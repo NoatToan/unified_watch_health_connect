@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Heart with a pulse line, centred in the 66dp safe zone. -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,76 L38.5,61.5 C33,56.3 30,52.5 30,47.5 C30,41.5 34.6,37 40.5,37 C44,37 47.4,38.7 49.5,41.3 L54,46.5 L58.5,41.3 C60.6,38.7 64,37 67.5,37 C73.4,37 78,41.5 78,47.5 C78,52.5 75,56.3 69.5,61.5 Z" />
+    <path
+        android:strokeColor="#006A60"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M34,52 L45,52 L49,45 L55,59 L59,50 L74,50" />
+</vector>

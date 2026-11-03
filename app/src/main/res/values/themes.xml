@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Platform theme only provides the window background before Compose draws;
+         all styling lives in the Compose UnifiedHealthTheme. -->
+    <style name="Theme.UnifiedHealth" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/window_background_light</item>
+    </style>
+</resources>

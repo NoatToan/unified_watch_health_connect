@@ -1,0 +1,200 @@
+package com.unified.health.driver.zepp
+
+import android.util.Log
+import com.unified.health.core.ble.HealthRecordSink
+import com.unified.health.core.ble.driver.SyncProgress
+import com.unified.health.core.ble.driver.SyncRequest
+import com.unified.health.core.ble.driver.UnsupportedDeviceException
+import com.unified.health.core.ble.driver.WearableProtocolException
+import com.unified.health.core.ble.driver.WearableSession
+import com.unified.health.core.ble.gatt.GattClient
+import com.unified.health.core.ble.gatt.StandardGattReader
+import com.unified.health.core.ble.gatt.StandardUuids
+import com.unified.health.core.ble.protocol.MalformedPayloadException
+import com.unified.health.core.model.DeviceCapability
+import com.unified.health.core.model.DeviceInfo
+import com.unified.health.core.model.HealthRecord
+import com.unified.health.core.model.WearableVendor
+import com.unified.health.driver.zepp.codec.GdspCodec
+import com.unified.health.driver.zepp.codec.GdspDataType
+import com.unified.health.driver.zepp.codec.GdspHeader
+import com.unified.health.driver.zepp.codec.GdspRecordParsers
+import com.unified.health.driver.zepp.codec.OpenAppCodec
+import com.unified.health.driver.zepp.transport.ChannelTransport
+import com.unified.health.driver.zepp.transport.GdspClient
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.withContext
+import java.time.Duration
+import java.time.Instant
+import java.time.ZoneId
+
+/**
+ * An authenticated Zepp / Amazfit connection. History is pulled with GDSP (§6.1) for activity
+ * (steps + heart rate per minute), SpO2 points and all-day stress.
+ *
+ * @param channel the authenticated channel (Zepp OS), kept alive so its reader keeps ACKing the
+ *  watch; null for legacy watches.
+ * @param scope session-owned scope (channel reader); cancelled in [close].
+ */
+internal class ZeppSession(
+    private val gatt: GattClient,
+    private val channel: ChannelTransport?,
+    private val scope: CoroutineScope,
+    private val zone: ZoneId,
+) : WearableSession {
+
+    private val gdsp: GdspClient? = run {
+        val control = gatt.findCharacteristic(ZeppUuids.GDSP_CONTROL, ZeppUuids.SERVICE_MILI) ?: gatt.findCharacteristic(ZeppUuids.GDSP_CONTROL)
+        val data = gatt.findCharacteristic(ZeppUuids.GDSP_DATA, ZeppUuids.SERVICE_MILI) ?: gatt.findCharacteristic(ZeppUuids.GDSP_DATA)
+        if (control != null && data != null) GdspClient(gatt, control, data) else null
+    }
+
+    /**
+     * Like the vendor (`HMHeartRateController.java:142-151`), a watch listing OpenAppModule (29)
+     * is switched over the channel even when it also exposes `2A39`; otherwise `2A39` is used.
+     */
+    private val live: Flow<HealthRecord.HeartRate>? = run {
+        val measurement = gatt.findCharacteristic(StandardUuids.HEART_RATE_MEASUREMENT, StandardUuids.HEART_RATE_SERVICE)
+            ?: return@run null
+        val control = gatt.findCharacteristic(ZeppUuids.HR_CONTROL, StandardUuids.HEART_RATE_SERVICE)
+        when {
+            channel != null && channel.supportsModule(OpenAppCodec.MODULE) -> ZeppOsLiveHeartRate(gatt, measurement, channel).flow
+            control != null -> ZeppLiveHeartRate(gatt, measurement, control).flow
+            else -> null
+        }
+    }
+
+    override val liveHeartRate: Flow<HealthRecord.HeartRate> = live ?: emptyFlow()
+
+    override val capabilities: Set<DeviceCapability> = buildSet {
+        if (live != null) add(DeviceCapability.LIVE_HEART_RATE)
+        if (gdsp != null) add(DeviceCapability.HISTORY_SYNC)
+        if (gatt.findCharacteristic(StandardUuids.BATTERY_LEVEL, StandardUuids.BATTERY_SERVICE) != null) add(DeviceCapability.BATTERY_LEVEL)
+    }
+
+    // TODO(zepp-protocol): model/firmware could also come from the PnP id (0x2A50, §2.4) and the
+    //  battery from Huami char 0x0006, whose layout the protocol document does not give.
+    override suspend fun readDeviceInfo(): DeviceInfo = StandardGattReader.readDeviceInfo(gatt)
+
+    override suspend fun sync(request: SyncRequest, sink: HealthRecordSink, progress: SyncProgress): Int {
+        val gdsp = gdsp ?: throw UnsupportedDeviceException("Watch does not expose the GDSP history characteristics")
+        gdsp.open()
+        val since = request.effectiveSince()
+        val now = request.now
+        var delivered = 0
+        SYNC_TYPES.forEachIndexed { typeIndex, type ->
+            delivered += syncType(gdsp, type, since, now, sink) { fraction ->
+                progress.report(((typeIndex + fraction) / SYNC_TYPES.size).coerceIn(0f, 1f))
+            }
+        }
+        progress.report(1f)
+        return delivered
+    }
+
+    /** Pulls [type] block by block from [since], looping on the header count (§6.1). */
+    private suspend fun syncType(
+        gdsp: GdspClient,
+        type: GdspDataType,
+        since: Instant,
+        now: Instant,
+        sink: HealthRecordSink,
+        report: (Float) -> Unit,
+    ): Int {
+        var cursor = since
+        var delivered = 0
+        var completed = false
+        try {
+            var blocks = 0
+            while (blocks++ < MAX_BLOCKS_PER_TYPE) {
+                val header = gdsp.requestHeader(type, cursor, zone) ?: break
+                if (header.count <= 0) break
+                val payload = gdsp.fetch()
+                val records = decode(type, payload, header)
+                if (records.isNotEmpty()) sink.onRecords(records)
+                delivered += records.count { it !is HealthRecord.RawPayload }
+                val next = nextCursor(type, header, records) ?: break
+                if (!next.isAfter(cursor)) break
+                cursor = next
+                report(fractionOf(since, cursor, now))
+            }
+            completed = true
+        } finally {
+            withContext(NonCancellable) { finishTransfer(gdsp, type, completed) }
+        }
+        report(1f)
+        return delivered
+    }
+
+    /**
+     * Ends the GDSP exchange like `GDSPSyncTask` does once per data type: `[0x03, 0x01]` on
+     * success (see [GdspCodec.STOP_CODE_CONFIRM_DELIVERED] for the "data delivered" risk) and a
+     * plain `[0x03]` otherwise. Best effort: a failure here must not hide the original error.
+     */
+    private suspend fun finishTransfer(gdsp: GdspClient, type: GdspDataType, success: Boolean) {
+        try {
+            val confirmed = gdsp.stop(if (success) GdspCodec.STOP_CODE_CONFIRM_DELIVERED else null)
+            if (!confirmed) Log.d(TAG, "GDSP stop for $type not confirmed")
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Log.w(TAG, "GDSP stop for $type failed: ${e.message}")
+        }
+    }
+
+    private fun decode(type: GdspDataType, payload: ByteArray, header: GdspHeader): List<HealthRecord> = try {
+        when (type) {
+            GdspDataType.ACTIVITY -> GdspRecordParsers.parseActivity(payload, header.start, header.count)
+            GdspDataType.STRESS_ALL_DAY -> GdspRecordParsers.parseStressAllDay(payload, header.start)
+            GdspDataType.SPO2_POINT -> {
+                val result = GdspRecordParsers.parseSpo2(payload)
+                val version = result.unsupportedVersion
+                if (version == null) {
+                    result.records
+                } else {
+                    // TODO(zepp-protocol): SpO2 v2 (`Spo2PointDataExtends`) layout is not in the document (§6.2, §9 q4).
+                    Log.i(TAG, "Keeping SpO2 payload version $version as raw data")
+                    listOf(HealthRecord.RawPayload(WearableVendor.ZEPP, "gdsp_spo2_v$version", header.start, payload))
+                }
+            }
+        }
+    } catch (e: MalformedPayloadException) {
+        throw WearableProtocolException("Could not decode GDSP $type data: ${e.message}", e)
+    }
+
+    /**
+     * Where the next header request starts (vendor loop behaviour, [V]):
+     * activity = header + count minutes (`HMProSyncDataTask`), stress = header + count minutes + 1 s
+     * (`HMSyncPressureTask`), SpO2 = last record + 30 s (`HMSyncSpo2DataTask`).
+     */
+    private fun nextCursor(type: GdspDataType, header: GdspHeader, records: List<HealthRecord>): Instant? = when (type) {
+        GdspDataType.ACTIVITY -> header.start.plus(Duration.ofMinutes(header.count))
+        GdspDataType.STRESS_ALL_DAY -> header.start.plus(Duration.ofMinutes(header.count)).plusSeconds(1)
+        GdspDataType.SPO2_POINT -> records.filterIsInstance<HealthRecord.SpO2>().maxOfOrNull { it.time }?.plusSeconds(SPO2_NEXT_OFFSET_SECONDS)
+    }
+
+    private fun fractionOf(since: Instant, cursor: Instant, now: Instant): Float {
+        val total = Duration.between(since, now).toMillis().toFloat()
+        if (total <= 0f) return 1f
+        return (Duration.between(since, cursor).toMillis() / total).coerceIn(0f, 1f)
+    }
+
+    override suspend fun close() {
+        scope.cancel()
+    }
+
+    private companion object {
+        const val TAG = "ZeppSession"
+
+        val SYNC_TYPES = listOf(GdspDataType.ACTIVITY, GdspDataType.SPO2_POINT, GdspDataType.STRESS_ALL_DAY)
+
+        /** Guards against a watch that keeps answering with data for the same window. */
+        const val MAX_BLOCKS_PER_TYPE = 512
+
+        const val SPO2_NEXT_OFFSET_SECONDS = 30L
+    }
+}
