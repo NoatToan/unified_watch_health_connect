@@ -12,13 +12,26 @@ import java.time.ZoneOffset
 /** GDSP data types requested by this driver (`HMGDSPType`, §6.1 [V]). */
 internal enum class GdspDataType(val code: Int) {
     ACTIVITY(0x01),
+
+    /** Single-event stress reading, `HMProSyncDataProfile.parsePressureSingleData()` (brief TODO, [V]). */
+    STRESS_SINGLE(0x12),
     STRESS_ALL_DAY(0x13),
     SPO2_POINT(0x25),
+
+    /**
+     * Resting heart rate. Type constant is [V] (`HMProSyncDataBaseProfile.java:71`); the record
+     * layout is [I] (inferred from [STRESS_SINGLE]'s shape, see `GdspRecordParsers.parseRestingHeartRate`).
+     */
+    RESTING_HEART_RATE(0x3A),
 }
 
 /** Header answer to `[0x01, type, time…]`: [count] items available from [start] (§6.1 [V]). */
 internal data class GdspHeader(
-    /** Item count; for activity and stress this is a number of minutes (§6.1). */
+    /**
+     * Item count; for [GdspDataType.ACTIVITY] and [GdspDataType.STRESS_ALL_DAY] this is a number of
+     * minutes (§6.1). For the event-based types (SpO2, stress-single, resting HR) it is a record
+     * count instead; only its positivity is used to decide whether to fetch (`ZeppSession.syncType`).
+     */
     val count: Long,
     val start: Instant,
 )

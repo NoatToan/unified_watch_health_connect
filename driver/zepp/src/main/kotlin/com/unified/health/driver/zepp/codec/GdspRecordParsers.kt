@@ -4,6 +4,7 @@ import com.unified.health.core.ble.protocol.ByteReader
 import com.unified.health.core.ble.protocol.MalformedPayloadException
 import com.unified.health.core.model.HealthRecord
 import java.time.Instant
+import java.time.ZoneId
 
 /**
  * Decoders for reassembled GDSP payloads (per-packet sequence bytes already stripped), §6.2.
@@ -28,6 +29,14 @@ internal object GdspRecordParsers {
     /** SpO2 point record: timestamp u32 LE (UTC seconds) + percent (`Spo2PointData`, [V]). */
     const val SPO2_RECORD_SIZE = 5
     const val SPO2_SUPPORTED_VERSION = 1
+
+    /** `Spo2PointDataExtends` (brief TODO-2 [V]): timestamp(4) + current spo2(1) + 60 history bytes. */
+    const val SPO2_V2_VERSION = 2
+    const val SPO2_V2_RECORD_SIZE = 65
+    private const val SPO2_V2_HISTORY_LENGTH = 60
+
+    /** Stress-single / resting-HR record: `[timestamp u32 LE, value u8]`, after one leading skip byte. */
+    const val EVENT_RECORD_SIZE = 5
 
     /**
      * Activity (type 0x01), one record per minute from [start] (§6.2 [V]). The first byte of the
@@ -62,38 +71,122 @@ internal object GdspRecordParsers {
     class Spo2Result(val records: List<HealthRecord.SpO2>, val unsupportedVersion: Int? = null)
 
     /**
-     * SpO2 points (type 0x25), version 1: 5-byte records `[timestamp u32 LE, spo2 u8]` (§6.2 [V]).
+     * SpO2 points (type 0x25). Version 1: 5-byte records `[timestamp u32 LE, spo2 u8]` (§6.2 [V]).
+     * Version 2 (`Spo2PointDataExtends`, brief TODO-2 [V]): 65-byte records `[timestamp u32 LE,
+     * current spo2 u8, 60 history bytes (oldest→newest, one per minute, ending at timestamp)]`; the
+     * current-point byte is superseded by `history[59]` (same instant) and not re-emitted.
      *
      * Devices with the "support version" feature prefix the payload with one version byte
      * (`HMSyncSpo2Profile.q`, [V]). We cannot query that feature, so the prefix is inferred from the
-     * length ([I]): `n × 5 + 1` bytes means a version byte, `n × 5` means none.
+     * length ([I]): a clean multiple of 5 bytes means no prefix (implicitly v1); otherwise the first
+     * byte is the version and the rest must cleanly fit a known record size (v1's 5 or v2's 65) —
+     * a version we don't recognise is kept as [Spo2Result.unsupportedVersion] (not decoded, not
+     * thrown), but a length that fits neither is a corrupt frame ([MalformedPayloadException]).
      */
     fun parseSpo2(payload: ByteArray): Spo2Result {
         if (payload.isEmpty()) return Spo2Result(emptyList())
-        val (version, body) = when (payload.size % SPO2_RECORD_SIZE) {
-            0 -> SPO2_SUPPORTED_VERSION to 0
-            1 -> (payload[0].toInt() and 0xFF) to 1
-            else -> throw MalformedPayloadException("SpO2 payload of ${payload.size} bytes is not n × $SPO2_RECORD_SIZE (+1)")
+        if (payload.size % SPO2_RECORD_SIZE == 0) return Spo2Result(parseSpo2V1(payload, 0))
+        val version = payload[0].toInt() and 0xFF
+        val body = payload.size - 1
+        val fitsV1 = body % SPO2_RECORD_SIZE == 0
+        val fitsV2 = body % SPO2_V2_RECORD_SIZE == 0
+        return when {
+            version == SPO2_SUPPORTED_VERSION && fitsV1 -> Spo2Result(parseSpo2V1(payload, 1))
+            version == SPO2_V2_VERSION && fitsV2 -> Spo2Result(parseSpo2V2(payload, 1))
+            fitsV1 || fitsV2 -> Spo2Result(emptyList(), unsupportedVersion = version)
+            else -> throw MalformedPayloadException(
+                "SpO2 payload of ${payload.size} bytes is not n × $SPO2_RECORD_SIZE or 1 + n × ($SPO2_RECORD_SIZE or $SPO2_V2_RECORD_SIZE)",
+            )
         }
-        if (version != SPO2_SUPPORTED_VERSION) return Spo2Result(emptyList(), unsupportedVersion = version)
-        val reader = ByteReader(payload, start = body)
+    }
+
+    private fun parseSpo2V1(payload: ByteArray, start: Int): List<HealthRecord.SpO2> {
+        val reader = ByteReader(payload, start = start)
         val records = ArrayList<HealthRecord.SpO2>()
         while (reader.hasRemaining) {
             val timestamp = reader.u32le()
             val percent = reader.u8()
             if (timestamp > 0 && percent in 1..100) records += HealthRecord.SpO2(Instant.ofEpochSecond(timestamp), percent)
         }
-        return Spo2Result(records)
+        return records
+    }
+
+    private fun parseSpo2V2(payload: ByteArray, start: Int): List<HealthRecord.SpO2> {
+        val reader = ByteReader(payload, start = start)
+        val records = ArrayList<HealthRecord.SpO2>()
+        while (reader.hasRemaining) {
+            val timestamp = reader.u32le()
+            reader.skip(1) // current spo2: same instant/value as history[last], not re-emitted.
+            val history = reader.bytes(SPO2_V2_HISTORY_LENGTH)
+            history.forEachIndexed { i, byte ->
+                val percent = byte.toInt() and 0xFF
+                val time = timestamp - (SPO2_V2_HISTORY_LENGTH - 1 - i) * SECONDS_PER_MINUTE
+                if (time > 0 && percent in 1..100) records += HealthRecord.SpO2(Instant.ofEpochSecond(time), percent)
+            }
+        }
+        return records
     }
 
     /**
-     * All-day stress (type 0x13): one byte per minute from [start] (`HMSyncPressureTask`,
-     * `HMProSyncDataProfile.M`, §6.2 [I]). Values outside 1..100 (0 = not measured, 0xFE/0xFF
-     * markers) are skipped ([I]).
+     * All-day stress (type 0x13): one byte per minute from [start], after a leading skip byte
+     * (`HMProSyncDataProfile.M()`, brief TODO [V]; mirrors [parseActivity]'s leading byte). Values
+     * outside 1..100 (0 = not measured, 0xFE/0xFF markers) are skipped ([I]).
      */
-    fun parseStressAllDay(payload: ByteArray, start: Instant): List<HealthRecord.Stress> =
-        payload.indices.mapNotNull { minute ->
-            val score = payload[minute].toInt() and 0xFF
-            if (score in 1..100) HealthRecord.Stress(start.plusSeconds(minute * SECONDS_PER_MINUTE), score) else null
+    fun parseStressAllDay(payload: ByteArray, start: Instant): List<HealthRecord.Stress> {
+        if (payload.size <= 1) return emptyList()
+        return (1 until payload.size).mapNotNull { index ->
+            val score = payload[index].toInt() and 0xFF
+            if (score in 1..100) HealthRecord.Stress(start.plusSeconds((index - 1) * SECONDS_PER_MINUTE), score) else null
         }
+    }
+
+    /**
+     * Single-event stress (type 0x12): 5-byte records `[timestamp u32 LE, stress u8]` after a
+     * leading skip byte (`HMProSyncDataProfile.parsePressureSingleData()`, brief TODO [V]).
+     */
+    fun parseStressSingle(payload: ByteArray): List<HealthRecord.Stress> {
+        if (payload.size <= 1) return emptyList()
+        val body = payload.size - 1
+        if (body % EVENT_RECORD_SIZE != 0) {
+            throw MalformedPayloadException("Stress-single payload of ${payload.size} bytes is not 1 + n × $EVENT_RECORD_SIZE")
+        }
+        val reader = ByteReader(payload, start = 1)
+        val records = ArrayList<HealthRecord.Stress>()
+        while (reader.hasRemaining) {
+            val timestamp = reader.u32le()
+            val score = reader.u8()
+            if (timestamp > 0 && score in 1..100) records += HealthRecord.Stress(Instant.ofEpochSecond(timestamp), score)
+        }
+        return records
+    }
+
+    /**
+     * Resting heart rate (type 0x3A = 58). The type constant is [V] (`HMProSyncDataBaseProfile.java:71`)
+     * but no parse method was found in the decompiled sources (likely R8-obfuscated or in a class
+     * jadx could not decompile). [I] Inferred as the same shape already confirmed for
+     * [parseStressSingle] (type 0x12): one skip byte then 5-byte `[timestamp u32 LE, bpm u8]` records.
+     *
+     * TODO(zepp-protocol): NEEDS-REAL-WATCH — this layout is a guess by analogy, not seen in code.
+     * Confirm with an HCI snoop log of a real sync before trusting these values; a watch answering
+     * this type with a different shape will surface as a [MalformedPayloadException] here, not
+     * silently wrong data, because [EVENT_RECORD_SIZE] validates the overall length first.
+     */
+    fun parseRestingHeartRate(payload: ByteArray, zone: ZoneId): List<HealthRecord.RestingHeartRate> {
+        if (payload.size <= 1) return emptyList()
+        val body = payload.size - 1
+        if (body % EVENT_RECORD_SIZE != 0) {
+            throw MalformedPayloadException("Resting-HR payload of ${payload.size} bytes is not 1 + n × $EVENT_RECORD_SIZE")
+        }
+        val reader = ByteReader(payload, start = 1)
+        val records = ArrayList<HealthRecord.RestingHeartRate>()
+        while (reader.hasRemaining) {
+            val timestamp = reader.u32le()
+            val bpm = reader.u8()
+            if (timestamp > 0 && bpm in 1..250) {
+                val date = Instant.ofEpochSecond(timestamp).atZone(zone).toLocalDate()
+                records += HealthRecord.RestingHeartRate(date, bpm)
+            }
+        }
+        return records
+    }
 }

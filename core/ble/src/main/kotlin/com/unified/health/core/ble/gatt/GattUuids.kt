@@ -16,6 +16,9 @@ object StandardUuids {
     val FIRMWARE_REVISION: UUID = sigUuid(0x2A26)
     val SOFTWARE_REVISION: UUID = sigUuid(0x2A28)
 
+    /** PnP ID: `[vendorSource u8, vendorId u16 LE, productId u16 LE, productVersion u16 LE]` (Bluetooth Assigned Numbers §6.5). */
+    val PNP_ID: UUID = sigUuid(0x2A50)
+
     val BATTERY_SERVICE: UUID = sigUuid(0x180F)
     val BATTERY_LEVEL: UUID = sigUuid(0x2A19)
 

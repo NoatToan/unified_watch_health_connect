@@ -1,5 +1,6 @@
 package com.unified.health.driver.zepp
 
+import android.util.Log
 import com.unified.health.core.ble.driver.AuthenticationException
 import com.unified.health.core.ble.driver.LinkRequirements
 import com.unified.health.core.ble.driver.MissingCredentialException
@@ -8,16 +9,21 @@ import com.unified.health.core.ble.driver.SessionContext
 import com.unified.health.core.ble.driver.WearableDriver
 import com.unified.health.core.ble.driver.WearableSession
 import com.unified.health.core.ble.gatt.GattClient
+import com.unified.health.core.ble.gatt.GattException
+import com.unified.health.core.ble.gatt.StandardUuids
 import com.unified.health.core.ble.scan.Advertisement
 import com.unified.health.core.model.CredentialFormat
 import com.unified.health.core.model.CredentialRequirement
 import com.unified.health.core.model.WearableVendor
+import com.unified.health.driver.zepp.codec.TimeSync
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import java.security.SecureRandom
+import java.time.Instant
 import java.time.ZoneId
 import java.util.Random
 import javax.inject.Inject
@@ -34,6 +40,7 @@ class ZeppDriver internal constructor(
     private val dispatcher: CoroutineDispatcher,
     private val zoneProvider: () -> ZoneId,
     private val random: Random,
+    private val now: () -> Instant = Instant::now,
 ) : WearableDriver {
 
     @Inject constructor() : this(Dispatchers.Default, ZoneId::systemDefault, SecureRandom())
@@ -65,16 +72,35 @@ class ZeppDriver internal constructor(
             } else {
                 null
             }
+            // ZeppHandshake already loads the module list itself (to pick the auth module); reused here
+            // for ZeppSession's live-heart-rate routing (OpenAppModule vs 0x2A39).
             val channel = ZeppHandshake(gatt, scope, random).authenticate(authKey, confirmBind)
-            channel?.loadModuleList()
-            return ZeppSession(gatt, channel, scope, zoneProvider())
+            val zone = zoneProvider()
+            syncTime(gatt, zone)
+            return ZeppSession(gatt, channel, scope, zone)
         } catch (e: Throwable) {
             scope.cancel()
             throw e
         }
     }
 
+    /**
+     * Writes the Current Time (§4 step 7 [V]); best effort, like the vendor flow it never blocks
+     * pairing on this (a watch without `2A2B`, or one that refuses the write, still syncs fine).
+     */
+    private suspend fun syncTime(gatt: GattClient, zone: ZoneId) {
+        val characteristic = gatt.findCharacteristic(StandardUuids.CURRENT_TIME, StandardUuids.CURRENT_TIME_SERVICE) ?: return
+        try {
+            gatt.write(characteristic, TimeSync.encode(now(), zone))
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: GattException) {
+            Log.w(TAG, "Time sync failed: ${e.message}")
+        }
+    }
+
     companion object {
+        private const val TAG = "ZeppDriver"
         const val AUTH_KEY_SIZE = 16
 
         val AUTH_KEY = CredentialRequirement(

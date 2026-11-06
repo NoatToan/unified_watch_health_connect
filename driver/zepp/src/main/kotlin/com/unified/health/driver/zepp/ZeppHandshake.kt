@@ -7,6 +7,7 @@ import com.unified.health.core.ble.driver.WearableProtocolException
 import com.unified.health.core.ble.gatt.GattCharacteristic
 import com.unified.health.core.ble.gatt.GattClient
 import com.unified.health.core.ble.protocol.MalformedPayloadException
+import com.unified.health.driver.zepp.codec.AuthModule1Codec
 import com.unified.health.driver.zepp.codec.B163Ecdh
 import com.unified.health.driver.zepp.codec.ChannelCipher
 import com.unified.health.driver.zepp.codec.ChannelProtocol
@@ -21,16 +22,22 @@ import kotlinx.coroutines.withTimeoutOrNull
 import java.util.Random
 
 /**
- * Chooses and runs the authentication for one connection (§4 steps 2-6):
- * - channel v2 with the encrypt byte → Zepp OS session auth on module 0x82 (§5.2);
- * - no channel (or no version reply) and characteristic 0x0009 → legacy auth (§5.5);
- * - channel v1, or v2 without the encrypt byte, would use module 0x80, whose flow the protocol
- *   document does not specify → [UnsupportedDeviceException].
+ * Chooses and runs the authentication for one connection (§4 steps 2-6, `DeviceAuthorizationFactory.java:79-94` [V]):
+ * the choice depends on the BuiltInModule list (§3.4), not the channel framing version (v1/v2
+ * only changes packet headers, `ChannelCodec`/`ChannelProtocol`):
+ * - module list has 0x82 or 0x80 → `encryptEnabled == null` selects module 0x80 session auth
+ *   (Impl1, no ECDH, `AuthModule1Codec`); otherwise module 0x82 (Impl2, ECDH session auth, §5.2) —
+ *   regardless of whether the channel is v1 or v2, which only changes packet framing;
+ * - module list has neither (or the watch never answered the version query) → legacy auth on
+ *   characteristic 0x0009 (§5.5);
+ * - channel present but an unrecognised version byte → [UnsupportedDeviceException].
  *
  * Session auth is the default. When [authenticate] gets a `confirmBind` callback the driver first
  * writes the (app-generated) key to the watch: legacy `0x01` bind (§5.5) or Zepp OS local bind
- * (§5.3 step 5, only if the firmware reports `allowLocalBinding`). The cloud-signed bind (§5.1,
- * §5.3 steps 2-4) is never performed: this driver does not contact Huami servers.
+ * (§5.3 step 5, only if the firmware reports `allowLocalBinding`). Module 0x80 has no documented
+ * bind command, so `confirmBind` on that path raises [AuthenticationException] instead of guessing
+ * one. The cloud-signed bind (§5.1, §5.3 steps 2-4) is never performed: this driver does not
+ * contact Huami servers.
  */
 internal class ZeppHandshake(
     private val gatt: GattClient,
@@ -53,29 +60,33 @@ internal class ZeppHandshake(
             Log.i(TAG, "Channel version: $version")
             when {
                 version == null -> Log.w(TAG, "No channel version reply; trying legacy auth")
-                // TODO(zepp-protocol): v1 watches may still use 0x0009 when they lack module 0x80/0x82;
-                //  deciding that needs the BuiltInModule (0x00) list, whose response layout is unverified.
-                version.version == 1 -> throw UnsupportedDeviceException(
-                    "This Zepp/Amazfit watch uses channel v1 (auth module 0x80), which is not supported yet",
-                )
-                version.version != 2 -> throw UnsupportedDeviceException("Unknown Zepp channel version ${version.version}")
-                version.encryptEnabled == null -> throw UnsupportedDeviceException(
-                    "This Zepp OS watch requests auth module 0x80, which is not supported yet",
-                )
+                version.version !in 1..2 -> throw UnsupportedDeviceException("Unknown Zepp channel version ${version.version}")
                 else -> {
-                    transport.use(ChannelProtocol.V2)
-                    if (confirmBind != null) {
-                        bindZeppOs(transport, authKey)
-                        confirmBind()
+                    // Framing only (§3.3); which auth module exists is decided by the module list below,
+                    // not by this version number (§4 step 4-5 [V]).
+                    transport.use(if (version.version == 1) ChannelProtocol.V1 else ChannelProtocol.V2)
+                    transport.loadModuleList()
+                    val hasChannelAuth = transport.supportsModule(ZeppOsAuthCodec.MODULE) || transport.supportsModule(AuthModule1Codec.MODULE)
+                    if (hasChannelAuth) {
+                        if (version.encryptEnabled == null) {
+                            if (confirmBind != null) throw AuthenticationException(AUTH_MODULE_1_BIND_UNSUPPORTED)
+                            authenticateModule1(transport, authKey)
+                        } else {
+                            if (confirmBind != null) {
+                                bindZeppOs(transport, authKey)
+                                confirmBind()
+                            }
+                            authenticateZeppOs(transport, authKey)
+                        }
+                        return transport
                     }
-                    authenticateZeppOs(transport, authKey)
-                    return transport
+                    Log.i(TAG, "No auth module (0x80/0x82) in the channel's module list; trying legacy auth")
                 }
             }
         }
         val legacy = gatt.findCharacteristic(ZeppUuids.LEGACY_AUTH, ZeppUuids.SERVICE_MILI_SECONDARY)
             ?: gatt.findCharacteristic(ZeppUuids.LEGACY_AUTH, ZeppUuids.SERVICE_MILI)
-            ?: throw UnsupportedDeviceException("Watch exposes neither the Zepp channel nor the legacy auth characteristic")
+            ?: throw UnsupportedDeviceException("Watch exposes neither a supported channel auth module nor the legacy auth characteristic")
         authenticateLegacy(legacy, authKey, confirmBind)
         return null
     }
@@ -143,13 +154,38 @@ internal class ZeppHandshake(
         Log.i(TAG, "Zepp OS session authenticated")
     }
 
+    /**
+     * Module 0x80 session auth (brief TODO-1, `AuthModule.java:401-538` [V]): no ECDH, the random
+     * challenge is encrypted directly with the stored auth key.
+     */
+    private suspend fun authenticateModule1(transport: ChannelTransport, authKey: ByteArray) {
+        val randomResponse = moduleRequest(transport, AuthModule1Codec.requestRandom(), AuthModule1Codec.CMD_REQUEST_RANDOM, module = AuthModule1Codec.MODULE)
+        if (!randomResponse.isSuccess) {
+            throw AuthenticationException("Watch refused the auth challenge (status ${randomResponse.status}). Is it still bound to this Zepp account?")
+        }
+        val random = try {
+            AuthModule1Codec.parseRandom(randomResponse.data)
+        } catch (e: MalformedPayloadException) {
+            throw WearableProtocolException("Malformed auth challenge: ${e.message}", e)
+        }
+        val result = moduleRequest(transport, AuthModule1Codec.authorize(authKey, random), AuthModule1Codec.CMD_AUTHORIZE, module = AuthModule1Codec.MODULE)
+        if (!result.isSuccess) {
+            throw AuthenticationException(
+                "Watch rejected the auth key (status ${result.status}). Re-read the key from your Zepp account; " +
+                    "it changes when the watch is reset or re-bound.",
+            )
+        }
+        Log.i(TAG, "Module 0x80 session authenticated")
+    }
+
     private suspend fun moduleRequest(
         transport: ChannelTransport,
         payload: ByteArray,
         command: Int,
         timeoutMs: Long = MODULE_RESPONSE_TIMEOUT_MS,
+        module: Int = ZeppOsAuthCodec.MODULE,
     ): CommandResponse {
-        val answer = transport.request(ZeppOsAuthCodec.MODULE, payload, timeoutMs) {
+        val answer = transport.request(module, payload, timeoutMs) {
             CommandResponse.parse(it)?.command == command
         }
         return checkNotNull(CommandResponse.parse(answer))
@@ -193,6 +229,10 @@ internal class ZeppHandshake(
 
     companion object {
         private const val TAG = "ZeppHandshake"
+
+        internal const val AUTH_MODULE_1_BIND_UNSUPPORTED =
+            "This watch's older auth module (0x80) has no documented way to bind a new key from this app. " +
+                "Bind it once in the Zepp app, then paste its existing key here instead."
 
         /** `BaseModule.sendCommand` default timeout (15 000 ms) [V]. */
         const val MODULE_RESPONSE_TIMEOUT_MS = 15_000L

@@ -41,6 +41,10 @@ internal class FakeZeppWatch(
     private val allowLocalBinding: Int = 0,
     /** BuiltInModule list: module id → requireEncryption. Without OpenAppModule (29) by default. */
     private val modules: Map<Int, Boolean> = mapOf(0x82 to false),
+    /** False: the watch does not expose the standard Current Time characteristic (§4 step 7). */
+    hasCurrentTime: Boolean = true,
+    /** True: expose a readable PnP ID (`2A50`) with `productId = 0x1234`, `productVersion = 0x0102`. */
+    private val hasPnpId: Boolean = false,
 ) {
     val channelDown = characteristic(ZeppUuids.SERVICE_MILI, ZeppUuids.CHANNEL_DOWN, PROPERTY_WRITE_NO_RESPONSE, PROPERTY_NOTIFY)
     val channelUp = characteristic(ZeppUuids.SERVICE_MILI, ZeppUuids.CHANNEL_UP, PROPERTY_WRITE_NO_RESPONSE, PROPERTY_NOTIFY)
@@ -50,6 +54,8 @@ internal class FakeZeppWatch(
     val hrMeasurement = characteristic(StandardUuids.HEART_RATE_SERVICE, StandardUuids.HEART_RATE_MEASUREMENT, PROPERTY_NOTIFY)
     val hrControl = characteristic(StandardUuids.HEART_RATE_SERVICE, ZeppUuids.HR_CONTROL, PROPERTY_WRITE, PROPERTY_WRITE_NO_RESPONSE)
     val battery = characteristic(StandardUuids.BATTERY_SERVICE, StandardUuids.BATTERY_LEVEL, PROPERTY_READ)
+    val currentTime = characteristic(StandardUuids.CURRENT_TIME_SERVICE, StandardUuids.CURRENT_TIME, PROPERTY_WRITE)
+    val pnpId = characteristic(StandardUuids.DEVICE_INFORMATION_SERVICE, StandardUuids.PNP_ID, PROPERTY_READ)
 
     val gatt = FakeGattClient(
         buildList {
@@ -58,6 +64,8 @@ internal class FakeZeppWatch(
             if (hasHeartRate) add(hrMeasurement)
             if (hasHeartRate && hasHrControl) add(hrControl)
             addAll(listOf(gdspControl, gdspData, battery))
+            if (hasCurrentTime) add(currentTime)
+            if (hasPnpId) add(pnpId)
         },
         mtu = mtu,
     )
@@ -120,6 +128,10 @@ internal class FakeZeppWatch(
 
     init {
         gatt.readValues[StandardUuids.BATTERY_LEVEL] = byteArrayOf(87)
+        if (hasPnpId) {
+            gatt.readValues[StandardUuids.PNP_ID] =
+                byteArrayOf(0x01, 0x57, 0x01, 0x34, 0x12, 0x02, 0x01) // vendorSource=SIG, vendorId=0x0157, productId=0x1234, productVersion=0x0102
+        }
         gatt.onWrite = { c, value -> onWrite(c, value) }
     }
 
@@ -132,23 +144,40 @@ internal class FakeZeppWatch(
         }
     }
 
+    /** Framing only (§3.3): matches the configured [channelVersion], independent of which auth module is used. */
+    private val channelProtocol: ChannelProtocol get() = if (channelVersion == 1) ChannelProtocol.V1 else ChannelProtocol.V2
+
     private fun onChannelDown(value: ByteArray) {
         if (value[0].toInt() == 0x01) {
             val reply = if (encryptByte == null) byteArrayOf(0x02, channelVersion.toByte()) else byteArrayOf(0x02, channelVersion.toByte(), encryptByte.toByte())
             gatt.notify(channelDown, reply)
             return
         }
-        val packet = ChannelCodec.decodeData(ChannelProtocol.V2, value)
+        val packet = ChannelCodec.decodeData(channelProtocol, value)
         val result = reassembler.append(packet)
         if (packet.needsReply) {
-            gatt.notify(channelDown, ChannelCodec.encodeAck(ChannelProtocol.V2, ChannelAck(packet.sessionId, ChannelReplyCode.OK, packet.index)))
+            gatt.notify(channelDown, ChannelCodec.encodeAck(channelProtocol, ChannelAck(packet.sessionId, ChannelReplyCode.OK, packet.index)))
         }
         if (result !is ChannelReassembler.Result.Complete) return
         val message = result.message
         when (message.module) {
             0x82 -> onAuthMessage(message.data)
+            0x80 -> onAuthModule1Message(message.data)
             0x00 -> onBuiltInMessage(message.data)
             0x1D -> onOpenAppMessage(message)
+        }
+    }
+
+    /** Module 0x80 session auth (no ECDH, brief TODO-1): `[0x04,...]` random request, `[0x05, enc]` authorize. */
+    private fun onAuthModule1Message(data: ByteArray) {
+        if (!answersAuth) return
+        when (data[0].toInt()) {
+            0x04 -> sendModule(0x80, byteArrayOf(0x10, 0x04, 0x01) + challenge)
+            0x05 -> {
+                val proofOk = data.copyOfRange(1, 17).contentEquals(AesEcb.encrypt(authKey, challenge))
+                authenticated = proofOk && authorizeStatus == 1
+                sendModule(0x80, byteArrayOf(0x10, 0x05, (if (proofOk) authorizeStatus else 2).toByte()))
+            }
         }
     }
 
@@ -207,8 +236,8 @@ internal class FakeZeppWatch(
     }
 
     private fun sendModule(module: Int, payload: ByteArray) {
-        val packets = ChannelCodec.split(ChannelProtocol.V2, outSession++, module, payload, packetSize = gatt.maxWriteLength)
-        packets.forEach { gatt.notify(channelUp, ChannelCodec.encodeData(ChannelProtocol.V2, it)) }
+        val packets = ChannelCodec.split(channelProtocol, outSession++, module, payload, packetSize = gatt.maxWriteLength)
+        packets.forEach { gatt.notify(channelUp, ChannelCodec.encodeData(channelProtocol, it)) }
     }
 
     private fun onLegacyAuth(value: ByteArray) {

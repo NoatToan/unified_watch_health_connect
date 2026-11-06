@@ -7,6 +7,7 @@ import com.unified.health.core.demo.mock.MockWatchDriver
 import com.unified.health.core.demo.mock.MockWatchVirtualDevice
 import com.unified.health.core.demo.seed.DemoDataSeeder
 import com.unified.health.core.demo.virtual.GarminVirtualDevice
+import com.unified.health.core.demo.virtual.ZeppVirtualWatch
 import com.unified.health.core.domain.repository.DemoDataController
 import dagger.Binds
 import dagger.Module
@@ -31,6 +32,15 @@ internal object DemoDeviceModule {
     @ElementsIntoSet
     fun mockDevice(): Set<VirtualDevice> =
         if (BuildConfig.MOCK_DEVICE) setOf(MockWatchVirtualDevice(), GarminVirtualDevice()) else emptySet()
+
+    /**
+     * No mock *driver* here: the real `ZeppDriver` (`:driver:zepp`, already on the app's Hilt graph)
+     * recognises and authenticates this virtual device like any real Zepp/Amazfit watch (§7/E2E in
+     * `docs/DECISIONS.md` D-5xx).
+     */
+    @Provides
+    @ElementsIntoSet
+    fun zeppVirtualWatch(): Set<VirtualDevice> = if (BuildConfig.MOCK_DEVICE) setOf(ZeppVirtualWatch()) else emptySet()
 }
 
 @Module

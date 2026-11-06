@@ -2,6 +2,7 @@ package com.unified.health.driver.zepp.codec
 
 import com.unified.health.core.ble.protocol.ByteReader
 import com.unified.health.core.ble.protocol.MalformedPayloadException
+import com.unified.health.core.ble.protocol.buildBytes
 import com.unified.health.core.ble.protocol.bytesOf
 
 /**
@@ -38,6 +39,44 @@ internal object BuiltInModuleCodec {
         if (reader.remaining > 0) throw MalformedPayloadException("Module list has ${reader.remaining} trailing bytes")
         return modules
     }
+}
+
+/**
+ * `AuthModule` (channel module 0x80): the pre-Zepp-OS session auth, used when the BuiltInModule
+ * list has an auth module but the channel version reply omitted the encrypt byte (§4 step 5,
+ * `AuthModule.java:401-538` [V]). No ECDH: the session key *is* the auth key, so there is no
+ * channel encryption either (`ChannelTransport.requiresEncryption` already returns false whenever
+ * `encryptEnabled` is null, which is exactly this case).
+ */
+internal object AuthModule1Codec {
+    const val MODULE = 0x80
+
+    const val CMD_REQUEST_RANDOM = 0x04
+    const val CMD_AUTHORIZE = 0x05
+
+    /** `DeviceAuthorizationImpl1`/`AuthModule` API level (distinct from `ZeppOsAuthCodec.APP_API_LEVEL`). */
+    private const val API_LEVEL = 1
+
+    /** Fixed byte after the API level in the request (`AuthModule.java:424-435`, [V]). */
+    private const val REQUEST_RANDOM_MARKER = 0x02
+
+    /** `[0x04, apiLevel u16 LE, 0x02]`; the successful reply's data is the 16-byte random challenge. */
+    fun requestRandom(): ByteArray = buildBytes(4) {
+        u8(CMD_REQUEST_RANDOM)
+        u16le(API_LEVEL)
+        u8(REQUEST_RANDOM_MARKER)
+    }
+
+    fun parseRandom(data: ByteArray): ByteArray {
+        if (data.size != ZeppOsAuthCodec.RANDOM_SIZE) {
+            throw MalformedPayloadException("Module 0x80 random challenge has ${data.size} bytes")
+        }
+        return data
+    }
+
+    /** `[0x05, AES_ECB(authKey, random)(16)]`: no session key, unlike module 0x82 (`AuthModule.java:401-411`, [V]). */
+    fun authorize(authKey: ByteArray, random: ByteArray): ByteArray =
+        byteArrayOf(CMD_AUTHORIZE.toByte()) + AesEcb.encrypt(authKey, random)
 }
 
 /**

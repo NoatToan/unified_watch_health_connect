@@ -107,8 +107,9 @@ class GdspCodecTest {
     }
 
     @Test
-    fun `stress skips invalid minutes`() {
-        val records = GdspRecordParsers.parseStressAllDay(bytesOf(20, 0, 0xFF, 101, 100), t0)
+    fun `stress skips invalid minutes after the leading byte`() {
+        // Leading byte is skipped (brief: HMProSyncDataProfile.M(), mirrors parseActivity's leading byte).
+        val records = GdspRecordParsers.parseStressAllDay(bytesOf(0x00, 20, 0, 0xFF, 101, 100), t0)
         assertEquals(listOf(HealthRecord.Stress(t0, 20), HealthRecord.Stress(t0.plusSeconds(240), 100)), records)
     }
 }

@@ -16,6 +16,7 @@ import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.testing.RecordingSink
 import com.unified.health.driver.zepp.codec.GdspCodec
 import com.unified.health.driver.zepp.codec.GdspDataType
+import com.unified.health.driver.zepp.codec.TimeSync
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
@@ -86,7 +87,16 @@ class ZeppDriverTest {
             listOf(FakeZeppWatch.GdspBlock(count = 1, start = start, payload = byteArrayOf(0x00, 0x10, 0x5E, 0x6A, 97))),
         )
         watch.gdspBlocks[GdspDataType.STRESS_ALL_DAY.code] = ArrayDeque(
-            listOf(FakeZeppWatch.GdspBlock(count = 3, start = start, payload = byteArrayOf(30, 0xFF.toByte(), 45))),
+            // leading skip byte, then one stress value per minute (brief TODO: HMProSyncDataProfile.M()).
+            listOf(FakeZeppWatch.GdspBlock(count = 3, start = start, payload = byteArrayOf(0x00, 30, 0xFF.toByte(), 45))),
+        )
+        watch.gdspBlocks[GdspDataType.STRESS_SINGLE.code] = ArrayDeque(
+            // leading skip byte, then [timestamp u32 LE, stress u8].
+            listOf(FakeZeppWatch.GdspBlock(count = 1, start = start, payload = byteArrayOf(0x00, 0x00, 0x10, 0x5E, 0x6A, 55))),
+        )
+        watch.gdspBlocks[GdspDataType.RESTING_HEART_RATE.code] = ArrayDeque(
+            // leading skip byte, then [timestamp u32 LE, bpm u8] (inferred layout, NEEDS-REAL-WATCH).
+            listOf(FakeZeppWatch.GdspBlock(count = 1, start = start, payload = byteArrayOf(0x00, 0x00, 0x10, 0x5E, 0x6A, 58))),
         )
 
         val session = driver().openSession(watch.gatt, withKey)
@@ -107,16 +117,17 @@ class ZeppDriverTest {
         assertEquals(listOf(HealthRecord.HeartRate(t0, 72)), sink.ofType<HealthRecord.HeartRate>())
         assertEquals(listOf(HealthRecord.SpO2(Instant.ofEpochSecond(0x6A5E1000), 97)), sink.ofType<HealthRecord.SpO2>())
         assertEquals(
-            listOf(HealthRecord.Stress(t0, 30), HealthRecord.Stress(t0.plusSeconds(120), 45)),
+            listOf(HealthRecord.Stress(t0, 30), HealthRecord.Stress(t0.plusSeconds(120), 45), HealthRecord.Stress(Instant.ofEpochSecond(0x6A5E1000), 55)),
             sink.ofType<HealthRecord.Stress>(),
         )
-        assertEquals(6, count)
+        assertEquals(listOf(HealthRecord.RestingHeartRate(java.time.LocalDate.of(2026, 7, 20), 58)), sink.ofType<HealthRecord.RestingHeartRate>())
+        assertEquals(8, count)
         assertEquals(1f, progress.last())
 
         // Header request for activity starts at `since` (UTC, tz key 0); the activity follow-up starts after 3 minutes.
         assertArrayEquals(byteArrayOf(0x01, 0x01, 0xEA.toByte(), 0x07, 10, 30, 0, 0, 0, 0), watch.headerRequests.first())
         assertArrayEquals(byteArrayOf(0x01, 0x01, 0xEA.toByte(), 0x07, 10, 30, 8, 3, 0, 0), watch.headerRequests[1])
-        assertEquals(List(3) { GdspCodec.STOP_CODE_CONFIRM_DELIVERED }, watch.stopCodes)
+        assertEquals(List(5) { GdspCodec.STOP_CODE_CONFIRM_DELIVERED }, watch.stopCodes)
         session.close()
     }
 
@@ -138,14 +149,46 @@ class ZeppDriverTest {
         driver().openSession(watch.gatt, withKey)
     }
 
-    @Test(expected = UnsupportedDeviceException::class)
-    fun `channel v1 is reported as unsupported`() = runTest {
-        driver().openSession(FakeZeppWatch(authKey, channelVersion = 1, encryptByte = null).gatt, withKey)
+    @Test
+    fun `channel v1 without encrypt byte authenticates via module 0x80 session auth`() = runTest {
+        val watch = FakeZeppWatch(authKey, channelVersion = 1, encryptByte = null)
+        val session = driver().openSession(watch.gatt, withKey)
+        assertTrue(watch.authenticated)
+        session.close()
     }
 
-    @Test(expected = UnsupportedDeviceException::class)
-    fun `v2 channel without encrypt byte needs module 0x80 and is unsupported`() = runTest {
-        driver().openSession(FakeZeppWatch(authKey, encryptByte = null).gatt, withKey)
+    @Test
+    fun `v2 channel without encrypt byte authenticates via module 0x80 session auth`() = runTest {
+        val watch = FakeZeppWatch(authKey, encryptByte = null)
+        val session = driver().openSession(watch.gatt, withKey)
+        assertTrue(watch.authenticated)
+        session.close()
+    }
+
+    @Test(expected = AuthenticationException::class)
+    fun `module 0x80 rejects a wrong auth key`() = runTest {
+        val watch = FakeZeppWatch(authKey, encryptByte = null).apply { authorizeStatus = 2 }
+        try {
+            driver().openSession(watch.gatt, withKey)
+        } finally {
+            assertFalse(watch.authenticated)
+        }
+    }
+
+    @Test
+    fun `channel v1 with module 0x82 authenticates (version is framing only, not the auth choice)`() = runTest {
+        val watch = FakeZeppWatch(authKey, channelVersion = 1)
+        val session = driver().openSession(watch.gatt, withKey)
+        assertTrue(watch.authenticated)
+        session.close()
+    }
+
+    @Test
+    fun `channel present but neither auth module listed falls back to legacy auth`() = runTest {
+        val watch = FakeZeppWatch(authKey, hasLegacyAuth = true, modules = emptyMap())
+        val session = driver().openSession(watch.gatt, withKey)
+        assertTrue(watch.authenticated)
+        session.close()
     }
 
     @Test
@@ -153,6 +196,42 @@ class ZeppDriverTest {
         val watch = FakeZeppWatch(authKey, hasChannel = false, hasLegacyAuth = true)
         val session = driver().openSession(watch.gatt, withKey)
         assertTrue(watch.authenticated)
+        session.close()
+    }
+
+    @Test
+    fun `writes the current time after authenticating`() = runTest {
+        val watch = FakeZeppWatch(authKey)
+        val now = Instant.parse("2026-11-06T10:15:30Z")
+        val driver = ZeppDriver(StandardTestDispatcher(testScheduler), { ZoneOffset.UTC }, Random(1)) { now }
+        val session = driver.openSession(watch.gatt, withKey)
+        val write = watch.gatt.writes.single { it.characteristic == watch.currentTime }
+        assertArrayEquals(TimeSync.encode(now, ZoneOffset.UTC), write.value)
+        session.close()
+    }
+
+    @Test
+    fun `falls back to a PnP-id label when the plain-text model number is absent`() = runTest {
+        val watch = FakeZeppWatch(authKey, hasPnpId = true)
+        val session = driver().openSession(watch.gatt, withKey)
+        assertEquals("Zepp 1234.0102", session.readDeviceInfo().model)
+        session.close()
+    }
+
+    @Test
+    fun `no model and no PnP id leaves model null`() = runTest {
+        val watch = FakeZeppWatch(authKey)
+        val session = driver().openSession(watch.gatt, withKey)
+        assertEquals(null, session.readDeviceInfo().model)
+        session.close()
+    }
+
+    @Test
+    fun `a watch without the Current Time characteristic still connects`() = runTest {
+        val watch = FakeZeppWatch(authKey, hasCurrentTime = false)
+        val session = driver().openSession(watch.gatt, withKey)
+        assertTrue(watch.authenticated)
+        assertTrue(watch.gatt.writes.none { it.characteristic == watch.currentTime })
         session.close()
     }
 
