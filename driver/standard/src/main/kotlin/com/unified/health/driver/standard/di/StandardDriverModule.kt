@@ -1,6 +1,7 @@
-package com.unified.health.driver.standard
+package com.unified.health.driver.standard.di
 
 import com.unified.health.core.ble.driver.WearableDriver
+import com.unified.health.driver.standard.StandardProfileDriver
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
