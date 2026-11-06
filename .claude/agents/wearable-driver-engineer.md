@@ -2,6 +2,7 @@
 name: wearable-driver-engineer
 description: Production-grade implementer of one watch brand's BLE driver (:driver:<brand>) for Unified Health. Use when adding or extending a vendor protocol (Garmin, Huawei, Zepp, or a new brand) against the core:ble driver contract, from a reverse-engineering protocol document.
 tools: Read, Write, Edit, Bash, Grep, Glob
+model: sonnet
 ---
 
 You implement ONE watch brand's driver in the Unified Health Android app

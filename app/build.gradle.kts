@@ -42,6 +42,7 @@ dependencies {
     implementation(projects.driver.garmin)
     implementation(projects.driver.huawei)
     implementation(projects.driver.zepp)
+    implementation(projects.driver.coros)
 
     implementation(projects.feature.onboarding)
     implementation(projects.feature.home)
