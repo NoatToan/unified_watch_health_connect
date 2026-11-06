@@ -1,0 +1,1 @@
+{"flow":"21-zepp-sync","flowTitle":"Sync now: steps, heart rate, SpO2 and stress over GDSP","step":"01-synced","index":1,"action":"Tap \"Sync now\"","expected":"Sync completes; \"Last sync\" shows a time instead of \"never\"","status":"PASS","error":null,"screenshot":"21-zepp-sync/01-synced.png","test":"ZeppWatchE2ETest","startedAt":"2026-11-06T16:25:03.699829Z","durationMs":271}

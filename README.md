@@ -12,8 +12,8 @@ instead of five vendor apps that each keep your data in their own silo.
 ![Android](https://img.shields.io/badge/Android-API%2026%E2%80%9337-3DDC84?logo=android&logoColor=white)
 ![Hilt](https://img.shields.io/badge/DI-Hilt-orange)
 ![Room](https://img.shields.io/badge/Storage-Room%20%2B%20DataStore-blue)
-![Tests](https://img.shields.io/badge/unit%20tests-352-brightgreen)
-![E2E](https://img.shields.io/badge/E2E-86%2F86%20steps%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/unit%20tests-355-brightgreen)
+![E2E](https://img.shields.io/badge/E2E-98%2F98%20steps%20passing-brightgreen)
 
 <br>
 
@@ -50,7 +50,7 @@ Own a Garmin for running and an Amazfit for sleep? That's two apps, two accounts
 - **📊 Apple-Health-grade UI on Material 3.** Summary with pinned metrics and activity rings, Browse by category, and metric detail with **D / W / M / 6M / Y** ranges, heart-rate range charts, a sleep-stage hypnogram and "Show all data" with source attribution.
 - **🏃 Workouts & weekly load.** Workout list and detail (pace, avg/max HR, heart-rate curve) plus an unbranded weekly activity-load trend against your 4-week baseline.
 - **🧪 Protocol simulators for every brand.** Debug builds ship virtual Garmin, Huawei, Zepp and SIG watches that speak the *real* wire protocol over an in-memory GATT — so the real driver → session → database pipeline is tested end to end without hardware.
-- **📸 Screenshot-driven E2E.** 9 instrumented journeys, 15 flows, **86/86 steps passing**, each step captured and compiled into an ordered visual report.
+- **📸 Screenshot-driven E2E.** 9 instrumented journeys, 19 flows, **98/98 steps passing**, each step captured and compiled into an ordered visual report.
 - **🔒 Privacy by design.** Data stays on the device in Room; mock/demo code is `debugImplementation` only and physically absent from release builds; no vendor secrets are extracted or embedded.
 
 ---
@@ -61,9 +61,9 @@ Own a Garmin for running and an Amazfit for sleep? That's two apps, two accounts
 |:---:|:---:|:---:|:---:|
 | <img src="docs/e2e-report/02-pair-mock-watch/02-scanning.png" width="180"> | <img src="docs/e2e-report/03-summary/02-rings-and-highlights.png" width="180"> | <img src="docs/e2e-report/05-browse/01-categories.png" width="180"> | <img src="docs/e2e-report/04-metric-detail/07-heart-rate-range.png" width="180"> |
 
-| Steps · 6 months | Garmin synced | About this device | Notifications |
+| Zepp synced | Garmin synced | About this device | Notifications |
 |:---:|:---:|:---:|:---:|
-| <img src="docs/e2e-report/04-metric-detail/04-steps-6m.png" width="180"> | <img src="docs/e2e-report/40-garmin-watch/06-resting-hr-and-hrv.png" width="180"> | <img src="docs/e2e-report/14-device-settings/03-about.png" width="180"> | <img src="docs/e2e-report/15-notifications/04-toggled.png" width="180"> |
+| <img src="docs/e2e-report/22-zepp-summary/01-summary.png" width="180"> | <img src="docs/e2e-report/40-garmin-watch/06-resting-hr-and-hrv.png" width="180"> | <img src="docs/e2e-report/14-device-settings/03-about.png" width="180"> | <img src="docs/e2e-report/15-notifications/04-toggled.png" width="180"> |
 
 👉 **Every step of every flow, in order: [E2E visual report](docs/e2e-report/README.md)**
 
@@ -75,7 +75,7 @@ Own a Garmin for running and an Amazfit for sleep? That's two apps, two accounts
 |---|---|---|---|
 | **Bluetooth SIG devices** (Polar/Wahoo straps, pulse oximeters, generic bands) | Standard GATT services | Live HR + HRV, SpO2 (live + stored records), steps from cadence, battery, device info, time write | ✅ Production-ready |
 | **Garmin** | GFDI over Multi-Link / dedicated service, COBS + CRC16 | Live HR, time sync, battery, FIT history: steps, HR, resting HR, HRV, stress, SpO2, sleep stages, workouts | ✅ Implemented, simulator-verified |
-| **Zepp / Amazfit** | Huami auth (user-supplied key, module 0x80), GDSP | Steps, HR, SpO2 v2, stress, resting HR, time sync | ✅ Implemented, unit-tested (E2E run pending) |
+| **Zepp / Amazfit** | Huami auth (user-supplied key, module 0x80), GDSP | Steps, HR, SpO2 v2, stress, resting HR, time sync | ✅ Implemented, simulator-verified |
 | **Huawei** | 0x5A link layer, TLV, AES-CBC | Device version, capabilities, time zone, watch-initiated events | 🟡 Transport done; pairing needs Huawei's own keys → data via Health Connect |
 | **COROS** | Protobuf master/slave over a custom UART-style service | Recognition, bonding, battery, device info | 🟡 History sync awaits a real-device Bluetooth capture |
 
@@ -130,8 +130,8 @@ unified_health_app/
 
 | | |
 |---|---|
-| Unit tests | **352** JVM tests — codecs with byte vectors, sessions against scripted fake watches, aggregation and ViewModels |
-| Instrumented E2E | **9** journeys · **15** flows · **86/86** steps, screenshot per step → [visual report](docs/e2e-report/README.md) |
+| Unit tests | **355** JVM tests — codecs with byte vectors, sessions against scripted fake watches, aggregation and ViewModels |
+| Instrumented E2E | **9** journeys · **19** flows · **98/98** steps, screenshot per step → [visual report](docs/e2e-report/README.md) |
 | Release hygiene | no mock code in release, lint clean, explicit capability declaration (the UI never promises data a driver can't deliver) |
 | Decision log | 90+ recorded engineering decisions with rationale → [`docs/DECISIONS.md`](docs/DECISIONS.md) |
 

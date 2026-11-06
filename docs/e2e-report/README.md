@@ -1,8 +1,8 @@
 # Unified Health — E2E report
 
-Generated 2026-11-06 23:05:05 +07 · Google sdk_gphone64_arm64, Android 16 (API 36) · serial `emulator-5554` · AVD `hc_api36`
+Generated 2026-11-06 23:25:26 +07 · Google sdk_gphone64_arm64, Android 16 (API 36) · serial `emulator-5554` · AVD `hc_api36`
 
-**15 flows · 86/86 steps passed**
+**19 flows · 98/98 steps passed**
 
 ## 01. Onboarding → permissions
 
@@ -139,6 +139,38 @@ Generated 2026-11-06 23:05:05 +07 · Google sdk_gphone64_arm64, Android 16 (API 
 | 4 | 04-toggled<br>![04-toggled](15-notifications/04-toggled.png) | Turn off Goal achieved, turn on Sync reminders → Switches reflect the new choice | PASS |
 | 5 | 05-persisted<br>![05-persisted](15-notifications/05-persisted.png) | Back, open Notifications again → Choices were saved (DataStore) | PASS |
 
+## 20. Devices → scan → pair → generate key → bind → connected
+
+| # | Step | Action → expected | Result |
+|---|---|---|---|
+| 1 | 01-onboarding<br>![01-onboarding](20-zepp-pair/01-onboarding.png) | Finish onboarding, grant Bluetooth → Summary opens with no device paired | PASS |
+| 2 | 02-scanning<br>![02-scanning](20-zepp-pair/02-scanning.png) | Open Devices, tap Scan → The simulated Zepp watch is listed with its brand | PASS |
+| 3 | 03-paired-needs-key<br>![03-paired-needs-key](20-zepp-pair/03-paired-needs-key.png) | Tap "Pair" → Device moves to My devices and asks for its auth key (no credential yet) | PASS |
+| 4 | 04-generate-key<br>![04-generate-key](20-zepp-pair/04-generate-key.png) | Tap "Enter Zepp auth key" then "Create a new key and bind this watch" → A key is generated and shown once, to back up | PASS |
+| 5 | 05-connected<br>![05-connected](20-zepp-pair/05-connected.png) | Tap "Done" → The watch accepts the local bind; the device becomes Connected with battery and firmware read | PASS |
+
+## 21. Sync now: steps, heart rate, SpO2 and stress over GDSP
+
+| # | Step | Action → expected | Result |
+|---|---|---|---|
+| 1 | 01-synced<br>![01-synced](21-zepp-sync/01-synced.png) | Tap "Sync now" → Sync completes; "Last sync" shows a time instead of "never" | PASS |
+
+## 22. Summary and Browse show the synced data with Zepp source attribution
+
+| # | Step | Action → expected | Result |
+|---|---|---|---|
+| 1 | 01-summary<br>![01-summary](22-zepp-summary/01-summary.png) | Open Summary → Pinned heart rate and steps cards show synced values | PASS |
+| 2 | 02-show-all-data<br>![02-show-all-data](22-zepp-summary/02-show-all-data.png) | Open Steps, tap "Show all data" → A daily row is attributed to the Zepp watch by name and brand | PASS |
+| 3 | 03-browse-spo2<br>![03-browse-spo2](22-zepp-summary/03-browse-spo2.png) | Back twice, Browse → search "oxygen" → open → Blood oxygen has a value from the synced SpO2 points | PASS |
+| 4 | 04-browse-stress<br>![04-browse-stress](22-zepp-summary/04-browse-stress.png) | Back, search "stress" → open → Stress has a value from the synced all-day stress data | PASS |
+
+## 23. Devices → unpair
+
+| # | Step | Action → expected | Result |
+|---|---|---|---|
+| 1 | 01-device-menu<br>![01-device-menu](23-zepp-unpair/01-device-menu.png) | Open Devices, tap ⋮ on the watch → Menu with Unpair | PASS |
+| 2 | 02-confirm<br>![02-confirm](23-zepp-unpair/02-confirm.png) | Tap Unpair, confirm → Watch removed; synced data from it is kept | PASS |
+
 ## 40. Garmin watch (driver:garmin, dedicated GFDI service)
 
 | # | Step | Action → expected | Result |
@@ -167,4 +199,12 @@ Generated 2026-11-06 23:05:05 +07 · Google sdk_gphone64_arm64, Android 16 (API 
 
 ## Test cases
 
-- FAIL · com.unified.health.e2e.ZeppWatchE2ETest.pairSyncAndUnpairZeppWatch
+- PASS · com.unified.health.e2e.DemoDataE2ETest.seedEveryChartThenClear
+- PASS · com.unified.health.e2e.DeviceSettingsE2ETest.aboutThisDevice
+- PASS · com.unified.health.e2e.GarminWatchE2ETest.pairSyncAndUnpairGarminWatch
+- PASS · com.unified.health.e2e.HuaweiWatchE2ETest.pairSyncAndUnpairTheSimulatedHuaweiWatch
+- PASS · com.unified.health.e2e.NotificationSettingsE2ETest.notificationPreferencesPersist
+- PASS · com.unified.health.e2e.StandardWatchE2ETest.standardWatchJourney
+- PASS · com.unified.health.e2e.UserJourneyE2ETest.firstRunJourney
+- PASS · com.unified.health.e2e.WorkoutsE2ETest.workoutListAndDetail
+- PASS · com.unified.health.e2e.ZeppWatchE2ETest.pairSyncAndUnpairZeppWatch

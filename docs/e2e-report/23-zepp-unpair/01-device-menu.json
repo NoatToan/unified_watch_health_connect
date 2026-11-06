@@ -1,0 +1,1 @@
+{"flow":"23-zepp-unpair","flowTitle":"Devices → unpair","step":"01-device-menu","index":1,"action":"Open Devices, tap ⋮ on the watch","expected":"Menu with Unpair","status":"PASS","error":null,"screenshot":"23-zepp-unpair/01-device-menu.png","test":"ZeppWatchE2ETest","startedAt":"2026-11-06T16:25:10.548371Z","durationMs":2088}

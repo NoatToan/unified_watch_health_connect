@@ -1,0 +1,1 @@
+{"flow":"23-zepp-unpair","flowTitle":"Devices → unpair","step":"02-confirm","index":2,"action":"Tap Unpair, confirm","expected":"Watch removed; synced data from it is kept","status":"PASS","error":null,"screenshot":"23-zepp-unpair/02-confirm.png","test":"ZeppWatchE2ETest","startedAt":"2026-11-06T16:25:12.641199Z","durationMs":518}

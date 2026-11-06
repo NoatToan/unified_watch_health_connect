@@ -1,0 +1,1 @@
+{"flow":"20-zepp-pair","flowTitle":"Devices → scan → pair → generate key → bind → connected","step":"02-scanning","index":2,"action":"Open Devices, tap Scan","expected":"The simulated Zepp watch is listed with its brand","status":"PASS","error":null,"screenshot":"20-zepp-pair/02-scanning.png","test":"ZeppWatchE2ETest","startedAt":"2026-11-06T16:25:01.497293Z","durationMs":922}

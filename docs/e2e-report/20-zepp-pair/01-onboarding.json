@@ -1,0 +1,1 @@
+{"flow":"20-zepp-pair","flowTitle":"Devices → scan → pair → generate key → bind → connected","step":"01-onboarding","index":1,"action":"Finish onboarding, grant Bluetooth","expected":"Summary opens with no device paired","status":"PASS","error":null,"screenshot":"20-zepp-pair/01-onboarding.png","test":"ZeppWatchE2ETest","startedAt":"2026-11-06T16:25:00.692872Z","durationMs":800}

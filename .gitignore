@@ -36,3 +36,7 @@ docs/re-evidence/*/jadx-*/
 docs/re-evidence/*/*.json
 docs/re-evidence/*/*.txt
 docs/re-evidence/*/AndroidManifest.xml
+
+# Claude Code session state and local settings
+.claude/state/
+.claude/settings.local.json
