@@ -44,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
@@ -97,7 +98,7 @@ private fun WelcomeStep(onNext: () -> Unit) {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(Modifier.height(Spacing.lg))
-        Button(onClick = onNext, modifier = Modifier.fillMaxWidth()) { Text("Get started") }
+        Button(onClick = onNext, modifier = Modifier.fillMaxWidth().testTag("get_started")) { Text("Get started") }
     }
 }
 
@@ -152,6 +153,7 @@ private fun PermissionsStep(
                 "Android 11 and below require location access to scan for Bluetooth devices."
             },
             granted = bluetoothGranted,
+            tag = "bluetooth",
             onGrant = { runtimeLauncher.launch(RuntimePermissions.bluetooth.toTypedArray()) },
         )
         if (RuntimePermissions.notifications.isNotEmpty()) {
@@ -160,6 +162,7 @@ private fun PermissionsStep(
                 title = "Notifications",
                 description = "Sync status, goal reminders and health alerts.",
                 granted = notificationsGranted,
+                tag = "notifications",
                 onGrant = { runtimeLauncher.launch(RuntimePermissions.notifications.toTypedArray()) },
             )
         }
@@ -172,6 +175,7 @@ private fun PermissionsStep(
                 HealthConnectAvailability.NOT_SUPPORTED -> "Health Connect is not supported on this device."
             },
             granted = state.healthConnectGranted,
+            tag = "health_connect",
             enabled = state.healthConnectAvailability == HealthConnectAvailability.AVAILABLE,
             onGrant = { healthConnectLauncher.launch(healthConnectPermissions) },
         )
@@ -180,12 +184,13 @@ private fun PermissionsStep(
             title = "Background activity",
             description = "Allow unrestricted battery use so the watch keeps syncing in the background.",
             granted = batteryUnrestricted,
+            tag = "battery",
             grantLabel = "Open settings",
             onGrant = { context.openBatteryOptimizationSettings() },
         )
 
         Spacer(Modifier.height(Spacing.lg))
-        Button(onClick = onFinish, modifier = Modifier.fillMaxWidth()) { Text("Continue") }
+        Button(onClick = onFinish, modifier = Modifier.fillMaxWidth().testTag("onboarding_continue")) { Text("Continue") }
         TextButton(onClick = onFinish, modifier = Modifier.fillMaxWidth()) { Text("Skip for now") }
     }
 }
@@ -197,10 +202,11 @@ private fun PermissionItem(
     description: String,
     granted: Boolean,
     onGrant: () -> Unit,
+    tag: String,
     enabled: Boolean = true,
     grantLabel: String = "Allow",
 ) {
-    Card(Modifier.fillMaxWidth()) {
+    Card(Modifier.fillMaxWidth().testTag("permission_$tag")) {
         Row(Modifier.padding(Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
             Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.width(Spacing.md))
@@ -210,9 +216,9 @@ private fun PermissionItem(
             }
             Spacer(Modifier.width(Spacing.sm))
             if (granted) {
-                Icon(Icons.Outlined.CheckCircle, contentDescription = "Granted", tint = MaterialTheme.colorScheme.primary)
+                Icon(Icons.Outlined.CheckCircle, contentDescription = "Granted", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.testTag("granted_$tag"))
             } else {
-                FilledTonalButton(onClick = onGrant, enabled = enabled) { Text(grantLabel) }
+                FilledTonalButton(onClick = onGrant, enabled = enabled, modifier = Modifier.testTag("grant_$tag")) { Text(grantLabel) }
             }
         }
     }

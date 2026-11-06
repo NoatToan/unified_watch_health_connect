@@ -4,9 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.unified.health.core.domain.usecase.ObserveMetricSeriesUseCase
+import com.unified.health.core.domain.repository.HealthDataRepository
+import com.unified.health.core.domain.usecase.MetricStats
+import com.unified.health.core.domain.usecase.MetricStatsCalculator
 import com.unified.health.core.model.ChartPoint
 import com.unified.health.core.model.HealthMetricType
+import com.unified.health.core.model.MetricAggregation
+import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.TimeRange
 import com.unified.health.feature.home.navigation.MetricDetailDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,37 +18,74 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.time.temporal.TemporalAdjusters
 import javax.inject.Inject
 
 data class MetricDetailUiState(
     val metric: HealthMetricType,
     val range: TimeRange = TimeRange.WEEK,
     val points: List<ChartPoint> = emptyList(),
+    val stats: MetricStats? = null,
+    /** The night shown by the stage chart (sleep, D only). */
+    val sleepSession: SleepSession? = null,
+    val periodLabel: String = "",
     val isLoading: Boolean = true,
-) {
-    val average: Float get() = if (points.isEmpty()) 0f else points.map { it.value }.average().toFloat()
-    val min: Float get() = points.minOfOrNull { it.value } ?: 0f
-    val max: Float get() = points.maxOfOrNull { it.value } ?: 0f
-}
+)
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class MetricDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    observeSeries: ObserveMetricSeriesUseCase,
+    private val repository: HealthDataRepository,
 ) : ViewModel() {
 
     private val metric = savedStateHandle.toRoute<MetricDetailDestination>().metric
     private val range = MutableStateFlow(TimeRange.WEEK)
 
     val uiState: StateFlow<MetricDetailUiState> = range
-        .flatMapLatest { r -> observeSeries(metric, r).map { MetricDetailUiState(metric, r, it, isLoading = false) } }
+        .flatMapLatest { r ->
+            val today = LocalDate.now()
+            val night = if (metric.aggregation == MetricAggregation.SLEEP && r == TimeRange.DAY) repository.observeSleep(today) else flowOf(null)
+            combine(repository.observeMetricSeries(metric, r, today), night) { points, session ->
+                MetricDetailUiState(
+                    metric = metric,
+                    range = r,
+                    points = points,
+                    stats = MetricStatsCalculator.of(metric, r, points),
+                    sleepSession = session,
+                    periodLabel = periodLabel(r, today),
+                    isLoading = false,
+                )
+            }
+        }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), MetricDetailUiState(metric))
 
     fun selectRange(newRange: TimeRange) {
         range.value = newRange
+    }
+
+    companion object {
+        private val DAY = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+        private val MONTH_YEAR = DateTimeFormatter.ofPattern("MMM yyyy")
+
+        /** The calendar span a range covers, e.g. "Oct 31, 2026 – Nov 6, 2026". */
+        fun periodLabel(range: TimeRange, today: LocalDate): String = when (range) {
+            TimeRange.DAY -> "Today, ${DAY.format(today)}"
+            TimeRange.WEEK -> "${DAY.format(today.minusDays(6))} – ${DAY.format(today)}"
+            TimeRange.MONTH -> "${DAY.format(today.minusDays(29))} – ${DAY.format(today)}"
+            TimeRange.SIX_MONTHS -> {
+                val start = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).minusWeeks(25)
+                "${MONTH_YEAR.format(start)} – ${MONTH_YEAR.format(today)}"
+            }
+            TimeRange.YEAR -> "${MONTH_YEAR.format(today.withDayOfMonth(1).minusMonths(11))} – ${MONTH_YEAR.format(today)}"
+        }
     }
 }

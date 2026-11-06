@@ -4,22 +4,84 @@ import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
 
-/** Every metric surfaced on the dashboard / detail screens. */
+/**
+ * Every metric surfaced on the dashboard / detail screens. Names are persisted (pinned metrics,
+ * navigation arguments), so never rename an existing value; append new ones.
+ */
 enum class HealthMetricType {
     STEPS,
     HEART_RATE,
     SLEEP,
     SPO2,
     STRESS,
+
+    /** Active energy (kcal). */
     CALORIES,
     WEIGHT,
+
+    /** Walking + running distance (meters). */
+    DISTANCE,
+    EXERCISE_MINUTES,
+    RESTING_HEART_RATE,
+
+    /** Heart rate variability (ms). */
+    HRV,
+    ;
+
+    /** How values of this metric combine over time. */
+    val aggregation: MetricAggregation
+        get() = when (this) {
+            STEPS, CALORIES, DISTANCE, EXERCISE_MINUTES -> MetricAggregation.CUMULATIVE
+            SLEEP -> MetricAggregation.SLEEP
+            HEART_RATE, SPO2, STRESS, WEIGHT, RESTING_HEART_RATE, HRV -> MetricAggregation.DISCRETE
+        }
 }
 
-/** Time window used by detail screens and charts. */
-enum class TimeRange { DAY, WEEK, MONTH }
+enum class MetricAggregation {
+    /** Summed per day (steps, energy…). Charts show totals; longer ranges show daily averages. */
+    CUMULATIVE,
 
-/** A single point in a chart series (x = bucket label, y = value). */
-data class ChartPoint(val label: String, val value: Float)
+    /** Point samples (heart rate, SpO2…). Charts show min–max ranges and averages. */
+    DISCRETE,
+
+    /** Nightly sessions made of stage intervals; value = minutes asleep. */
+    SLEEP,
+}
+
+/** Time window used by detail screens and charts (Apple Health's D / W / M / 6M / Y). */
+enum class TimeRange(val shortLabel: String) {
+    DAY("D"),
+    WEEK("W"),
+    MONTH("M"),
+    SIX_MONTHS("6M"),
+    YEAR("Y"),
+}
+
+/**
+ * A single bucket in a chart series (x = bucket label, y = value). [min]/[max] carry the spread
+ * of discrete metrics inside the bucket (null for cumulative metrics or empty buckets).
+ */
+data class ChartPoint(
+    val label: String,
+    val value: Float,
+    val min: Float? = null,
+    val max: Float? = null,
+) {
+    val hasData: Boolean get() = value > 0f || (max ?: 0f) > 0f
+}
+
+/**
+ * One value as listed by "Show All Data": a raw sample for discrete metrics, a daily total for
+ * cumulative ones, minutes asleep for a night.
+ */
+data class MetricReading(
+    val metric: HealthMetricType,
+    val value: Double,
+    val time: Instant,
+    val endTime: Instant? = null,
+    /** Device id (MAC) that recorded it, for "Data sources" attribution; null when merged/unknown. */
+    val sourceId: String? = null,
+)
 
 data class StepsSummary(
     val date: LocalDate,
@@ -93,4 +155,6 @@ data class DailyHealthSummary(
     val calories: CaloriesSummary,
     val activeMinutes: Int,
     val activeMinutesGoal: Int,
+    /** Latest heart rate variability of the day, in ms. */
+    val hrvMs: Int? = null,
 )

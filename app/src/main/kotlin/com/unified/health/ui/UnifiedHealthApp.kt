@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -49,6 +50,7 @@ fun UnifiedHealthApp(
                     TopLevelDestination.entries.forEach { destination ->
                         val selected = currentDestination.isOn(destination)
                         NavigationBarItem(
+                            modifier = Modifier.testTag("nav_${destination.name}"),
                             selected = selected,
                             onClick = { navigateToTopLevel(destination) },
                             icon = {

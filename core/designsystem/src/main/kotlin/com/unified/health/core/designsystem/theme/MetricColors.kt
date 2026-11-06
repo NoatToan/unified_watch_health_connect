@@ -18,6 +18,8 @@ data class MetricColors(
     val stress: Color,
     val calories: Color,
     val weight: Color,
+    val exercise: Color,
+    val hrv: Color,
 ) {
     fun forMetric(metric: HealthMetricType): Color = when (metric) {
         HealthMetricType.STEPS -> steps
@@ -27,6 +29,18 @@ data class MetricColors(
         HealthMetricType.STRESS -> stress
         HealthMetricType.CALORIES -> calories
         HealthMetricType.WEIGHT -> weight
+        HealthMetricType.DISTANCE -> steps
+        HealthMetricType.EXERCISE_MINUTES -> exercise
+        HealthMetricType.RESTING_HEART_RATE -> heartRate
+        HealthMetricType.HRV -> hrv
+    }
+
+    /** Hypnogram colours, awake → deep. */
+    fun sleepStage(stage: com.unified.health.core.model.SleepStage): Color = when (stage) {
+        com.unified.health.core.model.SleepStage.AWAKE -> calories
+        com.unified.health.core.model.SleepStage.REM -> spO2
+        com.unified.health.core.model.SleepStage.LIGHT -> sleep.copy(alpha = 0.65f)
+        com.unified.health.core.model.SleepStage.DEEP -> sleep
     }
 }
 
@@ -38,6 +52,8 @@ internal val LightMetricColors = MetricColors(
     stress = Color(0xFFB26A00),
     calories = Color(0xFFD84315),
     weight = Color(0xFF6A4C93),
+    exercise = Color(0xFF558B2F),
+    hrv = Color(0xFF00695C),
 )
 
 internal val DarkMetricColors = MetricColors(
@@ -48,6 +64,8 @@ internal val DarkMetricColors = MetricColors(
     stress = Color(0xFFFFCC80),
     calories = Color(0xFFFFAB91),
     weight = Color(0xFFCFB8F0),
+    exercise = Color(0xFFC5E1A5),
+    hrv = Color(0xFF80CBC4),
 )
 
 val LocalMetricColors = staticCompositionLocalOf { LightMetricColors }

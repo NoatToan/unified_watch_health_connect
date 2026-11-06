@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.unified.health.core.domain.repository.UserPreferencesRepository
+import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.ThemeMode
 import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.UserPreferences
@@ -24,6 +25,9 @@ class DataStoreUserPreferencesRepository @Inject constructor(
         val themeMode = stringPreferencesKey("theme_mode")
         val dynamicColor = booleanPreferencesKey("dynamic_color")
         val stepGoal = intPreferencesKey("daily_step_goal")
+
+        /** Comma-separated [HealthMetricType] names, in display order. */
+        val pinnedMetrics = stringPreferencesKey("pinned_metrics")
     }
 
     override val userPreferences: Flow<UserPreferences> = dataStore.data.map { p ->
@@ -34,6 +38,7 @@ class DataStoreUserPreferencesRepository @Inject constructor(
             themeMode = p[Keys.themeMode]?.let { runCatching { ThemeMode.valueOf(it) }.getOrNull() } ?: defaults.themeMode,
             useDynamicColor = p[Keys.dynamicColor] ?: defaults.useDynamicColor,
             dailyStepGoal = p[Keys.stepGoal] ?: defaults.dailyStepGoal,
+            pinnedMetrics = p[Keys.pinnedMetrics]?.let(::parseMetrics) ?: defaults.pinnedMetrics,
         )
     }
 
@@ -57,4 +62,12 @@ class DataStoreUserPreferencesRepository @Inject constructor(
         require(steps > 0) { "Step goal must be positive" }
         dataStore.edit { it[Keys.stepGoal] = steps }
     }
+
+    override suspend fun setPinnedMetrics(metrics: List<HealthMetricType>) {
+        dataStore.edit { it[Keys.pinnedMetrics] = metrics.distinct().joinToString(",") { m -> m.name } }
+    }
+
+    /** Unknown names (a metric removed in a later version) are skipped. */
+    private fun parseMetrics(raw: String): List<HealthMetricType> =
+        raw.split(',').filter { it.isNotBlank() }.mapNotNull { name -> HealthMetricType.entries.firstOrNull { it.name == name } }
 }

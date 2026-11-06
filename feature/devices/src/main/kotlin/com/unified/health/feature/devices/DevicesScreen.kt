@@ -61,6 +61,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -168,12 +169,14 @@ internal fun DevicesScreen(
         floatingActionButton = {
             if (state.isScanning) {
                 ExtendedFloatingActionButton(
+                    modifier = Modifier.testTag("stop_scan_fab"),
                     onClick = onStopScan,
                     icon = { Icon(Icons.Outlined.Stop, contentDescription = null) },
                     text = { Text("Stop") },
                 )
             } else {
                 ExtendedFloatingActionButton(
+                    modifier = Modifier.testTag("scan_fab"),
                     onClick = requestScan,
                     icon = { Icon(Icons.AutoMirrored.Outlined.BluetoothSearching, contentDescription = null) },
                     text = { Text("Scan") },
@@ -253,7 +256,7 @@ private fun PairedDeviceCard(
     val connected = device.connectionState == ConnectionState.Connected
     val busy = device.connectionState == ConnectionState.Connecting || device.connectionState == ConnectionState.Authenticating
 
-    ElevatedCard(Modifier.fillMaxWidth()) {
+    ElevatedCard(Modifier.fillMaxWidth().testTag("paired_${device.macAddress}")) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Outlined.Watch, contentDescription = null, modifier = Modifier.size(32.dp))
@@ -267,7 +270,7 @@ private fun PairedDeviceCard(
                     )
                 }
                 Column {
-                    IconButton(onClick = { menuOpen = true }) {
+                    IconButton(onClick = { menuOpen = true }, modifier = Modifier.testTag("more_${device.macAddress}")) {
                         Icon(Icons.Outlined.MoreVert, contentDescription = "More options for ${device.name}")
                     }
                     DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
@@ -275,7 +278,7 @@ private fun PairedDeviceCard(
                         device.credentialRequirements.forEach { requirement ->
                             DropdownMenuItem(text = { Text("Change ${requirement.label}") }, onClick = { menuOpen = false; editing = requirement })
                         }
-                        DropdownMenuItem(text = { Text("Unpair") }, onClick = { menuOpen = false; confirmUnpair = true })
+                        DropdownMenuItem(text = { Text("Unpair") }, onClick = { menuOpen = false; confirmUnpair = true }, modifier = Modifier.testTag("unpair_menu_item"))
                     }
                 }
             }
@@ -292,7 +295,8 @@ private fun PairedDeviceCard(
                 Text("Firmware $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Text(
-                "Last sync: " + (device.lastSyncedAt?.let { LAST_SYNC_FORMAT.format(it.atZone(ZoneId.systemDefault())) } ?: "never"),
+                modifier = Modifier.testTag("last_sync_${device.macAddress}"),
+                text = "Last sync: " + (device.lastSyncedAt?.let { LAST_SYNC_FORMAT.format(it.atZone(ZoneId.systemDefault())) } ?: "never"),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -304,7 +308,7 @@ private fun PairedDeviceCard(
             }
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 if (connected) {
-                    Button(onClick = onSync, enabled = syncState !is SyncState.InProgress) {
+                    Button(onClick = onSync, enabled = syncState !is SyncState.InProgress, modifier = Modifier.testTag("sync_${device.macAddress}")) {
                         Icon(Icons.Outlined.Sync, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(Spacing.xs))
                         Text("Sync now")
@@ -314,7 +318,7 @@ private fun PairedDeviceCard(
                     val requirement = device.missingCredentials.first()
                     Button(onClick = { editing = requirement }) { Text("Enter ${requirement.label}") }
                 } else {
-                    Button(onClick = onConnect, enabled = !busy) { Text(if (busy) "Connecting…" else "Connect") }
+                    Button(onClick = onConnect, enabled = !busy, modifier = Modifier.testTag("connect_${device.macAddress}")) { Text(if (busy) "Connecting…" else "Connect") }
                 }
             }
         }
@@ -334,7 +338,7 @@ private fun PairedDeviceCard(
             onDismissRequest = { confirmUnpair = false },
             title = { Text("Unpair ${device.name}?") },
             text = { Text("The device will be removed from this app. Data already synced is kept.") },
-            confirmButton = { TextButton(onClick = { confirmUnpair = false; onUnpair() }) { Text("Unpair") } },
+            confirmButton = { TextButton(onClick = { confirmUnpair = false; onUnpair() }, modifier = Modifier.testTag("confirm_unpair")) { Text("Unpair") } },
             dismissButton = { TextButton(onClick = { confirmUnpair = false }) { Text("Cancel") } },
         )
     }
@@ -342,7 +346,7 @@ private fun PairedDeviceCard(
 
 @Composable
 private fun DiscoveredDeviceItem(device: DiscoveredDevice, onPair: () -> Unit) {
-    OutlinedCard(Modifier.fillMaxWidth()) {
+    OutlinedCard(Modifier.fillMaxWidth().testTag("discovered_${device.macAddress}")) {
         ListItem(
             leadingContent = { Icon(Icons.Outlined.Bluetooth, contentDescription = null) },
             headlineContent = { Text(device.name) },
@@ -354,7 +358,7 @@ private fun DiscoveredDeviceItem(device: DiscoveredDevice, onPair: () -> Unit) {
                 }
                 Text("${device.vendor.displayName} · $detail")
             },
-            trailingContent = { FilledTonalButton(onClick = onPair) { Text("Pair") } },
+            trailingContent = { FilledTonalButton(onClick = onPair, modifier = Modifier.testTag("pair_${device.macAddress}")) { Text("Pair") } },
         )
     }
 }

@@ -25,6 +25,9 @@ enum class WearableVendor(val displayName: String) {
 
     /** Any watch exposing the Bluetooth SIG Heart Rate / Battery / Device Information services. */
     STANDARD("Bluetooth standard"),
+
+    /** Simulated watch served by the debug-only mock driver (E2E tests, demos). Never in release. */
+    DEMO("Demo watch"),
 }
 
 /** What a connected session can do; the UI enables actions from this set. */

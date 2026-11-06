@@ -5,16 +5,6 @@ plugins {
 
 android {
     namespace = "com.unified.health.core.ble"
-
-    defaultConfig {
-        // `./gradlew installDebug -PunifiedHealth.fakeBle=true` forces the demo devices.
-        val fakeBle = providers.gradleProperty("unifiedHealth.fakeBle").orNull?.toBoolean() ?: false
-        buildConfigField("boolean", "FAKE_BLE", fakeBle.toString())
-    }
-
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 dependencies {

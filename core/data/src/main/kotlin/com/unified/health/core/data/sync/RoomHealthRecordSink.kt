@@ -20,7 +20,7 @@ import javax.inject.Singleton
 @Singleton
 class HealthRecordSinkFactory @Inject constructor(
     private val dao: HealthRecordDao,
-    private val rawStore: RawPayloadStore,
+    private val rawStore: RawPayloadSaver,
 ) {
     fun create(deviceId: String): HealthRecordSink = RoomHealthRecordSink(deviceId, dao, rawStore)
 }
@@ -29,7 +29,7 @@ class HealthRecordSinkFactory @Inject constructor(
 internal class RoomHealthRecordSink(
     private val deviceId: String,
     private val dao: HealthRecordDao,
-    private val rawStore: RawPayloadStore,
+    private val rawStore: RawPayloadSaver,
     private val zone: ZoneId = ZoneId.systemDefault(),
 ) : HealthRecordSink {
 
@@ -53,7 +53,15 @@ internal class RoomHealthRecordSink(
                     samples += HealthSampleEntity(deviceId, SampleType.DAILY_STEPS, start, end, record.steps.toDouble())
                     record.activeKcal?.let { samples += HealthSampleEntity(deviceId, SampleType.DAILY_ACTIVE_KCAL, start, end, it.toDouble()) }
                     record.distanceMeters?.let { samples += HealthSampleEntity(deviceId, SampleType.DAILY_DISTANCE, start, end, it) }
+                    record.exerciseMinutes?.let { samples += HealthSampleEntity(deviceId, SampleType.DAILY_EXERCISE_MINUTES, start, end, it.toDouble()) }
                 }
+                is HealthRecord.RestingHeartRate -> {
+                    val start = record.date.atStartOfDay(zone).toInstant().toEpochMilli()
+                    val end = record.date.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
+                    samples += HealthSampleEntity(deviceId, SampleType.RESTING_HEART_RATE, start, end, record.bpm.toDouble())
+                }
+                is HealthRecord.HeartRateVariability ->
+                    samples += point(SampleType.HRV, record.time.toEpochMilli(), record.milliseconds.toDouble())
                 is HealthRecord.Workout -> workouts += WorkoutEntity(
                     deviceId = deviceId,
                     startEpochMs = record.start.toEpochMilli(),
@@ -74,11 +82,16 @@ internal class RoomHealthRecordSink(
     private fun point(type: String, epochMs: Long, value: Double) = HealthSampleEntity(deviceId, type, epochMs, epochMs, value)
 }
 
+/** Where [RoomHealthRecordSink] puts original vendor payloads; an interface so the sink runs in JVM tests. */
+fun interface RawPayloadSaver {
+    suspend fun save(deviceId: String, payload: HealthRecord.RawPayload)
+}
+
 /** Keeps original vendor files under `files/wearable_raw/<device>/` for later re-decoding. */
 @Singleton
-class RawPayloadStore @Inject constructor(@ApplicationContext private val context: Context) {
+class RawPayloadStore @Inject constructor(@ApplicationContext private val context: Context) : RawPayloadSaver {
 
-    suspend fun save(deviceId: String, payload: HealthRecord.RawPayload) = withContext(Dispatchers.IO) {
+    override suspend fun save(deviceId: String, payload: HealthRecord.RawPayload): Unit = withContext(Dispatchers.IO) {
         val dir = File(context.filesDir, "wearable_raw/${safe(deviceId)}").apply { mkdirs() }
         val stamp = payload.createdAt?.toEpochMilli() ?: System.currentTimeMillis()
         val file = File(dir, "${payload.vendor.name.lowercase()}_${safe(payload.kind)}_$stamp.bin")

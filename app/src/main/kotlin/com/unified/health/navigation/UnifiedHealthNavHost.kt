@@ -7,8 +7,11 @@ import androidx.navigation.compose.NavHost
 import com.unified.health.feature.activity.activityScreen
 import com.unified.health.feature.devices.navigation.devicesScreen
 import com.unified.health.feature.home.navigation.HomeDestination
+import com.unified.health.feature.home.navigation.browseScreen
 import com.unified.health.feature.home.navigation.homeScreen
+import com.unified.health.feature.home.navigation.metricDataScreen
 import com.unified.health.feature.home.navigation.metricDetailScreen
+import com.unified.health.feature.home.navigation.navigateToMetricData
 import com.unified.health.feature.home.navigation.navigateToMetricDetail
 import com.unified.health.feature.onboarding.navigation.OnboardingDestination
 import com.unified.health.feature.onboarding.navigation.onboardingScreen
@@ -37,8 +40,14 @@ fun UnifiedHealthNavHost(
         homeScreen(
             onMetricClick = navController::navigateToMetricDetail,
             onOpenDevices = { onNavigateToTopLevel(TopLevelDestination.DEVICES) },
+            onBrowseAll = { onNavigateToTopLevel(TopLevelDestination.BROWSE) },
         )
-        metricDetailScreen(onBack = navController::popBackStack)
+        browseScreen(
+            onMetricClick = navController::navigateToMetricDetail,
+            onOpenWorkouts = { onNavigateToTopLevel(TopLevelDestination.ACTIVITY) },
+        )
+        metricDetailScreen(onBack = navController::popBackStack, onShowAllData = navController::navigateToMetricData)
+        metricDataScreen(onBack = navController::popBackStack)
         activityScreen()
         sleepScreen()
         devicesScreen()

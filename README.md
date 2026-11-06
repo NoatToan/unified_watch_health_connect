@@ -66,9 +66,11 @@ unified_health_app/
 │   │                            #   components: MetricCard, ActivityRings, SimpleBarChart,
 │   │                            #   ConnectionStatusChip, Loading/Empty/ErrorState, RuntimePermissions
 │   ├── ble/                     # Abstraction kết nối thiết bị: DeviceScanner, DeviceConnection,
-│   │                            #   HealthDataSync + Fake*, BleModule (Hilt). TODO giao thức Huawei
-│   └── data/                    # Room (paired devices), DataStore (preferences), HealthConnectManager,
-│                                #   FakeHealthDataRepository, DefaultWearableDeviceRepository, DI
+│   │                            #   HealthDataSync, multi-vendor stack, điểm cắm VirtualDevice (rỗng ở release)
+│   ├── data/                    # Room (paired devices + health_samples/workouts), DataStore (preferences),
+│   │                            #   LocalHealthDataRepository + MetricSeriesBuilder, HealthConnectManager, DI
+│   └── demo/        (debug)     # Mock "Demo watch" (driver + GATT trong bộ nhớ), generator 90 ngày, seeder.
+│                                #   Chỉ `debugImplementation` → không có trong release (D-201)
 └── feature/
     ├── onboarding/              # Welcome + luồng xin quyền runtime
     ├── home/                    # Dashboard + chi tiết chỉ số (Ngày/Tuần/Tháng)
@@ -95,14 +97,14 @@ Quy tắc phụ thuộc: `feature:*` chỉ phụ thuộc `core:model`, `core:dom
 └──────────────────────────────────────────────────────┬────────────────────────────────────┘
                                                        │ implemented by (Hilt @Binds)
 ┌──────────────────────────────────── Data layer (core:data) ───────────────────────────────┐
-│  FakeHealthDataRepository ──(TODO)──▶ Room health records + Health Connect                 │
+│  LocalHealthDataRepository ── Room: HealthRecordDao (ghi bởi RoomHealthRecordSink khi sync)│
 │  DefaultWearableDeviceRepository ── Room: PairedDeviceDao                                  │
 │  DataStoreUserPreferencesRepository · HealthConnectManager                                 │
 └──────────────────────────────────────────────────────┬────────────────────────────────────┘
                                                        │ uses
 ┌───────────────────────────── Device transport (core:ble) ─────────────────────────────────┐
 │  interface DeviceScanner · DeviceConnection · HealthDataSync (+ HealthRecordSink)          │
-│      ├── FakeDeviceScanner / FakeDeviceConnection / FakeHealthDataSync   ◀── đang bind      │
+│      ├── MultiVendor* + DriverRegistry (:driver:*)  ◀── luôn bind; debug thêm mock watch  │
 │      └── (TODO) HuaweiDeviceScanner / HuaweiDeviceConnection / HuaweiHealthDataSync         │
 │                 BLE GATT + Huawei link-layer handshake/auth (từ phân tích RE riêng)          │
 └────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -137,6 +139,19 @@ Quy tắc phụ thuộc: `feature:*` chỉ phụ thuộc `core:model`, `core:dom
 8. Thư viện biểu đồ (ví dụ Vico) thay `SimpleBarChart`.
 9. Test: ViewModel tests (Turbine), Compose UI tests, Room DAO tests; CI chạy `assembleDebug lint test`.
 10. Chính sách quyền riêng tư chính thức trước khi phát hành (bắt buộc với Health Connect trên Play).
+
+## E2E, mock watch và seed data (debug)
+
+- Bản debug có thêm đồng hồ giả **UH Demo Watch** (`WearableVendor.DEMO`, module `:core:demo`): hiện khi quét, ghép đôi / kết nối / sync luôn thành công, dữ liệu đi qua pipeline thật (driver → session → sink → Room). Lần sync đầu lấy 90 ngày. Tắt: `-PunifiedHealth.mockDevice=false`.
+- Profile › **Developer (debug build)**: *Seed demo data* (90 ngày, seed cố định) / *Clear health data*.
+- Chạy toàn bộ E2E và sinh report ảnh từng bước:
+
+```bash
+scripts/e2e.sh [serial]          # build → cài mới → chạy flow → kéo ảnh → build/e2e-report/index.html
+E2E_SKIP_UNIT=1 scripts/e2e.sh emulator-5556
+```
+
+  Ảnh: `build/e2e-report/<NN-flow>/<NN-step>.png`; test ở `app/src/androidTest/.../e2e/`. Các quyết định: `docs/DECISIONS.md` D-201…D-212.
 
 ## Ghi chú
 

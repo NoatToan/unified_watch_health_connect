@@ -12,6 +12,8 @@ import com.unified.health.core.model.DailyHealthSummary
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.HeartRateSample
 import com.unified.health.core.model.HeartRateSummary
+import com.unified.health.core.model.MetricAggregation
+import com.unified.health.core.model.MetricReading
 import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.SpO2Reading
 import com.unified.health.core.model.StepsSummary
@@ -19,28 +21,34 @@ import com.unified.health.core.model.StressReading
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.Workout
 import com.unified.health.core.model.WorkoutType
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.format.TextStyle
-import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 /**
  * Local-first source for every screen: reads what wearable syncs stored in Room, so history is
  * available offline and with no device connected. Every flow re-emits when a sync writes rows.
+ * Chart rules live in [MetricSeriesBuilder].
  */
-class LocalHealthDataRepository @Inject constructor(
+class LocalHealthDataRepository internal constructor(
     private val dao: HealthRecordDao,
     private val preferences: UserPreferencesRepository,
+    private val zone: ZoneId,
 ) : HealthDataRepository {
 
-    private val zone: ZoneId = ZoneId.systemDefault()
+    @Inject
+    constructor(dao: HealthRecordDao, preferences: UserPreferencesRepository) : this(dao, preferences, ZoneId.systemDefault())
+
+    private val series = MetricSeriesBuilder(zone)
 
     override fun observeDailySummary(date: LocalDate): Flow<DailyHealthSummary> {
         val day = samples(SUMMARY_TYPES, date.startMs(), date.plusDays(1).startMs())
@@ -59,7 +67,7 @@ class LocalHealthDataRepository @Inject constructor(
                 ),
                 heartRate = HeartRateSummary(
                     latestBpm = heartRate.lastOrNull()?.value?.roundToInt(),
-                    restingBpm = null, // No device reports it through the sync yet.
+                    restingBpm = HealthAggregation.latest(samples, SampleType.RESTING_HEART_RATE)?.value?.roundToInt(),
                     minBpm = heartRate.minOfOrNull { it.value }?.roundToInt(),
                     maxBpm = heartRate.maxOfOrNull { it.value }?.roundToInt(),
                     samples = heartRate.map { HeartRateSample(Instant.ofEpochMilli(it.startEpochMs), it.value.roundToInt()) },
@@ -71,37 +79,20 @@ class LocalHealthDataRepository @Inject constructor(
                     activeKcal = HealthAggregation.dailyMax(samples, SampleType.DAILY_ACTIVE_KCAL)?.roundToInt() ?: 0,
                     goalKcal = DEFAULT_ACTIVE_KCAL_GOAL,
                 ),
-                activeMinutes = 0, // Not derived yet.
+                activeMinutes = HealthAggregation.dailyMax(samples, SampleType.DAILY_EXERCISE_MINUTES)?.roundToInt() ?: 0,
                 activeMinutesGoal = DEFAULT_ACTIVE_MINUTES_GOAL,
+                hrvMs = HealthAggregation.latest(samples, SampleType.HRV)?.value?.roundToInt(),
             )
         }
     }
 
     override fun observeMetricSeries(metric: HealthMetricType, range: TimeRange, endDate: LocalDate): Flow<List<ChartPoint>> {
-        val days = when (range) {
-            TimeRange.DAY -> 1L
-            TimeRange.WEEK -> 7L
-            TimeRange.MONTH -> 30L
-        }
-        val firstDay = endDate.minusDays(days - 1)
-        val types = typesFor(metric)
-        val from = if (metric == HealthMetricType.SLEEP) sleepWindowStart(firstDay) else firstDay.startMs()
-        val to = if (metric == HealthMetricType.SLEEP) sleepWindowEnd(endDate) else endDate.plusDays(1).startMs()
-        return samples(types, from, to).map { samples ->
-            if (range == TimeRange.DAY && metric != HealthMetricType.SLEEP) {
-                hourly(metric, samples)
-            } else {
-                (0 until days).map { offset ->
-                    val day = firstDay.plusDays(offset)
-                    val dayRows = if (metric == HealthMetricType.SLEEP) {
-                        samples.filter { it.startEpochMs in sleepWindowStart(day) until sleepWindowEnd(day) }
-                    } else {
-                        samples.filter { it.startEpochMs in day.startMs() until day.plusDays(1).startMs() }
-                    }
-                    ChartPoint(label(range, day), dailyValue(metric, dayRows).toFloat())
-                }
-            }
-        }
+        val types = MetricSeriesBuilder.typesFor(metric)
+        if (types.isEmpty()) return flowOf(series.buckets(metric, range, endDate).map { ChartPoint(it.label, 0f) })
+        val window = series.window(metric, range, endDate)
+        return samples(types, window.first, window.last + 1)
+            .map { rows -> series.build(metric, range, endDate, rows) }
+            .flowOn(Dispatchers.Default)
     }
 
     override fun observeWorkouts(): Flow<List<Workout>> =
@@ -110,44 +101,49 @@ class LocalHealthDataRepository @Inject constructor(
     override fun observeSleep(date: LocalDate): Flow<SleepSession?> =
         samples(listOf(SampleType.SLEEP_STAGE), sleepWindowStart(date), sleepWindowEnd(date)).map(HealthAggregation::sleepSession)
 
-    private fun samples(types: List<String>, from: Long, to: Long) = dao.observeSamples(types, from, to)
+    override fun observeLatestReading(metric: HealthMetricType, today: LocalDate): Flow<MetricReading?> {
+        val types = MetricSeriesBuilder.typesFor(metric)
+        if (types.isEmpty()) return flowOf(null)
+        val from = today.minusDays(LATEST_LOOKBACK_DAYS).let { if (metric.aggregation == MetricAggregation.SLEEP) sleepWindowStart(it) else it.startMs() }
+        return samples(types, from, today.plusDays(1).startMs())
+            .map { rows -> latest(metric, rows, today) }
+            .distinctUntilChanged()
+            .flowOn(Dispatchers.Default)
+    }
 
-    private fun hourly(metric: HealthMetricType, samples: List<HealthSampleEntity>): List<ChartPoint> {
-        val byHour = samples.groupBy { Instant.ofEpochMilli(it.startEpochMs).atZone(zone).hour }
-        return (0 until 24).map { hour ->
-            val rows = byHour[hour].orEmpty()
-            val value = when (metric) {
-                HealthMetricType.STEPS -> rows.filter { it.type == SampleType.STEPS }.sumOf { it.value }
-                else -> rows.map { it.value }.takeIf { it.isNotEmpty() }?.average() ?: 0.0
+    override fun observeMetricReadings(metric: HealthMetricType, limit: Int): Flow<List<MetricReading>> {
+        val types = when (metric.aggregation) {
+            MetricAggregation.CUMULATIVE -> listOfNotNull(MetricSeriesBuilder.dailyType(metric))
+            else -> MetricSeriesBuilder.typesFor(metric)
+        }
+        if (types.isEmpty()) return flowOf(emptyList())
+        // A night has ~15–25 stage rows; read enough of them to fill [limit] nights.
+        val rowLimit = if (metric.aggregation == MetricAggregation.SLEEP) limit * SLEEP_ROWS_PER_NIGHT else limit * types.size
+        return dao.observeLatestSamples(types, rowLimit)
+            .map { rows -> series.readings(metric, rows, limit) }
+            .flowOn(Dispatchers.Default)
+    }
+
+    private fun latest(metric: HealthMetricType, rows: List<HealthSampleEntity>, today: LocalDate): MetricReading? = when (metric.aggregation) {
+        MetricAggregation.CUMULATIVE -> {
+            val totals = series.dailyTotals(metric, rows)
+            // Today's running total, even if still zero, once anything was recorded today; otherwise the last day with data.
+            val day = if (rows.any { !Instant.ofEpochMilli(it.startEpochMs).atZone(zone).toLocalDate().isBefore(today) }) today else totals.keys.maxOrNull()
+            day?.let { MetricReading(metric, totals[it] ?: 0.0, it.atStartOfDay(zone).toInstant()) }
+        }
+        MetricAggregation.SLEEP -> {
+            val nights = series.sleepMinutesByNight(rows)
+            nights.keys.maxOrNull()?.let { night ->
+                val session = HealthAggregation.sleepSession(rows.filter { series.nightOf(it.startEpochMs) == night })
+                MetricReading(metric, nights.getValue(night), session?.start ?: night.atStartOfDay(zone).toInstant(), session?.end)
             }
-            ChartPoint("${hour}h", value.toFloat())
+        }
+        MetricAggregation.DISCRETE -> rows.maxByOrNull { it.startEpochMs }?.let {
+            MetricReading(metric, it.value, Instant.ofEpochMilli(it.startEpochMs), sourceId = it.deviceId)
         }
     }
 
-    private fun dailyValue(metric: HealthMetricType, rows: List<HealthSampleEntity>): Double = when (metric) {
-        HealthMetricType.STEPS -> HealthAggregation.steps(rows).toDouble()
-        HealthMetricType.HEART_RATE -> HealthAggregation.average(rows, SampleType.HEART_RATE) ?: 0.0
-        HealthMetricType.SPO2 -> HealthAggregation.average(rows, SampleType.SPO2) ?: 0.0
-        HealthMetricType.STRESS -> HealthAggregation.average(rows, SampleType.STRESS) ?: 0.0
-        HealthMetricType.CALORIES -> HealthAggregation.dailyMax(rows, SampleType.DAILY_ACTIVE_KCAL) ?: 0.0
-        HealthMetricType.SLEEP -> HealthAggregation.sleepMinutes(rows).toDouble()
-        HealthMetricType.WEIGHT -> 0.0 // No wearable source yet (Health Connect import is a later step).
-    }
-
-    private fun typesFor(metric: HealthMetricType): List<String> = when (metric) {
-        HealthMetricType.STEPS -> listOf(SampleType.STEPS, SampleType.DAILY_STEPS)
-        HealthMetricType.HEART_RATE -> listOf(SampleType.HEART_RATE)
-        HealthMetricType.SPO2 -> listOf(SampleType.SPO2)
-        HealthMetricType.STRESS -> listOf(SampleType.STRESS)
-        HealthMetricType.CALORIES -> listOf(SampleType.DAILY_ACTIVE_KCAL)
-        HealthMetricType.SLEEP -> listOf(SampleType.SLEEP_STAGE)
-        HealthMetricType.WEIGHT -> emptyList()
-    }
-
-    private fun label(range: TimeRange, day: LocalDate) = when (range) {
-        TimeRange.MONTH -> day.dayOfMonth.toString()
-        else -> day.dayOfWeek.shortLabel()
-    }
+    private fun samples(types: List<String>, from: Long, to: Long) = dao.observeSamples(types, from, to)
 
     private fun LocalDate.startMs() = atStartOfDay(zone).toInstant().toEpochMilli()
 
@@ -155,8 +151,6 @@ class LocalHealthDataRepository @Inject constructor(
     private fun sleepWindowStart(date: LocalDate) = date.minusDays(1).atTime(18, 0).atZone(zone).toInstant().toEpochMilli()
 
     private fun sleepWindowEnd(date: LocalDate) = date.atTime(12, 0).atZone(zone).toInstant().toEpochMilli()
-
-    private fun DayOfWeek.shortLabel(): String = getDisplayName(TextStyle.SHORT, Locale.getDefault())
 
     private fun WorkoutEntity.toModel() = Workout(
         id = "$deviceId@$startEpochMs",
@@ -183,9 +177,12 @@ class LocalHealthDataRepository @Inject constructor(
         val SUMMARY_TYPES = listOf(
             SampleType.HEART_RATE, SampleType.SPO2, SampleType.STRESS, SampleType.STEPS,
             SampleType.DAILY_STEPS, SampleType.DAILY_ACTIVE_KCAL, SampleType.DAILY_DISTANCE,
+            SampleType.DAILY_EXERCISE_MINUTES, SampleType.RESTING_HEART_RATE, SampleType.HRV,
         )
         const val DEFAULT_ACTIVE_KCAL_GOAL = 500
         const val DEFAULT_ACTIVE_MINUTES_GOAL = 30
         const val WORKOUT_LIMIT = 200
+        const val LATEST_LOOKBACK_DAYS = 30L
+        const val SLEEP_ROWS_PER_NIGHT = 40
     }
 }

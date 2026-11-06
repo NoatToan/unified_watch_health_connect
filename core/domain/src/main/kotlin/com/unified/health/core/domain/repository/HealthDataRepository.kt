@@ -3,6 +3,7 @@ package com.unified.health.core.domain.repository
 import com.unified.health.core.model.ChartPoint
 import com.unified.health.core.model.DailyHealthSummary
 import com.unified.health.core.model.HealthMetricType
+import com.unified.health.core.model.MetricReading
 import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.Workout
@@ -15,4 +16,17 @@ interface HealthDataRepository {
     fun observeMetricSeries(metric: HealthMetricType, range: TimeRange, endDate: LocalDate): Flow<List<ChartPoint>>
     fun observeWorkouts(): Flow<List<Workout>>
     fun observeSleep(date: LocalDate): Flow<SleepSession?>
+
+    /**
+     * Value shown on a Summary card: today's total for cumulative metrics, otherwise the most recent
+     * reading (looking back up to a few weeks). Null when nothing was recorded.
+     */
+    fun observeLatestReading(metric: HealthMetricType, today: LocalDate): Flow<MetricReading?>
+
+    /** "Show All Data": newest first, at most [limit] rows. */
+    fun observeMetricReadings(metric: HealthMetricType, limit: Int = DEFAULT_READINGS_LIMIT): Flow<List<MetricReading>>
+
+    companion object {
+        const val DEFAULT_READINGS_LIMIT = 500
+    }
 }

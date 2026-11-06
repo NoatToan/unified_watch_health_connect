@@ -19,20 +19,21 @@ import com.unified.health.core.domain.repository.LiveHealthRepository
 import com.unified.health.core.data.repository.DefaultWearableDeviceRepository
 import com.unified.health.core.ble.pairing.PairingCodeRequester
 import com.unified.health.core.domain.repository.PairingCodeBroker
-import com.unified.health.core.ble.di.UseFakeBle
-import com.unified.health.core.data.repository.FakeHealthDataRepository
 import com.unified.health.core.data.repository.LocalHealthDataRepository
+import com.unified.health.core.data.sync.RawPayloadSaver
+import com.unified.health.core.data.sync.RawPayloadStore
 import com.unified.health.core.domain.repository.HealthConnectRepository
 import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
+import com.unified.health.core.domain.repository.DemoDataController
 import dagger.Binds
+import dagger.BindsOptionalOf
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Provider
 import javax.inject.Singleton
 
 @Module
@@ -62,6 +63,18 @@ internal abstract class DataBindingsModule {
     @Binds
     @Singleton
     abstract fun bindHealthConnectRepository(impl: HealthConnectManager): HealthConnectRepository
+
+    /** Local-first: every screen reads what syncs stored in Room. */
+    @Binds
+    @Singleton
+    abstract fun bindHealthDataRepository(impl: LocalHealthDataRepository): HealthDataRepository
+
+    @Binds
+    abstract fun bindRawPayloadSaver(impl: RawPayloadStore): RawPayloadSaver
+
+    /** Bound only in debug builds (`:core:demo`); release injects `Optional.empty()`. */
+    @BindsOptionalOf
+    abstract fun optionalDemoDataController(): DemoDataController
 }
 
 @Module
@@ -78,15 +91,6 @@ internal object DataProvidersModule {
 
     @Provides
     fun provideHealthRecordDao(db: UnifiedHealthDatabase): HealthRecordDao = db.healthRecordDao()
-
-    /** Local-first: real data comes from Room; demo data only alongside demo devices. */
-    @Provides
-    @Singleton
-    fun provideHealthDataRepository(
-        @UseFakeBle demo: Boolean,
-        local: Provider<LocalHealthDataRepository>,
-        fake: Provider<FakeHealthDataRepository>,
-    ): HealthDataRepository = if (demo) fake.get() else local.get()
 
     @Provides
     @Singleton

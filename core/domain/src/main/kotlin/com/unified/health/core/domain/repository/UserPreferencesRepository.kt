@@ -1,5 +1,6 @@
 package com.unified.health.core.domain.repository
 
+import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.ThemeMode
 import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.UserPreferences
@@ -12,4 +13,5 @@ interface UserPreferencesRepository {
     suspend fun setThemeMode(themeMode: ThemeMode)
     suspend fun setUseDynamicColor(enabled: Boolean)
     suspend fun setDailyStepGoal(steps: Int)
+    suspend fun setPinnedMetrics(metrics: List<HealthMetricType>)
 }

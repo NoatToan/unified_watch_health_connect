@@ -12,6 +12,16 @@ android {
         applicationId = "com.unified.health"
         versionCode = 1
         versionName = "0.1.0"
+        // Hilt-aware runner (HiltTestApplication) for the E2E suite in src/androidTest.
+        testInstrumentationRunner = "com.unified.health.HiltTestRunner"
+        // Screenshots + step records go through TestStorage (/sdcard/googletest/test_outputfiles).
+        testInstrumentationRunnerArguments["useTestStorageService"] = "true"
+    }
+
+    testOptions {
+        // Each test in its own process: fresh Hilt graph, no DataStore "multiple instances" clash.
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+        animationsDisabled = true
     }
 
     buildTypes {
@@ -44,6 +54,9 @@ dependencies {
     implementation(projects.driver.zepp)
     implementation(projects.driver.coros)
 
+    // Simulated "Demo watch" + demo-data seeder: debug/androidTest only, never in release (D-006, D-201).
+    debugImplementation(projects.core.demo)
+
     implementation(projects.feature.onboarding)
     implementation(projects.feature.home)
     implementation(projects.feature.activity)
@@ -60,4 +73,18 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit4)
+
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.uiautomator)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(projects.core.demo)
+    kspAndroidTest(libs.hilt.compiler)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    androidTestImplementation(libs.androidx.test.storage)
+    androidTestUtil(libs.androidx.test.orchestrator)
+    androidTestUtil(libs.androidx.test.services)
 }

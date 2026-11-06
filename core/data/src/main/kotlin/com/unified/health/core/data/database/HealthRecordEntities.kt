@@ -45,6 +45,11 @@ object SampleType {
     const val DAILY_STEPS = "daily_steps"
     const val DAILY_ACTIVE_KCAL = "daily_active_kcal"
     const val DAILY_DISTANCE = "daily_distance_m"
+    const val DAILY_EXERCISE_MINUTES = "daily_exercise_min"
+
+    /** One row per day, stored at local midnight. */
+    const val RESTING_HEART_RATE = "resting_heart_rate"
+    const val HRV = "hrv_ms"
 
     /** Value is the [com.unified.health.core.model.SleepStage] ordinal. */
     const val SLEEP_STAGE = "sleep_stage"
@@ -66,4 +71,17 @@ interface HealthRecordDao {
 
     @Query("SELECT * FROM workouts ORDER BY startEpochMs DESC LIMIT :limit")
     fun observeWorkouts(limit: Int): Flow<List<WorkoutEntity>>
+
+    /** Newest first. */
+    @Query("SELECT * FROM health_samples WHERE type IN (:types) ORDER BY startEpochMs DESC LIMIT :limit")
+    fun observeLatestSamples(types: List<String>, limit: Int): Flow<List<HealthSampleEntity>>
+
+    @Query("SELECT COUNT(*) FROM health_samples")
+    suspend fun sampleCount(): Int
+
+    @Query("DELETE FROM health_samples")
+    suspend fun deleteAllSamples()
+
+    @Query("DELETE FROM workouts")
+    suspend fun deleteAllWorkouts()
 }

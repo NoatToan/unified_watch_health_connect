@@ -30,7 +30,15 @@ sealed interface HealthRecord {
         val steps: Int,
         val activeKcal: Int? = null,
         val distanceMeters: Double? = null,
+        /** Minutes of brisk activity (Apple "Exercise" ring). */
+        val exerciseMinutes: Int? = null,
     ) : HealthRecord
+
+    /** Device-computed resting heart rate for one local calendar day. */
+    data class RestingHeartRate(val date: LocalDate, val bpm: Int) : HealthRecord
+
+    /** Heart rate variability (SDNN or RMSSD as reported by the device), in milliseconds. */
+    data class HeartRateVariability(val time: Instant, val milliseconds: Int) : HealthRecord
 
     data class Sleep(val start: Instant, val end: Instant, val stage: SleepStage) : HealthRecord
 

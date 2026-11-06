@@ -33,6 +33,8 @@ include(":core:designsystem")
 include(":core:ble")
 include(":core:data")
 include(":core:testing")
+// Debug/test-only mock watch + demo data (never in release, see docs/DECISIONS.md D-201).
+include(":core:demo")
 
 // One module per watch brand. Add a brand: create :driver:<brand>, include it here and in :app.
 include(":driver:standard")
