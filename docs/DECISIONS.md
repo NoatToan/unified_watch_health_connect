@@ -129,6 +129,12 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   README viết bằng tiếng Anh (đối tượng là nhà tuyển dụng/khách hàng quốc tế). Report E2E được chép từ `build/e2e-report/`
   (bị gitignore) sang `docs/e2e-report/` để README nhúng ảnh và link hiển thị được trên GitHub.
 
+- **D-016** · 2026-11-06 · Repo riêng, public — **Chốt**
+  App tách khỏi `NoatToan/vibe-projects` thành repo public `NoatToan/unified_watch_health_connect`, giữ lịch sử commit
+  (`git filter-repo --subdirectory-filter`) nhưng lọc hẳn khỏi lịch sử: APK của hãng, cây mã dịch ngược `jadx-*`,
+  dump thô của rea (`*.json`, `*.txt`) và manifest của hãng. Lý do: đó là nội dung có bản quyền của hãng, không được
+  phát tán công khai (D-004). Chỉ giữ tài liệu giao thức và bằng chứng `.md` đã chắt lọc; `scripts/restore-apks.sh` bị bỏ.
+
 <!-- Các agent thêm quyết định mới bên dưới, đánh số tiếp D-1xx (COROS) và D-2xx (E2E/UI). -->
 
 ## COROS driver

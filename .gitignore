@@ -30,12 +30,9 @@ output-metadata.json
 Thumbs.db
 *.log
 
-# APK ghép lại từ docs/apks/*.part-* (scripts/restore-apks.sh)
-docs/apks/*.apk
-docs/apks/*.apkm
-
-# Source dịch ngược có package tên "build" — không phải output Gradle
-!docs/re-evidence/**/build/
-
-# Full decompiled sources are never committed (docs/DECISIONS.md D-010)
-docs/re-evidence/*/jadx-base/
+# Vendor apps and raw analysis output are never committed (copyrighted; docs/DECISIONS.md D-010, D-016)
+docs/apks/
+docs/re-evidence/*/jadx-*/
+docs/re-evidence/*/*.json
+docs/re-evidence/*/*.txt
+docs/re-evidence/*/AndroidManifest.xml
