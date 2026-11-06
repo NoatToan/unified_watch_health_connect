@@ -6,6 +6,7 @@ import com.unified.health.driver.garmin.codec.FitTime
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
+import kotlin.math.roundToInt
 
 /**
  * Maps decoded FIT messages onto [HealthRecord]s. Message and field numbers come from the public
@@ -25,6 +26,12 @@ internal object FitHealthMapper {
     const val MESG_SPO2_DATA = 269
     const val MESG_SLEEP_LEVEL = 275
 
+    /** Daily resting heart rate, synced alongside `monitoring` (55) in MONITORING_B files [Ext]. */
+    const val MESG_MONITORING_HR_DATA = 273
+
+    /** Nightly HRV status, a newer message not in every firmware's FIT profile [Ext]. */
+    const val MESG_HRV_STATUS_SUMMARY = 389
+
     // monitoring (55) fields [Ext].
     private const val MON_DISTANCE = 2 // uint32, scale 100 → m, cumulative per activity type
     private const val MON_CYCLES = 3 // uint32; "steps" sub-field for walking/running
@@ -39,6 +46,14 @@ internal object FitHealthMapper {
     private const val STRESS_TIME = 1 // date_time
     private const val SPO2_READING = 0 // uint8 %
     private const val SLEEP_LEVEL = 0 // enum sleep_level
+
+    // monitoring_hr_data (273) fields [Ext]; current_day wins over the plain resting field when both are present.
+    private const val MONITORING_HR_RESTING = 0 // uint8 bpm
+    private const val MONITORING_HR_CURRENT_DAY_RESTING = 1 // uint8 bpm
+
+    // hrv_status_summary (389) fields [Ext]: one record per night, scale 128 -> milliseconds.
+    private const val HRV_LAST_NIGHT_AVERAGE = 4 // uint16, scale 128
+    private const val HRV_SCALE = 128.0
 
     // session (18) fields [Ext].
     private const val SESSION_START_TIME = 2
@@ -76,6 +91,8 @@ internal object FitHealthMapper {
                 }
                 MESG_STRESS_LEVEL -> mapStress(message)?.let(records::add)
                 MESG_SPO2_DATA -> mapSpo2(message)?.let(records::add)
+                MESG_MONITORING_HR_DATA -> mapRestingHeartRate(message, zone)?.let(records::add)
+                MESG_HRV_STATUS_SUMMARY -> mapHrv(message)?.let(records::add)
                 MESG_SLEEP_LEVEL -> {
                     val time = message.timestamp ?: continue
                     val level = message.value(SLEEP_LEVEL) ?: continue
@@ -129,6 +146,33 @@ internal object FitHealthMapper {
         val percent = message.value(SPO2_READING)?.toInt()?.takeIf { it in 1..100 } ?: return null
         val time = message.timestamp ?: return null
         return HealthRecord.SpO2(FitTime.toInstant(time), percent)
+    }
+
+    /**
+     * monitoring_hr_data (273) [Ext]: the device's own daily resting HR, recomputed through the day.
+     * `current_day_resting_heart_rate` (1) is the running estimate and wins over the plain field (0)
+     * when both are present. TODO(garmin-protocol): confirm message/field numbers against a real
+     * MONITORING_B (type 32) file; not visible in the Garmin Connect APK (FIT is a separate, public spec).
+     */
+    private fun mapRestingHeartRate(message: FitMessage, zone: ZoneId): HealthRecord? {
+        val time = message.timestamp ?: return null
+        val bpm = (message.value(MONITORING_HR_CURRENT_DAY_RESTING) ?: message.value(MONITORING_HR_RESTING))
+            ?.toInt()?.takeIf { it in 20..120 } ?: return null
+        val date = FitTime.toInstant(time).atZone(zone).toLocalDate()
+        return HealthRecord.RestingHeartRate(date, bpm)
+    }
+
+    /**
+     * hrv_status_summary (389) [Ext]: nightly HRV status, one message per morning. We report
+     * `last_night_average` as the device's SDNN-like summary (scale 128, §FIT profile "Base Types").
+     * Newer firmware only; older watches may use a different/no HRV message (§9 question 7-adjacent).
+     * TODO(garmin-protocol): confirm message/field numbers and scale against a real file.
+     */
+    private fun mapHrv(message: FitMessage): HealthRecord? {
+        val time = message.timestamp ?: return null
+        val raw = message.value(HRV_LAST_NIGHT_AVERAGE) ?: return null
+        val milliseconds = (raw / HRV_SCALE).roundToInt().takeIf { it in 1..300 } ?: return null
+        return HealthRecord.HeartRateVariability(FitTime.toInstant(time), milliseconds)
     }
 
     private fun mapSession(message: FitMessage): HealthRecord? {

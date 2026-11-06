@@ -370,6 +370,21 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   bộ các loại file FIT liệt kê ở §6.1. Đủ để mọi `HealthRecord` mà `FitHealthMapper` tạo ra được một lượt
   qua pipeline thật (file → FIT decode → Room); không mô phỏng `libreliable-ml.so` (MLR), không mô phỏng
   Garmin Auth (phone luôn "đã bond" trong giả lập, đúng nhánh §5.1 không-mã-hoá mà driver triển khai).
+- **D-406** · 2026-11-06 · Sửa deadlock khi giả lập trả file (5002/5004) — **Chốt**
+  Bug thật tìm thấy qua E2E trên `emulator-5554`: `GarminWatchLink.answer()` chạy trong vòng lặp
+  `for (frame in inbox)` duy nhất đọc `inbox`; xử lý 5002 gọi thẳng (không `scope.launch`) `streamFile()`,
+  mà `streamFile` lại `request(FILE_DATA, …)` rồi `await` ACK của chính host — ACK đó chỉ tới được
+  `pendingAcks` khi vòng lặp kia tiếp tục đọc `inbox`, nhưng vòng lặp đang bị chặn ngay trong lệnh gọi đó
+  → tự deadlock. Sửa: đổi `streamFile` sang `scope.launch { streamFile(file) }` (giống hệt cách
+  `GfdiDispatcher.answer()` thật trong `driver/garmin` chạy `afterAck` trên `scope.launch` vì đúng lý do
+  này). Sau khi sửa: `GarminWatchE2ETest` pass trọn vẹn 8 bước (scan → pair → sync → Summary → nguồn dữ
+  liệu → resting HR/HRV → sleep/workout → unpair), 14 s, không còn treo ở bước "Sync now".
+- **D-407** · 2026-11-06 · Giờ ngủ giả lập phải neo theo cửa sổ "đêm", không theo "now − 8h" — **Chốt**
+  `GarminSimulatedFiles` ban đầu đặt sleep_level ở `now − 8h`; nếu sync chạy buổi chiều/tối, khoảng đó rơi
+  ra ngoài cửa sổ "đêm của hôm nay" mà `LocalHealthDataRepository` dùng (`[hôm qua 18:00, hôm nay 12:00]`,
+  D-206), nên `observeSleep(today)` rỗng và `sleep_stage_chart` không hiện (bắt được qua E2E, không phải
+  suy luận). Sửa: trước 12:00 trưa thì vẫn dùng `now − 8h` (luôn rơi trong cửa sổ và luôn ở quá khứ); từ
+  12:00 trưa trở đi thì neo cứng vào "hôm qua 23:00" (luôn rơi trong cửa sổ, luôn ở quá khứ bất kể giờ sync).
 
 ## Zepp driver (D-5xx)
 

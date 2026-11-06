@@ -6,6 +6,7 @@ import com.unified.health.core.demo.BuildConfig
 import com.unified.health.core.demo.mock.MockWatchDriver
 import com.unified.health.core.demo.mock.MockWatchVirtualDevice
 import com.unified.health.core.demo.seed.DemoDataSeeder
+import com.unified.health.core.demo.virtual.GarminVirtualDevice
 import com.unified.health.core.domain.repository.DemoDataController
 import dagger.Binds
 import dagger.Module
@@ -28,7 +29,8 @@ internal object DemoDeviceModule {
 
     @Provides
     @ElementsIntoSet
-    fun mockDevice(): Set<VirtualDevice> = if (BuildConfig.MOCK_DEVICE) setOf(MockWatchVirtualDevice()) else emptySet()
+    fun mockDevice(): Set<VirtualDevice> =
+        if (BuildConfig.MOCK_DEVICE) setOf(MockWatchVirtualDevice(), GarminVirtualDevice()) else emptySet()
 }
 
 @Module

@@ -111,6 +111,34 @@ class FitHealthMapperTest {
     }
 
     @Test
+    fun `monitoring_hr_data becomes resting heart rate keyed by local day`() {
+        val bytes = FitFileBuilder()
+            .define(0, FitHealthMapper.MESG_MONITORING_HR_DATA, u32(253), u8(0), u8(1))
+            .record(0, t0, 50, 48) // current_day (1) wins over the plain field (0)
+            .define(1, FitHealthMapper.MESG_MONITORING_HR_DATA, u32(253), u8(0))
+            .record(1, t0 + 86_400, 52) // only the plain field present
+            .build()
+        val records = FitHealthMapper.map(FitDecoder.decode(bytes), ZoneOffset.UTC, DailyActivityAccumulator())
+        assertEquals(
+            listOf(
+                HealthRecord.RestingHeartRate(LocalDate.of(2026, 3, 1), 48),
+                HealthRecord.RestingHeartRate(LocalDate.of(2026, 3, 2), 52),
+            ),
+            records.filterIsInstance<HealthRecord.RestingHeartRate>(),
+        )
+    }
+
+    @Test
+    fun `hrv_status_summary becomes heart rate variability in milliseconds`() {
+        val bytes = FitFileBuilder()
+            .define(0, FitHealthMapper.MESG_HRV_STATUS_SUMMARY, u32(253), u16(4))
+            .record(0, t0, 5120) // 5120 / 128 = 40 ms
+            .build()
+        val records = FitHealthMapper.map(FitDecoder.decode(bytes), ZoneOffset.UTC, DailyActivityAccumulator())
+        assertEquals(listOf(HealthRecord.HeartRateVariability(at(t0), 40)), records.filterIsInstance<HealthRecord.HeartRateVariability>())
+    }
+
+    @Test
     fun `timestamp_16 expands across a 16 bit rollover`() {
         assertEquals(0x1_0005L, FitHealthMapper.expandTimestamp16(0xFFF0L, 0x0005L))
         assertEquals(0xFFF8L, FitHealthMapper.expandTimestamp16(0xFFF0L, 0xFFF8L))
