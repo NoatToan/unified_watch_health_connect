@@ -29,3 +29,10 @@ output-metadata.json
 .DS_Store
 Thumbs.db
 *.log
+
+# APK ghép lại từ docs/apks/*.part-* (scripts/restore-apks.sh)
+docs/apks/*.apk
+docs/apks/*.apkm
+
+# Source dịch ngược có package tên "build" — không phải output Gradle
+!docs/re-evidence/**/build/

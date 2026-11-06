@@ -8,6 +8,8 @@ Các tài liệu phân tích được tạo ở thư mục cha `noattoan/` trong
 | `protocols/HUAWEI_DEVICE_PROTOCOL.md` | Giao thức Link Layer/HiChain của Huawei Health 17.0.7.310 → `driver/huawei` |
 | `protocols/ZEPP_DEVICE_PROTOCOL.md` | Giao thức Zepp OS (ECDH sect163r2) của Zepp 6.10.1 → `driver/zepp` |
 | `re-evidence/{garmin,huawei,zepp}/` | Output REA CLI (manifest, permissions, `cls_*`/`class_*`/`method_*.json`) mà các doc protocol trích dẫn |
+| `re-evidence/garmin/jadx-base`, `jadx-gcm`, `re-evidence/zepp/jadx-base`, `re-evidence/huawei/jadx-out` | Source jadx dịch ngược (tạm thời, sẽ xoá) |
+| `apks/` | APK gốc cắt nhỏ; ghép bằng `scripts/restore-apks.sh` (xem [SETUP_NEW_MACHINE.md](../SETUP_NEW_MACHINE.md)) |
 | `archive/driver-huawei-wearengine/` | Driver Huawei qua WearEngine SDK, đã gỡ khi chuyển sang BLE-only. Không nằm trong `settings.gradle.kts`; cách khôi phục xem README trong đó |
 
 ## Đối chiếu đường dẫn trong doc protocol
@@ -19,13 +21,10 @@ Các doc ghi đường dẫn theo bố cục cũ ở `noattoan/`:
 | `garmin-analysis/rea-output/…` | `docs/re-evidence/garmin/…` |
 | `zepp-analysis/rea-output/…` | `docs/re-evidence/zepp/…` |
 | `rea-output/…` (doc Huawei) | `docs/re-evidence/huawei/…` |
-| `garmin-analysis/jadx-base/sources/`, `zepp-analysis/jadx-base/sources/`, `jadx-out/sources/` | **Không commit** (hàng trăm MB–GB). Tạo lại bằng jadx từ APK gốc |
+| `garmin-analysis/jadx-base/…`, `garmin-analysis/jadx-gcm/…` | `docs/re-evidence/garmin/jadx-base/…`, `…/jadx-gcm/…` |
+| `zepp-analysis/jadx-base/…` | `docs/re-evidence/zepp/jadx-base/…` |
+| `jadx-out/sources/…` (doc Huawei) | `docs/re-evidence/huawei/jadx-out/sources/…` |
 
-## Tạo lại source dịch ngược (khi cần tra `pkg/X.java:NN`)
+## APK gốc
 
-APK không commit. Tải đúng phiên bản từ APKMirror:
-- Garmin Connect `com.garmin.android.apps.connectmobile` 5.30.1 (11657), `.apkm`
-- Zepp `com.huami.watch.hmwatchmanager` 6.10.1-play (100770), `.apkm`
-- Huawei Health `com.huawei.health` 17.0.7.310, `.apk`
-
-`.apkm` là file zip: giải nén lấy `base.apk`, rồi `jadx -d <brand>-analysis/jadx-base base.apk`.
+Đã commit dạng cắt nhỏ ở `apks/`. Chạy `scripts/restore-apks.sh` để ghép lại và kiểm tra checksum.
