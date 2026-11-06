@@ -1,0 +1,1 @@
+{"flow":"40-garmin-watch","flowTitle":"Garmin watch (driver:garmin, dedicated GFDI service)","step":"01-scan","index":1,"action":"Open Devices, tap Scan","expected":"Forerunner 965 is listed as Garmin","status":"PASS","error":null,"screenshot":"40-garmin-watch/01-scan.png","test":"GarminWatchE2ETest","startedAt":"2026-11-06T13:27:22.499911Z","durationMs":879}

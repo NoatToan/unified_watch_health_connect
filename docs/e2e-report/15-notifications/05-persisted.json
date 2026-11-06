@@ -1,0 +1,1 @@
+{"flow":"15-notifications","flowTitle":"Profile › Notifications","step":"05-persisted","index":5,"action":"Back, open Notifications again","expected":"Choices were saved (DataStore)","status":"PASS","error":null,"screenshot":"15-notifications/05-persisted.png","test":"NotificationSettingsE2ETest","startedAt":"2026-11-06T13:08:09.506151Z","durationMs":1736}

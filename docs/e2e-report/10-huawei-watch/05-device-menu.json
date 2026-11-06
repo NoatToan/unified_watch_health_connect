@@ -1,0 +1,1 @@
+{"flow":"10-huawei-watch","flowTitle":"Devices → scan → pair → sync → unpair (Huawei)","step":"05-device-menu","index":5,"action":"Tap ⋮ on the watch","expected":"Menu with Unpair","status":"PASS","error":null,"screenshot":"10-huawei-watch/05-device-menu.png","test":"HuaweiWatchE2ETest","startedAt":"2026-11-06T13:17:02.525651Z","durationMs":255}

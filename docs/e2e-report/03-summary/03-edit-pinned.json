@@ -1,0 +1,1 @@
+{"flow":"03-summary","flowTitle":"Summary","step":"03-edit-pinned","index":3,"action":"Tap Edit, pin Heart rate variability, Done","expected":"A new pinned card for HRV appears","status":"PASS","error":null,"screenshot":"03-summary/03-edit-pinned.png","test":"UserJourneyE2ETest","startedAt":"2026-11-06T12:12:57.497417Z","durationMs":1403}

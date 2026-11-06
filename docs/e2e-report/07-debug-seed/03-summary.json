@@ -1,0 +1,1 @@
+{"flow":"07-debug-seed","flowTitle":"Profile › Developer: seed demo data","step":"03-summary","index":3,"action":"Open Summary","expected":"Pinned metrics show seeded values","status":"PASS","error":null,"screenshot":"07-debug-seed/03-summary.png","test":"DemoDataE2ETest","startedAt":"2026-11-06T12:11:38.929231Z","durationMs":376}

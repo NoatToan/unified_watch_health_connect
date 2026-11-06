@@ -1,0 +1,1 @@
+{"flow":"60-standard-watch","flowTitle":"Bluetooth SIG band (driver:standard)","step":"07-spo2-source","index":7,"action":"Tap Show all data","expected":"Stored readings listed with SIG Pulse Band as source","status":"PASS","error":null,"screenshot":"60-standard-watch/07-spo2-source.png","test":"StandardWatchE2ETest","startedAt":"2026-11-06T12:26:12.585693Z","durationMs":879}

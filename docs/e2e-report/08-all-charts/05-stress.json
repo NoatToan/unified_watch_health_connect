@@ -1,0 +1,1 @@
+{"flow":"08-all-charts","flowTitle":"Every metric chart after seeding","step":"05-stress","index":5,"action":"Browse › search \"Stress\" › open › M","expected":"Header has a value and the chart has data","status":"PASS","error":null,"screenshot":"08-all-charts/05-stress.png","test":"DemoDataE2ETest","startedAt":"2026-11-06T12:11:54.977697Z","durationMs":2787}

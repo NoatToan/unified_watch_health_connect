@@ -1,0 +1,1 @@
+{"flow":"40-garmin-watch","flowTitle":"Garmin watch (driver:garmin, dedicated GFDI service)","step":"08-unpair","index":8,"action":"Devices › ⋮ › Unpair › confirm","expected":"Watch removed; synced data from it is kept","status":"PASS","error":null,"screenshot":"40-garmin-watch/08-unpair.png","test":"GarminWatchE2ETest","startedAt":"2026-11-06T13:27:32.286836Z","durationMs":914}

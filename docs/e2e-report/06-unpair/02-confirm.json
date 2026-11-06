@@ -1,0 +1,1 @@
+{"flow":"06-unpair","flowTitle":"Devices → unpair","step":"02-confirm","index":2,"action":"Tap Unpair","expected":"Confirmation dialog explains synced data is kept","status":"PASS","error":null,"screenshot":"06-unpair/02-confirm.png","test":"UserJourneyE2ETest","startedAt":"2026-11-06T12:13:13.947429Z","durationMs":805}

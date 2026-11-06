@@ -1,0 +1,1 @@
+{"flow":"08-all-charts","flowTitle":"Every metric chart after seeding","step":"11-year-heart-rate","index":11,"action":"Open Heart rate › Y","expected":"Twelve monthly min–max ranges","status":"PASS","error":null,"screenshot":"08-all-charts/11-year-heart-rate.png","test":"DemoDataE2ETest","startedAt":"2026-11-06T12:12:18.386291Z","durationMs":5240}

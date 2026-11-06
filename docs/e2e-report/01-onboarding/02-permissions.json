@@ -1,0 +1,1 @@
+{"flow":"01-onboarding","flowTitle":"Onboarding → permissions","step":"02-permissions","index":2,"action":"Tap \"Get started\"","expected":"Permissions list: Bluetooth, notifications, Health Connect, background","status":"PASS","error":null,"screenshot":"01-onboarding/02-permissions.png","test":"UserJourneyE2ETest","startedAt":"2026-11-06T12:12:34.444942Z","durationMs":592}

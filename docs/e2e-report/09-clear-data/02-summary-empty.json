@@ -1,0 +1,1 @@
+{"flow":"09-clear-data","flowTitle":"Profile › Developer: clear health data","step":"02-summary-empty","index":2,"action":"Open Summary","expected":"Pinned cards show \"No data\"","status":"PASS","error":null,"screenshot":"09-clear-data/02-summary-empty.png","test":"DemoDataE2ETest","startedAt":"2026-11-06T12:12:27.588654Z","durationMs":516}

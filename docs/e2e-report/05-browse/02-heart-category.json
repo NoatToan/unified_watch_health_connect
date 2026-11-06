@@ -1,0 +1,1 @@
+{"flow":"05-browse","flowTitle":"Browse: categories → metrics","step":"02-heart-category","index":2,"action":"Tap Heart","expected":"Heart rate, Resting heart rate and HRV listed","status":"PASS","error":null,"screenshot":"05-browse/02-heart-category.png","test":"UserJourneyE2ETest","startedAt":"2026-11-06T12:13:08.372068Z","durationMs":358}

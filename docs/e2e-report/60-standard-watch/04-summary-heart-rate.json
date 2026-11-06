@@ -1,0 +1,1 @@
+{"flow":"60-standard-watch","flowTitle":"Bluetooth SIG band (driver:standard)","step":"04-summary-heart-rate","index":4,"action":"Open Summary","expected":"Heart rate card shows the streamed bpm","status":"PASS","error":null,"screenshot":"60-standard-watch/04-summary-heart-rate.png","test":"StandardWatchE2ETest","startedAt":"2026-11-06T12:26:07.074912Z","durationMs":472}

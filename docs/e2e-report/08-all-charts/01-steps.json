@@ -1,0 +1,1 @@
+{"flow":"08-all-charts","flowTitle":"Every metric chart after seeding","step":"01-steps","index":1,"action":"Browse › search \"Steps\" › open › M","expected":"Header has a value and the chart has data","status":"PASS","error":null,"screenshot":"08-all-charts/01-steps.png","test":"DemoDataE2ETest","startedAt":"2026-11-06T12:11:39.334193Z","durationMs":2588}

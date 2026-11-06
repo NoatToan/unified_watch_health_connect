@@ -1,0 +1,1 @@
+{"flow":"01-onboarding","flowTitle":"Onboarding → permissions","step":"04-bluetooth-granted","index":4,"action":"Tap \"Allow\" in the system dialog","expected":"Nearby devices row shows a granted check mark","status":"PASS","error":null,"screenshot":"01-onboarding/04-bluetooth-granted.png","test":"UserJourneyE2ETest","startedAt":"2026-11-06T12:12:38.673693Z","durationMs":2278}

@@ -1,0 +1,1 @@
+{"flow":"06-unpair","flowTitle":"Devices → unpair","step":"01-device-menu","index":1,"action":"Open Devices, tap ⋮ on the watch","expected":"Menu with Unpair","status":"PASS","error":null,"screenshot":"06-unpair/01-device-menu.png","test":"UserJourneyE2ETest","startedAt":"2026-11-06T12:13:12.182168Z","durationMs":1751}

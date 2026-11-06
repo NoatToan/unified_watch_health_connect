@@ -1,0 +1,1 @@
+{"flow":"10-huawei-watch","flowTitle":"Devices → scan → pair → sync → unpair (Huawei)","step":"06-confirm","index":6,"action":"Tap Unpair","expected":"Confirmation dialog explains synced data is kept","status":"PASS","error":null,"screenshot":"10-huawei-watch/06-confirm.png","test":"HuaweiWatchE2ETest","startedAt":"2026-11-06T13:17:02.786390Z","durationMs":299}

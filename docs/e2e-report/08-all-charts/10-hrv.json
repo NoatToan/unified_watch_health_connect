@@ -1,0 +1,1 @@
+{"flow":"08-all-charts","flowTitle":"Every metric chart after seeding","step":"10-hrv","index":10,"action":"Browse › search \"Heart rate variability\" › open › M","expected":"Header has a value and the chart has data","status":"PASS","error":null,"screenshot":"08-all-charts/10-hrv.png","test":"DemoDataE2ETest","startedAt":"2026-11-06T12:12:13.496947Z","durationMs":4870}

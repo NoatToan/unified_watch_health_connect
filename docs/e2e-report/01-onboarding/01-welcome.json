@@ -1,0 +1,1 @@
+{"flow":"01-onboarding","flowTitle":"Onboarding → permissions","step":"01-welcome","index":1,"action":"Launch the app on a fresh install","expected":"Welcome screen with \"Get started\"","status":"PASS","error":null,"screenshot":"01-onboarding/01-welcome.png","test":"UserJourneyE2ETest","startedAt":"2026-11-06T12:12:32.540711Z","durationMs":1891}

@@ -125,6 +125,10 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   khoá `emu-lock.sh` (dùng `mkdir` làm mutex), vì các agent chạy chồng nhau sẽ gỡ APK của nhau giữa chừng.
   Build cache Gradle từng bị hỏng khi nhiều agent build song song (`:driver:zepp` chỉ dex được 2/108 class) → gặp `NoClassDefFoundError` thì build lại với `--no-build-cache`.
 
+- **D-015** · 2026-11-06 · README portfolio — **Chốt**
+  README viết bằng tiếng Anh (đối tượng là nhà tuyển dụng/khách hàng quốc tế). Report E2E được chép từ `build/e2e-report/`
+  (bị gitignore) sang `docs/e2e-report/` để README nhúng ảnh và link hiển thị được trên GitHub.
+
 <!-- Các agent thêm quyết định mới bên dưới, đánh số tiếp D-1xx (COROS) và D-2xx (E2E/UI). -->
 
 ## COROS driver

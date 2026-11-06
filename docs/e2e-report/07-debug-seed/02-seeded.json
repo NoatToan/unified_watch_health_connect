@@ -1,0 +1,1 @@
+{"flow":"07-debug-seed","flowTitle":"Profile › Developer: seed demo data","step":"02-seeded","index":2,"action":"Tap \"Seed demo data\"","expected":"Status reports the records written","status":"PASS","error":null,"screenshot":"07-debug-seed/02-seeded.png","test":"DemoDataE2ETest","startedAt":"2026-11-06T12:11:38.012999Z","durationMs":911}

@@ -1,162 +1,180 @@
-# Unified Health (Android)
+<div align="center">
 
-Ứng dụng Android native hiển thị dữ liệu sức khỏe (bước chân, nhịp tim, giấc ngủ, SpO2, căng thẳng, bài tập) từ **đồng hồ/vòng đeo Huawei của chính bạn** qua BLE, kèm đồng bộ Health Connect.
+# ⌚ Unified Health
 
-> **Trạng thái:** skeleton chạy được. Toàn bộ dữ liệu sức khỏe và kết nối BLE hiện là **giả lập (Fake)**. Giao thức Huawei (BLE GATT + handshake/xác thực link-layer) **chưa được cài đặt**, sẽ cắm vào sau dựa trên một bản phân tích reverse-engineering riêng.
+### One app for every smartwatch you own.
 
-Đặc tả tính năng và UI: xem [FEATURES.md](FEATURES.md).
+Garmin, Huawei, Zepp/Amazfit, COROS and any Bluetooth-standard band — paired, synced and charted in **one** privacy-first Android app,<br>
+instead of five vendor apps that each keep your data in their own silo.
+
+![Kotlin](https://img.shields.io/badge/Kotlin-2.4-7F52FF?logo=kotlin&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)
+![Android](https://img.shields.io/badge/Android-API%2026%E2%80%9337-3DDC84?logo=android&logoColor=white)
+![Hilt](https://img.shields.io/badge/DI-Hilt-orange)
+![Room](https://img.shields.io/badge/Storage-Room%20%2B%20DataStore-blue)
+![Tests](https://img.shields.io/badge/unit%20tests-352-brightgreen)
+![E2E](https://img.shields.io/badge/E2E-86%2F86%20steps%20passing-brightgreen)
+
+<br>
+
+<img src="docs/e2e-report/03-summary/01-pinned.png" width="200" alt="Summary">
+<img src="docs/e2e-report/04-metric-detail/08-sleep-stages.png" width="200" alt="Sleep stages">
+<img src="docs/e2e-report/13-workouts/03-activity-load.png" width="200" alt="Weekly activity load">
+<img src="docs/e2e-report/13-workouts/05-workout-detail.png" width="200" alt="Workout detail">
+
+</div>
 
 ---
 
-## Công nghệ
+## The problem
 
-| Hạng mục | Phiên bản |
-|---|---|
-| Android Gradle Plugin | 9.5.0 (Kotlin tích hợp sẵn của AGP 9) |
-| Gradle | 9.8.2 (wrapper) |
-| Kotlin | 2.4.21 · KSP 2.3.13 |
-| Compose BOM | 2026.09.00 (Material 3) |
-| Navigation Compose | 2.10.2 (route type-safe bằng kotlinx.serialization) |
-| Hilt | 2.60.1 · androidx.hilt 1.4.0 (`hilt-lifecycle-viewmodel-compose`) |
-| Room | 2.8.5 · DataStore 1.3.0 |
-| Health Connect | `connect-client` 1.1.0 |
-| Lifecycle 2.11.0 · Activity 1.13.0 · Coroutines 1.11.0 | |
-| SDK | minSdk 26 · compileSdk / targetSdk 37 |
-| JDK để build | 17 hoặc 21 (đã kiểm thử với 21) |
+Own a Garmin for running and an Amazfit for sleep? That's two apps, two accounts, two clouds — and no single place to see your week. Every brand speaks its own Bluetooth protocol, so the data never meets.
 
-Toàn bộ phiên bản nằm ở `gradle/libs.versions.toml`.
+## The solution
 
-## Build
+**Unified Health talks to each watch in its own language**, directly over Bluetooth Low Energy, and lands everything in one local database with one clean, Apple-Health-style interface. No vendor cloud in the middle. Every reading remembers which watch it came from.
 
-Yêu cầu: Android SDK (platform 37, build-tools 36+), JDK 17/21.
-
-```bash
-# macOS (Homebrew): JDK hệ thống /usr/bin/java trên máy này bị hỏng, chỉ định rõ JDK 21
-export JAVA_HOME=/opt/homebrew/opt/openjdk@21
-
-# local.properties (không commit) trỏ tới SDK:
-echo "sdk.dir=$HOME/Library/Android/sdk" > local.properties
-
-./gradlew assembleDebug            # APK: app/build/outputs/apk/debug/app-debug.apk
-./gradlew testDebugUnitTest :core:domain:test   # unit test
-./gradlew lint                     # Android lint (hiện sạch)
-./gradlew installDebug             # cài lên thiết bị/emulator đang kết nối
+```
+  Garmin ─┐  GFDI · COBS · FIT files
+  Huawei ─┤  0x5A frames · TLV · AES-CBC
+  Zepp ───┼──▶  driver ─▶ session ─▶ sync ─▶ Room ─▶ Summary · Browse · Charts
+  COROS ──┤  Protobuf master/slave
+  SIG BLE ┘  Heart Rate · Pulse Ox · RSC · Battery
 ```
 
-> Không dùng JDK 27: Gradle/AGP hiện tại chưa hỗ trợ chạy trên JDK đó.
+---
 
-## Cấu trúc module
+## ✨ Highlights
+
+- **🔌 Pluggable multi-brand drivers.** Each brand is an isolated `:driver:<brand>` Gradle module behind one `WearableDriver` contract. The scanner scores every advertisement against every driver and the best match wins — adding a brand never touches the UI.
+- **📊 Apple-Health-grade UI on Material 3.** Summary with pinned metrics and activity rings, Browse by category, and metric detail with **D / W / M / 6M / Y** ranges, heart-rate range charts, a sleep-stage hypnogram and "Show all data" with source attribution.
+- **🏃 Workouts & weekly load.** Workout list and detail (pace, avg/max HR, heart-rate curve) plus an unbranded weekly activity-load trend against your 4-week baseline.
+- **🧪 Protocol simulators for every brand.** Debug builds ship virtual Garmin, Huawei, Zepp and SIG watches that speak the *real* wire protocol over an in-memory GATT — so the real driver → session → database pipeline is tested end to end without hardware.
+- **📸 Screenshot-driven E2E.** 9 instrumented journeys, 15 flows, **86/86 steps passing**, each step captured and compiled into an ordered visual report.
+- **🔒 Privacy by design.** Data stays on the device in Room; mock/demo code is `debugImplementation` only and physically absent from release builds; no vendor secrets are extracted or embedded.
+
+---
+
+## 📱 Screens
+
+| Pair any watch | Summary | Browse | Heart-rate range |
+|:---:|:---:|:---:|:---:|
+| <img src="docs/e2e-report/02-pair-mock-watch/02-scanning.png" width="180"> | <img src="docs/e2e-report/03-summary/02-rings-and-highlights.png" width="180"> | <img src="docs/e2e-report/05-browse/01-categories.png" width="180"> | <img src="docs/e2e-report/04-metric-detail/07-heart-rate-range.png" width="180"> |
+
+| Steps · 6 months | Garmin synced | About this device | Notifications |
+|:---:|:---:|:---:|:---:|
+| <img src="docs/e2e-report/04-metric-detail/04-steps-6m.png" width="180"> | <img src="docs/e2e-report/40-garmin-watch/06-resting-hr-and-hrv.png" width="180"> | <img src="docs/e2e-report/14-device-settings/03-about.png" width="180"> | <img src="docs/e2e-report/15-notifications/04-toggled.png" width="180"> |
+
+👉 **Every step of every flow, in order: [E2E visual report](docs/e2e-report/README.md)**
+
+---
+
+## ⌚ Supported watches
+
+| Brand | How it connects | What syncs | Status |
+|---|---|---|---|
+| **Bluetooth SIG devices** (Polar/Wahoo straps, pulse oximeters, generic bands) | Standard GATT services | Live HR + HRV, SpO2 (live + stored records), steps from cadence, battery, device info, time write | ✅ Production-ready |
+| **Garmin** | GFDI over Multi-Link / dedicated service, COBS + CRC16 | Live HR, time sync, battery, FIT history: steps, HR, resting HR, HRV, stress, SpO2, sleep stages, workouts | ✅ Implemented, simulator-verified |
+| **Zepp / Amazfit** | Huami auth (user-supplied key, module 0x80), GDSP | Steps, HR, SpO2 v2, stress, resting HR, time sync | ✅ Implemented, unit-tested (E2E run pending) |
+| **Huawei** | 0x5A link layer, TLV, AES-CBC | Device version, capabilities, time zone, watch-initiated events | 🟡 Transport done; pairing needs Huawei's own keys → data via Health Connect |
+| **COROS** | Protobuf master/slave over a custom UART-style service | Recognition, bonding, battery, device info | 🟡 History sync awaits a real-device Bluetooth capture |
+
+Every byte layout is documented with its evidence and a confidence tag (verified / inferred / public spec) in [`docs/protocols/`](docs/protocols/).
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────── UI · feature:* ───────────────┐   Compose (stateless) ◀─ StateFlow ─ @HiltViewModel
+├─────────────── Domain · core:domain ─────────┤   pure Kotlin use cases + repository interfaces
+├─────────────── Data · core:data ─────────────┤   Room · DataStore · Health Connect
+├─────────────── Transport · core:ble ─────────┤   DeviceScanner · DeviceConnection · HealthDataSync
+│        DriverRegistry ── recognize() scores ─┤
+└──┬────────┬────────┬────────┬────────┬───────┘
+   │        │        │        │        │
+ standard garmin   huawei    zepp    coros       :driver:* — one Gradle module per brand
+```
+
+- **Clean Architecture + MVVM**, single activity, type-safe Navigation Compose.
+- **Features never see transport or storage**: `feature:*` depends only on `core:model`, `core:domain`, `core:designsystem`; `:app` wires everything with Hilt.
+- **Driver layering**: `Uuids` → pure `codec/` (framing, CRC, TLV, parsers — no Android, fully unit-tested with byte vectors) → `transport/` (chunking, reassembly, ACKs) → `Session` (handshake, sync) → `Driver` (recognition, link requirements).
+- **Coroutines everywhere** with explicit timeouts, cancellation-safe session scopes and an injected clock/dispatcher for deterministic tests.
+- **18 Gradle modules**, convention plugins in `build-logic/`, versions in `gradle/libs.versions.toml`.
+
+<details>
+<summary><b>Module map</b></summary>
 
 ```
 unified_health_app/
-├── build-logic/convention/      # Convention plugins (Gradle Kotlin DSL)
-│     unifiedhealth.android.application | .android.library | .android.compose
-│     unifiedhealth.android.feature | .hilt | .jvm.library
-├── gradle/libs.versions.toml    # Version catalog
-├── app/                         # Single Activity, NavHost, NavigationBar, Hilt Application,
-│                                #   Manifest (quyền), PermissionsRationaleActivity (Health Connect),
-│                                #   DeviceSyncService (placeholder foreground service)
+├── app/                  # Single activity, NavHost, Hilt app, DeviceSyncService, health alerts
+├── build-logic/          # Convention plugins
 ├── core/
-│   ├── model/        (JVM)      # Domain models: Steps, HeartRate, Sleep, SpO2, Stress, Workout,
-│   │                            #   WearableDevice, ConnectionState, SyncState, UserPreferences…
-│   ├── domain/       (JVM)      # Interface repository + use case (HealthDataRepository,
-│   │                            #   WearableDeviceRepository, UserPreferencesRepository,
-│   │                            #   HealthConnectRepository)
-│   ├── designsystem/            # Theme M3 (màu, typography, shape, spacing, dynamic color),
-│   │                            #   components: MetricCard, ActivityRings, SimpleBarChart,
-│   │                            #   ConnectionStatusChip, Loading/Empty/ErrorState, RuntimePermissions
-│   ├── ble/                     # Abstraction kết nối thiết bị: DeviceScanner, DeviceConnection,
-│   │                            #   HealthDataSync, multi-vendor stack, điểm cắm VirtualDevice (rỗng ở release)
-│   ├── data/                    # Room (paired devices + health_samples/workouts), DataStore (preferences),
-│   │                            #   LocalHealthDataRepository + MetricSeriesBuilder, HealthConnectManager, DI
-│   └── demo/        (debug)     # Mock "Demo watch" (driver + GATT trong bộ nhớ), generator 90 ngày, seeder.
-│                                #   Chỉ `debugImplementation` → không có trong release (D-201)
+│   ├── model/            # Domain models (JVM)
+│   ├── domain/           # Use cases + repository interfaces (JVM)
+│   ├── designsystem/     # M3 theme, charts (bar / range / sleep stages), metric cards
+│   ├── ble/              # Multi-vendor scanner/connection/sync, driver contract, VirtualDevice seam
+│   ├── data/             # Room, DataStore, LocalHealthDataRepository, MetricSeriesBuilder
+│   ├── testing/          # FakeGattClient, RecordingSink
+│   └── demo/             # debug-only: mock watch, brand simulators, 90-day seeder
+├── driver/
+│   ├── standard/  garmin/  huawei/  zepp/  coros/
 └── feature/
-    ├── onboarding/              # Welcome + luồng xin quyền runtime
-    ├── home/                    # Dashboard + chi tiết chỉ số (Ngày/Tuần/Tháng)
-    ├── activity/                # Bài tập theo tháng + "Weekly activity load" (D-805) + chi tiết bài tập (D-804)
-    ├── devices/                 # Quét / ghép đôi / kết nối / đồng bộ / bỏ ghép đôi + "About this device" (D-806)
-    └── profile/                 # Cài đặt (toggle đơn vị + dynamic color) + Notifications (D-807)
-                                 # (Giấc ngủ: Browse › Sleep, module feature/sleep đã xoá — D-808)
+    ├── onboarding/  home/ (Summary · Browse · Detail)  activity/  devices/  profile/
 ```
+</details>
 
-Quy tắc phụ thuộc: `feature:*` chỉ phụ thuộc `core:model`, `core:domain`, `core:designsystem`. Không feature nào biết tới `core:data` hay `core:ble`; chỉ `:app` ghép tất cả qua Hilt.
+---
 
-## Kiến trúc
+## 🧪 Quality
 
-```
-┌──────────────────────────────── UI layer (feature:*, app) ────────────────────────────────┐
-│  Composable Screen  ◀── StateFlow<UiState> ──  @HiltViewModel                              │
-│  (M3, stateless)    ── events (onClick…) ──▶   (combine flows, stateIn)                    │
-└──────────────────────────────────────────────────────┬────────────────────────────────────┘
-                                                       │ gọi use case / repository interface
-┌──────────────────────────── Domain layer (core:domain + core:model, thuần Kotlin) ────────┐
-│  ObserveTodaySummaryUseCase · ObserveMetricSeriesUseCase · ObservePrimaryDeviceUseCase      │
-│  interface HealthDataRepository · WearableDeviceRepository · UserPreferencesRepository     │
-│            HealthConnectRepository                                                          │
-└──────────────────────────────────────────────────────┬────────────────────────────────────┘
-                                                       │ implemented by (Hilt @Binds)
-┌──────────────────────────────────── Data layer (core:data) ───────────────────────────────┐
-│  LocalHealthDataRepository ── Room: HealthRecordDao (ghi bởi RoomHealthRecordSink khi sync)│
-│  DefaultWearableDeviceRepository ── Room: PairedDeviceDao                                  │
-│  DataStoreUserPreferencesRepository · HealthConnectManager                                 │
-└──────────────────────────────────────────────────────┬────────────────────────────────────┘
-                                                       │ uses
-┌───────────────────────────── Device transport (core:ble) ─────────────────────────────────┐
-│  interface DeviceScanner · DeviceConnection · HealthDataSync (+ HealthRecordSink)          │
-│      ├── MultiVendor* + DriverRegistry (:driver:*)  ◀── luôn bind; debug thêm mock watch  │
-│      └── (TODO) HuaweiDeviceScanner / HuaweiDeviceConnection / HuaweiHealthDataSync         │
-│                 BLE GATT + Huawei link-layer handshake/auth (từ phân tích RE riêng)          │
-└────────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-- **MVVM + Clean Architecture**, single-activity, Navigation Compose type-safe.
-- **Hilt** ở mọi tầng; đổi Fake sang triển khai thật chỉ cần sửa `core/ble/.../di/BleModule.kt` (và `DataModule.kt` cho repository sức khỏe).
-- **Coroutines/Flow**: repository trả `Flow`; ViewModel dùng `stateIn(WhileSubscribed(5s))`; UI dùng `collectAsStateWithLifecycle`.
-
-## Màn hình đã có
-
-| Màn hình | Trạng thái |
+| | |
 |---|---|
-| Onboarding: Welcome + Quyền (Bluetooth / Location ≤ API 30 / Thông báo / Health Connect / Pin nền) | ✅ |
-| Trang chủ: banner thiết bị, vòng hoạt động, 6 card chỉ số, pull-to-refresh | ✅ (dữ liệu giả) |
-| Chi tiết chỉ số: Ngày/Tuần/Tháng, biểu đồ cột, TB/Min/Max | ✅ (dữ liệu giả) |
-| Thiết bị: quét, ghép đôi, trạng thái kết nối, pin, firmware, đồng bộ, ngắt, bỏ ghép đôi | ✅ (BLE giả) |
-| Hoạt động: danh sách bài tập + FAB "Bắt đầu tập" | 🟡 placeholder |
-| Giấc ngủ | 🟡 placeholder |
-| Hồ sơ: danh sách cài đặt, toggle đơn vị + dynamic color | 🟡 placeholder |
-| Chính sách quyền riêng tư (Health Connect rationale) | ✅ |
+| Unit tests | **352** JVM tests — codecs with byte vectors, sessions against scripted fake watches, aggregation and ViewModels |
+| Instrumented E2E | **9** journeys · **15** flows · **86/86** steps, screenshot per step → [visual report](docs/e2e-report/README.md) |
+| Release hygiene | no mock code in release, lint clean, explicit capability declaration (the UI never promises data a driver can't deliver) |
+| Decision log | 90+ recorded engineering decisions with rationale → [`docs/DECISIONS.md`](docs/DECISIONS.md) |
 
-## Bước tiếp theo
+Try it in 30 seconds on an emulator: debug builds include a **UH Demo Watch** and *Profile › Developer › Seed demo data* fills 90 days of realistic, deterministic data.
 
-1. **Giao thức Huawei** (ưu tiên số 1): triển khai `HuaweiDeviceScanner`, `HuaweiDeviceConnection`, `HuaweiHealthDataSync` trong `:core:ble` theo bản phân tích reverse-engineering riêng; đổi binding trong `BleModule`. Xem `core/ble/.../WearableProtocol.kt`.
-2. **Foreground service** `DeviceSyncService` (`connectedDevice`): giữ kết nối, tự kết nối lại có back-off, notification ongoing.
-3. **Lưu dữ liệu sức khỏe thật**: entity Room cho steps/HR/sleep/SpO2/stress/workout; `HealthRecordSink` ghi vào Room; thay `FakeHealthDataRepository`.
-4. **Health Connect hai chiều**: ghi dữ liệu từ đồng hồ (thêm quyền WRITE_*), dedupe bằng `clientRecordId`, đồng bộ nền bằng WorkManager.
-5. Kiểm tra trạng thái Bluetooth bật/tắt, xử lý quyền bị từ chối vĩnh viễn.
-6. **Bản địa hóa**: đưa chuỗi UI (đang viết cứng tiếng Anh) vào `strings.xml` + `values-vi`.
-7. Màn Giấc ngủ (hypnogram), live workout, vùng nhịp tim & cảnh báo (xem FEATURES.md).
-8. Thư viện biểu đồ (ví dụ Vico) thay `SimpleBarChart`.
-9. Test: ViewModel tests (Turbine), Compose UI tests, Room DAO tests; CI chạy `assembleDebug lint test`.
-10. Chính sách quyền riêng tư chính thức trước khi phát hành (bắt buộc với Health Connect trên Play).
+---
 
-## E2E, mock watch và seed data (debug)
+## 🛠️ Tech stack
 
-- Bản debug có thêm đồng hồ giả **UH Demo Watch** (`WearableVendor.DEMO`, module `:core:demo`): hiện khi quét, ghép đôi / kết nối / sync luôn thành công, dữ liệu đi qua pipeline thật (driver → session → sink → Room). Lần sync đầu lấy 90 ngày. Tắt: `-PunifiedHealth.mockDevice=false`.
-- Profile › **Developer (debug build)**: *Seed demo data* (90 ngày, seed cố định) / *Clear health data*.
-- Chạy toàn bộ E2E và sinh report ảnh từng bước:
+Kotlin 2.4 · Jetpack Compose (BOM 2026.09, Material 3) · Navigation Compose (type-safe) · Hilt · Room · DataStore · Coroutines/Flow · Health Connect · Android BLE GATT · AGP 9.5 / Gradle 9.8 · minSdk 26, target 37
+
+---
+
+## 🚀 Build & run
+
+Requires Android SDK (platform 37, build-tools 36+) and JDK 17 or 21.
 
 ```bash
-scripts/e2e.sh [serial]          # build → cài mới → chạy flow → kéo ảnh → build/e2e-report/index.html
-E2E_SKIP_UNIT=1 scripts/e2e.sh emulator-5556
+export JAVA_HOME=/opt/homebrew/opt/openjdk@21          # JDK 27 is not supported by AGP yet
+echo "sdk.dir=$HOME/Library/Android/sdk" > local.properties
+
+./gradlew assembleDebug           # app/build/outputs/apk/debug/app-debug.apk
+./gradlew testDebugUnitTest       # unit tests
+./gradlew installDebug            # install on a connected device/emulator
+
+scripts/e2e.sh [serial]           # build → fresh install → run E2E → build/e2e-report/index.html
 ```
 
-  Ảnh: `build/e2e-report/<NN-flow>/<NN-step>.png`; test ở `app/src/androidTest/.../e2e/`. Các quyết định: `docs/DECISIONS.md` D-201…D-212.
+Debug installs as `com.unified.health.debug`. Disable the demo watch with `-PunifiedHealth.mockDevice=false`. To refresh the published report, copy `build/e2e-report/` to `docs/e2e-report/`.
 
-## Ghi chú
+---
 
-- Clone sang máy khác: [`SETUP_NEW_MACHINE.md`](SETUP_NEW_MACHINE.md).
-- Tài liệu giao thức (Garmin/Huawei/Zepp), evidence dịch ngược và driver đã archive: xem [`docs/`](docs/README.md).
-- `local.properties` không được commit (đã có trong `.gitignore`).
-- `android:usesPermissionFlags="neverForLocation"` trên `BLUETOOTH_SCAN`: nếu quảng bá BLE của đồng hồ bị lọc khi quét, bỏ cờ này và xin quyền vị trí.
-- Bản debug dùng `applicationIdSuffix = ".debug"` → package `com.unified.health.debug`.
+## 🗺️ Roadmap
+
+- Capture real-device Bluetooth logs to finish COROS history sync and Huawei service-7 parsing
+- Two-way Health Connect (import Huawei/COROS data today, export everything)
+- Concurrent connections to several watches at once
+- Swipe through past periods, tap-to-inspect chart values, data-source priority
+- Localization (Vietnamese first) and a published privacy policy for Play release
+
+## 📚 More
+
+- Feature spec: [FEATURES.md](FEATURES.md) · Screen inventory of the vendor apps: [docs/SCREEN_INVENTORY.md](docs/SCREEN_INVENTORY.md)
+- Protocol docs and evidence: [docs/protocols/](docs/protocols/) · New machine setup: [SETUP_NEW_MACHINE.md](SETUP_NEW_MACHINE.md)
+
+> Built for interoperability with watches you own. Not affiliated with Garmin, Huawei, Zepp Health or COROS; brand names are used only to identify compatible devices.

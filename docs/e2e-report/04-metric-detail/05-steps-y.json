@@ -1,0 +1,1 @@
+{"flow":"04-metric-detail","flowTitle":"Metric detail: D / W / M / 6M / Y","step":"05-steps-y","index":5,"action":"Tap Y","expected":"Y selected, header DAILY AVERAGE, chart has data","status":"PASS","error":null,"screenshot":"04-metric-detail/05-steps-y.png","test":"UserJourneyE2ETest","startedAt":"2026-11-06T12:13:00.380295Z","durationMs":304}

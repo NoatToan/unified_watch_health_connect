@@ -1,0 +1,1 @@
+{"flow":"04-metric-detail","flowTitle":"Metric detail: D / W / M / 6M / Y","step":"01-steps-week","index":1,"action":"Tap the Steps card","expected":"Steps page, W selected, daily average + bar chart","status":"PASS","error":null,"screenshot":"04-metric-detail/01-steps-week.png","test":"UserJourneyE2ETest","startedAt":"2026-11-06T12:12:58.909696Z","durationMs":611}

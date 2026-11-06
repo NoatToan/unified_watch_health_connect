@@ -1,0 +1,1 @@
+{"flow":"13-workouts","flowTitle":"Activity: weekly load → workouts → workout detail","step":"07-back-to-list","index":7,"action":"Tap Back","expected":"Back on the Activity tab","status":"PASS","error":null,"screenshot":"13-workouts/07-back-to-list.png","test":"WorkoutsE2ETest","startedAt":"2026-11-06T13:07:50.249231Z","durationMs":1278}

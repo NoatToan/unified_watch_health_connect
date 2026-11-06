@@ -1,0 +1,1 @@
+{"flow":"14-device-settings","flowTitle":"Devices › Device settings (About this device)","step":"07-unpaired","index":7,"action":"Confirm","expected":"Back on Devices with no paired watch","status":"PASS","error":null,"screenshot":"14-device-settings/07-unpaired.png","test":"DeviceSettingsE2ETest","startedAt":"2026-11-06T13:08:02.279210Z","durationMs":449}

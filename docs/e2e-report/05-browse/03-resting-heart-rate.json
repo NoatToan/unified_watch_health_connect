@@ -1,0 +1,1 @@
+{"flow":"05-browse","flowTitle":"Browse: categories → metrics","step":"03-resting-heart-rate","index":3,"action":"Tap Resting heart rate","expected":"Average resting heart rate with a daily chart","status":"PASS","error":null,"screenshot":"05-browse/03-resting-heart-rate.png","test":"UserJourneyE2ETest","startedAt":"2026-11-06T12:13:08.737829Z","durationMs":361}
