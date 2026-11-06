@@ -157,12 +157,26 @@ internal class MetricSeriesBuilder(
         }
         MetricAggregation.CUMULATIVE -> {
             val type = dailyType(metric)
-            rows.filter { it.type == type }
+            val daily = rows.filter { it.type == type }
                 .groupBy { dateOf(it.startEpochMs) }
-                .map { (_, sameDay) -> sameDay.maxBy { it.value } }
-                .sortedByDescending { it.startEpochMs }
-                .take(limit)
-                .map { MetricReading(metric, it.value, Instant.ofEpochMilli(it.startEpochMs), Instant.ofEpochMilli(it.endEpochMs), it.deviceId) }
+                .mapValues { (_, sameDay) -> sameDay.maxBy { it.value } }
+                .mapValues { (_, it) -> MetricReading(metric, it.value, Instant.ofEpochMilli(it.startEpochMs), Instant.ofEpochMilli(it.endEpochMs), it.deviceId) }
+            // Days a watch reported only interval steps (e.g. Zepp GDSP per-minute activity, no daily
+            // total): summed like the Summary card does (HealthAggregation.steps), so both screens agree.
+            val fromIntervals = if (metric != HealthMetricType.STEPS) emptyMap() else rows.filter { it.type == SampleType.STEPS }
+                .groupBy { dateOf(it.startEpochMs) }
+                .filterKeys { it !in daily }
+                .mapValues { (_, sameDay) ->
+                    MetricReading(
+                        metric = metric,
+                        value = sameDay.sumOf { it.value },
+                        time = Instant.ofEpochMilli(sameDay.minOf { it.startEpochMs }),
+                        endTime = Instant.ofEpochMilli(sameDay.maxOf { it.endEpochMs }),
+                        sourceId = sameDay.groupingBy { it.deviceId }.eachCount().maxByOrNull { it.value }?.key,
+                    )
+                }
+                .filterValues { it.value > 0.0 }
+            (daily + fromIntervals).values.sortedByDescending { it.time }.take(limit)
         }
         MetricAggregation.SLEEP -> rows.filter { it.type == SampleType.SLEEP_STAGE }
             .groupBy { nightOf(it.startEpochMs) }

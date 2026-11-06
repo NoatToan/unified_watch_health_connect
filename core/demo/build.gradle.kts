@@ -26,4 +26,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     testImplementation(projects.core.testing)
+    // The real Zepp driver against the simulated watch (ZeppVirtualWatchDriverTest), same pairing as the E2E.
+    testImplementation(projects.driver.zepp)
 }

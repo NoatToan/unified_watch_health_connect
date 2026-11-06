@@ -3,6 +3,7 @@ package com.unified.health.e2e
 import android.Manifest
 import android.content.Context
 import android.os.Build
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.ComposeTimeoutException
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.hasTestTag
@@ -11,6 +12,8 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
@@ -74,9 +77,20 @@ abstract class E2EBase {
         compose.waitUntil(timeoutMs) { compose.onAllNodesWithMatcher(matcher).isEmpty() }
     }
 
+    /**
+     * Brings the node into view and invokes its click action. Using the semantics action instead of a coordinate tap
+     * keeps a click reliable when the node sits under the Scan FAB or below the fold of a long device list.
+     */
     protected fun clickTag(tag: String) {
         waitForTag(tag)
-        compose.onNodeWithTag(tag, useUnmergedTree = true).performClick()
+        val node = compose.onNodeWithTag(tag, useUnmergedTree = true)
+        runCatching { node.performScrollTo() }
+        compose.waitForIdle()
+        if (node.fetchSemanticsNode().config.contains(SemanticsActions.OnClick)) {
+            node.performSemanticsAction(SemanticsActions.OnClick)
+        } else {
+            node.performClick()
+        }
     }
 
     /** Completes onboarding the quick way (no system dialogs), optionally granting Bluetooth through UiAutomation. */

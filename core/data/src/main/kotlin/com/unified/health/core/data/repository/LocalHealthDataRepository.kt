@@ -133,7 +133,17 @@ class LocalHealthDataRepository internal constructor(
         if (types.isEmpty()) return flowOf(emptyList())
         // A night has ~15–25 stage rows; read enough of them to fill [limit] nights.
         val rowLimit = if (metric.aggregation == MetricAggregation.SLEEP) limit * SLEEP_ROWS_PER_NIGHT else limit * types.size
-        return dao.observeLatestSamples(types, rowLimit)
+        val latest = dao.observeLatestSamples(types, rowLimit)
+        // Interval steps are far more rows than daily totals, so they get their own window (the last
+        // [limit] days) instead of crowding the row limit; readings() only uses them for days without a total.
+        val rows = if (metric != HealthMetricType.STEPS) {
+            latest
+        } else {
+            val today = LocalDate.now(zone)
+            val intervals = samples(listOf(SampleType.STEPS), today.minusDays(limit - 1L).startMs(), today.plusDays(1).startMs())
+            combine(latest, intervals) { daily, steps -> daily + steps }
+        }
+        return rows
             .map { rows -> series.readings(metric, rows, limit) }
             .flowOn(Dispatchers.Default)
     }

@@ -89,4 +89,25 @@ class MetricSeriesBuilderTest {
         assertEquals(1, nights.size)
         assertEquals(ms(end.minusDays(1), 23), nights.single().time.toEpochMilli())
     }
+
+    @Test
+    fun `steps readings fall back to summed interval steps on days without a daily total`() {
+        val rows = listOf(
+            // Zepp-style per-minute steps only (no daily total) today, from device "z".
+            HealthSampleEntity("z", SampleType.STEPS, ms(end, 9, 0), ms(end, 9, 1), 12.0),
+            HealthSampleEntity("z", SampleType.STEPS, ms(end, 9, 1), ms(end, 9, 2), 18.0),
+            HealthSampleEntity("z", SampleType.STEPS, ms(end, 9, 3), ms(end, 9, 4), 0.0),
+            // Yesterday has a device daily total: it wins over that day's intervals.
+            daily(SampleType.DAILY_STEPS, end.minusDays(1), 5000.0),
+            HealthSampleEntity("z", SampleType.STEPS, ms(end.minusDays(1), 8), ms(end.minusDays(1), 8, 1), 40.0),
+            // A day whose intervals are all zero is not listed.
+            HealthSampleEntity("z", SampleType.STEPS, ms(end.minusDays(2), 8), ms(end.minusDays(2), 8, 1), 0.0),
+        )
+        val readings = builder.readings(HealthMetricType.STEPS, rows, 10)
+        assertEquals(listOf(30.0, 5000.0), readings.map { it.value })
+        assertEquals("z", readings.first().sourceId)
+        assertEquals(ms(end, 9), readings.first().time.toEpochMilli())
+        assertEquals("w", readings.last().sourceId)
+        assertEquals(1, builder.readings(HealthMetricType.STEPS, rows, 1).size)
+    }
 }

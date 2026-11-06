@@ -81,5 +81,21 @@ internal object ZeppVirtualCharacteristics {
 class ZeppVirtualWatch(
     override val advertisement: Advertisement = ZeppVirtualWatchIdentity.advertisement(),
 ) : VirtualDevice {
-    override suspend fun connect(): GattClient = ZeppVirtualWatchGattClient(advertisement.address)
+    /** What the watch keeps across connections (its flash), shared by every link [connect] opens. */
+    private val storage = ZeppVirtualWatchStorage()
+
+    override suspend fun connect(): GattClient = ZeppVirtualWatchGattClient(advertisement.address, storage)
+}
+
+/**
+ * Persistent state of the simulated watch. A real Huami watch stores the bound auth key until it is
+ * reset or unbound (`ZEPP_DEVICE_PROTOCOL.md` §5.5, §7 "Mất key nếu đồng hồ bị reset hoặc unbind"):
+ * it survives disconnects, so a reconnect after the local bind must authenticate with that same
+ * key. Keeping it per link (per [ZeppVirtualWatchGattClient]) made every reconnect after the bind
+ * answer `[0x10, 0x03, 0x04]` (`docs/DECISIONS.md` D-5xx).
+ */
+internal class ZeppVirtualWatchStorage {
+    /** The key bound with the legacy `0x01` command; null while the watch is factory-fresh. */
+    @Volatile
+    var boundKey: ByteArray? = null
 }

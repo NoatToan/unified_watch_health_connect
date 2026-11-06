@@ -495,6 +495,10 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
 - **D-507** · 2026-11-06 · Zepp giao thức — **Tạm**
   Resting HR (GDSP type 58): hằng số tìm thấy tại `HMProSyncDataBaseProfile.java:71` nhưng parse method không tìm thấy trong sources (bị R8 obfuscate hoặc nằm trong class decompile lỗi). [I] Suy luận bản ghi 5 byte `[timestamp u32 LE, bpm u8]` theo mẫu tương tự type 18. Cần xác nhận bằng HCI snoop log trên thiết bị thật.
 
+- **D-508** · 2026-11-06 · Zepp simulator / E2E — **Chốt**
+  `ZeppVirtualWatch` lưu key đã bind ở cấp đồng hồ (`ZeppVirtualWatchStorage`, dùng chung mọi link), không theo từng `GattClient`: đồng hồ thật giữ key tới khi reset/unbind (§5.5, §7), nên lần kết nối lại sau local bind phải auth được bằng key đó. Lỗi cũ "Watch rejected the auth key (status 4)" là do simulator sai, driver giữ nguyên; regression: `core/demo` `ZeppVirtualWatchDriverTest` (ZeppDriver thật + simulator, bind → reconnect ×3).
+  Kèm theo: "Show all data" của Steps cộng bước theo phút cho ngày không có tổng ngày từ thiết bị (như thẻ Summary), vì GDSP của Zepp chỉ trả bước theo phút (`MetricSeriesBuilder.readings`).
+
 ## Standard BLE driver (D-6xx)
 
 - **D-601** · 2026-11-06 · Phạm vi `driver/standard` — **Chốt**

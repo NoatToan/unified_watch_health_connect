@@ -41,6 +41,8 @@ internal class GdspBlock(val count: Long, val start: Instant, val payload: ByteA
  */
 internal class ZeppVirtualWatchGattClient(
     override val address: String,
+    /** Survives this link: the bound key lives on the watch, not on the connection (§5.5). */
+    private val storage: ZeppVirtualWatchStorage = ZeppVirtualWatchStorage(),
     private val random: Random = Random(SEED),
 ) : GattClient {
 
@@ -59,8 +61,6 @@ internal class ZeppVirtualWatchGattClient(
         ZeppVirtualCharacteristics.batteryLevel to byteArrayOf(ZeppVirtualWatchIdentity.BATTERY_PERCENT.toByte()),
     )
 
-    /** The key currently bound to the watch; null until the legacy bind command sets one. */
-    private var authKey: ByteArray? = null
     private var challenge: ByteArray? = null
     private var hrJob: Job? = null
 
@@ -128,8 +128,8 @@ internal class ZeppVirtualWatchGattClient(
 
     private fun onLegacyAuth(value: ByteArray) {
         when (value[0].toInt() and 0xFF) {
-            0x01 -> { // [0x01, appId, key(16)]: always accepted, this watch is always "unbound".
-                authKey = value.copyOfRange(2, 2 + KEY_SIZE)
+            0x01 -> { // [0x01, appId, key(16)]: always accepted (no on-watch confirmation); replaces any earlier key.
+                storage.boundKey = value.copyOfRange(2, 2 + KEY_SIZE)
                 notify(ZeppVirtualCharacteristics.legacyAuth, byteArrayOf(0x10, 0x01, 0x01))
             }
             0x02 -> { // [0x02, appId, 0x02] or [0x02, appId]
@@ -138,7 +138,7 @@ internal class ZeppVirtualWatchGattClient(
                 notify(ZeppVirtualCharacteristics.legacyAuth, byteArrayOf(0x10, 0x02, 0x01) + fresh)
             }
             0x03 -> { // [0x03, appId, AES(key, random)]
-                val key = authKey
+                val key = storage.boundKey
                 val sent = value.copyOfRange(2, 2 + KEY_SIZE)
                 val ok = key != null && challenge != null && sent.contentEquals(aesEcb(Cipher.ENCRYPT_MODE, key, challenge!!))
                 notify(ZeppVirtualCharacteristics.legacyAuth, byteArrayOf(0x10, 0x03, if (ok) 0x01 else 0x04))
