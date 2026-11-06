@@ -92,6 +92,14 @@ Bằng chứng chính:
 
 ### 2.4 Nhận diện model [V]
 - Đọc Device Information `0x180A`: serial `2A25`, HW `2A27`, SW `2A28`, PnP `2A50` (7 byte: vendorSource, vendorId LE, productId LE, productVersion LE): `com/xiaomi/hm/health/bt/profile/base/BaseProfile.java:406-420`; UUID ở `profile/base/IBaseProfile.java:9-18`.
+- **PnP ID layout xác nhận** (`BaseProfile.setPnpInfo()`, lines 406-430) [V]:
+  ```
+  [0]     vendorSource u8   (1=Bluetooth SIG, 2=USB-IF)
+  [1..2]  vendorId u16 LE   (Huami = 0x0157, đăng ký SIG)
+  [3..4]  productId u16 LE
+  [5..6]  productVersion u16 LE  ([5] | ([6] << 8) — LE thuần)
+  ```
+  Đây là Bluetooth Assigned Numbers §6.5 chuẩn. `productId` / `productVersion` khớp `HMDeviceWebAPI.java:340-341`.
 - `productId`/`productVersion` được gửi lên cloud khi bind: `HMDeviceWebAPI.java:340-341` (`productId`, `productVersion`).
 
 ---
@@ -217,7 +225,7 @@ Lấy từ `@ChannelModule(id=…)` và `getModule()`:
 | 2 | Bật notify 0x0017 (và 0x0016 với v2) | | `BleChannelImpl.java:109`, `BleChannelImpl2.java:122` [V] |
 | 3 | Version query `0x01` trên 0x0016 → `0x02 ver [enc]` | Chọn channel v1/v2 | `BleChannelLink.java:252-267` [V] |
 | 4 | (v2) Hỏi danh sách module (module 0x00, lệnh `0x03`) | Biết module nào cần mã hoá | `BuiltInModule.java:402-420` [V] |
-| 5 | Chọn cơ chế auth | Có module 0x80/0x82: `encryptEnable == null` → `DeviceAuthorizationImpl1` (0x80), ngược lại `DeviceAuthorizationImpl2` (0x82). Không có → `TraditionalDeviceAuthorizationImpl` (char 0x0009) | `profile/auth/DeviceAuthorizationFactory.java:79-94` [V] |
+| 5 | Chọn cơ chế auth | Quyết định dựa trên **danh sách module** (BuiltInModule, bước 4), **không** phải phiên bản channel. `supportModule(0x80) \|\| supportModule(0x82)` → channel-based: nếu `encryptEnable == null` → `DeviceAuthorizationImpl1` (module 0x80, APP_API_LEVEL=1); nếu có `encryptEnable` byte → `DeviceAuthorizationImpl2` (module 0x82, ECDH). Không có cả hai → `TraditionalDeviceAuthorizationImpl` (char 0x0009). **Hệ quả:** đồng hồ channel v1 có thể xác thực qua module 0x80 (không phải luôn dùng 0x0009). | `profile/auth/DeviceAuthorizationFactory.java:88-94` [V] |
 | 6 | Auth (mục 5) | Thành công thì lưu `EncryptKeyStore` (session key, nonce) | `DeviceAuthorizationImpl2.java:113-160` [V] |
 | 7 | Đặt giờ: ghi `2A2B` | `[year u16 LE, month, day, hour, min, sec, dayOfWeek(0=CN), ms/4, adjustReason, tzKey]` | `HMBaseBleDevice.java:186`; `profile/base/ProfileUtils.java:42-58` [V] |
 | 8 | Đọc device info `180A` | | `HMBaseBleDevice.java:196` [V] |
@@ -310,7 +318,22 @@ nhận: giải AES → data(totalSize) ‖ nonce ‖ crc; kiểm CRC32; nonce ph
 - Module nào cần mã hoá do đồng hồ khai báo (BuiltInModule lệnh 0x03). Auth (0x82) thì **không** mã hoá.
 - `CRCUtilsKt.getCRC32` = `java.util.zip.CRC32` chuẩn: `com/xiaomi/hm/health/bt/utils/CRCUtilsKt.java:37-39`.
 
-### 5.5 Auth cũ trên char 0x0009 (Mi Band 2/3/4/5, Amazfit Bip…) [V]
+### 5.5 Session auth module 0x80 (đồng hồ channel v1 có module 0x80, không ECDH) [V]
+
+`AuthModule.java` (APP_API_LEVEL = 1 cho Impl1). Giao thức gần như giống §5.2 nhưng **không có ECDH**:
+
+| Bước | Gửi (module 0x80) | Nhận |
+|---|---|---|
+| 1 | `[0x00]` getAuthorizationInfo | `[code=1, version_u8, apiLevel_low, apiLevel_high, allowLocalBind_u8]` |
+| 2 | `[0x04, 0x01, 0x00, 0x02]` requestRandomNumber | `[code=1, random(16)]` |
+| 3 | `[0x05, AES_ECB(random, authKey)(16)]` authorize | `[code]` (1=OK) |
+
+- Không session key, không encryption keystore. Module 0x80 watches **không mã hoá channel**.
+- Bind cục bộ: `[0x01, 0x01, 0x00, key(16)]` → `[code]` (1=OK, 2=người dùng từ chối), timeout 30 s.
+- Cloud bind: `[0x02, 0x01, 0x00, pubPhone...]` → `[code, pubKeyHash(16), random(16)]`.
+- Bằng chứng: `AuthModule.java:401-411, 424-435, 512-538, 569-578`.
+
+### 5.6 Auth cũ trên char 0x0009 (Mi Band 2/3/4/5, Amazfit Bip…) [V]
 
 `profile/auth/HMProAuthProfile.java`:
 - Đăng ký notify 0x0009 trong service `FEE1` (fallback `FEE0`): `:326-330`.
@@ -373,13 +396,42 @@ Lệnh (`gdsp/activity/HMProSyncDataBaseProfile.java`):
 ```
 - Giai đoạn ngủ **được tính trên điện thoại** bởi `libdataProcess.so` (`Java_com_xiaomi_hm_health_dataprocess_DataAnalysis_processData`, `set24HoursSleepDetectionStatus`…) từ chuỗi activity. [I] Nghĩa của `kind` (ngủ nông/sâu/không đeo…) nằm trong native, **không tìm thấy** bảng mã trong Java.
 
-**SpO2 điểm (type 37, version 1)**: chuỗi bản ghi 5 byte `[timestamp u32 LE (giây UTC), spo2 u8]`: `gdsp/spo2/Spo2PointData.java:34-38`. Version 2 dùng `Spo2PointDataExtends` (chưa đọc): `gdsp/spo2/HMSyncSpo2Profile.java:101-113, 179-191`.
+**SpO2 điểm (type 37)** [V]: `HMSyncSpo2Profile.java:63-77` chọn parser theo byte version trong frame đầu (khi `supportVersion == true`):
 
-**Stress cả ngày (type 19)**: danh sách giá trị, mỗi giá trị = 1 phút. `time = header + index × 60 s` (cộng DST offset): `gdsp/pressure/HMSyncPressureTask.java:61, 77-99`. [I] 1 byte/phút, chưa đọc parser `fetchPressureAllDayData`.
+| Version | Kích thước bản ghi | Layout | Nguồn |
+|---|---|---|---|
+| v1 (hoặc `supportVersion==false`) | 5 byte | `[0..3] timestamp u32 LE (giây UTC), [4] spo2 u8` | `Spo2PointData.java:34-38` |
+| v2 | **65 byte** | `[0..3] timestamp u32 LE, [4] spo2 u8 (điểm hiện tại), [5..64] spo2History byte[60]` (60 phút lịch sử, từ cũ đến mới, 1 byte/phút) | `Spo2PointDataExtends.java:41-51` |
+
+Byte version ở `payload[1]` của chunk đầu (payload[0] = seq); data thực bắt đầu từ payload[2]. Parse loop v2: `i += 65`. Giá trị `other` → log "not support", trả null.
+
+**Stress cả ngày (type 19)** [V]: `HMProSyncDataProfile.M()` + `HMSyncPressureTask.a()`:
+- Payload: byte[0] bỏ qua; byte[1], byte[2], … mỗi byte = 1 giá trị stress (u8, 0-255) cho 1 phút.
+- Timestamp index i: `header.start_ms + DST_offset_ms + i × 60_000`
+
+**Stress đơn lẻ (type 18)** [V]: `HMProSyncDataProfile.parsePressureSingleData()`:
+- Payload: byte[0] bỏ qua; bản ghi 5 byte bắt đầu từ byte[1]:
+  `[0..3] timestamp u32 LE (giây UTC), [4] stress u8`
+- Validation: `(length - 1) % 5 == 0`
 
 **PAI (13)**, **resting HR (58)**, **GPS (5/6)**: có lớp riêng (`gdsp/pai/HMPaiData.java`, `gdsp/gps/*`, proto `com/xiaomi/hm/health/bt/proto/SportSummary2.java`). Workout summary dùng **protobuf** `SportSummary2`. Detail GPS là luồng node có tag (`gdsp/gps/sport800/DetailNodeType.java`, ví dụ `NODE_TAG_RT_SPO2 = 9`). **Chưa trích layout chi tiết** (câu hỏi mở số 4).
 
-**Sleep trên Zepp OS (module 0x32)**: lệnh `0x01` version, `0x03` config, `0x05` query data, `0x07` write data (+ reply 2/4/6/8). Kiểu: `1` SleepScore, `2` RestingHr, `4` SleepStage `(start, stop, status)`: `channel/module/sleep/impl/Command.java:46-122`; `sleep/DataType.java`; `sleep/SleepStage.java`. [I] Có lệnh "WriteData", nên app có thể **ghi kết quả ngủ đã tính trên điện thoại ngược lại đồng hồ**. Codec chi tiết ở `sleep/impl/codec/SleepDataCodec.java` (chưa đọc).
+**Sleep module 0x32 — WriteData payload (phone → watch, lệnh 0x07)** [V]: `SleepDataCodec.encode()`:
+```
+[0..3]   timestamp u32 LE          (giây UTC, bắt đầu phiên ngủ)
+[4..7]   updateTimestamp u32 LE    (giây UTC, lần cập nhật cuối)
+[8]      timezoneKey u8
+[9..12]  dataFlag u32 LE           (bitmask: 0x01=SleepScore, 0x02=RestingHr, 0x04=SleepStage)
+[13..14] start u16 LE              (bắt đầu ngủ, [I] phút từ 00:00)
+[15..16] stop u16 LE               (kết thúc ngủ, phút)
+[17..18] sleepDuration u16 LE      (phút)
+-- optional (theo thứ tự xuất hiện trong code, kiểm dataFlag) --
+if dataFlag & 0x01: sleepScore u8
+if dataFlag & 0x02: restingHr u8
+if dataFlag & 0x04: stageCount u16 LE, rồi N×6 byte mỗi stage: (start u16 LE, stop u16 LE, status u16 LE)
+```
+SleepStage.status values [I/Ext]: 0=light, 1=deep, 2=REM, 3=awake. **Không tìm thấy enum trong Java** — lấy từ [Ext] Gadgetbridge pattern.
+Module 0x32 là **phone → watch only**: `SleepDataCodec.decode()` = `throw NotImplementedError`. Để ĐỌC ngủ từ Zepp OS, dùng GDSP type 0x08 (PPG/RR) hoặc activity heuristic (`libdataProcess.so`), không phải module này.
 
 **Realtime**: bước qua module 0x16 (`RealtimeActivityModule`) hoặc char 0x0007. HR luôn đến qua notify `2A37`: byte `[1]` là bpm (`profile/hr/HMHeartRateProfile.java:53, 62`). Có hai cách bật cảm biến [V]:
 
@@ -450,7 +502,7 @@ Mã hoá gói module 29 theo bảng `BuiltInModule` (§3.4). Driver: `ZeppSessio
 | 1 | Firmware Zepp OS có trả `allowLocalBinding = 1` không? Nếu có, local bind `[01 02 00 key16]` cho phép bind **không cần server** | Thấp. Code hỗ trợ ([V] `AuthModule.java:569-578`) nhưng app luôn ép cloud. Kiểm: gửi `[0x00]` tới module 0x82 trên đồng hồ của bạn |
 | 2 | Định dạng byte chính xác của khoá công khai 48 byte (thứ tự từ, endianness, padding 163→192 bit) trong `libdevice-encrypt.so` | Trung bình. Hằng B-163 đã khớp [V]. Cần disassemble `ecdh_generate_keys` hoặc so với Gadgetbridge |
 | 3 | `BleChannelImpl2.sendData` (không dịch được): v2 có chờ ACK trên 0x0016 cho từng nhóm gói như v1 không | Trung bình. Dùng `jadx --comments-level debug` hoặc REA `inspect-android-method` để xem bytecode |
-| 4 | Layout PAI, resting HR, sport summary/detail, SpO2 v2, sleep module 0x32 | Chưa trích. File đã xác định ở mục 6.2 |
+| 4 | Layout PAI, resting HR (type 58), sport summary/detail, SpO2 v2, sleep module 0x32 | **Một phần giải quyết** (2026-11-06): SpO2 v2 [V], Stress type 18/19 [V], Sleep module 0x32 codec [V], PnP ID [V] — xem §6.2 và §5.5. **Còn mở**: resting HR type 58 — hằng `DATA_TYPE_RESTING_HEART_RATE=58` tại `HMProSyncDataBaseProfile.java:71` nhưng **không tìm thấy parse method** (có thể bị R8 obfuscate hoặc nằm trong class bị decompile lỗi); [I] bản ghi 5 byte `[timestamp u32 LE, bpm u8]` theo mẫu type 18/SpO2 v1. PAI layout và sport protobuf vẫn chưa trích. Cần HCI snoop log. |
 | 5 | Bảng mã `kind` của activity và thuật toán ngủ | Nằm trong `libdataProcess.so` (native). [Ext] Gadgetbridge có bảng kind cho Huami |
 | 6 | ~~Lệnh control point HR realtime (`2A39`)~~ — đã giải quyết [V] từ jadx: start `15 01 01`, stop `15 01 00`, heartbeat `16` mỗi 10 s (xem §3.1). Đường Zepp OS qua `OpenAppModule` (29) cũng đã giải quyết [V]: `[0x04, state]` → `[0x05, status]`, bpm vẫn qua `2A37` (xem §6.2 "Realtime"). Còn mở: chưa thử trên đồng hồ thật; chưa đọc timeout phía app cho lệnh danh sách module (driver dùng 5 s) |
 | 7 | API cloud tải `auth_key` (`v1/device/lists.json` / `users/{id}/devices`) cần token gì | `HMDeviceWebAPI.java:110, 114, 497`. Token lấy từ `HMWebUtil.getSystemParams()` (chưa đọc) |

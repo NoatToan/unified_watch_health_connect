@@ -279,31 +279,103 @@ giá trị mặc định an toàn (247, như Zepp) cho tới khi có log thật.
 
 ## 6. Đồng bộ dữ liệu — kiến trúc suy luận, KHÔNG có command ID
 
-- [V] `BleCmdPayloadPb` (protobuf) có ít nhất các kiểu payload: `HrSample`, `HrmBroadcastSwitch` — xác
-  nhận có bản ghi HR rời rạc kiểu "mẫu" (sample) và một cờ "bật/tắt phát HR" (có thể là tính năng phát
-  nhịp tim ra loa/phụ kiện ngoài, hoặc live HR tới điện thoại).
-  Tên các field cho `HrSample` hay `HrmBroadcastSwitch` (bpm, timestamp, nguồn tín hiệu…) không đọc
-  được (protobuf nén field descriptor vào bytecode, không phải string literal khi dùng lite runtime).
-- [V] `CREATE_SPORT_DATA_FILE_TYPE_FIT`, `CREATE_SPORT_DATA_FILE_TYPE_TCX` — đồng hồ/điện thoại tạo
-  được file **FIT và TCX** cho buổi tập, khớp với các vendor khác (Garmin dùng FIT; Zepp/Huami cũng hỗ
-  trợ FIT xuất). [I] Không rõ file FIT được tải qua kênh BLE kiểu "file transfer" (như Garmin GFDI
-  5002/5004) hay tính toán hoàn toàn trên điện thoại từ dữ liệu thô.
-- [V] `YFSportDataTypeGpsAltitude`, `YFSportDataTypeGpsAltitude2`, protobuf `SportSummary`-kiểu dữ liệu
-  track (`CRSLCreateTrackTypeSportData`, `CRSLCreateTrackTypeTrackData`) — xác nhận có luồng dữ liệu
-  track GPS/độ cao riêng cho buổi tập.
-- [V] `CRSLDailySleep` — có message protobuf riêng cho giấc ngủ (comment nội bộ còn sót:
-  `"docments/7COROS/Protobuf/ParseLib/DailyData/CRSLDailySleep.proto"` — lộ cả đường dẫn file `.proto`
-  gốc trong mã nguồn build server của COROS, xác nhận pipeline build dùng thư mục nội bộ
-  `docments/7COROS/Protobuf/ParseLib/...`). Không có nội dung file `.proto` đó trong APK này.
-- [V] Mẫu JSON nhúng (§2.3) xác nhận các trường cấp "ngày": `br` (nhịp thở), `hr`, `hrRest`, `hrvValue`,
-  `spo2`, `stress`/`stressLevel`.
-- [I] **Không có bằng chứng** về: command ID cụ thể để "xin lịch sử từ ngày X", cách phân trang/
-  fragment dữ liệu dài, có cần ACK từng phần hay không (dù có bằng chứng CRC + ACK offset ở §4), định
-  dạng byte của `HrSample`/sleep/track. Toàn bộ phần này cần log HCI thật hoặc 1 bản APK không bị đóng
-  gói (ví dụ bản cũ hơn trước khi áp dụng shell, nếu có) để đọc tiếp.
-- [I] Thời gian (time sync): không tìm thấy hằng rõ ràng tương đương `2A2B`/`Current Time` được dùng
-  chủ động (dù UUID `2A2B` nằm trong bảng hằng chung §3.1). Có khả năng time sync đi qua lệnh Protobuf
-  riêng trong `blecmd`, không qua GATT chuẩn.
+### 6.1 Lớp Protobuf command (tầng BLE, không đọc được layout) [V]
+
+- [V] `BleCmdPayloadPb` có ít nhất các kiểu payload: `HrSample`, `HrmBroadcastSwitch` — xác nhận có
+  bản ghi HR rời rạc kiểu "mẫu" (sample) và một cờ "bật/tắt phát HR". Field names không đọc được
+  (protobuf lite dùng bytecode, không string literal).
+- [V] `BleCmdPb` hierarchy đầy đủ hơn so với lần phân tích trước (xem `docs/re-evidence/coros/ble-
+  architecture-strings.md`): `MasterSend`, `MasterSendCmd`, `MasterSendOrBuilder`, `MasterSend$Builder`
+  (phone→watch); `SlaveAck`, `SlaveAckCmd`, `SlaveNotifyCmd`, `SlaveNotify` (watch→phone). Hai sub-
+  class `$a` và `$Builder` xác nhận đây là **protobuf-lite** (không phải full protobuf).
+- [V] `BleCmdDefPb$CMD_E` và `CMD_E$a` — enum command ID; giá trị số int **không đọc được** từ string.
+- [V] `CMD_FIELD_NUMBER`, `CMD_INVALID`, `CMD_INVALID_VALUE` — xác nhận có trường `cmd` trong proto
+  message và một giá trị "invalid" dùng làm sentinel.
+- [V] `SUPPORT_COMMON_PB_CMD` — tên hằng xác nhận app kiểm tra "thiết bị có hỗ trợ common PB cmd không"
+  trước khi gửi, gợi ý có cơ chế capability negotiation.
+- [V] `parseMasterSendSummary$lambda$0$0` — tên lambda/closure Kotlin tìm thấy trong string pool: app
+  có hàm `parseMasterSendSummary` parse dữ liệu tổng hợp từ gói `MasterSend`, dùng coroutine lambda.
+
+### 6.2 Các loại file/dữ liệu sync (SYN_FILE_TYPE) [V]
+
+```
+SYN_FILE_TYPE_DAILY_RECORD        → bản ghi sức khoẻ hàng ngày (steps, HR, SpO2, HRV, stress, sleep)
+SYN_FILE_TYPE_SPORT               → dữ liệu buổi tập (workout file, nhiều khả năng là FIT)
+SYN_FILE_TYPE_SYSINFO_RECORD      → thông tin hệ thống / device info
+SYN_FILE_TYPE_SYSLOG_RECORD       → log hệ thống thiết bị
+SYN_FILE_TYPE_VOICE_NOTE          → ghi âm giọng nói
+SYN_FILE_TYPE_VOICE_NOTE_INDEX    → chỉ mục danh sách ghi âm
+```
+Mẫu tên `FOO` / `FOO_VALUE` là quy ước protobuf enum → đây là các enum trong `syn_info.proto` (xem §6.4).
+Giá trị số int của `_VALUE` **không đọc được** (bytecode int, không phải string).
+
+### 6.3 Luồng đồng bộ daily data — phân nhánh "old" vs "new" protocol [V]
+
+Hai chuỗi log liên tiếp trong `classes.dex`:
+```
+getDailyData, onReadDataSuccess, is old protocol, onYfBtRequestStop
+getDailyData, onReadDataSuccess, is new protocol! prepare to getDynamicHeartRate
+```
+→ **Phân nhánh rõ ràng** dựa trên version giao thức:
+- **Old protocol**: sau `getDailyData` → dừng ngay (`onYfBtRequestStop`)
+- **New protocol**: sau `getDailyData` → gọi tiếp `getDynamicHeartRate` (chi tiết HR từng sample)
+
+Hàm sync riêng được xác nhận: `getDailyData`, `getSleepData`, `getHrvStatus`, `getHrvsCount`,
+`getDynamicHeartRate`. Hàm `getStartTime` gợi ý request có tham số thời gian bắt đầu.
+Lỗi: `getDailyData, onReadDataFail, yfBtStopCode = …` (enum `YfBtStopCode`).
+
+### 6.4 Protobuf data schema — tên message xác nhận trong native lib [V]
+
+Từ phân tích `libPbSource.so` (xem `docs/re-evidence/coros/native-lib-analysis.md`):
+
+```
+Giấc ngủ:    DailySleep, DailySleepAnalysisParam, DailySleepOverview, DailySleepOperation,
+             SleepAnalysis, SleepSummary, DaySleepSummary, NewAlgoSleepSummary
+HRV:         HrvInfo, HrvItem, PPGHrvInfo        (sample-level HRV — không chỉ daily)
+Stress:      DailyStress, DailyStressUIInfo
+HR:          DailyHrmInfo, DailyRhm              (daily resting heart rate)
+Daily:       DailyInfo, DailyHappenDayInfo, DailySummaryInfo, DailyTimeItem, DailyTimeSegment
+Sport:       SportSummaryPb, SportItemPb, SportLapPb, SportLapCacheInfo
+Fitness:     FitnessBase, FitnessRunModel, FitnessCycle, FitnessIndexUI
+Thời tiết:  WeatherAppCache (gửi từ điện thoại xuống đồng hồ)
+Sync meta:   SynStatsBatteryDaily (thống kê pin theo ngày trong chuỗi sync)
+```
+
+Proto files biên dịch vào `libPbSource.so` và `libw4-jni.so` (xác nhận tồn tại): `CRSLDailySleep.proto`,
+`CRSLDaily.proto`, `syn_info.proto`, `watch_settings.proto` / `watch_settings_v1.proto`,
+`CRSLSportDataCommonPb.proto`, `CRSLTrackInfo.proto`, `recovery_hr.proto`, `sport_custom.proto`.
+
+### 6.5 FIT / TCX và file transfer [V/I]
+
+- [V] `CREATE_SPORT_DATA_FILE_TYPE_FIT`, `CREATE_SPORT_DATA_FILE_TYPE_TCX` — đồng hồ/app tạo được FIT
+  và TCX cho buổi tập.
+- [I] File FIT/TCX nhiều khả năng được tải qua `SYN_FILE_TYPE_SPORT` kiểu "file transfer" (request có
+  `YfBtGetFileRequest`, `YfBtParamTraining`, `FileHeaderStruct`) giống mô hình Garmin GFDI, không phải
+  tính toán lại trên điện thoại từ sample thô.
+
+### 6.6 Packet frame và CRC [V tên hằng, I giá trị]
+
+Các hằng xác nhận tồn tại nhưng giá trị số KHÔNG đọc được:
+```
+ACK_HEADER_SIZE   ACK_MIN_SIZE    ACK_SIZE
+ACK_TYPE_OFFSET   ACK_OPS_OFFSET
+PACTYP_CRC16      PACTYP_CRC32
+```
+`PACTYP_CRC16` / `PACTYP_CRC32` → trường "packet type" trong frame header phân biệt loại checksum
+(giao thức hỗ trợ cả CRC16 lẫn CRC32 cho các loại packet khác nhau hoặc thiết bị khác nhau).
+
+### 6.7 Thời gian (time sync) [I]
+
+Không tìm thấy UUID `2A2B`/`Current Time` được dùng chủ động cho đồng hồ GPS. Có lớp `YfBtParamTime`
+trong framework request → time sync đi qua lệnh Protobuf riêng trong `blecmd`, không qua GATT chuẩn.
+
+### 6.8 Những gì vẫn chưa biết
+
+- Giá trị số nguyên thực của `BleCmdDefPb$CMD_E` (command IDs)
+- Giá trị thực của `ACK_HEADER_SIZE`, `ACK_TYPE_OFFSET`, `ACK_OPS_OFFSET`
+- Thứ tự byte thực của frame bọc ngoài protobuf
+- Cách phân biệt "old" vs "new" protocol tại tầng GATT (version byte? service khác? capability flag?)
+- Giá trị số của `SYN_FILE_TYPE_*_VALUE` enum constants
 
 ---
 

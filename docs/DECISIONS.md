@@ -106,6 +106,24 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   năng mạng xã hội/tài khoản của hãng khác; tránh rủi ro pháp lý (thương hiệu/bằng sáng chế) và rủi ro an
   toàn thiết bị (OTA sai layout).
 
+- **D-804** · 2026-11-06 · Danh sách + chi tiết bài tập (P0-1) — **Chốt**
+  Tab Activity nhóm bài tập theo tháng (mới nhất trước), bấm vào mở `WorkoutDetailDestination(workoutId)`: môn, giờ bắt đầu–kết thúc, thời lượng, quãng đường, kcal, pace (chạy/đi bộ/bơi) hoặc tốc độ (đạp xe), nhịp tim TB/max, biểu đồ nhịp tim (tối đa 30 cột min–max, dùng lại `HealthRangeChart`), thiết bị nguồn. Id bài tập = khoá chính `<deviceId>@<startEpochMs>`; nhịp tim lấy đúng thiết bị đã ghi bài tập; TB/max của đồng hồ ưu tiên, thiếu thì tính từ mẫu. Thêm `Workout.sourceDeviceId`, `HealthDataRepository.observeWorkout/observeHeartRateSamples` (cộng thêm, không đổi schema Room). Bỏ nút "Start workout" (chỉ hiện snackbar "coming soon") — live workout vẫn là P2.
+- **D-805** · 2026-11-06 · "Weekly activity load" chung, không thương hiệu (P0-2) — **Chốt**
+  Mỗi bài tập: `load = phút × clamp(avgHR/100, 0.5, 2.0)` (không có HR → hệ số 1.0). Tuần = 7 ngày lăn kết thúc hôm nay; baseline = TB 4 tuần trước (tuần trống tính 0, cần ≥1 tuần có bài tập); ratio < 0.8 "thấp hơn", > 1.3 "cao hơn", còn lại "như thường lệ" (ngưỡng acute:chronic công khai). Logic thuần `ActivityLoadCalculator` (`:core:domain`, có unit test), thẻ đầu tab Activity + biểu đồ 8 tuần.
+  Lý do: chỉ dùng dữ liệu driver đã có (start/end + avgHR); công thức minh bạch, không mượn tên/thuật toán độc quyền (D-803).
+- **D-806** · 2026-11-06 · Màn "About this device" (P0-3) — **Chốt**
+  Menu ⋮ của thẻ thiết bị: "Device settings" (thay mục disabled "coming soon") → `DeviceDetailDestination(deviceId)`: tên, hãng, model, firmware, pin, địa chỉ BT, ngày ghép đôi, lần sync cuối, khả năng (capabilities của phiên đang kết nối), trạng thái khoá xác thực, Connect/Sync now/Disconnect riêng thiết bị, Unpair (xác nhận, đóng màn). Thêm `WearableDevice.capabilities` + `pairedAt` (mặc định rỗng/null). Công tắc cảm biến (HR liên tục, theo dõi giấc ngủ) vẫn P1 vì cần lệnh ghi riêng từng hãng.
+- **D-807** · 2026-11-06 · Cài đặt Thông báo (P0-4) — **Chốt**
+  Profile › Notifications: 3 công tắc lưu DataStore (`notif_*` trong file `user_preferences`, repo riêng `NotificationPreferencesRepository` để không đổi `UserPreferencesRepository`) + thẻ xin quyền `POST_NOTIFICATIONS`. Có trigger thật: "Low watch battery" (≤ 20%, báo lại khi đã ≥ 30%) và "Goal achieved" (1 lần/ngày khi đạt mục tiêu bước) — `HealthAlertsMonitor` chạy trong `DeviceSyncService`, quy tắc thuần `WatchAlertRules`, trạng thái đã báo lưu DataStore. "Sync reminders" chỉ lưu lựa chọn, mặc định tắt, `TODO(notifications)` chờ WorkManager. Chuyển tiếp thông báo xuống đồng hồ vẫn P1.
+- **D-808** · 2026-11-06 · Xoá `:feature:sleep` (P0-6) — **Chốt**
+  Module `feature/sleep` (SleepScreen placeholder, không ai điều hướng tới) bị xoá khỏi `settings.gradle.kts`, `app` và NavHost. Giấc ngủ giữ ở Browse › Sleep (`MetricDetailScreen`: hypnogram D, xu hướng W/M/6M/Y, Show all data) theo D-208.
+  Lý do: đã có màn đầy đủ hơn; giữ route mồ côi chỉ là nợ kỹ thuật.
+
+- **D-014** · 2026-11-06 · Dùng chung emulator — **Chốt**
+  Chỉ chạy 1 emulator (`emulator-5554`) để tiết kiệm RAM. Mọi lần chạy test instrumented, `adb install` hoặc `pm clear` phải đi qua
+  khoá `emu-lock.sh` (dùng `mkdir` làm mutex), vì các agent chạy chồng nhau sẽ gỡ APK của nhau giữa chừng.
+  Build cache Gradle từng bị hỏng khi nhiều agent build song song (`:driver:zepp` chỉ dex được 2/108 class) → gặp `NoClassDefFoundError` thì build lại với `--no-build-cache`.
+
 <!-- Các agent thêm quyết định mới bên dưới, đánh số tiếp D-1xx (COROS) và D-2xx (E2E/UI). -->
 
 ## COROS driver
@@ -158,6 +176,23 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   Health Connect (app đã có) nếu app COROS ghi vào Health Connect, driver BLE chỉ làm nhận diện/pin/thông tin máy.
   Không unpack lớp bảo vệ của app (giữ D-101).
 
+- **D-109** · 2026-11-06 · Native lib COROS đã phân tích (`libPbSource.so`, `libw4-jni.so`) — **Chốt**
+  `lib/arm64-v8a/libPbSource.so` (7,2 MB) và `libw4-jni.so` (11,4 MB) **không phải** code BLE transport —
+  đây là lớp xử lý dữ liệu sport/health (parse protobuf sau khi nhận) và JNI bridge cho C++ parser "WeLoop4".
+  Không chứa code tầng `BleCmdPb`/`BleCmdDefPb`. Vẫn hữu ích: xác nhận tên proto file (`CRSLDailySleep.proto`,
+  `syn_info.proto`, `watch_settings.proto`…), tên message class (`HrvInfo`, `PPGHrvInfo`, `DailyStress`,
+  `SportSummaryPb`…), và loại dữ liệu sync (`SYN_FILE_TYPE_DAILY_RECORD`, `SPORT`, `VOICE_NOTE`…).
+  Bằng chứng chắt lọc vào `docs/re-evidence/coros/native-lib-analysis.md`, protocol doc cập nhật §6.
+  Lý do: giữ D-102 (không commit file lớn, chỉ chắt lọc bằng chứng có ý nghĩa).
+
+- **D-110** · 2026-11-06 · Luồng sync "new protocol" — **Tạm**
+  Có phân nhánh "old protocol" (dừng sau `getDailyData`) và "new protocol" (gọi tiếp `getDynamicHeartRate`
+  sau `getDailyData`) xác nhận bằng chuỗi log trong `classes.dex` [V]. Cơ chế phân biệt tại GATT layer
+  (version byte? capability flag? service UUID?) chưa xác định. Giả thuyết: app kiểm tra `SUPPORT_COMMON_PB_CMD`
+  trong capability negotiation và chọn nhánh theo đó. Driver giữ TODO(coros-protocol) cho cả hai nhánh; ghi nhận
+  trong `COROS_IMPLEMENTATION_BRIEF.md §1.2`.
+  Lý do: không tự bịa protocol version detection khi chưa có byte-level evidence.
+
 ## E2E / UI
 
 - **D-201** · 2026-11-06 · Mock provider / build — **Chốt**
@@ -199,7 +234,111 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
 
 ## Huawei driver (D-3xx)
 
+- **D-301** · 2026-11-06 · Không ship authenticator thật — **Chốt**
+  `HUAWEI_DEVICE_PROTOCOL.md` §6/§9 kết luận cả 3 cơ chế xác thực (legacy HMAC, HiChainLite, HiChain/
+  HiChain3) đều cần bí mật của vendor (CAK trong white-box, hoặc native `libhichain_sdk_jni.so`) mà
+  dự án không được trích xuất (D-004). `HuaweiDriverModule` (main source set) khai báo
+  `Set<HuaweiAuthenticator>` rỗng (`@Multibinds`) — đúng và giữ nguyên. Hệ quả: `HuaweiSession.open`
+  luôn dừng ở `UnsupportedDeviceException` với thông điệp rõ ràng trỏ người dùng sang Huawei Health +
+  Health Connect (§9 Option A) khi gặp đồng hồ Huawei thật. Đây là hành vi "production-ready" đúng
+  nghĩa cho một giao thức mà chính tài liệu RE khuyến cáo không nên tự làm cho sản phẩm thương mại.
+  Lý do: tuân thủ pháp lý + "không suy đoán layout"; thà từ chối rõ ràng còn hơn giả vờ kết nối được.
+- **D-302** · 2026-11-06 · `capabilities` không khai HISTORY_SYNC/LIVE_HEART_RATE — **Chốt**
+  `HuaweiSession.capabilities` chỉ còn `BATTERY_LEVEL` (khi GATT Battery 0x180F có mặt). Bỏ
+  `HISTORY_SYNC` (bản cũ khai cứng dù `sync()` chỉ lưu `RawPayload` không ai đọc được) theo đúng tiêu
+  chí nhiệm vụ "chỉ khai những gì thật sự chạy được", cùng tinh thần D-103 (COROS). Không thêm
+  `LIVE_HEART_RATE` qua SIG Heart Rate Service như COROS vì tài liệu RE không có bằng chứng Huawei
+  watch lộ service 0x180D (chỉ thấy FE86/0x181C/0x1805, §3.1) — COROS có ít nhất bằng chứng gián tiếp
+  (chest strap HR01/HR31), Huawei thì không, nên không suy đoán thêm.
+  Lý do: "declare in capabilities only what really works" (chỉ dẫn nhiệm vụ) áp dụng chữ nghĩa.
+- **D-303** · 2026-11-06 · `sync()` = full raw sweep, không bịa response layout — **Chốt**
+  Viết lại `HuaweiSession.sync()`: gửi đủ 4 lệnh service 7 đã có REQUEST layout xác minh ([V] §7.2) —
+  cmd 3 (today total), cmd 4/10/12 (đếm frame health/sample/status, đúng khung thời gian
+  `SyncRequest.effectiveSince()..now`) — mỗi phản hồi được chấp nhận lưu nguyên dạng
+  `HealthRecord.RawPayload` (khoá theo `kind`), lệnh bị watch từ chối (TLV lỗi 0x7F) chỉ log + bỏ qua
+  (không huỷ cả lượt sync); chỉ lỗi transport (timeout/mất link) mới abort. KHÔNG parse TLV đếm số
+  frame hay lặp `getXFrame(index)` vì đó là suy đoán layout phản hồi (tài liệu chỉ xác nhận REQUEST,
+  không xác nhận RESPONSE, §7.2/§10 "[?] response payload chi tiết") — vi phạm "never invent a
+  layout" của `wearable-driver-engineer.md`. `sync()` vẫn trả 0 bản ghi có kiểu (đúng vì không có).
+  Lý do: tận dụng tối đa phần giao thức đã xác minh (request) mà không bịa phần chưa xác minh
+  (response); `TODO(huawei-protocol)` giữ nguyên ở đúng chỗ còn thiếu bằng chứng (NEEDS-REAL-WATCH).
+- **D-304** · 2026-11-06 · Giả lập E2E cần một "authenticator giả lập" debug-only — **Chốt**
+  Để bài E2E đi qua pipeline thật (scan → `recognize` → `openSession` → encrypt → sync), cần ít nhất
+  MỘT `HuaweiAuthenticator` hoàn tất bắt tay thật (framing/CRC/TLV/cipher) — nhưng production không
+  được ship authenticator thật nào (D-301). Giải pháp: `HuaweiSimulatorAuthenticator` +
+  `HuaweiSimulatorAuthModule` đặt ở **source set `src/debug`** của `driver/huawei` (không nằm trong
+  biến thể release, AGP tách biến thể tự nhiên) — trao đổi 1 round-trip trên tag 0113 (y hệt hình
+  dạng AccessValidityAuth thật) nhưng đổi một khoá test cố định công khai, không phải HMAC/CAK/
+  HiChain thật. Chặn an toàn: chỉ chạy khi `LinkParameters.raw` có TLV đánh dấu riêng (tag 0x11 =
+  "UHSIM") mà chỉ `HuaweiVirtualWatch` (giả lập) gửi — đồng hồ thật không có TLV này nên thất bại
+  nhanh (`AuthenticationException`) thay vì tốn 10s timeout. `mode = LEGACY_HMAC` vì đó đúng là
+  nhánh "else" thật của `HuaweiAuthMode.candidatesFor` cho authType lạ (§6.1), không phải ánh xạ bịa.
+  Lý do: tối đa hoá coverage code thật (framing/CRC/TLV/transport/cipher) trong E2E mà không ship bất
+  cứ thứ gì giống xác thực thật vào bản người dùng cài, và không đụng vào `HuaweiDriverModule` chính.
+- **D-305** · 2026-11-06 · `HuaweiVirtualWatch` tự viết lại wire codec, không phụ thuộc `:driver:huawei` — **Chốt**
+  `core/demo/.../virtual/huawei/HuaweiWireCodec.kt` viết lại độc lập CRC-16/XMODEM, TLV varint, khung
+  0x5A (chỉ frame đơn, không cần slice vì mọi payload mô phỏng đều nhỏ hơn `maxFrame` tự công bố) và
+  bọc AES-CBC/PKCS5 — KHÔNG thêm dependency `core/demo → driver/huawei` và KHÔNG đổi các lớp `internal`
+  của `driver/huawei` thành `public`. Lý do kỹ thuật: `internal` trong Kotlin chỉ hiện trong cùng
+  module Gradle, không hiện qua dependency; đổi thành public chỉ để tiện demo sẽ làm lộ chi tiết triển
+  khai của driver ra ngoài module nó, trái kiến trúc "driver tự khép kín" của mọi driver khác (Garmin/
+  Zepp cũng không ai phụ thuộc ngược). CRC16/TLV/AES-CBC là thuật toán công khai, viết lại không phải
+  "bịa giao thức" — chỉ `HuaweiWireCodec.TEST_WORK_KEY` (hằng số test cố định) là phần "bí mật" duy
+  nhất, không liên quan CAK/HiChain thật (không vi phạm D-004).
+- **D-306** · 2026-11-06 · Phạm vi assert của `HuaweiWatchE2ETest` — **Tạm**
+  Flow `10-huawei-watch` chỉ assert: nhận diện đúng brand, bắt tay thật hoàn tất (Connected, pin/
+  firmware đọc qua GATT chuẩn, gắn nhãn "Huawei"), sync chạy xong không lỗi, rồi unpair. KHÔNG assert
+  "Summary hiện dữ liệu Huawei kèm nguồn" như mẫu `UserJourneyE2ETest` (đồng hồ demo) vì `sync()`
+  không tạo được bản ghi có kiểu nào (D-303) — Summary/Show-all-data sẽ không có dòng nào gắn nguồn
+  Huawei cho tới khi có HCI snoop log thật giải được layout phản hồi service 7. Ghi nhận **Tạm** để
+  đợt sau (khi có bằng chứng response layout) mở rộng assert sang Summary thật.
+  Lý do: assert đúng cái driver THẬT SỰ làm được, không viết test xanh giả bằng cách bịa decode trong
+  giả lập (sẽ che mất giới hạn thật của driver, trái tinh thần trung thực của toàn bộ quyết định trên).
+- **D-307** · 2026-11-06 · Đụng địa chỉ MAC ảo với Garmin — **Chốt**
+  `HuaweiVirtualDevice.ADDRESS` ban đầu đặt `02:DE:30:00:00:02`, trùng hệt `GarminVirtualWatch.ADDRESS`
+  (agent Garmin chọn độc lập cùng lúc) — phát hiện khi chạy thật trên `emulator-5554`: "discovered_…"
+  không bao giờ xuất hiện (danh sách thiết bị dedupe theo địa chỉ, chỉ 1 trong 2 bản ghi còn lại).
+  Đổi sang `02:DE:30:00:00:05` (không đụng `GarminVirtualWatch.kt`, `ZeppVirtualWatch.kt`
+  `D4:F5:13:00:00:09`, `StandardVirtualWatch.kt` `02:5D:00:00:18:0D`, đã rà trước khi chọn số mới).
+  Lý do: mỗi agent brand chọn địa chỉ độc lập trong cùng dải `02:DE:30:00:00:xx` nên va chạm là rủi ro
+  thật, không phải lý thuyết; sửa ở phía mình (được phép), không sửa file của agent khác.
+
 ## Garmin driver (D-4xx)
+
+- **D-401** · 2026-11-06 · Resting HR và HRV trong lịch sử — **Tạm**
+  `FitHealthMapper` thêm map `monitoring_hr_data` (273, field 0/1) → `HealthRecord.RestingHeartRate` và
+  `hrv_status_summary` (389, field 4, scale 128) → `HealthRecord.HeartRateVariability`. Hai message này
+  không nằm trong `GARMIN_DEVICE_PROTOCOL.md` (tài liệu chỉ phủ app Garmin Connect, không phủ định dạng
+  file FIT — đó là spec công khai riêng của Garmin). Số message/field lấy từ kiến thức FIT SDK công khai
+  ([Ext], không phải APK), chưa đối chiếu với file thật. Lý do: 2 chỉ số này nằm trong checklist tính năng
+  bắt buộc của nhiệm vụ; không làm thì driver thiếu hẳn "resting HR"/"HRV" dù storage (D-204) đã sẵn sàng.
+  Giữ TODO(garmin-protocol) tại chỗ map vì cần xác nhận trên đồng hồ thật.
+- **D-402** · 2026-11-06 · `FitDecoder` vẫn không đọc field kiểu float — **Chốt**
+  Không mở rộng `FitDecoder`/`FitBaseType` để đọc FLOAT32/64 (cần cho RR-interval thô ở message `hrv`
+  global 78) vì rủi ro suy đoán sai layout (không có bằng chứng, không public mẫu rõ ràng về scale/sentinel
+  của field đó). Chọn `hrv_status_summary` (toàn trường uint16/enum, bộ giải mã hiện có đã đọc được) thay
+  vì tự tính RMSSD từ nhịp tim thô. An toàn hơn, đúng tinh thần "không suy đoán byte-layout".
+- **D-403** · 2026-11-06 · Giả lập Garmin trong `:core:demo` dùng GFDI dedicated, không Multi-Link — **Tạm**
+  `GarminVirtualWatch` chỉ lộ service GFDI "dedicated" (`6A4E2401`/`CD28`/`4C80`), không lộ `6A4E2800`
+  (Multi-Link) — `GarminDriver` ưu tiên dedicated khi cả hai có mặt (§2.4), nên nhánh này chắc chắn được
+  thực thi khi pair giả lập. Nhánh Multi-Link (REGISTER/CLOSE_ALL/handle routing) đã có JVM test riêng
+  (`GarminSessionTest` + `FakeGarminWatch`, không đụng tới ở đây) nên E2E không cần lặp lại nó qua giả lập
+  thứ hai; đổi lại giảm hẳn độ phức tạp của giả lập (không cần mô phỏng registration/handle multiplexing).
+  Lý do: cân bằng giữa "exercising pipeline thật" (mục tiêu E2E) và effort/rủi ro của việc viết đúng khung
+  Multi-Link lần hai trong module khác.
+- **D-404** · 2026-11-06 · Giao thức GFDI của giả lập viết độc lập với `driver/garmin`, không dùng chung code — **Chốt**
+  `core/demo/.../virtual/{GarminWire,GarminFitFileWriter,GarminSimulatedFiles,GarminVirtualWatch}.kt` tự
+  cài lại COBS/CRC16/khung GFDI/khung FIT thay vì gọi `driver/garmin`'s codec (`internal`, module khác,
+  Kotlin `internal` không lộ qua Gradle module boundary). Lựa chọn thay thế (nới `internal` → public trong
+  driver/garmin để tái dùng) bị bỏ vì sẽ biến các lớp giao thức nội bộ của driver sản xuất thành API công
+  khai chỉ để phục vụ một bộ giả lập debug — không hợp lý về mặt kiến trúc. Rủi ro hai bản lệch nhau được
+  giảm bằng cách trích dẫn đúng số §section của `GARMIN_DEVICE_PROTOCOL.md` ở cả hai nơi.
+- **D-405** · 2026-11-06 · Dữ liệu giả lập: 2 file FIT (MONITORING + ACTIVITY), không Multi-Link reliable — **Chốt**
+  `GarminSimulatedFiles` dựng 1 file `MONITORING_B` (steps/distance/calories/HR theo giờ, stress, SpO2,
+  sleep stages, resting HR, HRV) + 1 file `ACTIVITY` (1 workout `session` chạy bộ) thay vì bắt chước toàn
+  bộ các loại file FIT liệt kê ở §6.1. Đủ để mọi `HealthRecord` mà `FitHealthMapper` tạo ra được một lượt
+  qua pipeline thật (file → FIT decode → Room); không mô phỏng `libreliable-ml.so` (MLR), không mô phỏng
+  Garmin Auth (phone luôn "đã bond" trong giả lập, đúng nhánh §5.1 không-mã-hoá mà driver triển khai).
 
 ## Zepp driver (D-5xx)
 
