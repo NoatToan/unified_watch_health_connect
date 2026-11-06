@@ -43,7 +43,7 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
 
 - **D-010** · 2026-11-06 · Repo hygiene — **Chốt**
   `docs/re-evidence/zepp/jadx-base` (627 MB, 49k file decompile) đang được track trong git, trái D-003/D-004.
-  Ở lần commit tới: `git rm -r --cached` + thêm vào `.gitignore`, chuyển bản sao sang `../rea-output/zepp/`.
+  Đã `git rm -r --cached` + thêm `docs/re-evidence/*/jadx-base/` vào `.gitignore`; file vẫn còn trên đĩa (bị ignore).
   Không viết lại lịch sử git (thao tác phá huỷ) trừ khi bạn yêu cầu.
 
 <!-- Các agent thêm quyết định mới bên dưới, đánh số tiếp D-1xx (COROS) và D-2xx (E2E/UI). -->

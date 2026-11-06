@@ -36,3 +36,6 @@ docs/apks/*.apkm
 
 # Source dịch ngược có package tên "build" — không phải output Gradle
 !docs/re-evidence/**/build/
+
+# Full decompiled sources are never committed (docs/DECISIONS.md D-010)
+docs/re-evidence/*/jadx-base/
