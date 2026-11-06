@@ -416,3 +416,87 @@ Bộ tin 5101–5112 (`ss2/c.java:152-158`, `:637-845`). Cơ chế mô phỏng l
 | 8 | Khoảng 1024 lỗi jadx / 500 file thiếu phương thức: có phương thức quan trọng nào bị thiếu? | `ml2.s.e/i` (gửi ML, đã đọc được qua smali), `ss2.c.b` (vòng auth). Dùng `rea inspect-android-method` hoặc `jadx --comments-level debug` để xem bytecode |
 
 **Bước kiểm chứng đề xuất:** bật *Bluetooth HCI snoop log* (Developer options) trên điện thoại khi Garmin Connect ghép đôi và sync. Mở bằng Wireshark và đối chiếu với các mục 3–6 (ghi ra ML register, 5024/5050, 5002/5004). Đây là cách nhanh nhất để chuyển các mục [I] thành [V] cho đúng model đồng hồ của bạn.
+
+---
+
+## 10. Bổ sung RE vòng 2 (2026-11-06)
+
+### 10.1 Bảng bit 5050 SupportedCapability [V]
+
+Nguồn: `rea inspect-android-method base.apk com.garmin.android.gfdi.configuration.SupportedCapability '<clinit>'` → smali `<clinit>` 41 264 byte, status=complete. Chi tiết: `docs/re-evidence/garmin/config_capability_bits.md`.
+
+Mã hoá: `bitmask[ordinal/8] |= (1 << (ordinal%8))`. Thiết bị gửi `[byteCount u8][bitmask]`; host trả `[byteCount u8][bitmask host]`. Bit = 1 nghĩa là hai bên hỗ trợ.
+
+| Bit | Tên | Bit | Tên |
+|-----|-----|-----|-----|
+| 0 | CONNECT_MOBILE_FIT_LINK | 48 | STOP_SYNC_AFTER_SOFTWARE_UPDATE |
+| 3 | SYNC | 49 | CALENDAR |
+| 4 | DEVICE_INITIATES_SYNC | 50 | WIFI_SETUP |
+| 5 | HOST_INITIATED_SYNC_REQUESTS | 51 | SMS_NOTIFICATIONS |
+| 6 | GNCS | 52 | BASIC_MUSIC_CONTROLS |
+| 7 | ADVANCED_MUSIC_CONTROLS | 53 | AUDIO_PROMPTS_SPEECH |
+| 8 | FIND_MY_PHONE | 54 | DELTA_SOFTWARE_UPDATES |
+| 9 | FIND_MY_WATCH | 55 | GARMIN_DEVICE_INFO_FILE_TYPE |
+| 10–16 | CONNECTIQ_* (HTTP…APP_MGMT) | 56 | SPORT_PROFILE_SETUP |
+| 17 | COURSE_DOWNLOAD | 57 | HSA_SUPPORT |
+| 18 | WORKOUT_DOWNLOAD | 58 | SPORT_STRENGTH |
+| 19 | GOLF_COURSE_DOWNLOAD | 59 | SPORT_CARDIO |
+| 20 | DELTA_SOFTWARE_UPDATE_FILES | 60 | UNION_PAY |
+| 21 | FITPAY | 61 | IPASS |
+| 22 | LIVETRACK | 62 | CIQ_AUDIO_CONTENT_PROVIDER |
+| 23 | LIVETRACK_AUTO_START | 63 | UNION_PAY_INTERNATIONAL |
+| 24 | LIVETRACK_MESSAGING | 64 | REQUEST_PAIR_FLOW |
+| 25 | GROUP_LIVETRACK | 65 | LOCATION_UPDATE |
+| 26 | WEATHER_CONDITIONS | 66 | LTE_SUPPORT |
+| 27 | WEATHER_ALERTS | 67 | DEVICE_DRIVEN_LIVETRACK_SUPPORT |
+| 28 | GPS_EPHEMERIS_DOWNLOAD | 68 | CUSTOM_CANNED_TEXT_LIST_SUPPORT |
+| 29 | EXPLICIT_ARCHIVE | 69 | EXPLORE_SYNC |
+| 30 | SWING_SENSOR | 70 | INCIDENT_DETECT_AND_ASSISTANCE |
+| 31 | SWING_SENSOR_REMOTE | **71** | **CURRENT_TIME_REQUEST_SUPPORT** |
+| 32 | INCIDENT_DETECTION | 72 | CONTACTS_SUPPORT |
+| 33 | TRUEUP | 73 | LAUNCH_REMOTE_CIQ_APP_SUPPORT |
+| 34 | INSTANT_INPUT | 74 | DEVICE_MESSAGES |
+| 35 | SEGMENTS | 75 | WAYPOINT_TRANSFER |
+| 36–41 | AUDIO_PROMPT_* | 76 | MULTI_LINK_SERVICE |
+| 42 | SPORT_GENERIC | 77 | OAUTH_CREDENTIALS |
+| 43 | SPORT_RUNNING | 78–80 | GOLF_9+9, ANTI_THEFT, INREACH |
+| 44 | SPORT_CYCLING | 81 | EVENT_SHARING |
+| 45 | SPORT_TRANSITION | 82–87 | HSA_FEATURE…WIND_DATA |
+| 46 | SPORT_FITNESS_EQUIPMENT | 88 | HTTP_RAW_RESOURCE_REQUEST |
+| 47 | SPORT_SWIMMING | 89–93 | SAMD, SYNC_2, NAV_SYNC, RT_SETTINGS, HAND_CALIB |
+
+**Bit 71 (CURRENT_TIME_REQUEST_SUPPORT):** `vs2.a.getConfiguration()` trả `a1.b(71)` [V] — khi host đặt bit này, thiết bị gửi 5052 để xin thời gian; nếu không đặt thì host phải chủ động gửi 5026.
+
+**Tập tối thiểu cho driver health-only:** bits 0, 3, 4, 5, 29, 71. Hiện tại driver sao chép bitmask của thiết bị, dẫn tới quảng cáo LIVETRACK/GNCS/Weather mà không xử lý được — cần sửa (xem `docs/protocols/GARMIN_IMPLEMENTATION_BRIEF.md §TODO-2`).
+
+### 10.2 Registration service 4 – info pages [V]
+
+Nguồn: `rea inspect-android-method base.apk ... eh2.f initialize`. Chi tiết: `docs/re-evidence/garmin/registration_service4.md`.
+
+App Garmin Connect **luôn** đăng ký service 4 (REGISTRATION) và hỏi 6 loại info page trước khi đăng ký service 1 (GFDI). Flow:
+
+1. `CLOSE_ALL` → resp `0x06`
+2. `REGISTER(4)` → handle H4
+3. Với mỗi pageType trong `{o.g, o.a, o.d, o.e, o.c, o.f(NFC)}`: ghi `[H4][pageType]`, nhận danh sách dịch vụ.
+4. Nếu `o.g` (GFDI service list) rỗng → ném `MultiLinkException("No supported services.")`
+5. `REGISTER(1, reliableFlag)` → handle H1 → mở GFDI
+
+**Driver hiện tại:** bỏ qua bước 2–4, nhảy thẳng vào `REGISTER(1)`. Nếu đồng hồ thật yêu cầu info pages (status REJECTED khi bỏ qua), thêm đoạn 2–4 trước `REGISTER(1)`. Xem `MultiLink.kt:34` TODO(garmin-protocol). **NEEDS-REAL-WATCH.**
+
+### 10.3 5023 Battery Status – suy luận [I]
+
+Nguồn: `strings` trong `classes7.dex`, `classes11.dex` tìm thấy `BatteryStatusDataHandler`, `BatteryStatusOptions(isCharging=`, `batteryPercentage=`, `batteryStatusTimeStamp=`. Chi tiết: `docs/re-evidence/garmin/battery_status_5023.md`.
+
+Cấu trúc suy luận (chưa xác nhận byte-level):
+
+```
+[batteryPercent u8][batteryStatus u8][timestamp u32 LE FIT-epoch]
+```
+
+`batteryStatus` enum [I]: 0=unknown, 1=new, 2=good, 3=ok, 4=low, 5=critical, 6=charging.
+
+**Driver:** giữ fallback SIG Battery (0x180F) làm nguồn chính cho đến khi 5023 được xác minh trên thiết bị thật. **NEEDS-REAL-WATCH.**
+
+### 10.4 Cập nhật §9 (câu hỏi còn mở)
+
+Câu hỏi 3 trong §9 ("ý nghĩa từng bit capability của 5050") đã được giải hoàn toàn [V] bởi đợt RE này — bảng 94 bit đầy đủ ở §10.1. Hai câu hỏi còn lại liên quan tới driver: service 4 bắt buộc không (§10.2) và 5023 layout (§10.3) vẫn NEEDS-REAL-WATCH.

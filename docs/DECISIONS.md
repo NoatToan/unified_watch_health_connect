@@ -420,6 +420,30 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   suy luận). Sửa: trước 12:00 trưa thì vẫn dùng `now − 8h` (luôn rơi trong cửa sổ và luôn ở quá khứ); từ
   12:00 trưa trở đi thì neo cứng vào "hôm qua 23:00" (luôn rơi trong cửa sổ, luôn ở quá khứ bất kể giờ sync).
 
+- **D-408** · 2026-11-06 · Bảng bit 5050 (SupportedCapability) đã xác minh đầy đủ — **Chốt**
+  94 bit được trích xuất từ smali `<clinit>` của `com.garmin.android.gfdi.configuration.SupportedCapability`
+  trong `base.apk` 5.30.1 [V]. Bit N = `ordinal()` = N; `bitmask[N/8] & (1<<(N%8))`. Danh sách đầy đủ
+  trong `docs/re-evidence/garmin/config_capability_bits.md`. Bit quan trọng nhất cho driver: 0 (FIT_LINK),
+  3 (SYNC), 4 (DEVICE_INITIATES_SYNC), 5 (HOST_INITIATED_SYNC_REQUESTS), 29 (EXPLICIT_ARCHIVE),
+  71 (CURRENT_TIME_REQUEST_SUPPORT). `client_config.xml` xác nhận `clientId=0x01`, `keep_alive=25s`.
+  Lý do: giải hoàn toàn câu hỏi còn mở §9 mục 3 trong GARMIN_DEVICE_PROTOCOL.md.
+
+- **D-409** · 2026-11-06 · Host bitmask 5050 phải là tập cố định, không sao chép thiết bị — **Chốt**
+  `GarminSession.sendConfiguration()` hiện gương bitmask của thiết bị, dẫn tới quảng cáo LIVETRACK/GNCS/
+  Weather/music mà driver không có handler. Driver cần gửi chỉ bits {0,3,4,5,29,71}. Xem
+  `docs/protocols/GARMIN_IMPLEMENTATION_BRIEF.md §TODO-2` để implement ngay (không cần thiết bị).
+  Lý do: watch gửi tin cho capabilities host "nhận" nhưng không xử lý → watch retry → có thể ngắt kết nối.
+
+- **D-410** · 2026-11-06 · Service 4 info pages và 5023 vẫn NEEDS-REAL-WATCH — **Tạm**
+  Registration service 4 (flow info pages trước REGISTER GFDI): `eh2.f.initialize` xác nhận app Garmin
+  Connect luôn làm bước này [V] nhưng firmware có enforce không thì chưa biết — driver bỏ qua bước này,
+  không break trên giả lập, cần kiểm trên đồng hồ thật (nếu REGISTER(1) trả REJECTED → thêm). Xem
+  `docs/re-evidence/garmin/registration_service4.md`. 5023 Battery Status: strings DEX xác nhận tên
+  field `batteryPercentage`, `isCharging`, `batteryStatusTimeStamp` [I] nhưng byte-layout chưa decompile
+  được; giữ SIG Battery Service (0x180F) làm nguồn chính cho đến khi HCI log xác nhận. Xem
+  `docs/re-evidence/garmin/battery_status_5023.md`.
+  Lý do: không suy đoán layout; fallback SIG Battery đã hoạt động và an toàn.
+
 ## Zepp driver (D-5xx)
 
 - **D-501** · 2026-11-06 · Zepp giao thức — **Chốt**
