@@ -174,7 +174,7 @@ Debug installs as `com.unified.health.debug`. Disable the demo watch with `-Puni
 
 ## 📚 More
 
-- Feature spec: [FEATURES.md](FEATURES.md) · Screen inventory of the vendor apps: [docs/SCREEN_INVENTORY.md](docs/SCREEN_INVENTORY.md)
+- Open work: [TODO.md](TODO.md) · Feature spec: [FEATURES.md](FEATURES.md) · Screen inventory of the vendor apps: [docs/SCREEN_INVENTORY.md](docs/SCREEN_INVENTORY.md)
 - Protocol docs and evidence: [docs/protocols/](docs/protocols/) · New machine setup: [SETUP_NEW_MACHINE.md](SETUP_NEW_MACHINE.md)
 
 > Built for interoperability with watches you own. Not affiliated with Garmin, Huawei, Zepp Health or COROS; brand names are used only to identify compatible devices.
