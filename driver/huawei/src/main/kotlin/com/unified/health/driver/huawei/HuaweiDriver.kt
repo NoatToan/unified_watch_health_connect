@@ -41,19 +41,24 @@ import javax.inject.Inject
  * - Request/response matching by service+command, 10 s timeout, 3 attempts (§4.5).
  * - 0x0101 link negotiation (frame sizes, interval, auth version, randA, auth type) (§5.2).
  * - Pluggable authentication: a Hilt set of [HuaweiAuthenticator], selected per auth type (§6).
- * - After authentication: 0x0105 time sync (§5.3) and a best-effort `sync()` that fires every
+ * - After authentication, the app's handshake steps 4-8 (§5.1, layouts §11, [DeviceConfigurator]):
+ *   0x0107 device version (firmware/model/serial/battery TLVs, also used by `readDeviceInfo`),
+ *   0x0105 date/time, 0x0132 IANA time-zone id, 0x0102 service and 0x0103 command capability consult.
+ * - Watch-initiated messages are routed by service and kept raw until the next sync (§11.5).
+ * - A best-effort `sync()` that fires every
  *   documented service 7 request (today totals cmd 3, and the frame-count requests behind steps/
  *   distance/calories, continuous HR/SpO2 and sleep/status, cmd 4/10/12) and keeps each accepted
  *   reply as an opaque raw payload for later re-decoding.
  * - Request builders for service 7 history commands 4/5/8/10/11/12/13 (§7.2).
- * - `capabilities` only ever advertises battery level, and only when the standard GATT Battery
- *   service is present; neither history sync nor live heart rate is declared because no typed
+ * - `capabilities` only ever advertises battery level (from 0x0107 type 12 or the standard GATT
+ *   Battery service); neither history sync nor live heart rate is declared because no typed
  *   record can be produced yet (see below).
  *
  * ## Still unknown (needs an HCI snoop log of Huawei Health with a real watch)
  * - Every service 7 response layout (the frame-count TLV and the frame bodies cmd 5/8/11/13), so no
  *   typed Steps/HeartRate/SpO2/Sleep/Stress/Workout record is decoded yet.
- * - 0x0107 device version, 0x0132 time-zone id and 0x0102/0x0103 capability consult layouts.
+ * - The 50-byte TLV 0x01 of 0x0132 (not sent), the 0x0103 response body (kept raw), the meaning of
+ *   the 0x0107 capability bitmap (kept raw), and every watch-initiated payload (kept raw).
  * - Whether the IV counter must strictly increase on the watch side.
  */
 class HuaweiDriver internal constructor(

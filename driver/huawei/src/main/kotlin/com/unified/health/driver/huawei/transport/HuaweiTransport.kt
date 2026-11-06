@@ -31,6 +31,17 @@ internal interface HuaweiCommandChannel {
 }
 
 /**
+ * Receives messages the watch sends on its own (no request of ours in flight with the same
+ * service+command): HR/fitness alerts (svc 7), notification confirmations (svc 2), exercise events
+ * (svc 23), file-transfer requests (svc 44), battery alerts (svc 1) — HUAWEI_DEVICE_PROTOCOL.md
+ * §11.5, [V] dispatcher `coa.d(…, tag, …)`, [I] which services actually do it.
+ * Called on the transport's reader coroutine: implementations must not block.
+ */
+internal fun interface WatchInitiatedHandler {
+    fun onWatchInitiated(command: HuaweiCommand)
+}
+
+/**
  * @property responseMillis wait per attempt; the app's handshake ack timer period is 10 s
  *  ([V] `cnx.java:443`).
  * @property maxAttempts sends per request. The app's `CommandTimerTask` gives up when its resend
@@ -81,6 +92,10 @@ internal class HuaweiTransport(
 
     @Volatile
     var frameSettings: FrameSettings = FrameSettings()
+
+    /** Gets every inbound message that does not answer the request in flight. */
+    @Volatile
+    var watchInitiatedHandler: WatchInitiatedHandler? = null
 
     /** Set once authentication produced a work key; incoming encrypted payloads need it too. */
     @Volatile
@@ -171,8 +186,17 @@ internal class HuaweiTransport(
         if (waiter != null && waiter.request.matches(command) && pending.compareAndSet(waiter, null)) {
             waiter.response.complete(command)
         } else {
-            // TODO(huawei-protocol): route watch-initiated commands (notifications, file requests).
-            Log.d(TAG, "Unsolicited Huawei message ${command.tag}")
+            val handler = watchInitiatedHandler
+            if (handler == null) {
+                Log.d(TAG, "Unsolicited Huawei message ${command.tag} (no handler)")
+            } else {
+                // A handler bug must not kill the reader loop (and with it the whole link).
+                try {
+                    handler.onWatchInitiated(command)
+                } catch (e: RuntimeException) {
+                    Log.w(TAG, "Watch-initiated handler failed for ${command.tag}", e)
+                }
+            }
         }
     }
 

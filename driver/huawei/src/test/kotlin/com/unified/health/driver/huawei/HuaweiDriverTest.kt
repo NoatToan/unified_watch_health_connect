@@ -5,12 +5,16 @@ import com.unified.health.core.ble.driver.SessionContext
 import com.unified.health.core.ble.driver.SyncRequest
 import com.unified.health.core.ble.driver.UnsupportedDeviceException
 import com.unified.health.core.ble.driver.WearableProtocolException
+import com.unified.health.core.ble.gatt.GattCharacteristic
 import com.unified.health.core.ble.gatt.GattCharacteristic.Companion.PROPERTY_NOTIFY
+import com.unified.health.core.ble.gatt.GattCharacteristic.Companion.PROPERTY_READ
 import com.unified.health.core.ble.gatt.GattCharacteristic.Companion.PROPERTY_WRITE
 import com.unified.health.core.ble.gatt.StandardUuids
 import com.unified.health.core.ble.protocol.hexToBytes
 import com.unified.health.core.ble.protocol.toHex
 import com.unified.health.core.ble.scan.Advertisement
+import com.unified.health.core.model.DeviceCapability
+import com.unified.health.core.model.DeviceInfo
 import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.WearableVendor
 import com.unified.health.core.testing.FakeGattClient
@@ -36,6 +40,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.Clock
 import java.time.Instant
+import java.time.ZoneId
 import java.time.ZoneOffset
 
 class HuaweiDriverTest {
@@ -46,6 +51,12 @@ class HuaweiDriverTest {
     private val clock = Clock.fixed(Instant.ofEpochSecond(0x65000000), ZoneOffset.UTC)
     private val workKey = "00112233445566778899aabbccddeeff".hexToBytes()
     private val randA = "a0a1a2a3a4a5a6a7a8a9aaabacadaeaf"
+
+    /** Post-authentication handshake order (§5.1 / §11). */
+    private val HANDSHAKE = listOf("0101", "0107", "0105", "0132", "0102", "0103")
+
+    /** 0x0107 reply: firmware "11.0.1.8", model (type 20) "GT 4", battery 75 %, capability bitmap 0f. */
+    private val VERSION_REPLY = "0107 0108 31312e302e312e38 1404 47542034 0c01 4b 1601 0f"
 
     /** Link parameters: maxFrame 64, singleFrame 244, interval 10, auth version 3, auth type 2 (HiChainLite), CBC. */
     private val linkResponse = "0101 020200 40 030200f4 04010a 0512 0003$randA 070102".replace(" ", "").hexToBytes()
@@ -89,8 +100,8 @@ class HuaweiDriverTest {
         val session = driver(setOf(authenticator)).openSession(watch.gatt, context)
 
         assertEquals(randA, authenticator.seenRandA)
-        assertEquals(listOf("0101", "0105"), watch.received.map { it.tag })
-        assertEquals("0105 0104 65000000 02020000".replace(" ", ""), watch.received[1].encode().toHex())
+        assertEquals(HANDSHAKE, watch.received.map { it.tag })
+        assertEquals("0105 0104 65000000 02020000".replace(" ", ""), watch.received[2].encode().toHex())
 
         val sink = RecordingSink()
         var progress = 0f
@@ -98,7 +109,7 @@ class HuaweiDriverTest {
         assertEquals(0, count)
         assertEquals(1f, progress)
         // The sweep fires every documented service-7 request once, in order, after the handshake.
-        assertEquals(listOf("0101", "0105", "0703", "0704", "070A", "070C"), watch.received.map { it.tag })
+        assertEquals(HANDSHAKE + listOf("0703", "0704", "070A", "070C"), watch.received.map { it.tag })
 
         val raws = sink.ofType<HealthRecord.RawPayload>()
         assertEquals(4, raws.size)
@@ -122,6 +133,88 @@ class HuaweiDriverTest {
         assertEquals(0, count)
         val raws = sink.ofType<HealthRecord.RawPayload>()
         assertEquals(setOf(HuaweiSession.RAW_TODAY_TOTAL, HuaweiSession.RAW_SAMPLE_FRAME_COUNT, HuaweiSession.RAW_STATUS_FRAME_COUNT), raws.map { it.kind }.toSet())
+        session.close()
+    }
+
+    @Test
+    fun `handshake learns version, time zone and capabilities`() = runTest {
+        val watch = FakeWatch()
+        val session = driver(setOf(FakeAuthenticator())).openSession(watch.gatt, context) as HuaweiSession
+
+        val version = session.configuration.version!!
+        assertEquals("11.0.1.8", version.firmwareVersion)
+        assertEquals("GT 4", version.productModel)
+        assertEquals(75, version.batteryPercent)
+        assertEquals(listOf(1, 7), session.configuration.supportedServices)
+        assertTrue(session.configuration.commandCapability != null)
+        // Battery comes from 0x0107 even though this fake exposes no GATT Battery service.
+        assertEquals(setOf(DeviceCapability.BATTERY_LEVEL), session.capabilities)
+        // UTC clock: 0x0132 carries the IANA name, nothing else (TLV 0x01 layout is unknown).
+        val tz = watch.received.single { it.tag == "0132" }
+        assertEquals(listOf(3), tz.tlvs.map { it.tag })
+        assertEquals("Etc/UTC", tz.tlvs.single().value.toString(Charsets.UTF_8))
+        // 0x0103 announces commands only for services 0x0102 reported.
+        val consult = watch.received.single { it.tag == "0103" }.tlvs.single().children()
+        assertEquals(listOf(1, 7), consult.filter { it.tag == 2 }.map { it.int() })
+        session.close()
+    }
+
+    @Test
+    fun `time zone request uses the clock's region id`() = runTest {
+        val watch = FakeWatch()
+        val zoned = Clock.fixed(clock.instant(), ZoneId.of("Asia/Ho_Chi_Minh"))
+        HuaweiDriver(setOf(FakeAuthenticator()), StandardTestDispatcher(testScheduler), zoned, TransportTimeouts())
+            .openSession(watch.gatt, context).close()
+        val tz = watch.received.single { it.tag == "0132" }.tlvs.single()
+        assertEquals("Asia/Ho_Chi_Minh", tz.value.toString(Charsets.UTF_8))
+    }
+
+    @Test
+    fun `device info prefers 0x0107 over standard gatt`() = runTest {
+        val battery = characteristic(StandardUuids.BATTERY_SERVICE, StandardUuids.BATTERY_LEVEL, PROPERTY_READ)
+        val firmware = characteristic(StandardUuids.DEVICE_INFORMATION_SERVICE, StandardUuids.FIRMWARE_REVISION, PROPERTY_READ)
+        val serial = characteristic(StandardUuids.DEVICE_INFORMATION_SERVICE, StandardUuids.SERIAL_NUMBER, PROPERTY_READ)
+        val watch = FakeWatch(extra = listOf(battery, firmware, serial))
+        watch.gatt.readValues[StandardUuids.BATTERY_LEVEL] = byteArrayOf(10)
+        watch.gatt.readValues[StandardUuids.FIRMWARE_REVISION] = "gatt-fw".toByteArray()
+        watch.gatt.readValues[StandardUuids.SERIAL_NUMBER] = "GATTSN".toByteArray()
+        val session = driver(setOf(FakeAuthenticator())).openSession(watch.gatt, context)
+
+        val info = session.readDeviceInfo()
+        assertEquals(DeviceInfo(model = "GT 4", firmwareVersion = "11.0.1.8", serialNumber = "GATTSN", batteryPercent = 75), info)
+        session.close()
+    }
+
+    @Test
+    fun `rejected optional steps do not fail the connection`() = runTest {
+        val watch = FakeWatch(rejectOptional = true)
+        val session = driver(setOf(FakeAuthenticator())).openSession(watch.gatt, context) as HuaweiSession
+        assertEquals(null, session.configuration.version)
+        assertEquals(null, session.configuration.supportedServices)
+        assertEquals(null, session.configuration.commandCapability)
+        // 0x0102 failed, so 0x0103 is not sent at all.
+        assertEquals(listOf("0101", "0107", "0105", "0132", "0102"), watch.received.map { it.tag })
+        assertEquals(emptySet<DeviceCapability>(), session.capabilities)
+        session.close()
+    }
+
+    @Test
+    fun `watch initiated messages are routed and handed over raw by the next sync`() = runTest {
+        val watch = FakeWatch()
+        val session = driver(setOf(FakeAuthenticator())).openSession(watch.gatt, context)
+        watch.push("0708 0101 48") // unsolicited fitness message (layout unknown)
+        watch.push("0108 0101 05") // unsolicited device-config message
+        testScheduler.advanceUntilIdle()
+
+        val sink = RecordingSink()
+        session.sync(SyncRequest(since = null, now = clock.instant()), sink) { }
+        val kinds = sink.ofType<HealthRecord.RawPayload>().map { it.kind }
+        assertTrue(kinds.toString(), kinds.containsAll(listOf("huawei_watch_fitness_0708", "huawei_watch_device_status_0108")))
+        assertEquals("0708010148", sink.ofType<HealthRecord.RawPayload>().single { it.kind == "huawei_watch_fitness_0708" }.bytes.toHex())
+        // Drained: a second sync does not repeat them.
+        val again = RecordingSink()
+        session.sync(SyncRequest(since = null, now = clock.instant()), again) { }
+        assertTrue(again.ofType<HealthRecord.RawPayload>().none { it.kind.startsWith("huawei_watch_") })
         session.close()
     }
 
@@ -169,8 +262,14 @@ class HuaweiDriverTest {
     }
 
     /** Scripted watch: reassembles what the driver writes and answers in 20-byte notifications. */
-    private inner class FakeWatch(answer: Boolean = true, timeSyncError: Boolean = false, rejectHealthFrameCount: Boolean = false) {
-        val gatt = FakeGattClient(listOf(write, notify))
+    private inner class FakeWatch(
+        answer: Boolean = true,
+        timeSyncError: Boolean = false,
+        rejectHealthFrameCount: Boolean = false,
+        rejectOptional: Boolean = false,
+        extra: List<GattCharacteristic> = emptyList(),
+    ) {
+        val gatt = FakeGattClient(listOf(write, notify) + extra)
         val received = mutableListOf<HuaweiCommand>()
         private val reassembler = FrameReassembler()
         private val cipher = PayloadCipher(workKey, CipherMode.AES_CBC_PKCS5, IvGenerator(null))
@@ -184,6 +283,10 @@ class HuaweiDriverTest {
                     if (!answer) continue
                     when (command.tag) {
                         "0101" -> send(linkResponse)
+                        "0107" -> send(cipher.encrypt((if (rejectOptional) "0107 7f04 0001a9ca" else VERSION_REPLY).clean()))
+                        "0132" -> send(cipher.encrypt((if (rejectOptional) "0132 7f04 0001a9ca" else "0132 7f04 000186a0").clean()))
+                        "0102" -> send(cipher.encrypt((if (rejectOptional) "0102 7f04 0001a9ca" else "0102 0102 0101").clean()))
+                        "0103" -> send(cipher.encrypt("0103 7f04 000186a0".clean()))
                         "0105" -> send(cipher.encrypt((if (timeSyncError) "0105 7f040001a9ca" else "0105 7f04000186a0").clean()))
                         "0703" -> send(cipher.encrypt("0703 01020fa0".clean()))
                         "0704" -> if (rejectHealthFrameCount) {
@@ -197,6 +300,9 @@ class HuaweiDriverTest {
                 }
             }
         }
+
+        /** Sends a watch-initiated (unsolicited) encrypted message. */
+        fun push(clearHex: String) = send(cipher.encrypt(clearHex.clean()))
 
         private fun send(payload: ByteArray) {
             for (frame in FrameCodec.encode(payload, maxFrame = 64)) {

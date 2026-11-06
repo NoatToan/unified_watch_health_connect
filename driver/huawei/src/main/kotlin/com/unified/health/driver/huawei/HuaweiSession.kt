@@ -19,7 +19,6 @@ import com.unified.health.driver.huawei.auth.HuaweiAuthMode
 import com.unified.health.driver.huawei.auth.HuaweiAuthenticator
 import com.unified.health.driver.huawei.auth.selectFor
 import com.unified.health.driver.huawei.codec.CipherMode
-import com.unified.health.driver.huawei.codec.DeviceConfigCommands
 import com.unified.health.driver.huawei.codec.FitnessCommands
 import com.unified.health.driver.huawei.codec.HuaweiCommand
 import com.unified.health.driver.huawei.codec.IvGenerator
@@ -39,33 +38,46 @@ import java.time.Instant
 /**
  * An authenticated Huawei link. Built by [open], which runs the handshake of
  * HUAWEI_DEVICE_PROTOCOL.md §5.1 as far as this driver can: 0x0101 link negotiation →
- * authenticator selection → authentication → 0x0105 time sync.
+ * authenticator selection → authentication → [DeviceConfigurator] (0x0107, 0x0105, 0x0132,
+ * 0x0102, 0x0103). Watch-initiated messages are routed to [router] for the whole session.
  */
 internal class HuaweiSession private constructor(
     private val gatt: GattClient,
     private val transport: HuaweiTransport,
     private val scope: CoroutineScope,
     private val clock: Clock,
+    private val router: WatchInitiatedRouter,
+    /** What the handshake learned; exposed for diagnostics and tests. */
+    val configuration: DeviceConfiguration,
 ) : WearableSession {
 
     /**
      * No [DeviceCapability.HISTORY_SYNC] or [DeviceCapability.LIVE_HEART_RATE]: [sync] cannot
      * decode a single typed [HealthRecord] yet (see below) and the document gives no evidence that
-     * Huawei watches also expose the Bluetooth SIG Heart Rate service (unlike COROS's chest straps,
-     * §3.1 only lists FE86/0x181C/0x1805). Declaring either would promise the UI data this driver
-     * cannot deliver. [DeviceCapability.BATTERY_LEVEL] is real: it comes from the standard GATT
-     * Battery service when the watch exposes it, independent of the proprietary channel.
+     * Huawei watches also expose the Bluetooth SIG Heart Rate service (§3.1 only lists
+     * FE86/0x181C/0x1805). [DeviceCapability.BATTERY_LEVEL] is real: 0x0107 type 12 (§11.1) or the
+     * standard GATT Battery service. The 0x0107 capability bitmap (type 22) is NOT mapped onto
+     * these flags: its bit meanings are undocumented.
      */
     override val capabilities: Set<DeviceCapability> = buildSet {
-        if (gatt.findCharacteristic(StandardUuids.BATTERY_LEVEL, StandardUuids.BATTERY_SERVICE) != null) add(DeviceCapability.BATTERY_LEVEL)
+        val gattBattery = gatt.findCharacteristic(StandardUuids.BATTERY_LEVEL, StandardUuids.BATTERY_SERVICE) != null
+        if (gattBattery || configuration.version?.batteryPercent != null) add(DeviceCapability.BATTERY_LEVEL)
     }
 
     /**
-     * Standard GATT Device Information / Battery only.
-     * TODO(huawei-protocol): 0x0107 GetDeviceVersion carries model/firmware (§5.1 step 4) but its
-     * request and response layouts are not in the document.
+     * Fresh 0x0107 (model type 20/3, firmware type 1, serial type 9, battery type 12, §11.1) with
+     * standard GATT Device Information / Battery filling whatever the watch does not report.
      */
-    override suspend fun readDeviceInfo(): DeviceInfo = StandardGattReader.readDeviceInfo(gatt)
+    override suspend fun readDeviceInfo(): DeviceInfo {
+        val version = DeviceConfigurator.readVersion(transport)
+        val gattInfo = StandardGattReader.readDeviceInfo(gatt)
+        return DeviceInfo(
+            model = version?.productModel ?: gattInfo.model,
+            firmwareVersion = version?.firmwareVersion ?: gattInfo.firmwareVersion,
+            serialNumber = version?.serialNumber ?: gattInfo.serialNumber,
+            batteryPercent = version?.batteryPercent ?: gattInfo.batteryPercent,
+        )
+    }
 
     /**
      * Best-effort raw sweep of service 7 (Fitness): every REQUEST layout §7.2 documents ([V]) is
@@ -97,6 +109,8 @@ internal class HuaweiSession private constructor(
             probe(kind, command, sink)
             progress.report((index + 1f) / probes.size)
         }
+        // Watch-initiated messages received since the last sync (also undecoded, see the router).
+        router.drain().takeIf { it.isNotEmpty() }?.let { sink.onRecords(it) }
         return 0
     }
 
@@ -112,6 +126,7 @@ internal class HuaweiSession private constructor(
     }
 
     override suspend fun close() {
+        transport.watchInitiatedHandler = null
         scope.cancel()
     }
 
@@ -140,7 +155,10 @@ internal class HuaweiSession private constructor(
 
             val scope = CoroutineScope(SupervisorJob() + dispatcher)
             try {
-                val transport = HuaweiTransport(gatt, write, notify, scope, timeouts).also { it.start() }
+                val router = WatchInitiatedRouter(clock)
+                val transport = HuaweiTransport(gatt, write, notify, scope, timeouts)
+                transport.watchInitiatedHandler = router // before start(): nothing unsolicited is dropped
+                transport.start()
                 val link = negotiateLink(transport)
                 transport.frameSettings = FrameSettings(link)
 
@@ -151,10 +169,8 @@ internal class HuaweiSession private constructor(
                     ?: if (authenticator.mode == HuaweiAuthMode.HICHAIN3) CipherMode.AES_GCM else link.cipherMode
                 transport.cipher = PayloadCipher(keys.workKey, cipherMode, IvGenerator(keys.ivCounterSeed))
 
-                val now = clock.instant()
-                requireSuccess(transport.request(DeviceConfigCommands.setDateTime(now, clock.zone.rules.getOffset(now)), encrypted = true))
-                // TODO(huawei-protocol): 0x0132 time-zone id, 0x0102/0x0103 capability consult (§5.1 steps 6-8): layouts undocumented.
-                return HuaweiSession(gatt, transport, scope, clock)
+                val configuration = DeviceConfigurator.configure(transport, clock)
+                return HuaweiSession(gatt, transport, scope, clock, router, configuration)
             } catch (e: Throwable) { // includes CancellationException, which is rethrown unchanged
                 scope.cancel()
                 throw e
@@ -180,11 +196,6 @@ internal class HuaweiSession private constructor(
                     "auth version 0x%04x). Sync this watch through Huawei Health and Health Connect instead.".format(link.authVersion) +
                     keyHint,
             )
-        }
-
-        private fun requireSuccess(response: HuaweiCommand) {
-            val code = response.errorCode() ?: return
-            if (code != HuaweiCommand.SUCCESS_CODE) throw WearableProtocolException("Huawei watch rejected ${response.tag} with error $code")
         }
     }
 }

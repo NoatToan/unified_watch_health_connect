@@ -16,8 +16,10 @@ import org.junit.Test
  * The Huawei driver end to end against the in-repo watch simulator
  * (`core/demo/.../virtual/huawei/HuaweiVirtualWatch.kt`): scan → `HuaweiDriver.recognize` → the
  * real 0x5A/CRC16/TLV/AES-CBC transport completes a full handshake
- * (`HuaweiSession.open`, debug-only `HuaweiSimulatorAuthenticator`) → connected with battery/
- * firmware attributed to Huawei → a full raw sync sweep completes → unpair.
+ * (`HuaweiSession.open`, debug-only `HuaweiSimulatorAuthenticator`, then 0x0107 version,
+ * 0x0105/0x0132 time, 0x0102/0x0103 capability consult) → connected with battery/firmware read
+ * from 0x0107 (the simulator's standard-GATT values differ on purpose, so seeing these proves the
+ * 0x0107 parser is used) → a full raw sync sweep completes → unpair.
  *
  * `HuaweiSession.sync()` cannot emit a single typed health record yet — every service 7 response
  * body layout is undocumented (see `HuaweiSession.sync` KDoc, protocol doc §7.2/§10) — so unlike
@@ -55,7 +57,7 @@ class HuaweiWatchE2ETest : E2EBase() {
             step(
                 "connected",
                 "Tap \"Pair\"",
-                "Real 0x5A/TLV/AES-CBC handshake completes: Connected, battery and firmware read, attributed to Huawei",
+                "Real 0x5A/TLV/AES-CBC handshake completes: Connected, battery and firmware from 0x0107, attributed to Huawei",
             ) {
                 clickTag("pair_$watch")
                 waitForTag("paired_$watch")

@@ -36,10 +36,10 @@ internal object HuaweiSimUuids {
  * `docs/protocols/HUAWEI_DEVICE_PROTOCOL.md` for the real `:driver:huawei` transport to complete a
  * full handshake and sync sweep against it: 0x0101 link negotiation, the debug-only 0x0113
  * challenge/work-key exchange ([com.unified.health.driver.huawei.auth.debug.HuaweiSimulatorAuthenticator]),
- * 0x0105 time sync and the service-7 probes `HuaweiSession.sync()` fires (cmd 3/4/10/12). Every
- * reply body is an arbitrary filler TLV: the REAL response layouts are undocumented (protocol doc
- * §7.2/§10), so there is nothing authentic to simulate there, and the driver does not decode them
- * either (see `HuaweiSession.sync` KDoc) — only the transport-level conversation is real.
+ * then 0x0107 version (§11.1 TLVs), 0x0105 time, 0x0132 time-zone id, 0x0102/0x0103 capability
+ * consult (§11.3-11.4), one watch-initiated message (§11.5), and the service-7 probes
+ * `HuaweiSession.sync()` fires (cmd 3/4/10/12). Service-7 reply bodies are arbitrary filler: their
+ * REAL layouts are undocumented (§11.6, NEEDS-REAL-WATCH) and the driver does not decode them.
  *
  * Also exposes the standard Device Information (0x180A) and Battery (0x180F) services so
  * `StandardGattReader` (used by every driver, including Huawei's `readDeviceInfo`) returns real
@@ -77,10 +77,11 @@ internal class HuaweiVirtualGattClient(override val address: String) : GattClien
     override suspend fun read(characteristic: GattCharacteristic): ByteArray {
         ensureConnected()
         return when (characteristic.uuid) {
-            StandardUuids.MODEL_NUMBER -> HuaweiVirtualDevice.MODEL.toByteArray()
-            StandardUuids.FIRMWARE_REVISION -> HuaweiVirtualDevice.FIRMWARE.toByteArray()
+            // Deliberately different from the 0x0107 values: the E2E then proves the driver prefers 0x0107.
+            StandardUuids.MODEL_NUMBER -> GATT_FALLBACK_MODEL.toByteArray()
+            StandardUuids.FIRMWARE_REVISION -> GATT_FALLBACK_FIRMWARE.toByteArray()
             StandardUuids.SERIAL_NUMBER -> HuaweiVirtualDevice.SERIAL.toByteArray()
-            StandardUuids.BATTERY_LEVEL -> byteArrayOf(HuaweiVirtualDevice.BATTERY_PERCENT.toByte())
+            StandardUuids.BATTERY_LEVEL -> byteArrayOf(GATT_FALLBACK_BATTERY.toByte())
             else -> throw GattException("Characteristic ${characteristic.uuid} is not readable")
         }
     }
@@ -129,7 +130,10 @@ internal class HuaweiVirtualGattClient(override val address: String) : GattClien
             when (tag) {
                 LINK_NEGOTIATION_TAG -> linkNegotiationReply()
                 SIMULATOR_AUTH_TAG -> authReply()
-                TIME_SYNC_TAG, TODAY_TOTAL_TAG, HEALTH_FRAME_COUNT_TAG, SAMPLE_FRAME_COUNT_TAG, STATUS_FRAME_COUNT_TAG ->
+                DEVICE_VERSION_TAG -> encrypted(serviceId, commandId, deviceVersionTlvs())
+                SERVICE_CAPABILITY_TAG -> encrypted(serviceId, commandId, listOf(HuaweiSimTlv(1, byteArrayOf(1, 1)))) // services 1 and 7
+                TIME_SYNC_TAG, TIME_ZONE_TAG, COMMAND_CAPABILITY_TAG -> encrypted(serviceId, commandId, listOf(successTlv()))
+                TODAY_TOTAL_TAG, HEALTH_FRAME_COUNT_TAG, SAMPLE_FRAME_COUNT_TAG, STATUS_FRAME_COUNT_TAG ->
                     encryptedFiller(serviceId, commandId)
                 else -> null
             }
@@ -138,7 +142,26 @@ internal class HuaweiVirtualGattClient(override val address: String) : GattClien
             null
         }
         reply?.let(::sendFrame)
+        // After the last handshake step, push one watch-initiated message so the driver's
+        // dispatcher path runs too (an arbitrary filler body: real unsolicited layouts are unknown).
+        if (tag == COMMAND_CAPABILITY_TAG) sendFrame(encryptedFiller(SERVICE_DEVICE_CONFIG, UNSOLICITED_COMMAND))
     }
+
+    /** 0x0107 reply TLVs (§11.1): firmware (1), hardware (2), serial (9), battery (12), product model (20), capability bitmap (22). */
+    private fun deviceVersionTlvs(): List<HuaweiSimTlv> = listOf(
+        HuaweiSimTlv(1, HuaweiVirtualDevice.FIRMWARE.toByteArray()),
+        HuaweiSimTlv(2, "HW-UHSIM-1".toByteArray()),
+        HuaweiSimTlv(9, HuaweiVirtualDevice.SERIAL.toByteArray()),
+        HuaweiSimTlv(12, byteArrayOf(HuaweiVirtualDevice.BATTERY_PERCENT.toByte())),
+        HuaweiSimTlv(20, HuaweiVirtualDevice.MODEL.toByteArray()),
+        HuaweiSimTlv(22, byteArrayOf(0x0F)),
+    )
+
+    /** TLV 0x7F carrying the app's success status 100000 (`HuaweiCommand.SUCCESS_CODE`). */
+    private fun successTlv() = HuaweiSimTlv(0x7F, byteArrayOf(0x00, 0x01, 0x86.toByte(), 0xA0.toByte()))
+
+    private fun encrypted(serviceId: Int, commandId: Int, tlvs: List<HuaweiSimTlv>): ByteArray =
+        HuaweiSimCipher.encrypt(byteArrayOf(serviceId.toByte(), commandId.toByte()), HuaweiSimTlvCodec.encode(tlvs), random)
 
     /** 0x0101: frame sizes generous enough that the driver never needs to slice, legacy-HMAC bucket, the simulator marker. */
     private fun linkNegotiationReply(): ByteArray {
@@ -192,6 +215,16 @@ internal class HuaweiVirtualGattClient(override val address: String) : GattClien
         const val LINK_NEGOTIATION_TAG = "0101"
         const val SIMULATOR_AUTH_TAG = "0113"
         const val TIME_SYNC_TAG = "0105"
+        const val DEVICE_VERSION_TAG = "0107"
+        const val TIME_ZONE_TAG = "0132"
+        const val SERVICE_CAPABILITY_TAG = "0102"
+        const val COMMAND_CAPABILITY_TAG = "0103"
+        const val SERVICE_DEVICE_CONFIG = 0x01
+        const val UNSOLICITED_COMMAND = 0x08
+
+        const val GATT_FALLBACK_MODEL = "gatt-fallback-model"
+        const val GATT_FALLBACK_FIRMWARE = "gatt-fallback-fw"
+        const val GATT_FALLBACK_BATTERY = 50
         const val TODAY_TOTAL_TAG = "0703"
         const val HEALTH_FRAME_COUNT_TAG = "0704"
         const val SAMPLE_FRAME_COUNT_TAG = "070A"

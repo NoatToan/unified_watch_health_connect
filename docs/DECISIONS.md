@@ -333,6 +333,40 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   decompile được). Giữ D-303 và TODO(huawei-protocol) trong FitnessCommands.kt.
   Lý do: không suy đoán layout; cần HCI snoop log thật (hướng dẫn capture ghi vào
   `docs/protocols/HUAWEI_IMPLEMENTATION_BRIEF.md §Priority 1 – TODO 3`).
+- **D-313** · 2026-11-06 · Driver vòng 2: thứ tự bắt tay sau xác thực — **Chốt**
+  `DeviceConfigurator` chạy đúng thứ tự app (§5.1): 0x0107 → 0x0105 → 0x0132 → 0x0102 → 0x0103, tất cả
+  gửi mã hoá như 0x0105 [I]. Chỉ 0x0105 bắt buộc (bị từ chối = lỗi kết nối như trước); 0x0107/0x0132/
+  0x0102/0x0103 bị watch từ chối (TLV 0x7F) thì log và đi tiếp; lỗi transport (timeout/mất link) luôn
+  ném ra. 0x0103 chỉ gửi cho các service mà 0x0102 báo hỗ trợ (app cũng chuyển kết quả 0102 sang `cki`).
+  Lý do: các bước này chỉ mang tính thông tin với driver; không để một lệnh tuỳ chọn làm hỏng kết nối.
+- **D-314** · 2026-11-06 · 0x0107: map trường nào, giữ gì ở dạng raw — **Chốt**
+  Request chỉ hỏi các type driver dùng {1,2,3,7,9,12,15,20,22} (app cũng hỏi một tập con). Map: 1 =
+  firmware, 20 (fallback 3) = model, 9 = serial, 12 = pin 0..100 (ngoài khoảng thì bỏ), giá trị chuỗi đọc
+  UTF-8 [I]. `readDeviceInfo()` gọi 0x0107 mới mỗi lần, GATT chuẩn chỉ lấp chỗ thiếu. Type 22 (bitmap)
+  giữ dạng byte, KHÔNG dịch sang `DeviceCapability` (nghĩa từng bit chưa có bằng chứng); `BATTERY_LEVEL`
+  bật khi có type 12 hoặc GATT Battery. Brief ghi "29 type" nhưng 3 danh sách switch thực ra liệt kê 30
+  id — code giữ đủ 30. Brief đề xuất `HealthRecord.DeviceStatus` — không tồn tại trong `core/model`; không
+  thêm (pin đã đi qua `DeviceInfo.batteryPercent`, đủ cho UI), tránh sửa `core/*`.
+- **D-315** · 2026-11-06 · 0x0132 bỏ TLV 0x01, chỉ gửi IANA id — **Tạm**
+  Chọn phương án "bỏ TLV 0x01" thay vì "50 byte 0": gửi nội dung bịa còn tệ hơn thiếu trường; watch cần
+  trường đó sẽ trả 0x7F và D-313 cho phép đi tiếp. Zone dạng offset cố định (`+07:00`) không có tên IANA
+  nên không gửi 0x0132 (0x0105 đã đặt offset); offset 0 gửi `Etc/UTC`. Chờ HCI log để xác nhận.
+- **D-316** · 2026-11-06 · 0x0102 bitmap đọc theo byte thô, theo code chứ không theo ví dụ của brief — **Chốt**
+  Byte `i` của TLV con đầu tiên ↔ service thứ `i` trong danh sách đã gửi, bit 0 = hỗ trợ ([V] `ckn.e`).
+  "hex ASCII" trong ghi chú RE là do app luôn xử lý giá trị TLV dưới dạng chuỗi hex (§4.4) nên
+  `hex[i*2..]` chính là byte thô `i` [I]. Ví dụ `"0100"` trong brief mâu thuẫn với quy tắc của chính nó
+  (byte 0 = 0x01 có bit 0) — làm theo code đã decompile.
+- **D-317** · 2026-11-06 · Watch-initiated: route + giữ raw, không decode — **Chốt**
+  `WatchInitiatedHandler` (fun interface) trong `HuaweiTransport`, đăng ký TRƯỚC `start()` để không rơi
+  frame nào; lỗi handler bị bắt để không giết vòng đọc. `WatchInitiatedRouter` phân loại theo service
+  (1 device_status, 2 notification, 7 fitness, 23 exercise, 44 file_request) và giữ tối đa 256 tin, lần
+  sync sau giao dưới dạng `RawPayload` kind `huawei_watch_<loại>_<sscc>`. Không phát `HeartRate`/pin từ
+  các tin này và không gửi ACK — layout payload và yêu cầu ACK đều chưa có bằng chứng. Giả lập đẩy một
+  tin `0108` sau 0x0103 để E2E đi qua đường này.
+- **D-318** · 2026-11-06 · Giả lập vòng 2: giá trị GATT khác 0x0107 có chủ đích — **Chốt**
+  `HuaweiVirtualGattClient` trả lời 0x0107/0x0132/0x0102/0x0103 theo layout §11; GATT Device Info/
+  Battery trả giá trị khác (`gatt-fallback-*`, pin 50) nên khi E2E thấy pin 64 % và firmware
+  `17.0.7-uhsim` là bằng chứng driver đang dùng parser 0x0107 chứ không phải GATT.
 
 ## Garmin driver (D-4xx)
 
