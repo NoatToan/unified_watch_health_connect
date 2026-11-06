@@ -9,6 +9,7 @@ import androidx.room.Room
 import com.unified.health.core.data.database.HealthRecordDao
 import com.unified.health.core.data.database.PairedDeviceDao
 import com.unified.health.core.data.database.UnifiedHealthDatabase
+import com.unified.health.core.data.datastore.DataStoreNotificationPreferencesRepository
 import com.unified.health.core.data.datastore.DataStoreUserPreferencesRepository
 import com.unified.health.core.data.healthconnect.HealthConnectManager
 import com.unified.health.core.data.link.DefaultDeviceLinkKeeper
@@ -24,6 +25,7 @@ import com.unified.health.core.data.sync.RawPayloadSaver
 import com.unified.health.core.data.sync.RawPayloadStore
 import com.unified.health.core.domain.repository.HealthConnectRepository
 import com.unified.health.core.domain.repository.HealthDataRepository
+import com.unified.health.core.domain.repository.NotificationPreferencesRepository
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.domain.repository.DemoDataController
@@ -59,6 +61,10 @@ internal abstract class DataBindingsModule {
     @Binds
     @Singleton
     abstract fun bindUserPreferencesRepository(impl: DataStoreUserPreferencesRepository): UserPreferencesRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindNotificationPreferencesRepository(impl: DataStoreNotificationPreferencesRepository): NotificationPreferencesRepository
 
     @Binds
     @Singleton

@@ -82,10 +82,11 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
-internal fun DevicesRoute(viewModel: DevicesViewModel = hiltViewModel()) {
+internal fun DevicesRoute(onOpenDevice: (String) -> Unit, viewModel: DevicesViewModel = hiltViewModel()) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     DevicesScreen(
         state = state,
+        onOpenDevice = onOpenDevice,
         onStartScan = viewModel::startScan,
         onStopScan = viewModel::stopScan,
         onPair = viewModel::pair,
@@ -106,6 +107,7 @@ internal fun DevicesRoute(viewModel: DevicesViewModel = hiltViewModel()) {
 @Composable
 internal fun DevicesScreen(
     state: DevicesUiState,
+    onOpenDevice: (String) -> Unit,
     onStartScan: () -> Unit,
     onStopScan: () -> Unit,
     onPair: (DiscoveredDevice) -> Unit,
@@ -204,6 +206,7 @@ internal fun DevicesScreen(
                     PairedDeviceCard(
                         device = device,
                         syncState = state.syncState,
+                        onOpenSettings = { onOpenDevice(device.id) },
                         onConnect = { onConnect(device) },
                         onDisconnect = { onDisconnect(device) },
                         onSync = { onSync(device) },
@@ -243,6 +246,7 @@ internal fun DevicesScreen(
 private fun PairedDeviceCard(
     device: WearableDevice,
     syncState: SyncState,
+    onOpenSettings: () -> Unit,
     onConnect: () -> Unit,
     onDisconnect: () -> Unit,
     onSync: () -> Unit,
@@ -274,7 +278,11 @@ private fun PairedDeviceCard(
                         Icon(Icons.Outlined.MoreVert, contentDescription = "More options for ${device.name}")
                     }
                     DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
-                        DropdownMenuItem(text = { Text("Device settings (coming soon)") }, onClick = { menuOpen = false }, enabled = false)
+                        DropdownMenuItem(
+                            text = { Text("Device settings") },
+                            onClick = { menuOpen = false; onOpenSettings() },
+                            modifier = Modifier.testTag("device_settings_menu_item"),
+                        )
                         device.credentialRequirements.forEach { requirement ->
                             DropdownMenuItem(text = { Text("Change ${requirement.label}") }, onClick = { menuOpen = false; editing = requirement })
                         }

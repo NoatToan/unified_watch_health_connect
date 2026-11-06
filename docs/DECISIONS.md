@@ -108,6 +108,7 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
 
 - **D-804** · 2026-11-06 · Danh sách + chi tiết bài tập (P0-1) — **Chốt**
   Tab Activity nhóm bài tập theo tháng (mới nhất trước), bấm vào mở `WorkoutDetailDestination(workoutId)`: môn, giờ bắt đầu–kết thúc, thời lượng, quãng đường, kcal, pace (chạy/đi bộ/bơi) hoặc tốc độ (đạp xe), nhịp tim TB/max, biểu đồ nhịp tim (tối đa 30 cột min–max, dùng lại `HealthRangeChart`), thiết bị nguồn. Id bài tập = khoá chính `<deviceId>@<startEpochMs>`; nhịp tim lấy đúng thiết bị đã ghi bài tập; TB/max của đồng hồ ưu tiên, thiếu thì tính từ mẫu. Thêm `Workout.sourceDeviceId`, `HealthDataRepository.observeWorkout/observeHeartRateSamples` (cộng thêm, không đổi schema Room). Bỏ nút "Start workout" (chỉ hiện snackbar "coming soon") — live workout vẫn là P2.
+  E2E: flow `13-workouts`, `14-device-settings`, `15-notifications` (số 10 đã được flow Huawei dùng).
 - **D-805** · 2026-11-06 · "Weekly activity load" chung, không thương hiệu (P0-2) — **Chốt**
   Mỗi bài tập: `load = phút × clamp(avgHR/100, 0.5, 2.0)` (không có HR → hệ số 1.0). Tuần = 7 ngày lăn kết thúc hôm nay; baseline = TB 4 tuần trước (tuần trống tính 0, cần ≥1 tuần có bài tập); ratio < 0.8 "thấp hơn", > 1.3 "cao hơn", còn lại "như thường lệ" (ngưỡng acute:chronic công khai). Logic thuần `ActivityLoadCalculator` (`:core:domain`, có unit test), thẻ đầu tab Activity + biểu đồ 8 tuần.
   Lý do: chỉ dùng dữ liệu driver đã có (start/end + avgHR); công thức minh bạch, không mượn tên/thuật toán độc quyền (D-803).
@@ -302,6 +303,36 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   `D4:F5:13:00:00:09`, `StandardVirtualWatch.kt` `02:5D:00:00:18:0D`, đã rà trước khi chọn số mới).
   Lý do: mỗi agent brand chọn địa chỉ độc lập trong cùng dải `02:DE:30:00:00:xx` nên va chạm là rủi ro
   thật, không phải lý thuyết; sửa ở phía mình (được phép), không sửa file của agent khác.
+- **D-308** · 2026-11-06 · 0x0107 response – 29 TLV type IDs đã xác định — **Chốt**
+  RE vòng 2 (`defpackage/ckq.d/b/c`) ánh xạ 29 type ID trong phản hồi GetDeviceVersion (§11.1):
+  nhóm `ckq.d` {1,3,7,25,36-41}, `ckq.b` {2,10,14,17,18,22,26}, `ckq.c` {9,12,15,20,21,27,29-35}.
+  Semantic từng type là [I] (suy từ tên field DeviceInfo); type 22 = capabilityBitmap, type 12 = batteryLevel [I].
+  Quyết định: ghi bằng chứng vào `docs/re-evidence/huawei/version_tlv_types.md`, cập nhật §11.1 protocol.
+  Chưa implement parse trong driver (chờ xác nhận semantic qua thiết bị thật); giữ TODO(huawei-protocol).
+- **D-309** · 2026-11-06 · 0x0102/0x0103 layout đã giải – implement request trước — **Chốt**
+  Request layout của cả hai lệnh capability consult đã xác minh [V] (ckn.b, cki.a – §11.3/11.4).
+  Response 0x0102 (hex bitmap) đã xác minh [V]. Response 0x0103 (nested TLV) là [I] – trace qua tên
+  method `d/b/a` nhưng chưa đến byte-level.
+  Quyết định: có thể implement phần request + parse response 0x0102 ngay; response 0x0103 lưu raw TLV
+  và log cho đến khi xác minh bằng thiết bị. Ghi vào TODO(huawei-protocol) ở HuaweiSession.
+- **D-310** · 2026-11-06 · 0x0132 – TLV(0x01) 50 byte chưa xác định — **Tạm**
+  TLV(0x03) IANA timezone ID đã xác minh [V]. TLV(0x01) = 50 byte từ `cku.c()` (no-arg overload) chưa
+  decompile được trong đợt RE này. Không tự bịa layout 50 byte.
+  Quyết định: driver gửi TLV(0x03) với IANA ID; bỏ TLV(0x01) hoặc gửi 50 zero byte và đánh dấu
+  `TODO(huawei-protocol): confirm cku.c() 50-byte layout via HCI snoop log`. NEEDS-REAL-WATCH.
+- **D-311** · 2026-11-06 · Watch-initiated routing – thêm interface, không coupling — **Chốt**
+  `coa.d(DeviceInfo, String, cml, List<cmi>, MessageReceiveCallback)` xác nhận [V] là dispatcher chính
+  cho frame không solicited. Driver cần `WatchInitiatedHandler` interface inject vào `HuaweiTransport`;
+  `HuaweiSession` đăng ký và route theo serviceId/commandId.
+  Quyết định: thêm interface + hook trong `HuaweiTransport.onPayload()` (TODO:174); không implement
+  handler cụ thể cho từng event (vì layout payload của event chưa xác minh) – chỉ log có cấu trúc.
+- **D-312** · 2026-11-06 · Service 7 response – vẫn NEEDS-REAL-WATCH — **Tạm**
+  `DataTotalMotion` và `HeartRateDetect` data model đã xác minh [V] qua jadx (`defpackage/mqj.java`,
+  `com/huawei/hwcommonmodel/fitnessdatatype/DataTotalMotion.java`). TLV type IDs để populate từng field
+  trong response frame của cmd 3/4/5/8/10/11/12/13 không tìm thấy trong đợt này (parser lxp chưa
+  decompile được). Giữ D-303 và TODO(huawei-protocol) trong FitnessCommands.kt.
+  Lý do: không suy đoán layout; cần HCI snoop log thật (hướng dẫn capture ghi vào
+  `docs/protocols/HUAWEI_IMPLEMENTATION_BRIEF.md §Priority 1 – TODO 3`).
 
 ## Garmin driver (D-4xx)
 

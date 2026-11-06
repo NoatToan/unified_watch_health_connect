@@ -15,6 +15,8 @@ data class Workout(
     val avgHeartRate: Int? = null,
     val maxHeartRate: Int? = null,
     val source: DataSource = DataSource.WEARABLE,
+    /** Id (MAC) of the paired device that recorded it, for source attribution; null when unknown. */
+    val sourceDeviceId: String? = null,
 ) {
     val duration: Duration get() = Duration.between(start, end)
 }

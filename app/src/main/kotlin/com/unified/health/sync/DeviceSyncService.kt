@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import com.unified.health.core.domain.repository.DeviceLinkKeeper
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.model.ConnectionState
+import com.unified.health.notifications.HealthAlertsMonitor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +41,7 @@ class DeviceSyncService : Service() {
 
     @Inject lateinit var keeper: DeviceLinkKeeper
     @Inject lateinit var repository: WearableDeviceRepository
+    @Inject lateinit var alerts: HealthAlertsMonitor
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private var watching: Job? = null
@@ -57,6 +59,7 @@ class DeviceSyncService : Service() {
         keeper.start()
         if (watching?.isActive != true) {
             watching = scope.launch {
+                launch { alerts.run() }
                 launch {
                     combine(repository.pairedDevices, repository.connectionState) { devices, state ->
                         val name = devices.firstOrNull()?.name ?: "watch"
@@ -72,6 +75,7 @@ class DeviceSyncService : Service() {
                 }
                 keeper.active.first { !it }
                 stopSelf()
+                cancel() // also stops the alert monitor
             }
         }
         return START_NOT_STICKY

@@ -98,6 +98,20 @@ class LocalHealthDataRepository internal constructor(
     override fun observeWorkouts(): Flow<List<Workout>> =
         dao.observeWorkouts(WORKOUT_LIMIT).map { rows -> rows.map { it.toModel() } }
 
+    override fun observeWorkout(id: String): Flow<Workout?> {
+        val key = WorkoutKey.parse(id) ?: return flowOf(null)
+        return dao.observeWorkout(key.deviceId, key.startEpochMs).map { it?.toModel() }
+    }
+
+    override fun observeHeartRateSamples(from: Instant, to: Instant, deviceId: String?): Flow<List<HeartRateSample>> {
+        val rows = if (deviceId == null) {
+            samples(listOf(SampleType.HEART_RATE), from.toEpochMilli(), to.toEpochMilli())
+        } else {
+            dao.observeDeviceSamples(SampleType.HEART_RATE, deviceId, from.toEpochMilli(), to.toEpochMilli())
+        }
+        return rows.map { list -> list.map { HeartRateSample(Instant.ofEpochMilli(it.startEpochMs), it.value.roundToInt()) } }
+    }
+
     override fun observeSleep(date: LocalDate): Flow<SleepSession?> =
         samples(listOf(SampleType.SLEEP_STAGE), sleepWindowStart(date), sleepWindowEnd(date)).map(HealthAggregation::sleepSession)
 
@@ -153,7 +167,7 @@ class LocalHealthDataRepository internal constructor(
     private fun sleepWindowEnd(date: LocalDate) = date.atTime(12, 0).atZone(zone).toInstant().toEpochMilli()
 
     private fun WorkoutEntity.toModel() = Workout(
-        id = "$deviceId@$startEpochMs",
+        id = WorkoutKey(deviceId, startEpochMs).id,
         type = workoutType(sport),
         start = Instant.ofEpochMilli(startEpochMs),
         end = Instant.ofEpochMilli(endEpochMs),
@@ -161,6 +175,7 @@ class LocalHealthDataRepository internal constructor(
         activeKcal = activeKcal,
         avgHeartRate = avgHeartRate,
         maxHeartRate = maxHeartRate,
+        sourceDeviceId = deviceId,
     )
 
     private fun workoutType(sport: String): WorkoutType = when {
@@ -171,6 +186,20 @@ class LocalHealthDataRepository internal constructor(
         sport.contains("strength") || sport.contains("training") -> WorkoutType.STRENGTH
         sport.contains("yoga") -> WorkoutType.YOGA
         else -> WorkoutType.OTHER
+    }
+
+    /** A workout's id is its primary key: `<deviceId>@<startEpochMs>` (device ids never contain '@'). */
+    internal data class WorkoutKey(val deviceId: String, val startEpochMs: Long) {
+        val id: String get() = "$deviceId@$startEpochMs"
+
+        companion object {
+            fun parse(id: String): WorkoutKey? {
+                val at = id.lastIndexOf('@')
+                if (at <= 0) return null
+                val start = id.substring(at + 1).toLongOrNull() ?: return null
+                return WorkoutKey(id.substring(0, at), start)
+            }
+        }
     }
 
     private companion object {

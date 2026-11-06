@@ -72,6 +72,12 @@ interface HealthRecordDao {
     @Query("SELECT * FROM workouts ORDER BY startEpochMs DESC LIMIT :limit")
     fun observeWorkouts(limit: Int): Flow<List<WorkoutEntity>>
 
+    @Query("SELECT * FROM workouts WHERE deviceId = :deviceId AND startEpochMs = :startEpochMs")
+    fun observeWorkout(deviceId: String, startEpochMs: Long): Flow<WorkoutEntity?>
+
+    @Query("SELECT * FROM health_samples WHERE type = :type AND deviceId = :deviceId AND startEpochMs >= :fromEpochMs AND startEpochMs < :toEpochMs ORDER BY startEpochMs")
+    fun observeDeviceSamples(type: String, deviceId: String, fromEpochMs: Long, toEpochMs: Long): Flow<List<HealthSampleEntity>>
+
     /** Newest first. */
     @Query("SELECT * FROM health_samples WHERE type IN (:types) ORDER BY startEpochMs DESC LIMIT :limit")
     fun observeLatestSamples(types: List<String>, limit: Int): Flow<List<HealthSampleEntity>>

@@ -32,6 +32,14 @@ class InMemoryHealthRecordDao : HealthRecordDao {
     override fun observeWorkouts(limit: Int): Flow<List<WorkoutEntity>> =
         workouts.map { all -> all.values.sortedByDescending { it.startEpochMs }.take(limit) }
 
+    override fun observeWorkout(deviceId: String, startEpochMs: Long): Flow<WorkoutEntity?> =
+        workouts.map { all -> all[deviceId to startEpochMs] }
+
+    override fun observeDeviceSamples(type: String, deviceId: String, fromEpochMs: Long, toEpochMs: Long): Flow<List<HealthSampleEntity>> =
+        samples.map { all ->
+            all.values.filter { it.type == type && it.deviceId == deviceId && it.startEpochMs in fromEpochMs until toEpochMs }.sortedBy { it.startEpochMs }
+        }
+
     override fun observeLatestSamples(types: List<String>, limit: Int): Flow<List<HealthSampleEntity>> =
         samples.map { all -> all.values.filter { it.type in types }.sortedByDescending { it.startEpochMs }.take(limit) }
 

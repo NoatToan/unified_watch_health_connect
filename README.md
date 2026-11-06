@@ -74,10 +74,10 @@ unified_health_app/
 └── feature/
     ├── onboarding/              # Welcome + luồng xin quyền runtime
     ├── home/                    # Dashboard + chi tiết chỉ số (Ngày/Tuần/Tháng)
-    ├── activity/                # Danh sách bài tập (placeholder, dữ liệu giả)
-    ├── sleep/                   # Placeholder
-    ├── devices/                 # Quét / ghép đôi / kết nối / đồng bộ / bỏ ghép đôi
-    └── profile/                 # Cài đặt (placeholder, có toggle đơn vị + dynamic color)
+    ├── activity/                # Bài tập theo tháng + "Weekly activity load" (D-805) + chi tiết bài tập (D-804)
+    ├── devices/                 # Quét / ghép đôi / kết nối / đồng bộ / bỏ ghép đôi + "About this device" (D-806)
+    └── profile/                 # Cài đặt (toggle đơn vị + dynamic color) + Notifications (D-807)
+                                 # (Giấc ngủ: Browse › Sleep, module feature/sleep đã xoá — D-808)
 ```
 
 Quy tắc phụ thuộc: `feature:*` chỉ phụ thuộc `core:model`, `core:domain`, `core:designsystem`. Không feature nào biết tới `core:data` hay `core:ble`; chỉ `:app` ghép tất cả qua Hilt.

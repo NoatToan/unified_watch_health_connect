@@ -45,12 +45,14 @@ class DefaultWearableDeviceRepository @Inject constructor(
     private val credentialsVersion = MutableStateFlow(0)
 
     override val pairedDevices: Flow<List<WearableDevice>> =
-        combine(dao.observeAll(), connection.state, connection.activeAddress, credentialsVersion) { entities, state, active, _ ->
+        combine(dao.observeAll(), connection.state, connection.activeAddress, connection.capabilities, credentialsVersion) { entities, state, active, capabilities, _ ->
             entities.map { e ->
+                val isActive = e.macAddress == active
                 e.toModel(
-                    connectionState = if (e.macAddress == active) state else ConnectionState.Disconnected,
+                    connectionState = if (isActive) state else ConnectionState.Disconnected,
                     credentialRequirements = requirementsFor(e.wearableVendor),
                     storedCredentialKeys = credentials.keys(e.macAddress),
+                    capabilities = if (isActive && state == ConnectionState.Connected) capabilities else emptySet(),
                 )
             }
         }

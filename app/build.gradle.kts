@@ -60,7 +60,6 @@ dependencies {
     implementation(projects.feature.onboarding)
     implementation(projects.feature.home)
     implementation(projects.feature.activity)
-    implementation(projects.feature.sleep)
     implementation(projects.feature.devices)
     implementation(projects.feature.profile)
 

@@ -141,11 +141,11 @@ Card chỉ số: `ElevatedCard` (level 1). Banner thiết bị: `Card` màu `sec
 ### 3.4 Hoạt động / Bài tập: **[MVP]** danh sách 🟡 · **[P2]** live workout ⬜
 
 **Màn hình**
-1. **Danh sách bài tập** (tab Hoạt động): nhóm theo tuần, mỗi item `ListItem` gồm icon môn, tên, ngày, thời lượng, quãng đường, kcal, nhịp tim TB. ✅ (dữ liệu giả)
+1. **Danh sách bài tập** (tab Hoạt động): nhóm theo tháng, mỗi item `ListItem` gồm icon môn, tên, ngày, thời lượng, quãng đường, kcal, nhịp tim TB; thẻ "Weekly activity load" ở đầu (D-805). ✅ (dữ liệu Room)
 2. **Chọn môn** (`ModalBottomSheet` với lưới môn: Đi bộ, Chạy, Đạp xe, Bơi, Sức mạnh, Yoga, Khác). [P2]
 3. **Bài tập trực tiếp**: thời gian lớn, nhịp tim realtime + vùng, quãng đường, pace, nút Tạm dừng / Kết thúc (giữ để kết thúc). Chạy trong foreground service, hiện thông báo ongoing. [P2]
 4. **Tổng kết bài tập**: bản đồ (nếu có GPS, P3), biểu đồ nhịp tim theo vùng, splits, nút Lưu / Xóa. [P2]
-5. **Chi tiết lịch sử**: như tổng kết, read-only. [P2]
+5. **Chi tiết lịch sử**: read-only — thời lượng, quãng đường, kcal, pace/tốc độ, nhịp tim TB/max, biểu đồ nhịp tim theo thời gian bài tập, thiết bị nguồn (D-804). ✅
 
 **Components**: `ExtendedFloatingActionButton` "Bắt đầu tập", `ListItem` trong `ElevatedCard`, `FilterChip` (lọc môn), `ModalBottomSheet`.
 **States**: Empty ("Chưa có bài tập"); Disconnected khi đang tập → snackbar "Mất kết nối đồng hồ, đang thử lại…" và tiếp tục ghi bằng điện thoại.

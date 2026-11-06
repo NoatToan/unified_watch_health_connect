@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.CredentialRequirement
+import com.unified.health.core.model.DeviceCapability
 import com.unified.health.core.model.WearableDevice
 import com.unified.health.core.model.WearableVendor
 import java.time.Instant
@@ -31,6 +32,7 @@ fun PairedDeviceEntity.toModel(
     connectionState: ConnectionState,
     credentialRequirements: List<CredentialRequirement> = emptyList(),
     storedCredentialKeys: Set<String> = emptySet(),
+    capabilities: Set<DeviceCapability> = emptySet(),
 ) = WearableDevice(
     id = id,
     name = name,
@@ -43,4 +45,6 @@ fun PairedDeviceEntity.toModel(
     firmwareVersion = firmwareVersion,
     connectionState = connectionState,
     lastSyncedAt = lastSyncedAtEpochMs?.let(Instant::ofEpochMilli),
+    capabilities = capabilities,
+    pairedAt = Instant.ofEpochMilli(pairedAtEpochMs),
 )

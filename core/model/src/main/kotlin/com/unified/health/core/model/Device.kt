@@ -81,6 +81,10 @@ data class WearableDevice(
     val credentialRequirements: List<CredentialRequirement> = emptyList(),
     /** Keys from [credentialRequirements] that are already stored. */
     val storedCredentialKeys: Set<String> = emptySet(),
+    /** What the live session supports; empty while the device is not connected. */
+    val capabilities: Set<DeviceCapability> = emptySet(),
+    /** When the device was added to the app. */
+    val pairedAt: Instant? = null,
 ) {
     val missingCredentials: List<CredentialRequirement>
         get() = credentialRequirements.filterNot { it.key in storedCredentialKeys }

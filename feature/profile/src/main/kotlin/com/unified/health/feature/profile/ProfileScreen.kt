@@ -47,6 +47,7 @@ import com.unified.health.core.domain.repository.DemoDataController
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.UserPreferences
+import com.unified.health.feature.profile.notifications.NotificationSettingsRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -61,10 +62,20 @@ import javax.inject.Inject
 @Serializable
 data object ProfileDestination
 
+/** Profile › Notifications. */
+@Serializable
+data object NotificationSettingsDestination
+
 fun NavController.navigateToProfile(navOptions: NavOptions? = null) = navigate(ProfileDestination, navOptions)
 
-fun NavGraphBuilder.profileScreen() {
-    composable<ProfileDestination> { ProfileRoute() }
+fun NavController.navigateToNotificationSettings() = navigate(NotificationSettingsDestination)
+
+fun NavGraphBuilder.profileScreen(onOpenNotifications: () -> Unit) {
+    composable<ProfileDestination> { ProfileRoute(onOpenNotifications = onOpenNotifications) }
+}
+
+fun NavGraphBuilder.notificationSettingsScreen(onBack: () -> Unit) {
+    composable<NotificationSettingsDestination> { NotificationSettingsRoute(onBack = onBack) }
 }
 
 @HiltViewModel
@@ -113,7 +124,7 @@ sealed interface DeveloperStatus {
 /** Placeholder settings list; most rows are not wired yet (see FEATURES.md §Profile & settings). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ProfileRoute(viewModel: ProfileViewModel = hiltViewModel()) {
+internal fun ProfileRoute(onOpenNotifications: () -> Unit, viewModel: ProfileViewModel = hiltViewModel()) {
     val prefs by viewModel.prefs.collectAsStateWithLifecycle()
     val developer by viewModel.developerStatus.collectAsStateWithLifecycle()
     Scaffold(topBar = { TopAppBar(title = { Text("Profile") }) }) { padding ->
@@ -133,7 +144,13 @@ internal fun ProfileRoute(viewModel: ProfileViewModel = hiltViewModel()) {
                 trailingContent = { Switch(checked = prefs.useDynamicColor, onCheckedChange = { viewModel.setDynamicColor(it) }) },
             )
             HorizontalDivider(Modifier.padding(vertical = Spacing.sm))
-            SettingRow(Icons.Outlined.Notifications, "Notifications", "Coming soon")
+            SettingRow(
+                Icons.Outlined.Notifications,
+                "Notifications",
+                "Goal achieved, low watch battery, sync reminders",
+                onClick = onOpenNotifications,
+                modifier = Modifier.testTag("profile_notifications"),
+            )
             SettingRow(Icons.Outlined.HealthAndSafety, "Health Connect", "Manage data sharing (coming soon)")
             SettingRow(Icons.Outlined.PrivacyTip, "Privacy", "Coming soon")
             SettingRow(Icons.Outlined.FileDownload, "Export data", "Coming soon")
@@ -152,10 +169,11 @@ private fun SettingRow(
     subtitle: String,
     destructive: Boolean = false,
     onClick: (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
 ) {
     val color = if (destructive) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
     ListItem(
-        modifier = if (onClick != null) Modifier.clickableRow(onClick) else Modifier,
+        modifier = if (onClick != null) modifier.clickableRow(onClick) else modifier,
         leadingContent = { Icon(icon, contentDescription = null, tint = color) },
         headlineContent = { Text(title, color = color) },
         supportingContent = { Text(subtitle) },
