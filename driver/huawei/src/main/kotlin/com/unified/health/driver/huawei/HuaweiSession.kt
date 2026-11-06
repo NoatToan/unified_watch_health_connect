@@ -48,8 +48,15 @@ internal class HuaweiSession private constructor(
     private val clock: Clock,
 ) : WearableSession {
 
+    /**
+     * No [DeviceCapability.HISTORY_SYNC] or [DeviceCapability.LIVE_HEART_RATE]: [sync] cannot
+     * decode a single typed [HealthRecord] yet (see below) and the document gives no evidence that
+     * Huawei watches also expose the Bluetooth SIG Heart Rate service (unlike COROS's chest straps,
+     * §3.1 only lists FE86/0x181C/0x1805). Declaring either would promise the UI data this driver
+     * cannot deliver. [DeviceCapability.BATTERY_LEVEL] is real: it comes from the standard GATT
+     * Battery service when the watch exposes it, independent of the proprietary channel.
+     */
     override val capabilities: Set<DeviceCapability> = buildSet {
-        add(DeviceCapability.HISTORY_SYNC)
         if (gatt.findCharacteristic(StandardUuids.BATTERY_LEVEL, StandardUuids.BATTERY_SERVICE) != null) add(DeviceCapability.BATTERY_LEVEL)
     }
 
@@ -61,19 +68,47 @@ internal class HuaweiSession private constructor(
     override suspend fun readDeviceInfo(): DeviceInfo = StandardGattReader.readDeviceInfo(gatt)
 
     /**
-     * Fetches today's totals (service 7 cmd 3) and keeps the decrypted response as a
-     * [HealthRecord.RawPayload] because its TLV layout is unknown; no typed records yet.
+     * Best-effort raw sweep of service 7 (Fitness): every REQUEST layout §7.2 documents ([V]) is
+     * sent once for [request]'s window — today's totals (cmd 3) and the frame counts behind steps/
+     * distance/calories (cmd 4 "health frames"), continuous HR/SpO2 (cmd 10 "sample frames") and
+     * sleep/status (cmd 12 "status frames"). Each accepted reply is kept as an opaque
+     * [HealthRecord.RawPayload] (the sink persists it for later re-decoding); a reply the watch
+     * rejects (its own 0x7F error TLV) is logged and skipped so one unsupported command does not
+     * abort the rest. Only a transport failure (timeout, link loss) aborts the sweep.
      *
-     * TODO(huawei-protocol): history needs the response layouts of the count/frame commands in
-     * [FitnessCommands] (cmd 4→5/8, 10→11, 12→13, §7.2 "count, then fetch by index"). Once known,
-     * loop over [SyncRequest.effectiveSince]..now and emit Steps/HeartRate/SpO2/Sleep in batches.
+     * TODO(huawei-protocol): every RESPONSE body layout in service 7 is undocumented (§7.2 "chưa
+     * giải mã ở tầng nội dung", §10 "[?] response payload chi tiết") — the count TLV of cmd
+     * 4/10/12 and the frame bodies of cmd 5/8/11/13 are not decoded here, so this never emits a
+     * typed Steps/HeartRate/RestingHeartRate/HeartRateVariability/Sleep/SpO2/Stress/Workout record
+     * and always returns 0. Once an HCI snoop log or a real watch resolves those layouts: parse the
+     * count reply, loop `getXFrame(index)` for 0..count (cmd 5/8/11/13), decode each frame and
+     * deliver it through [sink] in batches, reporting partial [progress] as you go.
      */
     override suspend fun sync(request: SyncRequest, sink: HealthRecordSink, progress: SyncProgress): Int {
-        val response = transport.request(FitnessCommands.todayTotal(), encrypted = true)
-        requireSuccess(response)
-        sink.onRecords(listOf(HealthRecord.RawPayload(WearableVendor.HUAWEI, RAW_TODAY_TOTAL, Instant.now(clock), response.encode())))
-        progress.report(1f)
+        val startSec = request.effectiveSince().epochSecond
+        val endSec = request.now.epochSecond
+        val probes = listOf(
+            RAW_TODAY_TOTAL to FitnessCommands.todayTotal(),
+            RAW_HEALTH_FRAME_COUNT to FitnessCommands.healthFrameCount(startSec, endSec),
+            RAW_SAMPLE_FRAME_COUNT to FitnessCommands.sampleFrameCount(startSec, endSec),
+            RAW_STATUS_FRAME_COUNT to FitnessCommands.statusFrameCount(startSec, endSec),
+        )
+        probes.forEachIndexed { index, (kind, command) ->
+            probe(kind, command, sink)
+            progress.report((index + 1f) / probes.size)
+        }
         return 0
+    }
+
+    /** Sends one probe command; stores a successful reply, logs and skips a rejected one. */
+    private suspend fun probe(kind: String, command: HuaweiCommand, sink: HealthRecordSink) {
+        val response = transport.request(command, encrypted = true)
+        val error = response.errorCode()
+        if (error != null && error != HuaweiCommand.SUCCESS_CODE) {
+            Log.w(TAG, "Huawei watch rejected $kind (${response.tag}) with error $error")
+            return
+        }
+        sink.onRecords(listOf(HealthRecord.RawPayload(WearableVendor.HUAWEI, kind, Instant.now(clock), response.encode())))
     }
 
     override suspend fun close() {
@@ -83,6 +118,9 @@ internal class HuaweiSession private constructor(
     companion object {
         private const val TAG = "HuaweiSession"
         const val RAW_TODAY_TOTAL = "huawei_fitness_today_total"
+        const val RAW_HEALTH_FRAME_COUNT = "huawei_fitness_health_frame_count"
+        const val RAW_SAMPLE_FRAME_COUNT = "huawei_fitness_sample_frame_count"
+        const val RAW_STATUS_FRAME_COUNT = "huawei_fitness_status_frame_count"
 
         /**
          * Runs the handshake. On any failure the session scope is cancelled and the exception

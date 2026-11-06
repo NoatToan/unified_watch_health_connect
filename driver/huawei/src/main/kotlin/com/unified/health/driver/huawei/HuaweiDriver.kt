@@ -41,12 +41,18 @@ import javax.inject.Inject
  * - Request/response matching by service+command, 10 s timeout, 3 attempts (§4.5).
  * - 0x0101 link negotiation (frame sizes, interval, auth version, randA, auth type) (§5.2).
  * - Pluggable authentication: a Hilt set of [HuaweiAuthenticator], selected per auth type (§6).
- * - After authentication: 0x0105 time sync (§5.3) and a sync that stores service 7 cmd 3
- *   (today totals) as a raw payload.
+ * - After authentication: 0x0105 time sync (§5.3) and a best-effort `sync()` that fires every
+ *   documented service 7 request (today totals cmd 3, and the frame-count requests behind steps/
+ *   distance/calories, continuous HR/SpO2 and sleep/status, cmd 4/10/12) and keeps each accepted
+ *   reply as an opaque raw payload for later re-decoding.
  * - Request builders for service 7 history commands 4/5/8/10/11/12/13 (§7.2).
+ * - `capabilities` only ever advertises battery level, and only when the standard GATT Battery
+ *   service is present; neither history sync nor live heart rate is declared because no typed
+ *   record can be produced yet (see below).
  *
  * ## Still unknown (needs an HCI snoop log of Huawei Health with a real watch)
- * - Every service 7 response layout, so no typed health records are decoded.
+ * - Every service 7 response layout (the frame-count TLV and the frame bodies cmd 5/8/11/13), so no
+ *   typed Steps/HeartRate/SpO2/Sleep/Stress/Workout record is decoded yet.
  * - 0x0107 device version, 0x0132 time-zone id and 0x0102/0x0103 capability consult layouts.
  * - Whether the IV counter must strictly increase on the watch side.
  */
