@@ -126,6 +126,33 @@ internal object GfdiPayloads {
         bytes(bitmask)
     }
 
+    /**
+     * `SupportedCapability` ordinals this host really serves (§10.1 [V], `SupportedCapability.<clinit>`;
+     * set from `GARMIN_IMPLEMENTATION_BRIEF.md` TODO-2). Anything else (GNCS, LiveTrack, weather…)
+     * would make the watch send messages we can only answer with UNKNOWN_OR_NOT_SUPPORTED.
+     */
+    val HOST_CAPABILITIES: Set<Int> = setOf(
+        0, // CONNECT_MOBILE_FIT_LINK: FIT file transfer
+        3, // SYNC
+        4, // DEVICE_INITIATES_SYNC: watch may send 5037
+        5, // HOST_INITIATED_SYNC_REQUESTS
+        // EXPLICIT_ARCHIVE: the host archives files itself (5008) instead of the watch doing it after
+        // a download [I]; we never send 5008, so files stay un-archived for Garmin Connect.
+        29,
+        71, // CURRENT_TIME_REQUEST_SUPPORT: the watch asks for time with 5052, which we answer
+    )
+
+    /** `bitmask[bit / 8] |= 1 << (bit % 8)` (§10.1 [V]), as short as the highest bit allows. */
+    fun capabilityBitmask(bits: Set<Int>): ByteArray {
+        val highest = bits.maxOrNull() ?: return ByteArray(0)
+        val bytes = ByteArray(highest / 8 + 1)
+        for (bit in bits) bytes[bit / 8] = (bytes[bit / 8].toInt() or (1 shl (bit % 8))).toByte()
+        return bytes
+    }
+
+    /** Our own 5050 payload: `len u8 | HOST_CAPABILITIES bitmask`. */
+    fun hostConfiguration(): ByteArray = encodeConfiguration(capabilityBitmask(HOST_CAPABILITIES))
+
     /** 5030 payload `[eventId, 0]` (§4.16 [V], `vs2/l.java:96-100`). */
     fun systemEvent(eventId: Int): ByteArray = byteArrayOf(eventId.toByte(), 0)
 
@@ -157,6 +184,34 @@ internal data class DownloadResponse(val status: Int, val fileSize: Long) {
         fun decode(data: ByteArray): DownloadResponse {
             val r = ByteReader(data)
             return DownloadResponse(r.u8(), r.u32le())
+        }
+    }
+}
+
+/**
+ * 5023 Battery Status, **provisional**: `u8 percent | u8 status | u32 timestamp (FIT s)`
+ * (§10.3 [I], low confidence: inferred from `BatteryStatusOptions(isCharging=, batteryPercentage=)`
+ * strings only). [decode] returns null for anything that does not fit that layout, so callers fall
+ * back to the SIG Battery service.
+ * TODO(garmin-protocol): NEEDS-REAL-WATCH — confirm the layout from an HCI snoop log of a Garmin
+ * Connect sync (GFDI id bytes `9A 13`), then promote this from fallback to primary source.
+ */
+internal data class BatteryStatus(val percent: Int, val status: Int, val fitTimestamp: Long) {
+    val isCharging: Boolean get() = status == STATUS_CHARGING
+
+    companion object {
+        const val LENGTH = 6
+        const val STATUS_CHARGING = 6
+        private const val MAX_STATUS = 7
+
+        fun decode(payload: ByteArray): BatteryStatus? {
+            if (payload.size < LENGTH) return null
+            val r = ByteReader(payload)
+            val percent = r.u8()
+            val status = r.u8()
+            val timestamp = r.u32le()
+            if (percent !in 0..100 || status !in 0..MAX_STATUS) return null
+            return BatteryStatus(percent, status, timestamp)
         }
     }
 }

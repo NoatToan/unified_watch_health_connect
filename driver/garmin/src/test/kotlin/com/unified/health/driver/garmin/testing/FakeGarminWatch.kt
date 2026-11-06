@@ -29,6 +29,7 @@ internal class FakeGarminWatch(
     mtu: Int = 23,
     heartRateService: Boolean = false,
     realtimeService: Boolean = false,
+    sigBattery: Boolean = true,
 ) {
 
     val mlNotify = characteristic(GarminUuids.MULTI_LINK_SERVICE, GarminUuids.multiLinkNotify(0), PROPERTY_NOTIFY)
@@ -41,7 +42,8 @@ internal class FakeGarminWatch(
     val realtimeHeartRate = characteristic(GarminUuids.REALTIME_SERVICE, GarminUuids.REALTIME_HEART_RATE, PROPERTY_NOTIFY)
 
     val gatt = FakeGattClient(
-        (if (multiLink) listOf(mlNotify, mlWrite) else listOf(gfdiRead, gfdiWrite)) + battery +
+        (if (multiLink) listOf(mlNotify, mlWrite) else listOf(gfdiRead, gfdiWrite)) +
+            (if (sigBattery) listOf(battery) else emptyList()) +
             (if (heartRateService) listOf(heartRate) else emptyList()) +
             (if (realtimeService) listOf(realtimeHeartRate) else emptyList()),
         mtu = mtu,
@@ -49,6 +51,18 @@ internal class FakeGarminWatch(
 
     /** Statuses sent, in order, in answer to REGISTER of GFDI (e.g. PENDING_AUTH then SUCCESS). */
     var registerStatuses = listOf(RegisterStatus.SUCCESS)
+
+    /** When true, REGISTER(GFDI) is REJECTED until service 4 was registered and every info page asked. */
+    var requireRegistrationService = false
+
+    /** Answer to REGISTER of REGISTRATION (service 4). */
+    var registrationStatus = RegisterStatus.SUCCESS
+
+    /** Info pages that get no answer on the first N requests each (to exercise retries). */
+    var silentInfoPageRequests = 0
+
+    /** Info-page types asked on the REGISTRATION handle, in order (retries included). */
+    val infoPageRequests = mutableListOf<Int>()
 
     /** Answer to REGISTER of REAL_TIME_HR (service 6); null = never answer. */
     var realtimeRegisterStatus: Int? = RegisterStatus.INVALID_SERVICE_ID
@@ -94,6 +108,7 @@ internal class FakeGarminWatch(
         when (value[0].toInt()) {
             MultiLinkCodec.CONTROL_HANDLE -> onControl(value)
             HANDLE -> onGfdiBytes(value.copyOfRange(1, value.size))
+            REGISTRATION_HANDLE -> onInfoPageRequest(value[1].toInt())
             else -> error("Write to unknown handle ${value[0]}")
         }
     }
@@ -111,9 +126,12 @@ internal class FakeGarminWatch(
                         // Another client's traffic on the same characteristic must be ignored by the driver.
                         notifyRaw(registerResponse(clientId + 1, serviceId, RegisterStatus.SUCCESS, handle = 9))
                         notifyRaw(byteArrayOf(9, 1, 2, 3))
-                        for (status in registerStatuses) notifyRaw(registerResponse(clientId, serviceId, status, HANDLE))
-                        if (registerStatuses.last() == RegisterStatus.SUCCESS) sendDeviceInformation()
+                        val statuses = if (requireRegistrationService && !infoPagesComplete()) listOf(RegisterStatus.REJECTED) else registerStatuses
+                        for (status in statuses) notifyRaw(registerResponse(clientId, serviceId, status, HANDLE))
+                        if (statuses.last() == RegisterStatus.SUCCESS) sendDeviceInformation()
                     }
+                    MultiLinkCodec.SERVICE_REGISTRATION ->
+                        notifyRaw(registerResponse(clientId, serviceId, registrationStatus, REGISTRATION_HANDLE))
                     MultiLinkCodec.SERVICE_REAL_TIME_HR ->
                         realtimeRegisterStatus?.let { notifyRaw(registerResponse(clientId, serviceId, it, REALTIME_HANDLE)) }
                 }
@@ -123,6 +141,19 @@ internal class FakeGarminWatch(
                 closedHandles += r.u16le() to r.u8()
             }
         }
+    }
+
+    private fun infoPagesComplete() =
+        registrations.containsKey(MultiLinkCodec.SERVICE_REGISTRATION) && infoPageRequests.toSet() == MultiLinkCodec.INFO_PAGE_ORDER.toSet()
+
+    /** Answers `[H4][pageType]` with `[H4][pageType][one service entry]`; content is opaque to the driver. */
+    private fun onInfoPageRequest(page: Int) {
+        infoPageRequests += page
+        if (silentInfoPageRequests > 0) {
+            silentInfoPageRequests--
+            return
+        }
+        notifyRaw(byteArrayOf(REGISTRATION_HANDLE.toByte(), page.toByte(), 1, 0))
     }
 
     private fun registerResponse(clientId: Long, serviceId: Int, status: Int, handle: Int) = buildBytes {
@@ -227,6 +258,7 @@ internal class FakeGarminWatch(
     companion object {
         const val HANDLE = 4
         const val REALTIME_HANDLE = 5
+        const val REGISTRATION_HANDLE = 6
         const val FILE_CHUNK = 100
     }
 }

@@ -444,6 +444,23 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   `docs/re-evidence/garmin/battery_status_5023.md`.
   Lý do: không suy đoán layout; fallback SIG Battery đã hoạt động và an toàn.
 
+- **D-411** · 2026-11-06 · Driver gửi 5050 cố định {0,3,4,5,29,71} (thực thi D-409) — **Chốt**
+  `GfdiPayloads.HOST_CAPABILITIES` + `capabilityBitmask()` → payload `09 39 00 00 20 00 00 00 00 80`
+  (test byte-vector). Bitmask của đồng hồ chỉ còn được log, không gửi ngược lại. Giữ bit 29
+  EXPLICIT_ARCHIVE theo brief: hiểu [I] là "host tự archive" nên đồng hồ không tự archive sau khi tải;
+  driver không bao giờ gửi 5008 → file vẫn còn cho Garmin Connect (đúng chính sách không phá dữ liệu).
+- **D-412** · 2026-11-06 · Service 4 chỉ chạy khi REGISTER(GFDI) bị REJECTED, thử lại 1 lần — **Tạm**
+  Không bắt buộc chạy service 4 mọi lần (giữ đường ngắn đã chạy được); khi status 4: REGISTER(4) → hỏi
+  6 info page theo thứ tự `eh2/f` (0,1,3,4,2,5), mỗi trang tối đa 5 lần × 1 s (§4.B.7), chỉ chờ có trả
+  lời chứ không giải mã nội dung (layout chưa có) → REGISTER(GFDI) lại. Service 4 bị từ chối → giữ lỗi
+  REJECTED gốc. Lý do: đúng TODO-1 của brief, không đổi hành vi với đồng hồ không cần service 4;
+  kiểm bằng `FakeGarminWatch.requireRegistrationService`. Giả lập E2E (GFDI dedicated) không đổi.
+- **D-413** · 2026-11-06 · 5023 parse tạm, SIG Battery vẫn là nguồn chính — **Tạm**
+  `BatteryStatus.decode` theo layout suy luận §10.3 (`u8 % | u8 status | u32 FIT-time`), loại bỏ nếu
+  < 6 byte, % ngoài 0..100 hoặc status ngoài 0..7. `readDeviceInfo` = SIG 0x180F, chỉ khi không có SIG
+  mới dùng giá trị 5023 hợp lệ gần nhất; capability `BATTERY_LEVEL` vẫn chỉ báo khi có SIG (không hứa
+  dựa trên layout chưa kiểm). Lý do: yêu cầu vòng 2, an toàn khi layout sai (rơi về null/SIG).
+
 ## Zepp driver (D-5xx)
 
 - **D-501** · 2026-11-06 · Zepp giao thức — **Chốt**

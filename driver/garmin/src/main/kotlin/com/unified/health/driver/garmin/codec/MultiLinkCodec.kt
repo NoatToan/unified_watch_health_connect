@@ -16,6 +16,15 @@ internal object MultiLinkCodec {
     /** Multi-Link service id of GFDI (§3.3 [V], `ml2/q.java`). */
     const val SERVICE_GFDI = 1
 
+    /** Multi-Link REGISTRATION service, whose handle serves the info pages (§3.3, §10.2 [V]). */
+    const val SERVICE_REGISTRATION = 4
+
+    /**
+     * Info-page types in the order `eh2/f.initialize` asks them: o.g (GFDI services), o.a, o.d, o.e,
+     * o.c, o.f (NFC) (§10.2 [V]; ordinals per `GARMIN_IMPLEMENTATION_BRIEF.md` TODO-1).
+     */
+    val INFO_PAGE_ORDER = listOf(0, 1, 3, 4, 2, 5)
+
     /** `ml2/q.java`, `xm2/h.java:11`: REAL_TIME_HR. */
     const val SERVICE_REAL_TIME_HR = 6
 

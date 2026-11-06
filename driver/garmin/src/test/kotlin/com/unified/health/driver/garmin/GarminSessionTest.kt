@@ -6,6 +6,7 @@ import com.unified.health.core.ble.driver.UnsupportedDeviceException
 import com.unified.health.core.ble.driver.WearableProtocolException
 import com.unified.health.core.ble.protocol.ByteReader
 import com.unified.health.core.ble.protocol.buildBytes
+import com.unified.health.core.ble.protocol.hexToBytes
 import com.unified.health.core.ble.protocol.toHex
 import com.unified.health.core.model.DeviceCapability
 import com.unified.health.core.model.HealthRecord
@@ -85,7 +86,8 @@ class GarminSessionTest {
         // Handshake replies.
         val deviceInfoAck = watch.ackOf(GfdiMessageId.DEVICE_INFORMATION)!!
         assertEquals(113, ByteReader(deviceInfoAck.data).u16le())
-        assertArrayEquals(byteArrayOf(3) + watch.configuration, watch.sent(GfdiMessageId.CONFIGURATION).single().payload)
+        // Our own fixed capability set (bits 0,3,4,5,29,71), never the watch's bitmask mirrored back.
+        assertEquals("09390000200000000080", watch.sent(GfdiMessageId.CONFIGURATION).single().payload.toHex())
         val timeReply = watch.ackOf(GfdiMessageId.CURRENT_TIME_REQUEST)!!
         assertEquals("01020304", timeReply.data.copyOf(4).toHex())
         assertEquals(FitTime.fromInstant(now), ByteReader(timeReply.data, 4).u32le())
@@ -134,6 +136,68 @@ class GarminSessionTest {
         val error = runCatching { GarminSession.open(watch.gatt, config()) }.exceptionOrNull()
         assertTrue(error is MultiLinkRegistrationException)
         assertTrue(error!!.message!!.contains("client id"))
+    }
+
+    @Test
+    fun `rejected GFDI is retried after the REGISTRATION info-page query`() = runTest {
+        val watch = FakeGarminWatch().apply {
+            requireRegistrationService = true
+            silentInfoPageRequests = 1 // first page needs one retry
+        }
+        val session = GarminSession.open(watch.gatt, config())
+
+        assertEquals(
+            listOf(
+                MultiLinkCodec.closeAll(CLIENT_ID),
+                MultiLinkCodec.register(CLIENT_ID, MultiLinkCodec.SERVICE_GFDI),
+                MultiLinkCodec.register(CLIENT_ID, MultiLinkCodec.SERVICE_REGISTRATION),
+                MultiLinkCodec.register(CLIENT_ID, MultiLinkCodec.SERVICE_GFDI),
+            ).map { it.toHex() },
+            watch.controlWrites.map { it.toHex() },
+        )
+        assertEquals(listOf(0, 0, 1, 3, 4, 2, 5), watch.infoPageRequests)
+        assertEquals("Forerunner 265S", session.readDeviceInfo().model)
+        session.close()
+    }
+
+    @Test
+    fun `refused REGISTRATION service keeps the original rejection`() = runTest {
+        val watch = FakeGarminWatch().apply {
+            requireRegistrationService = true
+            registrationStatus = RegisterStatus.REJECTED
+        }
+        val error = runCatching { GarminSession.open(watch.gatt, config()) }.exceptionOrNull()
+        assertTrue(error is MultiLinkRegistrationException)
+        assertEquals(1, watch.registrations[MultiLinkCodec.SERVICE_GFDI])
+        assertTrue(watch.infoPageRequests.isEmpty())
+    }
+
+    @Test
+    fun `SIG battery stays primary over a provisional 5023`() = runTest {
+        val watch = FakeGarminWatch()
+        val session = GarminSession.open(watch.gatt, config())
+        watch.send(GfdiMessageId.BATTERY_STATUS, "400200000000".hexToBytes())
+        testScheduler.runCurrent()
+        assertEquals(81, session.readDeviceInfo().batteryPercent)
+        assertEquals(GfdiStatus.ACK, watch.ackOf(GfdiMessageId.BATTERY_STATUS)!!.status)
+        session.close()
+    }
+
+    @Test
+    fun `provisional 5023 fills in when the watch has no SIG battery, malformed ones are ignored`() = runTest {
+        val watch = FakeGarminWatch(sigBattery = false)
+        val session = GarminSession.open(watch.gatt, config())
+        assertEquals(null, session.readDeviceInfo().batteryPercent)
+        assertTrue(DeviceCapability.BATTERY_LEVEL !in session.capabilities)
+
+        watch.send(GfdiMessageId.BATTERY_STATUS, "400200000000".hexToBytes())
+        testScheduler.runCurrent()
+        assertEquals(64, session.readDeviceInfo().batteryPercent)
+
+        watch.send(GfdiMessageId.BATTERY_STATUS, "ff02".hexToBytes()) // does not fit: previous value kept
+        testScheduler.runCurrent()
+        assertEquals(64, session.readDeviceInfo().batteryPercent)
+        session.close()
     }
 
     @Test

@@ -29,9 +29,12 @@ internal class MultiLinkRegistrationException(val status: Int, message: String) 
  * `6A4E281x` characteristic, CLOSE_ALL our client's stale handles, then REGISTER service 1 (GFDI)
  * without the reliable layer and wait through PENDING_AUTH.
  *
- * TODO(garmin-protocol): the official app first registers service 4 (REGISTRATION) and reads the
- * "info pages" (§4.7, `ml2/o.java`) before GFDI. Skipped here; check on a real watch whether
- * firmware requires it.
+ * The official app always registers service 4 (REGISTRATION) and queries its info pages first
+ * (§10.2 [V], `eh2/f.initialize`). We go straight to GFDI, and only when the watch answers REJECTED
+ * do we run that registration sequence ([queryRegistrationInfoPages]) and retry once
+ * (`GARMIN_IMPLEMENTATION_BRIEF.md` TODO-1).
+ * TODO(garmin-protocol): NEEDS-REAL-WATCH — whether firmware ever requires service 4 first, and the
+ * info-page *response* layout (not decoded; we only wait for an answer per page).
  */
 internal class MultiLinkConnector(
     private val gatt: GattClient,
@@ -68,9 +71,11 @@ internal class MultiLinkConnector(
     }
 
     private suspend fun registerGfdi(link: MultiLinkLink): Int {
-        val response = link.register(MultiLinkCodec.SERVICE_GFDI, REGISTER_TIMEOUT_MS) ?: throw WearableProtocolException(
-            "The watch did not answer the Multi-Link GFDI registration within ${REGISTER_TIMEOUT_MS / 1000}s",
-        )
+        var response = requestGfdi(link)
+        if (response.status == RegisterStatus.REJECTED && queryRegistrationInfoPages(link)) {
+            Log.i(TAG, "GFDI rejected; retrying after the REGISTRATION info-page query")
+            response = requestGfdi(link)
+        }
         when (response.status) {
             RegisterStatus.SUCCESS -> Unit
             RegisterStatus.ALREADY_IN_USE -> throw MultiLinkRegistrationException(
@@ -89,6 +94,39 @@ internal class MultiLinkConnector(
         return response.handle
     }
 
+    private suspend fun requestGfdi(link: MultiLinkLink): MultiLinkResponse.Register =
+        link.register(MultiLinkCodec.SERVICE_GFDI, REGISTER_TIMEOUT_MS) ?: throw WearableProtocolException(
+            "The watch did not answer the Multi-Link GFDI registration within ${REGISTER_TIMEOUT_MS / 1000}s",
+        )
+
+    /**
+     * REGISTER service 4 and ask each info page (§4.B.6-7, §10.2 [V]): write `[H4][pageType]` for the
+     * page order of `eh2/f.initialize` and wait for any answer on H4, retrying [INFO_PAGE_ATTEMPTS]
+     * times with [INFO_PAGE_TIMEOUT_MS] each (`ml2/o.java`). The answer's content is not parsed.
+     * @return false when the watch refused service 4, so retrying GFDI is pointless.
+     */
+    private suspend fun queryRegistrationInfoPages(link: MultiLinkLink): Boolean {
+        val registration = link.register(MultiLinkCodec.SERVICE_REGISTRATION, REGISTER_TIMEOUT_MS)
+        if (registration == null || registration.status != RegisterStatus.SUCCESS) {
+            Log.w(TAG, "REGISTRATION service refused (status ${registration?.status}); cannot retry GFDI")
+            return false
+        }
+        val handle = registration.handle
+        val answers = link.channelFor(handle)
+        for (page in MultiLinkCodec.INFO_PAGE_ORDER) {
+            var answered = false
+            for (attempt in 1..INFO_PAGE_ATTEMPTS) {
+                link.write(byteArrayOf(handle.toByte(), page.toByte()))
+                if (withTimeoutOrNull(INFO_PAGE_TIMEOUT_MS) { answers.receiveCatching().getOrNull() } != null) {
+                    answered = true
+                    break
+                }
+            }
+            if (!answered) Log.w(TAG, "No answer to info page $page after $INFO_PAGE_ATTEMPTS attempts")
+        }
+        return true
+    }
+
     companion object {
         private const val TAG = "GarminMultiLink"
 
@@ -97,6 +135,10 @@ internal class MultiLinkConnector(
 
         /** `nl2/d.java:224-231`: REGISTER waits up to 30 s, including PENDING_AUTH. */
         const val REGISTER_TIMEOUT_MS = 30_000L
+
+        /** `ml2/o.java` via §4.B.7: retried 5 times, 1 s per page. */
+        const val INFO_PAGE_ATTEMPTS = 5
+        const val INFO_PAGE_TIMEOUT_MS = 1_000L
     }
 }
 
@@ -197,7 +239,9 @@ internal class MultiLinkRouter(private val clientId: Long) {
 
     /** Drops stale control responses so the next exchange only sees answers to its own request. */
     fun drainControl() {
-        while (control.tryReceive().isSuccess) Unit
+        do {
+            val drained = control.tryReceive().isSuccess
+        } while (drained)
     }
 
     suspend fun run(notifications: ReceiveChannel<ByteArray>) {

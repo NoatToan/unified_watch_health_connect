@@ -13,6 +13,7 @@ import com.unified.health.core.ble.gatt.StandardUuids
 import com.unified.health.core.model.DeviceCapability
 import com.unified.health.core.model.DeviceInfo
 import com.unified.health.core.model.HealthRecord
+import com.unified.health.driver.garmin.codec.BatteryStatus
 import com.unified.health.driver.garmin.codec.GarminDeviceInformation
 import com.unified.health.driver.garmin.codec.GarminSystemEvent
 import com.unified.health.driver.garmin.codec.GfdiMessage
@@ -66,6 +67,10 @@ internal class GarminSession private constructor(
     /** Completed once our own 5050 went out, so HANDSHAKE_COMPLETE follows it as in the official flow. */
     private val configurationExchanged = CompletableDeferred<Unit>()
 
+    /** Last 5023 that passed [BatteryStatus.decode]'s checks; only a fallback (§10.3 [I]). */
+    @Volatile
+    private var provisionalBattery: BatteryStatus? = null
+
     private val liveHr = GarminLiveHeartRate.sources(gatt, stream.multiLink).takeIf { it.isNotEmpty() }
         ?.let { GarminLiveHeartRate(it, scope, config.clock) }
 
@@ -98,11 +103,12 @@ internal class GarminSession private constructor(
             InboundReply(data = GfdiPayloads.hostInformation(config.host))
         }
         GfdiMessageId.CONFIGURATION -> {
-            val capabilities = GfdiPayloads.decodeConfiguration(message.payload)
+            val deviceCapabilities = GfdiPayloads.decodeConfiguration(message.payload)
+            Log.d(TAG, "Watch capabilities: ${deviceCapabilities.size} bytes")
             InboundReply(
                 afterAck = {
                     try {
-                        sendConfiguration(capabilities)
+                        sendConfiguration()
                     } finally {
                         configurationExchanged.complete(Unit)
                     }
@@ -112,9 +118,17 @@ internal class GarminSession private constructor(
         GfdiMessageId.CURRENT_TIME_REQUEST ->
             InboundReply(data = GfdiPayloads.currentTimeReply(message.payload, config.clock.instant(), config.clock.zone))
         GfdiMessageId.FILE_DATA -> fileSync.onFileData(message.payload)
+        GfdiMessageId.BATTERY_STATUS -> {
+            val battery = BatteryStatus.decode(message.payload)
+            if (battery == null) {
+                Log.d(TAG, "5023 (${message.payload.size} bytes) does not match the provisional layout; ignored")
+            } else {
+                provisionalBattery = battery
+            }
+            InboundReply()
+        }
         GfdiMessageId.FIT_DEFINITION,
         GfdiMessageId.FIT_DATA,
-        GfdiMessageId.BATTERY_STATUS,
         GfdiMessageId.SYSTEM_EVENT,
         GfdiMessageId.SYNC_REQUEST,
         -> InboundReply()
@@ -139,13 +153,12 @@ internal class GarminSession private constructor(
     }
 
     /**
-     * Sends the host's 5050 capability bitmask. We mirror the watch's own bitmask.
-     * TODO(garmin-protocol): the official app sends the set *it* supports (`at2/a.java:429-458`);
-     * mirroring may advertise features (weather, notifications…) that we then answer with
-     * UNKNOWN_OR_NOT_SUPPORTED. Verify on a real watch and narrow the set if it causes retries.
+     * Sends the host's own 5050: the fixed [GfdiPayloads.HOST_CAPABILITIES] set, like the official
+     * app sends the set *it* supports (§4.12, `at2/a.java:429-458`; bit table §10.1 [V]), never the
+     * watch's set mirrored back.
      */
-    private suspend fun sendConfiguration(capabilities: ByteArray) {
-        val ack = dispatcher.request(GfdiMessageId.CONFIGURATION, GfdiPayloads.encodeConfiguration(capabilities), REQUEST_TIMEOUT_MS)
+    private suspend fun sendConfiguration() {
+        val ack = dispatcher.request(GfdiMessageId.CONFIGURATION, GfdiPayloads.hostConfiguration(), REQUEST_TIMEOUT_MS)
         if (!ack.isAck) Log.w(TAG, "Watch answered our Configuration with ${GfdiStatus.name(ack.status)}")
     }
 
@@ -160,8 +173,8 @@ internal class GarminSession private constructor(
             model = info.deviceModel.ifBlank { info.deviceName }.ifBlank { null },
             firmwareVersion = info.firmwareVersionText,
             serialNumber = info.unitId.toString(),
-            // TODO(garmin-protocol): 5023 Battery Status layout is not documented; using the SIG service.
-            batteryPercent = StandardGattReader.readBatteryPercent(gatt),
+            // SIG Battery is primary; the provisional 5023 parse only fills in when it is absent (§10.3).
+            batteryPercent = StandardGattReader.readBatteryPercent(gatt) ?: provisionalBattery?.percent,
         )
     }
 

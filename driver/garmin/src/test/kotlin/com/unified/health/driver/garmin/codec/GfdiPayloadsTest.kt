@@ -43,6 +43,38 @@ class GfdiPayloadsTest {
     }
 
     @Test
+    fun `host 5050 advertises exactly bits 0 3 4 5 29 71`() {
+        // byte 0: bits 0,3,4,5 = 0x39; byte 3: bit 29 = 0x20; byte 8: bit 71 = 0x80; 9 bytes, length-prefixed.
+        assertEquals("09" + "39000020" + "00000000" + "80", GfdiPayloads.hostConfiguration().toHex())
+        assertEquals(setOf(0, 3, 4, 5, 29, 71), GfdiPayloads.HOST_CAPABILITIES)
+    }
+
+    @Test
+    fun `capability bitmask sets bit modulo 8 in byte bit div 8`() {
+        assertEquals("", GfdiPayloads.capabilityBitmask(emptySet()).toHex())
+        assertEquals("01", GfdiPayloads.capabilityBitmask(setOf(0)).toHex())
+        assertEquals("0080", GfdiPayloads.capabilityBitmask(setOf(15)).toHex())
+        assertEquals("010001", GfdiPayloads.capabilityBitmask(setOf(0, 16)).toHex())
+    }
+
+    @Test
+    fun `provisional 5023 battery status decodes the inferred layout`() {
+        // 64 % | status 6 (charging) | timestamp 0x12345678 LE
+        val battery = BatteryStatus.decode("400678563412".hexToBytes())
+        assertEquals(BatteryStatus(percent = 64, status = 6, fitTimestamp = 0x12345678L), battery)
+        assertTrue(battery!!.isCharging)
+        assertEquals(BatteryStatus(100, 2, 0), BatteryStatus.decode("640200000000".hexToBytes() + byteArrayOf(9)))
+    }
+
+    @Test
+    fun `5023 that does not fit the inferred layout is rejected`() {
+        assertEquals(null, BatteryStatus.decode("4006".hexToBytes())) // too short
+        assertEquals(null, BatteryStatus.decode("ff0200000000".hexToBytes())) // 0xFF = unknown percent
+        assertEquals(null, BatteryStatus.decode("650200000000".hexToBytes())) // 101 %
+        assertEquals(null, BatteryStatus.decode("400900000000".hexToBytes())) // status out of range
+    }
+
+    @Test
     fun `host information layout`() {
         val bytes = GfdiPayloads.hostInformation(HostIdentity(appVersion = 2, friendlyName = "UH", manufacturer = "G", model = "P9"))
         assertEquals(

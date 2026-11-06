@@ -10,8 +10,9 @@ import kotlin.math.roundToInt
 
 /**
  * Maps decoded FIT messages onto [HealthRecord]s. Message and field numbers come from the public
- * FIT SDK profile ([Ext], `Profile.xlsx`); none of them are visible in the Garmin Connect APK, so
- * every mapping here must be checked against files from a real watch (TODO(garmin-protocol)).
+ * FIT SDK profile ([Ext], `Profile.xlsx`), confirmed as the right source by
+ * `GARMIN_IMPLEMENTATION_BRIEF.md` TODO-4 (RESOLVED). The few *behaviours* that brief still lists
+ * for a real MONITORING_B file carry their own TODO below.
  *
  * Daily step/calorie/distance counters are cumulative within a day, so they are collected in a
  * [DailyActivityAccumulator] shared by every file of one sync and emitted once at the end.
@@ -151,8 +152,9 @@ internal object FitHealthMapper {
     /**
      * monitoring_hr_data (273) [Ext]: the device's own daily resting HR, recomputed through the day.
      * `current_day_resting_heart_rate` (1) is the running estimate and wins over the plain field (0)
-     * when both are present. TODO(garmin-protocol): confirm message/field numbers against a real
-     * MONITORING_B (type 32) file; not visible in the Garmin Connect APK (FIT is a separate, public spec).
+     * when both are present.
+     * TODO(garmin-protocol): NEEDS-REAL-WATCH (brief TODO-4 item 1) — confirm field 1 is actually
+     * present in real type-32 files and that preferring it over field 0 is right.
      */
     private fun mapRestingHeartRate(message: FitMessage, zone: ZoneId): HealthRecord? {
         val time = message.timestamp ?: return null
@@ -165,8 +167,8 @@ internal object FitHealthMapper {
     /**
      * hrv_status_summary (389) [Ext]: nightly HRV status, one message per morning. We report
      * `last_night_average` as the device's SDNN-like summary (scale 128, §FIT profile "Base Types").
-     * Newer firmware only; older watches may use a different/no HRV message (§9 question 7-adjacent).
-     * TODO(garmin-protocol): confirm message/field numbers and scale against a real file.
+     * Newer firmware only; older watches may use a different/no HRV message.
+     * TODO(garmin-protocol): NEEDS-REAL-WATCH (brief TODO-4 item 2) — confirm scale 128 on a real file.
      */
     private fun mapHrv(message: FitMessage): HealthRecord? {
         val time = message.timestamp ?: return null
@@ -193,8 +195,9 @@ internal object FitHealthMapper {
 
     /**
      * Each sleep_level sample starts a stage that lasts until the next sample [Ext]. The last
-     * sample has no end and is dropped. TODO(garmin-protocol): confirm the sampling scheme
-     * (every minute vs on change) and whether type-49 files carry these messages.
+     * sample has no end and is dropped.
+     * TODO(garmin-protocol): NEEDS-REAL-WATCH (brief TODO-4 item 4) — confirm samples are on stage
+     * change (so [MAX_SLEEP_SEGMENT_SECONDS] is sound) and whether type-49 files carry them.
      */
     private fun sleepIntervals(levels: List<Pair<Long, Int>>): List<HealthRecord.Sleep> {
         val result = mutableListOf<HealthRecord.Sleep>()
@@ -229,7 +232,7 @@ internal object FitHealthMapper {
  * at local midnight and each record holds the running total for its activity type, so a day's
  * value is the sum over activity types of each type's maximum [Ext].
  *
- * TODO(garmin-protocol): verify on a real watch that counters are per activity type (not global)
+ * TODO(garmin-protocol): NEEDS-REAL-WATCH (brief TODO-4 item 3) — verify counters are per activity type (not global)
  * and that `cycles` is already in steps for walking/running (FIT sub-field `steps`, scale 1).
  */
 internal class DailyActivityAccumulator {
