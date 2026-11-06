@@ -1,0 +1,45 @@
+package com.unified.health.core.ble.driver
+
+import com.unified.health.core.model.CredentialRequirement
+import com.unified.health.core.model.WearableVendor
+
+/**
+ * Plug-in point for a brand reached through its companion app's SDK instead of raw GATT
+ * (e.g. Huawei WearEngine, which talks to the watch via the Huawei Health app). Registered with
+ * `@Binds @IntoSet` like [WearableDriver]; a vendor may have both kinds, and the companion route
+ * is preferred whenever it is [CompanionAvailability.Available].
+ */
+interface CompanionAppDriver {
+    val vendor: WearableVendor
+
+    val credentialRequirements: List<CredentialRequirement> get() = emptyList()
+
+    /** Whether the companion app and its SDK service can be used right now. Cheap; no UI. */
+    suspend fun availability(): CompanionAvailability
+
+    /** Watches the companion app knows about. May trigger the SDK's own permission UI. */
+    suspend fun bondedDevices(): List<CompanionDevice>
+
+    /**
+     * Opens a session with the device whose [CompanionDevice.id] is [deviceId]. Throw
+     * [WearableProtocolException] subclasses on failure (permission denied, device offline…).
+     */
+    suspend fun openSession(deviceId: String): WearableSession
+}
+
+/** A watch as reported by a companion SDK. [id] is stable across app restarts. */
+data class CompanionDevice(
+    val id: String,
+    val name: String,
+    val model: String?,
+    val isConnected: Boolean,
+)
+
+sealed interface CompanionAvailability {
+    data object Available : CompanionAvailability
+
+    /** The vendor app (e.g. `com.huawei.health`) is not installed or too old. */
+    data class AppMissing(val packageName: String) : CompanionAvailability
+
+    data class Unavailable(val reason: String) : CompanionAvailability
+}

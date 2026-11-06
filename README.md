@@ -140,6 +140,7 @@ Quy tắc phụ thuộc: `feature:*` chỉ phụ thuộc `core:model`, `core:dom
 
 ## Ghi chú
 
+- Tài liệu giao thức (Garmin/Huawei/Zepp), evidence dịch ngược và driver đã archive: xem [`docs/`](docs/README.md).
 - `local.properties` không được commit (đã có trong `.gitignore`).
 - `android:usesPermissionFlags="neverForLocation"` trên `BLUETOOTH_SCAN`: nếu quảng bá BLE của đồng hồ bị lọc khi quét, bỏ cờ này và xin quyền vị trí.
 - Bản debug dùng `applicationIdSuffix = ".debug"` → package `com.unified.health.debug`.
