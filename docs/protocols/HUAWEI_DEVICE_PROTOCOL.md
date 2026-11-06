@@ -462,6 +462,105 @@ Bộ lớp/ID tối thiểu cần tham chiếu: `cmj` (UUID), `coa`+`cov`+`cph`+
 
 ---
 
+## 11. Layout chi tiết – kết quả RE vòng 2 (2026-11-06)
+
+Phần này bổ sung các mục còn thiếu được xác định trong vòng RE thứ hai phân tích
+`defpackage/ckq`, `ckw`, `ckn`, `cki`, `coa`. Bằng chứng ngắn gọn tại
+`docs/re-evidence/huawei/`.
+
+### 11.1 0x0107 GetDeviceVersion – layout response TLV
+
+Request payload: `{0x01, 0x07, type1_lo, type1_hi, type2_lo, type2_hi, ...}` – danh sách
+type ID muốn hỏi, mỗi type là uint16-LE (giá trị < 128 nên byte cao = 0). [V]
+
+Response: outer TLV container parse bởi `cku.e(bArr)`, sau đó mỗi child TLV được dispatch:
+
+| Nhóm sub-handler | Type IDs (decimal) | Ghi chú |
+|---|---|---|
+| `ckq.d` | 1, 3, 7, 25, 36, 37, 38, 39, 40, 41 | firmwareVersion, productModel, healthFw, bleVersion, extended meta [I semantic] |
+| `ckq.b` | 2, 10, 14, 17, 18, 22, 26 | hwVersion, sdkVersion, sysVersion, bootVersion, modemVersion, **capabilityBitmap**, configVersion [I semantic] |
+| `ckq.c` | 9, 12, 15, 20, 21, 27, 29, 30, 31, 32, 33, 34, 35 | SN, **batteryLevel**, alias, productModel, screen, country/lang/region, factory info [I semantic] |
+
+type 22 = capability bitmap là trường quan trọng nhất – quyết định service nào device hỗ trợ.
+type 12 = batteryLevel (int, 0-100). Semantic của các type còn lại là [I] (suy từ tên field DeviceInfo).
+
+### 11.2 0x0132 SetDeviceTimeZoneId – layout request
+
+```
+Frame body:
+  TLV type=0x01, len=50, value = cku.c() output (50 byte, layout chưa xác định) [I]
+  TLV type=0x03, len=N,  value = IANA timezone ID UTF-8 (vd "Asia/Ho_Chi_Minh")  [V]
+```
+
+`cku.c()` không tham số (overload 3) trả `byte[]` 50 byte; nội dung bên trong chưa decompile
+được trong đợt RE này. Có thể chứa epoch + offset + regional flags. NEEDS-REAL-WATCH để xác minh.
+
+### 11.3 0x0102 ServiceCapabilityConsult – layout đầy đủ
+
+**Request** (`ckn.b(DeviceInfo)`) [V]:
+```
+TLV type=0x01, len=N:
+  byte[0]  = serviceCount - 1
+  byte[1+] = serviceId_1, serviceId_2, ...  (từ cor.e())
+TLV type=0x03, len=1, value=deviceType    (tuỳ chọn)
+```
+
+**Response** (`ckn.d(DeviceInfo, byte[], List<Integer>)`) [V]:
+```
+Outer TLV container
+  child[0]: hex ASCII bitmap string
+            charIndex i*2 .. i*2+1 = hex byte tại vị trí i (serviceId_i+1)
+            bit 0 (LSB) của byte đó = 1 → service (i+1) được device hỗ trợ
+```
+
+Sau khi parse, `ckn.processReceivedData` tạo `new cki(supportedServices)` làm lệnh tiếp theo. [V]
+
+### 11.4 0x0103 CommandCapabilityConsult – layout đầy đủ
+
+**Request** (`cki.a(DeviceInfo)`) [V]:
+```
+Header: {0x01, 0x03, 0x81, <varint totalSize>}
+Per supported service (từ danh sách 0x0102 response):
+  TLV type=0x02, len=1, value=serviceId
+  TLV type=0x03, len=M, value={cmdCount, cmdId_1, cmdId_2, ..., cmdId_M}
+```
+`cmdId` list lấy từ `cor.d(flag)` → `Map<Integer,List<Integer>>`.
+
+**Response** (xử lý trong `cki.processReceivedData`) [V]:
+Gọi theo thứ tự:
+1. `d(bArrD, deviceCapability)` – parse response, điền DeviceCapability.
+2. `b(map, deviceCapability)` – giao nhau phone-supported ∩ device-supported.
+3. `a(deviceCapability, cmhVar)` – ghi kết quả vào session context, kết thúc handshake.
+
+Cấu trúc byte response mirror request (nested TLV per-service capability bitmap) [I – chưa
+trace đến byte-level phía response, chỉ trace qua tên method].
+
+### 11.5 Watch-initiated command routing
+
+Phương thức dispatcher chính: `coa.d(DeviceInfo, String tag, cml, List<cmi>, MessageReceiveCallback)`.
+
+`tag` = 4 hex chars = `serviceId(2) + commandId(2)` (định dạng giống `getTag()` trong các lệnh).
+Watch gửi unsolicited frames cho: HR alert (svc 7), file transfer request (svc 44), notify confirm
+(svc 2), exercise event (svc 23), battery low (svc 1). [I – từ service IDs trong log strings]
+
+Driver hiện tại (`HuaweiTransport.kt:174`) bỏ qua frame không có pending request. Cần thêm
+`WatchInitiatedHandler` interface và inject vào `onPayload()` (xem re-evidence/watch_initiated_routing.md).
+
+### 11.6 Service 7 response – data model (NEEDS-REAL-WATCH)
+
+`defpackage/mqj.java` (FitnessDataContainer) [V]:
+- field `f108760b: List<DataTotalMotion>` – danh sách bản ghi fitness
+- field `f108762e: HeartRateDetect` – dữ liệu HR
+
+`DataTotalMotion` fields: `motion_type`, `step`, `calorie`, `distance`, `height`,
+`sleep_time`, `pushes`. [V – class đọc được trong jadx]
+
+TLV type IDs dùng để populate từng field từ service 7 response frame: **KHÔNG tìm thấy trong
+đợt RE này** (lớp parser `lxp` / frame decoder không decompile được với phần jadx hiện có).
+Cần chụp HCI snoop log khi Huawei Health sync với đồng hồ thật để xác minh.
+
+---
+
 ## Phụ lục – Bản đồ lớp obfuscated -> vai trò
 
 - cjs DeviceDiscoveryProcessor | cjy EncryptStrategyGeneral | cjz ScaleEncryptStrategy(EncryptBase) | lmt EncryptionBase impl
