@@ -1400,3 +1400,25 @@ User thấy màn chi tiết workout hiện tại ("Workout detail" theo D-804) q
   giờ wrap 2 dòng làm lệch chiều cao hàng. (3) `WorkoutsFeedCard` compact: bỏ hẳn prefix "Last
   <loại>: ", chỉ còn ngày — bỏ năm khi là năm hiện tại (`shortWorkoutDate`, ví dụ "Nov 8"), giữ năm khi
   khác năm hiện tại.
+
+- **D-1103** · 2026-11-08 · Audit `docs/re-analysis/garmin-analysis` — không bỏ sót gì, không phải lỗ hổng pháp lý — **Chốt**
+  User yêu cầu kiểm tra lại vì lo sợ bỏ sót thông tin. Kết quả kiểm tra bằng diff thật (không đoán):
+  - `docs/re-analysis/garmin-analysis/` **không được track trong git** (`.gitignore:35`), chưa từng
+    commit — không phải lỗ hổng vi phạm D-016 (không commit APK/dex vendor).
+  - `CONNECTION_ANALYSIS.md`/`AUTH_CRYPTO_ANALYSIS.md` trong đó **byte-identical 100%** với
+    `docs/analysis/GARMIN_CONNECTION_ANALYSIS.md`/`GARMIN_AUTH_CRYPTO_ANALYSIS.md` đã commit — không
+    mất nội dung.
+  - `docs/re-evidence/garmin/` là **superset** của `docs/re-analysis/garmin-analysis/rea-output/`:
+    mọi file chung diff ra giống hệt (`cls_proto_generated.json`, `cls_gfdi.json`,
+    `cls_device_filetransfer.json`, `cls_device_multilink.json`, `cls_AuthRegistry.json` — đã check
+    5 file lớn nhất), và `re-evidence` có thêm `battery_status_5023.md`/`config_capability_bits.md`/
+    `registration_service4.md`/`jadx-base`/`jadx-gcm` (bằng chứng được bổ sung SAU, không phải bị mất).
+  - Đọc kỹ 2 file MD tìm các điểm `[I]` (suy luận, chưa xác nhận trực tiếp) được flag rõ — 2 điểm nghe
+    có vẻ là gap thật đã **kiểm tra chéo với code hiện tại và xác nhận đã được xử lý đúng từ trước**:
+    (a) "driver so trực tiếp encoded frame với maxPacketSize, có thể vượt giới hạn watch thật" —
+    `GfdiPacketBudget.usablePayload()` (`GfdiPayloads.kt:300`) đã copy đúng công thức vendor
+    (`us2/b.java:221-235`: trừ COBS overhead + 8/18 byte framing/encryption + align 4 byte) và
+    `GfdiDispatcher.send()` so `payload.size` với budget này trước khi encode — đúng như khuyến nghị,
+    không phải bug còn tồn tại. (b) "driver request MTU vô điều kiện, cần fail non-fatal" —
+    `GattConnector.kt:106-107` đã `runCatching { requestMtu }.onFailure { Log.w(...) }`, không throw
+    — đã non-fatal sẵn. **Kết luận: không có gap nào cần vá thêm từ `docs/re-analysis/garmin-analysis`.**
