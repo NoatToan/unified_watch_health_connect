@@ -26,7 +26,9 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BatteryStd
 import androidx.compose.material.icons.automirrored.outlined.BluetoothSearching
+import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Keyboard
+import androidx.compose.material.icons.outlined.Memory
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.Stop
@@ -64,6 +66,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -249,7 +252,6 @@ internal fun DevicesScreen(
             if (permissionDenied) {
                 item { PermissionCard(onOpenSettings = { context.openAppSettings() }) }
             }
-            item { SectionHeader("My devices") }
             if (state.pairedDevices.isEmpty()) {
                 item { NoPairedDeviceCard(onScan = requestScan, onScanQrCode = { showScanner = true }) }
             } else {
@@ -359,6 +361,10 @@ private fun PairedDeviceCard(
                         revealKey = connected,
                         modifier = Modifier.align(Alignment.Center),
                     )
+                    // D-1162: floats symmetrically with menuButton below, instead of sitting in the
+                    // status-info block — the big image area reads as the card's "header", so both its
+                    // corner badges belong to it.
+                    Box(Modifier.align(Alignment.TopStart)) { ConnectionStatusChip(device.connectionState) }
                     Box(Modifier.align(Alignment.TopEnd)) { menuButton() }
                 }
                 Text(device.name, style = MaterialTheme.typography.titleLarge, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
@@ -369,6 +375,26 @@ private fun PairedDeviceCard(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                 )
+                // D-1162: one cohesive icon+text block instead of a chip row plus two stray Text
+                // lines — text content/testTag per line kept exactly as before (e2e asserts on them).
+                Column(Modifier.padding(top = Spacing.xs), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                    device.batteryPercent?.let {
+                        StatusInfoRow(Icons.Outlined.BatteryStd) { Text("$it%", style = MaterialTheme.typography.bodyMedium) }
+                    }
+                    device.firmwareVersion?.let {
+                        StatusInfoRow(Icons.Outlined.Memory) {
+                            Text("Firmware $it", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                    }
+                    StatusInfoRow(Icons.Outlined.History) {
+                        Text(
+                            modifier = Modifier.testTag("last_sync_${device.macAddress}"),
+                            text = "Last sync: " + (device.lastSyncedAt?.let { LAST_SYNC_FORMAT.format(it.atZone(ZoneId.systemDefault())) } ?: "never"),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
             } else {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     WatchImage(model = watchModel, size = 56.dp, interactive = false, revealKey = connected)
@@ -379,25 +405,25 @@ private fun PairedDeviceCard(
                     }
                     Column { menuButton() }
                 }
-            }
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
-                ConnectionStatusChip(device.connectionState)
-                device.batteryPercent?.let {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Outlined.BatteryStd, contentDescription = null, modifier = Modifier.size(18.dp))
-                        Text("$it%", style = MaterialTheme.typography.bodyMedium)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                    ConnectionStatusChip(device.connectionState)
+                    device.batteryPercent?.let {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Outlined.BatteryStd, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Text("$it%", style = MaterialTheme.typography.bodyMedium)
+                        }
                     }
                 }
+                device.firmwareVersion?.let {
+                    Text("Firmware $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                Text(
+                    modifier = Modifier.testTag("last_sync_${device.macAddress}"),
+                    text = "Last sync: " + (device.lastSyncedAt?.let { LAST_SYNC_FORMAT.format(it.atZone(ZoneId.systemDefault())) } ?: "never"),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
-            device.firmwareVersion?.let {
-                Text("Firmware $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            Text(
-                modifier = Modifier.testTag("last_sync_${device.macAddress}"),
-                text = "Last sync: " + (device.lastSyncedAt?.let { LAST_SYNC_FORMAT.format(it.atZone(ZoneId.systemDefault())) } ?: "never"),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
             if (connected && syncState is SyncState.InProgress) {
                 LinearProgressIndicator(progress = { syncState.progress }, modifier = Modifier.fillMaxWidth())
                 syncState.stage?.let {
@@ -447,6 +473,16 @@ private fun PairedDeviceCard(
             confirmButton = { TextButton(onClick = { confirmUnpair = false; onUnpair() }, modifier = Modifier.testTag("confirm_unpair")) { Text("Unpair") } },
             dismissButton = { TextButton(onClick = { confirmUnpair = false }) { Text("Cancel") } },
         )
+    }
+}
+
+/** One line of the connected [PairedDeviceCard]'s status block (D-1162): a leading icon for quick
+ * scanning, then whatever text the caller needs verbatim (e2e tests assert on exact text/testTags). */
+@Composable
+private fun StatusInfoRow(icon: ImageVector, content: @Composable () -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(18.dp))
+        content()
     }
 }
 

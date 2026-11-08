@@ -40,6 +40,10 @@ fun ConnectionStatusChip(
         leadingIcon = {
             Box(Modifier.size(AssistChipDefaults.IconSize / 2).background(dot, CircleShape))
         },
+        // D-1169: AssistChip draws a border by default (AssistChipDefaults.assistChipBorder()) —
+        // dropped so the chip reads as a plain tonal pill, which looks cleaner floating directly
+        // over the device image (D-1162).
+        border = null,
         modifier = modifier,
     )
 }

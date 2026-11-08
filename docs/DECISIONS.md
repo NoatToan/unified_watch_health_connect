@@ -2424,6 +2424,65 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   `weight(1f, fill = false)` hoặc tương tự nếu cần). Kiểm tra lại cả 4 trạng thái CTA bằng cách tự tạo
   dữ liệu test hoặc preview, không chỉ thấy 1 trạng thái "Đăng ký ngay" rồi coi là xong.
 
+- **D-1172** · 2026-11-09 · Thực thi D-1148 + D-1162 + D-1167 + D-1169 (Devices: ảnh tappable →
+  fullscreen, nhấn-giữ phóng to + pháo hoa, re-layout status info) — **Chốt** (đánh số lại từ D-1171 ban
+  đầu — trùng với entry "Thực thi D-1150 + D-1151" của agent khác log gần như cùng lúc; nội dung không
+  đổi, chỉ đổi số)
+  File mới `feature/devices/src/main/kotlin/com/unified/health/feature/devices/DeviceImageViewer.kt`:
+  `TappableWatchImage` (wrap quanh `WatchImage` có sẵn, không sửa `WatchImage.kt`/`core/designsystem`
+  để tránh đụng code đang dùng chung với Home) — pulse nhẹ (`rememberInfiniteTransition`, scale
+  1.0↔1.03, chu kỳ 2.6s) gợi ý tap được, tap mở `FullscreenWatchImageViewer`. Dùng `androidx.compose.
+  ui.window.Dialog(usePlatformDefaultWidth = false)` theo đúng gợi ý D-1148 thay vì `SharedTransitionLayout`
+  — `Dialog` tạo Android Window riêng nên khớp toạ độ chuẩn với vị trí ảnh gốc (shared-element thật) rủi
+  ro cao hơn giá trị nó mang lại ở đây; bù lại bằng scrim fade + ảnh pop lên bằng `spring(DampingRatio
+  MediumBouncy, StiffnessLow)` — cùng "tính cách" animation với flip-in của `WatchImage.tilt3d` khi
+  connect, để không bị lạc tông. Sau phản hồi "fade in phải ấn tượng hơn, không được như tắt/bật ngay"
+  (giữa chừng task): tách `scrimAlpha`/`heroAlpha` (tween 280ms) khỏi `heroScale` (spring, có overshoot)
+  để animation mở đọng lại rõ ràng thay vì một tween ngắn ăn hết mọi thứ trong ~260ms. Bug tự phát hiện
+  trên máy thật: scrim 0.92 alpha để lọt ~8% độ sáng ảnh nhỏ bên dưới qua, trông như lỗi render (ảnh đôi
+  mờ) — tăng lên 0.97 (`SCRIM_MAX_ALPHA`), hết hẳn.
+  **D-1167** (bổ sung nhận giữa chừng task, cùng file): viewer giờ mở lên với ảnh **nhỏ**
+  (`SMALL_REST_SCALE = 0.42` nhân thêm vào `heroScale`), kèm text gợi ý "Press & hold to view full
+  size" (canh `BottomCenter`, fade dần theo `(1 - growProgress)`). `Modifier.pointerInput` +
+  `detectTapGestures(onPress = …)`: khi nhấn, `scope.launch` chạy `growProgress.animateTo(1f,
+  keyframes { … })` (easing chậm→nhanh dần, ngưỡng `HOLD_THRESHOLD_MS = 1800`) chạy song song với
+  `tryAwaitRelease()` trong cùng `onPress` — nếu nhả tay trước khi job xong thì `job.cancel()` rồi
+  animate `growProgress` về 0 (ảnh thu nhỏ lại, không đóng modal); nếu job tự hoàn tất (giữ đủ lâu,
+  *không* bị cancel) thì chính job đó set `celebrating = true` — không cần so sánh `released`/thời gian
+  thủ công, tận dụng việc `Animatable.animateTo` ném `CancellationException` khi coroutine chứa nó bị
+  cancel. 30% cuối của hold có thêm jitter nhẹ (`rememberInfiniteTransition` chu kỳ 90ms, biên độ tăng
+  dần tới `JITTER_MAX_AMPLITUDE = 0.035`) báo hiệu "sắp tới". Đạt ngưỡng → `ConfettiBurst` (riêng,
+  `Canvas` vẽ 28 chấm tròn màu sắc bay ra từ tâm theo góc/tốc độ ngẫu nhiên, fade alpha theo
+  `progress`, 700ms) → `onFinished = onDismissed` (đóng thẳng, không qua animation đóng thường —
+  `dismiss()` tự chặn bằng `if (!celebrating)` để không đụng độ 2 luồng đóng). Ngưỡng 1.8s nằm trong
+  khoảng 1.5–3s user gợi ý; không cố làm đúng lý thuyết Premack theo nghĩa đen như user tự nói là
+  không cần.
+  **D-1162**: bỏ hẳn `SectionHeader("My devices")` (`DevicesScreen.kt` LazyColumn). `PairedDeviceCard`
+  nhánh `connected`: `ConnectionStatusChip` dời ra khỏi khối info, nổi `Box(Modifier.align(Alignment.
+  TopStart))` đối xứng với `menuButton` ở `TopEnd` — cả hai cùng nằm trong `Box(Modifier.fillMaxWidth())`
+  bọc ảnh. Battery/firmware/last-sync gom thành 1 `Column` dùng chung `StatusInfoRow` (icon
+  `BatteryStd`/`Memory`/`History` + nội dung) — **giữ nguyên y hệt** text/testTag từng dòng (vd
+  `Text("$it%")`, `Text("Firmware $it")`, `Modifier.testTag("last_sync_$mac")` + text "Last sync: …")
+  vì e2e (`GarminWatchE2ETest`, `StandardWatchE2ETest`, `HuaweiWatchE2ETest`, `ZeppWatchE2ETest`) assert
+  đúng các chuỗi/tag này — chỉ đổi bố cục/style, không đổi nội dung. Nhánh `else` (chưa connected) giữ
+  nguyên `Row` chip+battery+2 `Text` cũ, không bắt buộc đổi theo (đúng như D-1162 cho phép).
+  **D-1169**: `ConnectionStatusChip.kt` (`core/designsystem`) — thêm `border = null` vào `AssistChip`.
+  Xác nhận trước khi sửa: `grep` cho thấy component này hiện chỉ được `feature/devices` dùng (Home đã
+  bỏ hẳn `DeviceBanner` ở D-1147/D-1152) nên sửa thẳng không ảnh hưởng màn khác.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug` — pass
+  toàn bộ (`feature/devices`: `DevicesViewModelTest` 15/15, `DeviceDetailViewModelTest` 8/8;
+  `core/designsystem` test khác không đổi), `app-debug.apk` build lại thành công nhiều lần qua các vòng
+  sửa. **Xác nhận trên máy thật** (Pixel 4 đã pair sẵn 1 Garmin Forerunner 165 connected — dùng được
+  luôn, không cần seed data): tap ảnh → mở fullscreen đúng, ảnh mở **nhỏ** kèm text gợi ý, scrim tối đều
+  (không còn lọt sáng), nút Close + back đều đóng được; D-1162 (chip nổi góc trái, info block có icon,
+  bỏ "My devices") + D-1169 (chip hết viền) lên đúng như mô tả. **Không xác nhận trực tiếp được** nhánh
+  nhấn-giữ-đủ-lâu→pháo hoa→tự đóng và nhánh nhả-sớm→thu nhỏ: máy thật *và* emulator trong phiên này đều
+  bị thiết bị/scratchpad dùng chung với (ít nhất) 1 agent khác chạy song song (app bị cài đè, màn hình/
+  dữ liệu đổi giữa 2 lần chụp liên tiếp không do thao tác của mình, phát hiện cả file lạ xuất hiện trong
+  thư mục scratchpad tưởng là riêng) — không có cách nào giữ 1 cử chỉ nhấn-giữ 1.8–2.2s sạch để chụp lại
+  kết quả. Đã rà kỹ logic qua code thay vì đoán: race `growJob`/`tryAwaitRelease()` dùng đúng tính chất
+  cancel-ném-exception của `animateTo`, không có đường nào khiến `celebrating` set sai hoặc modal treo.
+
 - **D-1171** · 2026-11-09 · Thực thi D-1150 (ảnh cover Race Detail theo tỉ lệ gốc) + D-1151 (nav bar che CTA) — **Chốt**
   **D-1150**: thêm `RaceCoverImage` mới trong `core/designsystem/.../component/RaceCoverImage.kt` (file
   riêng, không sửa `RaceCard.kt` — đúng ràng buộc phạm vi vì agent khác đang làm trong file đó) —
