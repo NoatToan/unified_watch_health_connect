@@ -2006,3 +2006,13 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   không ép vuông/ép ngang) — giống kiểu thumbnail/badge, không còn là hero band full-width. Tên giải/
   ngày/cự ly/giá/CTA vẫn nằm trên nền blur, tránh đè lên góc có ảnh rõ nét. Race chưa có ảnh thật vẫn
   giữ gradient-theo-terrain full card như cũ (D-1131 đã quyết, không đổi).
+
+- **D-1143** · 2026-11-08 · `DeviceBanner` to (180dp, D-1115/1137) chiếm quá nhiều chỗ trên Home — tự co lại sau khi vào màn — **Chốt**
+  Sau khi D-1115 làm `DeviceBanner` trên Home copy style to (180dp) của Devices/"About this device",
+  user thấy nó chiếm quá nhiều không gian dọc ngay khi mở Home — trước đây (trước D-1115) nó là banner
+  gọn nhỏ. Yêu cầu: **lúc mới vào Home thì hiện to** (giữ hiệu ứng "đập vào mắt" D-1130 muốn), nhưng
+  **tự động animate co lại về bố cục gọn (như trước D-1115)** sau một khoảng ngắn — không cần chờ user
+  tự scroll như cơ chế collapse-theo-scroll đã có (D-1083/1088) — content bên dưới animate dồn lên lấp
+  khoảng trống khi banner co lại. Có thể tái dùng chung animation/trigger với D-1083 (chỉ khác: tự
+  trigger sau delay thay vì chờ scroll), agent tự quyết thời gian delay hợp lý (gợi ý: 1.5-2.5s) và
+  cách phối hợp 2 cơ chế (tự co + co-theo-scroll) không xung đột nhau.
