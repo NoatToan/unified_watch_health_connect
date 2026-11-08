@@ -56,6 +56,7 @@ BaseProfile ──► BleChannelLink(0x0016 down/0x0017 up) ──► BleChannel
   │                                                          └─► Module: 0x00 BuiltIn, 0x82 Auth2, 0x0A Settings,
   │                                                              0x1E Notification, 0x16 Realtime activity, 0x32 Sleep…
   ├─► Auth: DeviceAuthorizationFactory → Traditional (0x0009) | Impl1 (module 0x80) | Impl2 (module 0x82, ECDH)
+  │     (module list và 0x80/0x82 chỉ có ở channel v2; v1 ⇒ danh sách rỗng ⇒ 0x0009)
   ├─► setDateTime (0x2A2B), đọc Device Information (0x180A)
   └─► GDSP fetch (0x0004 control / 0x0005 data) → activity, HR, SpO2, stress, PAI, GPS…
         └─► libdataProcess.so (thuật toán ngủ/hoạt động trên điện thoại) → DB → cloud Huami, Google Fit, Strava…
@@ -133,7 +134,7 @@ Base UUID riêng của Huami: `0000xxxx-0000-3512-2118-0009af100700` (`new UUID(
 | `0000fed0-…`, `00000010/11-…` | SmartWatch transport | Đồng hồ Amazfit Pace/Stratos đời cũ | `profile/smartwatch/transport/HMSmartWatchTransportProfile.java:29-31` [V] |
 | `180D` / `2A37` / `2A39` | HR service chuẩn | HR realtime (notify `2A37`, control `2A39`) | `profile/hr/HMHeartRateProfile.java:24-26` [V]; lệnh trên `2A39`: `[0x15, mode, op]` (mode Continuous=1, op Open=1/Close=0) và heartbeat `[0x16]`, ghi no-response: `HeartRateCommand.java` (SetWorkMode=21, Heartbeat=22), `HeartRateControl.java` (Mode/Operation), `HeartRateControlImpl.java` (`sendCommandNoResponse`) [V]; heartbeat re-arm mỗi 10 000 ms: `HMHeartRateController.java:160,201` [V] |
 | `180A` / `2A23-2A29`, `2A50` | Device Information | Model, serial, firmware, PnP | `IBaseProfile.java:9-16` [V] |
-| `2A2B` | Current Time | Đặt giờ | `IBaseProfile.java:17`; `BaseProfile.java:387-395` [V] |
+| `2A2B` | Current Time | Đặt giờ; vendor tìm dưới `FEE0` (không chỉ `0x1805`) | `IBaseProfile.java:17`; `BaseProfile.java:293-301,387-395` [V] |
 | `1811` / `2A46`, `2A44` | Alert Notification | Thông báo cũ | `profile/alert/HMAlertServiceProfile.java:38-40` [V] |
 | `1802` / `2A06` | Immediate Alert | Rung, tìm thiết bị | `profile/alert/HMAlertProfile.java:31-32` [V] |
 
@@ -206,14 +207,21 @@ Lấy từ `@ChannelModule(id=…)` và `getModule()`:
 | 0x15 | `ConnectModule` (MTU, tham số kết nối) | | 0x3B | `PhoneMuteModule` |
 | 0x16 | `RealtimeActivityModule` (bước/realtime) | | 0x3C | `MemberCardModule` |
 | 0x18 | `MotorVibrateModule` | | 0x3D | `GestureProtocolApiImpl` |
-| 0x1A | `FindDeviceModule` | | **0x80** | `AuthModule` (auth v1 channel) |
+| 0x1A | `FindDeviceModule` | | **0x80** | `AuthModule` (auth channel v2, không encrypt byte) |
 | 0x1C | `PersonalBestModule` | | 0x81 | `EncryptEchoModule` |
 | | | | **0x82** | `AuthModule2` (auth Zepp OS, ECDH) |
 | | | | 0x90 | `ObsoleteModule` |
 
-- `BuiltInModule` (0x00): lệnh `0x00` → `[0x01, count u16le, id u8…]`; lệnh `0x03` → `[0x04, count u16le, (id u16le, requireEncryption u8)…]`. Byte đầu của phản hồi là lệnh + 1 và được tách ra trước khi parse (`BuiltInModule.java:186-196, 461`). Còn byte thừa thì cả danh sách bị coi là rỗng (`:373-430`). Dùng lệnh `0x03` khi phản hồi version có byte encrypt, ngược lại `0x00` (`:365-368`). Số nguyên little-endian (`utils/BufByteDecoder.java:133-149`) [V]. **Đồng hồ khai báo module nào bắt buộc mã hoá.** App chỉ mã hoá gói gửi khi `encryptEnable == true` **và** danh sách đánh dấu module đó (`ChannelApiImpl2.java:126-141`) [V]. Driver: `ChannelTransport.loadModuleList()` chạy sau auth; lỗi hoặc timeout (5 s, [I]) thì coi như danh sách rỗng.
+- `BuiltInModule` (0x00): lệnh `0x00` → `[0x01, count u16le, id u8…]`; lệnh `0x03` → `[0x04, count u16le, (id u16le, requireEncryption u8)…]`. Byte đầu của phản hồi là lệnh + 1 và được tách ra trước khi parse (`BuiltInModule.java:186-196, 461`). Còn byte thừa thì cả danh sách bị coi là rỗng (`:373-430`). Dùng lệnh `0x03` khi phản hồi version có byte encrypt, ngược lại `0x00` (`:365-368`). Số nguyên little-endian (`utils/BufByteDecoder.java:133-149`) [V]. **Đồng hồ khai báo module nào bắt buộc mã hoá.** App chỉ mã hoá gói gửi khi `encryptEnable == true` **và** danh sách đánh dấu module đó (`ChannelApiImpl2.java:126-141`) [V].
+- **Đính chính 2026-11-08 — module list chỉ có ở channel v2.** Vendor không hỏi module list trên channel v1; `BaseProfile.supportModule()` trả `false` trừ khi channel version == 2 (`BaseProfile.java:486-499`; `BuiltInModule.java:365-368`) [V]. Vì vậy v1 luôn có danh sách rỗng và đi auth legacy 0x0009 (§5.6); module 0x80/0x82 chỉ đạt được trên v2. Nguồn: `docs/analysis/ZEPP_CONNECTION_ANALYSIS.md` §1. Driver: `ChannelTransport.loadModuleList()` chạy sau auth; lỗi hoặc timeout (5 s, [I]) thì coi như danh sách rỗng.
 - [Ext] Gadgetbridge đặt tên endpoint Zepp OS gần như trùng (0x0082 auth, 0x0016 steps, 0x000A settings…). Bảng trên lấy từ code, không lấy từ Gadgetbridge.
 - Không tìm thấy module ID "0x0013 steps" trong APK này (đã tìm `@ChannelModule` và `getModule()`); bước realtime là **0x16**.
+
+### 3.5 Pin (battery) [V]
+
+- **Zepp OS — module 0x29 (`BatteryModule`)**: query-version `0x01`, query-battery `0x03`, notify `0x04`. Payload sau byte lệnh dùng layout chung `BatteryInfo.parseBatteryInfo` (`BatteryCommand.java:17-70`, `BatteryCodec.java:53-62`).
+- **Legacy — char 0x0006 trong FEE0**: đọc trực tiếp. Byte flags quyết định các trường phụ: bit 0 = DC status (+1 byte), bit 1 = last-charge-full (+8 byte), bit 2 = last-charge (+8 byte), bit 3 = last-charge-level (+1 byte); sau các trường phụ là `level %` (`BatteryInfo.java:54-90`; `MiLiProProfile.java:732-739,1258-1261`).
+- Driver hiện chỉ đọc SIG `0x180F`; hai đường vendor trên chưa implement (`ZeppSession.kt:76-83`). Nguồn: `docs/analysis/ZEPP_CONNECTION_ANALYSIS.md` §3.
 
 ---
 
@@ -225,9 +233,9 @@ Lấy từ `@ChannelModule(id=…)` và `getModule()`:
 | 2 | Bật notify 0x0017 (và 0x0016 với v2) | | `BleChannelImpl.java:109`, `BleChannelImpl2.java:122` [V] |
 | 3 | Version query `0x01` trên 0x0016 → `0x02 ver [enc]` | Chọn channel v1/v2 | `BleChannelLink.java:252-267` [V] |
 | 4 | (v2) Hỏi danh sách module (module 0x00, lệnh `0x03`) | Biết module nào cần mã hoá | `BuiltInModule.java:402-420` [V] |
-| 5 | Chọn cơ chế auth | Quyết định dựa trên **danh sách module** (BuiltInModule, bước 4), **không** phải phiên bản channel. `supportModule(0x80) \|\| supportModule(0x82)` → channel-based: nếu `encryptEnable == null` → `DeviceAuthorizationImpl1` (module 0x80, APP_API_LEVEL=1); nếu có `encryptEnable` byte → `DeviceAuthorizationImpl2` (module 0x82, ECDH). Không có cả hai → `TraditionalDeviceAuthorizationImpl` (char 0x0009). **Hệ quả:** đồng hồ channel v1 có thể xác thực qua module 0x80 (không phải luôn dùng 0x0009). | `profile/auth/DeviceAuthorizationFactory.java:88-94` [V] |
+| 5 | Chọn cơ chế auth | **Channel v2:** dựa trên danh sách module (bước 4). `supportModule(0x80) \|\| supportModule(0x82)` → channel-based: `encryptEnable == null` → `DeviceAuthorizationImpl1` (module 0x80, APP_API_LEVEL=1); có `encryptEnable` byte → `DeviceAuthorizationImpl2` (module 0x82, ECDH). Không có cả hai → `TraditionalDeviceAuthorizationImpl` (char 0x0009). **Channel v1 không hỏi module list** (`supportModule()` luôn false), nên v1 luôn đi 0x0009; module 0x80 chỉ đạt được trên v2. | `profile/auth/DeviceAuthorizationFactory.java:88-94`; `BaseProfile.java:486-499` [V] |
 | 6 | Auth (mục 5) | Thành công thì lưu `EncryptKeyStore` (session key, nonce) | `DeviceAuthorizationImpl2.java:113-160` [V] |
-| 7 | Đặt giờ: ghi `2A2B` | `[year u16 LE, month, day, hour, min, sec, dayOfWeek(0=CN), ms/4, adjustReason, tzKey]` | `HMBaseBleDevice.java:186`; `profile/base/ProfileUtils.java:42-58` [V] |
+| 7 | Đặt giờ: ghi `2A2B` | `[year u16 LE, month, day, hour, min, sec, dayOfWeek(0=CN), ms/4, adjustReason, tzKey]`; vendor tìm `2A2B` dưới `FEE0`, không chỉ `0x1805` | `HMBaseBleDevice.java:186`; `BaseProfile.java:293-301,387-395`; `profile/base/ProfileUtils.java:42-58` [V] |
 | 8 | Đọc device info `180A` | | `HMBaseBleDevice.java:196` [V] |
 | 9 | Hỏi MTU (ConnectModule 0x15) và cấu hình | | `MiLiProProfile.java:2053-2056` [V] |
 | 10 | Sync GDSP (mục 6) | | `HMProSyncDataTask.java:80-135` [V] |
@@ -318,7 +326,12 @@ nhận: giải AES → data(totalSize) ‖ nonce ‖ crc; kiểm CRC32; nonce ph
 - Module nào cần mã hoá do đồng hồ khai báo (BuiltInModule lệnh 0x03). Auth (0x82) thì **không** mã hoá.
 - `CRCUtilsKt.getCRC32` = `java.util.zip.CRC32` chuẩn: `com/xiaomi/hm/health/bt/utils/CRCUtilsKt.java:37-39`.
 
-### 5.5 Session auth module 0x80 (đồng hồ channel v1 có module 0x80, không ECDH) [V]
+### 5.5 Session auth module 0x80 (channel v2 không có byte encryptEnable, không ECDH) [V]
+
+> **Đính chính 2026-11-08:** tiêu đề cũ gán module 0x80 cho "channel v1" và bỏ sót local bind.
+> Module 0x80 chỉ đạt được trên channel v2 (v1 không có module list — §3.4); bind cục bộ có trong
+> `DeviceAuthorizationImpl1`/`AuthModule.startLocalBinding`. Nguồn:
+> `docs/analysis/ZEPP_CONNECTION_ANALYSIS.md` §1.
 
 `AuthModule.java` (APP_API_LEVEL = 1 cho Impl1). Giao thức gần như giống §5.2 nhưng **không có ECDH**:
 
@@ -329,9 +342,10 @@ nhận: giải AES → data(totalSize) ‖ nonce ‖ crc; kiểm CRC32; nonce ph
 | 3 | `[0x05, AES_ECB(random, authKey)(16)]` authorize | `[code]` (1=OK) |
 
 - Không session key, không encryption keystore. Module 0x80 watches **không mã hoá channel**.
-- Bind cục bộ: `[0x01, 0x01, 0x00, key(16)]` → `[code]` (1=OK, 2=người dùng từ chối), timeout 30 s.
+- **Local bind được hỗ trợ**: `DeviceAuthorizationImpl1` → `startLocalBinding`, gửi `[0x01, 0x01, 0x00, key(16)]` → `[code]` (1=OK, 2=người dùng từ chối), timeout 30 s. Module 0x80 không chỉ có session auth; nó còn bind cục bộ được.
 - Cloud bind: `[0x02, 0x01, 0x00, pubPhone...]` → `[code, pubKeyHash(16), random(16)]`.
-- Bằng chứng: `AuthModule.java:401-411, 424-435, 512-538, 569-578`.
+- Bằng chứng: `AuthModule.java:401-411, 424-435, 512-538, 569-578`; `DeviceAuthorizationImpl1.java:158-162`.
+- Chỉ áp dụng cho channel v2 (không có byte `encryptEnable`); v1 đi 0x0009 (§5.6).
 
 ### 5.6 Auth cũ trên char 0x0009 (Mi Band 2/3/4/5, Amazfit Bip…) [V]
 
@@ -480,7 +494,7 @@ Mã hoá gói module 29 theo bảng `BuiltInModule` (§3.4). Driver: `ZeppSessio
 1. **Lấy auth key**: bind bằng app Zepp một lần. Lấy `auth_key` (32 ký tự hex) từ danh sách thiết bị trên cloud bằng tài khoản của bạn (`HMDeviceWebAPI.java:637`, `additionalInfo.auth_key`), hoặc từ DB app trên máy root. [Ext] Gadgetbridge có hướng dẫn và script cộng đồng cho việc này. **Không** unbind trong app Zepp: unbind/factory reset sẽ huỷ key. Sau đó tắt hoặc gỡ app Zepp để hai app không tranh kết nối.
 2. **Quét**: lọc service `FEE0` + đúng MAC (hoặc quét QR trên đồng hồ để lấy MAC). `connectGatt(TRANSPORT_LE)`, `requestMtu(247)`, `discoverServices`.
 3. **Channel**: bật notify `0x0016` và `0x0017`. Ghi `0x01` lên `0x0016`, đọc `0x02 ver [enc]`. Với Zepp OS, `ver = 2` → header v2 (có byte appId = 0).
-4. **Module list**: gửi module 0x0000 lệnh `0x03`, lưu cờ `requireEncryption` cho từng module.
+4. **Module list**: chỉ channel v2 mới gửi module 0x0000 lệnh `0x03`, lưu cờ `requireEncryption` cho từng module. Channel v1 bỏ qua bước này (danh sách rỗng) và dùng auth 0x0009 ở bước 5.
 5. **Session auth** (module 0x0082): ECDH **sect163r2** (BouncyCastle `SECNamedCurves.getByName("sect163r2")`). Khoá công khai 48 byte = X‖Y, mỗi phần 24 byte. [I] Thứ tự byte và cách đệm của tiny-ECDH (mảng `uint32` little-endian) phải kiểm bằng thử nghiệm; [Ext] Gadgetbridge có sẵn `ECDH_B163.java` port từ tiny-ECDH. Gửi `04 02 00 02 ‖ pub`, nhận `random ‖ pubWatch`, tính `sessionKey`, gửi `05 ‖ AES(authKey,random) ‖ AES(sessionKey,random)`, chờ `10 05 01`.
 6. **Khởi tạo nonce/khoá** theo `EncryptKeyStore` (r0, r1, key). Mã hoá payload cho module cần mã hoá (mục 5.4). ACK mọi gói có cờ NEED_REPLY bằng `[04, 00, session, 01, index]` lên `0x0017`.
 7. **Đặt giờ** (`2A2B`, mục 4 bước 7).

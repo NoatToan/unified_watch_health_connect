@@ -127,19 +127,34 @@ class ZeppBindTest {
     }
 
     @Test
-    fun `module 0x80 has no documented bind command so generating a key is refused`() = runTest {
-        val watch = FakeZeppWatch(watchOldKey, encryptByte = null)
+    fun `module 0x80 local bind is accepted when the firmware allows it`() = runTest {
+        val watch = FakeZeppWatch(watchOldKey, encryptByte = null, allowLocalBinding = 1)
+        val store = unbound()
+
+        val session = driver().openSession(watch.gatt, contextFor(store))
+
+        assertEquals(1, watch.infoRequests)
+        assertArrayEquals(byteArrayOf(0x01, 0x01, 0x00) + generatedKey, watch.bindCommands.single())
+        assertArrayEquals(generatedKey, watch.storedKey)
+        assertTrue(watch.authenticated)
+        assertFalse(marker in store.values)
+        session.close()
+    }
+
+    @Test
+    fun `module 0x80 without local binding explains the server signature and keeps the marker`() = runTest {
+        val watch = FakeZeppWatch(watchOldKey, encryptByte = null, allowLocalBinding = 0)
         val store = unbound()
 
         try {
             driver().openSession(watch.gatt, contextFor(store))
             fail("expected AuthenticationException")
         } catch (e: AuthenticationException) {
-            assertTrue(e.message!!.contains("0x80"))
+            assertTrue(e.message!!.contains("Huami server"))
         }
         assertTrue(watch.bindCommands.isEmpty())
         assertFalse(watch.authenticated)
-        assertTrue(marker in store.values) // the marker is only cleared once a bind actually succeeds
+        assertTrue(marker in store.values)
     }
 
     @Test

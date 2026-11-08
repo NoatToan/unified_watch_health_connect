@@ -31,6 +31,9 @@ internal object ZeppUuids {
     /** Legacy auth control point for watches without the channel (§3.1, §5.5 [V]). */
     val LEGACY_AUTH: UUID = huamiUuid(0x0009)
 
+    /** Legacy battery characteristic in FEE0 (`IMiLiProProfile.UUID_CHARACTERISTIC_BATTERY` = 0x0006, §3.1 [V]). */
+    val BATTERY: UUID = huamiUuid(0x0006)
+
     /**
      * Channel "down" link: the phone writes DATA packets here; the watch notifies ACKs and the
      * version reply on the same characteristic (§3.1, §3.3 [V]).

@@ -7,6 +7,7 @@ import com.unified.health.core.ble.driver.MissingCredentialException
 import com.unified.health.core.ble.driver.RecognitionScore
 import com.unified.health.core.ble.driver.SessionContext
 import com.unified.health.core.ble.driver.WearableDriver
+import com.unified.health.core.ble.driver.WearableProtocolException
 import com.unified.health.core.ble.driver.WearableSession
 import com.unified.health.core.ble.gatt.GattClient
 import com.unified.health.core.ble.gatt.GattException
@@ -22,6 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.withTimeoutOrNull
 import java.security.SecureRandom
 import java.time.Instant
 import java.time.ZoneId
@@ -47,8 +49,19 @@ class ZeppDriver internal constructor(
 
     override val vendor = WearableVendor.ZEPP
 
-    /** No OS bond: security lives in the auth key + channel encryption (§2.3 [I]); MTU 247 (§3.2). */
-    override val linkRequirements = LinkRequirements(bond = false, mtu = 247)
+    /**
+     * No OS bond: security lives in the auth key + channel encryption (§2.3 [I]); MTU 247 (§3.2).
+     * Timing copies the vendor: 45 s connect, 30 s service discovery, 30 s per GATT operation, and
+     * the hidden GATT cache refresh on API 28+ before discovery (§4.2-§4.5).
+     */
+    override val linkRequirements = LinkRequirements(
+        bond = false,
+        mtu = 247,
+        connectTimeoutMs = CONNECT_TIMEOUT_MS,
+        discoveryTimeoutMs = DISCOVERY_TIMEOUT_MS,
+        operationTimeoutMs = GATT_OPERATION_TIMEOUT_MS,
+        refreshGattCacheBeforeDiscovery = true,
+    )
 
     override val credentialRequirements: List<CredentialRequirement> = listOf(AUTH_KEY)
 
@@ -67,17 +80,26 @@ class ZeppDriver internal constructor(
         }
         val scope = CoroutineScope(SupervisorJob() + dispatcher)
         try {
-            val confirmBind: (suspend () -> Unit)? = if (context.credentials.get(AUTH_KEY.unboundMarkerKey) != null) {
-                { context.credentialWriter.remove(AUTH_KEY.unboundMarkerKey) }
-            } else {
-                null
-            }
-            // ZeppHandshake already loads the module list itself (to pick the auth module); reused here
-            // for ZeppSession's live-heart-rate routing (OpenAppModule vs 0x2A39).
-            val channel = ZeppHandshake(gatt, scope, random).authenticate(authKey, confirmBind)
-            val zone = zoneProvider()
-            syncTime(gatt, zone)
-            return ZeppSession(gatt, channel, scope, zone)
+            // Whole-handshake watchdog (§4.1): the vendor arms 120 s on connecting/discovery/init/auth
+            // and clears it once the watch reports AUTH_SUCCESS.
+            return withTimeoutOrNull(HANDSHAKE_TIMEOUT_MS) {
+                val confirmBind: (suspend () -> Unit)? = if (context.credentials.get(AUTH_KEY.unboundMarkerKey) != null) {
+                    { context.credentialWriter.remove(AUTH_KEY.unboundMarkerKey) }
+                } else {
+                    null
+                }
+                // ZeppHandshake already loads the module list itself (to pick the auth module); reused here
+                // for ZeppSession's live-heart-rate routing (OpenAppModule vs 0x2A39).
+                val channel = ZeppHandshake(gatt, scope, random).authenticate(authKey, confirmBind)
+                val zone = zoneProvider()
+                syncTime(gatt, zone)
+                ZeppSession(gatt, channel, scope, zone)
+            } ?: throw WearableProtocolException(
+                "Zepp handshake did not complete within ${HANDSHAKE_TIMEOUT_MS / 1000} s " +
+                    "(connect, service discovery, channel version, auth or time sync). Move closer to the " +
+                    "watch, close the Zepp app, and retry. If the watch asks for confirmation, accept it on " +
+                    "its screen.",
+            )
         } catch (e: Throwable) {
             scope.cancel()
             throw e
@@ -87,9 +109,13 @@ class ZeppDriver internal constructor(
     /**
      * Writes the Current Time (§4 step 7 [V]); best effort, like the vendor flow it never blocks
      * pairing on this (a watch without `2A2B`, or one that refuses the write, still syncs fine).
+     * The vendor reads/writes `2A2B` under FEE0 (`BaseProfile.java:387-395`); some watches only
+     * expose the SIG Current Time service, so that is the fallback.
      */
     private suspend fun syncTime(gatt: GattClient, zone: ZoneId) {
-        val characteristic = gatt.findCharacteristic(StandardUuids.CURRENT_TIME, StandardUuids.CURRENT_TIME_SERVICE) ?: return
+        val characteristic = gatt.findCharacteristic(StandardUuids.CURRENT_TIME, ZeppUuids.SERVICE_MILI)
+            ?: gatt.findCharacteristic(StandardUuids.CURRENT_TIME, StandardUuids.CURRENT_TIME_SERVICE)
+            ?: return
         try {
             gatt.write(characteristic, TimeSync.encode(now(), zone))
         } catch (e: CancellationException) {
@@ -102,6 +128,18 @@ class ZeppDriver internal constructor(
     companion object {
         private const val TAG = "ZeppDriver"
         const val AUTH_KEY_SIZE = 16
+
+        /** Vendor connect timeout (`a0.java:1159-1183`, §4.2). */
+        const val CONNECT_TIMEOUT_MS = 45_000L
+
+        /** Vendor service-discovery timeout (`a0.java:795`, §4.2). */
+        const val DISCOVERY_TIMEOUT_MS = 30_000L
+
+        /** Vendor per read/write/descriptor timeout (`a0.java:327-517`, §4.2). */
+        const val GATT_OPERATION_TIMEOUT_MS = 30_000L
+
+        /** Overall connection watchdog (`HMBaseBleDevice.java:511-523`, §4.1). */
+        const val HANDSHAKE_TIMEOUT_MS = 120_000L
 
         val AUTH_KEY = CredentialRequirement(
             key = "zepp.auth_key",

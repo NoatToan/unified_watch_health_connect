@@ -12,6 +12,7 @@ import com.unified.health.driver.zepp.codec.ChannelAck
 import com.unified.health.driver.zepp.codec.ChannelCipher
 import com.unified.health.driver.zepp.codec.ChannelCodec
 import com.unified.health.driver.zepp.codec.ChannelCryptoException
+import com.unified.health.driver.zepp.codec.ChannelDataPacket
 import com.unified.health.driver.zepp.codec.ChannelMessage
 import com.unified.health.driver.zepp.codec.ChannelPacketType
 import com.unified.health.driver.zepp.codec.ChannelProtocol
@@ -47,6 +48,12 @@ internal class ChannelTransport(
 ) {
     private lateinit var downFrames: ReceiveChannel<ByteArray>
     private val inboxes = ConcurrentHashMap<Int, Channel<ByteArray>>()
+
+    /**
+     * Passive listeners that receive a copy of every complete message for a module without stealing
+     * it from [request]'s inbox (used for unsolicited module notifications, e.g. battery 0x29).
+     */
+    private val taps = ConcurrentHashMap<Int, Channel<ByteArray>>()
     private val sendLock = Mutex()
     private val reassembler = ChannelReassembler()
     private var nextSessionId = 0
@@ -114,6 +121,12 @@ internal class ChannelTransport(
     fun register(module: Int): ReceiveChannel<ByteArray> = inboxes.getOrPut(module) { Channel(Channel.UNLIMITED) }
 
     /**
+     * Returns a passive copy channel for [module]. It sees every complete message delivered to the
+     * module (request answers included) without consuming [register]'s inbox.
+     */
+    fun tap(module: Int): ReceiveChannel<ByteArray> = taps.getOrPut(module) { Channel(Channel.UNLIMITED) }
+
+    /**
      * Sends [payload] to [module] and returns the first inbound message for that module accepted by
      * [accept]. The inbox is registered and drained before writing, so the answer cannot be missed.
      */
@@ -147,30 +160,57 @@ internal class ChannelTransport(
             ChannelCodec.split(protocol, sessionId, module, payload, packetSize = gatt.maxWriteLength)
         }
         for (packet in packets) {
+            sendPacket(protocol, sessionId, packet)
+        }
+    }
+
+    /**
+     * Sends one packet and, when it carries NEED_REPLY (every [ChannelCodec.DEFAULT_REPLY_FREQUENCY]
+     * packets and the last one), waits for its DATA_REPLY. A missing reply is retried a bounded
+     * number of times; an explicit refusal is a protocol error and is not retried. The vendor's v2
+     * retry body did not decompile (§9 question 3), so [ACK_ATTEMPTS] is a conservative policy [I].
+     */
+    private suspend fun sendPacket(protocol: ChannelProtocol, sessionId: Int, packet: ChannelDataPacket) {
+        // The retry rule is a v2 question only (the vendor's BleChannelImpl2.sendData body is a
+        // decompilation gap); v1 keeps the previous single-attempt behaviour.
+        val attempts = if (protocol == ChannelProtocol.V2 && packet.needsReply) ACK_ATTEMPTS else 1
+        var lastTimeout: WearableProtocolException? = null
+        repeat(attempts) { attempt ->
             drainDownFrames()
             writeDown(ChannelCodec.encodeData(protocol, packet))
-            if (packet.needsReply) awaitAck(protocol, sessionId, packet.index)
+            if (!packet.needsReply) return
+            val ack = awaitAck(protocol, sessionId, packet.index)
+            if (ack != null) {
+                if (ack.code != ChannelReplyCode.OK) {
+                    throw WearableProtocolException("Watch refused channel packet ${packet.index} of session $sessionId (code ${ack.code})")
+                }
+                return
+            }
+            lastTimeout = WearableProtocolException(
+                "Watch did not acknowledge channel packet ${packet.index} of session $sessionId",
+            )
+            if (attempt < attempts - 1) {
+                Log.w(TAG, "No ACK for packet ${packet.index} of session $sessionId; resending (${attempt + 1}/$attempts)")
+            }
         }
+        throw checkNotNull(lastTimeout)
     }
 
     /**
      * Waits for the watch's DATA_REPLY on 0x0016. The vendor's v2 sender waits up to 15 s for a
      * reply (`BleChannelImpl2`, constant `l = 15000`; the method body did not decompile, §9
      * question 3), so the exact rule is [I].
+     * @return null on timeout.
      */
-    private suspend fun awaitAck(protocol: ChannelProtocol, sessionId: Int, index: Int) {
-        val ack = withTimeoutOrNull(ACK_TIMEOUT_MS) {
+    private suspend fun awaitAck(protocol: ChannelProtocol, sessionId: Int, index: Int): ChannelAck? =
+        withTimeoutOrNull(ACK_TIMEOUT_MS) {
             var match: ChannelAck? = null
             while (match == null) {
                 val candidate = ChannelCodec.decodeAck(protocol, downFrames.receive()) ?: continue
                 if (candidate.sessionId == sessionId && candidate.index == index) match = candidate
             }
             match
-        } ?: throw WearableProtocolException("Watch did not acknowledge channel packet $index of session $sessionId")
-        if (ack.code != ChannelReplyCode.OK) {
-            throw WearableProtocolException("Watch refused channel packet $index of session $sessionId (code ${ack.code})")
         }
-    }
 
     private suspend fun readUpLink(frames: ReceiveChannel<ByteArray>) {
         for (frame in frames) {
@@ -199,7 +239,8 @@ internal class ChannelTransport(
         val protocol = protocol ?: return
         val packet = ChannelCodec.decodeData(protocol, frame)
         if (protocol.hasAppId && packet.appId != ChannelCodec.APP_ID) return
-        if (packet.isFirst && !inboxes.containsKey(packet.module)) {
+        val module = packet.module
+        if (packet.isFirst && module != null && !inboxes.containsKey(module) && !taps.containsKey(module)) {
             reassembler.reset()
             ack(protocol, packet.sessionId, ChannelReplyCode.UNKNOWN_MODULE, packet.index)
             return
@@ -217,6 +258,7 @@ internal class ChannelTransport(
     private fun deliver(message: ChannelMessage) {
         val data = if (message.isEncrypted) decryptOrNull(message) ?: return else message.data
         inboxes[message.module]?.trySend(data)
+        taps[message.module]?.trySend(data)
     }
 
     private fun decryptOrNull(message: ChannelMessage): ByteArray? {
@@ -260,6 +302,9 @@ internal class ChannelTransport(
 
         /** `BleChannelImpl2` reply wait (15 000 ms) [V]. */
         const val ACK_TIMEOUT_MS = 15_000L
+
+        /** Initial send plus two retries when a NEED_REPLY packet's ACK is lost [I]. */
+        const val ACK_ATTEMPTS = 3
 
         /** No vendor constant read for the module-list answer; one round trip [I]. */
         const val MODULE_LIST_TIMEOUT_MS = 5_000L

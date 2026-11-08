@@ -18,6 +18,14 @@ import java.time.Instant
 import java.time.ZoneId
 
 /**
+ * A GDSP failure that is worth retrying (lost packet, stall, busy/CRC mismatch, transient error
+ * code). Malformed frames, unsupported types and auth failures deliberately stay plain
+ * [WearableProtocolException]s so callers never retry them.
+ */
+internal class GdspTransientException(message: String, cause: Throwable? = null) :
+    WearableProtocolException(message, cause)
+
+/**
  * GDSP request/response on 0x0004 (control, notifies `[0x10, cmd, code, data…]`) and 0x0005
  * (data, notifies `[seq, payload…]`), §6.1 [V]. One operation at a time; callers serialize.
  */
@@ -53,9 +61,12 @@ internal class GdspClient(
     suspend fun requestHeader(type: GdspDataType, since: Instant, zone: ZoneId): GdspHeader? {
         val request = GdspCodec.requestHeader(type, since, zone, version)
         val response = command(request, GdspCodec.CMD_REQUEST_HEADER, HEADER_TIMEOUT_MS)
-            ?: throw WearableProtocolException("Watch did not answer the GDSP header request for $type")
+            ?: throw GdspTransientException("Watch did not answer the GDSP header request for $type")
         if (!response.isSuccess) {
-            Log.i(TAG, "GDSP header for $type refused with code ${response.status}")
+            val message = "GDSP header for $type refused with code ${response.status}"
+            // BUSY/TIMEOUT/OPERATION_FAILED etc. are worth retrying; unsupported-type refusals are not.
+            if (response.status in TRANSIENT_ERROR_CODES) throw GdspTransientException(message)
+            Log.i(TAG, message)
             return null
         }
         return try {
@@ -82,7 +93,7 @@ internal class GdspClient(
                     dataFrames.onReceive { true to it }
                     controlFrames.onReceive { false to it }
                 }
-            } ?: throw WearableProtocolException("GDSP transfer stalled for $DATA_IDLE_TIMEOUT_MS ms")
+            } ?: throw GdspTransientException("GDSP transfer stalled for $DATA_IDLE_TIMEOUT_MS ms")
             val (isData, frame) = event
             if (isData) {
                 lastSeq = appendPacket(payload, lastSeq, frame)
@@ -105,16 +116,22 @@ internal class GdspClient(
     private fun appendPacket(payload: ByteArrayOutputStream, lastSeq: Int, frame: ByteArray): Int {
         if (frame.isEmpty()) throw WearableProtocolException("Empty GDSP data packet")
         val seq = frame[0].toInt() and 0xFF
-        if ((lastSeq + 1) % 256 != seq) throw WearableProtocolException("GDSP packet lost (expected ${(lastSeq + 1) % 256}, got $seq)")
+        if ((lastSeq + 1) % 256 != seq) throw GdspTransientException("GDSP packet lost (expected ${(lastSeq + 1) % 256}, got $seq)")
         if (payload.size() + frame.size > MAX_PAYLOAD_SIZE) throw WearableProtocolException("GDSP payload exceeds $MAX_PAYLOAD_SIZE bytes")
         payload.write(frame, 1, frame.size - 1)
         return seq
     }
 
     private fun verify(end: CommandResponse, payload: ByteArray): ByteArray {
-        if (!end.isSuccess) throw WearableProtocolException("GDSP transfer failed with code ${end.status}")
+        if (!end.isSuccess) {
+            val message = "GDSP transfer failed with code ${end.status}"
+            // Transient link/transfer states: operation failed, packet index, busy, CRC mismatch,
+            // timeout (GDSPErrorCode 4/6/7/8/50). Anything else is a protocol/state error.
+            if (end.status in TRANSIENT_ERROR_CODES) throw GdspTransientException(message)
+            throw WearableProtocolException(message)
+        }
         val expected = GdspCodec.parseTransferCrc(end.data) ?: throw WearableProtocolException("GDSP end marker without CRC")
-        if (expected != crc32(payload)) throw WearableProtocolException("GDSP CRC mismatch")
+        if (expected != crc32(payload)) throw GdspTransientException("GDSP CRC mismatch")
         return payload
     }
 
@@ -144,5 +161,11 @@ internal class GdspClient(
 
         /** 90 days of 8-byte activity minutes is ~1 MiB; anything far larger is corrupt. */
         const val MAX_PAYLOAD_SIZE = 8 shl 20
+
+        /**
+         * `GDSPErrorCode` values worth a fresh sync attempt: OPERATION_FAILED(4),
+         * PACKET_INDEX_ERROR(6), BUSY(7), CRC_MISMATCH(8), TIMEOUT(50) (`GDSPErrorCode.java`).
+         */
+        val TRANSIENT_ERROR_CODES = setOf(4, 6, 7, 8, 50)
     }
 }

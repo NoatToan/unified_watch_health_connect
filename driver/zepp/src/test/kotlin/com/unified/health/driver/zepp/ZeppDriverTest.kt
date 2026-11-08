@@ -8,6 +8,8 @@ import com.unified.health.core.ble.driver.SessionContext
 import com.unified.health.core.ble.driver.SyncRequest
 import com.unified.health.core.ble.driver.UnsupportedDeviceException
 import com.unified.health.core.ble.driver.WearableProtocolException
+import com.unified.health.core.ble.gatt.GattCharacteristic
+import com.unified.health.core.ble.gatt.GattClient
 import com.unified.health.core.ble.gatt.StandardUuids
 import com.unified.health.core.ble.protocol.hexToBytes
 import com.unified.health.core.ble.scan.Advertisement
@@ -17,6 +19,8 @@ import com.unified.health.core.testing.RecordingSink
 import com.unified.health.driver.zepp.codec.GdspCodec
 import com.unified.health.driver.zepp.codec.GdspDataType
 import com.unified.health.driver.zepp.codec.TimeSync
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
@@ -38,6 +42,12 @@ class ZeppDriverTest {
 
     private fun TestScope.driver() = ZeppDriver(StandardTestDispatcher(testScheduler), { ZoneOffset.UTC }, Random(1))
 
+    /** A link whose notification setup never completes, to exercise the whole-handshake deadline. */
+    private class HangingGattClient(delegate: GattClient) : GattClient by delegate {
+        override suspend fun subscribe(characteristic: GattCharacteristic): ReceiveChannel<ByteArray> =
+            suspendCancellableCoroutine { }
+    }
+
     @Test
     fun `declares the auth key credential and link requirements`() {
         val driver = ZeppDriver()
@@ -45,6 +55,23 @@ class ZeppDriverTest {
         assertTrue(driver.credentialRequirements.single().description.contains("Zepp app"))
         assertFalse(driver.linkRequirements.bond)
         assertEquals(247, driver.linkRequirements.mtu)
+        // Vendor §4.2/§4.5: 45 s connect, 30 s discovery, 30 s per GATT operation, cache refresh.
+        assertEquals(45_000L, driver.linkRequirements.connectTimeoutMs)
+        assertEquals(30_000L, driver.linkRequirements.discoveryTimeoutMs)
+        assertEquals(30_000L, driver.linkRequirements.operationTimeoutMs)
+        assertTrue(driver.linkRequirements.refreshGattCacheBeforeDiscovery)
+    }
+
+    @Test
+    fun `whole-handshake watchdog aborts a stalled handshake with a precise error`() = runTest {
+        val watch = FakeZeppWatch(authKey)
+        try {
+            driver().openSession(HangingGattClient(watch.gatt), withKey)
+            fail("expected WearableProtocolException")
+        } catch (e: WearableProtocolException) {
+            assertTrue(e.message!!.contains("120 s"))
+            assertTrue(e.message!!.contains("handshake"))
+        }
     }
 
     @Test
@@ -150,10 +177,21 @@ class ZeppDriverTest {
     }
 
     @Test
-    fun `channel v1 without encrypt byte authenticates via module 0x80 session auth`() = runTest {
-        val watch = FakeZeppWatch(authKey, channelVersion = 1, encryptByte = null)
+    fun `channel v1 skips the module list and authenticates on legacy 0x0009`() = runTest {
+        // Even with modules 0x80/0x82 advertised, the vendor only queries BuiltInModule and picks a
+        // channel auth module on v2; v1 always takes TraditionalDeviceAuthorizationImpl (0x0009).
+        val watch = FakeZeppWatch(
+            authKey,
+            channelVersion = 1,
+            encryptByte = null,
+            hasLegacyAuth = true,
+            modules = mapOf(0x82 to false, 0x80 to false),
+        )
         val session = driver().openSession(watch.gatt, withKey)
         assertTrue(watch.authenticated)
+        assertEquals(0, watch.builtInRequests)
+        assertEquals(0, watch.module1Requests)
+        assertTrue(watch.legacyAuthRequests > 0)
         session.close()
     }
 
@@ -173,14 +211,6 @@ class ZeppDriverTest {
         } finally {
             assertFalse(watch.authenticated)
         }
-    }
-
-    @Test
-    fun `channel v1 with module 0x82 authenticates (version is framing only, not the auth choice)`() = runTest {
-        val watch = FakeZeppWatch(authKey, channelVersion = 1)
-        val session = driver().openSession(watch.gatt, withKey)
-        assertTrue(watch.authenticated)
-        session.close()
     }
 
     @Test
@@ -211,6 +241,41 @@ class ZeppDriverTest {
     }
 
     @Test
+    fun `writes the current time to 2A2B under FEE0 when that is the only copy`() = runTest {
+        val watch = FakeZeppWatch(authKey, currentTimeService = ZeppUuids.SERVICE_MILI)
+        val now = Instant.parse("2026-11-06T10:15:30.800Z")
+        val driver = ZeppDriver(StandardTestDispatcher(testScheduler), { ZoneOffset.UTC }, Random(1)) { now }
+        val session = driver.openSession(watch.gatt, withKey)
+        val write = watch.gatt.writes.single { it.characteristic == watch.currentTime }
+        assertEquals(ZeppUuids.SERVICE_MILI, write.characteristic.service)
+        assertArrayEquals(TimeSync.encode(now, ZoneOffset.UTC), write.value)
+        session.close()
+    }
+
+    @Test
+    fun `reads battery from Zepp OS module 0x29`() = runTest {
+        val watch = FakeZeppWatch(authKey, modules = mapOf(0x82 to false, 0x29 to false)).apply {
+            batteryFlags = 0x00
+            batteryLevel = 64
+        }
+        val session = driver().openSession(watch.gatt, withKey)
+        assertEquals(64, session.readDeviceInfo().batteryPercent)
+        assertEquals(1, watch.batteryVersionQueries)
+        assertEquals(1, watch.batteryQueries)
+        session.close()
+    }
+
+    @Test
+    fun `reads battery from the legacy FEE0 characteristic when 0x180F is absent`() = runTest {
+        val watch = FakeZeppWatch(authKey, hasStandardBattery = false, hasLegacyBattery = true)
+        // flags bit0 (DC status) and bit3 (last-charge level) add trailing bytes; the level stays byte 1.
+        watch.gatt.readValues[ZeppUuids.BATTERY] = byteArrayOf(0x09, 55, 1, 42)
+        val session = driver().openSession(watch.gatt, withKey)
+        assertEquals(55, session.readDeviceInfo().batteryPercent)
+        session.close()
+    }
+
+    @Test
     fun `falls back to a PnP-id label when the plain-text model number is absent`() = runTest {
         val watch = FakeZeppWatch(authKey, hasPnpId = true)
         val session = driver().openSession(watch.gatt, withKey)
@@ -236,12 +301,77 @@ class ZeppDriverTest {
     }
 
     @Test
-    fun `GDSP CRC mismatch fails the sync without confirming delivery`() = runTest {
+    fun `handles a pushed module 0x29 battery notification`() = runTest {
+        val watch = FakeZeppWatch(authKey, modules = mapOf(0x82 to false, 0x29 to false))
+        val session = driver().openSession(watch.gatt, withKey)
+        watch.pushBattery(level = 42)
+        testScheduler.advanceUntilIdle()
+        assertEquals(42, session.readDeviceInfo().batteryPercent)
+        // The pushed level is used without spending the one-shot query round trips.
+        assertEquals(0, watch.batteryVersionQueries)
+        assertEquals(0, watch.batteryQueries)
+        session.close()
+    }
+
+    @Test
+    fun `retries transient GDSP failures and delivers the block afterwards`() = runTest {
+        val watch = FakeZeppWatch(authKey)
+        watch.gdspBlocks[GdspDataType.ACTIVITY.code] = ArrayDeque(
+            listOf(FakeZeppWatch.GdspBlock(1, LocalDateTime.of(2026, 10, 30, 8, 0), byteArrayOf(0, 1, 1, 10, 70))),
+        )
+        watch.transientGdspFailures = 2
+        val session = driver().openSession(watch.gatt, withKey)
+        val sink = RecordingSink()
+        val count = session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), sink) {}
+
+        assertEquals(2, count) // one Steps and one HeartRate record
+        assertEquals(listOf(10), sink.ofType<HealthRecord.Steps>().map { it.count })
+        assertEquals(4, activityHeaderRequests(watch)) // three transfer attempts + the empty follow-up
+        assertEquals(listOf<Int?>(null, null, 1, 1, 1, 1, 1), watch.stopCodes)
+        session.close()
+    }
+
+    @Test
+    fun `GDSP retry is bounded to three retries`() = runTest {
+        val watch = FakeZeppWatch(authKey)
+        watch.gdspBlocks[GdspDataType.ACTIVITY.code] = ArrayDeque(
+            listOf(FakeZeppWatch.GdspBlock(1, LocalDateTime.of(2026, 10, 30, 8, 0), byteArrayOf(0, 1, 1, 10, 70))),
+        )
+        watch.transientGdspFailures = 10
+        val session = driver().openSession(watch.gatt, withKey)
+        try {
+            session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), RecordingSink()) {}
+            fail("expected WearableProtocolException")
+        } catch (e: WearableProtocolException) {
+            assertTrue(e.message!!.contains("code 4"))
+        }
+        assertEquals(4, activityHeaderRequests(watch)) // initial attempt + 3 retries
+        assertEquals(List<Int?>(4) { null }, watch.stopCodes) // never confirmed as delivered
+        session.close()
+    }
+
+    @Test
+    fun `retries a one-off GDSP CRC mismatch and confirms delivery`() = runTest {
         val watch = FakeZeppWatch(authKey)
         watch.gdspBlocks[GdspDataType.ACTIVITY.code] = ArrayDeque(
             listOf(FakeZeppWatch.GdspBlock(1, LocalDateTime.of(2026, 10, 30, 8, 0), byteArrayOf(0, 1, 1, 10, 70))),
         )
         watch.corruptNextCrc = true
+        val session = driver().openSession(watch.gatt, withKey)
+        val count = session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), RecordingSink()) {}
+
+        assertEquals(2, count) // one Steps and one HeartRate record
+        assertEquals(listOf<Int?>(null, 1, 1, 1, 1, 1), watch.stopCodes)
+        session.close()
+    }
+
+    @Test
+    fun `persistent GDSP CRC mismatch fails after the retry budget without confirming delivery`() = runTest {
+        val watch = FakeZeppWatch(authKey)
+        watch.gdspBlocks[GdspDataType.ACTIVITY.code] = ArrayDeque(
+            listOf(FakeZeppWatch.GdspBlock(1, LocalDateTime.of(2026, 10, 30, 8, 0), byteArrayOf(0, 1, 1, 10, 70))),
+        )
+        watch.corruptCrcAlways = true
         val session = driver().openSession(watch.gatt, withKey)
         try {
             session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), RecordingSink()) {}
@@ -249,7 +379,30 @@ class ZeppDriverTest {
         } catch (e: WearableProtocolException) {
             assertTrue(e.message!!.contains("CRC"))
         }
+        assertEquals(4, activityHeaderRequests(watch))
+        assertEquals(List<Int?>(4) { null }, watch.stopCodes)
+        session.close()
+    }
+
+    @Test
+    fun `does not retry a malformed GDSP header`() = runTest {
+        val watch = FakeZeppWatch(authKey)
+        watch.gdspBlocks[GdspDataType.ACTIVITY.code] = ArrayDeque(
+            listOf(FakeZeppWatch.GdspBlock(1, LocalDateTime.of(2026, 10, 30, 8, 0), byteArrayOf(0, 1, 1, 10, 70))),
+        )
+        watch.malformedGdspHeader = true
+        val session = driver().openSession(watch.gatt, withKey)
+        try {
+            session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), RecordingSink()) {}
+            fail("expected WearableProtocolException")
+        } catch (e: WearableProtocolException) {
+            assertTrue(e.message!!.contains("Malformed GDSP header"))
+        }
+        assertEquals(1, activityHeaderRequests(watch))
         assertEquals(listOf<Int?>(null), watch.stopCodes)
         session.close()
     }
+
+    private fun activityHeaderRequests(watch: FakeZeppWatch): Int =
+        watch.headerRequests.count { it[1].toInt() and 0xFF == GdspDataType.ACTIVITY.code }
 }

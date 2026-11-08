@@ -46,24 +46,40 @@ internal object BuiltInModuleCodec {
  * list has an auth module but the channel version reply omitted the encrypt byte (§4 step 5,
  * `AuthModule.java:401-538` [V]). No ECDH: the session key *is* the auth key, so there is no
  * channel encryption either (`ChannelTransport.requiresEncryption` already returns false whenever
- * `encryptEnabled` is null, which is exactly this case).
+ * `encryptEnabled` is null, which is exactly this case). Local bind uses the same
+ * `[0x01, apiLevel u16 LE, key]` command as 0x82 (`DeviceAuthorizationImpl1.java:162`).
  */
 internal object AuthModule1Codec {
     const val MODULE = 0x80
 
+    const val CMD_GET_AUTH_INFO = 0x00
+    const val CMD_LOCAL_BIND = 0x01
     const val CMD_REQUEST_RANDOM = 0x04
     const val CMD_AUTHORIZE = 0x05
 
     /** `DeviceAuthorizationImpl1`/`AuthModule` API level (distinct from `ZeppOsAuthCodec.APP_API_LEVEL`). */
-    private const val API_LEVEL = 1
+    const val APP_API_LEVEL = 1
 
     /** Fixed byte after the API level in the request (`AuthModule.java:424-435`, [V]). */
     private const val REQUEST_RANDOM_MARKER = 0x02
 
+    /** `[0x00]`: asks which bind modes the firmware allows (`AuthModule.getAuthorizationInfo`, [V]). */
+    fun getAuthorizationInfo(): ByteArray = byteArrayOf(CMD_GET_AUTH_INFO.toByte())
+
+    /** Local bind `[0x01, apiLevel u16 LE, key(16)]` (`AuthModule.java:569-578`, [V]). */
+    fun localBind(key: ByteArray): ByteArray {
+        require(key.size == ZeppOsAuthCodec.RANDOM_SIZE) { "Key must be ${ZeppOsAuthCodec.RANDOM_SIZE} bytes" }
+        return buildBytes(3 + key.size) {
+            u8(CMD_LOCAL_BIND)
+            u16le(APP_API_LEVEL)
+            bytes(key)
+        }
+    }
+
     /** `[0x04, apiLevel u16 LE, 0x02]`; the successful reply's data is the 16-byte random challenge. */
     fun requestRandom(): ByteArray = buildBytes(4) {
         u8(CMD_REQUEST_RANDOM)
-        u16le(API_LEVEL)
+        u16le(APP_API_LEVEL)
         u8(REQUEST_RANDOM_MARKER)
     }
 
@@ -100,4 +116,45 @@ internal object OpenAppCodec {
 
     /** `[0x05, status]`; status 0 means accepted (`OpenAppModule.java:142-146`). */
     fun realtimeHrAccepted(message: ByteArray): Boolean = message.size >= 2 && message[1].toInt() and 0xFF == 0
+}
+
+/**
+ * Huami legacy battery characteristic 0x0006 in FEE0 (`BatteryInfo.parseBatteryInfo`, §3.1 [V]):
+ * `[flags, level, optional fields…]`. Flag bits add variable-length fields after the level:
+ * bit0 DC status (+1), bit1 last-charge-full (+8), bit2 last-charge (+8), bit3 last-charge-level
+ * (+1). Only the level is exposed; a truncated payload is rejected like the vendor parser does.
+ */
+internal object LegacyBatteryCodec {
+    fun parseLevel(value: ByteArray): Int? {
+        if (value.size < 2) return null
+        val flags = value[0].toInt() and 0xFF
+        val required = 2 +
+            (if (flags and 0x01 != 0) 1 else 0) +
+            (if (flags and 0x02 != 0) 8 else 0) +
+            (if (flags and 0x04 != 0) 8 else 0) +
+            (if (flags and 0x08 != 0) 1 else 0)
+        if (value.size < required) return null
+        return (value[1].toInt() and 0xFF).takeIf { it in 0..100 }
+    }
+}
+
+/**
+ * Zepp OS battery module 0x29 (`BatteryModule`, `BatteryCommand`, §3.1 [V]): query version
+ * `0x01` (reply `0x02`), query battery `0x03`. The answer and the unsolicited notify both use
+ * command `0x04`; after that command byte the payload is the common [LegacyBatteryCodec] layout.
+ */
+internal object ZeppOsBatteryCodec {
+    const val MODULE = 0x29
+
+    const val CMD_QUERY_VERSION = 0x01
+    const val CMD_VERSION_RESPONSE = 0x02
+    const val CMD_QUERY_BATTERY = 0x03
+    const val CMD_BATTERY = 0x04
+
+    /** The vendor only creates its battery API when the module version is 1 (`LullabyDevice.java:112`). */
+    const val SUPPORTED_VERSION = 1
+
+    fun queryVersion(): ByteArray = bytesOf(CMD_QUERY_VERSION)
+
+    fun queryBattery(): ByteArray = bytesOf(CMD_QUERY_BATTERY)
 }

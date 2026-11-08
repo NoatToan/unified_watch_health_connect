@@ -35,4 +35,25 @@ class TimeSyncTest {
     fun `payload is always 11 bytes`() {
         assertEquals(TimeSync.PAYLOAD_SIZE, TimeSync.encode(Instant.EPOCH, ZoneOffset.UTC).size)
     }
+
+    @Test
+    fun `fraction is milliseconds divided by four`() {
+        // Vendors write Calendar.MILLISECOND / 4 (`ProfileUtils.java:49`).
+        val bytes = TimeSync.encode(Instant.parse("2026-11-06T10:15:30.800Z"), ZoneOffset.UTC)
+        assertEquals(200, bytes[8].toInt() and 0xFF)
+        assertEquals(0, bytes[9].toInt() and 0xFF)
+    }
+
+    @Test
+    fun `marks the DST adjust reason while the zone is in daylight saving time`() {
+        // 2026-07-01 in New York is EDT (UTC-4, DST) → adjustReason = 8, tzKey = -16.
+        val bytes = TimeSync.encode(Instant.parse("2026-07-01T12:00:00Z"), ZoneId.of("America/New_York"))
+        assertEquals(TimeSync.ADJUST_REASON_DST, bytes[9].toInt() and 0xFF)
+    }
+
+    @Test
+    fun `does not mark DST outside daylight saving time`() {
+        val bytes = TimeSync.encode(Instant.parse("2026-01-01T12:00:00Z"), ZoneId.of("America/New_York"))
+        assertEquals(0, bytes[9].toInt() and 0xFF)
+    }
 }

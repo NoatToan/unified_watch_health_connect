@@ -7,6 +7,7 @@ import com.unified.health.core.ble.driver.SyncRequest
 import com.unified.health.core.ble.driver.UnsupportedDeviceException
 import com.unified.health.core.ble.driver.WearableProtocolException
 import com.unified.health.core.ble.driver.WearableSession
+import com.unified.health.core.ble.gatt.GattCharacteristic
 import com.unified.health.core.ble.gatt.GattClient
 import com.unified.health.core.ble.gatt.GattException
 import com.unified.health.core.ble.gatt.StandardGattReader
@@ -17,19 +18,25 @@ import com.unified.health.core.model.DeviceCapability
 import com.unified.health.core.model.DeviceInfo
 import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.WearableVendor
+import com.unified.health.driver.zepp.codec.CommandResponse
 import com.unified.health.driver.zepp.codec.GdspCodec
 import com.unified.health.driver.zepp.codec.GdspDataType
 import com.unified.health.driver.zepp.codec.GdspHeader
 import com.unified.health.driver.zepp.codec.GdspRecordParsers
+import com.unified.health.driver.zepp.codec.LegacyBatteryCodec
 import com.unified.health.driver.zepp.codec.OpenAppCodec
+import com.unified.health.driver.zepp.codec.ZeppOsBatteryCodec
 import com.unified.health.driver.zepp.transport.ChannelTransport
 import com.unified.health.driver.zepp.transport.GdspClient
+import com.unified.health.driver.zepp.transport.GdspTransientException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Duration
 import java.time.Instant
@@ -73,17 +80,93 @@ internal class ZeppSession(
 
     override val liveHeartRate: Flow<HealthRecord.HeartRate> = live ?: emptyFlow()
 
+    /** Legacy Huami battery characteristic 0x0006 in FEE0 (`MiLiProProfile.getBatteryInfo`, §3.1 [V]). */
+    private val legacyBattery: GattCharacteristic? = gatt.findCharacteristic(ZeppUuids.BATTERY, ZeppUuids.SERVICE_MILI)
+        ?: gatt.findCharacteristic(ZeppUuids.BATTERY)
+
+    private val hasStandardBattery: Boolean =
+        gatt.findCharacteristic(StandardUuids.BATTERY_LEVEL, StandardUuids.BATTERY_SERVICE) != null
+
+    private val hasChannelBattery: Boolean = channel?.supportsModule(ZeppOsBatteryCodec.MODULE) == true
+
+    /**
+     * Latest level pushed by module 0x29 command 0x04 (`BatteryCommand` notify). The watch sends it
+     * unsolicited after the one-shot query and when the level changes, so it is preferred over a
+     * new query; the on-demand query below remains the fallback.
+     */
+    private val pushedBattery = MutableStateFlow<Int?>(null)
+
+    private val batteryTap = channel?.takeIf { hasChannelBattery }?.let { ch ->
+        // Register synchronously so a push arriving right after openSession is not refused as an
+        // unknown module; only the consumption loop is asynchronous.
+        val tap = ch.tap(ZeppOsBatteryCodec.MODULE)
+        scope.launch {
+            for (message in tap) {
+                val response = CommandResponse.parse(message) ?: continue
+                if (response.command != ZeppOsBatteryCodec.CMD_BATTERY || !response.isSuccess) continue
+                LegacyBatteryCodec.parseLevel(response.data)?.let { pushedBattery.value = it }
+            }
+        }
+    }
+
     override val capabilities: Set<DeviceCapability> = buildSet {
         if (live != null) add(DeviceCapability.LIVE_HEART_RATE)
         if (gdsp != null) add(DeviceCapability.HISTORY_SYNC)
-        if (gatt.findCharacteristic(StandardUuids.BATTERY_LEVEL, StandardUuids.BATTERY_SERVICE) != null) add(DeviceCapability.BATTERY_LEVEL)
+        if (hasChannelBattery || legacyBattery != null || hasStandardBattery) add(DeviceCapability.BATTERY_LEVEL)
     }
 
-    // TODO(zepp-protocol): NEEDS-REAL-WATCH — battery could also come from the Huami characteristic
-    //  0x0006, but no source gives its layout (§3.1), so it stays unread; 0x180F is used instead.
+    /**
+     * Battery sources in vendor order (`HMBaseBleDevice`/`LullabyDevice.java:112` [V]): channel
+     * module 0x29 on Zepp OS, the bit-flagged FEE0 characteristic 0x0006 on legacy watches, and the
+     * SIG 0x180F service as the last fallback.
+     */
     override suspend fun readDeviceInfo(): DeviceInfo {
         val base = StandardGattReader.readDeviceInfo(gatt)
-        return if (base.model != null) base else base.copy(model = readPnpModel())
+        val info = if (base.model != null) base else base.copy(model = readPnpModel())
+        return info.copy(batteryPercent = readBattery() ?: info.batteryPercent)
+    }
+
+    private suspend fun readBattery(): Int? =
+        pushedBattery.value ?: readChannelBattery() ?: readLegacyBattery()
+
+    /** Module 0x29: query version 0x01 (only version 1 is used, `LullabyDevice.java:112`), then battery 0x03. */
+    private suspend fun readChannelBattery(): Int? {
+        val channel = channel ?: return null
+        if (!hasChannelBattery) return null
+        return try {
+            val versionReply = channel.request(
+                ZeppOsBatteryCodec.MODULE, ZeppOsBatteryCodec.queryVersion(), BATTERY_TIMEOUT_MS,
+            ) { CommandResponse.parse(it)?.command == ZeppOsBatteryCodec.CMD_VERSION_RESPONSE }
+            val version = CommandResponse.parse(versionReply)
+                ?.takeIf { it.isSuccess }
+                ?.data?.firstOrNull()?.toInt()?.and(0xFF)
+            if (version != ZeppOsBatteryCodec.SUPPORTED_VERSION) return null
+            val reply = channel.request(
+                ZeppOsBatteryCodec.MODULE, ZeppOsBatteryCodec.queryBattery(), BATTERY_TIMEOUT_MS,
+            ) { CommandResponse.parse(it)?.command == ZeppOsBatteryCodec.CMD_BATTERY }
+            val response = CommandResponse.parse(reply) ?: return null
+            if (!response.isSuccess) null else LegacyBatteryCodec.parseLevel(response.data)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: WearableProtocolException) {
+            Log.w(TAG, "Battery module 0x29 query failed: ${e.message}")
+            null
+        } catch (e: GattException) {
+            Log.w(TAG, "Battery module 0x29 query failed: ${e.message}")
+            null
+        }
+    }
+
+    private suspend fun readLegacyBattery(): Int? {
+        val characteristic = legacyBattery ?: return null
+        val data = try {
+            gatt.read(characteristic)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: GattException) {
+            return null
+        }
+        return LegacyBatteryCodec.parseLevel(data)
     }
 
     /**
@@ -136,24 +219,35 @@ internal class ZeppSession(
     ): Int {
         var cursor = since
         var delivered = 0
-        var completed = false
-        try {
-            var blocks = 0
-            while (blocks++ < MAX_BLOCKS_PER_TYPE) {
-                val header = gdsp.requestHeader(type, cursor, zone) ?: break
-                if (header.count <= 0) break
-                val payload = gdsp.fetch()
-                val records = decode(type, payload, header)
-                if (records.isNotEmpty()) sink.onRecords(records)
-                delivered += records.count { it !is HealthRecord.RawPayload }
-                val next = nextCursor(type, header, records) ?: break
-                if (!next.isAfter(cursor)) break
-                cursor = next
-                report(fractionOf(since, cursor, now))
+        var retries = MAX_SYNC_RETRIES
+        while (true) {
+            var completed = false
+            try {
+                var blocks = 0
+                while (blocks++ < MAX_BLOCKS_PER_TYPE) {
+                    val header = gdsp.requestHeader(type, cursor, zone) ?: break
+                    if (header.count <= 0) break
+                    val payload = gdsp.fetch()
+                    val records = decode(type, payload, header)
+                    if (records.isNotEmpty()) sink.onRecords(records)
+                    delivered += records.count { it !is HealthRecord.RawPayload }
+                    val next = nextCursor(type, header, records) ?: break
+                    if (!next.isAfter(cursor)) break
+                    cursor = next
+                    report(fractionOf(since, cursor, now))
+                }
+                completed = true
+            } catch (e: GdspTransientException) {
+                // The vendor retries the whole sync unit from the last good cursor up to 3 times
+                // (`CommonGdspSyncTask.java:102-157`, `BaseGdspSyncParam.retryCount = 3`). Protocol,
+                // decoding and auth failures are not [GdspTransientException] and propagate at once.
+                if (retries-- <= 0) throw e
+                Log.w(TAG, "GDSP $type failed transiently (${e.message}); retrying from $cursor ($retries retries left)")
+                continue
+            } finally {
+                withContext(NonCancellable) { finishTransfer(gdsp, type, completed) }
             }
-            completed = true
-        } finally {
-            withContext(NonCancellable) { finishTransfer(gdsp, type, completed) }
+            break
         }
         report(1f)
         return delivered
@@ -241,6 +335,12 @@ internal class ZeppSession(
 
         /** Guards against a watch that keeps answering with data for the same window. */
         const val MAX_BLOCKS_PER_TYPE = 512
+
+        /** Vendor default `retryCount`: three retries after the first transient failure. */
+        const val MAX_SYNC_RETRIES = 3
+
+        /** Battery queries are best effort; keep the failure short instead of the module default 15 s. */
+        const val BATTERY_TIMEOUT_MS = 5_000L
 
         const val EVENT_NEXT_OFFSET_SECONDS = 30L
     }

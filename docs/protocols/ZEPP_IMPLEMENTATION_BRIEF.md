@@ -4,35 +4,45 @@
 > Tag: [V] seen in code / [I] inferred / [Ext] public knowledge.
 > Evidence snippets in `docs/re-evidence/zepp/`.
 
+> **Update 2026-11-08:** corrected against `docs/analysis/ZEPP_CONNECTION_ANALYSIS.md`.
+> Module list and `supportModule()` are channel-v2 only; v1 watches have an empty list and use
+> legacy 0x0009 auth. Module 0x80 supports local bind (`DeviceAuthorizationImpl1` →
+> `startLocalBinding`). Time sync 2A2B may live under FEE0. Battery = module 0x29
+> (0x01/0x03/0x04) or legacy FEE0 char 0x0006.
+
 ---
 
 ## Priority 1 — Unblock active driver TODOs
 
-### TODO-1: `ZeppHandshake.kt:56` — v1 watches with module 0x80
+### TODO-1: `ZeppHandshake.kt:56` — channel-v2 module 0x80 auth (v1 uses 0x0009)
 
-**Status: RESOLVED** [V]
+**Status: RESOLVED (corrected 2026-11-08)** [V]
 
-The `TODO` comment frames this as "v1 watches may still use 0x0009 when they lack module
-0x80/0x82". That is **correct but backwards**: the decision is determined by the BuiltInModule
-list, not the channel version number.
+The module list is **channel-v2 only**. The vendor never queries it on v1; `BaseProfile.supportModule()`
+returns false unless the channel version is exactly 2 (`BaseProfile.java:486-499`,
+`BuiltInModule.java:365-368`). So a v1 watch has an empty module list and always takes the legacy
+0x0009 path; module 0x80 is reachable only on v2 without an `encryptEnable` byte. Source:
+`docs/analysis/ZEPP_CONNECTION_ANALYSIS.md` §1.3/§2.
 
 **Decision tree** (`DeviceAuthorizationFactory.java:88-94`):
 ```
-if supportModule(0x80) || supportModule(0x82):
+if channelVersion != 2:
+    → char 0x0009 auth         (§5.6, already implemented)
+else if supportModule(0x80) || supportModule(0x82):
     if encryptEnable == null:  → module 0x80 auth  (§5.5)
     else:                      → module 0x82 ECDH  (§5.2, already implemented)
 else:
-    → char 0x0009 auth         (§5.6, already implemented)
+    → char 0x0009 auth         (§5.6)
 ```
 
 **What to implement in `ZeppHandshake.kt`:**
 
-1. After channel version query, query BuiltInModule (module 0x00):
-   - Channel v2: command `0x03` → `[0x04, count u16 LE, (id u16 LE, requireEncrypt u8)…]`
-   - Channel v1: command `0x00` → `[0x01, count u16 LE, id u8…]`
+1. After the channel version query, query BuiltInModule (module 0x00) **only when version == 2**:
+   command `0x03` → `[0x04, count u16 LE, (id u16 LE, requireEncrypt u8)…]`.
+   On v1 skip the query; the module list stays empty.
 2. If `moduleList.contains(0x80)` AND `encryptEnable == null` → run module 0x80 auth below.
 3. If `moduleList.contains(0x80) || moduleList.contains(0x82)` AND `encryptEnable != null` → existing ECDH path.
-4. Else → 0x0009 path (already implemented; also valid for channel-v1 watches without 0x80).
+4. Else → 0x0009 path (already implemented; this is also the v1 default).
 
 **Module 0x80 session auth** (3-step, no ECDH, `AuthModule.java:401-538`):
 ```
@@ -51,6 +61,14 @@ Step 3 — authorize
 ```
 
 No session key derivation. No `EncryptKeyStore`. No channel encryption for module 0x80 watches.
+
+**Module 0x80 local bind** (`DeviceAuthorizationImpl1` → `startLocalBinding`):
+```
+Send (module 0x80): [0x01, 0x01, 0x00, key(16)]
+Recv:               [code]   — 0x01 = OK, 0x02 = user reject; timeout 30 s
+```
+Module 0x80 **does** support local bind; it is not session-auth only (`AuthModule.java:512-538,569-578`,
+`DeviceAuthorizationImpl1.java:158-162`). Gate it behind the unbound-credential marker like 0x82.
 
 **Test byte sequence** (key = `01..10`, random = `A0..AF`):
 - getAuthInfo req: `00`
@@ -208,7 +226,8 @@ SleepStage.status values: 0=light, 1=deep, 2=REM, 3=awake [I/Ext].
 |---|---|---|
 | BLE scan (FEE0) + connect | ✓ Implemented | [V] |
 | Channel v2 (Zepp OS) auth + ECDH | ✓ Implemented | [V] |
-| Channel v1 auth (module 0x80) | ✗ Throws exception | [V] RESOLVED → implement |
+| Channel v2 auth (module 0x80, no ECDH) | ✗ Throws exception | [V] RESOLVED → implement |
+| Channel v1 → legacy 0x0009 (no module list) | ✓ Implemented | [V] corrected 2026-11-08 |
 | Auth 0x0009 (legacy band) | ✓ Implemented | [V] |
 | PnP ID parse | ✗ TODO | [V] RESOLVED → implement |
 | GDSP activity sync (type 1) | ✓ Implemented | [V] |
@@ -224,3 +243,6 @@ SleepStage.status values: 0=light, 1=deep, 2=REM, 3=awake [I/Ext].
 | Live steps (module 0x16) | ✓ Implemented | [V] |
 | Sleep reading | ✗ Not implemented | [I] needs libdataProcess heuristic |
 | Sleep write-back (module 0x32) | ✗ Not implemented | [V] write-only codec documented |
+| Battery module 0x29 (0x01/0x03/0x04) | ✗ Not implemented | [V] layouts known; real-watch cadence |
+| Battery FEE0 char 0x0006 | ✗ Not implemented | [V] bit-flagged layout known |
+| Time sync 2A2B under FEE0 | Partial (0x1805 only) | [V] vendor uses FEE0; real-watch placement |

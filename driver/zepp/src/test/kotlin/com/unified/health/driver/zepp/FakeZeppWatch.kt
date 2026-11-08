@@ -21,6 +21,7 @@ import com.unified.health.driver.zepp.codec.ChannelReplyCode
 import com.unified.health.driver.zepp.codec.crc32
 import java.time.LocalDateTime
 import java.util.Random
+import java.util.UUID
 
 /**
  * Scripted Zepp watch for JVM tests: channel v2 with real B-163 session auth on module 0x82, a
@@ -43,6 +44,14 @@ internal class FakeZeppWatch(
     private val modules: Map<Int, Boolean> = mapOf(0x82 to false),
     /** False: the watch does not expose the standard Current Time characteristic (§4 step 7). */
     hasCurrentTime: Boolean = true,
+    /** Service holding 2A2B: FEE0 in the vendor flow (`BaseProfile.setDateTime`), SIG 0x1805 otherwise. */
+    private val currentTimeService: UUID = StandardUuids.CURRENT_TIME_SERVICE,
+    /** False: no SIG battery service 0x180F (legacy Huami watch exposing only 0x0006). */
+    hasStandardBattery: Boolean = true,
+    /** True: expose the Huami legacy battery characteristic 0x0006 in FEE0. */
+    hasLegacyBattery: Boolean = false,
+    /** Version answered by channel module 0x29; the vendor only queries battery when it is 1. */
+    private val batteryModuleVersion: Int = 1,
     /** True: expose a readable PnP ID (`2A50`) with `productId = 0x1234`, `productVersion = 0x0102`. */
     private val hasPnpId: Boolean = false,
 ) {
@@ -54,7 +63,8 @@ internal class FakeZeppWatch(
     val hrMeasurement = characteristic(StandardUuids.HEART_RATE_SERVICE, StandardUuids.HEART_RATE_MEASUREMENT, PROPERTY_NOTIFY)
     val hrControl = characteristic(StandardUuids.HEART_RATE_SERVICE, ZeppUuids.HR_CONTROL, PROPERTY_WRITE, PROPERTY_WRITE_NO_RESPONSE)
     val battery = characteristic(StandardUuids.BATTERY_SERVICE, StandardUuids.BATTERY_LEVEL, PROPERTY_READ)
-    val currentTime = characteristic(StandardUuids.CURRENT_TIME_SERVICE, StandardUuids.CURRENT_TIME, PROPERTY_WRITE)
+    val legacyBattery = characteristic(ZeppUuids.SERVICE_MILI, ZeppUuids.BATTERY, PROPERTY_READ)
+    val currentTime = characteristic(currentTimeService, StandardUuids.CURRENT_TIME, PROPERTY_WRITE)
     val pnpId = characteristic(StandardUuids.DEVICE_INFORMATION_SERVICE, StandardUuids.PNP_ID, PROPERTY_READ)
 
     val gatt = FakeGattClient(
@@ -63,7 +73,9 @@ internal class FakeZeppWatch(
             if (hasLegacyAuth) add(legacyAuth)
             if (hasHeartRate) add(hrMeasurement)
             if (hasHeartRate && hasHrControl) add(hrControl)
-            addAll(listOf(gdspControl, gdspData, battery))
+            addAll(listOf(gdspControl, gdspData))
+            if (hasStandardBattery) add(battery)
+            if (hasLegacyBattery) add(legacyBattery)
             if (hasCurrentTime) add(currentTime)
             if (hasPnpId) add(pnpId)
         },
@@ -91,9 +103,40 @@ internal class FakeZeppWatch(
     /** Raw bind commands received (legacy `0x01` writes and Zepp OS local-bind messages). */
     val bindCommands = mutableListOf<ByteArray>()
 
-    /** Number of Zepp OS `[0x00]` authorization-info requests received. */
+    /** Number of auth-info `[0x00]` requests received on module 0x80 or 0x82. */
     var infoRequests = 0
         private set
+
+    /** Number of BuiltInModule requests received (must stay 0 on channel v1). */
+    var builtInRequests = 0
+        private set
+
+    /** Number of any module-0x80 messages received (must stay 0 on channel v1). */
+    var module1Requests = 0
+        private set
+
+    /** Number of legacy 0x0009 auth writes received. */
+    var legacyAuthRequests = 0
+        private set
+
+    /** Module 0x29 version and battery queries received. */
+    var batteryVersionQueries = 0
+        private set
+    var batteryQueries = 0
+        private set
+
+    /** Channel ACKs to drop before acknowledging normally (simulates a lost DATA_REPLY). */
+    var dropAcks = 0
+
+    /**
+     * Start-transfer commands answered with a transient OPERATION_FAILED (4) before serving data.
+     * The pending block is put back, as a real watch keeps undelivered history.
+     */
+    var transientGdspFailures = 0
+
+    /** Flags byte and level answered by module 0x29 (`[flags, level, …]`). */
+    var batteryFlags = 0
+    var batteryLevel = 87
 
     /** The key the watch currently holds. */
     val storedKey: ByteArray get() = authKey
@@ -116,6 +159,12 @@ internal class FakeZeppWatch(
 
     var corruptNextCrc = false
 
+    /** Corrupt the CRC of every transfer (exercises the retry budget). */
+    var corruptCrcAlways = false
+
+    /** Answer a non-empty header with an impossible date (a non-retryable protocol error). */
+    var malformedGdspHeader = false
+
     class GdspBlock(val count: Long, val start: LocalDateTime, val payload: ByteArray, val tzKey: Int = 0)
 
     private val reassembler = ChannelReassembler()
@@ -125,9 +174,15 @@ internal class FakeZeppWatch(
     private var sessionKey: ByteArray? = null
     private var outSession = 0x40
     private var pendingBlock: GdspBlock? = null
+    private var pendingType: Int? = null
+
+    /** Block sent but not yet confirmed with `[0x03, 0x01]`; re-queued if the app aborts. */
+    private var unconfirmedBlock: GdspBlock? = null
+    private var unconfirmedType: Int? = null
 
     init {
-        gatt.readValues[StandardUuids.BATTERY_LEVEL] = byteArrayOf(87)
+        if (hasStandardBattery) gatt.readValues[StandardUuids.BATTERY_LEVEL] = byteArrayOf(87)
+        if (hasLegacyBattery) gatt.readValues[ZeppUuids.BATTERY] = byteArrayOf(0x00, 87)
         if (hasPnpId) {
             gatt.readValues[StandardUuids.PNP_ID] =
                 byteArrayOf(0x01, 0x57, 0x01, 0x34, 0x12, 0x02, 0x01) // vendorSource=SIG, vendorId=0x0157, productId=0x1234, productVersion=0x0102
@@ -156,7 +211,11 @@ internal class FakeZeppWatch(
         val packet = ChannelCodec.decodeData(channelProtocol, value)
         val result = reassembler.append(packet)
         if (packet.needsReply) {
-            gatt.notify(channelDown, ChannelCodec.encodeAck(channelProtocol, ChannelAck(packet.sessionId, ChannelReplyCode.OK, packet.index)))
+            if (dropAcks > 0) {
+                dropAcks--
+            } else {
+                gatt.notify(channelDown, ChannelCodec.encodeAck(channelProtocol, ChannelAck(packet.sessionId, ChannelReplyCode.OK, packet.index)))
+            }
         }
         if (result !is ChannelReassembler.Result.Complete) return
         val message = result.message
@@ -165,13 +224,24 @@ internal class FakeZeppWatch(
             0x80 -> onAuthModule1Message(message.data)
             0x00 -> onBuiltInMessage(message.data)
             0x1D -> onOpenAppMessage(message)
+            0x29 -> onBatteryMessage(message)
         }
     }
 
-    /** Module 0x80 session auth (no ECDH, brief TODO-1): `[0x04,...]` random request, `[0x05, enc]` authorize. */
+    /** Module 0x80 session auth plus local bind (`DeviceAuthorizationImpl1`, §3.2). */
     private fun onAuthModule1Message(data: ByteArray) {
+        module1Requests++
         if (!answersAuth) return
         when (data[0].toInt()) {
+            0x00 -> {
+                infoRequests++
+                sendModule(0x80, byteArrayOf(0x10, 0x00, 0x01, 0x01, 0x01, 0x00, allowLocalBinding.toByte()))
+            }
+            0x01 -> {
+                bindCommands += data
+                if (bindStatus == 1) authKey = data.copyOfRange(3, 19)
+                sendModule(0x80, byteArrayOf(0x10, 0x01, bindStatus.toByte()))
+            }
             0x04 -> sendModule(0x80, byteArrayOf(0x10, 0x04, 0x01) + challenge)
             0x05 -> {
                 val proofOk = data.copyOfRange(1, 17).contentEquals(AesEcb.encrypt(authKey, challenge))
@@ -182,6 +252,7 @@ internal class FakeZeppWatch(
     }
 
     private fun onBuiltInMessage(data: ByteArray) {
+        builtInRequests++
         when (data[0].toInt()) {
             0x03 -> sendModule(0x00, buildBytes {
                 u8(0x04)
@@ -206,6 +277,26 @@ internal class FakeZeppWatch(
         openAppCommands += data
         openAppEncrypted += message.isEncrypted
         if (answersOpenApp && data[0].toInt() == 0x04) sendModule(0x1D, byteArrayOf(0x05, realtimeHrStatus.toByte()))
+    }
+
+    /** Module 0x29: query version `[0x01]` → `[0x02, version]`, query battery `[0x03]` → `[0x04, flags, level]`. */
+    private fun onBatteryMessage(message: ChannelMessage) {
+        val data = if (message.isEncrypted) {
+            val key = ByteArray(16) { (checkNotNull(sessionKey)[it].toInt() xor message.sessionId).toByte() }
+            AesEcb.decrypt(key, message.data).copyOf(message.totalSize)
+        } else {
+            message.data
+        }
+        when (data[0].toInt()) {
+            0x01 -> {
+                batteryVersionQueries++
+                sendModule(0x29, byteArrayOf(0x10, 0x02, 0x01, batteryModuleVersion.toByte()))
+            }
+            0x03 -> {
+                batteryQueries++
+                sendModule(0x29, byteArrayOf(0x10, 0x04, 0x01, batteryFlags.toByte(), batteryLevel.toByte()))
+            }
+        }
     }
 
     private fun onAuthMessage(data: ByteArray) {
@@ -240,7 +331,13 @@ internal class FakeZeppWatch(
         packets.forEach { gatt.notify(channelUp, ChannelCodec.encodeData(channelProtocol, it)) }
     }
 
+    /** Unsolicited module 0x29 battery push (`[0x10, 0x04, 0x01, flags, level]`). */
+    fun pushBattery(level: Int, flags: Int = 0) {
+        sendModule(0x29, byteArrayOf(0x10, 0x04, 0x01, flags.toByte(), level.toByte()))
+    }
+
     private fun onLegacyAuth(value: ByteArray) {
+        legacyAuthRequests++
         when (value[0].toInt()) {
             0x01 -> {
                 bindCommands += value
@@ -261,13 +358,36 @@ internal class FakeZeppWatch(
             0x00 -> gatt.notify(gdspControl, byteArrayOf(0x10, 0x00, 0x01, 0x01))
             0x01 -> {
                 headerRequests += value
-                val block = gdspBlocks[value[1].toInt() and 0xFF]?.removeFirstOrNull()
+                // A new header means the app accepted the previous block (it advances its cursor only
+                // after decoding it), so that block no longer needs to be recoverable.
+                unconfirmedBlock = null
+                unconfirmedType = null
+                val type = value[1].toInt() and 0xFF
+                pendingType = type
+                val block = gdspBlocks[type]?.removeFirstOrNull()
                 pendingBlock = block
                 gatt.notify(gdspControl, header(block))
             }
-            0x02 -> sendBlock(checkNotNull(pendingBlock) { "start without header" })
+            0x02 -> {
+                val block = checkNotNull(pendingBlock) { "start without header" }
+                if (transientGdspFailures > 0) {
+                    transientGdspFailures--
+                    pendingType?.let { gdspBlocks[it]?.addFirst(block) } // Undelivered history stays on the watch.
+                    pendingBlock = null
+                    gatt.notify(gdspControl, byteArrayOf(0x10, 0x02, 0x04)) // OPERATION_FAILED
+                } else {
+                    sendBlock(block)
+                }
+            }
             0x03 -> {
                 stopCodes += value.getOrNull(1)?.toInt()
+                if (value.getOrNull(1)?.toInt() != 1) {
+                    // Cancel/abort: the watch keeps undelivered history for the next attempt.
+                    unconfirmedBlock?.let { gdspBlocks[checkNotNull(unconfirmedType)]?.addFirst(it) }
+                }
+                unconfirmedBlock = null
+                unconfirmedType = null
+                pendingBlock = null
                 gatt.notify(gdspControl, byteArrayOf(0x10, 0x03, 0x01))
             }
         }
@@ -281,7 +401,7 @@ internal class FakeZeppWatch(
         } else {
             u32le(block.count)
             u16le(block.start.year)
-            u8(block.start.monthValue)
+            u8(if (malformedGdspHeader) 13 else block.start.monthValue) // month 13 is not a date
             u8(block.start.dayOfMonth)
             u8(block.start.hour)
             u8(block.start.minute)
@@ -295,8 +415,12 @@ internal class FakeZeppWatch(
         block.payload.toList().chunked(chunk).forEachIndexed { seq, part ->
             gatt.notify(gdspData, byteArrayOf(seq.toByte()) + part.toByteArray())
         }
-        val crc = crc32(block.payload) xor if (corruptNextCrc) 1L else 0L
+        val corrupt = corruptNextCrc || corruptCrcAlways
+        val crc = crc32(block.payload) xor if (corrupt) 1L else 0L
         corruptNextCrc = false
+        pendingBlock = null
+        unconfirmedBlock = block
+        unconfirmedType = pendingType
         gatt.notify(gdspControl, buildBytes { bytes(byteArrayOf(0x10, 0x02, 0x01)); u32le(crc) })
     }
 }

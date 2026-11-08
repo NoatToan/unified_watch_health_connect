@@ -89,6 +89,14 @@ class ChannelCodecTest {
     }
 
     @Test
+    fun `split asks for a reply on every 16th packet and the last one by default`() {
+        val packets = ChannelCodec.split(ChannelProtocol.V2, sessionId = 1, module = 0x0A, payload = ByteArray(400), packetSize = 15)
+        assertTrue(packets.size > 16)
+        // Indices are zero-based, so packets 15 and 31 are the 16th and 32nd.
+        assertEquals(listOf(15, 31, packets.last().index), packets.filter { it.needsReply }.map { it.index })
+    }
+
+    @Test
     fun `split asks for a reply every replyFrequency packets and marks encryption`() {
         val packets = ChannelCodec.split(
             ChannelProtocol.V2, sessionId = 1, module = 0x0A, payload = ByteArray(40), packetSize = 16,
