@@ -2645,3 +2645,18 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   các màn chi tiết đẩy chồng lên trên (`MetricDetailScreen`, `DeviceDetailScreen`,
   `WorkoutDetailDestination`, `RaceDetailScreen`, v.v.) vẫn phải giữ nguyên hành vi back bình thường
   (pop về màn trước đó), không bị đổi thành minimize.
+
+- **D-1179** · 2026-11-09 · Thực thi D-1176 (backfill workout detail từ raw FIT đã lưu) — **Chốt**
+  Fix mapper + thêm cơ chế backfill: `WorkoutDetailBackfill.kt` mới (`core/data/.../sync/`) gồm
+  `WorkoutDetailBackfillFilter` (lọc bỏ record đã có lap/sample rồi, chống trùng) và
+  `DataStoreWorkoutDetailBackfillState` (cờ `isDone`/`markDone` theo từng `deviceId`, DataStore-backed,
+  chống chạy lại mỗi lần mở app). Trigger: `DefaultWearableDeviceRepository.connect()` gọi
+  `backfillWorkoutDetailOnce(deviceId)` sau khi connect thành công — chạy đúng 1 lần/thiết bị, dùng lại
+  connect user/auto-reconnect đã làm sẵn, không cần hành động thủ công. `reprocessRawPayloads()` (đã có
+  sẵn nút "Reprocess downloaded files" ở "About this device") cũng dùng chung logic này nên user có thể
+  tự trigger lại thủ công nếu cần (đã dùng nút này để test).
+  Sửa thêm `FitHealthMapper.kt`/`GarminDriver.kt`/`GarminFileSync.kt` — lần backfill thử đầu tiên không
+  ra data vì lỗi mapper, đã fix.
+  **User xác nhận trên máy thật qua nút "Reprocess downloaded files": workout cũ giờ đã có data** (splits/
+  HR-zone/trend chart hiện ra đúng D-1093). Verify: `testDebugUnitTest`/`assembleDebug` xanh, cài
+  `app-debug.apk` lên `99251FFAZ003T3`.

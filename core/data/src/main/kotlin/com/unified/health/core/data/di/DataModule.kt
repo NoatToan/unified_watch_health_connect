@@ -22,8 +22,12 @@ import com.unified.health.core.data.repository.DefaultWearableDeviceRepository
 import com.unified.health.core.ble.pairing.PairingCodeRequester
 import com.unified.health.core.domain.repository.PairingCodeBroker
 import com.unified.health.core.data.repository.LocalHealthDataRepository
+import com.unified.health.core.data.sync.DataStoreWorkoutDetailBackfillState
 import com.unified.health.core.data.sync.RawPayloadSaver
 import com.unified.health.core.data.sync.RawPayloadStore
+import com.unified.health.core.data.sync.RoomWorkoutDetailRowCounter
+import com.unified.health.core.data.sync.WorkoutDetailBackfillState
+import com.unified.health.core.data.sync.WorkoutDetailRowCounter
 import com.unified.health.core.domain.repository.HealthConnectRepository
 import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.NotificationPreferencesRepository
@@ -82,6 +86,14 @@ internal abstract class DataBindingsModule {
 
     @Binds
     abstract fun bindRawPayloadSaver(impl: RawPayloadStore): RawPayloadSaver
+
+    /** D-1176 workout-detail backfill. */
+    @Binds
+    abstract fun bindWorkoutDetailRowCounter(impl: RoomWorkoutDetailRowCounter): WorkoutDetailRowCounter
+
+    @Binds
+    @Singleton
+    abstract fun bindWorkoutDetailBackfillState(impl: DataStoreWorkoutDetailBackfillState): WorkoutDetailBackfillState
 
     /** D-1105/D-1107: marketing races carousel + full list, not personal health data. */
     @Binds

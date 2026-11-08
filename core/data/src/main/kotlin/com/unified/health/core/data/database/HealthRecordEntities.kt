@@ -136,6 +136,14 @@ interface HealthRecordDao {
     @Query("SELECT * FROM workout_samples WHERE deviceId = :deviceId AND workoutStartEpochMs = :workoutStartEpochMs ORDER BY timeEpochMs")
     fun observeWorkoutSamples(deviceId: String, workoutStartEpochMs: Long): Flow<List<WorkoutSampleEntity>>
 
+    /** D-1176 backfill: whether this workout already has laps, so a repeated reprocess pass can skip it. */
+    @Query("SELECT COUNT(*) FROM workout_laps WHERE deviceId = :deviceId AND workoutStartEpochMs = :workoutStartEpochMs")
+    suspend fun workoutLapCount(deviceId: String, workoutStartEpochMs: Long): Int
+
+    /** D-1176 backfill: whether this workout already has per-second samples, same purpose as [workoutLapCount]. */
+    @Query("SELECT COUNT(*) FROM workout_samples WHERE deviceId = :deviceId AND workoutStartEpochMs = :workoutStartEpochMs")
+    suspend fun workoutSampleCount(deviceId: String, workoutStartEpochMs: Long): Int
+
     @Query("SELECT * FROM health_samples WHERE type = :type AND deviceId = :deviceId AND startEpochMs >= :fromEpochMs AND startEpochMs < :toEpochMs ORDER BY startEpochMs")
     fun observeDeviceSamples(type: String, deviceId: String, fromEpochMs: Long, toEpochMs: Long): Flow<List<HealthSampleEntity>>
 

@@ -11,6 +11,8 @@ import com.unified.health.core.data.database.PairedDeviceEntity
 import com.unified.health.core.data.database.toModel
 import com.unified.health.core.data.sync.HealthRecordSinkFactory
 import com.unified.health.core.data.sync.RawPayloadStore
+import com.unified.health.core.data.sync.WorkoutDetailBackfillFilter
+import com.unified.health.core.data.sync.WorkoutDetailBackfillState
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.CredentialFormat
@@ -46,6 +48,8 @@ class DefaultWearableDeviceRepository @Inject constructor(
     private val credentials: DeviceCredentialStore,
     private val sinkFactory: HealthRecordSinkFactory,
     private val rawPayloads: RawPayloadStore,
+    private val backfillFilter: WorkoutDetailBackfillFilter,
+    private val backfillState: WorkoutDetailBackfillState,
 ) : WearableDeviceRepository {
 
     /** Bumped on every credential change so [pairedDevices] re-reads stored keys. */
@@ -116,7 +120,22 @@ class DefaultWearableDeviceRepository @Inject constructor(
             connection.readDeviceInfo().onSuccess { info ->
                 dao.updateInfo(deviceId, info.batteryPercent, info.firmwareVersion, info.model)
             }
+            // D-1176: a workout downloaded before D-1093 existed never got its lap/sample rows
+            // created (dedup skips re-downloading an ACTIVITY file it already has, D-422), so the
+            // workout-detail screen stays flat for it forever unless something re-parses the FIT
+            // bytes already on disk. Runs once per device, on the connection the user/auto-reconnect
+            // was already going to make — no re-pairing or manual step required — and never again
+            // after that (see [WorkoutDetailBackfillState]); `reprocessRawPayloads` itself already
+            // skips workouts that already have data, so calling it here is cheap even if this ever
+            // reruns for a device that was already fully backfilled.
+            scope.launch { backfillWorkoutDetailOnce(deviceId) }
         }
+    }
+
+    private suspend fun backfillWorkoutDetailOnce(deviceId: String) {
+        if (backfillState.isDone(deviceId)) return
+        reprocessRawPayloads(deviceId)
+        backfillState.markDone(deviceId)
     }
 
     override suspend fun disconnect(deviceId: String) {
@@ -156,7 +175,7 @@ class DefaultWearableDeviceRepository @Inject constructor(
         var recovered = 0
         for (stored in rawPayloads.list(entity.id)) {
             val payload = HealthRecord.RawPayload(stored.vendor, stored.kind, stored.createdAt, stored.bytes)
-            val records = driver.reprocess(payload)
+            val records = backfillFilter.dropAlreadyBackfilled(entity.id, driver.reprocess(payload))
             if (records.isNotEmpty()) {
                 sink.onRecords(records)
                 recovered += records.size

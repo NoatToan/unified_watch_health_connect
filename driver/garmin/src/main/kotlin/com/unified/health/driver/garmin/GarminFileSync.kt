@@ -250,12 +250,16 @@ internal class GarminFileSync(
 
 /**
  * Re-decodes a previously downloaded `fit_activity` [HealthRecord.RawPayload] without a live
- * session, for [GarminDriver.reprocess] (D-420): lets a fixed FIT-decoder bug recover
- * workouts from files we already stored, without asking the user to pair/resync.
+ * session, for [GarminDriver.reprocess]. Originally D-420 (recovering workouts from a fixed
+ * FIT-decoder bug without asking the user to pair/resync); D-1176 reuses the exact same call for
+ * the workout-detail backfill, since [FitHealthMapper.map] already produces [HealthRecord.WorkoutLap]/
+ * [HealthRecord.WorkoutSample] from the `lap`(19)/`record`(20) messages every ACTIVITY file carries
+ * (D-1093) — a workout downloaded before D-1093 existed only ever got its `session`(18) summary
+ * parsed, so re-running the same mapper over the untouched raw bytes recovers the rest.
  */
-internal fun decodeGarminActivityWorkouts(bytes: ByteArray): List<HealthRecord.Workout> = try {
+internal fun decodeGarminActivityRecords(bytes: ByteArray): List<HealthRecord> = try {
     FitHealthMapper.map(FitDecoder.decode(bytes), ZoneId.systemDefault(), DailyActivityAccumulator())
-        .filterIsInstance<HealthRecord.Workout>()
+        .filter { it is HealthRecord.Workout || it is HealthRecord.WorkoutLap || it is HealthRecord.WorkoutSample }
 } catch (e: FitDecodeException) {
     Log.w("GarminFileSync", "Raw fit_activity payload is still not decodable: ${e.message}")
     emptyList()

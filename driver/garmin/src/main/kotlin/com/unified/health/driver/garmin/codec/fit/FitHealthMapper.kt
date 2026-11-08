@@ -108,6 +108,15 @@ internal object FitHealthMapper {
     private const val LAP_TOTAL_CALORIES = 11 // uint16 kcal
     private const val LAP_AVG_SPEED = 13 // uint16, scale 1000 → m/s
     private const val LAP_MAX_SPEED = 14 // uint16, scale 1000 → m/s
+
+    /**
+     * Wider-range alternatives to [LAP_AVG_SPEED]/[LAP_MAX_SPEED], same scale (D-1176). [V] against
+     * `docs/re-evidence/garmin/jadx-base/sources/bs2/ti.java`: `new rc("enhanced_avg_speed", 110,
+     * ..., 1000.0, ...)` / `new rc("enhanced_max_speed", 111, ..., 1000.0, ...)`. A real Forerunner
+     * 165 ACTIVITY file only fills these, leaving the plain fields above null for every lap.
+     */
+    private const val LAP_ENHANCED_AVG_SPEED = 110 // uint32, scale 1000 → m/s
+    private const val LAP_ENHANCED_MAX_SPEED = 111 // uint32, scale 1000 → m/s
     private const val LAP_AVG_HEART_RATE = 15 // uint8 bpm
     private const val LAP_MAX_HEART_RATE = 16 // uint8 bpm
     private const val LAP_AVG_CADENCE = 17 // uint8 rpm
@@ -124,6 +133,17 @@ internal object FitHealthMapper {
     private const val RECORD_HEART_RATE = 3 // uint8 bpm
     private const val RECORD_CADENCE = 4 // uint8 rpm
     private const val RECORD_SPEED = 6 // uint16, scale 1000 → m/s
+
+    /**
+     * Wider-range alternatives to [RECORD_ALTITUDE]/[RECORD_SPEED], same scale/offset (D-1176). [V]
+     * against `docs/re-evidence/garmin/jadx-base/sources/bs2/zp.java`: `new rc("enhanced_speed", 73,
+     * ..., 1000.0, 0.0, ...)` / `new rc("enhanced_altitude", 78, ..., 5.0, 500.0, ...)`. A real
+     * Forerunner 165 ACTIVITY file only fills these, leaving the plain fields above null for every
+     * `record` — confirmed by decoding a raw payload pulled from a paired device (D-1176 backfill
+     * investigation), not guessed.
+     */
+    private const val RECORD_ENHANCED_SPEED = 73 // uint32, scale 1000 → m/s
+    private const val RECORD_ENHANCED_ALTITUDE = 78 // uint32, scale 5 offset 500 → m
 
     private const val SPEED_SCALE = 1000.0
     private const val ALTITUDE_SCALE = 5.0
@@ -144,11 +164,16 @@ internal object FitHealthMapper {
         val zone = deviceOffset(file) ?: fallbackZone
         val records = mutableListOf<HealthRecord>()
         val sleepLevels = mutableListOf<Pair<Long, Int>>()
-        // Laps/records recorded so far for the session that hasn't closed yet (D-1093): a FIT
-        // ACTIVITY file lists a sport segment's record(20)/lap(19) messages before its session(18)
-        // summary, so flushing on MESG_SESSION naturally keys each lap/sample to the right workout
-        // even for a multi-sport file with several sessions. Dropped (never flushed) if the file ends
-        // without a session — same as WithGearChangeData.fit (no session, no workout to attach to).
+        val workouts = mutableListOf<HealthRecord.Workout>()
+        // Collected across the whole file and matched to their workout afterward by timestamp
+        // range (D-1176), not flushed on the next MESG_SESSION: a FIT ACTIVITY file is not
+        // guaranteed to list a sport segment's record(20)/lap(19) messages before its session(18)
+        // summary — confirmed on a real Forerunner 165 file, whose session(18) sits near the start
+        // of the file (message index 4) with its ~1800 record(20)/lap(19) messages all trailing
+        // after it and no second session to "close" that assumption's buffer against. Matching by
+        // time range instead still handles the simpler "lap/record before session" shape the
+        // original D-1093 test files use, and a multi-sport file with several sessions, as long as
+        // each session's own [start, end] doesn't overlap another's.
         val pendingLaps = mutableListOf<PendingLap>()
         val pendingSamples = mutableListOf<PendingSample>()
         var lastTimestamp: Long? = null
@@ -171,18 +196,46 @@ internal object FitHealthMapper {
                 }
                 MESG_LAP -> mapLap(message)?.let(pendingLaps::add)
                 MESG_RECORD -> mapRecordSample(message)?.let(pendingSamples::add)
-                MESG_SESSION -> mapSession(message)?.let { workout ->
-                    records.add(workout)
-                    pendingLaps.forEachIndexed { index, lap -> records.add(lap.toRecord(workout.start, index)) }
-                    pendingSamples.forEach { records.add(it.toRecord(workout.start)) }
-                    pendingLaps.clear()
-                    pendingSamples.clear()
-                }
+                MESG_SESSION -> mapSession(message)?.let(workouts::add)
                 MESG_MAX_MET_DATA -> lastTimestamp?.let { mapVo2Max(message, it) }?.let(records::add)
             }
         }
+        records += workouts
+        records += attachLapsAndSamples(workouts, pendingLaps, pendingSamples)
         records += sleepIntervals(sleepLevels)
         return records
+    }
+
+    /**
+     * Matches each buffered lap/sample to the workout whose `[start, end]` covers its own
+     * timestamp (D-1176), dropped (same as before) when no workout covers it — e.g.
+     * `WithGearChangeData.fit`, which has lap/record messages but no session at all. Laps are
+     * numbered per workout in the order they were recorded (their original, chronological position
+     * in [laps]/[samples], not sorted again here).
+     */
+    private fun attachLapsAndSamples(
+        workouts: List<HealthRecord.Workout>,
+        laps: List<PendingLap>,
+        samples: List<PendingSample>,
+    ): List<HealthRecord> {
+        if (workouts.isEmpty()) return emptyList()
+        val sortedWorkouts = workouts.sortedBy { it.start }
+        fun workoutFor(time: Instant): HealthRecord.Workout? =
+            sortedWorkouts.firstOrNull { time >= it.start && time <= it.end }
+
+        val result = mutableListOf<HealthRecord>()
+        val nextLapIndex = mutableMapOf<Instant, Int>()
+        for (lap in laps) {
+            val workout = workoutFor(lap.start) ?: continue
+            val index = nextLapIndex.getOrDefault(workout.start, 0)
+            result += lap.toRecord(workout.start, index)
+            nextLapIndex[workout.start] = index + 1
+        }
+        for (sample in samples) {
+            val workout = workoutFor(sample.time) ?: continue
+            result += sample.toRecord(workout.start)
+        }
+        return result
     }
 
     /** monitoring_info carries both UTC and local timestamps; their difference is the watch's offset. */
@@ -297,8 +350,8 @@ internal object FitHealthMapper {
             end = FitTime.toInstant(end),
             distanceMeters = message.value(LAP_TOTAL_DISTANCE)?.let { it / DISTANCE_SCALE },
             calories = message.value(LAP_TOTAL_CALORIES)?.toInt(),
-            avgSpeedMps = message.value(LAP_AVG_SPEED)?.let { it / SPEED_SCALE },
-            maxSpeedMps = message.value(LAP_MAX_SPEED)?.let { it / SPEED_SCALE },
+            avgSpeedMps = (message.value(LAP_AVG_SPEED) ?: message.value(LAP_ENHANCED_AVG_SPEED))?.let { it / SPEED_SCALE },
+            maxSpeedMps = (message.value(LAP_MAX_SPEED) ?: message.value(LAP_ENHANCED_MAX_SPEED))?.let { it / SPEED_SCALE },
             avgHeartRate = message.value(LAP_AVG_HEART_RATE)?.toInt(),
             maxHeartRate = message.value(LAP_MAX_HEART_RATE)?.toInt(),
             avgCadence = message.value(LAP_AVG_CADENCE)?.toInt(),
@@ -318,10 +371,10 @@ internal object FitHealthMapper {
         val time = message.timestamp ?: return null
         val lat = message.value(RECORD_POSITION_LAT)
         val lon = message.value(RECORD_POSITION_LONG)
-        val altitude = message.value(RECORD_ALTITUDE)
+        val altitude = message.value(RECORD_ALTITUDE) ?: message.value(RECORD_ENHANCED_ALTITUDE)
         val heartRate = message.value(RECORD_HEART_RATE)?.toInt()?.takeIf { it > 0 }
         val cadence = message.value(RECORD_CADENCE)?.toInt()
-        val speed = message.value(RECORD_SPEED)
+        val speed = message.value(RECORD_SPEED) ?: message.value(RECORD_ENHANCED_SPEED)
         if (lat == null && lon == null && altitude == null && heartRate == null && cadence == null && speed == null) return null
         return PendingSample(
             time = FitTime.toInstant(time),

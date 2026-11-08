@@ -11,6 +11,7 @@ import com.unified.health.core.model.WearableVendor
 import com.unified.health.driver.garmin.codec.fit.FitHealthMapper
 import com.unified.health.driver.garmin.testing.FitFileBuilder
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.enum
+import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.fit
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u16
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u32
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u8
@@ -98,6 +99,31 @@ class GarminDriverTest {
         val workout = records.filterIsInstance<HealthRecord.Workout>().single()
         assertEquals("cycling", workout.sport)
         assertEquals(300, workout.activeKcal)
+    }
+
+    @Test
+    fun `reprocess also recovers laps and samples from a workout synced before D-1093 (D-1176 backfill)`() = runTest {
+        // Same shape as a real ACTIVITY file: record(20)/lap(19) appear before the session(18) that
+        // closes them. Before D-1176, `reprocess` discarded everything but the Workout; now the
+        // backfill relies on the exact same FitHealthMapper output recovering WorkoutLap/WorkoutSample.
+        val t0 = fit("2026-03-01T20:00:00Z")
+        val bytes = FitFileBuilder()
+            .define(0, FitHealthMapper.MESG_RECORD, u32(253), u8(3))
+            .record(0, t0 + 10, 150)
+            .define(1, FitHealthMapper.MESG_LAP, u32(2), u32(7))
+            .record(1, t0, 600_000)
+            .define(2, FitHealthMapper.MESG_SESSION, u32(253), u32(2), enum(5), u32(7), u32(9), u16(11), u8(16), u8(17))
+            .record(2, t0 + 700, t0, 1, 610_000, 100_000, 80, 140, 160)
+            .build()
+
+        val records = driver.reprocess(HealthRecord.RawPayload(WearableVendor.GARMIN, "fit_activity", null, bytes))
+
+        val workout = records.filterIsInstance<HealthRecord.Workout>().single()
+        val lap = records.filterIsInstance<HealthRecord.WorkoutLap>().single()
+        val sample = records.filterIsInstance<HealthRecord.WorkoutSample>().single()
+        assertEquals(workout.start, lap.workoutStart)
+        assertEquals(workout.start, sample.workoutStart)
+        assertEquals(150, sample.heartRate)
     }
 
     @Test

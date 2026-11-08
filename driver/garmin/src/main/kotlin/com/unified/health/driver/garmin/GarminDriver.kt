@@ -68,13 +68,15 @@ class GarminDriver @Inject constructor(
         )
 
     /**
-     * Re-decodes a stored `fit_activity` payload (§6.1 [V], D-420); other raw kinds
-     * (monitoring/metrics/wellness) depend on cross-file daily accumulation, so they are only
-     * reprocessed as part of a real [openSession] sync, not here.
+     * Re-decodes a stored `fit_activity` payload (§6.1 [V], D-420), now also recovering
+     * [HealthRecord.WorkoutLap]/[HealthRecord.WorkoutSample] for the D-1176 backfill (a workout
+     * synced before D-1093 only ever got its `session`(18) summary parsed, never `lap`(19)/`record`(20));
+     * other raw kinds (monitoring/metrics/wellness) depend on cross-file daily accumulation, so they
+     * are only reprocessed as part of a real [openSession] sync, not here.
      */
     override suspend fun reprocess(payload: HealthRecord.RawPayload): List<HealthRecord> {
         if (payload.vendor != WearableVendor.GARMIN || payload.kind != GarminFitFileType.ACTIVITY.kind) return emptyList()
-        return decodeGarminActivityWorkouts(payload.bytes)
+        return decodeGarminActivityRecords(payload.bytes)
     }
 
     private fun hostIdentity() = HostIdentity(

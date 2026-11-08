@@ -53,6 +53,12 @@ class InMemoryHealthRecordDao : HealthRecordDao {
     override fun observeWorkoutSamples(deviceId: String, workoutStartEpochMs: Long): Flow<List<WorkoutSampleEntity>> =
         workoutSamples.map { all -> all.values.filter { it.deviceId == deviceId && it.workoutStartEpochMs == workoutStartEpochMs }.sortedBy { it.timeEpochMs } }
 
+    override suspend fun workoutLapCount(deviceId: String, workoutStartEpochMs: Long): Int =
+        workoutLaps.value.values.count { it.deviceId == deviceId && it.workoutStartEpochMs == workoutStartEpochMs }
+
+    override suspend fun workoutSampleCount(deviceId: String, workoutStartEpochMs: Long): Int =
+        workoutSamples.value.values.count { it.deviceId == deviceId && it.workoutStartEpochMs == workoutStartEpochMs }
+
     override fun observeDeviceSamples(type: String, deviceId: String, fromEpochMs: Long, toEpochMs: Long): Flow<List<HealthSampleEntity>> =
         samples.map { all ->
             all.values.filter { it.type == type && it.deviceId == deviceId && it.startEpochMs in fromEpochMs until toEpochMs }.sortedBy { it.startEpochMs }
