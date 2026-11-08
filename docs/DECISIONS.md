@@ -814,3 +814,81 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   thật. Khi nhánh đó merge, nối `WatchModelMatcher` vào `DevicesViewModel.labelFor()`/`QrFindSheet`
   (map `productNumber`→model cho Garmin, `pnpNumber/pnpVersion`→model cho Zepp) là việc còn lại,
   không cần đổi kiến trúc đã làm ở đây.
+
+## Garmin sync gaps, Summary/Health UI, ngưỡng chỉ số, tiếng Việt (D-10xx)
+
+Batch quyết định 2026-11-08 từ yêu cầu "check Garmin + UI + config + tiếng Việt" của user. Dùng ID
+4 chữ số (D-10xx) thay vì tái dùng một prefix 1 chữ số đã có (ví dụ `D-8xx` đã bị dùng trùng cho 2
+batch khác nhau ở trên — "Gộp màn hình" và "Watch model images" — để tránh gây nhầm thêm lần nữa.
+
+- **D-1000** · 2026-11-08 · Garmin VO2 max — đọc giá trị thiết bị đã tính, không tái tạo thuật toán — **Chốt**
+  Thêm mapper đọc field `vo2_max` trong FIT message 140 (`user_metrics`, kiểm tra thêm msg 42
+  `user_profile` tùy firmware) tại `FitHealthMapper` (`driver/garmin`), thêm biến thể mới trong
+  `core/model/.../HealthRecord.kt` (ví dụ `HealthRecord.Vo2Max`). D-803 (2026-11-06) chỉ cấm tái
+  tạo thuật toán Firstbeat độc quyền (không có trong FIT dump) — đây là đọc số watch đã tự tính và
+  xuất sẵn trong file FIT, không vi phạm D-803. Hiện tại không có record VO2max nào được map — đây
+  là khoảng trống thật, không phải lỗi parse. Nguồn: fork investigation 2026-11-08, `docs/protocols/GARMIN_DEVICE_PROTOCOL.md`.
+- **D-1001** · 2026-11-08 · Garmin pin bị cũ sau lần connect đầu — ghi lại mỗi lần poll vào Room — **Chốt**
+  `GarminSession.startBatteryPolling()` (SIG `0x180F` + fallback 5023, mỗi 10 phút) hiện chỉ cập
+  nhật `provisionalBattery` trong RAM của session; `DefaultWearableDeviceRepository.connect()` chỉ
+  gọi `dao.updateInfo(...)` đúng 1 lần lúc connect. Sửa: mỗi lần poll có giá trị mới phải ghi luôn
+  xuống `PairedDeviceDao`; nếu lần đọc lúc connect fail/null (hay gặp ngay sau khi pair) thì giá trị
+  được điền ở lần poll kế tiếp thay vì treo `null` tới khi disconnect/reconnect lại. Nguồn: fork
+  investigation 2026-11-08 — `GarminSession.kt`, `DefaultWearableDeviceRepository.kt`.
+- **D-1002** · 2026-11-08 · Xác minh lại việc dọn `feature/sleep` theo D-808 — **Tạm**
+  D-808 (2026-11-06) ghi là đã xoá `feature/sleep` khỏi `settings.gradle.kts`/`app`/NavHost, nhưng
+  fork UI đợt này vẫn thấy `feature/sleep/SleepScreen.kt` còn đăng ký trong nav host, không ai gọi
+  `navigateToSleep` tới. Cần agent implement kiểm tra lại trạng thái thật (có thể bị merge revert
+  hoặc D-808 chưa áp dụng hết) và hoàn tất xoá nếu đúng là mồ côi — không phải việc mới, chỉ là
+  đóng nốt D-808.
+- **D-1010** · 2026-11-08 · Gộp Summary + Health thành 1 destination — **Chốt**
+  Giữ `TopLevelDestination.HOME`, xoá `HEALTH` (`FeedDestination`, được tạo ở D-809 2026-11-08 cùng
+  ngày — đổi ý trong cùng phiên làm việc vì lý do khác: trùng lặp ring + user muốn gộp lại 1 màn).
+  Gộp nội dung `FeedScreen` (feature/home/feed) vào `HomeScreen` thành 1 list cuộn: DeviceBanner →
+  RingsCard (dời lên ngay sau DeviceBanner, xem D-1011) → pinned metrics → full metric feed (từ
+  FeedScreen) → highlights/workouts. Xoá `ActivityRingsFeedCard` (trùng lặp hoàn toàn với
+  `RingsCard`, cùng dựng `RingSpec` từ `DailyHealthSummary`). Chỉ ảnh hưởng `feature/home`; cập nhật
+  `UnifiedHealthNavHost.kt` bỏ route `feedScreen`. Nguồn: fork investigation 2026-11-08 —
+  `HomeScreen.kt`, `FeedScreen.kt`, `TopLevelDestination.kt`, `UnifiedHealthNavHost.kt`.
+- **D-1011** · 2026-11-08 · Vị trí Activity Rings trong Summary — **Chốt**
+  Dời `RingsCard` lên ngay sau `DeviceBanner` trong list của Home (trước "Pinned"), thay vì nằm
+  dưới section Pinned như hiện tại — khớp phản hồi "ring bị đẩy xuống dưới device". Data binding
+  của ring (đọc `DailyHealthSummary` qua `HomeViewModel`) đã đúng, không cần sửa; ring trống chỉ do
+  thiết bị Garmin chưa sync đủ (xem D-1000/D-1001 và phần activities/calories/sleep ở trên).
+- **D-1020** · 2026-11-08 · Thanh scrub cho chart — **Chốt**
+  Thêm gesture kéo-xem-giá-trị (`detectDragGestures`/`detectTapGestures` qua `pointerInput`) vào
+  `HealthBarChart`/`HealthRangeChart` trong `core/designsystem/.../HealthCharts.kt` (chart dùng ở
+  `MetricDetailScreen` — không làm cho mini-card trong feed vì quá nhỏ để scrub). Map tọa độ x →
+  điểm dữ liệu gần nhất bằng đúng hàm `slot`/`plot` đã có sẵn trong `ChartFrame.drawAxes`; vẽ thêm
+  vạch dọc + nhãn giá trị tại điểm đang chọn. Xoá `SimpleBarChart.kt` (dead code, tự có TODO
+  "replace with Vico") sau khi agent tự grep xác nhận không còn nơi nào dùng.
+- **D-1030** · 2026-11-08 · Config ngưỡng "bình thường" cho các chỉ số sức khỏe — **Chốt**
+  Thêm `core/domain/model/MetricThresholds.kt` + `DefaultMetricThresholds`: resting HR 60-100, 5
+  vùng nhịp tim theo %HRmax (Z1 50-60% khởi động, Z2 60-70% đốt mỡ, Z3 70-80% hiếu khí, Z4 80-90%
+  yếm khí, Z5 90-100% tối đa), bước chân mặc định giữ nguyên `dailyStepGoal` đã có, ngủ 7-9h, SpO2
+  95-100% (báo động <90%), VO2max theo bảng band tuổi/giới (không có công thức chuẩn chung — chỉ
+  categorize, không tính điểm — tránh đụng D-803), calorie dựa trên BMR×hệ số hoạt động thay vì
+  hằng số cố định. `UserPreferences` thêm field override nullable theo đúng pattern `dailyStepGoal`
+  đã dùng (mặc định dùng `DefaultMetricThresholds`, user có thể ghi đè). Dời `StressLevel` band
+  (hiện hardcode trong `HealthMetrics.kt`) và các hằng số `DEFAULT_ACTIVE_KCAL_GOAL`/
+  `DEFAULT_ACTIVE_MINUTES_GOAL` (`LocalHealthDataRepository.kt`) vào config mới này.
+  `HealthAlertsMonitor`/`WatchAlertRules` đọc threshold từ config thay vì hardcode. Vòng đầu: Profile
+  chỉ cần xem được tất cả threshold + chỉnh được step/calorie/sleep goal (đã có pattern); HR
+  zone/SpO2/VO2max band hiển thị read-only, chưa cần UI chỉnh — mở rộng sau nếu cần. Nguồn: fork
+  investigation 2026-11-08 — `UserPreferences.kt`, `HealthMetrics.kt`, `LocalHealthDataRepository.kt`.
+- **D-1040** · 2026-11-08 · Giao diện tiếng Việt — locale mặc định + cấu trúc resource — **Chốt**
+  `values/` (mặc định) = tiếng Anh, thêm `values-vi/` = tiếng Việt (thêm, không thay thế — khớp
+  CLAUDE.md "code/comment tiếng Anh", string UI tiếng Anh làm baseline nhất quán). String dùng
+  chung nhiều màn (OK/Cancel/Retry/Connect/Disconnect/Try again...) đặt ở
+  `core/designsystem/src/main/res/values(-vi)/strings.xml` — mọi feature module đã phụ thuộc
+  designsystem sẵn. String đặc thù từng màn hình đặt trong `res/` riêng của mỗi module `feature/*`
+  (devices, home, profile, activity, onboarding — đều dùng `AndroidFeatureConventionPlugin` nên tự
+  thêm `res/` được). String cấp app/notification ở `app/src/main/res/values(-vi)/strings.xml`
+  (hiện chỉ có `app_name`). Thứ tự triển khai theo khối lượng + mức độ người dùng thấy:
+  `feature/devices` (58 chỗ `Text("...")` hardcode) → `feature/home` (27) → `feature/profile` (21)
+  → `app/.../notifications/` (1, nhưng là text hệ thống luôn hiển thị) → `feature/activity` (6) →
+  `feature/onboarding` (4). Cơ chế chuyển locale: `AppCompatDelegate.setApplicationLocales` + toggle
+  EN/VI trong Profile (không theo system locale mặc định) — vì user Việt Nam hay để máy ở English
+  nhưng muốn riêng app này tiếng Việt. Nguồn: fork investigation 2026-11-08 (0 `stringResource` nào
+  trong code thật trước khi có quyết định này, chỉ có `app/src/main/res/values/strings.xml` với
+  đúng 1 string).
