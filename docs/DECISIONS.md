@@ -1534,3 +1534,12 @@ kit/design system nào tải về được). Thay vào đó dùng skill nội b�
      50 races (49 còn hạn), `imageUrl` null 100% — đúng như brief mô tả "most races currently have
      imageUrl: null" — xác nhận gradient-by-terrain thật sự là trường hợp phổ biến, không phải giả
      định.
+
+- **D-1110** · 2026-11-08 · Dời "Giải chạy sắp tới" xuống cuối Home; đổi tên "Summary" → "Home" — **Chốt**
+  User phản hồi sau khi xem bản cài thật: (1) carousel giải chạy đang nằm ngay sau `RingsCard` (đầu
+  trang) — dời xuống **cuối** list Home (sau "All metrics"/feed, trước khoảng trống cuối trang), vì
+  đây là nội dung marketing/khám phá, không phải data sức khỏe chính — không nên chiếm vị trí đầu màn
+  hình. (2) Đổi nhãn **"Summary" → "Home"** ở mọi chỗ hiển thị cho user (tiêu đề màn, nhãn tab trong
+  `PillBottomNavigation`/`TopLevelDestination`) vì "Home" thân thiện hơn — chỉ đổi label/string hiển
+  thị, không đổi route/composable name nội bộ (`HomeScreen`, `HomeDestination`... giữ nguyên để không
+  phải sửa lan man) trừ khi cấn.
