@@ -987,3 +987,25 @@ tránh 2 agent sửa song song cùng file.
   `app/build.gradle.kts`, và `UnifiedHealthNavHost.kt` hiện tại không có route/import nào liên quan
   `SleepScreen`/`navigateToSleep`. D-808 đã áp dụng đầy đủ từ trước — không có gì để xoá thêm ở
   đợt này; nghi ngờ trong D-1002 (lo sợ bị merge revert) không xảy ra trên nhánh hiện tại.
+
+- **D-1070** · 2026-11-08 · Chẩn đoán trực tiếp trên máy thật: sleep/resting HR/SpO2 vẫn trống — **Tạm**
+  User báo sau khi cài APK thật và kết nối Garmin thật, 3 chỉ số sleep/resting HR/SpO2 vẫn chưa
+  hiện. Đọc `adb logcat` trực tiếp: `GarminFileSync` log "Directory: 59 entries, ... {MONITORING=31,
+  METRICS=23, WELLNESS_49=2}" — `WELLNESS_49` (2 file, theo `docs/protocols/GARMIN_DEVICE_PROTOCOL.md`
+  §... ghi `[I]` là "nhiều khả năng sleep/wellness", chưa xác nhận) giữ nguyên số lượng qua nhiều vòng
+  sync, cursor `wellness since` đã đi qua 2 file đó từ trước (giờ 10:5x cùng ngày) — nghĩa là 2 file
+  này đã được tải/giải mã từ sớm hơn hôm nay, không phải đang bị bỏ qua. Đọc code xác nhận
+  `GarminFileSync.sync()` cho MỌI loại file non-activity (kể cả `WELLNESS_49`) đi qua đúng 1 pipeline
+  `FitHealthMapper.map()` — không có nhánh nào bỏ qua `SLEEP_LEVEL`(275)/`SPO2_DATA`(269)/
+  `MONITORING_HR_DATA`(273) theo loại file; code không phải nguyên nhân thiếu dữ liệu. `decodeFailures=0`
+  suốt log — không có file nào giải mã lỗi.
+  **Kết luận tạm thời (chưa xác nhận 100%, cần quan sát thêm):** nhiều khả năng đây là giới hạn dữ
+  liệu từ chính đồng hồ chứ không phải bug: (1) Sleep cần qua 1 đêm ngủ thật với đồng hồ đeo mới có
+  file mới; test đang làm vào buổi chiều cùng ngày pairing nên chưa có gì để sync. (2) Resting HR
+  Garmin thường tính 1 lần vào sáng sớm dựa trên đêm trước; pairing mới trong ngày chưa có giá trị
+  này. (3) SpO2 "all-day"/Pulse Ox trên đa số đồng hồ Garmin **mặc định TẮT** để tiết kiệm pin — cần
+  user tự bật trong cài đặt trên đồng hồ (Settings → Sensors → Pulse Ox → All-day) thì máy mới sinh
+  ra message `SPO2_DATA`(269) để app đọc được.
+  **Đã thêm ngay:** log `byKind=<map tên record → số lượng>` vào dòng "Sync finished" của
+  `GarminFileSync.kt` (trước đây chỉ có tổng `totalRecords`) — lần sync tới (đặc biệt sau 1 đêm ngủ)
+  sẽ thấy ngay chính xác loại nào có/không, không cần đoán nữa.

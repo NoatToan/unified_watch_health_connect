@@ -97,6 +97,11 @@ internal class GarminFileSync(
         var decodeFailures = 0
         var workoutsProduced = 0
         val downloaded = mutableListOf<GarminFitFileType>()
+        // Per-record-type tally across this sync round, so "Sync finished" shows exactly which
+        // metric kinds the watch's files actually carried (e.g. 0 Sleep/SpO2/RestingHeartRate is
+        // the watch not having produced that data yet, not a parser gap — all file types decode
+        // through the same FitHealthMapper.map(), see D-1070).
+        val recordKindCounts = sortedMapOf<String, Int>()
         wanted.forEachIndexed { index, (entry, type) ->
             val bytes = try {
                 download(entry.fileIndex)
@@ -109,6 +114,10 @@ internal class GarminFileSync(
                 val outcome = decode(entry, bytes, daily)
                 if (outcome.decoded) decodedFiles++ else decodeFailures++
                 workoutsProduced += outcome.records.count { it is HealthRecord.Workout }
+                outcome.records.forEach { record ->
+                    val kind = record::class.simpleName ?: "Unknown"
+                    recordKindCounts[kind] = (recordKindCounts[kind] ?: 0) + 1
+                }
                 sink.onRecords(listOf(HealthRecord.RawPayload(WearableVendor.GARMIN, type.kind, entry.timestamp, bytes)) + outcome.records)
                 delivered += outcome.records.size
             }
@@ -124,7 +133,7 @@ internal class GarminFileSync(
             TAG,
             "Sync finished: downloaded ${downloaded.size}/${wanted.size} files ${countsOf(downloaded)}, " +
                 "decoded=$decodedFiles decodeFailures=$decodeFailures workouts=$workoutsProduced dailySummaries=${days.size} " +
-                "totalRecords=$delivered",
+                "totalRecords=$delivered byKind=$recordKindCounts",
         )
         return delivered
     }
