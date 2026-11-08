@@ -1244,3 +1244,61 @@ tránh 2 agent sửa song song cùng file.
   máy thật có ra VO2max hay không sau khi mở rộng cửa sổ — nếu vẫn không ra nghĩa là giả thuyết sai,
   cần điều tra tiếp (có thể do `update_time` field 0 thay vì 253 khiến logic timestamp-từ-đâu có vấn
   đề khác, hoặc giá trị thật sự chưa từng được watch ghi vào bất kỳ file nào qua đường BLE này).
+
+**Cập nhật 18:5x:** user xác nhận VO2max + workouts đã ra sau fix D-1092 — giả thuyết đúng, Tạm → Chốt.
+
+## Workout detail chi tiết kiểu Huawei Health (D-1093+)
+
+User thấy màn chi tiết workout hiện tại ("Workout detail" theo D-804) quá sơ sài so với Huawei Health.
+Điều tra qua `claude-personal` theo đúng quy trình (không đoán):
+
+- **`docs/re-evidence/huawei/jadx-out`**: Huawei Health model 1 workout rất giàu —
+  `HiTrackMetaData.java` (avgPace/bestPace, avgStepRate, paceMap, **partTimeMap = split theo km**,
+  max/min altitude, total descent, max/min SpO2, running dynamics: ground contact time, vertical
+  oscillation/eversion/swing angle, strike pattern); `MotionData.java` (chuỗi theo giây: HR, pace,
+  speed, altitude, cadence, power, SpO2 — nguồn vẽ graph); `WorkoutRecordPaceMap.java` (bảng split
+  mỗi km: distance/pace/pointIndex); `MotionPathDetail.java` (route GPS: lat/long/altitude/timestamp);
+  `WorkoutRecord.java` (`intensityZone` = HR zone breakdown). **Không có** field VO2max riêng theo
+  từng workout, không có stride-length field thật (chỉ có string resource).
+- **`docs/re-evidence/garmin/jadx-base`**: FIT `lap`(19, `bs2/ti.java`) có đủ `total_elapsed_time`(7,
+  scale 1000)/`total_distance`(9, scale 100)/`total_calories`(11)/`avg_speed`(13)/`max_speed`(14,
+  scale 1000)/`avg_heart_rate`(15)/`max_heart_rate`(16)/`avg_cadence`(17)/`max_cadence`(18)/
+  `total_ascent`(21)/`total_descent`(22) — đủ để làm **bảng split theo lap/km** giống
+  `WorkoutRecordPaceMap` của Huawei. FIT `record`(20, `bs2/zp.java`) có `timestamp`(253)/
+  `position_lat`(0)/`position_long`(1)/`altitude`(2, scale 5 offset 500)/`heart_rate`(3)/`cadence`(4)/
+  `distance`(5, accumulate)/`speed`(6, scale 1000)/`power`(7)/`temperature`(13) — đủ để vẽ **graph
+  pace/HR/elevation theo thời gian** và **route GPS** giống `MotionData`/`MotionPathDetail`. Cả 2
+  message này nằm chung file ACTIVITY (FIT_TYPE_4) đã tải sẵn — **chưa parse**, chỉ `FitHealthMapper`
+  mới đọc `session`(18) cho tới giờ.
+
+- **D-1093** · 2026-11-08 · Scope v1 cho workout detail chi tiết — **Chốt**
+  Làm trong khả năng dữ liệu Garmin thật có (không bịa): (1) Parse `lap`(19) → bảng split mỗi lap/km
+  (thời gian, pace, HR TB, cadence TB, độ cao lên/xuống) — thêm `HealthRecord.WorkoutLap` liên kết
+  `workoutId`. (2) Parse `record`(20) → chuỗi theo giây cho pace/HR/elevation (route GPS CÓ parse
+  luôn vì field rẻ, nhưng **render bản đồ route để P2** — cần thư viện map, không làm vòng này) —
+  thêm `HealthRecord.WorkoutSample` (timestamp, lat?, long?, altitudeM?, heartRate?, cadence?, paceMps?).
+  (3) `WorkoutDetailScreen` thêm: graph pace+HR+elevation theo thời gian (dùng lại `HealthCharts`),
+  bảng split theo lap, HR zone breakdown thời gian (% mỗi zone, tính từ chuỗi HR + `MetricThresholds`
+  đã có D-1030 — không cần field riêng), cadence TB/max, tổng lên/xuống dốc.
+  **Không làm** (lý do): route map hiển thị (P2, cần map SDK); Training Effect/Load/Recovery/Running
+  Score kiểu Huawei (tên + công thức độc quyền, D-803); running dynamics sâu (ground contact
+  time/vertical oscillation...) vì Garmin FIT `record`/`lap` chuẩn không có các field này (Garmin có
+  message riêng `event`/`length` cho running dynamics nhưng chưa xác nhận qua re-evidence — để P2 nếu
+  cần).
+- **D-1094** · 2026-11-08 · Trend line trên chart — **Chốt**
+  Thêm optional trend line (hồi quy tuyến tính đơn giản, hoặc moving-average N điểm — agent tự chọn
+  cái nào hợp với từng loại chart) overlay lên `HealthBarChart`/`HealthRangeChart` hiện có trong
+  `HealthCharts.kt`, màu nhạt hơn data chính, bật mặc định ở chart xu hướng dài hạn (W/M/6M/Y), tắt ở
+  D (chart ngày quá ngắn để có trend).
+- **D-1095** · 2026-11-08 · Nghiên cứu chart chuẩn + mô tả ý nghĩa sức khỏe từng chỉ số — giao Opus — **Chốt**
+  Theo yêu cầu "Opus research" của user — giao task cho agent model Opus (không phải Sonnet, khác quy
+  ước coding thường của dự án) vì đây là nghiên cứu/tổng hợp, không phải code. Output: (a) design
+  pattern chart chuẩn cho từng loại chỉ số sức khỏe (line/bar/range, có trend line hay không, có
+  average/zone-shading hay không) tham khảo Apple Health/Garmin Connect/Huawei Health; (b) mô tả ngắn
+  gọn ý nghĩa sức khỏe + ngưỡng bình thường cho mỗi chỉ số app có (đối chiếu lại `MetricThresholds`
+  D-1030 đã có sẵn ngưỡng số, chỉ cần viết mô tả dễ hiểu bằng tiếng Việt để hiện trong UI, mỗi mục 2-3
+  câu). Dùng cho `MetricDetailScreen` section mới "Về chỉ số này".
+- **D-1096** · 2026-11-08 · Màn chọn ngôn ngữ (tiếng Việt) vẫn CHƯA làm — **Tạm**
+  User nhận ra chưa thấy — đúng, D-1040 (locale EN/VI) mới chỉ ở mức quyết định/plan, chưa từng giao
+  agent implement (bị trì hoãn nhiều lần vì ưu tiên các fix Garmin + redesign Home). Việc tiếp theo
+  sau khi các task UI/workout đang chạy ổn định.
