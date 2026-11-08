@@ -1699,3 +1699,12 @@ phía client, mặc định chỉ hiện upcoming.
   "Metrics", theo đúng pattern "Show all data"/"Xem tất cả" đã dùng ở nơi khác) mở **màn riêng** liệt
   kê **toàn bộ** chỉ số kể cả chưa có data — màn này tái dùng đúng danh sách card hiện có (component
   card cũ), chỉ khác là không lọc theo có-data-hay-không.
+
+- **D-1120** · 2026-11-08 · Nền container của bottom bar phải trong suốt, chỉ còn pill nổi — **Chốt**
+  `PillBottomNavigation` (D-1051) đang nằm trong slot `bottomBar` của `Scaffold`, và container đó
+  đang có nền trắng/surface mặc định bao quanh pill thành 1 dải ngang đặc — không phải pill nổi thật
+  sự trên content. Sửa: container `bottomBar` (`Scaffold(bottomBar = {...})` ở
+  `app/.../ui/UnifiedHealthApp.kt` hoặc nơi đặt `Scaffold`) phải trong suốt hoàn toàn
+  (`containerColor = Color.Transparent` nếu dùng `Surface` bọc ngoài, hoặc bỏ hẳn `Surface`/background
+  thừa quanh `PillBottomNavigation`) — chỉ còn đúng hình pill nổi, content phía sau scroll tràn hết
+  xuống sát đáy màn hình (tối ưu diện tích hiển thị), không còn dải nền đặc phía sau pill.
