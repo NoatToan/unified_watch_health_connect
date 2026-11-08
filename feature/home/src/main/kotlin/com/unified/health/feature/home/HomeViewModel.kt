@@ -20,6 +20,7 @@ import com.unified.health.core.model.FeedCardId
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.LiveHeartRate
+import com.unified.health.core.model.SyncState
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.WearableDevice
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,6 +55,9 @@ sealed interface HomeUiState {
         val hiddenFeedCards: Set<String> = emptySet(),
         /** D-1073/1074: List vs Grid layout for the "All metrics" section. */
         val metricsViewMode: HomeMetricsViewMode = HomeMetricsViewMode.GRID,
+        /** D-1147: drives the header device chip's status dot (green = connected + actively syncing
+         *  right now, gray otherwise) — same [WearableDeviceRepository.syncState] source Devices uses. */
+        val syncState: SyncState = SyncState.Idle,
     ) : HomeUiState
     data class Error(val message: String) : HomeUiState
 }
@@ -114,8 +118,9 @@ class HomeViewModel @Inject constructor(
         observePrimaryDevice(),
         deviceRepository.pairedDevices.map { it.size },
         observeHighlights(),
-    ) { summary, device, count, highlights ->
-        HomeUiState.Success(summary, device, highlights, count)
+        deviceRepository.syncState,
+    ) { summary, device, count, highlights, syncState ->
+        HomeUiState.Success(summary, device, highlights, count, syncState = syncState)
     }
 
     private val metricsViewMode: Flow<HomeMetricsViewMode> =

@@ -57,8 +57,14 @@ import kotlin.math.roundToInt
  * D-1134: [visible] fades the whole pill out/in (e.g. while the content behind it is scrolling,
  * driven from [com.unified.health.ui.UnifiedHealthApp]) and the surface uses a translucent
  * "liquid glass"-style color + a light edge border instead of the old opaque
- * `surfaceContainerHigh`. **No real backdrop blur of the scrolling content is applied here** — see
- * the note above [GLASS_ALPHA] for why, and what it would take to add it.
+ * `surfaceContainerHigh`. **No real backdrop blur of the scrolling content is applied here** — D-1144
+ * moved this `Surface` out of `Scaffold.bottomBar` into a `Box` overlay sitting on top of the
+ * `NavHost` (the prerequisite D-1141 flagged as missing), so a real blur-behind-content effect is now
+ * architecturally possible, but implementing it (an explicit shared `GraphicsLayer` the content draws
+ * into and this pill blur-samples from, via `androidx.compose.ui.graphics.layer.GraphicsLayer`) is
+ * still its own chunk of plumbing/testing — deferred again rather than rushed in the same pass as the
+ * `Box` restructure; see [GLASS_ALPHA] for the previous attempt's full reasoning (still accurate
+ * about the *mechanism* needed — only the "sibling, not overlay" part of it is now out of date).
  */
 @Composable
 fun PillBottomNavigation(
@@ -159,15 +165,16 @@ private val NAV_HEIGHT = 72.dp
  *   *behind* it in the window. Blurring a flat color fill looks identical to not blurring it; the
  *   only thing it could visibly blur here is the icons/labels themselves, which is the opposite of
  *   what "glass" should do to its own contents.
- * - This pill lives in `Scaffold`'s `bottomBar` slot (`UnifiedHealthApp.kt`), a sibling to — not an
- *   overlay on top of — the scrollable content in the `content` slot; the two aren't in the same
- *   draw stack, so there's no shared layer for a blur effect here to sample from.
- * - A *real* frosted-glass effect needs the content actually drawn underneath the pill's bounds
- *   (moving the pill into a `Box` overlay alongside the `NavHost`, with content no longer stopping
- *   short of the pill's area) plus an explicit shared `GraphicsLayer` (Compose UI's
+ * - **Update, D-1144**: this pill now *does* live in a `Box` overlay alongside the `NavHost`
+ *   (`UnifiedHealthApp.kt`), with content genuinely drawn underneath its bounds — the bullet above is
+ *   no longer true. That removes the structural blocker, but a real blur-behind-content effect still
+ *   needs the explicit shared `GraphicsLayer` described below; that plumbing (capture the content's
+ *   layer, blur-sample the region under the pill, crop to its shape) was deferred again rather than
+ *   added in the same pass as the `Box` restructure — see the updated class doc above.
+ * - A *real* frosted-glass effect needs an explicit shared `GraphicsLayer` (Compose UI's
  *   `androidx.compose.ui.graphics.layer.GraphicsLayer` snapshot API) that the pill's own draw phase
- *   blurs and crops to its shape. That is a layering/compositing change, not "purely a background
- *   material change" — flagged back rather than guessed at silently, per the decision's own request.
+ *   blurs and crops to its shape — a layering/compositing change beyond "purely a background material
+ *   change", flagged back rather than guessed at silently, per the original decision's own request.
  * Translucency + the light edge border below still read as "glass-like" without it.
  */
 private const val GLASS_ALPHA = 0.62f

@@ -240,7 +240,10 @@ internal fun DevicesScreen(
         }
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(padding),
-            contentPadding = PaddingValues(start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = 96.dp),
+            // D-1144: Spacing.bottomNavClearance (was a literal 96.dp — same value, now the shared
+            // constant) — the pill nav floats as a Box overlay over this tab's content instead of
+            // reserving Scaffold space, so without this the last card would sit behind it permanently.
+            contentPadding = PaddingValues(start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.bottomNavClearance),
             verticalArrangement = Arrangement.spacedBy(Spacing.md),
         ) {
             if (permissionDenied) {
@@ -349,10 +352,10 @@ private fun PairedDeviceCard(
                 // "About this device" — so it gets the same big, centered watch image treatment
                 // (WatchImage(size = 180.dp), DeviceDetailScreen.kt) instead of a small inline one.
                 Box(Modifier.fillMaxWidth()) {
-                    WatchImage(
+                    // D-1148: tappable -> fullscreen viewer, with a subtle pulse hinting it's tappable.
+                    TappableWatchImage(
                         model = watchModel,
                         size = 180.dp,
-                        interactive = true,
                         revealKey = connected,
                         modifier = Modifier.align(Alignment.Center),
                     )

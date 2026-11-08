@@ -2109,3 +2109,76 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   pattern insets đã đúng ở `PillBottomNavigation` (D-1084, `windowInsetsPadding(WindowInsets.navigationBars...)`)
   làm chuẩn. Không cần sửa toàn bộ app trong 1 lần nếu phát hiện phạm vi quá rộng — ưu tiên `RaceDetailScreen`
   trước, agent tự quyết định mở rộng thêm bao nhiêu mà vẫn giữ an toàn/đúng phạm vi.
+
+## Thực thi D-1144/D-1147 (Scaffold→Box cho pill nav, bỏ hẳn DeviceBanner khỏi Home) — D-115x
+
+- **D-1152** · 2026-11-08 · Thực thi D-1147 (bỏ hẳn `DeviceBanner` khỏi Home) — **Chốt** (đánh số lại
+  từ D-1148 ban đầu vì trùng với D-1148 "Devices: tap ảnh thiết bị → mở fullscreen" do một phiên khác
+  log song song cùng lúc — nội dung không đổi, chỉ đổi số để hết trùng, giống cách D-1130→D-1131 đã
+  tự xử lý trước đó.)
+  `HomeScreen.kt` (`feature/home`): xoá hẳn `item { DeviceBanner(...) }` khỏi `Summary`'s `LazyColumn`
+  (không còn box thiết bị nào trong body), xoá hẳn composable `DeviceBanner` (grep xác nhận không còn
+  caller nào khác trong repo — an toàn xoá hẳn, không chỉ để lại unused), và xoá theo 2 helper chỉ
+  phục vụ nó (`rememberRelativeSyncLabel`/`relativeTimeLabel`/`REFRESH_INTERVAL_MS`/`DATE_LABEL`, D-1075's
+  "Last synced" label — không còn chỗ nào hiển thị nó nữa vì chip header không yêu cầu label này).
+  Xoá hẳn luôn D-1083/1088's `deviceBannerCollapseFraction`/`deviceBannerHeightPx` (`derivedStateOf`
+  theo scroll offset của item 0) và D-1143's `LaunchedEffect` auto-collapse (`listState.animateScrollBy`
+  sau 2s) — đúng yêu cầu xoá hẳn thay vì để lại chết, vì không còn banner nào để co lại nữa.
+  `DeviceChip` (header, trong `TopAppBar`'s `actions`): đổi tham số từ `alphaFraction: Float` (trước
+  nhận trực tiếp `deviceBannerCollapseFraction`) sang `syncState: SyncState` — giờ **luôn hiện** (không
+  còn early-return theo `alphaFraction <= 0f`), chỉ giữ 1 fade-in nhẹ một lần lúc Home mới compose
+  (`remember { mutableStateOf(false) }` bật `true` trong `LaunchedEffect(Unit)`, animate qua
+  `animateFloatAsState` + `graphicsLayer { alpha = ... }`) — đúng tinh thần "không cần dựng lại
+  scroll-tracking phức tạp" của quyết định. `WatchImage`'s `revealKey` (hiệu ứng xoay-vào 3D, D-1098)
+  giờ key theo chính biến `revealed` một-lần-khi-compose đó thay vì theo fraction cũ.
+  **Dot trạng thái**: thêm `LiveDot(isLive = ...)` (tái dùng đúng component D-1054, không viết mới)
+  vào cuối `DeviceChip`'s `Row`, `isLive = connected && syncState is SyncState.InProgress` — xanh khi
+  vừa connected vừa đang sync, xám mọi trường hợp khác (disconnected/idle/done/failed), đúng yêu cầu.
+  `SyncState` chưa có sẵn trong `HomeUiState`/`HomeViewModel` trước đó — thêm field
+  `HomeUiState.Success.syncState: SyncState = SyncState.Idle` + combine thêm
+  `deviceRepository.syncState` (cùng nguồn `WearableDeviceRepository.syncState` mà `DevicesViewModel`
+  đã dùng — không có state per-device, dùng chung 1 global flow như Devices màn đang làm, không tự
+  chế thêm per-device tracking mới cho task này). `onOpenDevices` param trong `Summary` giờ không còn
+  nơi nào dùng nội bộ (trước chỉ dùng trong `DeviceBanner`) nhưng **giữ nguyên trong signature** thay
+  vì dọn luôn — xoá nó sẽ kéo theo sửa cả `HomeScreen`/`HomeRoute`/`HomeNavigation.kt` (đổi signature
+  công khai, rủi ro/phạm vi vượt quá yêu cầu D-1147 chỉ nói về `DeviceBanner`); Kotlin không coi tham
+  số không dùng là lỗi biên dịch, và repo không bật detekt/ktlint/`-Werror` nên không ảnh hưởng build.
+
+- **D-1153** · 2026-11-08 · Thực thi D-1144 (Scaffold→Box cho pill nav) — **Chốt** (đánh số lại từ
+  D-1149 ban đầu vì trùng với D-1149 "Bottom nav: không ẩn khi swipe đổi tab" do cùng phiên khác ở
+  trên log song song — nội dung không đổi, chỉ đổi số.)
+  `UnifiedHealthApp.kt` (`app`): thay `Scaffold(bottomBar = { PillBottomNavigation(...) }, containerColor
+  = Color.Transparent)` bằng `Box(Modifier.fillMaxSize())` chứa `UnifiedHealthNavHost` (`Modifier.fillMaxSize()`,
+  không còn `.padding(padding)` nào bóp hẹp nó nữa) và `PillBottomNavigation(modifier =
+  Modifier.align(Alignment.BottomCenter))` cùng cấp — đúng kiến trúc D-1144 đã xác định nguyên nhân
+  gốc (Scaffold's `innerPadding` khiến content dừng hẳn trước vùng pill, nên pill trong suốt chỉ lộ
+  nền app trơn chứ không phải content thật). `D-1140`'s `NestedScrollConnection` (fade pill theo
+  scroll) giữ nguyên, chỉ chuyển từ gắn trên `Modifier.padding(padding).consumeWindowInsets(padding)`
+  sang thẳng `Modifier.fillMaxSize()` của NavHost — không đổi hành vi.
+  **Bottom clearance cho nội dung 4 tab**: thêm `Spacing.bottomNavClearance = 96.dp` vào
+  `core/designsystem/.../Spacing.kt` (giá trị = `PillBottomNavigation`'s `NAV_HEIGHT` 72dp + 2×
+  `Spacing.md` 12dp lề trên/dưới — đúng "chiều cao + lề" quyết định gợi ý, không cộng thêm
+  system-nav-bar inset vì giá trị đó biến thiên theo máy và `feature/*` không thấy được hằng số riêng
+  của `app` để tính động — chấp nhận xấp xỉ cố định theo đúng cách quyết định cho phép "fixed bottom
+  padding matching pill's height + margin"). Áp dụng hằng số này cho **4 tab thật sự hiện pill**
+  (`onMainPager` ở `UnifiedHealthApp.kt`): `HomeScreen.kt`'s `Summary` (bottom `Spacing.xxl` →
+  `Spacing.bottomNavClearance`), `ActivityScreen.kt` (tương tự), `DevicesScreen.kt` (đổi literal `96.dp`
+  có sẵn sang hằng số dùng chung — cùng giá trị, chỉ hết trùng lặp), `ProfileScreen.kt` (thêm
+  `.padding(bottom = Spacing.bottomNavClearance)` *sau* `.verticalScroll(...)` trên `Column` — đặt sau
+  để padding mở rộng vùng nội dung cuộn được, không phải chỉ thu nhỏ viewport). **Không** đụng
+  `RacesScreen.kt`/`AllMetricsScreen` dù brief nêu ví dụ "Races list" — kiểm tra lại
+  `MainPagerDestination`/`TopLevelDestination` xác nhận Races/All metrics là màn con push lên trên
+  (không nằm trong `HorizontalPager` 4 tab), nên `onMainPager` = false ở đó và pill vốn đã ẩn hoàn
+  toàn — không có gì để chừa chỗ, thêm padding ở đó sẽ là thừa/sai so với lý do brief đưa ra.
+  **Blur thật bị hoãn lại tiếp** (không làm trong lượt này): kiến trúc overlay giờ đã đúng (tiền đề
+  D-1141 từng nói còn thiếu), nhưng blur-sample-nội-dung-thật cần `androidx.compose.ui.graphics.layer.GraphicsLayer`
+  tường minh (capture layer của content, blur rồi vẽ lại đúng vùng dưới pill, crop theo hình pill) —
+  vẫn là một khối việc/kiểm thử riêng, không có thiết bị thật trong môi trường này để xác nhận thị
+  giác. Theo đúng lời mời của D-1144 ("đừng chặn việc sửa 'box' lại vì muốn blur hoàn hảo"): chỉ xác
+  nhận bug "box" đã sửa xong (Box overlay + content cuộn thật sự ra sau pill), giữ nguyên vẻ ngoài
+  bán-trong-suốt từ D-1141, và ghi lại rõ trong doc comment `PillBottomNavigation.kt`/`GLASS_ALPHA` là
+  tiền đề đã đổi (không còn "sibling, not overlay" nữa) nhưng phần plumbing blur thật vẫn chưa làm.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug` —
+  cả hai chạy thật (test-result XML mới sinh ra ở `feature/home`/`core/designsystem`/`feature/profile`/
+  `feature/activity`/`feature/races`/`feature/devices`, không file nào `failures`/`errors` > 0;
+  `app-debug.apk` build lại thành công) — không chỉ tin Gradle UP-TO-DATE im lặng.

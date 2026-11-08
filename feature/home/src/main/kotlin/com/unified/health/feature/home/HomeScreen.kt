@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -41,7 +40,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -54,11 +52,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,21 +65,17 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.unified.health.core.designsystem.component.ActivityRings
-import com.unified.health.core.designsystem.component.ConnectionStatusChip
 import com.unified.health.core.designsystem.component.ErrorState
 import com.unified.health.core.designsystem.component.HealthBarChart
 import com.unified.health.core.designsystem.component.HealthRangeChart
@@ -121,6 +114,7 @@ import com.unified.health.core.model.Race
 import com.unified.health.core.model.RaceStatus
 import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.StepsSummary
+import com.unified.health.core.model.SyncState
 import com.unified.health.core.model.WatchModelMatcher
 import com.unified.health.core.model.WearableDevice
 import com.unified.health.core.model.WearableVendor
@@ -168,9 +162,11 @@ internal fun HomeRoute(
 }
 
 /**
- * Apple Health's Summary merged with the Huawei Health-style flat feed (D-1010): device banner,
- * activity rings, every metric's own card, then highlights — one scrolling list, no separate
- * "Health" tab. The "Pinned" subset was dropped (D-1072): this feed already shows every metric.
+ * Apple Health's Summary merged with the Huawei Health-style flat feed (D-1010): activity rings,
+ * every metric's own card, then highlights — one scrolling list, no separate "Health" tab. The
+ * "Pinned" subset was dropped (D-1072): this feed already shows every metric. D-1147 removed the
+ * device banner that used to sit above the rings — the only device affordance left on Home is the
+ * small chip in the TopAppBar's `actions` (see [DeviceChip]).
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -192,53 +188,23 @@ internal fun HomeScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val listState = rememberLazyListState()
-    // D-1083: how far the full-size DeviceBanner (list item 0) has scrolled past the top, as a
-    // continuous 0..1 fraction — 0 while fully visible, 1 once it has scrolled a full banner-height
-    // or the list has scrolled past it entirely. Drives both the banner's own shrink/fade (in
-    // Summary) and the small chip fading in on the opposite end, in this composable's TopAppBar.
-    var deviceBannerHeightPx by remember { mutableIntStateOf(0) }
-    val deviceBannerCollapseFraction by remember {
-        derivedStateOf {
-            when {
-                listState.firstVisibleItemIndex > 0 -> 1f
-                deviceBannerHeightPx <= 0 -> 0f
-                else -> (listState.firstVisibleItemScrollOffset / deviceBannerHeightPx.toFloat()).coerceIn(0f, 1f)
-            }
-        }
-    }
-    // D-1143: the big (180dp, D-1115/1130) banner shows its full "wow" size when Home first appears,
-    // then auto-collapses to the compact layout shortly after — without waiting for the user to
-    // scroll. Reuses D-1083's existing mechanism exactly (deviceBannerCollapseFraction above is a pure
-    // function of listState's real scroll position) by *programmatically scrolling* the list down by
-    // the banner's own height, rather than animating a second, separate "collapsed" property: this is
-    // what also makes the content below slide up to fill the freed space for free, same as a real
-    // scroll would. Conflict-free by construction — there is only one source of truth
-    // (listState's scroll offset) for both triggers to drive, and Compose's own scrollable gesture
-    // handling already cancels a lower-priority programmatic animation (this one) the instant the user
-    // starts a real drag, so a manual scroll beginning before the timer fires simply wins outright.
+    // D-1147: DeviceBanner (the full-size device row that used to be list item 0) is gone from Home's
+    // body entirely — D-1083/1088's scroll-collapse fraction and D-1143's auto-collapse LaunchedEffect
+    // existed only to animate that banner away, so both are deleted outright rather than kept as dead
+    // code with nothing left to collapse.
     val device = (state as? HomeUiState.Success)?.device
-    LaunchedEffect(listState, device?.connectionState) {
-        // Only the connected case is actually big (D-1115/1130) — nothing worth auto-collapsing
-        // otherwise, so skip the pointless tiny scroll nudge.
-        if (device?.connectionState != ConnectionState.Connected) return@LaunchedEffect
-        delay(2_000)
-        val bannerHeight = deviceBannerHeightPx
-        val stillAtRestAtTop = listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset == 0
-        if (bannerHeight > 0 && stillAtRestAtTop && !listState.isScrollInProgress) {
-            listState.animateScrollBy(bannerHeight.toFloat())
-        }
-    }
+    val syncState = (state as? HomeUiState.Success)?.syncState ?: SyncState.Idle
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
                 title = { Text("Home") },
                 actions = {
-                    // Only ever visible together with the TopAppBar itself, which is exactly the
-                    // "once the header is visible" condition D-1083 asks for — enterAlwaysScrollBehavior
-                    // already hides/shows the whole bar on scroll, so nothing extra is needed here.
+                    // D-1147: the only device affordance left on Home — always visible now (no banner
+                    // left in the body for it to reveal alongside), with a status dot (D-1054's LiveDot)
+                    // showing whether the device is connected and actively syncing right now.
                     if (device != null) {
-                        DeviceChip(device, deviceBannerCollapseFraction, Modifier.testTag("device_chip"))
+                        DeviceChip(device, syncState, Modifier.testTag("device_chip"))
                     }
                 },
                 scrollBehavior = scrollBehavior,
@@ -267,8 +233,6 @@ internal fun HomeScreen(
                     onFeedCardsChanged = onFeedCardsChanged,
                     onMetricsViewModeChange = onMetricsViewModeChange,
                     listState = listState,
-                    deviceBannerCollapseFraction = deviceBannerCollapseFraction,
-                    onDeviceBannerSizeChanged = { deviceBannerHeightPx = it },
                 )
             }
         }
@@ -368,8 +332,6 @@ private fun Summary(
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit,
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit,
     listState: LazyListState,
-    deviceBannerCollapseFraction: Float,
-    onDeviceBannerSizeChanged: (Int) -> Unit,
 ) {
     var editingFeed by rememberSaveable { mutableStateOf(false) }
     // The live bpm (while fresh) used to override the Pinned heart-rate card's value; now that Pinned
@@ -384,32 +346,14 @@ private fun Summary(
         // *true* full width to scroll within. A shared contentPadding here previously left every
         // item, including the carousel, permanently constrained to (screen width - 2*lg): no
         // Modifier trick on a child can claw back space a LazyColumn already decided not to give it.
-        contentPadding = PaddingValues(top = Spacing.sm, bottom = Spacing.xxl),
+        // D-1144: bottom clearance is now Spacing.bottomNavClearance (was Spacing.xxl) — the pill nav
+        // floats as a Box overlay over this list instead of reserving Scaffold space, so without this
+        // the last item would permanently sit behind it instead of merely scrolling behind it.
+        contentPadding = PaddingValues(top = Spacing.sm, bottom = Spacing.bottomNavClearance),
         verticalArrangement = Arrangement.spacedBy(Spacing.md),
     ) {
-        item {
-            DeviceBanner(
-                device = state.device,
-                deviceCount = state.deviceCount,
-                onOpenDevices = onOpenDevices,
-                // D-1083: shrink + fade out continuously as this item scrolls past the top, in lock
-                // step with deviceBannerCollapseFraction (0 = full size, 1 = scrolled fully away).
-                // A visual-only transform (not a layout resize) avoids the item's measured height
-                // ever depending on the scroll position it also helps compute — no feedback loop.
-                // The horizontal inset is applied first (outermost), so it reduces the available
-                // width the same way the old shared contentPadding did, before any of that scaling.
-                modifier = Modifier
-                    .padding(horizontal = Spacing.lg)
-                    .onSizeChanged { onDeviceBannerSizeChanged(it.height) }
-                    .graphicsLayer {
-                        val scale = 1f - 0.5f * deviceBannerCollapseFraction
-                        scaleX = scale
-                        scaleY = scale
-                        alpha = (1f - deviceBannerCollapseFraction * 1.3f).coerceIn(0f, 1f)
-                        transformOrigin = TransformOrigin(0f, 0f)
-                    },
-            )
-        }
+        // D-1147: DeviceBanner removed entirely from Home's body — the small header chip (TopAppBar
+        // actions, DeviceChip below) is now the only device affordance on Home.
         item { RingsCard(state.summary, onClick = { onMetricClick(HealthMetricType.CALORIES) }, modifier = Modifier.padding(horizontal = Spacing.lg)) }
         item {
             Row(modifier = Modifier.padding(horizontal = Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
@@ -623,131 +567,21 @@ private val METRICS_WITH_LIVE_MODE = setOf(HealthMetricType.HEART_RATE)
 private fun HealthMetricType.liveDotOrNull(liveMetrics: Set<HealthMetricType>): Boolean? =
     if (this in METRICS_WITH_LIVE_MODE) this in liveMetrics else null
 
-@Composable
-private fun DeviceBanner(device: WearableDevice?, deviceCount: Int, onOpenDevices: () -> Unit, modifier: Modifier = Modifier) {
-    // D-1115/D-1130: same card type/shape/elevation and WatchImage treatment as "My devices"' own
-    // PairedDeviceCard (feature/devices/DevicesScreen.kt) — including D-1130's big, centered 180dp
-    // image once connected (Home is where users actually look at their watch day to day, not "About
-    // this device"), vs. a small inline image otherwise. Not a shared composable with
-    // PairedDeviceCard itself (that one also owns menu/credentials/sync controls Home's compact
-    // banner doesn't need), but the same WatchImage call shape/values and layout pattern so the two
-    // don't drift again.
-    val connected = device?.connectionState == ConnectionState.Connected
-    val watchModel = remember(device?.vendor, device?.name, device?.model) { device?.let(WatchModelMatcher::match) }
-    ElevatedCard(
-        onClick = onOpenDevices,
-        modifier = modifier.fillMaxWidth().testTag("device_banner"),
-    ) {
-        if (device != null && connected) {
-            Column(
-                modifier = Modifier.padding(Spacing.lg).fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(Spacing.sm),
-            ) {
-                WatchImage(model = watchModel, size = 180.dp, interactive = true, revealKey = connected)
-                Text(device.name, style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
-                Text(
-                    listOfNotNull(
-                        device.vendor.displayName,
-                        device.batteryPercent?.let { "$it%" },
-                        (deviceCount - 1).takeIf { it > 0 }?.let { "+$it more" },
-                    ).joinToString(" · "),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                )
-                // D-1075: always visible on Home (not just Device Detail), relative + live-updating.
-                Text(
-                    "Last synced ${rememberRelativeSyncLabel(device.lastSyncedAt)}",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.testTag("last_synced"),
-                )
-                ConnectionStatusChip(device.connectionState, onClick = onOpenDevices)
-            }
-        } else {
-            Row(
-                modifier = Modifier.padding(Spacing.lg),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                WatchImage(model = watchModel, size = 56.dp, interactive = false, revealKey = connected)
-                Spacer(Modifier.width(Spacing.md))
-                if (device == null) {
-                    Column(Modifier.weight(1f)) {
-                        Text("No device paired", style = MaterialTheme.typography.titleSmall)
-                        Text("Pair a watch of any supported brand to start syncing", style = MaterialTheme.typography.bodySmall)
-                    }
-                    FilledTonalButton(onClick = onOpenDevices) { Text("Pair") }
-                } else {
-                    Column(Modifier.weight(1f)) {
-                        Text(device.name, style = MaterialTheme.typography.titleSmall)
-                        Text(
-                            listOfNotNull(
-                                device.vendor.displayName,
-                                device.batteryPercent?.let { "$it%" },
-                                (deviceCount - 1).takeIf { it > 0 }?.let { "+$it more" },
-                            ).joinToString(" · "),
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                        Text(
-                            "Last synced ${rememberRelativeSyncLabel(device.lastSyncedAt)}",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.testTag("last_synced"),
-                        )
-                    }
-                    ConnectionStatusChip(device.connectionState, onClick = onOpenDevices)
-                }
-            }
-        }
-    }
-}
-
 /**
- * "Just now" / "N minutes ago" / ... (D-1075), re-evaluated every [REFRESH_INTERVAL_MS] so it stays
- * current while the screen sits open, and immediately when [syncedAt] itself changes (a new sync
- * completing writes a newer `lastSyncedAt`, which restarts this effect right away).
+ * D-1147: Home's only device affordance now that `DeviceBanner` is gone from its scrolling body —
+ * watch image + name + a connected/syncing status dot, in the TopAppBar's `actions`. Always visible
+ * (there's nothing left in the body to collapse from, so the D-1083/1088/1098 scroll-driven reveal
+ * tied to the banner's collapse fraction is gone too) — just a light one-shot fade-in driven purely
+ * by composition, for polish, the first time Home composes this chip.
  */
 @Composable
-private fun rememberRelativeSyncLabel(syncedAt: Instant?): String {
-    var now by remember(syncedAt) { mutableStateOf(Instant.now()) }
-    LaunchedEffect(syncedAt) {
-        while (true) {
-            now = Instant.now()
-            delay(REFRESH_INTERVAL_MS)
-        }
-    }
-    return relativeTimeLabel(syncedAt, now)
-}
-
-private const val REFRESH_INTERVAL_MS = 30_000L
-
-private fun relativeTimeLabel(time: Instant?, now: Instant): String {
-    if (time == null) return "never"
-    val seconds = Duration.between(time, now).seconds.coerceAtLeast(0)
-    return when {
-        seconds < 60 -> "just now"
-        seconds < 3_600 -> (seconds / 60).let { "$it minute${if (it == 1L) "" else "s"} ago" }
-        seconds < 86_400 -> (seconds / 3_600).let { "$it hour${if (it == 1L) "" else "s"} ago" }
-        seconds < 7 * 86_400 -> (seconds / 86_400).let { "$it day${if (it == 1L) "" else "s"} ago" }
-        else -> DATE_LABEL.format(time.atZone(ZoneId.systemDefault()))
-    }
-}
-
-private val DATE_LABEL: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
-
-/**
- * D-1083: small "landed" form of [DeviceBanner] — watch image + name only — that fades into the
- * TopAppBar's top-right corner as [alphaFraction] (the banner's own collapse fraction) goes from 0
- * to 1. Lives inside the TopAppBar's `actions`, so it only ever shows together with the bar itself.
- */
-@Composable
-private fun DeviceChip(device: WearableDevice, alphaFraction: Float, modifier: Modifier = Modifier) {
-    val isVisible = alphaFraction > 0f
-    if (!isVisible) return
+private fun DeviceChip(device: WearableDevice, syncState: SyncState, modifier: Modifier = Modifier) {
+    var revealed by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { revealed = true }
+    val alpha by animateFloatAsState(if (revealed) 1f else 0f, label = "deviceChipReveal")
     Row(
         modifier = modifier
-            .graphicsLayer { alpha = alphaFraction }
+            .graphicsLayer { this.alpha = alpha }
             .padding(end = Spacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -756,10 +590,9 @@ private fun DeviceChip(device: WearableDevice, alphaFraction: Float, modifier: M
             size = 28.dp,
             interactive = true,
             // D-1098: same flip-in-from -90° rotationY effect WatchImage already does on Devices
-            // (D-803), instead of the plain fade/scale this chip used before. Keyed on visibility
-            // (not e.g. collapseFraction) so it plays once per appearance, not on every scroll tick
-            // while the chip stays on screen.
-            revealKey = isVisible,
+            // (D-803). Keyed on [revealed] (now a one-shot composition flag, not a scroll fraction —
+            // there's no banner left to derive one from) so it plays once when the chip first appears.
+            revealKey = revealed,
         )
         Spacer(Modifier.width(Spacing.xs))
         Text(
@@ -769,6 +602,10 @@ private fun DeviceChip(device: WearableDevice, alphaFraction: Float, modifier: M
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.widthIn(max = 96.dp),
         )
+        Spacer(Modifier.width(Spacing.xs))
+        // D-1147: green while connected AND actively syncing right now, gray otherwise (disconnected
+        // or idle) — reuses D-1054's LiveDot as-is rather than a new dot component.
+        LiveDot(isLive = device.connectionState == ConnectionState.Connected && syncState is SyncState.InProgress)
     }
 }
 

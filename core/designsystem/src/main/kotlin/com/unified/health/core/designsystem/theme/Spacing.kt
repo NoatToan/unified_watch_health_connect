@@ -14,4 +14,16 @@ object Spacing {
 
     /** Minimum touch target recommended by Material / WCAG. */
     val minTouchTarget = 48.dp
+
+    /**
+     * D-1144: clearance to reserve at the bottom of each top-level tab's own scrollable content, now
+     * that `PillBottomNavigation` (`app` module) floats as a `Box` overlay instead of reserving
+     * `Scaffold` bottom-bar space — without this, a screen's last card/item would sit permanently
+     * behind the pill instead of merely scrolling behind it like everything else. Matches the pill's
+     * own total footprint (its fixed height + top/bottom margins, see `PillBottomNavigation.kt`'s
+     * `NAV_HEIGHT`) as a fixed dp value rather than a real `WindowInsets` reading — feature modules
+     * cannot see `app`'s private layout constants (architecture: feature depends on
+     * domain/designsystem only), so this is kept in sync by hand instead of computed from one source.
+     */
+    val bottomNavClearance = 96.dp
 }
