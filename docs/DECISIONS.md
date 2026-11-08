@@ -16,9 +16,10 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   Tác vụ reverse-engineering / tái hiện cơ chế kết nối chạy bằng `model: sonnet` (= Claude Sonnet 5, `claude-sonnet-5`;
   không tồn tại `claude-sonnet-5-5`). Áp dụng cho `.claude/agents/device-protocol-re.md` và `wearable-driver-engineer.md`.
   Muốn pin Sonnet 4.6: đổi `model:` thành `claude-sonnet-4-6`.
-- **D-003** · 2026-11-06 · rea — **Chốt**
+- **D-003** · 2026-11-06 · rea — **Chốt** (cập nhật 2026-11-08)
   Dùng `rea` đã cài sẵn (`~/.volta/bin/rea`), không clone repo. Mọi việc liên quan rea chạy trong sub-agent (lỗi không ảnh hưởng session chính).
   Output thô (APK ghép lại, dump decompile) để ngoài git ở `../rea-output/<brand>/`; chỉ bằng chứng đã chắt lọc vào `docs/re-evidence/<brand>/`.
+  **Cập nhật 2026-11-08:** việc đọc output thô của rea/jadx (`../rea-output/<brand>/`, `docs/re-evidence/<brand>/`) để chắt lọc bằng chứng không giao cho agent Sonnet đọc trực tiếp — chạy `claude-personal -p "<prompt>"` (model DeepSeek) để đọc/tóm tắt dump trước, agent Sonnet chỉ nhận lại phần đã chắt lọc. Lý do: dump rea/jadx rất lớn, dùng model rẻ hơn (DeepSeek) để nhai thô, giữ ngữ cảnh/chi phí của Sonnet cho việc viết code và ra quyết định.
 - **D-004** · 2026-11-06 · Pháp lý — **Chốt**
   Không copy code GPL (Gadgetbridge…), không trích xuất/nhúng key bí mật của vendor; credential chỉ đến từ người dùng (`SessionContext.credentials`).
   Chỉ phục vụ kết nối đồng hồ của chính người dùng.
