@@ -1,6 +1,7 @@
 package com.unified.health.feature.activity
 
 import com.unified.health.core.model.Workout
+import com.unified.health.core.model.WorkoutLap
 import com.unified.health.core.model.WorkoutType
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -27,5 +28,14 @@ class WorkoutUiTest {
         assertEquals("24.0", workout(WorkoutType.CYCLING, 60, 24_000.0).paceOrSpeed(Locale.US)!!.value)
         assertNull(workout(WorkoutType.STRENGTH, 30, 1_000.0).paceOrSpeed(Locale.US))
         assertNull(workout(WorkoutType.RUNNING, 30, null).paceOrSpeed(Locale.US))
+    }
+
+    @Test
+    fun `lap pace or speed label per sport, nothing without avg speed`() {
+        fun lap(avgSpeedMps: Double?) = WorkoutLap(index = 0, start = start, end = start.plusSeconds(60), avgSpeedMps = avgSpeedMps)
+        assertEquals("5'00\"/km", lap(1000.0 / 300).paceOrSpeedLabel(WorkoutType.RUNNING, Locale.US))
+        assertEquals("24.0 km/h", lap(24_000.0 / 3600).paceOrSpeedLabel(WorkoutType.CYCLING, Locale.US))
+        assertNull(lap(3.0).paceOrSpeedLabel(WorkoutType.STRENGTH, Locale.US))
+        assertNull(lap(null).paceOrSpeedLabel(WorkoutType.RUNNING, Locale.US))
     }
 }

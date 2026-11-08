@@ -4,6 +4,8 @@ import com.unified.health.core.data.database.HealthRecordDao
 import com.unified.health.core.data.database.HealthSampleEntity
 import com.unified.health.core.data.database.SampleType
 import com.unified.health.core.data.database.WorkoutEntity
+import com.unified.health.core.data.database.WorkoutLapEntity
+import com.unified.health.core.data.database.WorkoutSampleEntity
 import com.unified.health.core.domain.model.DefaultMetricThresholds
 import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.UserPreferencesRepository
@@ -21,6 +23,8 @@ import com.unified.health.core.model.StepsSummary
 import com.unified.health.core.model.StressReading
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.Workout
+import com.unified.health.core.model.WorkoutLap
+import com.unified.health.core.model.WorkoutSample
 import com.unified.health.core.model.WorkoutType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -102,6 +106,16 @@ class LocalHealthDataRepository internal constructor(
     override fun observeWorkout(id: String): Flow<Workout?> {
         val key = WorkoutKey.parse(id) ?: return flowOf(null)
         return dao.observeWorkout(key.deviceId, key.startEpochMs).map { it?.toModel() }
+    }
+
+    override fun observeWorkoutLaps(workoutId: String): Flow<List<WorkoutLap>> {
+        val key = WorkoutKey.parse(workoutId) ?: return flowOf(emptyList())
+        return dao.observeWorkoutLaps(key.deviceId, key.startEpochMs).map { rows -> rows.map { it.toModel() } }
+    }
+
+    override fun observeWorkoutSamples(workoutId: String): Flow<List<WorkoutSample>> {
+        val key = WorkoutKey.parse(workoutId) ?: return flowOf(emptyList())
+        return dao.observeWorkoutSamples(key.deviceId, key.startEpochMs).map { rows -> rows.map { it.toModel() } }
     }
 
     override fun observeHeartRateSamples(from: Instant, to: Instant, deviceId: String?): Flow<List<HeartRateSample>> {
@@ -187,6 +201,32 @@ class LocalHealthDataRepository internal constructor(
         avgHeartRate = avgHeartRate,
         maxHeartRate = maxHeartRate,
         sourceDeviceId = deviceId,
+    )
+
+    private fun WorkoutLapEntity.toModel() = WorkoutLap(
+        index = lapIndex,
+        start = Instant.ofEpochMilli(startEpochMs),
+        end = Instant.ofEpochMilli(endEpochMs),
+        distanceMeters = distanceMeters,
+        calories = calories,
+        avgSpeedMps = avgSpeedMps,
+        maxSpeedMps = maxSpeedMps,
+        avgHeartRate = avgHeartRate,
+        maxHeartRate = maxHeartRate,
+        avgCadence = avgCadence,
+        maxCadence = maxCadence,
+        ascentMeters = ascentMeters,
+        descentMeters = descentMeters,
+    )
+
+    private fun WorkoutSampleEntity.toModel() = WorkoutSample(
+        time = Instant.ofEpochMilli(timeEpochMs),
+        latitude = latitude,
+        longitude = longitude,
+        altitudeMeters = altitudeMeters,
+        heartRate = heartRate,
+        cadence = cadence,
+        speedMps = speedMps,
     )
 
     private fun workoutType(sport: String): WorkoutType = when {

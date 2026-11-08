@@ -62,6 +62,19 @@ data class MetricThresholds(
         val restingKcal = profile?.restingEnergyKcal() ?: return defaultActiveCalorieGoal
         return (restingKcal * (activityLevel.factor - 1.0)).roundToInt()
     }
+
+    /**
+     * Estimated max heart rate (Fox/"220 minus age" formula, the standard public estimate this
+     * [heartRateZones] model is built on) for [profile], or the same reference-adult age used by
+     * [activeCalorieGoal] when no [BodyProfile] is known (docs/DECISIONS.md D-1097 — onboarding does
+     * not collect age yet, so a workout's HR-zone breakdown needs a stand-in).
+     */
+    fun estimatedMaxHeartRateBpm(profile: BodyProfile? = null): Int = MAX_HEART_RATE_CONSTANT - (profile?.age ?: REFERENCE_AGE)
+
+    private companion object {
+        const val MAX_HEART_RATE_CONSTANT = 220
+        const val REFERENCE_AGE = 35
+    }
 }
 
 /** One of the 5 universal heart-rate-zone bands used industry-wide. */

@@ -33,6 +33,8 @@ class DemoDataSeeder internal constructor(
         clearDemo = {
             dao.deleteSamplesForDevices(DemoDeviceIds.ALL)
             dao.deleteWorkoutsForDevices(DemoDeviceIds.ALL)
+            dao.deleteWorkoutLapsForDevices(DemoDeviceIds.ALL)
+            dao.deleteWorkoutSamplesForDevices(DemoDeviceIds.ALL)
         },
         generator = DemoHealthDataGenerator(),
         now = Instant::now,

@@ -1303,6 +1303,44 @@ User thấy màn chi tiết workout hiện tại ("Workout detail" theo D-804) q
   agent implement (bị trì hoãn nhiều lần vì ưu tiên các fix Garmin + redesign Home). Việc tiếp theo
   sau khi các task UI/workout đang chạy ổn định.
 
+## Thực thi D-1093 (workout detail) + D-1094 (trend line) — D-1097
+
+- **D-1097** · 2026-11-08 · Các điểm chưa chốt cụ thể khi implement D-1093/D-1094 — **Chốt**
+  D-1093/D-1094 đã chốt phạm vi; các điểm implementation cụ thể dưới đây agent tự quyết vì không có
+  trong 2 quyết định gốc:
+  1. **Khoá lap/sample vào workout cha**: `HealthRecord.WorkoutLap`/`WorkoutSample` mang
+     `workoutStart: Instant` (= `Workout.start`) thay vì chuỗi id đầy đủ, vì `FitHealthMapper.map()`
+     không biết `deviceId`. `RoomHealthRecordSink` ghép `deviceId` (đã có sẵn trong sink) +
+     `workoutStart` thành khoá `(deviceId, workoutStartEpochMs, lapIndex/timeEpochMs)` — đúng cặp
+     `(deviceId, startEpochMs)` đã là khoá chính của `WorkoutEntity` (D-804), không tạo quy ước id mới.
+     Lap/record trong file FIT được buffer theo thứ tự xuất hiện và "flush" vào danh sách kết quả khi
+     gặp `session`(18) đóng segment đó — khớp đúng thứ tự thật trong file ACTIVITY (record/lap trước,
+     session tổng kết sau mỗi segment), nên cũng xử lý đúng file multi-sport nhiều session mà không
+     cần field tham chiếu session rõ ràng (lap/record FIT chuẩn không có field đó).
+  2. **Room schema**: bump `UnifiedHealthDatabase` version 2 → 3, thêm 2 bảng mới
+     (`workout_laps`, `workout_samples`) thuần cộng thêm → dùng `AutoMigration(from = 2, to = 3)`,
+     không cần `Migration` thủ công. `3.json` tự sinh khi build (KSP), không viết tay.
+  3. **HR zone breakdown cần %HRmax nhưng app chưa thu thập tuổi** (`BodyProfile` chưa được
+     onboarding thu thập — xem D-1030): thêm `MetricThresholds.estimatedMaxHeartRateBpm(profile)` =
+     công thức Fox "220 − tuổi" phổ biến, dùng tuổi tham chiếu 35 khi không có `BodyProfile` — tái
+     dùng đúng quy ước "người lớn tham chiếu" D-1030 đã dùng cho `activeCalorieGoal` mặc định, không
+     bịa model mới.
+  4. **Trend line (D-1094) chọn thuật toán khác nhau theo loại chart**: `HealthBarChart` (dữ liệu dạng
+     cột, nhiều điểm rời rạc như bước chân/calo theo ngày) dùng **moving average** (mượt nhiễu ngày
+     qua ngày dễ đọc hơn); `HealthRangeChart` (dữ liệu dạng min–max capsule, vốn nhiễu điểm-điểm hơn
+     như nhịp tim/SpO2) dùng **hồi quy tuyến tính** (một đường thẳng thể hiện xu hướng tăng/giảm rõ
+     hơn moving average khi dữ liệu đã nhiễu sẵn). Cả 2 vẽ nhạt hơn + nét liền để phân biệt với đường
+     trung bình nét đứt (`average`) đã có sẵn trong `HealthBarChart`.
+  5. **`WorkoutDetailScreen` không build chart-line component mới**: 3 mini chart pace/độ cao/nhịp tim
+     theo giây (từ `record` D-1093) tái dùng `HealthRangeChart` (D-1093 yêu cầu "reuse HealthCharts
+     components", app chưa có component line-chart riêng) — mỗi chỉ số một chart riêng vì đơn vị khác
+     nhau (giây/km, mét, bpm) không chia sẻ chung 1 trục y được. Bảng split hiển thị dạng danh sách
+     `ListItem` (lap # + thời gian ở headline, các chỉ số còn lại ở supporting text) thay vì bảng lưới
+     thật — đủ cho 1 lap trên màn hình điện thoại hẹp mà không cần cuộn ngang.
+  6. **Không mở rộng demo-data generator** (`DemoHealthDataGenerator`) để sinh lap/sample mẫu — ngoài
+     phạm vi D-1093 (chỉ parse dữ liệu Garmin thật); `DemoDataSeeder.clearDemoData()` vẫn được cập
+     nhật xoá 2 bảng mới cho vệ sinh dữ liệu dù demo generator chưa ghi vào đó.
+
 - **D-1097** · 2026-11-08 · Kết quả nghiên cứu Opus (D-1095) — lưu vào `docs/analysis/CHART_DESIGN_AND_METRIC_COPY.md` — **Chốt**
   Agent Opus trả về report đầy đủ (chart pattern theo từng loại chỉ số + bảng trend-line-theo-range +
   12 đoạn mô tả tiếng Việt cho "Về chỉ số này"). Lưu nguyên văn vào

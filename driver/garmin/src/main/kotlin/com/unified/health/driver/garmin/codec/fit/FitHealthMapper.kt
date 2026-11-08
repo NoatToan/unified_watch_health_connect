@@ -3,6 +3,7 @@ package com.unified.health.driver.garmin.codec.fit
 import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.SleepStage
 import com.unified.health.driver.garmin.codec.FitTime
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -21,6 +22,8 @@ internal object FitHealthMapper {
 
     // Global message numbers [Ext].
     const val MESG_SESSION = 18
+    const val MESG_LAP = 19
+    const val MESG_RECORD = 20
     const val MESG_MONITORING = 55
     const val MESG_MONITORING_INFO = 103
     const val MESG_STRESS_LEVEL = 227
@@ -97,6 +100,38 @@ internal object FitHealthMapper {
     private const val ELAPSED_TIME_SCALE = 1000
     private const val ACTIVITY_TYPE_MASK = 0x1F
 
+    // lap (19) fields. [V] against the FIT profile bundled in Garmin Connect Mobile
+    // (docs/re-evidence/garmin/jadx-base/sources/bs2/ti.java) — D-1093.
+    private const val LAP_START_TIME = 2
+    private const val LAP_TOTAL_ELAPSED_TIME = 7 // uint32, scale 1000 → s
+    private const val LAP_TOTAL_DISTANCE = 9 // uint32, scale 100 → m
+    private const val LAP_TOTAL_CALORIES = 11 // uint16 kcal
+    private const val LAP_AVG_SPEED = 13 // uint16, scale 1000 → m/s
+    private const val LAP_MAX_SPEED = 14 // uint16, scale 1000 → m/s
+    private const val LAP_AVG_HEART_RATE = 15 // uint8 bpm
+    private const val LAP_MAX_HEART_RATE = 16 // uint8 bpm
+    private const val LAP_AVG_CADENCE = 17 // uint8 rpm
+    private const val LAP_MAX_CADENCE = 18 // uint8 rpm
+    private const val LAP_TOTAL_ASCENT = 21 // uint16 m
+    private const val LAP_TOTAL_DESCENT = 22 // uint16 m
+
+    // record (20) fields. [V] against docs/re-evidence/garmin/jadx-base/sources/bs2/zp.java — D-1093.
+    // `distance` (5) is also on this message (cumulative, scale 100) but is not needed: laps already
+    // carry their own total_distance, and the per-second pace chart is derived from `speed` instead.
+    private const val RECORD_POSITION_LAT = 0 // sint32 semicircles
+    private const val RECORD_POSITION_LONG = 1 // sint32 semicircles
+    private const val RECORD_ALTITUDE = 2 // uint16, scale 5 offset 500 → m
+    private const val RECORD_HEART_RATE = 3 // uint8 bpm
+    private const val RECORD_CADENCE = 4 // uint8 rpm
+    private const val RECORD_SPEED = 6 // uint16, scale 1000 → m/s
+
+    private const val SPEED_SCALE = 1000.0
+    private const val ALTITUDE_SCALE = 5.0
+    private const val ALTITUDE_OFFSET = 500.0
+
+    /** FIT semicircles → degrees: 2^31 semicircles span 180°. */
+    private const val SEMICIRCLE_TO_DEGREES = 180.0 / 2147483648.0
+
     /** Longest believable gap between two sleep_level samples; longer gaps are not filled. */
     private const val MAX_SLEEP_SEGMENT_SECONDS = 2 * 3600L
 
@@ -109,6 +144,13 @@ internal object FitHealthMapper {
         val zone = deviceOffset(file) ?: fallbackZone
         val records = mutableListOf<HealthRecord>()
         val sleepLevels = mutableListOf<Pair<Long, Int>>()
+        // Laps/records recorded so far for the session that hasn't closed yet (D-1093): a FIT
+        // ACTIVITY file lists a sport segment's record(20)/lap(19) messages before its session(18)
+        // summary, so flushing on MESG_SESSION naturally keys each lap/sample to the right workout
+        // even for a multi-sport file with several sessions. Dropped (never flushed) if the file ends
+        // without a session — same as WithGearChangeData.fit (no session, no workout to attach to).
+        val pendingLaps = mutableListOf<PendingLap>()
+        val pendingSamples = mutableListOf<PendingSample>()
         var lastTimestamp: Long? = null
         for (message in file.messages) {
             message.timestamp?.let { lastTimestamp = it }
@@ -127,7 +169,15 @@ internal object FitHealthMapper {
                     val level = message.value(SLEEP_LEVEL) ?: continue
                     sleepLevels += time to level.toInt()
                 }
-                MESG_SESSION -> mapSession(message)?.let(records::add)
+                MESG_LAP -> mapLap(message)?.let(pendingLaps::add)
+                MESG_RECORD -> mapRecordSample(message)?.let(pendingSamples::add)
+                MESG_SESSION -> mapSession(message)?.let { workout ->
+                    records.add(workout)
+                    pendingLaps.forEachIndexed { index, lap -> records.add(lap.toRecord(workout.start, index)) }
+                    pendingSamples.forEach { records.add(it.toRecord(workout.start)) }
+                    pendingLaps.clear()
+                    pendingSamples.clear()
+                }
                 MESG_MAX_MET_DATA -> lastTimestamp?.let { mapVo2Max(message, it) }?.let(records::add)
             }
         }
@@ -218,7 +268,7 @@ internal object FitHealthMapper {
         return HealthRecord.Vo2Max(FitTime.toInstant(time), value)
     }
 
-    private fun mapSession(message: FitMessage): HealthRecord? {
+    private fun mapSession(message: FitMessage): HealthRecord.Workout? {
         val start = message.value(SESSION_START_TIME) ?: return null
         val end = message.value(SESSION_TOTAL_ELAPSED_TIME)?.let { start + it / ELAPSED_TIME_SCALE } ?: message.timestamp ?: return null
         if (end <= start) return null
@@ -231,6 +281,56 @@ internal object FitHealthMapper {
             activeKcal = message.value(SESSION_TOTAL_CALORIES)?.toInt(),
             avgHeartRate = message.value(SESSION_AVG_HEART_RATE)?.toInt(),
             maxHeartRate = message.value(SESSION_MAX_HEART_RATE)?.toInt(),
+        )
+    }
+
+    /**
+     * lap (19) → one split, buffered until the enclosing session(18) closes and supplies the
+     * workout's start time (D-1093). Elapsed time is truncated to the second, same as [mapSession].
+     */
+    private fun mapLap(message: FitMessage): PendingLap? {
+        val start = message.value(LAP_START_TIME) ?: return null
+        val end = message.value(LAP_TOTAL_ELAPSED_TIME)?.let { start + it / ELAPSED_TIME_SCALE } ?: return null
+        if (end <= start) return null
+        return PendingLap(
+            start = FitTime.toInstant(start),
+            end = FitTime.toInstant(end),
+            distanceMeters = message.value(LAP_TOTAL_DISTANCE)?.let { it / DISTANCE_SCALE },
+            calories = message.value(LAP_TOTAL_CALORIES)?.toInt(),
+            avgSpeedMps = message.value(LAP_AVG_SPEED)?.let { it / SPEED_SCALE },
+            maxSpeedMps = message.value(LAP_MAX_SPEED)?.let { it / SPEED_SCALE },
+            avgHeartRate = message.value(LAP_AVG_HEART_RATE)?.toInt(),
+            maxHeartRate = message.value(LAP_MAX_HEART_RATE)?.toInt(),
+            avgCadence = message.value(LAP_AVG_CADENCE)?.toInt(),
+            maxCadence = message.value(LAP_MAX_CADENCE)?.toInt(),
+            ascentMeters = message.value(LAP_TOTAL_ASCENT)?.toDouble(),
+            descentMeters = message.value(LAP_TOTAL_DESCENT)?.toDouble(),
+        )
+    }
+
+    /**
+     * record (20) → one instantaneous sample, buffered the same way as [mapLap]. GPS lat/long are
+     * parsed and stored (cheap fields, already decoded) but have no map UI yet — route rendering is
+     * P2 (D-1093). Dropped when none of its fields decoded (e.g. a record with only `distance`, which
+     * this mapper does not use — see the field comment on [RECORD_SPEED]'s block above).
+     */
+    private fun mapRecordSample(message: FitMessage): PendingSample? {
+        val time = message.timestamp ?: return null
+        val lat = message.value(RECORD_POSITION_LAT)
+        val lon = message.value(RECORD_POSITION_LONG)
+        val altitude = message.value(RECORD_ALTITUDE)
+        val heartRate = message.value(RECORD_HEART_RATE)?.toInt()?.takeIf { it > 0 }
+        val cadence = message.value(RECORD_CADENCE)?.toInt()
+        val speed = message.value(RECORD_SPEED)
+        if (lat == null && lon == null && altitude == null && heartRate == null && cadence == null && speed == null) return null
+        return PendingSample(
+            time = FitTime.toInstant(time),
+            latitude = lat?.let { it * SEMICIRCLE_TO_DEGREES },
+            longitude = lon?.let { it * SEMICIRCLE_TO_DEGREES },
+            altitudeMeters = altitude?.let { it / ALTITUDE_SCALE - ALTITUDE_OFFSET },
+            heartRate = heartRate,
+            cadence = cadence,
+            speedMps = speed?.let { it / SPEED_SCALE },
         )
     }
 
@@ -266,6 +366,61 @@ internal object FitHealthMapper {
         4 -> SleepStage.REM
         else -> null
     }
+}
+
+/** One lap(19) message, held until its session(18) supplies the workout start time (D-1093). */
+private data class PendingLap(
+    val start: Instant,
+    val end: Instant,
+    val distanceMeters: Double?,
+    val calories: Int?,
+    val avgSpeedMps: Double?,
+    val maxSpeedMps: Double?,
+    val avgHeartRate: Int?,
+    val maxHeartRate: Int?,
+    val avgCadence: Int?,
+    val maxCadence: Int?,
+    val ascentMeters: Double?,
+    val descentMeters: Double?,
+) {
+    fun toRecord(workoutStart: Instant, index: Int) = HealthRecord.WorkoutLap(
+        workoutStart = workoutStart,
+        index = index,
+        start = start,
+        end = end,
+        distanceMeters = distanceMeters,
+        calories = calories,
+        avgSpeedMps = avgSpeedMps,
+        maxSpeedMps = maxSpeedMps,
+        avgHeartRate = avgHeartRate,
+        maxHeartRate = maxHeartRate,
+        avgCadence = avgCadence,
+        maxCadence = maxCadence,
+        ascentMeters = ascentMeters,
+        descentMeters = descentMeters,
+    )
+}
+
+/** One record(20) message, held the same way as [PendingLap]. */
+private data class PendingSample(
+    val time: Instant,
+    val latitude: Double?,
+    val longitude: Double?,
+    val altitudeMeters: Double?,
+    val heartRate: Int?,
+    val cadence: Int?,
+    val speedMps: Double?,
+) {
+    fun toRecord(workoutStart: Instant) = HealthRecord.WorkoutSample(
+        workoutStart = workoutStart,
+        time = time,
+        latitude = latitude,
+        longitude = longitude,
+        altitudeMeters = altitudeMeters,
+        heartRate = heartRate,
+        cadence = cadence,
+        speedMps = speedMps,
+    )
 }
 
 /**

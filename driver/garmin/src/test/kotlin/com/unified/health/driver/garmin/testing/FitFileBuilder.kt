@@ -85,16 +85,20 @@ internal class FitFileBuilder {
 
     companion object {
         const val ENUM = 0x00
+        const val SINT8 = 0x01
         const val UINT8 = 0x02
         const val SINT16 = 0x83
         const val UINT16 = 0x84
+        const val SINT32 = 0x85
         const val UINT32 = 0x86
         const val STRING = 0x07
 
         fun u8(number: Int) = Field(number, 1, UINT8)
+        fun s8(number: Int) = Field(number, 1, SINT8)
         fun enum(number: Int) = Field(number, 1, ENUM)
         fun s16(number: Int) = Field(number, 2, SINT16)
         fun u16(number: Int) = Field(number, 2, UINT16)
+        fun s32(number: Int) = Field(number, 4, SINT32)
         fun u32(number: Int) = Field(number, 4, UINT32)
 
         fun fit(instant: String): Long = FitTime.fromInstant(Instant.parse(instant))

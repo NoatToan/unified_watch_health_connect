@@ -7,10 +7,12 @@ import com.unified.health.driver.garmin.testing.FitFileBuilder
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.enum
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.fit
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.s16
+import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.s32
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u16
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u32
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u8
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.Instant
@@ -108,6 +110,73 @@ class FitHealthMapperTest {
             listOf(HealthRecord.Workout(at(t0), at(t0 + 3600), "running", 10_000.0, 750, 150, 182)),
             workouts,
         )
+    }
+
+    @Test
+    fun `lap and record attach to the session they precede`() {
+        val bytes = FitFileBuilder()
+            .define(0, FitHealthMapper.MESG_RECORD, u32(253), s32(0), s32(1), u16(2), u8(3), u8(4), u16(6))
+            .record(0, t0 + 10, 1_073_741_824, 536_870_912, 3500, 150, 85, 3500)
+            .record(0, t0 + 20, 0x7FFF_FFFFL, 0x7FFF_FFFFL, 0xFFFFL, 0, 90, 3000) // invalid lat/long/altitude; hr=0 filtered
+            .define(1, FitHealthMapper.MESG_LAP, u32(2), u32(7), u32(9), u16(11), u16(13), u16(14), u8(15), u8(16), u8(17), u8(18), u16(21), u16(22))
+            .record(1, t0, 600_000, 100_000, 80, 3000, 4000, 140, 160, 80, 90, 15, 5)
+            .define(2, FitHealthMapper.MESG_SESSION, u32(253), u32(2), enum(5), u32(7), u32(9), u16(11), u8(16), u8(17))
+            .record(2, t0 + 700, t0, 1, 610_000, 100_000, 80, 140, 160)
+            .build()
+
+        val records = FitHealthMapper.map(FitDecoder.decode(bytes), ZoneOffset.UTC, DailyActivityAccumulator())
+
+        val workout = records.filterIsInstance<HealthRecord.Workout>().single()
+        assertEquals(at(t0), workout.start)
+
+        val lap = records.filterIsInstance<HealthRecord.WorkoutLap>().single()
+        assertEquals(workout.start, lap.workoutStart)
+        assertEquals(0, lap.index)
+        assertEquals(at(t0), lap.start)
+        assertEquals(at(t0 + 600), lap.end)
+        assertEquals(1000.0, lap.distanceMeters)
+        assertEquals(80, lap.calories)
+        assertEquals(3.0, lap.avgSpeedMps)
+        assertEquals(4.0, lap.maxSpeedMps)
+        assertEquals(140, lap.avgHeartRate)
+        assertEquals(160, lap.maxHeartRate)
+        assertEquals(80, lap.avgCadence)
+        assertEquals(90, lap.maxCadence)
+        assertEquals(15.0, lap.ascentMeters)
+        assertEquals(5.0, lap.descentMeters)
+
+        val samples = records.filterIsInstance<HealthRecord.WorkoutSample>()
+        assertEquals(2, samples.size)
+        val first = samples[0]
+        assertEquals(workout.start, first.workoutStart)
+        assertEquals(at(t0 + 10), first.time)
+        assertEquals(90.0, first.latitude!!, 0.001)
+        assertEquals(45.0, first.longitude!!, 0.001)
+        assertEquals(200.0, first.altitudeMeters)
+        assertEquals(150, first.heartRate)
+        assertEquals(85, first.cadence)
+        assertEquals(3.5, first.speedMps)
+
+        val second = samples[1]
+        assertNull(second.latitude)
+        assertNull(second.longitude)
+        assertNull(second.altitudeMeters)
+        assertNull(second.heartRate)
+        assertEquals(90, second.cadence)
+        assertEquals(3.0, second.speedMps)
+    }
+
+    @Test
+    fun `records and laps without a following session are dropped`() {
+        val bytes = FitFileBuilder()
+            .define(0, FitHealthMapper.MESG_RECORD, u32(253), u8(3))
+            .record(0, t0, 120)
+            .define(1, FitHealthMapper.MESG_LAP, u32(2), u32(7))
+            .record(1, t0, 60_000)
+            .build()
+        val records = FitHealthMapper.map(FitDecoder.decode(bytes), ZoneOffset.UTC, DailyActivityAccumulator())
+        assertTrue(records.filterIsInstance<HealthRecord.WorkoutSample>().isEmpty())
+        assertTrue(records.filterIsInstance<HealthRecord.WorkoutLap>().isEmpty())
     }
 
     @Test

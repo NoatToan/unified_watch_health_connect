@@ -14,6 +14,8 @@ import com.unified.health.core.model.SyncState
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.WearableDevice
 import com.unified.health.core.model.Workout
+import com.unified.health.core.model.WorkoutLap
+import com.unified.health.core.model.WorkoutSample
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
@@ -24,9 +26,13 @@ import java.time.LocalDate
 class FakeHealthDataRepository : HealthDataRepository {
     val workouts = MutableStateFlow<List<Workout>>(emptyList())
     val heartRate = MutableStateFlow<List<Pair<String?, HeartRateSample>>>(emptyList())
+    val laps = MutableStateFlow<Map<String, List<WorkoutLap>>>(emptyMap())
+    val workoutSamples = MutableStateFlow<Map<String, List<WorkoutSample>>>(emptyMap())
 
     override fun observeWorkouts(): Flow<List<Workout>> = workouts
     override fun observeWorkout(id: String): Flow<Workout?> = workouts.map { list -> list.firstOrNull { it.id == id } }
+    override fun observeWorkoutLaps(workoutId: String): Flow<List<WorkoutLap>> = laps.map { it[workoutId].orEmpty() }
+    override fun observeWorkoutSamples(workoutId: String): Flow<List<WorkoutSample>> = workoutSamples.map { it[workoutId].orEmpty() }
     override fun observeHeartRateSamples(from: Instant, to: Instant, deviceId: String?): Flow<List<HeartRateSample>> =
         heartRate.map { all ->
             all.filter { (device, s) -> (deviceId == null || device == deviceId) && !s.time.isBefore(from) && s.time.isBefore(to) }.map { it.second }

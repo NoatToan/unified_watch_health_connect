@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.SelfImprovement
 import androidx.compose.material.icons.outlined.SportsScore
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.unified.health.core.model.Workout
+import com.unified.health.core.model.WorkoutLap
 import com.unified.health.core.model.WorkoutType
 import java.time.Duration
 import java.util.Locale
@@ -63,6 +64,23 @@ internal fun Workout.paceOrSpeed(locale: Locale = Locale.getDefault()): PaceOrSp
         WorkoutType.SWIMMING -> {
             val secPer100 = (seconds / (meters / 100.0)).toLong()
             PaceOrSpeed("Avg. pace", "%d'%02d\"".format(Locale.ROOT, secPer100 / 60, secPer100 % 60), "/100 m")
+        }
+        else -> null
+    }
+}
+
+/** Same idea as [Workout.paceOrSpeed] but for a split's own average speed (D-1093), with the unit baked in. */
+internal fun WorkoutLap.paceOrSpeedLabel(type: WorkoutType, locale: Locale = Locale.getDefault()): String? {
+    val speed = avgSpeedMps?.takeIf { it > 0 } ?: return null
+    return when (type) {
+        WorkoutType.CYCLING -> String.format(locale, "%.1f km/h", speed * 3.6)
+        WorkoutType.RUNNING, WorkoutType.WALKING -> {
+            val secPerKm = (1000.0 / speed).toLong()
+            "%d'%02d\"/km".format(Locale.ROOT, secPerKm / 60, secPerKm % 60)
+        }
+        WorkoutType.SWIMMING -> {
+            val secPer100 = (100.0 / speed).toLong()
+            "%d'%02d\"/100m".format(Locale.ROOT, secPer100 / 60, secPer100 % 60)
         }
         else -> null
     }

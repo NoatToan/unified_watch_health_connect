@@ -27,8 +27,10 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -66,6 +68,11 @@ fun HealthBarChart(
     height: Dp = 200.dp,
     average: Float? = null,
     axisLabel: (Float) -> String = ::compactNumber,
+    /** D-1094: overlays a moving-average trend line, lighter/solid so it reads as distinct from the
+     * flat dashed [average] line and the bars themselves. Off by default — callers turn it on for
+     * longer ranges (Week/Month/6-Month/Year), where a trend is meaningful; a single Day of bars is
+     * too short a series to trend. */
+    showTrend: Boolean = false,
 ) {
     val frame = rememberChartFrame()
     val maxValue = niceCeil(points.maxOfOrNull { it.value } ?: 0f)
@@ -94,6 +101,11 @@ fun HealthBarChart(
             val y = plot.bottom - plot.height * (avg / maxValue)
             drawLine(color.copy(alpha = 0.8f), Offset(plot.left, y), Offset(plot.right, y), 1.5.dp.toPx(), pathEffect = PathEffect.dashPathEffect(floatArrayOf(8f, 8f)))
         }
+        if (showTrend) {
+            TrendLine.movingAverage(points, window = trendWindow(points.size))?.let { trend ->
+                drawTrendLine(plot, trend, 0f, maxValue, color)
+            }
+        }
         frame.drawScrub(this, plot, points, scrubX, color) { p ->
             if (p.value <= 0f) "${p.label}: no data" else "${p.label}: ${axisLabel(p.value)}"
         }
@@ -108,6 +120,10 @@ fun HealthRangeChart(
     modifier: Modifier = Modifier,
     height: Dp = 200.dp,
     axisLabel: (Float) -> String = ::compactNumber,
+    /** D-1094: overlays a linear-regression trend line (see [HealthBarChart]'s [showTrend] for why
+     * it defaults off). A straight best-fit line reads better here than a moving average, since
+     * capsule charts (heart rate, SpO2…) are naturally noisier point-to-point. */
+    showTrend: Boolean = false,
 ) {
     val frame = rememberChartFrame()
     val withData = points.filter { it.hasData }
@@ -138,6 +154,9 @@ fun HealthRangeChart(
             } else {
                 drawRoundRect(color, Offset(cx - w / 2, top), Size(w, bottom - top), CornerRadius(w / 2))
             }
+        }
+        if (showTrend) {
+            TrendLine.linearRegression(points)?.let { trend -> drawTrendLine(plot, trend, yMin, yMax, color) }
         }
         frame.drawScrub(this, plot, points, scrubX, color) { p ->
             val min = p.min
@@ -328,6 +347,66 @@ private fun Modifier.chartScrubGestures(enabled: Boolean, onScrub: (Float?) -> U
                 },
             )
         }
+}
+
+/** A trend line's window for [TrendLine.movingAverage]: roughly a sixth of the series, 2..9 points. */
+private fun trendWindow(pointCount: Int): Int = (pointCount / 6).coerceIn(2, 9)
+
+/**
+ * Draws [values] (one per x-slot, same layout [ChartFrame.drawAxes] used) as a light, solid polyline
+ * — deliberately different from [drawAxes]'s dashed gridlines and [HealthBarChart]'s dashed average
+ * line, so the trend reads as its own, lower-emphasis series (D-1094).
+ */
+private fun DrawScope.drawTrendLine(plot: PlotArea, values: List<Float>, yMin: Float, yMax: Float, color: Color) {
+    if (values.size < 2 || yMax <= yMin) return
+    val slot = plot.width / values.size.coerceAtLeast(1)
+    fun y(v: Float) = plot.bottom - plot.height * ((v - yMin) / (yMax - yMin)).coerceIn(0f, 1f)
+    val path = Path()
+    values.forEachIndexed { i, v ->
+        val x = plot.left + i * slot + slot / 2
+        val py = y(v)
+        if (i == 0) path.moveTo(x, py) else path.lineTo(x, py)
+    }
+    drawPath(path, color.copy(alpha = 0.45f), style = Stroke(width = 2.dp.toPx()))
+}
+
+/** Pure trend-line math (D-1094), split out so it is unit-testable without a Compose [DrawScope]. */
+internal object TrendLine {
+
+    /**
+     * Least-squares line through the points of [points] that [ChartPoint.hasData], evaluated at
+     * every index (including the gaps) — null when fewer than 2 data points exist to fit a line.
+     */
+    fun linearRegression(points: List<ChartPoint>): List<Float>? {
+        val xs = points.indices.filter { points[it].hasData }
+        if (xs.size < 2) return null
+        val n = xs.size.toDouble()
+        val sumX = xs.sumOf { it.toDouble() }
+        val sumY = xs.sumOf { points[it].value.toDouble() }
+        val sumXY = xs.sumOf { it.toDouble() * points[it].value }
+        val sumXX = xs.sumOf { it.toDouble() * it }
+        val denominator = n * sumXX - sumX * sumX
+        if (denominator == 0.0) return null
+        val slope = (n * sumXY - sumX * sumY) / denominator
+        val intercept = (sumY - slope * sumX) / n
+        return points.indices.map { (slope * it + intercept).toFloat() }
+    }
+
+    /**
+     * Centered simple moving average of [points] over [window] data points (edges shrink the window
+     * rather than padding with zeros); null when fewer than 2 points of [points] [ChartPoint.hasData].
+     */
+    fun movingAverage(points: List<ChartPoint>, window: Int): List<Float>? {
+        val values = points.map { if (it.hasData) it.value else null }
+        if (values.count { it != null } < 2) return null
+        val half = (window / 2).coerceAtLeast(1)
+        return points.indices.map { i ->
+            val lo = (i - half).coerceAtLeast(0)
+            val hi = (i + half).coerceAtMost(points.lastIndex)
+            val windowValues = (lo..hi).mapNotNull { values[it] }
+            if (windowValues.isEmpty()) values[i] ?: 0f else windowValues.average().toFloat()
+        }
+    }
 }
 
 private fun describe(points: List<ChartPoint>): String =

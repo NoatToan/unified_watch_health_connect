@@ -195,13 +195,21 @@ private fun Chart(state: MetricDetailUiState, accent: Color) {
                 SleepStageLegend(session)
             }
         }
-        metric.aggregation == MetricAggregation.DISCRETE -> HealthRangeChart(state.points, accent, Modifier.testTag("range_chart"), axisLabel = axis)
+        metric.aggregation == MetricAggregation.DISCRETE -> HealthRangeChart(
+            state.points,
+            accent,
+            Modifier.testTag("range_chart"),
+            axisLabel = axis,
+            // D-1094: a trend is only meaningful over a longer window than a single Day of points.
+            showTrend = state.range != TimeRange.DAY,
+        )
         else -> HealthBarChart(
             state.points,
             accent,
             Modifier.testTag("bar_chart"),
             average = state.stats?.takeIf { it.kind == StatKind.AVERAGE }?.value?.toFloat(),
             axisLabel = axis,
+            showTrend = state.range != TimeRange.DAY,
         )
     }
 }
