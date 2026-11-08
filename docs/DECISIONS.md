@@ -2279,3 +2279,20 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   hiện tại** (kích thước chữ tên/ngày/khoảng cách/giá/CTA so với nhau) — user xác nhận phần đó đã ổn,
   chỉ sửa cách ảnh được bố trí/hiển thị. Agent phải chụp ảnh thật để tự đánh giá, không đoán mò qua đọc
   code — lặp lại chụp sau khi sửa để tự xác nhận kết quả đẹp hơn trước khi báo cáo xong.
+
+- **D-1162** · 2026-11-09 · `DevicesScreen`: bỏ text "My devices" thừa, re-layout status (connected/firmware/last sync), "Connected" nổi góc trái — **Chốt**
+  `DevicesScreen.kt` (`PairedDeviceCard`'s parent list, `SectionHeader("My devices")` dòng ~252): **bỏ
+  hẳn** section header này — thừa thãi (đã rõ ràng đây là danh sách thiết bị đã pair qua UI xung quanh,
+  không cần nhãn). Trong `PairedDeviceCard` (khi `connected`): hiện `ConnectionStatusChip` + battery +
+  "Firmware x" + "Last sync: ..." đang xếp rời rạc (1 `Row` rồi 2 dòng `Text` riêng bên dưới, dùng chung
+  `onSurfaceVariant`/`bodySmall`) — **re-layout cho đẹp hơn**, agent tự quyết bố cục cụ thể (gợi ý: gom
+  thành 1 khối thông tin thống nhất — có thể dùng icon đi kèm mỗi dòng (pin, chip firmware, đồng hồ sync)
+  cho dễ quét mắt, căn chỉnh/spacing nhất quán, có thể dùng `FlowRow` hoặc layout dạng chip/row gọn hơn
+  thay vì 3 dòng đứng rời). **Riêng `ConnectionStatusChip`**: đưa ra khỏi khối thông tin đó, đặt **nổi
+  (floating) ở góc trái-trên** của khu vực ảnh thiết bị — đối xứng với nút menu (`menuButton`) đang nổi
+  góc phải-trên (`Box(Modifier.align(Alignment.TopEnd))` dòng ~362) — dùng `Box(Modifier.align(
+  Alignment.TopStart))` tương ứng bên trong cùng `Box(Modifier.fillMaxWidth())` bọc ảnh. Cùng file với
+  D-1148 (agent đang xử lý `TappableWatchImage`) — gộp chung, không tách agent riêng. Trạng thái
+  `connectionState == false` (chưa connected, nhánh `else` dòng ~372) không bắt buộc đổi theo (không có
+  ảnh lớn để đặt chip nổi lên trên) — agent tự quyết có áp dụng tương tự hay giữ nguyên Row cũ cho nhánh
+  đó, miễn nhất quán/hợp lý.
