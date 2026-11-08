@@ -1461,3 +1461,28 @@ kê thông tin.
   (`unified_health_service`) đang được dựng song song, có thể chưa live/chưa có race nào — màn hình
   phải xử lý đẹp cả 3 trạng thái: loading, có data, lỗi/rỗng (ẩn hẳn card quảng bá trên Home nếu rỗng,
   không hiện khung trống xấu).
+
+## UI polish pass — dịch nguyên tắc từ skill "make-interfaces-feel-better" (D-1108+, hoãn tới sau Races)
+
+User thấy UI "trông basic quá", đưa link `motionsites.ai` — kiểm tra thì đây là nền tảng prompt cho
+web design (SaaS/portfolio/ecommerce), **không áp dụng được cho mobile/Compose** (không có UI
+kit/design system nào tải về được). Thay vào đó dùng skill nội bộ `make-interfaces-feel-better`
+(viết cho CSS/web) — dịch nguyên tắc sang Compose:
+
+- **D-1108** · 2026-11-08 · Phạm vi polish pass — **Chốt**
+  Áp cho `core/designsystem` (component dùng chung) trước, rồi lan ra các card/screen đang "basic":
+  (1) **Concentric radius** — bo góc card lồng trong card (vd pill indicator trong `PillBottomNavigation`,
+  mini card trong grid) phải = bo góc ngoài trừ padding, kiểm tra lại từng chỗ đang lệch. (2)
+  **Tabular numbers** — mọi số liệu động (bước chân, bpm, kcal, đếm ngược ngày giải chạy) dùng
+  `TextStyle(fontFeatureSettings = "tnum")` để không nhảy độ rộng khi số đổi. (3) **Motion có chủ
+  đích** — card/button bấm vào co nhẹ (`scale(0.96f)` qua `Modifier.scale` + theo dõi
+  `PressInteraction` qua `interactionSource`, không dùng ripple mặc định khi đã có press-scale, như
+  đã làm cho `PillBottomNavigation` ở D-1091); enter animation chậm/êm hơn exit (`AnimatedVisibility`
+  tách riêng `enter`/`exit`, exit ngắn ~150ms); đổi icon (vd nút Grid/List D-1073) dùng `Crossfade`
+  thay vì nhảy tức thì. (4) **Hit area** — icon button tối thiểu 48dp, audit lại các nút nhỏ hiện có.
+  (5) **Shadow/border có chủ đích** — card dùng `tonalElevation` HOẶC `BorderStroke`, không tuỳ tiện
+  cả hai không lý do; ảnh (card race có `imageUrl` thật, D-1106) nên có outline mờ 1dp viền trong để
+  không bị nhòe cạnh vào nền.
+  **Hoãn tới khi agent Races (D-1105/1106/1107) xong** — cả hai đều đụng `core/designsystem` và
+  `HomeScreen.kt`; làm polish pass song song dễ đụng diff. Thứ tự: Races xong trước (đang tạo card
+  mới, cần polish áp dụng luôn từ đầu lên card đó thay vì làm 2 lần), polish pass sau.
