@@ -1302,3 +1302,13 @@ User thấy màn chi tiết workout hiện tại ("Workout detail" theo D-804) q
   User nhận ra chưa thấy — đúng, D-1040 (locale EN/VI) mới chỉ ở mức quyết định/plan, chưa từng giao
   agent implement (bị trì hoãn nhiều lần vì ưu tiên các fix Garmin + redesign Home). Việc tiếp theo
   sau khi các task UI/workout đang chạy ổn định.
+
+- **D-1097** · 2026-11-08 · Kết quả nghiên cứu Opus (D-1095) — lưu vào `docs/analysis/CHART_DESIGN_AND_METRIC_COPY.md` — **Chốt**
+  Agent Opus trả về report đầy đủ (chart pattern theo từng loại chỉ số + bảng trend-line-theo-range +
+  12 đoạn mô tả tiếng Việt cho "Về chỉ số này"). Lưu nguyên văn vào
+  `docs/analysis/CHART_DESIGN_AND_METRIC_COPY.md` thay vì nhét vào DECISIONS.md (quá dài). Lưu ý quan
+  trọng từ report: 3 đoạn text (bước chân/calo/giấc ngủ) phải đọc goal **override của user** thay vì
+  số mặc định nếu user đã tự đặt; số "830 kcal" là tính toán runtime chứ không phải hằng số; chưa có
+  text cho Weight (ngoài phạm vi brief ban đầu, cần bổ sung sau). Việc implement (wire trend line theo
+  bảng, thêm section "Về chỉ số này" vào `MetricDetailScreen`) để sau khi agent workout-detail (đang
+  chạy, cũng đụng `HealthCharts.kt`) xong — tránh đụng file.
