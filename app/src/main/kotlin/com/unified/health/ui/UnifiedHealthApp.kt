@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -52,6 +53,11 @@ fun UnifiedHealthApp(
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
+        // D-1120: Scaffold's own background (MaterialTheme.colorScheme.background by default) was
+        // showing as a solid strip behind PillBottomNavigation's own transparent margins — the pill
+        // never actually looked "floating". Transparent here means only the pill shape itself paints
+        // anything in that area.
+        containerColor = Color.Transparent,
         bottomBar = {
             if (onMainPager) {
                 PillBottomNavigation(pagerState = pagerState, onSelect = switchTab)

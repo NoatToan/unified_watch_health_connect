@@ -66,7 +66,10 @@ fun UnifiedHealthNavHost(
         allMetricsScreen(
             onBack = navController::popBackStack,
             onMetricClick = navController::navigateToMetricDetail,
-            onOpenWorkouts = navController::navigateToWorkoutDetail,
+            // Same "tap Workouts -> go to the Activity tab" behavior as Home's own card (onOpenWorkouts
+            // there just switches the pager's tab); from this pushed screen that means popping back to
+            // reveal MainPagerDestination underneath, then switching it to Activity.
+            onOpenWorkouts = { navController.popBackStack(); onSwitchTab(TopLevelDestination.ACTIVITY) },
         )
         workoutDetailScreen(onBack = navController::popBackStack)
         deviceDetailScreen(onBack = navController::popBackStack)
