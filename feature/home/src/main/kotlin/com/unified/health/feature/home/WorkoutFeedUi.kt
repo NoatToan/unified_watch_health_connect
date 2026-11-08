@@ -1,4 +1,4 @@
-package com.unified.health.feature.home.feed
+package com.unified.health.feature.home
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.DirectionsBike
@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.unified.health.core.model.WorkoutType
 
 /**
- * Feed-local copy of `feature.activity`'s workout icon/label (that module's are `internal`, and
+ * Home-local copy of `feature.activity`'s workout icon/label (that module's are `internal`, and
  * features never depend on one another — see `AndroidFeatureConventionPlugin`).
  */
 internal fun WorkoutType.feedLabel(): String = when (this) {

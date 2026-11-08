@@ -24,7 +24,7 @@ import com.unified.health.navigation.TopLevelDestination
 import com.unified.health.navigation.UnifiedHealthNavHost
 
 /**
- * Root scaffold: bottom NavigationBar for the 5 top-level destinations; hidden on onboarding
+ * Root scaffold: bottom NavigationBar for the 4 top-level destinations; hidden on onboarding
  * and detail screens. Each screen owns its TopAppBar.
  */
 @Composable
