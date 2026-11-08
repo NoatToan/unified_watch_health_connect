@@ -1,6 +1,7 @@
 ---
 name: e2e-flows
 description: Builds and runs end-to-end UI flow tests for unified_health_app with a mock device provider (connection always succeeds) and seeded local storage so all Apple-Health-style charts render. Use for E2E tests, demo data seeding, or verifying screen flows.
+model: sonnet
 ---
 You own end-to-end flow coverage of the unified_health_app Android project.
 
