@@ -2050,3 +2050,17 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   vẫn giữ `ContentScale.Fit` theo đúng tỉ lệ gốc ảnh (D-1142 không đổi), chỉ đổi vị trí + kích thước.
   Kiểm tra lại bố cục text (CTA/giá thường nằm dưới cùng) không bị đè bởi ảnh to hơn ở góc mới — nhường
   chỗ hợp lý.
+
+- **D-1147** · 2026-11-08 · **Thay cho D-1145**: bỏ hẳn `DeviceBanner` khỏi Home, chỉ giữ chip ở header + dot trạng thái — **Chốt**
+  User đổi ý thêm lần nữa ngay sau D-1145 — không revert về bản gọn cũ nữa, mà **bỏ hẳn** `DeviceBanner`
+  khỏi nội dung chính của Home (không còn box thiết bị nào trong `LazyColumn` cả). Giữ nguyên chip nhỏ
+  tên+ảnh thiết bị đã có sẵn ở góc phải `TopAppBar`/header (từ D-1083/1098) — user xác nhận chip đó
+  "như hiện tại ổn rồi", không cần sửa style/animation của nó. Vì không còn banner trong body để
+  collapse-theo-scroll nữa, chip ở header nên **luôn hiện sẵn** (bỏ logic ẩn/hiện theo scroll gắn với
+  banner đã xoá — đơn giản hoá, không cần animation reveal phức tạp nữa, trừ khi muốn giữ fade-in nhẹ
+  lúc Home mới mở).
+  **Thêm dot trạng thái** lên chip đó: **xanh lá** khi thiết bị đang connected/đang sync (progress),
+  **xám** cho các trạng thái còn lại (disconnected/idle) — tái dùng đúng component `LiveDot`/pattern
+  dot đã có (D-1054), không tạo component dot mới.
+  D-1130 (ảnh to 180dp ở "My devices"/"About this device") và D-1115's style-sync cho Devices **không
+  đổi** — D-1147 chỉ ảnh hưởng Home. D-1143 (auto-collapse) giờ xoá hẳn vì không còn gì để collapse.
