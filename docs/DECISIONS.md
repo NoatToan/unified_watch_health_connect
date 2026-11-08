@@ -411,6 +411,12 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   connect/handshake/battery/device info/live-HR, một `authVersion=3/authType=2` để test lỗi rõ ràng.
   Không còn đường bypass auth trong bất kỳ build nào.
 
+- **D-326** · 2026-11-08 · Huawei bond theo TLV 9 — **Tạm**
+  `HuaweiDriver.linkRequirements` đổi `bond=true` → `bond=false`; vendor quyết định bond **sau** 0x0101
+  theo TLV 9 (0 = không bond, 1/2 = bond khi BOND_NONE; `ckv.java:101-121`, `coi.java:576-605`). Nhánh
+  bond sau 0x0101 chưa implement được vì `GattClient` không có API bond (chỉ có `ensureBonded` trước
+  session) → `TODO(huawei-bond)`. Cần thêm bond API vào session/GattClient rồi xác minh trên watch.
+
 ## Garmin driver (D-4xx)
 
 - **D-401** · 2026-11-06 · Resting HR và HRV trong lịch sử — **Tạm**
@@ -571,6 +577,12 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   cursor cuối, không retry lỗi protocol; channel v2 ACK retry 3 lần (NEED_REPLY mỗi packet 16 và packet
   cuối); battery notify module 0x29 (0x04) được cache và ưu tiên hơn query một lần. Nguồn:
   `docs/analysis/ZEPP_CONNECTION_ANALYSIS.md` §4.
+
+- **D-512** · 2026-11-08 · Zepp MTU align vendor — **Chốt**
+  Bỏ `requestMtu` upfront (`LinkRequirements.mtu = null`); sau auth, nếu module list có 0x15 thì gửi
+  `queryConnectParam`, parse `skip u8 | payload u16 LE`, ATT MTU = `min(payload+3, 247)`, chunk =
+  `MTU-3` (cap 244 như vendor `Mtu`), fallback GATT MTU khi module vắng/im lặng/lỗi. Nguồn:
+  `docs/analysis/ZEPP_CONNECTION_ANALYSIS.md` §2/§4, `MiLiProProfile.java:2053-2056`.
 
 ## Standard BLE driver (D-6xx)
 
