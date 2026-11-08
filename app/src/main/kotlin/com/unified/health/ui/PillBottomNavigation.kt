@@ -80,7 +80,13 @@ fun PillBottomNavigation(
         // fillMaxHeight(), which needs a bounded constraint to resolve against.
         modifier = modifier
             .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom))
-            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+            // D-1154: vertical margin trimmed from Spacing.md (12dp) to Spacing.xs (4dp) — reclaims
+            // 16dp of screen height overall (8dp off each side) without touching NAV_HEIGHT/any
+            // internal spacing, so the icon+label content inside each PillNavItem keeps exactly the
+            // same room it had before (no new clipping risk to verify without a device on hand). The
+            // system nav bar clearance itself is unaffected — windowInsetsPadding above already
+            // guarantees that regardless of this margin (D-1084).
+            .padding(horizontal = Spacing.lg, vertical = Spacing.xs)
             .height(NAV_HEIGHT)
             .graphicsLayer { this.alpha = alpha },
         shape = RoundedCornerShape(50),

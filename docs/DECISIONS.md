@@ -2192,3 +2192,56 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   không bị bóp méo/chật — có thể cần giảm cả `NAV_HEIGHT` một chút nếu giảm riêng outer padding chưa đủ
   "gọn" theo cảm nhận, agent tự cân đối. Cùng file với D-1149 (agent đang xử lý) — gộp chung, không tách
   agent riêng.
+
+- **D-1155** · 2026-11-09 · Home `RingsCard`: bỏ background, animate progress ring lần đầu hiển thị — **Chốt**
+  `RingsCard` (`HomeScreen.kt`) hiện bọc `ActivityRings` trong `Card(...)` mặc định (có nền
+  `surfaceContainer`-ish) — bỏ background này đi, để ring hiện trực tiếp trên nền Home (vẫn giữ
+  `onClick`/`testTag`, chỉ bỏ phần vẽ nền — dùng `Modifier` trơn hoặc `Surface(color = Color.Transparent)`
+  nếu cần giữ ripple/semantics của `onClick`, miễn không còn khối nền hình chữ nhật/bo góc nào hiện ra).
+  **Animate progress lần đầu hiển thị**: `ActivityRings` (`core/designsystem/.../ActivityRings.kt`) hiện
+  vẽ `sweepAngle` thẳng theo `ring.progress`, không animation — sửa để mỗi ring chạy animate từ 0 lên
+  đúng % thật khi composable này xuất hiện lần đầu (`Animatable`/`animateFloatAsState` + `LaunchedEffect`
+  theo từng ring, có thể stagger nhẹ giữa 3 ring cho đẹp mắt — agent tự quyết timing, gợi ý: 600-900ms
+  mỗi ring, `EaseOutCubic` hoặc tương tự). Chỉ animate **lần đầu** compose (giống tinh thần D-1098's
+  `revealKey` một-lần) — không animate lại mỗi khi progress đổi do data mới (tránh giật khi Home
+  refresh/polling); việc đó agent tự cân nhắc key animation theo đúng lifecycle hợp lý.
+
+- **D-1156** · 2026-11-09 · Bottom nav pill: bỏ shadow — đang gây drop FPS lúc fade ẩn/hiện — **Chốt**
+  `PillBottomNavigation.kt`'s `Surface` đang có `shadowElevation = 6.dp` — user xác nhận trên máy thật
+  việc animate `alpha` (D-1134's `visible` fade) kèm shadow đang làm giật/drop FPS lúc pill ẩn/hiện.
+  Bỏ hẳn `shadowElevation` (set về `0.dp` hoặc bỏ tham số) — giữ nguyên `tonalElevation = 3.dp`,
+  `border` (viền sáng "glass"), và toàn bộ phần còn lại không đổi. Nếu mất shadow làm pill trông "phẳng"
+  hẳn so với trước, không cần bù lại bằng cách khác trừ khi rất đơn giản — ưu tiên hết giật FPS. Cùng
+  file với D-1149/D-1154 (agent đang xử lý) — gộp chung.
+
+## Thực thi D-1149/D-1154 (pill nav: không ẩn theo pager swipe, giảm padding dọc) — D-115x
+
+- **D-1155** · 2026-11-09 · Thực thi D-1149 (bottom nav không ẩn khi swipe đổi tab) — **Chốt**
+  `UnifiedHealthApp.kt`'s `scrollFadeConnection` (D-1140, gắn `nestedScroll` trên `UnifiedHealthNavHost`
+  — tổ tiên chung của cả `HorizontalPager` (D-1052) lẫn từng tab's list/column riêng) trước đây phản
+  ứng với **mọi** delta `onPreScroll` nhận được, không phân biệt nguồn — nested scroll bubble lên bất kể
+  trục, nên pager swipe ngang (đổi tab) và list scroll dọc (đọc nội dung) đều trigger cùng 1 tín hiệu ẩn
+  pill, dù D-1134/1141 chỉ định nghĩa mục đích là tối ưu diện tích lúc *đọc*. Sửa: mọi scrollable trong
+  app này đều khoá trục (pager chỉ ngang, mọi list/column tab chỉ dọc), nên `available: Offset` mỗi lần
+  dispatch về cơ bản chỉ có 1 trục khác 0 — thêm 1 điều kiện đầu `onPreScroll`:
+  `if (abs(available.y) <= abs(available.x)) return Offset.Zero` (bỏ qua, không đụng `pillVisible` lẫn
+  timer fade-in) khi delta là ngang-trội (pager swipe, hoặc 1 carousel ngang trong tab như
+  `RacesCarousel` — cũng cố ý không trigger ẩn, vì "lướt carousel" không phải "đọc list" mà D-1134 nhắm
+  tới). Chỉ delta dọc-trội mới tiếp tục set `pillVisible = false` + reset timer 400ms như cũ. Cập nhật
+  doc comment tại chỗ giải thích rõ lý do/giả định (mọi scrollable khoá trục — không có trường hợp
+  scroll 2 chiều thật trong app để lo ngại nhầm lẫn).
+
+- **D-1156** · 2026-11-09 · Thực thi D-1154 (giảm padding dọc pill nav) — **Chốt**
+  `PillBottomNavigation.kt`: đổi `vertical` trong `Modifier.padding(horizontal = Spacing.lg, vertical =
+  Spacing.md)` (12dp) xuống `Spacing.xs` (4dp) — tiết kiệm 16dp chiều cao tổng (8dp mỗi bên). **Không**
+  đổi `NAV_HEIGHT` (giữ 72dp) dù quyết định cho phép — tính tay thấy dư địa bên trong đã khá sít:
+  `BoxWithConstraints`'s `padding(Spacing.xs = 4dp)` + `PillNavItem`'s `padding(vertical = Spacing.sm =
+  8dp)` đã chiếm 24dp trong 72dp, còn lại 48dp cho icon (24dp mặc định) + khoảng cách `Spacing.xxs`
+  (2dp) + label `labelSmall` (dòng chữ thường ~14-16dp tuỳ font metrics) ≈ 40-42dp — chỉ còn ~6-8dp dư,
+  giảm thêm `NAV_HEIGHT` sẽ có rủi ro cắt chữ/icon mà không có thiết bị thật trong môi trường này để
+  xác nhận bằng mắt. Chỉ giảm margin ngoài (không ảnh hưởng không gian nội dung bên trong pill) là lựa
+  chọn an toàn hơn, vẫn đáp ứng đúng yêu cầu "chiếm ít chiều cao hơn" (pill nổi gần mép màn hình hơn).
+  `D-1084`'s `windowInsetsPadding(WindowInsets.navigationBars...)` không đổi — pill vẫn né đúng system
+  nav bar như cũ, chỉ phần margin *sau* inset đó bị co lại.
+  **Verify (cả D-1155+D-1156)**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest
+  assembleDebug` — build thành công, `app-debug.apk` build lại (timestamp mới).
