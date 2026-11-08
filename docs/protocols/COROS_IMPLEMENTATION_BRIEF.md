@@ -4,6 +4,11 @@
 > `com.yf.smart.coros.dist` 4.11.8 (`COROS_DEVICE_PROTOCOL.md`).  
 > Ngày: 2026-11-06.
 
+> **Cập nhật 2026-11-08:** đính chính bằng chứng CRC theo `docs/analysis/COROS_CONNECTION_ANALYSIS.md`
+> §4.8. `PACTYP_CRC16`/`PACTYP_CRC32` là enum packet-type của **Opus audio**, không phải framing BLE.
+> Bằng chứng CRC thật là `block_crc32` trong `syn_info.proto`, `CRC16_FIELD_NUMBER` /
+> `CRC_FIELD_NUMBER` và các log retry block. Xem thêm `COROS_DEVICE_PROTOCOL.md` §6.6.
+
 ---
 
 ## Tóm tắt tình trạng
@@ -43,7 +48,7 @@
 - UUID nào trong 4 họ trên là service thực sự quảng bá trong advertisement (vs chỉ có sau discoverServices)
 - Characteristic nào là RX (phone writes) vs TX (watch notifies) trong service 3-characteristic
 - Giá trị MTU thực app yêu cầu (driver dùng 247 — đây là giá trị Zepp, có thể sai)
-- Frame format của packet bọc ngoài protobuf (CRC16 vs CRC32, offset của header fields)
+- Frame format của packet bọc ngoài protobuf (CRC16 vs CRC32 vẫn chưa rõ; `PACTYP_CRC16/32` không phải bằng chứng BLE — xem ghi chú 2026-11-08; offset của header fields)
 - Trình tự bond: trước hay sau mở GATT channel; `YfBtSystemBondAuth` gửi/nhận byte gì
 
 **Việc cần làm khi có HCI snoop log:**

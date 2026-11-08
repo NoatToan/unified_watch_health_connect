@@ -24,8 +24,18 @@ import javax.inject.Inject
  * implements only the safe subset: recognition, OS bonding, and the standard SIG GATT fallback
  * (Device Information / Battery / Heart Rate). Full history sync is a documented
  * `TODO(coros-protocol)` pending a real device or an HCI snoop log (protocol doc §6, §9).
+ *
+ * Session setup runs the explicit [CorosConnectionStateMachine] (`OpenFreshGatt → Connecting →
+ * DiscoverServices → InitializeProtocol → Ready`, with `PrepareServiceRediscovery`) and logs a
+ * [CorosCaptureSnapshot]. When the vendor channel is needed but unimplemented the session fails
+ * with [CorosCaptureNeededException], whose message is the exact capture request for an HCI snoop log.
  */
-class CorosDriver @Inject constructor() : WearableDriver {
+class CorosDriver internal constructor(
+    private val capture: CorosCaptureRecorder,
+    internal val connectionStateMachine: CorosConnectionStateMachine,
+) : WearableDriver {
+
+    @Inject constructor() : this(CorosCaptureRecorder(), CorosConnectionStateMachine())
 
     override val vendor = WearableVendor.COROS
 
@@ -38,14 +48,24 @@ class CorosDriver @Inject constructor() : WearableDriver {
      */
     override val linkRequirements = LinkRequirements(bond = true, mtu = REQUESTED_MTU)
 
-    override fun recognize(advertisement: Advertisement): Int = when {
-        CorosUuids.VENDOR_SERVICES.any { advertisement.hasService(it) } -> RecognitionScore.VENDOR_SERVICE
-        advertisement.nameStartsWith(*NAME_PREFIXES) -> RecognitionScore.NAME
-        else -> RecognitionScore.NONE
+    override fun recognize(advertisement: Advertisement): Int {
+        val score = when {
+            CorosUuids.VENDOR_SERVICES.any { advertisement.hasService(it) } -> RecognitionScore.VENDOR_SERVICE
+            advertisement.nameStartsWith(*NAME_PREFIXES) -> RecognitionScore.NAME
+            else -> RecognitionScore.NONE
+        }
+        // Bounded diagnostic memo, not protocol behaviour: openSession only gets a MAC address, and
+        // the "capture needed" report should include the advertised name and scan-time bond state.
+        if (score != RecognitionScore.NONE) capture.record(advertisement)
+        return score
     }
 
     override suspend fun openSession(gatt: GattClient, context: SessionContext): WearableSession =
-        CorosSession(gatt).also { it.start() }
+        CorosSession(
+            gatt,
+            seen = capture.lastSeen(gatt.address),
+            stateMachine = connectionStateMachine,
+        ).also { it.start() }
 
     internal companion object {
         /** Unverified default; the app's own requested MTU was not found in the recoverable strings (§3.3 [I]). */

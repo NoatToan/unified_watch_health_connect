@@ -359,10 +359,17 @@ Các hằng xác nhận tồn tại nhưng giá trị số KHÔNG đọc đượ
 ```
 ACK_HEADER_SIZE   ACK_MIN_SIZE    ACK_SIZE
 ACK_TYPE_OFFSET   ACK_OPS_OFFSET
-PACTYP_CRC16      PACTYP_CRC32
+CRC16_FIELD_NUMBER   CRC_FIELD_NUMBER   BLOCK_CRC32_FIELD_NUMBER
 ```
-`PACTYP_CRC16` / `PACTYP_CRC32` → trường "packet type" trong frame header phân biệt loại checksum
-(giao thức hỗ trợ cả CRC16 lẫn CRC32 cho các loại packet khác nhau hoặc thiết bị khác nhau).
+Bằng chứng CRC thật cho tầng BLE/sync: field `block_crc32` trong `SynBlockHeader` (`syn_info.proto`),
+`CRC16_FIELD_NUMBER` / `CRC_FIELD_NUMBER`, cùng log retry block
+(`send data timeout, blockRetryCount=`, `after sending a block crc error, blockRetryCount:`). Đọc là:
+CRC theo block + retry có giới hạn.
+
+> **Đính chính 2026-11-08:** bản cũ coi `PACTYP_CRC16`/`PACTYP_CRC32` là packet-type của frame BLE.
+> Sai: hai hằng này nằm trong enum packet-type của **Opus audio** (`PACTYP_AUDIOSCENEINFO`,
+> `PACTYP_LOUDNESS`, `PACTYP_MPEGH3DACFG`), không liên quan framing BLE. Nguồn:
+> `docs/analysis/COROS_CONNECTION_ANALYSIS.md` §4.8.
 
 ### 6.7 Thời gian (time sync) [I]
 

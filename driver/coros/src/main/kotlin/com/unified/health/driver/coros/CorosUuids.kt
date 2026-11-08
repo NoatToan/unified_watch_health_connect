@@ -26,6 +26,16 @@ internal object CorosUuids {
     val WELOOP_UART_WRITE: UUID = UUID.fromString("6E400002-B5A3-F393-E0A9-77656C6F6F70")
     val WELOOP_UART_NOTIFY: UUID = UUID.fromString("6E400003-B5A3-F393-E0A9-77656C6F6F70")
 
+    /**
+     * Second `6E400001-…` suffix variant found as a literal in the dex (§3.2 [V]). The suffix
+     * `77 75 7C 7F 7F 70` is not clean ASCII, suggesting a different hardware/product generation.
+     * [I] Its service/characteristic role is unconfirmed, so it is **not** used for recognition
+     * (D-104); only the capture diagnostics probe it.
+     */
+    val WELOOP_UART_ALT_SERVICE: UUID = UUID.fromString("6E400001-B5A3-F393-E0A9-77757C7F7F70")
+    val WELOOP_UART_ALT_WRITE: UUID = UUID.fromString("6E400002-B5A3-F393-E0A9-77757C7F7F70")
+    val WELOOP_UART_ALT_NOTIFY: UUID = UUID.fromString("6E400003-B5A3-F393-E0A9-77757C7F7F70")
+
     /** Standard public Nordic UART Service UUID, also found as a literal (§3.2 [Ext] for the suffix). */
     val NORDIC_UART_SERVICE: UUID = UUID.fromString("6E400001-B5A3-F393-E0A9-E50E24DCCA9E")
     val NORDIC_UART_WRITE: UUID = UUID.fromString("6E400002-B5A3-F393-E0A9-E50E24DCCA9E")
