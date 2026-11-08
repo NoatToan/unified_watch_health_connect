@@ -9,6 +9,7 @@ Merged 2026-11-08 from the local per-brand RE trees (`garmin-analysis/`, `zepp-a
 | Zepp / Amazfit | [ZEPP_CONNECTION_ANALYSIS.md](ZEPP_CONNECTION_ANALYSIS.md) | [ZEPP_AUTH_CRYPTO_ANALYSIS.md](ZEPP_AUTH_CRYPTO_ANALYSIS.md) |
 | Huawei | [HUAWEI_CONNECTION_ANALYSIS.md](HUAWEI_CONNECTION_ANALYSIS.md) | [HUAWEI_AUTH_CRYPTO_ANALYSIS.md](HUAWEI_AUTH_CRYPTO_ANALYSIS.md) |
 | COROS | [COROS_CONNECTION_ANALYSIS.md](COROS_CONNECTION_ANALYSIS.md) | [COROS_AUTH_CRYPTO_ANALYSIS.md](COROS_AUTH_CRYPTO_ANALYSIS.md) |
+| Samsung (Galaxy Watch / Wear OS) | [SAMSUNG_CONNECTION_ANALYSIS.md](SAMSUNG_CONNECTION_ANALYSIS.md) | [SAMSUNG_AUTH_CRYPTO_ANALYSIS.md](SAMSUNG_AUTH_CRYPTO_ANALYSIS.md) |
 
 Scope: how each vendor app discovers, connects, holds the session context and does basic operations
 (time/battery/device info/live HR), plus the authentication and payload-cipher mechanisms needed to

@@ -100,6 +100,20 @@ Remaining:
 - G6 — Garmin handshake watchdog / KEY_MISSING teardown (partially covered by timeouts; not a full
   vendor-style watchdog).
 - G7 — Garmin Auth simulator (watch side of 5101–5111) for E2E; the state machine is unit-tested.
-- X1 — full build/test/lint/APK (in progress).
+- X1 — full build/test/lint/APK (done: 403 tests, lint clean, APK built).
 - X2 — extend E2E flows for Garmin Auth / Zepp local bind / Huawei no-auth beyond JVM simulators.
 - Real-watch runs for every brand (no HCI captures yet).
+
+## 9. Samsung (new, 2026-11-08)
+
+Samsung Health 7.1.2.001 was extracted with rea (`docs/re-analysis/rea-output/samsung/`). It does **not**
+contain a vendor BLE watch protocol: classic SAP is absent, pairing is delegated to Watch Manager/Wear OS,
+and the Galaxy/Tizen transport is a signature-gated LocalSocket/MCF stack. There is therefore no
+`driver/samsung` BLE to implement. The supported directions are:
+
+1. **Wear OS companion app** — our own Wear app using Wear Health Services + Data Layer/MessageClient for
+   Galaxy Watch 4+; Samsung privileged sensors (ECG/BIA) require a Samsung partnership.
+2. **Health Connect import** — read Samsung Health's exported records; the importer is still TODO.
+3. Tizen-era Galaxy watches have no third-party transport; Health Connect/manual export only.
+
+Details: `docs/analysis/SAMSUNG_CONNECTION_ANALYSIS.md` and `SAMSUNG_AUTH_CRYPTO_ANALYSIS.md`.
