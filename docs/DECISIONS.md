@@ -1149,3 +1149,16 @@ tránh 2 agent sửa song song cùng file.
   Hiệu ứng liên tục theo % scroll (không phải bật/tắt đột ngột). Cùng nhóm việc Home với D-1075 (Last
   synced luôn hiện) — cả hai đều chưa làm, giao lại cho agent đã làm D-1050-1054/1072-1074 (đã có
   context `HomeScreen.kt`/`MainPagerDestination` mới nhất) tiếp tục thay vì agent mới.
+
+- **D-1084** · 2026-11-08 · `PillBottomNavigation` chưa né navigation bar hệ thống của Android — **Chốt**
+  User test thật thấy bottom nav mới (D-1051, pill nổi) không tính tới system navigation bar của
+  Android (gesture-nav pill hoặc 3-nút) — cần padding/inset đúng (`WindowInsets.navigationBars`,
+  giống cách `NavigationBar` Material 3 mặc định vẫn làm) để pill không bị đè/che bởi thanh điều
+  hướng hệ thống, đúng trên cả 2 chế độ điều hướng (gesture và 3-nút). Không đụng tới phần né
+  edge-swipe-back (D-1053/1078) — đó là vấn đề khác (cạnh trái/phải, không phải cạnh dưới).
+- **D-1085** · 2026-11-08 · Grid mode (compact) xấu — bỏ hẳn chart, viết tắt tên chỉ số — **Chốt**
+  Phản hồi trực tiếp sau khi thấy Grid mode compact (D-1050/1073, mini chart 36–48dp) trên máy thật:
+  xấu, cần sửa lại. Grid mode: **bỏ hẳn** mini chart (không phải thu nhỏ nữa) — chỉ tên chỉ số
+  (viết tắt gọn, ví dụ "Heart rate" → "HR", "Active calories" → "Cal", "Resting HR" → "RHR" — agent
+  tự chọn viết tắt hợp lý, dễ nhận ra) + giá trị lớn, layout 2 cột đơn giản dễ nhìn. List mode (D-1073)
+  giữ nguyên full chart + chi tiết như đã làm, không đổi.
