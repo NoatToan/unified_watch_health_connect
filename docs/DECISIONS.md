@@ -1112,3 +1112,32 @@ tránh 2 agent sửa song song cùng file.
   score/insight, chart thu nhỏ còn 36–48dp (`MiniChart(tiny = true)`), theo đúng yêu cầu D-1073 "không
   có hoặc chart rất nhỏ, chỉ tên + giá trị". `WorkoutsFeedCard` compact tương tự: chỉ số lượng gần đây +
   1 dòng workout gần nhất, bỏ danh sách đầy đủ.
+
+- **D-1082** · 2026-11-08 · Tìm ra field/message number SAI cho resting HR, HRV, VO2max qua jadx evidence đã có — **Chốt**
+  (Đánh số lại từ D-1080 ban đầu vì trùng với D-1080 "thêm `HealthMetricType.VO2_MAX`" do agent
+  redesign Home log song song cùng lúc — nội dung không đổi, chỉ đổi số để hết trùng.)
+  Theo đúng feedback của user ("update rules không đoán, tất cả đã có trong docs/re-evidence") — đọc
+  qua `claude-personal -p` (DeepSeek, D-003) các class FIT profile bundle sẵn trong Garmin Connect
+  Mobile tại `docs/re-evidence/garmin/jadx-base/sources/bs2/*.java` (đã có từ trước, không cần RE
+  thêm). Kết quả xác nhận **[V]** bằng source thật:
+  - `monitoring_hr_data` = **211** (không phải 273 như đoán cũ) — `bs2/uk.java`: `new bk("monitoring_hr_data", 211)`.
+  - `hrv_status_summary` = **370** (không phải 389) — `bs2/wg.java`; field `last_night_average` = **1** (không phải 4), scale 128.
+  - VO2max **không nằm trong `user_metrics`(140)/`user_profile`(42)** như đoán cũ (2 message đó xác
+    nhận KHÔNG BAO GIỜ xuất hiện trong 63 file sync thật từ đồng hồ — D-1071/D-1070) — mà nằm trong
+    message riêng **`max_met_data` = 229** (`bs2/pj.java`), field **2** `vo2_max`, scale **10** (raw÷10
+    → mL/kg/min, không phải "plain integer" như đoán cũ), và message này có field 0 `update_time`
+    (date_time) riêng — không dùng field 253 chuẩn như các message khác.
+  - Đối chiếu công khai: 5 class DTO của Garmin Connect app (`UserDailySummaryDTO`,
+    `CurrentTrainingStatusDTO`, `TrainingStatusReportDTO`, `BiometricProfileDTO`,
+    `VO2MaxReportsActivity`) xác nhận app Garmin Connect lấy các số này từ **REST cloud**
+    (`usersummary-service`, `metrics-service`...), nhưng FIT profile bundle sẵn trong app vẫn có đủ
+    `max_met_data`/`stress_level`/`sleep_level`/`monitoring_hr_data`/`hrv_status_summary` — nghĩa là
+    **cùng dữ liệu khả dụng qua local BLE (GFDI file manager → FIT)**, không cần cloud/Garmin Connect
+    Developer Program.
+  - Đã sửa `FitHealthMapper.kt` theo đúng 3 giá trị trên + scale VO2max, cập nhật
+    `FitHealthMapperTest.kt` theo field/scale mới, xoá nhánh `MESG_USER_METRICS`/`MESG_USER_PROFILE`.
+  **Rule mới cho mọi việc RE Garmin/vendor khác sau này (áp dụng ngay, không chỉ lần này):** không
+  được đoán message/field number FIT và gắn nhãn `[Ext]` khi chưa kiểm tra `docs/re-evidence/<brand>`
+  trước — app Garmin Connect (và tương tự Huawei Health/Zepp/COROS) luôn bundle sẵn FIT profile đầy đủ
+  của chính nó trong APK, nên gần như chắc chắn evidence thật đã nằm sẵn trong `docs/re-evidence/`
+  (ở dạng jadx, đọc qua `claude-personal -p` theo D-003) trước khi phải đoán hoặc hỏi thêm. Xem CLAUDE.md.

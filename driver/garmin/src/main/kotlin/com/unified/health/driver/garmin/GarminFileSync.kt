@@ -146,14 +146,12 @@ internal class GarminFileSync(
 
     private fun decode(entry: GarminFileEntry, bytes: ByteArray, daily: DailyActivityAccumulator): DecodeOutcome = try {
         val file = FitDecoder.decode(bytes)
-        // D-1071 diagnostic: raw message-number histogram (before FitHealthMapper drops anything
-        // it doesn't recognize), so we can tell "message not present on this watch/firmware" apart
-        // from "message present but our field guess is wrong" for VO2max (user_metrics 140 /
-        // user_profile 42) without re-flashing logging every time.
+        // D-1071/D-1080 diagnostic: raw message-number histogram (before FitHealthMapper drops
+        // anything it doesn't recognize), so a "message genuinely absent on this watch/firmware"
+        // is distinguishable from "message present but our field guess is wrong" for any future
+        // [Ext]-tagged constant, without needing another logging round-trip.
         val histogram = file.messages.groupingBy { it.globalNumber }.eachCount()
         Log.d(TAG, "File ${entry.fileIndex} raw globalNumbers=$histogram")
-        file.messages.filter { it.globalNumber == FitHealthMapper.MESG_USER_METRICS || it.globalNumber == FitHealthMapper.MESG_USER_PROFILE }
-            .forEach { Log.i(TAG, "VO2max candidate $it value(field7)=${it.value(7)}") }
         DecodeOutcome(FitHealthMapper.map(file, zone(), daily), decoded = true)
     } catch (e: FitDecodeException) {
         Log.w(TAG, "File ${entry.fileIndex} is not decodable (${e.message}); keeping the raw payload only")

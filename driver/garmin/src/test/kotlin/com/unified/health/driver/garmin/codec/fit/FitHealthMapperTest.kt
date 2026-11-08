@@ -131,7 +131,7 @@ class FitHealthMapperTest {
     @Test
     fun `hrv_status_summary becomes heart rate variability in milliseconds`() {
         val bytes = FitFileBuilder()
-            .define(0, FitHealthMapper.MESG_HRV_STATUS_SUMMARY, u32(253), u16(4))
+            .define(0, FitHealthMapper.MESG_HRV_STATUS_SUMMARY, u32(253), u16(1))
             .record(0, t0, 5120) // 5120 / 128 = 40 ms
             .build()
         val records = FitHealthMapper.map(FitDecoder.decode(bytes), ZoneOffset.UTC, DailyActivityAccumulator())
@@ -139,18 +139,18 @@ class FitHealthMapperTest {
     }
 
     @Test
-    fun `user_metrics and user_profile vo2_max become Vo2Max records at the last seen timestamp`() {
+    fun `max_met_data vo2_max is scaled by 10 and uses its own update_time when present`() {
         val bytes = FitFileBuilder()
             .define(0, FitHealthMapper.MESG_MONITORING, u32(253), enum(5), u32(3))
             .record(0, t0, 6, 1000)
-            .define(1, FitHealthMapper.MESG_USER_METRICS, u8(7))
-            .record(1, 52)
-            .define(2, FitHealthMapper.MESG_USER_PROFILE, u8(7))
-            .record(2, 48)
+            .define(1, FitHealthMapper.MESG_MAX_MET_DATA, u32(0), u16(2))
+            .record(1, t0 + 500, 500) // own update_time (field 0) = t0+500, raw 500 -> 50.0 mL/kg/min
+            .define(2, FitHealthMapper.MESG_MAX_MET_DATA, u16(2))
+            .record(2, 480) // no update_time field -> falls back to the last timestamp seen (t0)
             .build()
         val records = FitHealthMapper.map(FitDecoder.decode(bytes), ZoneOffset.UTC, DailyActivityAccumulator())
         assertEquals(
-            listOf(HealthRecord.Vo2Max(at(t0), 52), HealthRecord.Vo2Max(at(t0), 48)),
+            listOf(HealthRecord.Vo2Max(at(t0 + 500), 50), HealthRecord.Vo2Max(at(t0), 48)),
             records.filterIsInstance<HealthRecord.Vo2Max>(),
         )
     }
@@ -160,8 +160,8 @@ class FitHealthMapperTest {
         val bytes = FitFileBuilder()
             .define(0, FitHealthMapper.MESG_MONITORING, u32(253), enum(5), u32(3))
             .record(0, t0, 6, 1000)
-            .define(1, FitHealthMapper.MESG_USER_METRICS, u8(7))
-            .record(1, 150) // not the 0xFF invalid sentinel, but not a believable VO2max either
+            .define(1, FitHealthMapper.MESG_MAX_MET_DATA, u16(2))
+            .record(1, 1500) // scales to 150.0 mL/kg/min — not believable
             .build()
         val records = FitHealthMapper.map(FitDecoder.decode(bytes), ZoneOffset.UTC, DailyActivityAccumulator())
         assertTrue(records.filterIsInstance<HealthRecord.Vo2Max>().isEmpty())
