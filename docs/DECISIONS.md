@@ -1896,6 +1896,19 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   connected, giữ `Row` ngang nhỏ (56dp) như D-1115 đã làm. Làm theo đúng thứ tự user yêu cầu (D-1130
   trước, D-1115 kế thừa theo) thay vì phải sửa `DeviceBanner` 2 lần.
 
+- **D-1134** · 2026-11-08 · Thực thi D-1132 — tắt scrub-theo-ngày trên mini chart ở Home — **Chốt**
+  Thêm tham số `scrubEnabled: Boolean = true` vào `HealthBarChart`/`HealthRangeChart`
+  (`core/designsystem/HealthCharts.kt`), truyền thẳng vào `chartScrubGestures(scrubEnabled &&
+  points.isNotEmpty())` — khi `false`, `chartScrubGestures` trả về `Modifier` gốc không gắn
+  `pointerInput` nào (đã có sẵn logic `if (!enabled) return this`), nên thao tác kéo trên Home không
+  bị "giả vờ phản hồi rồi không hiện gì" mà chỉ đơn giản KHÔNG được xử lý ở đây — gesture rơi xuống
+  đúng `ElevatedCard.onClick` của card để mở `MetricDetailScreen`, đúng tinh thần "bấm vào xem chi
+  tiết đầy đủ" mà quyết định yêu cầu, không cần thêm text/hint nào khác. `HomeScreen.kt`'s `MiniChart`
+  (dùng bởi card "Metrics" List mode, D-1073/1090) truyền `scrubEnabled = false` ở cả 2 nhánh
+  (`HealthRangeChart`/`HealthBarChart`); `MetricDetailScreen.kt` không đổi gì, giữ mặc định `true`.
+  Không đụng tới `ActivityScreen.kt`/`WorkoutDetailScreen.kt` (cũng gọi 2 chart này) — nằm ngoài phạm
+  vi quyết định này (chỉ nói "Home's Metrics cards"), không tự ý mở rộng.
+
 - **D-1133** · 2026-11-08 · Carousel giải chạy: snap paged scroll (1 item + 20% peek), cache ảnh, giới hạn compose ngoài khung nhìn — **Chốt**
   User lường trước data giải chạy sẽ nhiều lên theo thời gian — tối ưu carousel `RacesCarousel` ngay:
   1. **Kích thước item**: mỗi card rộng ~80% bề ngang khả dụng của `LazyRow`, sao cho lúc đứng yên

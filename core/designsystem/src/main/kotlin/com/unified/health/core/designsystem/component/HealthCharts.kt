@@ -73,6 +73,10 @@ fun HealthBarChart(
      * longer ranges (Week/Month/6-Month/Year), where a trend is meaningful; a single Day of bars is
      * too short a series to trend. */
     showTrend: Boolean = false,
+    /** D-1132: off for Home's small embedded mini-charts (too small to scrub, and the drag would
+     *  conflict with the card's own tap-to-open-detail) — only [MetricDetailScreen] (the default)
+     *  lets you drag to see a specific day's value. */
+    scrubEnabled: Boolean = true,
 ) {
     val frame = rememberChartFrame()
     val maxValue = niceCeil(points.maxOfOrNull { it.value } ?: 0f)
@@ -82,7 +86,7 @@ fun HealthBarChart(
             .fillMaxWidth()
             .height(height)
             .semantics { contentDescription = describe(points) }
-            .chartScrubGestures(points.isNotEmpty()) { scrubX = it },
+            .chartScrubGestures(scrubEnabled && points.isNotEmpty()) { scrubX = it },
     ) {
         val plot = frame.drawAxes(this, 0f, maxValue, points.map { it.label }, axisLabel)
         val slot = plot.width / points.size.coerceAtLeast(1)
@@ -124,6 +128,8 @@ fun HealthRangeChart(
      * it defaults off). A straight best-fit line reads better here than a moving average, since
      * capsule charts (heart rate, SpO2…) are naturally noisier point-to-point. */
     showTrend: Boolean = false,
+    /** D-1132: see [HealthBarChart]'s [scrubEnabled] — same rationale, off for Home's mini-charts. */
+    scrubEnabled: Boolean = true,
 ) {
     val frame = rememberChartFrame()
     val withData = points.filter { it.hasData }
@@ -138,7 +144,7 @@ fun HealthRangeChart(
             .fillMaxWidth()
             .height(height)
             .semantics { contentDescription = describe(points) }
-            .chartScrubGestures(points.isNotEmpty()) { scrubX = it },
+            .chartScrubGestures(scrubEnabled && points.isNotEmpty()) { scrubX = it },
     ) {
         val plot = frame.drawAxes(this, yMin, yMax, points.map { it.label }, axisLabel)
         val slot = plot.width / points.size.coerceAtLeast(1)

@@ -994,13 +994,15 @@ private fun MiniChart(
         HealthMetricType.DISTANCE -> { v -> compactNumber(v / 1000f) }
         else -> ::compactNumber
     }
+    // D-1132: drag-to-scrub (D-1020) is off here — this chart is too small for it, and a drag would
+    // fight the card's own tap-to-open-detail. MetricDetailScreen's own, bigger chart keeps scrub on.
     when {
         metric.aggregation == MetricAggregation.SLEEP && sleepSession != null ->
             SleepStageChart(sleepSession, Modifier.testTag("feed_sleep_chart"), height = 110.dp)
         metric.aggregation == MetricAggregation.DISCRETE ->
-            HealthRangeChart(weekPoints, accent, Modifier.testTag("feed_mini_range"), height = 90.dp, axisLabel = axis)
+            HealthRangeChart(weekPoints, accent, Modifier.testTag("feed_mini_range"), height = 90.dp, axisLabel = axis, scrubEnabled = false)
         else ->
-            HealthBarChart(weekPoints, accent, Modifier.testTag("feed_mini_bar"), height = 90.dp, axisLabel = axis)
+            HealthBarChart(weekPoints, accent, Modifier.testTag("feed_mini_bar"), height = 90.dp, axisLabel = axis, scrubEnabled = false)
     }
 }
 
