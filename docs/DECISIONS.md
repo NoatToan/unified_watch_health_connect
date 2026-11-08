@@ -1877,3 +1877,21 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   ngày được, bấm vào xem chi tiết đầy đủ" — agent tự chọn cách thể hiện hợp lý (có thể không cần thêm
   gì ngoài việc tắt hẳn phản hồi scrub, miễn thao tác kéo trên Home không làm gì cả thay vì giả vờ
   hoạt động rồi không hiện giá trị).
+
+- **D-1133** · 2026-11-08 · Thực thi D-1130 — ảnh đồng hồ to (180dp) khi connected trên Devices + Home — **Chốt**
+  (Số D-1130 "ảnh đồng hồ to" bị trùng với D-1131 bản gốc "sửa fillBleed" do 2 agent log song song —
+  D-1131 đã tự đổi số; entry D-1130 "ảnh to" giữ nguyên số, đây chỉ là entry log việc *thực thi* nó.)
+  `PairedDeviceCard` (`feature/devices/DevicesScreen.kt`): khi `connected`, đổi từ `Row` ngang (ảnh
+  nhỏ bên cạnh text) sang `Column` dọc — `WatchImage(size = 180.dp, interactive = true, revealKey =
+  connected)` to, canh giữa ở trên (đúng bố cục `DeviceDetailScreen.kt`'s "About this device"), tên +
+  vendor/mac canh giữa bên dưới, nút "more options" (menu 3 chấm) nổi góc phải trên bằng `Box` overlay
+  thay vì nằm trong `Row` cũ. Khi KHÔNG connected: giữ nguyên `Row` ngang + `size = 56.dp` như cũ
+  (không đổi). Phần khác của card (battery, firmware, last sync, sync stage, nút Connect/Disconnect/
+  Sync, menu Unpair/credentials) không đổi logic, chỉ tách `menuButton` thành 1 lambda cục bộ dùng lại
+  được ở cả 2 nhánh bố cục.
+  `DeviceBanner` (`feature/home/HomeScreen.kt`, D-1115 vừa làm trước đó với size cũ 88dp/56dp): cập
+  nhật theo đúng size mới — khi có device và đang connected, cũng chuyển sang `Column` dọc với
+  `WatchImage(size = 180.dp, ...)` + tên/subtitle/"Last synced"/`ConnectionStatusChip` canh giữa bên
+  dưới, y hệt tinh thần layout của `PairedDeviceCard`; khi chưa pair hoặc có device nhưng chưa
+  connected, giữ `Row` ngang nhỏ (56dp) như D-1115 đã làm. Làm theo đúng thứ tự user yêu cầu (D-1130
+  trước, D-1115 kế thừa theo) thay vì phải sửa `DeviceBanner` 2 lần.

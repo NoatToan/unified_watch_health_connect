@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import com.unified.health.core.model.PairingCodeRequest
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -66,6 +67,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -324,38 +326,55 @@ private fun PairedDeviceCard(
 
     ElevatedCard(Modifier.fillMaxWidth().testTag("paired_${device.macAddress}")) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                WatchImage(
-                    model = watchModel,
-                    size = if (connected) 88.dp else 56.dp,
-                    interactive = connected,
-                    revealKey = connected,
-                )
-                Spacer(Modifier.width(Spacing.md))
-                Column(Modifier.weight(1f)) {
-                    Text(device.name, style = MaterialTheme.typography.titleMedium)
-                    Text(
-                        listOfNotNull(watchModel?.takeUnless { it.isGeneric }?.displayName, device.vendor.displayName, device.macAddress)
-                            .joinToString(" · "),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+            val menuButton: @Composable () -> Unit = {
+                IconButton(onClick = { menuOpen = true }, modifier = Modifier.testTag("more_${device.macAddress}")) {
+                    Icon(Icons.Outlined.MoreVert, contentDescription = "More options for ${device.name}")
                 }
-                Column {
-                    IconButton(onClick = { menuOpen = true }, modifier = Modifier.testTag("more_${device.macAddress}")) {
-                        Icon(Icons.Outlined.MoreVert, contentDescription = "More options for ${device.name}")
+                DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
+                    DropdownMenuItem(
+                        text = { Text("Device settings") },
+                        onClick = { menuOpen = false; onOpenSettings() },
+                        modifier = Modifier.testTag("device_settings_menu_item"),
+                    )
+                    device.credentialRequirements.forEach { requirement ->
+                        DropdownMenuItem(text = { Text("Change ${requirement.label}") }, onClick = { menuOpen = false; editing = requirement })
                     }
-                    DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
-                        DropdownMenuItem(
-                            text = { Text("Device settings") },
-                            onClick = { menuOpen = false; onOpenSettings() },
-                            modifier = Modifier.testTag("device_settings_menu_item"),
-                        )
-                        device.credentialRequirements.forEach { requirement ->
-                            DropdownMenuItem(text = { Text("Change ${requirement.label}") }, onClick = { menuOpen = false; editing = requirement })
-                        }
-                        DropdownMenuItem(text = { Text("Unpair") }, onClick = { menuOpen = false; confirmUnpair = true }, modifier = Modifier.testTag("unpair_menu_item"))
+                    DropdownMenuItem(text = { Text("Unpair") }, onClick = { menuOpen = false; confirmUnpair = true }, modifier = Modifier.testTag("unpair_menu_item"))
+                }
+            }
+            val subtitle = listOfNotNull(watchModel?.takeUnless { it.isGeneric }?.displayName, device.vendor.displayName, device.macAddress)
+                .joinToString(" · ")
+            if (connected) {
+                // D-1130: once paired, this is the screen users actually look at regularly — not
+                // "About this device" — so it gets the same big, centered watch image treatment
+                // (WatchImage(size = 180.dp), DeviceDetailScreen.kt) instead of a small inline one.
+                Box(Modifier.fillMaxWidth()) {
+                    WatchImage(
+                        model = watchModel,
+                        size = 180.dp,
+                        interactive = true,
+                        revealKey = connected,
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                    Box(Modifier.align(Alignment.TopEnd)) { menuButton() }
+                }
+                Text(device.name, style = MaterialTheme.typography.titleLarge, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+                Text(
+                    subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                )
+            } else {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    WatchImage(model = watchModel, size = 56.dp, interactive = false, revealKey = connected)
+                    Spacer(Modifier.width(Spacing.md))
+                    Column(Modifier.weight(1f)) {
+                        Text(device.name, style = MaterialTheme.typography.titleMedium)
+                        Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
+                    Column { menuButton() }
                 }
             }
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {

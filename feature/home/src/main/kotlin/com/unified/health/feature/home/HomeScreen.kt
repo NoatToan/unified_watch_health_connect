@@ -73,6 +73,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -601,54 +602,79 @@ private fun HealthMetricType.liveDotOrNull(liveMetrics: Set<HealthMetricType>): 
 
 @Composable
 private fun DeviceBanner(device: WearableDevice?, deviceCount: Int, onOpenDevices: () -> Unit, modifier: Modifier = Modifier) {
-    // D-1115: same card type/shape/elevation and WatchImage treatment as "My devices"' own
-    // PairedDeviceCard (feature/devices/DevicesScreen.kt) — plain ElevatedCard (no custom container
-    // color) and the interactive 3D flip-in (rotationY from -90°, D-803) keyed on connection state,
-    // instead of a separately-styled, static box. Not a shared composable with PairedDeviceCard
-    // itself (that one also owns menu/credentials/sync controls Home's compact banner doesn't need),
-    // but the same WatchImage call shape/values so the two don't drift again.
+    // D-1115/D-1130: same card type/shape/elevation and WatchImage treatment as "My devices"' own
+    // PairedDeviceCard (feature/devices/DevicesScreen.kt) — including D-1130's big, centered 180dp
+    // image once connected (Home is where users actually look at their watch day to day, not "About
+    // this device"), vs. a small inline image otherwise. Not a shared composable with
+    // PairedDeviceCard itself (that one also owns menu/credentials/sync controls Home's compact
+    // banner doesn't need), but the same WatchImage call shape/values and layout pattern so the two
+    // don't drift again.
     val connected = device?.connectionState == ConnectionState.Connected
+    val watchModel = remember(device?.vendor, device?.name, device?.model) { device?.let(WatchModelMatcher::match) }
     ElevatedCard(
         onClick = onOpenDevices,
         modifier = modifier.fillMaxWidth().testTag("device_banner"),
     ) {
-        Row(
-            modifier = Modifier.padding(Spacing.lg),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            WatchImage(
-                model = remember(device?.vendor, device?.name, device?.model) { device?.let(WatchModelMatcher::match) },
-                size = if (connected) 88.dp else 56.dp,
-                interactive = connected,
-                revealKey = connected,
-            )
-            Spacer(Modifier.width(Spacing.md))
-            if (device == null) {
-                Column(Modifier.weight(1f)) {
-                    Text("No device paired", style = MaterialTheme.typography.titleSmall)
-                    Text("Pair a watch of any supported brand to start syncing", style = MaterialTheme.typography.bodySmall)
-                }
-                FilledTonalButton(onClick = onOpenDevices) { Text("Pair") }
-            } else {
-                Column(Modifier.weight(1f)) {
-                    Text(device.name, style = MaterialTheme.typography.titleSmall)
-                    Text(
-                        listOfNotNull(
-                            device.vendor.displayName,
-                            device.batteryPercent?.let { "$it%" },
-                            (deviceCount - 1).takeIf { it > 0 }?.let { "+$it more" },
-                        ).joinToString(" · "),
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    // D-1075: always visible on Home (not just Device Detail), relative + live-updating.
-                    Text(
-                        "Last synced ${rememberRelativeSyncLabel(device.lastSyncedAt)}",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.testTag("last_synced"),
-                    )
-                }
+        if (device != null && connected) {
+            Column(
+                modifier = Modifier.padding(Spacing.lg).fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(Spacing.sm),
+            ) {
+                WatchImage(model = watchModel, size = 180.dp, interactive = true, revealKey = connected)
+                Text(device.name, style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
+                Text(
+                    listOfNotNull(
+                        device.vendor.displayName,
+                        device.batteryPercent?.let { "$it%" },
+                        (deviceCount - 1).takeIf { it > 0 }?.let { "+$it more" },
+                    ).joinToString(" · "),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                )
+                // D-1075: always visible on Home (not just Device Detail), relative + live-updating.
+                Text(
+                    "Last synced ${rememberRelativeSyncLabel(device.lastSyncedAt)}",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.testTag("last_synced"),
+                )
                 ConnectionStatusChip(device.connectionState, onClick = onOpenDevices)
+            }
+        } else {
+            Row(
+                modifier = Modifier.padding(Spacing.lg),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                WatchImage(model = watchModel, size = 56.dp, interactive = false, revealKey = connected)
+                Spacer(Modifier.width(Spacing.md))
+                if (device == null) {
+                    Column(Modifier.weight(1f)) {
+                        Text("No device paired", style = MaterialTheme.typography.titleSmall)
+                        Text("Pair a watch of any supported brand to start syncing", style = MaterialTheme.typography.bodySmall)
+                    }
+                    FilledTonalButton(onClick = onOpenDevices) { Text("Pair") }
+                } else {
+                    Column(Modifier.weight(1f)) {
+                        Text(device.name, style = MaterialTheme.typography.titleSmall)
+                        Text(
+                            listOfNotNull(
+                                device.vendor.displayName,
+                                device.batteryPercent?.let { "$it%" },
+                                (deviceCount - 1).takeIf { it > 0 }?.let { "+$it more" },
+                            ).joinToString(" · "),
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                        Text(
+                            "Last synced ${rememberRelativeSyncLabel(device.lastSyncedAt)}",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.testTag("last_synced"),
+                        )
+                    }
+                    ConnectionStatusChip(device.connectionState, onClick = onOpenDevices)
+                }
             }
         }
     }
