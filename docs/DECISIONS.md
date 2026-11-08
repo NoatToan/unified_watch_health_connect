@@ -1024,3 +1024,18 @@ tránh 2 agent sửa song song cùng file.
   thấy ngay: (a) msg 140/42 có xuất hiện trong file thật không, (b) nếu có thì field 7 đọc ra giá
   trị gì (đúng VO2max / sai field / không có field này). Không sửa mù field number khi chưa có bằng
   chứng — chờ log thật rồi vá đúng chỗ.
+
+- **D-1072** · 2026-11-08 · Bỏ hẳn section "Pinned" khỏi Home — **Chốt**
+  Không chỉ dời hay gộp — xoá hẳn section "Pinned" (card ghim) khỏi `HomeScreen.kt` sau khi gộp
+  Summary+Health (D-1010). Lý do: user phản hồi trực tiếp; "All metrics"/full feed (gộp từ
+  `FeedScreen` theo D-1010) đã hiển thị mọi chỉ số rồi, Pinned chỉ là tập con trùng lặp không cần
+  thiết. Thứ tự Home còn lại: DeviceBanner → RingsCard → "All metrics" (xem D-1073/1074).
+- **D-1073** · 2026-11-08 · Nút chuyển chế độ hiển thị cho "All metrics" — **Chốt**
+  Thêm nút switch 2 chế độ hiển thị cho section "All metrics" (đặt cạnh tiêu đề section): **List**
+  — mỗi metric chiếm 1 row full-width, có chart; **Grid** — 2 cột như hiện tại (D-1050), không có
+  hoặc chart rất nhỏ, chỉ tên + giá trị. Áp dụng ngay tại chỗ, không cần màn riêng.
+- **D-1074** · 2026-11-08 · Lưu chế độ hiển thị vào `UserPreferences` — **Chốt**
+  Thêm field mới trong `UserPreferences`/DataStore (enum 2 giá trị, ví dụ `homeMetricsViewMode`:
+  `LIST` | `GRID`), mặc định `GRID` (giữ hành vi hiện tại không đổi cho user cũ), lưu theo đúng
+  pattern các preference khác (`dailyStepGoal`...) — đổi 1 lần, nhớ mãi, không hỏi lại mỗi lần mở
+  app.
