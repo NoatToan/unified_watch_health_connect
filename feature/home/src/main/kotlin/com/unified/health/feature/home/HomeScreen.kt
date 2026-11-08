@@ -36,7 +36,6 @@ import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -591,16 +590,27 @@ private fun HealthMetricType.liveDotOrNull(liveMetrics: Set<HealthMetricType>): 
 
 @Composable
 private fun DeviceBanner(device: WearableDevice?, deviceCount: Int, onOpenDevices: () -> Unit, modifier: Modifier = Modifier) {
-    Card(
+    // D-1115: same card type/shape/elevation and WatchImage treatment as "My devices"' own
+    // PairedDeviceCard (feature/devices/DevicesScreen.kt) — plain ElevatedCard (no custom container
+    // color) and the interactive 3D flip-in (rotationY from -90°, D-803) keyed on connection state,
+    // instead of a separately-styled, static box. Not a shared composable with PairedDeviceCard
+    // itself (that one also owns menu/credentials/sync controls Home's compact banner doesn't need),
+    // but the same WatchImage call shape/values so the two don't drift again.
+    val connected = device?.connectionState == ConnectionState.Connected
+    ElevatedCard(
         onClick = onOpenDevices,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
         modifier = modifier.fillMaxWidth().testTag("device_banner"),
     ) {
         Row(
             modifier = Modifier.padding(Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            WatchImage(model = remember(device?.vendor, device?.name, device?.model) { device?.let(WatchModelMatcher::match) }, size = 48.dp)
+            WatchImage(
+                model = remember(device?.vendor, device?.name, device?.model) { device?.let(WatchModelMatcher::match) },
+                size = if (connected) 88.dp else 56.dp,
+                interactive = connected,
+                revealKey = connected,
+            )
             Spacer(Modifier.width(Spacing.md))
             if (device == null) {
                 Column(Modifier.weight(1f)) {

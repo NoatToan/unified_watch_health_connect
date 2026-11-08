@@ -1781,6 +1781,19 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   phải khớp đúng số tham số của method trừu tượng (default value trên interface không miễn trừ số
   tham số bắt buộc khi convert từ lambda).
 
+- **D-1128** · 2026-11-08 · Thực thi D-1115 — `DeviceBanner` đồng bộ style/animation với Devices — **Chốt**
+  Bỏ sót ở 2 commit trước (`fd11f99`/`609299c`) — làm lại ngay khi được nhắc. `DeviceBanner`
+  (`HomeScreen.kt`) đổi từ `Card` (nền `secondaryContainer` tự đặt riêng) sang `ElevatedCard` không
+  màu tuỳ chỉnh — đúng loại card + shape/elevation mặc định mà `PairedDeviceCard`
+  (`feature/devices/DevicesScreen.kt`) đang dùng. `WatchImage` gọi đúng pattern của
+  `PairedDeviceCard`: `interactive = connected`, `revealKey = connected` (bật hiệu ứng flip rotationY
+  từ -90°, D-803/D-1098) và cùng 2 mức size `88.dp`/`56.dp` theo trạng thái connected — thay vì 48dp cố
+  định, tĩnh, không animation như trước. Không tạo composable dùng chung mới giữa 2 màn (lý do: card ở
+  Devices còn có menu/credentials/nút sync/connect mà banner trên Home không cần — gộp chung sẽ phải
+  thêm nhiều tham số không dùng tới) — chỉ đồng bộ đúng phần `WatchImage`/kiểu `Card` theo đúng yêu cầu
+  "gọi lại đúng component/style đã có, không viết riêng" (ở mức giá trị tham số, không bắt buộc 1 hàm
+  Composable vật lý dùng chung).
+
 - **D-1128** · 2026-11-08 · D-1117 (carousel edge-to-edge) vẫn chưa đúng — lề đầu lệch + vẫn còn margin ở cuối — **Chốt**
   User test bản cài thật: cách làm trước (`Modifier.fillBleed` tự viết + `contentPadding` trên
   `LazyRow`) chưa đạt — (1) lề trái lúc đứng yên của card đầu tiên **không khớp** với lề nội dung
