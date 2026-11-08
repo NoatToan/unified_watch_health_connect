@@ -1319,3 +1319,21 @@ User thấy màn chi tiết workout hiện tại ("Workout detail" theo D-804) q
   giả lập đã có sẵn ở `WatchImage` (D-803, 2026-11-08 — `rotationY` từ -90° khi "lật vào" lúc
   `revealKey` đổi + nghiêng phối cảnh khi kéo). Dùng lại đúng component/kiểu animation đó cho chip
   trong header thay vì tự viết fade/scale riêng — đồng bộ ngôn ngữ hình ảnh với Devices.
+
+- **D-1099** · 2026-11-08 · Grid mode: title bị cắt giữa chữ + "No data yet" xuống 2 dòng — xấu, sửa ngay — **Chốt**
+  Chụp màn hình thật qua `adb screencap` ngay trên máy xác nhận bug cụ thể (không phải suy đoán):
+  title bị ellipsis giữa chữ ở nhiều card — "Blood ..." (Blood oxygen/SpO2), "Heart ..." (Heart rate
+  variability/HRV), "Exerci..." (Exercise minutes — dù D-1090 đã rút gọn thành "Exercise" nhưng vẫn
+  còn dài quá so với bề ngang cột + icon + chevron), "Walking + runnin..." (Distance) — nghĩa là bảng
+  viết tắt ở D-1090 **chưa phủ hết mọi loại chỉ số**, chỉ có HR/Cal/RHR/Exercise. VO2max và Workouts
+  đã **có data thật** (50 mL/kg/min, 1 workout "Last running: Nov 8") — xác nhận fix D-1092 hoạt động.
+  **Fix cần làm:**
+  1. Bổ sung đầy đủ bảng viết tắt cho MỌI loại chỉ số dùng trong Grid (không chỉ 4 cái cũ): Blood
+     oxygen→**SpO2**, Heart rate variability→**HRV**, Walking+running distance→**Distance**, Exercise
+     minutes→ rút ngắn hơn nữa (ví dụ **"Active"** hoặc bỏ hẳn chevron/icon-gap để còn chỗ) — tự đo lại
+     xem "Exercise" có thực sự vừa không, nếu không thì rút ngắn tiếp.
+  2. Text giá trị placeholder "No data yet" phải giới hạn `maxLines = 1` + `TextOverflow.Ellipsis`
+     (hoặc đổi label ngắn hơn, ví dụ "No data"/"—") — tuyệt đối không để xuống 2 dòng làm card lệch
+     cao thấp so với card bên cạnh trong cùng hàng.
+  3. Ngày trong card Workouts ("Last running: Nov 8, 20...") cũng bị cắt xấu — rút ngắn format ngày
+     (bỏ năm nếu là năm hiện tại, ví dụ chỉ "Nov 8") hoặc bỏ hẳn label "Last running:" chỉ còn ngày.
