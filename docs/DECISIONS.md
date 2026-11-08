@@ -2355,3 +2355,19 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   `core/designsystem` (gồm cả `RaceCardTest` của phiên khác — vẫn xanh sau khi thêm import thiếu),
   `feature/activity`, `feature/profile`, `feature/races`, `feature/devices`), `app-debug.apk` build lại
   thành công.
+
+- **D-1167** · 2026-11-09 · Fullscreen ảnh thiết bị: mở lên nhỏ, nhấn-giữ để phóng to dần theo thời gian (timing kiểu gamified), giữ đủ lâu → full + hiệu ứng pháo hoa → tự đóng — **Chốt**
+  Bổ sung cho fullscreen viewer của D-1148 (đang implement): thay vì mở lên hiện ảnh full ngay, **mở lên
+  với ảnh kích thước nhỏ** trước — kèm 1 animation/gợi ý nhẹ cho user biết cần **nhấn giữ (long-press)**
+  để phóng to. Trong lúc giữ: ảnh **to dần theo thời gian** giữ (progressive scale theo duration của
+  gesture, không phải tap 1 lần là xong). **"Chọn thời gian dạng Premack tí, kích thích người dùng"** —
+  user muốn timing/curve phóng to không tuyến tính nhàm chán, mà theo kiểu gamification gây hứng thú
+  (built-up tension/anticipation) — agent tự thiết kế cụ thể, gợi ý: easing không đều (chậm → nhanh dần,
+  hoặc có khoảng "rung lắc"/pulse nhẹ báo hiệu gần đạt ngưỡng), không cần implement đúng nghĩa đen lý
+  thuyết Premack, chỉ cần truyền tải cảm giác "càng giữ càng hồi hộp/phấn khích". **Giữ đủ lâu** (agent
+  tự chọn ngưỡng hợp lý, gợi ý 1.5-3s) → ảnh đạt full size → trigger **hiệu ứng kiểu pháo hoa** (particle
+  burst/confetti/sparkle, màu sắc rực rỡ, ngắn gọn ấn tượng) → **sau đó tự động đóng modal fullscreen**
+  (không cần user tap để đóng nữa trong trường hợp này). Nếu user **thả tay giữ sớm** (chưa đạt ngưỡng):
+  ảnh thu nhỏ lại về trạng thái ban đầu (không giữ nguyên size đang dở, không đóng modal) — user có thể
+  thử giữ lại. Cùng khu vực file với D-1148/D-1162 (agent đang xử lý Devices fullscreen viewer) — gộp
+  chung, không tách agent riêng.
