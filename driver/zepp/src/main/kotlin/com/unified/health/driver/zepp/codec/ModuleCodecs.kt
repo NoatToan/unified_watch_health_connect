@@ -42,6 +42,43 @@ internal object BuiltInModuleCodec {
 }
 
 /**
+ * ConnectModule (channel module 0x15 = 21): the watch's link parameters, including the ATT MTU
+ * (`ConnectModule.java:40,166-176`; `ConnectionParamCodec.java:56-59`; `Mtu.java:5-35` [V]).
+ *
+ * The vendor never calls `requestMtu` on the Zepp path: after device info it sends `queryConnectParam`
+ * (`[0x01]`, answered with command `0x02`) and applies `readShort() + 3` as the ATT MTU, capped by
+ * `Mtu.setAttMtuSize` to 23..247. The reply layout is `skip u8, payload u16 LE`.
+ */
+internal object ConnectParamCodec {
+    const val MODULE = 0x15
+
+    const val CMD_QUERY = 0x01
+    const val CMD_NOTIFY = 0x02
+
+    private const val ATT_HEADER_SIZE = 3
+
+    /** `Mtu.ATT_MTU_MAX`; `setAttMtuSize` ignores anything above it. */
+    const val MAX_ATT_MTU = 247
+
+    /** `Mtu.ATT_MTU_MIN`; `setAttMtuSize` ignores anything below it. */
+    const val MIN_ATT_MTU = 23
+
+    fun query(): ByteArray = bytesOf(CMD_QUERY)
+
+    /**
+     * @return ATT MTU = payload + 3, capped at 247, or null when the reply is not a well-formed
+     *   ConnectParam notify. The vendor stores `ATT MTU - 3` as its channel chunk size.
+     */
+    fun parseAttMtu(reply: ByteArray): Int? {
+        if (reply.size < 3) return null
+        val reader = ByteReader(reply)
+        if (reader.u8() != CMD_NOTIFY) return null
+        val payload = reader.u16le()
+        return (payload + ATT_HEADER_SIZE).coerceAtMost(MAX_ATT_MTU).takeIf { it >= MIN_ATT_MTU }
+    }
+}
+
+/**
  * `AuthModule` (channel module 0x80): the pre-Zepp-OS session auth, used when the BuiltInModule
  * list has an auth module but the channel version reply omitted the encrypt byte (§4 step 5,
  * `AuthModule.java:401-538` [V]). No ECDH: the session key *is* the auth key, so there is no

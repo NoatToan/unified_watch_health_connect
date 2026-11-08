@@ -42,6 +42,8 @@ internal class FakeZeppWatch(
     private val allowLocalBinding: Int = 0,
     /** BuiltInModule list: module id → requireEncryption. Without OpenAppModule (29) by default. */
     private val modules: Map<Int, Boolean> = mapOf(0x82 to false),
+    /** ConnectModule (0x15) reply payload, little-endian: ATT MTU = payload + 3 (default 247). */
+    private val connectParamPayload: Int = 244,
     /** False: the watch does not expose the standard Current Time characteristic (§4 step 7). */
     hasCurrentTime: Boolean = true,
     /** Service holding 2A2B: FEE0 in the vendor flow (`BaseProfile.setDateTime`), SIG 0x1805 otherwise. */
@@ -124,6 +126,13 @@ internal class FakeZeppWatch(
         private set
     var batteryQueries = 0
         private set
+
+    /** Module 0x15 `queryConnectParam` requests received. */
+    var connectParamRequests = 0
+        private set
+
+    /** False: the watch never answers module 0x15 (the driver must keep the GATT MTU). */
+    var answersConnectParam = true
 
     /** Channel ACKs to drop before acknowledging normally (simulates a lost DATA_REPLY). */
     var dropAcks = 0
@@ -225,6 +234,7 @@ internal class FakeZeppWatch(
             0x00 -> onBuiltInMessage(message.data)
             0x1D -> onOpenAppMessage(message)
             0x29 -> onBatteryMessage(message)
+            0x15 -> onConnectParamMessage(message)
         }
     }
 
@@ -267,13 +277,17 @@ internal class FakeZeppWatch(
         }
     }
 
-    private fun onOpenAppMessage(message: ChannelMessage) {
-        val data = if (message.isEncrypted) {
+    /** Decrypts an encrypted module message with the session key; plaintext messages pass through. */
+    private fun plaintext(message: ChannelMessage): ByteArray =
+        if (message.isEncrypted) {
             val key = ByteArray(16) { (checkNotNull(sessionKey)[it].toInt() xor message.sessionId).toByte() }
             AesEcb.decrypt(key, message.data).copyOf(message.totalSize)
         } else {
             message.data
         }
+
+    private fun onOpenAppMessage(message: ChannelMessage) {
+        val data = plaintext(message)
         openAppCommands += data
         openAppEncrypted += message.isEncrypted
         if (answersOpenApp && data[0].toInt() == 0x04) sendModule(0x1D, byteArrayOf(0x05, realtimeHrStatus.toByte()))
@@ -281,12 +295,7 @@ internal class FakeZeppWatch(
 
     /** Module 0x29: query version `[0x01]` → `[0x02, version]`, query battery `[0x03]` → `[0x04, flags, level]`. */
     private fun onBatteryMessage(message: ChannelMessage) {
-        val data = if (message.isEncrypted) {
-            val key = ByteArray(16) { (checkNotNull(sessionKey)[it].toInt() xor message.sessionId).toByte() }
-            AesEcb.decrypt(key, message.data).copyOf(message.totalSize)
-        } else {
-            message.data
-        }
+        val data = plaintext(message)
         when (data[0].toInt()) {
             0x01 -> {
                 batteryVersionQueries++
@@ -296,6 +305,19 @@ internal class FakeZeppWatch(
                 batteryQueries++
                 sendModule(0x29, byteArrayOf(0x10, 0x04, 0x01, batteryFlags.toByte(), batteryLevel.toByte()))
             }
+        }
+    }
+
+    /** Module 0x15: query `[0x01]` → notify `[0x02, payload u16 LE]`; ATT MTU = payload + 3 (§2). */
+    private fun onConnectParamMessage(message: ChannelMessage) {
+        val data = plaintext(message)
+        if (data.isNotEmpty() && data[0].toInt() == 0x01) {
+            connectParamRequests++
+            if (!answersConnectParam) return
+            sendModule(0x15, buildBytes {
+                u8(0x02)
+                u16le(connectParamPayload)
+            })
         }
     }
 

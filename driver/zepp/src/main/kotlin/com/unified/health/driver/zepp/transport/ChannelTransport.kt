@@ -70,6 +70,13 @@ internal class ChannelTransport(
         private set
 
     /**
+     * ATT MTU reported by the watch's ConnectModule (0x15) after auth, or null when the module is
+     * absent or did not answer. The vendor replaces its default 20-byte chunk with this value
+     * (`MiLiProProfile.C0` → `Mtu.setAttMtuSize`, `ConnectionParamCodec.java:56-59`).
+     */
+    @Volatile private var reportedAttMtu: Int? = null
+
+    /**
      * Subscribes to both characteristics, starts the inbound reader and runs the version query
      * `[0x01]` → `[0x02, version, encrypt?]` (§3.3 [V]).
      * @return null when the watch did not answer within [VERSION_TIMEOUT_MS].
@@ -117,6 +124,24 @@ internal class ChannelTransport(
         this.protocol = protocol
     }
 
+    /**
+     * Applies the ATT MTU reported by the watch's ConnectModule (0x15). The vendor does not call
+     * `requestMtu`; it asks the watch and stores `ATT MTU - 3` as the channel payload size
+     * (`Mtu.setAttMtuSize`, `Mtu.java:26-33`; `MiLiProProfile.java:2053-2056`).
+     */
+    fun useAttMtu(attMtu: Int) {
+        reportedAttMtu = attMtu.coerceIn(GattClient.DEFAULT_MTU, MAX_ATT_MTU)
+    }
+
+    /**
+     * Largest channel frame (header + payload) sent in one BLE write: `ATT MTU - 3`, exactly the
+     * value `Mtu.setAttMtuSize` stores. The watch-reported value wins over the GATT-negotiated one;
+     * the GATT value still caps it (Android rejects a write above the real ATT payload) and the
+     * vendor never uses more than 247 ([V] `Mtu.ATT_MTU_MAX`).
+     */
+    internal fun writeSize(): Int =
+        minOf(reportedAttMtu?.minus(GattClient.ATT_HEADER_SIZE) ?: gatt.maxWriteLength, gatt.maxWriteLength, MAX_WRITE_SIZE)
+
     /** Creates (or returns) the inbox for [module]; messages for unregistered modules are refused. */
     fun register(module: Int): ReceiveChannel<ByteArray> = inboxes.getOrPut(module) { Channel(Channel.UNLIMITED) }
 
@@ -154,10 +179,10 @@ internal class ChannelTransport(
             val cipher = cipher ?: throw WearableProtocolException("Module 0x%04x requires encryption before auth".format(module))
             ChannelCodec.split(
                 protocol, sessionId, module, cipher.encrypt(sessionId, payload),
-                packetSize = gatt.maxWriteLength, totalSize = payload.size, encrypted = true,
+                packetSize = writeSize(), totalSize = payload.size, encrypted = true,
             )
         } else {
-            ChannelCodec.split(protocol, sessionId, module, payload, packetSize = gatt.maxWriteLength)
+            ChannelCodec.split(protocol, sessionId, module, payload, packetSize = writeSize())
         }
         for (packet in packets) {
             sendPacket(protocol, sessionId, packet)
@@ -308,5 +333,11 @@ internal class ChannelTransport(
 
         /** No vendor constant read for the module-list answer; one round trip [I]. */
         const val MODULE_LIST_TIMEOUT_MS = 5_000L
+
+        /** `Mtu.ATT_MTU_MAX` (`Mtu.java:8`): the vendor never chunks above 247 B ATT MTU. */
+        const val MAX_ATT_MTU = 247
+
+        /** `Mtu.ATT_MTU_MAX - ATT_HEADER_SIZE`, i.e. `Mtu.b` = 244 (`Mtu.java:9,26-33`). */
+        const val MAX_WRITE_SIZE = 244
     }
 }

@@ -48,18 +48,61 @@ class ZeppDriverTest {
             suspendCancellableCoroutine { }
     }
 
+    /** Records `requestMtu` calls: the vendor never requests one, the driver must not either. */
+    private class MtuRecordingGatt(private val delegate: GattClient) : GattClient by delegate {
+        var mtuRequests = 0
+        override suspend fun requestMtu(mtu: Int): Int {
+            mtuRequests++
+            return delegate.requestMtu(mtu)
+        }
+    }
+
     @Test
     fun `declares the auth key credential and link requirements`() {
         val driver = ZeppDriver()
         assertEquals(listOf("zepp.auth_key"), driver.credentialRequirements.map { it.key })
         assertTrue(driver.credentialRequirements.single().description.contains("Zepp app"))
         assertFalse(driver.linkRequirements.bond)
-        assertEquals(247, driver.linkRequirements.mtu)
+        // §2: the vendor never calls requestMtu; the MTU is asked from module 0x15 after auth.
+        assertEquals(null, driver.linkRequirements.mtu)
         // Vendor §4.2/§4.5: 45 s connect, 30 s discovery, 30 s per GATT operation, cache refresh.
         assertEquals(45_000L, driver.linkRequirements.connectTimeoutMs)
         assertEquals(30_000L, driver.linkRequirements.discoveryTimeoutMs)
         assertEquals(30_000L, driver.linkRequirements.operationTimeoutMs)
         assertTrue(driver.linkRequirements.refreshGattCacheBeforeDiscovery)
+    }
+
+    @Test
+    fun `queries module 0x15 for the ATT MTU instead of requesting one`() = runTest {
+        val watch = FakeZeppWatch(
+            authKey,
+            mtu = 247,
+            modules = mapOf(0x82 to false, 0x15 to false),
+            connectParamPayload = 100, // ATT MTU 103
+        )
+        val gatt = MtuRecordingGatt(watch.gatt)
+        val session = driver().openSession(gatt, withKey)
+        assertEquals(1, watch.connectParamRequests)
+        assertEquals(0, gatt.mtuRequests)
+        session.close()
+    }
+
+    @Test
+    fun `watch without module 0x15 keeps the GATT MTU and does not fail`() = runTest {
+        val watch = FakeZeppWatch(authKey, mtu = 185) // default module list has no 0x15
+        val session = driver().openSession(watch.gatt, withKey)
+        assertEquals(0, watch.connectParamRequests)
+        session.close()
+    }
+
+    @Test
+    fun `silent module 0x15 falls back to the GATT MTU and does not fail`() = runTest {
+        val watch = FakeZeppWatch(authKey, modules = mapOf(0x82 to false, 0x15 to false)).apply {
+            answersConnectParam = false
+        }
+        val session = driver().openSession(watch.gatt, withKey)
+        assertEquals(1, watch.connectParamRequests)
+        session.close()
     }
 
     @Test

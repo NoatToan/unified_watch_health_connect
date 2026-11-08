@@ -12,6 +12,7 @@ import com.unified.health.driver.zepp.codec.B163Ecdh
 import com.unified.health.driver.zepp.codec.ChannelCipher
 import com.unified.health.driver.zepp.codec.ChannelProtocol
 import com.unified.health.driver.zepp.codec.CommandResponse
+import com.unified.health.driver.zepp.codec.ConnectParamCodec
 import com.unified.health.driver.zepp.codec.LegacyAuthCodec
 import com.unified.health.driver.zepp.codec.ZeppOsAuthCodec
 import com.unified.health.driver.zepp.transport.ChannelTransport
@@ -84,6 +85,7 @@ internal class ZeppHandshake(
                             }
                             authenticateZeppOs(transport, authKey)
                         }
+                        queryConnectParam(transport)
                         return transport
                     }
                     Log.i(TAG, "No auth module (0x80/0x82) in the channel's module list; trying legacy auth")
@@ -95,6 +97,32 @@ internal class ZeppHandshake(
             ?: throw UnsupportedDeviceException("Watch exposes neither a supported channel auth module nor the legacy auth characteristic")
         authenticateLegacy(legacy, authKey, confirmBind)
         return null
+    }
+
+    /**
+     * Applies the watch-reported ATT MTU (module 0x15 `queryConnectParam`): `skip u8, payload
+     * u16 LE`, ATT MTU = payload + 3 capped at 247 (§2, `ConnectionParamCodec.java:56-59`,
+     * `Mtu.java:26-33`). The vendor queries it after device info and only when the module list
+     * advertises ConnectModule (`MiLiProProfile.C0`); a missing or malformed answer leaves its
+     * default chunk size, so here the channel keeps the GATT-negotiated MTU instead of failing.
+     */
+    private suspend fun queryConnectParam(transport: ChannelTransport) {
+        if (!transport.supportsModule(ConnectParamCodec.MODULE)) return
+        val reply = try {
+            transport.request(ConnectParamCodec.MODULE, ConnectParamCodec.query(), MTU_QUERY_TIMEOUT_MS) {
+                ConnectParamCodec.parseAttMtu(it) != null
+            }
+        } catch (e: WearableProtocolException) {
+            Log.w(TAG, "No connect-param answer: ${e.message}; keeping the GATT MTU")
+            return
+        }
+        val attMtu = ConnectParamCodec.parseAttMtu(reply)
+        if (attMtu == null) {
+            Log.w(TAG, "Malformed connect-param answer; keeping the GATT MTU")
+            return
+        }
+        transport.useAttMtu(attMtu)
+        Log.i(TAG, "Watch reports ATT MTU $attMtu")
     }
 
     /** §5.3 step 5 (`DeviceAuthorizationImpl2.d`): local bind, only when the firmware allows it. */
@@ -272,6 +300,9 @@ internal class ZeppHandshake(
 
         /** The watch may wait for a tap on its screen before answering a bind [I]. */
         const val BIND_TIMEOUT_MS = 30_000L
+
+        /** Optional post-auth query (`BaseModule` default is 15 s); keep it short, the link works without it. */
+        const val MTU_QUERY_TIMEOUT_MS = 5_000L
 
         internal const val NEEDS_SERVER_SIGNATURE =
             "This watch only accepts a first bind signed by the Huami server, and this app never contacts Huami " +

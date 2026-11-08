@@ -50,13 +50,16 @@ class ZeppDriver internal constructor(
     override val vendor = WearableVendor.ZEPP
 
     /**
-     * No OS bond: security lives in the auth key + channel encryption (§2.3 [I]); MTU 247 (§3.2).
+     * No OS bond: security lives in the auth key + channel encryption (§2.3 [I]).
+     * No up-front MTU either: the vendor never calls `requestMtu`; it asks the watch over channel
+     * module 0x15 after device info (`MiLiProProfile.java:2053-2056`, §2) and the resolved value is
+     * applied by [ZeppHandshake]/[com.unified.health.driver.zepp.transport.ChannelTransport].
      * Timing copies the vendor: 45 s connect, 30 s service discovery, 30 s per GATT operation, and
      * the hidden GATT cache refresh on API 28+ before discovery (§4.2-§4.5).
      */
     override val linkRequirements = LinkRequirements(
         bond = false,
-        mtu = 247,
+        mtu = null,
         connectTimeoutMs = CONNECT_TIMEOUT_MS,
         discoveryTimeoutMs = DISCOVERY_TIMEOUT_MS,
         operationTimeoutMs = GATT_OPERATION_TIMEOUT_MS,
