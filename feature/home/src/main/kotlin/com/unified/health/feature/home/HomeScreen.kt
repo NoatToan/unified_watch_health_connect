@@ -24,7 +24,6 @@ import androidx.compose.material.icons.automirrored.outlined.TrendingDown
 import androidx.compose.material.icons.automirrored.outlined.TrendingFlat
 import androidx.compose.material.icons.automirrored.outlined.TrendingUp
 import androidx.compose.material.icons.outlined.BatteryStd
-import androidx.compose.material.icons.outlined.Watch
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -67,6 +66,7 @@ import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.RingSpec
 import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.component.SummaryMetricCard
+import com.unified.health.core.designsystem.component.WatchImage
 import com.unified.health.core.designsystem.component.formatValue
 import com.unified.health.core.designsystem.component.label
 import com.unified.health.core.designsystem.component.unit
@@ -83,6 +83,7 @@ import com.unified.health.core.model.LiveHeartRate
 import com.unified.health.core.model.MetricAggregation
 import com.unified.health.core.model.MetricReading
 import com.unified.health.core.model.StepsSummary
+import com.unified.health.core.model.WatchModelMatcher
 import com.unified.health.core.model.WearableDevice
 import com.unified.health.core.model.WearableVendor
 import kotlinx.coroutines.delay
@@ -340,7 +341,7 @@ private fun DeviceBanner(device: WearableDevice?, deviceCount: Int, onOpenDevice
             modifier = Modifier.padding(Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(Icons.Outlined.Watch, contentDescription = null)
+            WatchImage(model = remember(device?.vendor, device?.name, device?.model) { device?.let(WatchModelMatcher::match) }, size = 48.dp)
             Spacer(Modifier.width(Spacing.md))
             if (device == null) {
                 Column(Modifier.weight(1f)) {

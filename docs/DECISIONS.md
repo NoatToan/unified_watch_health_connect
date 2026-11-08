@@ -623,3 +623,18 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   `:core:demo` có `StandardVirtualWatch` ("SIG Pulse Band", `02:5D:00:00:18:0D`): GATT trong bộ nhớ chỉ nói các service SIG (HR 1 Hz + RR, Battery, DIS, CTS ghi được, PLX spot-check + RACP với 7 ngày × 3 lần đo, RSC), không có mock driver — được `:driver:standard` thật phục vụ. Module Hilt riêng (`StandardVirtualWatchModule`), tắt cùng cờ `MOCK_DEVICE`. E2E `StandardWatchE2ETest`, flow `60-standard-watch`.
 
 ## Release readiness (D-7xx)
+
+## Watch model images (D-8xx)
+
+- **D-801** · 2026-11-08 · Ảnh sản phẩm official đóng gói WebP trong `:core:designsystem` — **Chốt**
+  Đóng gói trực tiếp (`drawable-nodpi/watch_<id>.webp`, trong suốt, ≤ 512px) thay vì tải qua mạng, vì app không xin quyền INTERNET (offline, riêng tư cho app sức khoẻ).
+  Lý do: bản quyền ảnh thuộc hãng sản xuất; chỉ dùng để giúp người dùng nhận diện thiết bị của chính họ, không dùng cho mục đích thương mại/quảng cáo. Nguồn từng ảnh liệt kê ở `docs/watch-catalog.md`.
+- **D-802** · 2026-11-08 · Nhận diện model: regex DIS rồi BLE name — **Tạm**
+  Mỗi `WatchModel` có một `namePattern` khớp (không phân biệt hoa/thường) trước tiên vào chuỗi model đọc từ Device Information Service, sau đó vào tên quảng bá BLE; pattern lấy từ tên thiết bị trong Gadgetbridge (codeberg.org/Freeyourgadget/Gadgetbridge, chỉ lấy pattern tên, không copy code) kết hợp RE của project cho vendor service/manufacturer data.
+  Lý do: một số pattern độ tin cậy thấp vì suy luận chứ chưa có bằng chứng xác nhận trực tiếp — đánh dấu `bleNameConfidence: "low"` trong `docs/research/watch_catalog.json` cho COROS PACE 4 / PACE 4 Pro / APEX 4 / NOMAD / VERTIX 2S và Wahoo TICKR; cần xác minh trên máy thật.
+- **D-803** · 2026-11-08 · Hiệu ứng 3D giả lập trong `WatchImage` — **Chốt**
+  Không hãng nào (Garmin, Huawei, Honor, Amazfit/Zepp, Xiaomi, COROS, Polar) công bố asset 3D official (GLB/GLTF/USDZ) hay bộ ảnh xoay 360° cho sản phẩm của họ, nên `WatchImage` giả 3D trên ảnh 2D phẳng: nghiêng phối cảnh (`graphicsLayer` rotationX/Y) khi kéo, lật vào (`rotationY` từ -90°) khi `revealKey` đổi (lúc kết nối), và một vệt sáng chạy theo hướng nghiêng.
+  Lý do: vẫn cho cảm giác sản phẩm "sống" mà không cần tải model 3D (giữ offline, không quyền INTERNET) hay tự dựng model trái phép.
+- **D-804** · 2026-11-08 · Xiaomi Smart Band 8/9/10 (và 7 Pro) giữ trong catalog chỉ để hiển thị — **Tạm**
+  Các model này dùng giao thức riêng của Xiaomi, không phải Huami/Zepp (chỉ Mi Band 5/6 và Xiaomi Smart Band 7 là Huami/Zepp thật); vẫn giữ trong `WatchCatalog` (vendor `ZEPP`) để hiện đúng tên và ảnh khi nhận ra tên quảng bá.
+  Lý do: driver `:driver:zepp` (giao thức Huami) nhiều khả năng không nói chuyện được với các model này dù nhận diện được tên; cần driver Xiaomi riêng hoặc xác nhận trên máy thật trước khi coi là hỗ trợ đầy đủ.

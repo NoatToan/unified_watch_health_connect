@@ -21,7 +21,6 @@ import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material.icons.outlined.LinkOff
 import androidx.compose.material.icons.outlined.MonitorHeart
 import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.Watch
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -60,10 +59,12 @@ import com.unified.health.core.designsystem.component.ConnectionStatusChip
 import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.SectionHeader
+import com.unified.health.core.designsystem.component.WatchImage
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.DeviceCapability
 import com.unified.health.core.model.SyncState
+import com.unified.health.core.model.WatchModelMatcher
 import com.unified.health.core.model.WearableDevice
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -149,12 +150,22 @@ private fun DeviceDetailContent(
     ) {
         ElevatedCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                val watchModel = remember(device.vendor, device.name, device.model) { WatchModelMatcher.match(device) }
+                WatchImage(
+                    model = watchModel,
+                    size = 180.dp,
+                    interactive = true,
+                    revealKey = connected,
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                )
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Outlined.Watch, contentDescription = null, modifier = Modifier.size(40.dp))
-                    Spacer(Modifier.width(Spacing.md))
                     Column(Modifier.weight(1f)) {
                         Text(device.name, style = MaterialTheme.typography.titleLarge)
-                        Text(device.vendor.displayName, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(
+                            listOfNotNull(watchModel?.takeUnless { it.isGeneric }?.displayName, device.vendor.displayName).joinToString(" · "),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
                     }
                 }
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {

@@ -23,12 +23,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BatteryStd
-import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.automirrored.outlined.BluetoothSearching
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Stop
 import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.Watch
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
@@ -67,6 +65,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.unified.health.core.designsystem.component.ConnectionStatusChip
+import com.unified.health.core.designsystem.component.WatchImage
 import com.unified.health.core.model.CredentialFormat
 import com.unified.health.core.model.CredentialRequirement
 import com.unified.health.core.designsystem.component.LoadingState
@@ -76,6 +75,7 @@ import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.DiscoveredDevice
 import com.unified.health.core.model.SyncState
+import com.unified.health.core.model.WatchModelMatcher
 import com.unified.health.core.model.WearableDevice
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -259,16 +259,23 @@ private fun PairedDeviceCard(
     var confirmUnpair by remember { mutableStateOf(false) }
     val connected = device.connectionState == ConnectionState.Connected
     val busy = device.connectionState == ConnectionState.Connecting || device.connectionState == ConnectionState.Authenticating
+    val watchModel = remember(device.vendor, device.name, device.model) { WatchModelMatcher.match(device) }
 
     ElevatedCard(Modifier.fillMaxWidth().testTag("paired_${device.macAddress}")) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Outlined.Watch, contentDescription = null, modifier = Modifier.size(32.dp))
+                WatchImage(
+                    model = watchModel,
+                    size = if (connected) 88.dp else 56.dp,
+                    interactive = connected,
+                    revealKey = connected,
+                )
                 Spacer(Modifier.width(Spacing.md))
                 Column(Modifier.weight(1f)) {
                     Text(device.name, style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "${device.vendor.displayName} · ${device.macAddress}",
+                        listOfNotNull(watchModel?.takeUnless { it.isGeneric }?.displayName, device.vendor.displayName, device.macAddress)
+                            .joinToString(" · "),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -356,7 +363,10 @@ private fun PairedDeviceCard(
 private fun DiscoveredDeviceItem(device: DiscoveredDevice, onPair: () -> Unit) {
     OutlinedCard(Modifier.fillMaxWidth().testTag("discovered_${device.macAddress}")) {
         ListItem(
-            leadingContent = { Icon(Icons.Outlined.Bluetooth, contentDescription = null) },
+            leadingContent = {
+                val watchModel = remember(device.vendor, device.name) { WatchModelMatcher.match(device) }
+                WatchImage(model = watchModel, size = 48.dp)
+            },
             headlineContent = { Text(device.name) },
             supportingContent = {
                 val rssi = device.rssi
