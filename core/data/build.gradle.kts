@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.unifiedhealth.android.library)
     alias(libs.plugins.unifiedhealth.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -23,4 +24,8 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.health.connect.client)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.serialization.json)
+
+    // Races feed fetch (D-1107): lightest HTTP client, no existing network stack in the project.
+    implementation(libs.okhttp)
 }

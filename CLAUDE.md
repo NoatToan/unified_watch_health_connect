@@ -39,6 +39,6 @@ Check the result: a quiet Gradle run that produced no test-result XML did not ru
   DataStore, Health Connect, repository impls) · `core/ble` (scanner, GATT, `WearableDriver` contract)
   · `core/designsystem` (theme, components) · `core/demo` (virtual watches for debug/E2E) · `core/testing`
 - `driver/<brand>` — one module per vendor protocol; specs in `docs/protocols/`, evidence in `docs/re-evidence/`
-- `feature/{onboarding,home,activity,devices,profile}` — screens + ViewModels; depend on domain/designsystem only
+- `feature/{onboarding,home,activity,devices,profile,races}` — screens + ViewModels; depend on domain/designsystem only
 - Watch model recognition: `core/model/.../WatchModel.kt` (regex matcher) + generated `WatchCatalog.kt`;
   product images `core/designsystem/src/main/res/drawable-nodpi/watch_<id>.webp` via `scripts/gen_watch_catalog.py`

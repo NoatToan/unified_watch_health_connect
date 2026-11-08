@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -68,6 +69,7 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -83,6 +85,7 @@ import com.unified.health.core.designsystem.component.HealthBarChart
 import com.unified.health.core.designsystem.component.HealthRangeChart
 import com.unified.health.core.designsystem.component.LiveDot
 import com.unified.health.core.designsystem.component.LoadingState
+import com.unified.health.core.designsystem.component.RaceCard
 import com.unified.health.core.designsystem.component.RingSpec
 import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.component.SleepStageChart
@@ -99,6 +102,8 @@ import com.unified.health.core.designsystem.component.unit
 import com.unified.health.core.designsystem.theme.MetricValueTextStyle
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
+import com.unified.health.core.designsystem.util.launchInCustomTab
+import com.unified.health.core.domain.repository.RacesState
 import com.unified.health.core.domain.usecase.Highlight
 import com.unified.health.core.domain.usecase.Trend
 import com.unified.health.core.model.CaloriesSummary
@@ -110,6 +115,7 @@ import com.unified.health.core.model.HeartRateSummary
 import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.LiveHeartRate
 import com.unified.health.core.model.MetricAggregation
+import com.unified.health.core.model.Race
 import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.StepsSummary
 import com.unified.health.core.model.WatchModelMatcher
@@ -130,21 +136,25 @@ internal fun HomeRoute(
     onMetricClick: (HealthMetricType) -> Unit,
     onOpenDevices: () -> Unit,
     onOpenWorkouts: () -> Unit,
+    onOpenRaces: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val refreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     val live by viewModel.liveHeartRate.collectAsStateWithLifecycle()
     val liveMetrics by viewModel.liveMetrics.collectAsStateWithLifecycle()
+    val racesState by viewModel.racesState.collectAsStateWithLifecycle()
     HomeScreen(
         state = state,
         liveHeartRate = live,
         liveMetrics = liveMetrics,
+        racesState = racesState,
         isRefreshing = refreshing,
         onRefresh = viewModel::refresh,
         onMetricClick = onMetricClick,
         onOpenDevices = onOpenDevices,
         onOpenWorkouts = onOpenWorkouts,
+        onOpenRaces = onOpenRaces,
         onFeedCardsChanged = viewModel::setFeedCards,
         onMetricsViewModeChange = viewModel::setMetricsViewMode,
     )
@@ -161,11 +171,13 @@ internal fun HomeScreen(
     state: HomeUiState,
     liveHeartRate: LiveHeartRate? = null,
     liveMetrics: Set<HealthMetricType> = emptySet(),
+    racesState: RacesState = RacesState.Loading,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onMetricClick: (HealthMetricType) -> Unit,
     onOpenDevices: () -> Unit,
     onOpenWorkouts: () -> Unit = {},
+    onOpenRaces: () -> Unit = {},
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit = { _, _ -> },
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit = {},
 ) {
@@ -215,9 +227,11 @@ internal fun HomeScreen(
                     state = state,
                     liveHeartRate = liveHeartRate,
                     liveMetrics = liveMetrics,
+                    racesState = racesState,
                     onMetricClick = onMetricClick,
                     onOpenDevices = onOpenDevices,
                     onOpenWorkouts = onOpenWorkouts,
+                    onOpenRaces = onOpenRaces,
                     onFeedCardsChanged = onFeedCardsChanged,
                     onMetricsViewModeChange = onMetricsViewModeChange,
                     listState = listState,
@@ -234,9 +248,11 @@ private fun Summary(
     state: HomeUiState.Success,
     liveHeartRate: LiveHeartRate?,
     liveMetrics: Set<HealthMetricType>,
+    racesState: RacesState,
     onMetricClick: (HealthMetricType) -> Unit,
     onOpenDevices: () -> Unit,
     onOpenWorkouts: () -> Unit,
+    onOpenRaces: () -> Unit,
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit,
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit,
     listState: LazyListState,
@@ -275,6 +291,12 @@ private fun Summary(
             )
         }
         item { RingsCard(state.summary, onClick = { onMetricClick(HealthMetricType.CALORIES) }) }
+        // D-1105: "Giải chạy sắp tới" carousel — rendered only on a non-empty Success, never a
+        // visible empty/error placeholder, since the sibling data source may not be live yet.
+        val racesSuccess = racesState as? RacesState.Success
+        if (racesSuccess != null && racesSuccess.races.isNotEmpty()) {
+            item { RacesCarousel(races = racesSuccess.races, onOpenRaces = onOpenRaces) }
+        }
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 SectionHeader("All metrics", Modifier.weight(1f))
@@ -567,6 +589,35 @@ private fun RingsCard(summary: DailyHealthSummary, onClick: () -> Unit) {
                 RingLegend("Move", "${summary.calories.activeKcal} / ${summary.calories.goalKcal} kcal", colors.calories)
                 RingLegend("Exercise", "${summary.activeMinutes} / ${summary.activeMinutesGoal} min", colors.exercise)
                 RingLegend("Steps", "${summary.steps.count} / ${summary.steps.goal}", colors.steps)
+            }
+        }
+    }
+}
+
+/**
+ * "Giải chạy sắp tới" (D-1105): a horizontally-scrolling carousel of upcoming Vietnam races, right
+ * after [RingsCard] and before "All metrics" — the marketing/discovery spot, not buried in the feed.
+ * Each card opens its own `registrationUrl` in a Custom Tab directly (D-1105); "Xem tất cả" opens
+ * the full [onOpenRaces] list screen instead.
+ */
+@Composable
+private fun RacesCarousel(races: List<Race>, onOpenRaces: () -> Unit) {
+    val context = LocalContext.current
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            SectionHeader("Giải chạy sắp tới", Modifier.weight(1f))
+            TextButton(onClick = onOpenRaces, modifier = Modifier.testTag("races_see_all")) { Text("Xem tất cả") }
+        }
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(Spacing.md),
+            modifier = Modifier.testTag("races_carousel"),
+        ) {
+            items(races, key = { it.id }) { race ->
+                RaceCard(
+                    race = race,
+                    onClick = { launchInCustomTab(context, race.registrationUrl) },
+                    modifier = Modifier.width(300.dp).testTag("race_card_${race.id}"),
+                )
             }
         }
     }

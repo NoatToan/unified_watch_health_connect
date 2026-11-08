@@ -40,8 +40,9 @@ fun HomeTabContent(
     onMetricClick: (HealthMetricType) -> Unit,
     onOpenDevices: () -> Unit,
     onOpenWorkouts: () -> Unit,
+    onOpenRaces: () -> Unit,
 ) {
-    HomeRoute(onMetricClick = onMetricClick, onOpenDevices = onOpenDevices, onOpenWorkouts = onOpenWorkouts)
+    HomeRoute(onMetricClick = onMetricClick, onOpenDevices = onOpenDevices, onOpenWorkouts = onOpenWorkouts, onOpenRaces = onOpenRaces)
 }
 
 fun NavGraphBuilder.metricDetailScreen(onBack: () -> Unit, onShowAllData: (HealthMetricType) -> Unit) {

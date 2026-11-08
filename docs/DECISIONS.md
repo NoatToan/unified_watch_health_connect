@@ -1486,3 +1486,51 @@ kit/design system nào tải về được). Thay vào đó dùng skill nội b�
   **Hoãn tới khi agent Races (D-1105/1106/1107) xong** — cả hai đều đụng `core/designsystem` và
   `HomeScreen.kt`; làm polish pass song song dễ đụng diff. Thứ tự: Races xong trước (đang tạo card
   mới, cần polish áp dụng luôn từ đầu lên card đó thay vì làm 2 lần), polish pass sau.
+
+## Thực thi D-1105/1106/1107 (màn "Giải chạy") — D-1109
+
+- **D-1109** · 2026-11-08 · Các điểm chưa chốt cụ thể khi implement — **Chốt**
+  D-1105/1106/1107 đã chốt phạm vi/vị trí/thiết kế/cache; các điểm implementation cụ thể dưới đây
+  agent tự quyết vì không có trong 3 quyết định gốc:
+  1. **Module mới `feature:races`** (không nhét vào `feature:activity`) — `feature:activity` hiện chỉ
+     xử lý workout cá nhân (dữ liệu sync từ đồng hồ), còn Races là nội dung marketing từ nguồn ngoài,
+     bản chất khác hẳn; tách module riêng đúng tinh thần "one module per feature" đã có, build.gradle.kts
+     copy y hệt feature khác (`unifiedhealth.android.feature` convention plugin).
+  2. **Dependency mới**: `OkHttp 4.12.0` (dự án chưa có client HTTP nào, kotlinx.serialization đã có
+     sẵn version 1.12.0 nhưng plugin `kotlin-serialization` + lib `kotlinx-serialization-json` chưa
+     được áp cho `core/data` — thêm cả hai), `Coil 2.7.0` (`coil-compose`, dự án chưa load ảnh remote
+     bao giờ — chọn Coil vì là chuẩn de-facto cho Compose, nhẹ hơn Glide), `androidx.browser 1.8.0`
+     (Custom Tabs, dự án chưa có). `RaceCard`/`launchInCustomTab` đặt ở `core/designsystem` (không
+     phải từng feature module) vì cả Home lẫn `feature:races` đều cần y hệt — `core/designsystem` đã
+     `api(projects.core.model)` sẵn nên không phát sinh dependency mới giữa 2 feature module.
+  3. **`RaceCountdown` đặt ở `core/model`, không phải `core/domain`** — dù về bản chất giống style
+     `HighlightCalculator`/usecase khác (phép tính thuần, không gọi repository), `core/designsystem`
+     chỉ `api(projects.core.model)` chứ không phụ thuộc `core/domain` (feature mới được phép, xem
+     `AndroidFeatureConventionPlugin`); đặt ở `core/model` để `RaceCard` (designsystem) gọi trực tiếp
+     mà không phá quy ước "designsystem không biết domain".
+  4. **Lọc bỏ giải đã qua ở tầng repository** (`endDate ?: startDate < today` → loại), áp dụng chung
+     cho cả carousel Home lẫn `RacesScreen` đầy đủ — mục đích feature là đẩy đăng ký giải sắp/đang
+     diễn ra, giải đã xong không còn actionable; D-1105 nói "list đầy đủ" nhưng không nói giữ cả giải
+     cũ, nên hiểu "đầy đủ" = đầy đủ trong số giải còn liên quan. Nhờ lọc chung 1 chỗ, `RacesState`
+     (`Loading`/`Success`/`Empty`/`Error`) dùng được y hệt cho cả 2 màn hình.
+  5. **`registrationStatus`/`terrain` lạ hoặc thiếu** → mặc định `UNKNOWN`/`ROAD` (loại phổ biến nhất
+     trong feed) thay vì crash/loại bỏ cả race; CTA khi `UNKNOWN` hiện "Xem chi tiết" (không phải
+     "Đăng ký ngay" vì không chắc còn mở, cũng không phải "Đã đóng" vì không có bằng chứng đã đóng) —
+     card vẫn bấm được (mở `registrationUrl`), chỉ nhãn khác.
+  6. **Home pull-to-refresh refetch luôn cả Races** (không chỉ sync đồng hồ) — D-1107 nói "user pull-
+     to-refresh" không chỉ rõ màn nào; Home có cử chỉ pull-to-refresh sẵn, hợp lý refetch luôn Races
+     hiển thị ngay trên Home. `RacesScreen` riêng cũng có pull-to-refresh/nút "Thử lại" của chính nó.
+  7. **Test `RemoteRacesRepositoryTest`**: constructor 4 tham số (`scope`/`ioDispatcher` tường minh,
+     giống `DefaultLiveHealthRepository`) để test truyền `backgroundScope`/`Dispatchers.Unconfined`
+     thay vì `Dispatchers.IO` thật — nếu không, `withContext(Dispatchers.IO)` bên trong sẽ "biến mất"
+     khỏi `TestCoroutineScheduler` của `runTest`, khiến `advanceUntilIdle()`/`first{}` không bao giờ
+     thấy state cập nhật (đã tự kiểm chứng bằng 1 test chẩn đoán độc lập trước khi sửa). Dùng
+     `runCurrent()` chứ không phải `advanceUntilIdle()` để pump scheduler — thực nghiệm thấy
+     `advanceUntilIdle()` không chạy coroutine `launch` từ `init{}` trên `backgroundScope` trong phiên
+     bản coroutines-test của dự án (1.11.0), còn `runCurrent()` thì có (khớp với cách
+     `DefaultLiveHealthRepositoryTest` đã làm sẵn trong repo, không phải suy đoán mới).
+  8. **Test data xác nhận nguồn sống thật đã có data** lúc viết: `curl` trực tiếp
+     `https://noattoan.github.io/unified_health_service/races/latest.json` lúc 2026-11-08 trả về 200,
+     50 races (49 còn hạn), `imageUrl` null 100% — đúng như brief mô tả "most races currently have
+     imageUrl: null" — xác nhận gradient-by-terrain thật sự là trường hợp phổ biến, không phải giả
+     định.
