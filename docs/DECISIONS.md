@@ -1849,7 +1849,10 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   trực tiếp D-1115 (DeviceBanner Home copy style Devices) — làm xong cái này trước thì D-1115 copy
   theo sẽ tự động to theo, không cần sửa 2 lần.
 
-- **D-1131** · 2026-11-08 · Bố cục lại race card: ảnh rõ nét ở trên, nền blur màu ảnh ở dưới thay vì overlay+scrim — **Chốt**
+- **D-1132** · 2026-11-08 · Bố cục lại race card: ảnh rõ nét ở trên, nền blur màu ảnh ở dưới thay vì overlay+scrim — **Chốt**
+  (Đánh số lại từ D-1131 ban đầu vì trùng với D-1131 "Sửa đúng D-1128 — bỏ `fillBleed`" do agent/phiên
+  khác log song song cùng lúc — nội dung không đổi, chỉ đổi số để hết trùng, giống cách D-1130→D-1131
+  đã tự xử lý ở trên.)
   Sau khi thấy ảnh thật (D-1129) khá đẹp, user muốn đổi hướng bố cục thay vì ảnh làm nền full-bleed có
   scrim tối phủ chữ lên: (1) **Ảnh thật hiển thị rõ, không bị scrim**, nằm ở phần **trên** của card
   (dùng `ContentScale.Crop` cho gọn khung ảnh, không cần giữ nguyên tỉ lệ như D-1129 nữa vì giờ ảnh
@@ -1862,3 +1865,15 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   ứng blur, không cần tự viết fallback thủ công. Race **chưa có ảnh thật** (gradient theo terrain) thì
   giữ nguyên cách hiển thị cũ (gradient làm cả nền, không áp dụng bố cục 2 phần này) — chỉ race có
   `imageUrl` thật mới dùng layout mới.
+
+- **D-1132** · 2026-11-08 · Tắt scrub-theo-ngày trên mini chart ở Home, chỉ bật trong `MetricDetailScreen` — **Chốt**
+  Chart nhúng trong card "Metrics" trên Home (List mode, D-1073/1090) tái dùng
+  `HealthBarChart`/`HealthRangeChart` ở `core/designsystem/HealthCharts.kt` — cùng component đã có
+  drag-to-scrub xem giá trị từng điểm (D-1020). User không muốn scrub theo từng ngày hoạt động ngay
+  trên Home (chart quá nhỏ, dễ nhầm với thao tác bấm card để mở detail) — chỉ `MetricDetailScreen`
+  (sau khi bấm vào 1 chỉ số cụ thể) mới cho scrub xem chi tiết từng ngày. Thêm tham số bật/tắt scrub
+  (vd `scrubEnabled: Boolean = true`) vào `HealthBarChart`/`HealthRangeChart`, Home truyền `false`,
+  `MetricDetailScreen` giữ `true`. Cần tìm cách báo cho user biết "chart này không xem chi tiết từng
+  ngày được, bấm vào xem chi tiết đầy đủ" — agent tự chọn cách thể hiện hợp lý (có thể không cần thêm
+  gì ngoài việc tắt hẳn phản hồi scrub, miễn thao tác kéo trên Home không làm gì cả thay vì giả vờ
+  hoạt động rồi không hiện giá trị).
