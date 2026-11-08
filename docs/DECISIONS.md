@@ -893,3 +893,47 @@ batch khác nhau ở trên — "Gộp màn hình" và "Watch model images" — �
   nhưng muốn riêng app này tiếng Việt. Nguồn: fork investigation 2026-11-08 (0 `stringResource` nào
   trong code thật trước khi có quyết định này, chỉ có `app/src/main/res/values/strings.xml` với
   đúng 1 string).
+
+## Giao diện Home sau khi gộp — grid card, bottom nav animation, swipe, live dot (D-105x)
+
+User gửi 3 ảnh tham khảo (`~/Downloads/IMG_1001.png`, `IMG_1002.png`, `IMG_1003.jpg` — giao diện
+Health của một app vendor khác) làm reference về layout/animation, **không** tham khảo tính năng
+độc quyền của họ (Health Clovers, Emotional wellbeing... — những card này KHÔNG được copy, D-803
+vẫn áp dụng: chỉ lấy pattern UI chung, không lấy tên/thuật toán/tính năng gamification riêng của
+hãng khác). Việc implement các mục dưới đây **chờ** agent đang làm D-1010/1011/1020 (gộp
+Summary+Health, dời ring, thêm chart scrub) xong trước, vì cùng đụng `HomeScreen.kt` và nav host —
+tránh 2 agent sửa song song cùng file.
+
+- **D-1050** · 2026-11-08 · Layout dạng grid 2 cột cho Home sau khi gộp — **Tạm**
+  Khi có thiết bị đã kết nối: card ring full-width ở đầu (giữ `RingsCard` đã dời lên theo D-1011) +
+  thanh "Today's steps"-style ngay dưới, rồi tới grid 2 cột các card metric (mỗi card: tên chỉ số,
+  giá trị mới nhất to, 1 mini-visual nếu có — line chart nhỏ/route map/hypnogram thu nhỏ — giống bố
+  cục ảnh tham khảo). **Chỉ map vào các chỉ số app này thực sự có** (steps/calo/active-minutes đã
+  có trong ring, heart rate, sleep, SpO2, VO2max — mới thêm D-1000 —, workouts/exercise records);
+  KHÔNG tạo card giả cho Weight/Emotional wellbeing/Blood pressure vì app chưa thu thập các dữ liệu
+  này — để trống/không hiện card đó thay vì bịa. Agent implement tự quyết số cột/kích thước theo
+  Material 3, tự chọn chỉ số nào lên card riêng vs gộp vào pinned/highlights đã có.
+- **D-1051** · 2026-11-08 · Bottom navigation dạng pill, animation khi đổi tab — **Chốt**
+  Đổi bottom nav hiện tại (Material 3 `NavigationBar` tiêu chuẩn) sang dạng pill nổi giống ảnh tham
+  khảo: nền pill bo tròn cho toàn thanh, tab đang chọn có icon+label màu nhấn + nền pill nhỏ di
+  chuyển mượt (animate) theo tab khi đổi, tab khác chỉ icon xám. 4 tab sau khi gộp D-1010: Home
+  (Summary+Health), Activity, Devices, Profile.
+- **D-1052** · 2026-11-08 · Vuốt ngang để chuyển tab — **Chốt**
+  Bọc 4 màn hình top-level trong `HorizontalPager` (Compose Foundation), đồng bộ 2 chiều với bottom
+  nav: vuốt đổi trang thì pill nhảy theo, bấm pill thì pager animate-scroll sang trang đó.
+- **D-1053** · 2026-11-08 · Tắt gesture back-vuốt-cạnh mặc định của Android ở các tab cha — **Tạm**
+  Vì vuốt ngang giờ dùng để đổi tab (D-1052), gesture back-vuốt-từ-cạnh-trái mặc định của Android
+  (predictive back / gesture nav) phải bị vô hiệu hoá trên các màn top-level để khỏi đánh nhau với
+  `HorizontalPager`, nhưng vẫn phải hoạt động bình thường ở các màn con (MetricDetailScreen,
+  DeviceDetailScreen, WorkoutDetailDestination...). Cách làm gợi ý (agent tự xác nhận khi code):
+  `View.setSystemGestureExclusionRects()` loại trừ vùng cạnh trái/phải khỏi gesture hệ thống ngay
+  trên Compose host của 4 màn top-level; không ảnh hưởng máy dùng nút back 3-nút (không có edge
+  gesture để tắt). Đánh dấu Tạm vì cần test trên máy thật ở cả 2 chế độ điều hướng.
+- **D-1054** · 2026-11-08 · Dot xanh/xám cho dữ liệu đang live — **Chốt**
+  Các chỉ số có "live mode" (đọc liên tục khi đang kết nối, ví dụ heart rate) hiện dot màu xanh lá
+  cạnh tên khi đang thực sự nhận dữ liệu live từ thiết bị; dot màu xám khi không live (giá trị cũ/
+  cache, không có live stream đang chạy cho đúng chỉ số đó — khác với "thiết bị có đang connect hay
+  không" vì từng chỉ số có thể live độc lập nhau). Dùng lại `core/domain/repository/LiveHealthRepository.kt`
+  + `core/data/.../live/DefaultLiveHealthRepository.kt` đã có sẵn khái niệm "live" trong kiến trúc —
+  expose state live theo từng metric (không chỉ 1 cờ live chung) nếu repository hiện tại chưa làm
+  vậy, rồi bind dot màu vào đúng state đó trên mỗi card Home.
