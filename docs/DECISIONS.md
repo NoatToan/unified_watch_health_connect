@@ -1780,3 +1780,14 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   `driver:*`) đổi từ 1 tham số/`{}` sang `{ fraction, stage -> ... }` hoặc `{ _, _ -> }` vì SAM lambda
   phải khớp đúng số tham số của method trừu tượng (default value trên interface không miễn trừ số
   tham số bắt buộc khi convert từ lambda).
+
+- **D-1128** · 2026-11-08 · D-1117 (carousel edge-to-edge) vẫn chưa đúng — lề đầu lệch + vẫn còn margin ở cuối — **Chốt**
+  User test bản cài thật: cách làm trước (`Modifier.fillBleed` tự viết + `contentPadding` trên
+  `LazyRow`) chưa đạt — (1) lề trái lúc đứng yên của card đầu tiên **không khớp** với lề nội dung
+  chuẩn của Home (các section khác như `RingsCard`/"Metrics" đang thẳng hàng với nhau, carousel giải
+  chạy bị lệch khỏi hàng đó). (2) Cuộn hết tới card cuối vẫn còn 1 khoảng margin thừa ở mép phải,
+  chưa thật sự "edge-to-edge". Yêu cầu agent: đo lại chính xác lề chuẩn Home đang dùng ở chỗ khác
+  (padding của `LazyColumn`/item khác, không đoán lại từ đầu), đảm bảo card đầu carousel thẳng hàng
+  pixel-perfect với mép trái của card "Metrics" ngay bên dưới nó lúc đứng yên, và card cuối cùng khi
+  cuộn hết phải chạm sát mép phải màn hình (trừ đúng phần `contentPadding` cuối cùng = lề chuẩn, không
+  thừa thêm margin nào khác chồng lên).
