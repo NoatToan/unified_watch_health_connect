@@ -7,6 +7,7 @@ import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.WearableVendor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.emptyFlow
 
 /**
  * A link to the single active wearable: GATT connect → (bond) → vendor handshake/auth
@@ -27,6 +28,10 @@ interface DeviceConnection {
 
     /** Live heart rate of the connected device, when [DeviceCapability.LIVE_HEART_RATE] is present. */
     val liveHeartRate: Flow<HealthRecord.HeartRate>
+
+    /** Battery percent of the connected device every time its session gets a fresh reading, independent
+     *  of [readDeviceInfo] (D-1001). Default: no such telemetry. */
+    val batteryUpdates: Flow<Int> get() = emptyFlow()
 
     suspend fun connect(macAddress: String, vendor: WearableVendor): Result<Unit>
     suspend fun disconnect()

@@ -139,6 +139,35 @@ class FitHealthMapperTest {
     }
 
     @Test
+    fun `user_metrics and user_profile vo2_max become Vo2Max records at the last seen timestamp`() {
+        val bytes = FitFileBuilder()
+            .define(0, FitHealthMapper.MESG_MONITORING, u32(253), enum(5), u32(3))
+            .record(0, t0, 6, 1000)
+            .define(1, FitHealthMapper.MESG_USER_METRICS, u8(7))
+            .record(1, 52)
+            .define(2, FitHealthMapper.MESG_USER_PROFILE, u8(7))
+            .record(2, 48)
+            .build()
+        val records = FitHealthMapper.map(FitDecoder.decode(bytes), ZoneOffset.UTC, DailyActivityAccumulator())
+        assertEquals(
+            listOf(HealthRecord.Vo2Max(at(t0), 52), HealthRecord.Vo2Max(at(t0), 48)),
+            records.filterIsInstance<HealthRecord.Vo2Max>(),
+        )
+    }
+
+    @Test
+    fun `vo2_max outside the plausible human range is dropped`() {
+        val bytes = FitFileBuilder()
+            .define(0, FitHealthMapper.MESG_MONITORING, u32(253), enum(5), u32(3))
+            .record(0, t0, 6, 1000)
+            .define(1, FitHealthMapper.MESG_USER_METRICS, u8(7))
+            .record(1, 150) // not the 0xFF invalid sentinel, but not a believable VO2max either
+            .build()
+        val records = FitHealthMapper.map(FitDecoder.decode(bytes), ZoneOffset.UTC, DailyActivityAccumulator())
+        assertTrue(records.filterIsInstance<HealthRecord.Vo2Max>().isEmpty())
+    }
+
+    @Test
     fun `timestamp_16 expands across a 16 bit rollover`() {
         assertEquals(0x1_0005L, FitHealthMapper.expandTimestamp16(0xFFF0L, 0x0005L))
         assertEquals(0xFFF8L, FitHealthMapper.expandTimestamp16(0xFFF0L, 0xFFF8L))

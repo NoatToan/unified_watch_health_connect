@@ -42,6 +42,13 @@ sealed interface HealthRecord {
 
     data class Sleep(val start: Instant, val end: Instant, val stage: SleepStage) : HealthRecord
 
+    /**
+     * Device-computed VO2max estimate (mL/kg/min), read back as-is from the watch's own FIT export
+     * (D-1000). Never re-derived from raw sensor data here — that would re-implement a vendor's
+     * proprietary fitness algorithm (Firstbeat etc.), which is explicitly out of scope (D-803).
+     */
+    data class Vo2Max(val time: Instant, val value: Int) : HealthRecord
+
     data class Workout(
         val start: Instant,
         val end: Instant,

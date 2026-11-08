@@ -27,6 +27,13 @@ interface WearableSession {
 
     val liveHeartRate: Flow<HealthRecord.HeartRate> get() = emptyFlow()
 
+    /**
+     * Battery percent (0..100) every time the session gets a fresh on-device reading outside of
+     * [readDeviceInfo] (e.g. periodic polling). Lets the caller keep stored battery info fresh
+     * without re-running [readDeviceInfo] (D-1001). Default: no such telemetry.
+     */
+    val batteryUpdates: Flow<Int> get() = emptyFlow()
+
     /** Releases protocol resources. Must not throw; the GATT link is closed by the caller. */
     suspend fun close()
 }

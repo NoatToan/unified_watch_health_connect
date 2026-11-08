@@ -937,3 +937,53 @@ tránh 2 agent sửa song song cùng file.
   + `core/data/.../live/DefaultLiveHealthRepository.kt` đã có sẵn khái niệm "live" trong kiến trúc —
   expose state live theo từng metric (không chỉ 1 cờ live chung) nếu repository hiện tại chưa làm
   vậy, rồi bind dot màu vào đúng state đó trên mỗi card Home.
+- **D-1055** · 2026-11-08 · Hai quyết định nhỏ khi thực thi D-1010/1011/1020 — **Chốt**
+  (1) Bỏ hẳn nút "Show all health data" (`onBrowseAll`) khỏi `HomeScreen.kt`/`HomeNavigation.kt`/
+  `UnifiedHealthNavHost.kt` thay vì "repoint" sang Home — sau khi gộp, nút này nằm ngay trên màn
+  Home và sẽ trỏ về chính nó (no-op gây rối UI), nên không còn lý do giữ. Grep xác nhận không có
+  nơi nào khác (feature khác) tham chiếu `onBrowseAll`/`FeedDestination`/`TopLevelDestination.HEALTH`
+  trước khi xoá. (2) Khi gộp `FeedViewModel` vào `HomeViewModel`, lọc bỏ id `FeedCardId.ACTIVITY_RINGS`
+  khỏi danh sách hiển thị trong dialog "Edit cards" (`feature/home` only, filter tại chỗ dùng —
+  không sửa schema `UserPreferences`/`FeedCardId` ở `core/model` vì D-1010 ghi rõ "chỉ ảnh hưởng
+  feature/home"); card Activity rings giờ cố định ngay sau `DeviceBanner` (D-1011) nên không còn
+  cần một vị trí trong `feedCardOrder` nữa — id cũ trong dữ liệu đã lưu của người dùng cũ chỉ bị bỏ
+  qua (`mapNotNull`), không gây lỗi.
+  Lưu ý cho người review: `app/src/androidTest/kotlin/com/unified/health/e2e/*.kt` (DemoDataE2ETest,
+  StandardWatchE2ETest, ZeppWatchE2ETest, GarminWatchE2ETest, UserJourneyE2ETest) vẫn còn tham chiếu
+  tag cũ (`nav_HEALTH`, `feed_list`, `card_ACTIVITY_RINGS`) từ trước khi gộp — ngoài phạm vi
+  android-coder (chỉ build `testDebugUnitTest` + `assembleDebug`, không chạy `connectedAndroidTest`/
+  `scripts/e2e.sh`); cần một lượt sửa riêng bởi `e2e-flows` theo quy ước CLAUDE.md trước khi chạy E2E.
+
+## Garmin D-1000/D-1001/D-1002 — implementation (D-106x)
+
+- **D-1060** · 2026-11-08 · VO2 max field number — **Tạm**
+  Triển khai đúng theo D-1000: `FitHealthMapper.MESG_USER_METRICS = 140`, `MESG_USER_PROFILE = 42`,
+  cả hai đọc field số 7 (`vo2_max`) dạng số nguyên thường (không scale), lọc theo khoảng hợp lý
+  10..95 mL/kg/min để loại giá trị rác (không phải sentinel 0xFF — FIT đã tự lọc sentinel ở tầng
+  decode). Record gắn timestamp bằng `lastTimestamp` của message trước đó trong file (hai message
+  này thường không tự mang field 253). Field number 7 và việc `user_profile` (42) thực sự có mang
+  `vo2_max` hay không là suy đoán [Ext] chưa có file FIT thật xác minh —
+  `TODO(garmin-protocol): NEEDS-REAL-WATCH` giữ trong `FitHealthMapper.mapVo2Max`. Không cần đổi gì
+  ở `GarminFileSync`/`GarminFitFileType`: METRICS (subType 44) đã được liệt kê và tải về từ trước,
+  chỉ là chưa ai parse message 140/42 bên trong.
+- **D-1061** · 2026-11-08 · Battery poll → Room qua `batteryUpdates` Flow — **Chốt**
+  Thêm `WearableSession.batteryUpdates: Flow<Int>` (mặc định `emptyFlow()`, giống pattern
+  `liveHeartRate` đã có) + `DeviceConnection.batteryUpdates` (mặc định rỗng) +
+  `MultiVendorDeviceConnection.batteryUpdates` (flatMapLatest theo session đang active). Chỉ
+  `GarminSession` override thật: mỗi tick 10 phút của `startBatteryPolling()` vẫn gửi 5023 như cũ
+  (không đổi hành vi/test cũ) nhưng giờ cũng tự đọc SIG 0x180F ngay trong tick đó; giá trị đọc được
+  (SIG hoặc 5023 giải mã được, qua `onMessage`) đều `tryEmit` vào `MutableSharedFlow<Int>(replay=1)`.
+  `DefaultWearableDeviceRepository` collect flow này trong `init{}` (CoroutineScope riêng của
+  repository, không cancel — cùng kiểu với scope nội bộ của `MultiVendorDeviceConnection`), ghi
+  bằng `PairedDeviceDao.updateBattery(id, battery)` mới (chỉ update cột battery, không đụng
+  firmware/model như `updateInfo`) với `deviceId = connection.activeAddress.value` (bằng
+  `macAddress`, đúng bằng `entity.id` theo cách `pair()` tạo). Hệ quả: pin không còn treo `null`
+  tới khi disconnect/reconnect nếu lần đọc lúc connect() thất bại — lần poll kế tiếp (tối đa 10
+  phút sau) sẽ tự điền. Không sửa `Huawei/Standard/Zepp/Coros Session` vì `batteryUpdates` có default
+  rỗng, không bắt buộc override.
+- **D-1062** · 2026-11-08 · D-1002 (`feature/sleep`) — xác nhận đã dọn sạch — **Chốt**
+  Kiểm tra lại: không còn thư mục `feature/sleep` nào trên đĩa (ngoài thư mục decompile Zepp không
+  liên quan ở `docs/re-evidence/`), không có dòng nào nhắc `sleep` trong `settings.gradle.kts` hay
+  `app/build.gradle.kts`, và `UnifiedHealthNavHost.kt` hiện tại không có route/import nào liên quan
+  `SleepScreen`/`navigateToSleep`. D-808 đã áp dụng đầy đủ từ trước — không có gì để xoá thêm ở
+  đợt này; nghi ngờ trong D-1002 (lo sợ bị merge revert) không xảy ra trên nhánh hiện tại.

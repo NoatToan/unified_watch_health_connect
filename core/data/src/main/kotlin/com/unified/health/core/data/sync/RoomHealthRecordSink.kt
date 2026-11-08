@@ -64,6 +64,8 @@ internal class RoomHealthRecordSink(
                 }
                 is HealthRecord.HeartRateVariability ->
                     samples += point(SampleType.HRV, record.time.toEpochMilli(), record.milliseconds.toDouble())
+                is HealthRecord.Vo2Max ->
+                    samples += point(SampleType.VO2_MAX, record.time.toEpochMilli(), record.value.toDouble())
                 is HealthRecord.Workout -> workouts += WorkoutEntity(
                     deviceId = deviceId,
                     startEpochMs = record.start.toEpochMilli(),

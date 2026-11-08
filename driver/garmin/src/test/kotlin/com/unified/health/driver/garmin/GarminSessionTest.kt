@@ -28,6 +28,7 @@ import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u32
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u8
 import com.unified.health.driver.garmin.transport.MultiLinkRegistrationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -339,6 +340,27 @@ class GarminSessionTest {
         testScheduler.advanceTimeBy(GarminSession.BATTERY_POLL_INTERVAL_MS + 1)
         testScheduler.runCurrent()
         assertEquals("ff00ffffffff", watch.sent(GfdiMessageId.BATTERY_STATUS).single().payload.toHex())
+        session.close()
+    }
+
+    @Test
+    fun `every successful battery poll result is published on batteryUpdates`() = runTest {
+        val watch = FakeGarminWatch()
+        val session = GarminSession.open(watch.gatt, config())
+        val updates = mutableListOf<Int>()
+        val collector = launch { session.batteryUpdates.toList(updates) }
+
+        // SIG 0x180F is primary: a plain GATT read on the tick publishes immediately.
+        testScheduler.advanceTimeBy(GarminSession.BATTERY_POLL_INTERVAL_MS + 1)
+        testScheduler.runCurrent()
+        assertEquals(listOf(81), updates)
+
+        // The watch's own 5023 reply (whenever it lands) is published too (D-1001).
+        watch.send(GfdiMessageId.BATTERY_STATUS, "10aa4a000000".hexToBytes()) // status NEW, 74 %
+        testScheduler.runCurrent()
+        assertEquals(listOf(81, 74), updates)
+
+        collector.cancel()
         session.close()
     }
 

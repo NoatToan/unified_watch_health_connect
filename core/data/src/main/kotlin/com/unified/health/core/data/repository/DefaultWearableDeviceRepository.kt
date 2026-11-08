@@ -20,9 +20,13 @@ import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.SyncState
 import com.unified.health.core.model.WearableDevice
 import com.unified.health.core.model.WearableVendor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import java.security.SecureRandom
 import java.time.Instant
 import javax.inject.Inject
@@ -46,6 +50,19 @@ class DefaultWearableDeviceRepository @Inject constructor(
 
     /** Bumped on every credential change so [pairedDevices] re-reads stored keys. */
     private val credentialsVersion = MutableStateFlow(0)
+
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    init {
+        // Every battery reading a session gets outside of the one-time connect() read must reach
+        // Room too (D-1001), so a watch whose connect-time SIG 0x180F read failed/returned null is
+        // no longer stuck showing a stale/null battery until the next disconnect/reconnect.
+        scope.launch {
+            connection.batteryUpdates.collect { percent ->
+                connection.activeAddress.value?.let { deviceId -> dao.updateBattery(deviceId, percent) }
+            }
+        }
+    }
 
     override val pairedDevices: Flow<List<WearableDevice>> =
         combine(dao.observeAll(), connection.state, connection.activeAddress, connection.capabilities, credentialsVersion) { entities, state, active, capabilities, _ ->
