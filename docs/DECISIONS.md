@@ -1312,3 +1312,10 @@ User thấy màn chi tiết workout hiện tại ("Workout detail" theo D-804) q
   text cho Weight (ngoài phạm vi brief ban đầu, cần bổ sung sau). Việc implement (wire trend line theo
   bảng, thêm section "Về chỉ số này" vào `MetricDetailScreen`) để sau khi agent workout-detail (đang
   chạy, cũng đụng `HealthCharts.kt`) xong — tránh đụng file.
+
+- **D-1098** · 2026-11-08 · Chip device trong header (D-1083) dùng hiệu ứng xoay-vào 3D giống `WatchImage` — **Chốt**
+  User thấy hiệu ứng fade/scale hiện tại (D-1083/1088) của chip tên+ảnh thiết bị trong header (khi
+  scroll) chưa đẹp — yêu cầu đổi sang hiệu ứng "xoay xoay" giống bên Devices. Đây chính là hiệu ứng 3D
+  giả lập đã có sẵn ở `WatchImage` (D-803, 2026-11-08 — `rotationY` từ -90° khi "lật vào" lúc
+  `revealKey` đổi + nghiêng phối cảnh khi kéo). Dùng lại đúng component/kiểu animation đó cho chip
+  trong header thay vì tự viết fade/scale riêng — đồng bộ ngôn ngữ hình ảnh với Devices.
