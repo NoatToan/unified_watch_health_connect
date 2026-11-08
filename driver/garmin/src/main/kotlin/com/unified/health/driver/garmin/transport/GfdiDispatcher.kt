@@ -4,11 +4,14 @@ import android.util.Log
 import com.unified.health.core.ble.driver.WearableProtocolException
 import com.unified.health.core.ble.gatt.GattException
 import com.unified.health.core.ble.protocol.MalformedPayloadException
+import com.unified.health.driver.garmin.auth.GarminAuthCrypto
+import com.unified.health.driver.garmin.auth.GarminAuthMessages
 import com.unified.health.driver.garmin.codec.Cobs
 import com.unified.health.driver.garmin.codec.CobsFrameAccumulator
 import com.unified.health.driver.garmin.codec.GfdiAck
 import com.unified.health.driver.garmin.codec.GfdiMessage
 import com.unified.health.driver.garmin.codec.GfdiMessageId
+import com.unified.health.driver.garmin.codec.GfdiPacketBudget
 import com.unified.health.driver.garmin.codec.GfdiStatus
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
@@ -56,9 +59,22 @@ internal class GfdiDispatcher(
     private val pending = ConcurrentHashMap<Int, CompletableDeferred<GfdiAck>>()
     private val accumulator = CobsFrameAccumulator()
 
-    /** Largest message the watch accepts (from 5024); unknown until the handshake. */
+    /**
+     * Largest GFDI packet the watch accepts (from 5024). This is a *link* budget, not a payload
+     * size; [maxPayloadSize] converts it using the vendor's COBS/framing math.
+     */
     @Volatile
     var maxPacketSize: Int = Int.MAX_VALUE
+
+    /**
+     * Set after Garmin Auth's 5111; every GFDI frame is then XXTEA-wrapped (`ss2/p`, `us2/b.g` [V]).
+     * The ACK for 5111 itself is sent unencrypted, matching `ct2/f.java:84`.
+     */
+    @Volatile
+    var frameCipher: GarminAuthCrypto.GarminSecureSession? = null
+
+    /** Usable GFDI payload after COBS and framing overhead (§2, `us2/b.java:221-235`). */
+    val maxPayloadSize: Int get() = GfdiPacketBudget.usablePayload(maxPacketSize, encrypted = frameCipher != null)
 
     fun start(): Job = scope.launch {
         try {
@@ -89,18 +105,45 @@ internal class GfdiDispatcher(
     }
 
     private suspend fun send(message: GfdiMessage) {
-        val encoded = message.encode()
-        if (encoded.size > maxPacketSize) {
-            throw WearableProtocolException("Message ${message.id} (${encoded.size} bytes) exceeds the watch limit of $maxPacketSize")
+        val budget = maxPayloadSize
+        if (message.payload.size > budget) {
+            throw WearableProtocolException(
+                "Message ${message.id} (${message.payload.size}-byte payload) exceeds the watch's usable payload " +
+                    "of $budget bytes (maxPacketSize $maxPacketSize)",
+            )
         }
-        writeLock.withLock { stream.write(Cobs.frame(encoded)) }
+        val frame = message.encode()
+        val cipher = frameCipher
+        val bytes = if (cipher == null || isSecureSessionAck(message)) frame else cipher.encrypt(frame)
+        writeLock.withLock { stream.write(Cobs.frame(bytes)) }
+    }
+
+    /** The 5111 ACK is sent in clear; the session cipher starts with the next frame (`ct2/f.java:84`). */
+    private fun isSecureSessionAck(message: GfdiMessage): Boolean {
+        if (message.id != GfdiMessageId.ACK || message.payload.size < 2) return false
+        val original = (message.payload[0].toInt() and 0xFF) or ((message.payload[1].toInt() and 0xFF) shl 8)
+        return original == GarminAuthMessages.SECURE_SESSION
     }
 
     private suspend fun handleFrame(frame: ByteArray) {
-        val message = try {
-            GfdiMessage.decode(Cobs.decode(frame))
+        val raw = try {
+            Cobs.decode(frame)
         } catch (e: WearableProtocolException) {
-            Log.w(TAG, "Dropping corrupt GFDI frame (${frame.size} bytes): ${e.message}")
+            Log.w(TAG, "Dropping corrupt GFDI COBS frame (${frame.size} bytes): ${e.message}")
+            return
+        }
+        val plain = frameCipher?.let { cipher ->
+            try {
+                cipher.decryptFrame(raw)
+            } catch (e: Exception) {
+                Log.w(TAG, "Dropping frame that failed session decryption: ${e.message}")
+                return
+            }
+        } ?: raw
+        val message = try {
+            GfdiMessage.decode(plain)
+        } catch (e: WearableProtocolException) {
+            Log.w(TAG, "Dropping corrupt GFDI frame (${plain.size} bytes): ${e.message}")
             return
         }
         if (message.id == GfdiMessageId.ACK) {

@@ -146,7 +146,10 @@ Native lib:
 ### 3.2 MTU [V]
 - `pj2/g.java:18`: `requestMtu(515)`.
 - Payload tối đa của một gói ML là `MTU_payload − 1` (trừ 1 byte handle), hoặc `−2` nếu dùng chế độ reliable (`ml2/l.java:210-212`).
-- GFDI tự chia khung theo `maxPacketSize` mà thiết bị báo trong 5024 (`at2/a.java:481`, `us2/b.java:e()`).
+- `maxPacketSize` mà thiết bị báo trong 5024 (`at2/a.java:481`) là **ngân sách của link**, không phải payload GFDI dùng được. Vendor tính (`us2/b.java:221-235`):
+  - `usable = n - ceil(n/254) - 8` (`ceil(n/254)` là overhead COBS, 8 byte framing);
+  - nếu phiên đang mã hoá XXTEA: trừ 18 byte rồi làm tròn **xuống bội số 4**, tức `usable = floor((n - ceil(n/254) - 18) / 4) * 4`.
+  Nguồn: `docs/analysis/GARMIN_CONNECTION_ANALYSIS.md` §2.
 
 ### 3.3 Multi-Link (ML): kênh lệnh trên handle 0 [V]
 Mọi lệnh ML là little-endian. `clientId` là u64, Garmin Connect dùng **`client_uuid = 0x01`** (`assets/client_config.xml`).
@@ -213,8 +216,8 @@ Mọi lệnh ML là little-endian. `clientId` là u64, Garmin Connect dùng **`c
 
 4. Bật notify (ghi CCCD) cho `6A4E281x`.
 5. Ghi `CLOSE_ALL` (`00 05 clientId 0000`), chờ resp `0x06`.
-6. `REGISTER` serviceId **4 (REGISTRATION)**, flags 0, nhận handle của registration service.
-7. Hỏi "info pages" qua handle đó: ghi `[handle][pageType]`, với pageType 0..5 (`ml2/o.java`), để biết danh sách dịch vụ thiết bị hỗ trợ. Có retry 5 lần, timeout 1 giây/trang.
+6. `REGISTER` serviceId **4 (REGISTRATION)**, flags 0, nhận handle của registration service. Bước này chạy trên **mọi kết nối**, trước `REGISTER(1)`, không phải chỉ sau khi `REGISTER(1)` trả REJECTED.
+7. Hỏi "info pages" qua handle đó: ghi `[handle][pageType]`, với 6 pageType 0..5 (`ml2/o.java`), để biết danh sách dịch vụ thiết bị hỗ trợ. Timeout 1 s/trang, tối đa 5 lần thử, tổng 20 s (`ml2/h0.java:101-140`).
 8. `REGISTER` serviceId **1 (GFDI)**, flags `2` nếu có MLR. Nếu status=2 (PENDING_AUTH) thì chờ tối đa 30 giây (`nl2/d.java:224-231`).
 9. Mở stream GFDI trên handle được cấp.
 
@@ -229,7 +232,7 @@ Mọi lệnh ML là little-endian. `clientId` là u64, Garmin Connect dùng **`c
 13. **Thiết bị → 5011/5012 FIT** (connectivity/sport/audio/segment capabilities). App phản hồi FIT capabilities và đặt thêm bit 6, 8, 52 (`at2/a.java:283-342`, `zs2.h.b`).
     Khi xong thì log "Handshake complete".
 14. **Protobuf 5043**: `Smart{ core_service(13) { FeatureCapabilitiesRequest } }`, nhận `FeatureCapabilitiesResponse` (`rs2/i.java:186-231`).
-15. Khởi động các data handler: CurrentTime, Sync, File, Protobuf, Battery… **Thiết bị → 5052 Current Time request**. App trả `4 byte đầu của request (lặp lại) | now−631065600 (giây FIT epoch 1989-12-31) | tzOffset s | nextDST transition…` (`vs2/a.java:333-347`). Hoặc app chủ động gửi **5026 Set Device Settings** dạng TLV (tag 1 thời gian, 2 DST, 3 tzOffset, 4/5 DST transitions) (`vs2/a.java:237-270`).
+15. Khởi động các data handler: CurrentTime, Sync, File, Protobuf, Battery… **Time sync (vendor)**: nếu 5050 flags có bit 71, app gửi **5030 `TIME_UPDATED` (16)** rồi chờ **5 s** để watch gửi **5052**; khi nhận 5052 app trả `4 byte đầu của request (lặp lại) | now−631065600 (giây FIT epoch 1989-12-31) | tzOffset s | nextDST transition…` (`vs2/a.java:333-347`). Nếu bit 71 không bật, app chủ động gửi **5026 Set Device Settings** dạng TLV (tag 1 time, 2 DST, 3 tzOffset, 4/5 transitions) thay vì chờ 5052 (`vs2/a.java:237-312`, `vs2/l.java:96-100`).
 16. App gửi **5030 System Event** `[eventId, 0]` (`vs2/l.java:96-100`), ví dụ `HANDSHAKE_COMPLETE (8)`, `SYNC_COMPLETE (0)`, `PAIR_START (3)`, `PAIR_COMPLETE (4)`, `TIME_UPDATED (16)`, `HOST_DID_ENTER_FOREGROUND (6)` (`vs2/k.java`).
 17. **Thiết bị → 5037 Sync Request** (`type u8: 0 MANUAL, 1 INVISIBLE, …; len u8; bitmask kiểu file`), hoặc 5027 Queued Download, hoặc 5009 File Ready. App bắt đầu đồng bộ (`vs2/i.java:200-300`).
 
@@ -382,7 +385,7 @@ Bộ tin 5101–5112 (`ss2/c.java:152-158`, `:637-845`). Cơ chế mô phỏng l
    - Có `6A4E2800`: dùng Multi-Link. Notify `6A4E281x`, ghi `6A4E282x`. Gửi `CLOSE_ALL`, rồi `REGISTER(4)` và đọc info pages, rồi `REGISTER(1, flags=0)` (**không xin reliable**, để né MLR). Lấy handle.
    - Ngược lại: dùng dịch vụ GFDI dedicated (`6A4E2401`+`6A4ECD28`/`6A4E4C80`, hoặc `9B012401`+`4ACBCD28`/`DF334C80`).
 5. Cài COBS, khung `len|id|payload|crc16(FIT)`, ACK 5000. Mọi request từ thiết bị **phải được ACK**, nếu không thiết bị sẽ retry rồi ngắt.
-6. Bắt tay: nhận 5024 → ACK + host info (protocol 113 cho an toàn); nhận 5050 → ACK + gửi 5050 bitmask; trả FIT capabilities (5011/5012); trả lời 5052 thời gian; gửi 5030 `HANDSHAKE_COMPLETE (8)`. Trả `UNKNOWN_OR_NOT_SUPPORTED (2)` cho mọi tin chưa hỗ trợ.
+6. Bắt tay: nhận 5024 → ACK + host info (protocol 113 cho an toàn); nhận 5050 → ACK + gửi 5050 bitmask; trả FIT capabilities (5011/5012); time sync: nếu bit 71 bật gửi 5030 `TIME_UPDATED` rồi chờ 5052 trong 5 s, nếu tắt gửi 5026 TLV; gửi 5030 `HANDSHAKE_COMPLETE (8)`. Trả `UNKNOWN_OR_NOT_SUPPORTED (2)` cho mọi tin chưa hỗ trợ.
 7. Đồng bộ: gửi 5030 hoặc chờ 5037; tải file index 0 → parse thư mục → 5002 từng file FIT_TYPE_4/32/49/44 → nhận 5004 → ghép file → parse bằng **FIT SDK** (Garmin, công khai) → ghi vào DB và/hoặc Health Connect. Đặt cờ archive (5008) **chỉ khi** bạn chắc không cần Garmin Connect nữa.
 8. Realtime HR (tuỳ chọn): characteristic dedicated `6A4E2501`, hoặc ML service 6 (REAL_TIME_HR), hoặc bật trên đồng hồ "Broadcast Heart Rate" rồi dùng **Heart Rate Profile chuẩn (0x180D)**. Chi tiết ở §6.2.1.
    - **Đã triển khai trong driver** (`GarminLiveHeartRate`): thử lần lượt `6A4E2501` → ML service 6 → `0x2A37`, tắt nguồn khi không còn ai xem (§6.2.1). Payload realtime HR đã giải mã [V]; **chưa kiểm chứng trên đồng hồ thật**.
@@ -391,7 +394,7 @@ Bộ tin 5101–5112 (`ss2/c.java:152-158`, `:637-845`). Cơ chế mô phỏng l
 - [V] Multi-Link: `6A4E2800-667B-11E3-949A-0800200C9A66`, `6A4E2810..2819` (notify), `6A4E2820..2829` (write). Lệnh ML 0x00/0x01/0x05/0x06; service ID 1 (GFDI), 4 (REGISTRATION).
 - [V] GFDI dedicated: `6A4E2401` + `6A4ECD28`/`6A4E4C80`; `9B012401-BC30-CE9A-E111-0F67E491ABDE` + `4ACBCD28-7425-868E-F447-915C8F00D0CB`/`DF334C80-E6A7-D082-274D-78FC66F85E16`.
 - [V] Tin: 5000, 5024, 5050, 5011/5012, 5052, 5030, 5037, 5031, 5002, 5004, 5054, 5008, 5043/5044 (FeatureCapabilities qua core_service=13).
-- [I] Cần thêm trong thực tế: 5023 (pin), 5026 (set time), 5009/5027 (file ready, queued download).
+- [V] Đã giải mã thêm: 5023 (pin, §10.3), 5026 (set time). [I] Còn cần capture: 5009/5027 (file ready, queued download).
 
 **Rủi ro**
 - Firmware từ chối `clientId` lạ trên ML (REJECTED/PENDING_AUTH). **Chưa kiểm chứng.** Có thể thử `clientId=0x01` (giả làm Garmin Connect, chỉ trên thiết bị của bạn) hoặc một ID khác.
@@ -465,7 +468,7 @@ Mã hoá: `bitmask[ordinal/8] |= (1 << (ordinal%8))`. Thiết bị gửi `[byteC
 | 46 | SPORT_FITNESS_EQUIPMENT | 88 | HTTP_RAW_RESOURCE_REQUEST |
 | 47 | SPORT_SWIMMING | 89–93 | SAMD, SYNC_2, NAV_SYNC, RT_SETTINGS, HAND_CALIB |
 
-**Bit 71 (CURRENT_TIME_REQUEST_SUPPORT):** `vs2.a.getConfiguration()` trả `a1.b(71)` [V] — khi host đặt bit này, thiết bị gửi 5052 để xin thời gian; nếu không đặt thì host phải chủ động gửi 5026.
+**Bit 71 (CURRENT_TIME_REQUEST_SUPPORT):** `vs2.a.getConfiguration()` trả `a1.b(71)` [V] — khi bit này bật, host chủ động gửi 5030 `TIME_UPDATED` rồi chờ 5 s để thiết bị gửi 5052; khi bit tắt, host gửi 5026 TLV thay vì chờ (`vs2/a.java:206-347`).
 
 **Tập tối thiểu cho driver health-only:** bits 0, 3, 4, 5, 29, 71. Hiện tại driver sao chép bitmask của thiết bị, dẫn tới quảng cáo LIVETRACK/GNCS/Weather mà không xử lý được — cần sửa (xem `docs/protocols/GARMIN_IMPLEMENTATION_BRIEF.md §TODO-2`).
 
@@ -481,22 +484,26 @@ App Garmin Connect **luôn** đăng ký service 4 (REGISTRATION) và hỏi 6 lo�
 4. Nếu `o.g` (GFDI service list) rỗng → ném `MultiLinkException("No supported services.")`
 5. `REGISTER(1, reliableFlag)` → handle H1 → mở GFDI
 
-**Driver hiện tại:** bỏ qua bước 2–4, nhảy thẳng vào `REGISTER(1)`. Nếu đồng hồ thật yêu cầu info pages (status REJECTED khi bỏ qua), thêm đoạn 2–4 trước `REGISTER(1)`. Xem `MultiLink.kt:34` TODO(garmin-protocol). **NEEDS-REAL-WATCH.**
+**Driver hiện tại:** bỏ qua bước 2–4, nhảy thẳng vào `REGISTER(1)`. Đây là sai lệch so với vendor: info-page query chạy **đầu tiên trên mọi kết nối**, không phải chỉ khi `REGISTER(1)` trả REJECTED. Sửa `MultiLink.kt` để luôn `REGISTER(4)` + query 6 page trước `REGISTER(1)`; timeout 1 s/trang, 5 lần thử, tổng 20 s.
 
-### 10.3 5023 Battery Status – suy luận [I]
+> **Đính chính 2026-11-08:** bản cũ coi service-4 query là điều kiện chỉ cần khi `REGISTER(1)` REJECTED. Vendor luôn chạy nó trên mọi kết nối. Nguồn: `docs/analysis/GARMIN_CONNECTION_ANALYSIS.md` §1.6; `ml2/h0.java:101-140`. **RESOLVED [V] về thứ tự; vẫn cần real-watch xác nhận firmware cụ thể.**
 
-Nguồn: `strings` trong `classes7.dex`, `classes11.dex` tìm thấy `BatteryStatusDataHandler`, `BatteryStatusOptions(isCharging=`, `batteryPercentage=`, `batteryStatusTimeStamp=`. Chi tiết: `docs/re-evidence/garmin/battery_status_5023.md`.
+### 10.3 5023 Battery Status – layout [V]
 
-Cấu trúc suy luận (chưa xác nhận byte-level):
+Nguồn: `docs/analysis/GARMIN_CONNECTION_ANALYSIS.md` §3; `ha2/a.java:161-215`, `ha2/b.java:59-77`.
 
-```
-[batteryPercent u8][batteryStatus u8][timestamp u32 LE FIT-epoch]
-```
+Notification dài ≥6 byte:
+- `payload[0] & 0x70` = status (mask/offset [V]; nhãn [I]): `0x10` new, `0x20` good, `0x30` ok, `0x40` low, `0x50` critical, `0x70` invalid;
+- `payload[2]` = battery percent [V].
 
-`batteryStatus` enum [I]: 0=unknown, 1=new, 2=good, 3=ok, 4=low, 5=critical, 6=charging.
+App vendor **poll mỗi 10 phút** (`scheduleAtFixedRate(..., 0, 600000)`) bằng request `FF 00 <level> FF FF FF`.
 
-**Driver:** giữ fallback SIG Battery (0x180F) làm nguồn chính cho đến khi 5023 được xác minh trên thiết bị thật. **NEEDS-REAL-WATCH.**
+> **Đính chính 2026-11-08:** layout cũ `[percent u8][status u8][timestamp u32]` là suy luận sai.
+> Status là mask ở byte 0, percent ở byte 2; có polling chủ động 10 phút. Nguồn:
+> `docs/analysis/GARMIN_CONNECTION_ANALYSIS.md` §3.
+
+**Driver:** hiện dùng SIG Battery (0x180F) làm nguồn chính và 5023 fallback với layout `[0]=percent, [1]=status` — không khớp vendor. Sửa parser theo layout trên và thêm poll nếu cần; real-watch chỉ còn cần xác nhận notification vs response identity.
 
 ### 10.4 Cập nhật §9 (câu hỏi còn mở)
 
-Câu hỏi 3 trong §9 ("ý nghĩa từng bit capability của 5050") đã được giải hoàn toàn [V] bởi đợt RE này — bảng 94 bit đầy đủ ở §10.1. Hai câu hỏi còn lại liên quan tới driver: service 4 bắt buộc không (§10.2) và 5023 layout (§10.3) vẫn NEEDS-REAL-WATCH.
+Câu hỏi 3 trong §9 ("ý nghĩa từng bit capability của 5050") đã được giải hoàn toàn [V] bởi đợt RE này — bảng 94 bit đầy đủ ở §10.1. Service 4: vendor luôn chạy info-page query trước `REGISTER(1)` → thứ tự đã RESOLVED [V] (§10.2); chỉ còn cần xác nhận firmware thật. 5023: layout đã xác minh [V] (§10.3); còn NEEDS-REAL-WATCH việc xác nhận notification hay response.

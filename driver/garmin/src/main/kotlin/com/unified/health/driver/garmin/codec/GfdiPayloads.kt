@@ -1,6 +1,7 @@
 package com.unified.health.driver.garmin.codec
 
 import com.unified.health.core.ble.protocol.ByteReader
+import com.unified.health.core.ble.protocol.ByteWriter
 import com.unified.health.core.ble.protocol.MalformedPayloadException
 import com.unified.health.core.ble.protocol.buildBytes
 import java.time.Instant
@@ -93,25 +94,73 @@ internal object GfdiPayloads {
      */
     fun currentTimeReply(request: ByteArray, now: Instant, zone: ZoneId): ByteArray {
         if (request.size < 4) throw MalformedPayloadException("Current time request needs 4 bytes, got ${request.size}")
-        val rules = zone.rules
-        var dstStart = 0L
-        var dstEnd = 0L
-        val first = rules.nextTransition(now)?.instant
-        if (first != null) {
-            val second = rules.nextTransition(first.plusSeconds(SECONDS_PER_DAY))?.instant
-            val firstStartsDst = rules.isDaylightSavings(first)
-            val start = if (firstStartsDst) first else second
-            val end = if (firstStartsDst) second else first
-            dstStart = start?.let(FitTime::fromInstant) ?: 0L
-            dstEnd = end?.let(FitTime::fromInstant) ?: 0L
-        }
+        val (dstStart, dstEnd) = nextDstTransitions(now, zone)
         return buildBytes(20) {
             bytes(request.copyOf(4))
             u32le(FitTime.fromInstant(now))
-            u32le(rules.getOffset(now).totalSeconds.toLong() and 0xFFFF_FFFFL)
+            u32le(zone.rules.getOffset(now).totalSeconds.toLong() and 0xFFFF_FFFFL)
             u32le(dstStart)
             u32le(dstEnd)
         }
+    }
+
+    /**
+     * 5026 Set Device Settings pushed when the watch does not advertise capability bit 71
+     * (§4.3 [V], `vs2/a.java:237-312`): `count u8 = 5` followed by five TLVs
+     * `tag u8 | len u8 = 4 | u32le value`: 1 = current time (FIT s), 2 = DST savings seconds,
+     * 3 = UTC offset seconds, 4 = next DST start, 5 = next DST end.
+     *
+     * The vendor writes the local zone's current DST savings for tag 2 (0 outside DST), not the
+     * next transition's savings.
+     */
+    fun setDeviceSettings(now: Instant, zone: ZoneId): ByteArray {
+        val rules = zone.rules
+        val utcOffset = rules.getOffset(now).totalSeconds.toLong()
+        val dstSavings = if (rules.isDaylightSavings(now)) utcOffset - rules.getStandardOffset(now).totalSeconds else 0L
+        val (dstStart, dstEnd) = nextDstTransitions(now, zone)
+        return buildBytes(31) {
+            u8(5)
+            u32leTlv(1, FitTime.fromInstant(now))
+            u32leTlv(2, dstSavings)
+            u32leTlv(3, utcOffset)
+            u32leTlv(4, dstStart)
+            u32leTlv(5, dstEnd)
+        }
+    }
+
+    /** `tag u8 | len u8 (4) | u32le value`, the TLV unit of 5026. */
+    private fun ByteWriter.u32leTlv(tag: Int, value: Long) {
+        u8(tag)
+        u8(4)
+        u32le(value)
+    }
+
+    /** Next DST start/end as FIT seconds, zero when [zone] has no further transitions. */
+    private fun nextDstTransitions(now: Instant, zone: ZoneId): Pair<Long, Long> {
+        val rules = zone.rules
+        val first = rules.nextTransition(now)?.instant ?: return 0L to 0L
+        val second = rules.nextTransition(first.plusSeconds(SECONDS_PER_DAY))?.instant
+        val firstStartsDst = rules.isDaylightSavings(first)
+        val start = if (firstStartsDst) first else second
+        val end = if (firstStartsDst) second else first
+        return (start?.let(FitTime::fromInstant) ?: 0L) to (end?.let(FitTime::fromInstant) ?: 0L)
+    }
+
+    /**
+     * Device capability bit 71 = CURRENT_TIME_REQUEST_SUPPORT (§4.15 [V], `vs2/k.java`), held in the
+     * watch's own 5050 bitmask. With it the vendor sends 5030 TIME_UPDATED and waits for 5052;
+     * without it the host pushes [setDeviceSettings] instead (`vs2/a.java:206-302`).
+     */
+    const val CURRENT_TIME_REQUEST_CAPABILITY = 71
+
+    fun timeSyncMode(deviceCapabilities: ByteArray): TimeSyncMode =
+        if (hasCapability(deviceCapabilities, CURRENT_TIME_REQUEST_CAPABILITY)) TimeSyncMode.TIME_UPDATED
+        else TimeSyncMode.SET_DEVICE_SETTINGS
+
+    /** `bitmask[bit / 8] & (1 << (bit % 8))`, the same packing as [capabilityBitmask]. */
+    fun hasCapability(bitmask: ByteArray, bit: Int): Boolean {
+        val index = bit / 8
+        return index < bitmask.size && (bitmask[index].toInt() and (1 shl (bit % 8))) != 0
     }
 
     /** 5050 payload: `len u8 | capability bitmask[len]` (§4.12 [V], `at2/a.java:429-458`). */
@@ -174,6 +223,16 @@ internal object GfdiPayloads {
 internal object GarminSystemEvent {
     const val SYNC_COMPLETE = 0
     const val HANDSHAKE_COMPLETE = 8
+    const val TIME_UPDATED = 16
+}
+
+/** Which 5026/5030 command the host uses for its active time sync (§4.3 [V]). */
+internal enum class TimeSyncMode {
+    /** Device 5050 bit 71 set: send 5030 TIME_UPDATED, then wait up to 5 s for 5052. */
+    TIME_UPDATED,
+
+    /** Device 5050 bit 71 clear: push the 5026 Set Device Settings TLV. */
+    SET_DEVICE_SETTINGS,
 }
 
 /** ACK data of a 5002 download request: `u8 status (0 = OK) | u32 fileSize` (§6.1 [V]). */
@@ -189,30 +248,71 @@ internal data class DownloadResponse(val status: Int, val fileSize: Long) {
 }
 
 /**
- * 5023 Battery Status, **provisional**: `u8 percent | u8 status | u32 timestamp (FIT s)`
- * (§10.3 [I], low confidence: inferred from `BatteryStatusOptions(isCharging=, batteryPercentage=)`
- * strings only). [decode] returns null for anything that does not fit that layout, so callers fall
- * back to the SIG Battery service.
- * TODO(garmin-protocol): NEEDS-REAL-WATCH — confirm the layout from an HCI snoop log of a Garmin
- * Connect sync (GFDI id bytes `9A 13`), then promote this from fallback to primary source.
+ * 5023 Battery Status (§10.3 [V], `ha2/a.java:161-198`; mask/offset verified, label mapping [I]):
+ * `flags u8 | ? u8 | percent u8 | ...`, at least [LENGTH] bytes. The status is `payload[0] & 0x70`
+ * (0x10 new, 0x20 good, 0x30 ok, 0x40 low, 0x50 critical, 0x70 invalid); the capacity percentage is
+ * `payload[2]`. A timestamp at offset 3 is kept when present but is not required.
+ *
+ * This is only the fallback when the SIG `0x180F` battery is absent; [decode] returns null for
+ * invalid statuses/percentages so a bad notification never overwrites a good value.
  */
 internal data class BatteryStatus(val percent: Int, val status: Int, val fitTimestamp: Long) {
-    val isCharging: Boolean get() = status == STATUS_CHARGING
-
     companion object {
         const val LENGTH = 6
-        const val STATUS_CHARGING = 6
-        private const val MAX_STATUS = 7
+        const val STATUS_MASK = 0x70
+        const val STATUS_NEW = 0x10
+        const val STATUS_GOOD = 0x20
+        const val STATUS_OK = 0x30
+        const val STATUS_LOW = 0x40
+        const val STATUS_CRITICAL = 0x50
+        const val STATUS_INVALID = 0x70
+
+        /** Statuses the vendor reports through its callback; 0x00/0x60 are ignored, 0x70 is invalid. */
+        private val REPORTABLE_STATUSES = setOf(STATUS_NEW, STATUS_GOOD, STATUS_OK, STATUS_LOW, STATUS_CRITICAL)
 
         fun decode(payload: ByteArray): BatteryStatus? {
             if (payload.size < LENGTH) return null
-            val r = ByteReader(payload)
-            val percent = r.u8()
-            val status = r.u8()
-            val timestamp = r.u32le()
-            if (percent !in 0..100 || status !in 0..MAX_STATUS) return null
+            val status = payload[0].toInt() and STATUS_MASK
+            if (status !in REPORTABLE_STATUSES) return null
+            val percent = payload[2].toInt() and 0xFF
+            if (percent !in 0..100) return null
+            val timestamp = if (payload.size >= 7) ByteReader(payload, 3).u32le() else 0L
             return BatteryStatus(percent, status, timestamp)
         }
+    }
+}
+
+/**
+ * 5023 request sent by the vendor's 10-minute battery timer (§4.3 [V], `ha2/a.java:201-215`,
+ * `ha2/b.java:59-77`): `FF 00 level FF FF FF`. The vendor fills [level] with the phone's battery
+ * percentage; this driver has no phone-battery source, so it sends 0xFF (unknown).
+ */
+internal fun batteryStatusPoll(level: Int = 0xFF): ByteArray =
+    byteArrayOf(0xFF.toByte(), 0x00, level.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte())
+
+/**
+ * Converts the 5024 `maxPacketSize` into the usable GFDI payload budget (§2 "Capability bitmask /
+ * maxPacket", `us2/b.java:221-235`). The watch value is a *link* budget, not a payload size:
+ * subtract the COBS block overhead `ceil(n / 254)` plus 8 bytes of framing, or 18 bytes when
+ * session encryption is on, then align an encrypted budget so `budget + 18` is a multiple of 4
+ * (the vendor's `budget -= 4 - budget % 4`).
+ */
+internal object GfdiPacketBudget {
+    private const val COBS_BLOCK = 254
+    private const val FRAMING_OVERHEAD = 8
+    private const val ENCRYPTED_OVERHEAD = 18
+    private const val ENCRYPTION_ALIGNMENT = 4
+
+    fun usablePayload(maxPacketSize: Int, encrypted: Boolean = false): Int {
+        require(maxPacketSize >= 0) { "maxPacketSize must be >= 0, got $maxPacketSize" }
+        var cobsOverhead = maxPacketSize / COBS_BLOCK
+        if (maxPacketSize % COBS_BLOCK > 0) cobsOverhead++
+        var budget = maxPacketSize - cobsOverhead - if (encrypted) ENCRYPTED_OVERHEAD else FRAMING_OVERHEAD
+        if (encrypted) {
+            val remainder = budget % ENCRYPTION_ALIGNMENT
+            if (remainder > 0) budget -= ENCRYPTION_ALIGNMENT - remainder
+        }
+        return budget
     }
 }
 

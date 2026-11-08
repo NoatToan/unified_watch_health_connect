@@ -14,6 +14,7 @@ import com.unified.health.core.testing.FakeGattClient
 import com.unified.health.core.testing.RecordingSink
 import com.unified.health.driver.garmin.codec.FitTime
 import com.unified.health.driver.garmin.codec.GfdiMessageId
+import com.unified.health.driver.garmin.codec.GfdiPayloads
 import com.unified.health.driver.garmin.codec.GfdiStatus
 import com.unified.health.driver.garmin.codec.HostIdentity
 import com.unified.health.driver.garmin.codec.MultiLinkCodec
@@ -25,6 +26,7 @@ import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.enum
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u32
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u8
 import com.unified.health.driver.garmin.transport.MultiLinkRegistrationException
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -38,6 +40,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GarminSessionTest {
 
     private val now = Instant.parse("2026-03-02T12:00:00Z")
@@ -78,11 +81,16 @@ class GarminSessionTest {
 
         val session = GarminSession.open(watch.gatt, config())
 
-        // Multi-Link setup: CLOSE_ALL then REGISTER(GFDI, flags 0) with our client id.
+        // Multi-Link setup: CLOSE_ALL, REGISTRATION (service 4) and its info pages, then REGISTER(GFDI).
         assertEquals(
-            listOf(MultiLinkCodec.closeAll(CLIENT_ID).toHex(), MultiLinkCodec.register(CLIENT_ID, 1).toHex()),
+            listOf(
+                MultiLinkCodec.closeAll(CLIENT_ID).toHex(),
+                MultiLinkCodec.register(CLIENT_ID, MultiLinkCodec.SERVICE_REGISTRATION).toHex(),
+                MultiLinkCodec.register(CLIENT_ID, 1).toHex(),
+            ),
             watch.controlWrites.map { it.toHex() },
         )
+        assertEquals(MultiLinkCodec.INFO_PAGE_ORDER, watch.infoPageRequests)
         // Handshake replies.
         val deviceInfoAck = watch.ackOf(GfdiMessageId.DEVICE_INFORMATION)!!
         assertEquals(113, ByteReader(deviceInfoAck.data).u16le())
@@ -139,7 +147,7 @@ class GarminSessionTest {
     }
 
     @Test
-    fun `rejected GFDI is retried after the REGISTRATION info-page query`() = runTest {
+    fun `REGISTRATION info pages are queried before GFDI on every connect`() = runTest {
         val watch = FakeGarminWatch().apply {
             requireRegistrationService = true
             silentInfoPageRequests = 1 // first page needs one retry
@@ -149,13 +157,21 @@ class GarminSessionTest {
         assertEquals(
             listOf(
                 MultiLinkCodec.closeAll(CLIENT_ID),
-                MultiLinkCodec.register(CLIENT_ID, MultiLinkCodec.SERVICE_GFDI),
                 MultiLinkCodec.register(CLIENT_ID, MultiLinkCodec.SERVICE_REGISTRATION),
                 MultiLinkCodec.register(CLIENT_ID, MultiLinkCodec.SERVICE_GFDI),
             ).map { it.toHex() },
             watch.controlWrites.map { it.toHex() },
         )
         assertEquals(listOf(0, 0, 1, 3, 4, 2, 5), watch.infoPageRequests)
+        assertEquals("Forerunner 265S", session.readDeviceInfo().model)
+        session.close()
+    }
+
+    @Test
+    fun `unanswered REGISTRATION service is bounded and GFDI still opens`() = runTest {
+        val watch = FakeGarminWatch().apply { answerRegistrationService = false }
+        val session = GarminSession.open(watch.gatt, config())
+        assertEquals(1, watch.registrations[MultiLinkCodec.SERVICE_GFDI])
         assertEquals("Forerunner 265S", session.readDeviceInfo().model)
         session.close()
     }
@@ -173,10 +189,10 @@ class GarminSessionTest {
     }
 
     @Test
-    fun `SIG battery stays primary over a provisional 5023`() = runTest {
+    fun `SIG battery stays primary over a 5023 fallback`() = runTest {
         val watch = FakeGarminWatch()
         val session = GarminSession.open(watch.gatt, config())
-        watch.send(GfdiMessageId.BATTERY_STATUS, "400200000000".hexToBytes())
+        watch.send(GfdiMessageId.BATTERY_STATUS, "20ff4a000000".hexToBytes())
         testScheduler.runCurrent()
         assertEquals(81, session.readDeviceInfo().batteryPercent)
         assertEquals(GfdiStatus.ACK, watch.ackOf(GfdiMessageId.BATTERY_STATUS)!!.status)
@@ -184,19 +200,75 @@ class GarminSessionTest {
     }
 
     @Test
-    fun `provisional 5023 fills in when the watch has no SIG battery, malformed ones are ignored`() = runTest {
+    fun `5023 fills in when the watch has no SIG battery, malformed ones are ignored`() = runTest {
         val watch = FakeGarminWatch(sigBattery = false)
         val session = GarminSession.open(watch.gatt, config())
         assertEquals(null, session.readDeviceInfo().batteryPercent)
         assertTrue(DeviceCapability.BATTERY_LEVEL !in session.capabilities)
 
-        watch.send(GfdiMessageId.BATTERY_STATUS, "400200000000".hexToBytes())
+        watch.send(GfdiMessageId.BATTERY_STATUS, "10aa4a000000".hexToBytes()) // status NEW, 74 %
         testScheduler.runCurrent()
-        assertEquals(64, session.readDeviceInfo().batteryPercent)
+        assertEquals(74, session.readDeviceInfo().batteryPercent)
 
-        watch.send(GfdiMessageId.BATTERY_STATUS, "ff02".hexToBytes()) // does not fit: previous value kept
+        watch.send(GfdiMessageId.BATTERY_STATUS, "ff02".hexToBytes()) // too short: previous value kept
         testScheduler.runCurrent()
-        assertEquals(64, session.readDeviceInfo().batteryPercent)
+        assertEquals(74, session.readDeviceInfo().batteryPercent)
+
+        watch.send(GfdiMessageId.BATTERY_STATUS, "70004a000000".hexToBytes()) // invalid status: ignored
+        testScheduler.runCurrent()
+        assertEquals(74, session.readDeviceInfo().batteryPercent)
+        session.close()
+    }
+
+    @Test
+    fun `5023 battery is polled every ten minutes`() = runTest {
+        val watch = FakeGarminWatch()
+        val session = GarminSession.open(watch.gatt, config())
+        assertEquals(0, watch.sent(GfdiMessageId.BATTERY_STATUS).size)
+
+        testScheduler.advanceTimeBy(GarminSession.BATTERY_POLL_INTERVAL_MS + 1)
+        testScheduler.runCurrent()
+        assertEquals("ff00ffffffff", watch.sent(GfdiMessageId.BATTERY_STATUS).single().payload.toHex())
+        session.close()
+    }
+
+    @Test
+    fun `time sync pushes the 5026 TLV when capability bit 71 is clear`() = runTest {
+        val watch = FakeGarminWatch()
+        val session = GarminSession.open(watch.gatt, config())
+
+        val push = watch.sent(GfdiMessageId.SET_DEVICE_SETTINGS).single()
+        assertEquals(GfdiPayloads.setDeviceSettings(now, ZoneOffset.UTC).toHex(), push.payload.toHex())
+        assertEquals(listOf("0800"), watch.sent(GfdiMessageId.SYSTEM_EVENT).map { it.payload.toHex() })
+        session.close()
+    }
+
+    @Test
+    fun `time sync sends TIME_UPDATED and stops waiting when the watch asks for time`() = runTest {
+        val watch = FakeGarminWatch().apply {
+            configuration = GfdiPayloads.capabilityBitmask(setOf(71))
+        }
+        val session = GarminSession.open(watch.gatt, config())
+
+        assertEquals(
+            listOf("0800", "1000"),
+            watch.sent(GfdiMessageId.SYSTEM_EVENT).map { it.payload.toHex() },
+        )
+        assertTrue(watch.sent(GfdiMessageId.SET_DEVICE_SETTINGS).isEmpty())
+        assertTrue(testScheduler.currentTime < GarminSession.TIME_SYNC_WAIT_MS)
+        session.close()
+    }
+
+    @Test
+    fun `time sync gives up waiting for 5052 after five seconds`() = runTest {
+        val watch = FakeGarminWatch().apply {
+            configuration = GfdiPayloads.capabilityBitmask(setOf(71))
+            sendTimeRequestOnTimeUpdated = false
+        }
+        val session = GarminSession.open(watch.gatt, config())
+
+        assertEquals("1000", watch.sent(GfdiMessageId.SYSTEM_EVENT).last().payload.toHex())
+        assertTrue(testScheduler.currentTime >= GarminSession.TIME_SYNC_WAIT_MS)
         session.close()
     }
 

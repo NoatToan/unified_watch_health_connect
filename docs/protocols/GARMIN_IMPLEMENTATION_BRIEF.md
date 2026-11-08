@@ -4,16 +4,21 @@
 **Dựa trên:** `docs/protocols/GARMIN_DEVICE_PROTOCOL.md` + RE đợt 2 (2026-11-06).  
 **Trạng thái:** RESOLVED = có đủ bằng chứng để implement ngay; PARTIAL = có hướng nhưng thiếu một mảnh; NEEDS-REAL-WATCH = cần HCI snoop log hoặc đồng hồ thật.
 
+> **Cập nhật 2026-11-08:** theo `docs/analysis/GARMIN_CONNECTION_ANALYSIS.md`: service-4 info-page
+> query chạy đầu tiên trên **mọi** kết nối (6 page, 1 s/trang ×5, tổng 20 s); 5023 layout là
+> `payload[0] & 0x70` + `payload[2]`, poll 10 phút; time sync 5030 `TIME_UPDATED` → chờ 5 s → 5052
+> (bit 71) hoặc 5026 TLV khi bit 71 tắt; `maxPacketSize` là link budget.
+
 ---
 
 ## TODO-1 · Registration service 4 info pages
 
 **File:** `driver/garmin/src/.../transport/MultiLink.kt:34`  
-**Trạng thái:** PARTIAL  
-**Mô tả:** `MultiLinkConnector.openGfdi()` hiện bỏ qua service 4 (REGISTRATION) và nhảy thẳng vào `REGISTER(1, GFDI)`. App Garmin Connect luôn thực hiện info-page query trước.  
-**Bằng chứng:** `docs/re-evidence/garmin/registration_service4.md` [V]  
+**Trạng thái:** RESOLVED [V] (thứ tự); vẫn cần real-watch xác nhận firmware  
+**Mô tả:** `MultiLinkConnector.openGfdi()` hiện bỏ qua service 4 (REGISTRATION) và nhảy thẳng vào `REGISTER(1, GFDI)`. App Garmin Connect **luôn** đăng ký service 4 và query 6 info page **trước** `REGISTER(1)` trên mọi kết nối — không phải chỉ sau khi `REGISTER(1)` trả REJECTED. Timeout 1 s/trang, 5 lần thử, tổng 20 s (`ml2/h0.java:101-140`).  
+**Bằng chứng:** `docs/re-evidence/garmin/registration_service4.md`; `docs/analysis/GARMIN_CONNECTION_ANALYSIS.md` §1.6 [V]  
 
-**Nếu đồng hồ thật trả REJECTED khi bỏ qua service 4**, thêm trước `REGISTER(1)`:
+**Thêm trước `REGISTER(1)` (luôn chạy, không điều kiện):**
 
 ```kotlin
 // 1. REGISTER service 4
@@ -30,7 +35,7 @@ for (pageType in INFO_PAGES) {
 val h1 = ml.register(serviceId = 1, flags = reliableFlag)
 ```
 
-**Bước kiểm tra:** Pair một đồng hồ Garmin thật với driver. Nếu `REGISTER(1)` trả status 0 (SUCCESS) mà không có service 4 trước → không cần thay đổi. Nếu trả 4 (REJECTED) → thêm đoạn trên.
+**Bước kiểm tra:** Pair một đồng hồ Garmin thật; xác nhận firmware cụ thể chấp nhận flow service-4 trước `REGISTER(1)`. Vendor luôn chạy flow này, nên không còn nhánh "chỉ thêm khi REJECTED".
 
 ---
 
@@ -69,23 +74,29 @@ fun sendConfiguration(deviceBitmask: ByteArray) {
 }
 ```
 
-**Bit 71 (CURRENT_TIME_REQUEST_SUPPORT):** quando este bit está definido no host bitmask, o watch envia 5052 solicitando a hora atual. `GarminSession` já processa 5052 (`vs2.a.java:333-347`), então manter bit 71 é correto.
+**Bit 71 (CURRENT_TIME_REQUEST_SUPPORT):** khi bit này bật, host gửi 5030 `TIME_UPDATED` rồi chờ 5 s để watch gửi 5052; khi tắt, host gửi 5026 TLV. `GarminSession` hiện chỉ trả lời 5052 (`vs2.a.java:333-347`), nên giữ bit 71 là đúng nhưng cần thêm trigger 5030/5026.
 
 ---
 
 ## TODO-3 · 5023 Battery Status layout
 
 **File:** `driver/garmin/src/.../GarminSession.kt:163`  
-**Trạng thái:** NEEDS-REAL-WATCH  
-**Mô tả:** payload của 5023 chưa được xác nhận byte-level. Suy luận [I]:
+**Trạng thái:** RESOLVED [V] (layout) / NEEDS-REAL-WATCH (notification vs response identity)  
+**Mô tả:** layout 5023 đã xác minh (`ha2/a.java:161-215`, `ha2/b.java:59-77`;
+`docs/analysis/GARMIN_CONNECTION_ANALYSIS.md` §3):
 
 ```
-[batteryPercent u8][batteryStatus u8][timestamp u32 LE FIT-epoch]
+payload[0] & 0x70 = status (mask/offset [V]; labels [I]: 0x10 new, 0x20 good, 0x30 ok,
+                    0x40 low, 0x50 critical, 0x70 invalid)
+payload[2]        = battery percent [V]
 ```
 
-`batteryStatus`: 0=unknown, 1=new, 2=good, 3=ok, 4=low, 5=critical, 6=charging.
+Vendor **poll mỗi 10 phút** (`scheduleAtFixedRate(..., 0, 600000)`) bằng request
+`FF 00 <level> FF FF FF`.
 
-**Giữ nguyên:** fallback SIG Battery (0x180F) là chính xác và an toàn. Chỉ thêm 5023 parser sau khi xác nhận layout qua HCI snoop log.
+**Sửa parser:** driver hiện dùng `[0]=percent, [1]=status` — không khớp vendor. Thay bằng layout
+trên; có thể giữ SIG Battery (0x180F) làm nguồn chính/fallback. HCI log chỉ còn cần để xác nhận
+notification vs response identity.
 
 **Capture HCI log:**
 ```bash
@@ -128,14 +139,23 @@ adb bugreport /tmp/garmin_snoop.zip
 
 | # | TODO | Trạng thái | Action |
 |---|------|-----------|--------|
-| 1 | Service 4 info pages | PARTIAL | Test trên đồng hồ thật; thêm flow nếu REJECTED |
+| 1 | Service 4 info pages | **RESOLVED [V]** | Luôn REGISTER(4) + 6 page trước REGISTER(1); 1 s/trang ×5, tổng 20 s |
 | 2 | 5050 host bitmask | **RESOLVED** | Thay mirror bằng HOST_CAPABILITIES cố định (bits 0,3,4,5,29,71) |
-| 3 | 5023 battery layout | NEEDS-REAL-WATCH | Giữ SIG fallback; thêm parser sau HCI log |
+| 3 | 5023 battery layout | **RESOLVED [V]** / NEEDS-REAL-WATCH (identity) | `status=[0]&0x70`, `percent=[2]`, poll 10 phút |
 | 4 | FIT message numbers | **RESOLVED** | Số đúng per FIT SDK; chỉ cần xác nhận trên file thật |
 
 **Top 5 việc driver engineer phải làm:**
 1. **Thay host bitmask 5050** (fix TODO-2, 10 dòng code, không cần hardware)
-2. **Test REGISTER(1) trực tiếp** trên đồng hồ Garmin thật để xác nhận service 4 không bắt buộc (hoặc thêm nếu cần)
-3. **Capture HCI snoop log** trong một session sync Garmin Connect thật → xác nhận 5023 layout → thêm parser
+2. **Thêm service-4 info pages trước REGISTER(1)** theo vendor (TODO-1); test firmware thật
+3. **Sửa parser 5023** theo layout `status=[0]&0x70`, `percent=[2]` (TODO-3); HCI log chỉ để xác nhận identity
 4. **Dump 1 file MONITORING_B** (FIT type 32) từ đồng hồ thật → verify FIT message numbers và field behavior
 5. **Xóa các TODO(garmin-protocol)** còn lại trong `FitHealthMapper.kt` sau khi xác nhận (1) và (4)
+
+---
+
+## Đính chính 2026-11-08 — time sync + maxPacketSize
+
+Nguồn: `docs/analysis/GARMIN_CONNECTION_ANALYSIS.md` §2-3.
+
+- **Time sync:** nếu 5050 bit 71 bật, host gửi 5030 `TIME_UPDATED` rồi chờ 5 s cho 5052; nếu tắt, host gửi 5026 TLV (`vs2/a.java:206-347`). Status: **RESOLVED [V]**; độ chấp nhận 5026 vẫn **NEEDS-REAL-WATCH**.
+- **maxPacketSize:** là link budget, không phải payload. `usable = n - ceil(n/254) - 8`; nếu mã hoá XXTEA trừ 18 rồi làm tròn xuống bội số 4 (`us2/b.java:221-235`). Status: **RESOLVED [V]**; test LENGTH_ERROR gần giới hạn vẫn **NEEDS-REAL-WATCH**.

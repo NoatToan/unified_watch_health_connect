@@ -26,15 +26,16 @@ internal class MultiLinkRegistrationException(val status: Int, message: String) 
 
 /**
  * Opens GFDI over Multi-Link (§4.B [V], `eh2/f.java:250-330`, `nl2/d.java`): subscribe to a
- * `6A4E281x` characteristic, CLOSE_ALL our client's stale handles, then REGISTER service 1 (GFDI)
- * without the reliable layer and wait through PENDING_AUTH.
+ * `6A4E281x` characteristic, CLOSE_ALL our client's stale handles, query the REGISTRATION
+ * (service 4) info pages, then REGISTER service 1 (GFDI) without the reliable layer and wait
+ * through PENDING_AUTH.
  *
- * The official app always registers service 4 (REGISTRATION) and queries its info pages first
- * (§10.2 [V], `eh2/f.initialize`). We go straight to GFDI, and only when the watch answers REJECTED
- * do we run that registration sequence ([queryRegistrationInfoPages]) and retry once
- * (`GARMIN_IMPLEMENTATION_BRIEF.md` TODO-1).
- * TODO(garmin-protocol): NEEDS-REAL-WATCH — whether firmware ever requires service 4 first, and the
- * info-page *response* layout (not decoded; we only wait for an answer per page).
+ * The official app always registers service 4 and queries its info pages *before* opening any
+ * service (§10.2 [V], `eh2/f.initialize`). We did that only after a REJECTED GFDI response before;
+ * now it runs first on every connect. Watches without service 4 may leave its REGISTER unanswered,
+ * so the whole query is bounded by [INFO_PAGES_OVERALL_TIMEOUT_MS] and failure is non-fatal: GFDI
+ * registration still proceeds. The info-page *response* layout is not decoded; we only wait for an
+ * answer per page.
  */
 internal class MultiLinkConnector(
     private val gatt: GattClient,
@@ -71,11 +72,12 @@ internal class MultiLinkConnector(
     }
 
     private suspend fun registerGfdi(link: MultiLinkLink): Int {
-        var response = requestGfdi(link)
-        if (response.status == RegisterStatus.REJECTED && queryRegistrationInfoPages(link)) {
-            Log.i(TAG, "GFDI rejected; retrying after the REGISTRATION info-page query")
-            response = requestGfdi(link)
+        // The vendor queries service 4 before opening any service; do the same on every connect.
+        // Failure (or no answer) is not fatal: GFDI registration below is the only hard requirement.
+        if (!queryRegistrationInfoPages(link)) {
+            Log.w(TAG, "REGISTRATION info pages unavailable; registering GFDI without them")
         }
+        val response = requestGfdi(link)
         when (response.status) {
             RegisterStatus.SUCCESS -> Unit
             RegisterStatus.ALREADY_IN_USE -> throw MultiLinkRegistrationException(
@@ -102,30 +104,34 @@ internal class MultiLinkConnector(
     /**
      * REGISTER service 4 and ask each info page (§4.B.6-7, §10.2 [V]): write `[H4][pageType]` for the
      * page order of `eh2/f.initialize` and wait for any answer on H4, retrying [INFO_PAGE_ATTEMPTS]
-     * times with [INFO_PAGE_TIMEOUT_MS] each (`ml2/o.java`). The answer's content is not parsed.
-     * @return false when the watch refused service 4, so retrying GFDI is pointless.
+     * times with [INFO_PAGE_TIMEOUT_MS] each (`ml2/h0.java:101-140`). The whole exchange, including
+     * the REGISTER, is capped at [INFO_PAGES_OVERALL_TIMEOUT_MS] (vendor: 20 s overall). The
+     * answer's content is not parsed.
+     * @return false when the watch refused service 4 or the budget expired, so GFDI is tried anyway.
      */
-    private suspend fun queryRegistrationInfoPages(link: MultiLinkLink): Boolean {
-        val registration = link.register(MultiLinkCodec.SERVICE_REGISTRATION, REGISTER_TIMEOUT_MS)
-        if (registration == null || registration.status != RegisterStatus.SUCCESS) {
-            Log.w(TAG, "REGISTRATION service refused (status ${registration?.status}); cannot retry GFDI")
-            return false
-        }
-        val handle = registration.handle
-        val answers = link.channelFor(handle)
-        for (page in MultiLinkCodec.INFO_PAGE_ORDER) {
-            var answered = false
-            for (attempt in 1..INFO_PAGE_ATTEMPTS) {
-                link.write(byteArrayOf(handle.toByte(), page.toByte()))
-                if (withTimeoutOrNull(INFO_PAGE_TIMEOUT_MS) { answers.receiveCatching().getOrNull() } != null) {
-                    answered = true
-                    break
+    private suspend fun queryRegistrationInfoPages(link: MultiLinkLink): Boolean =
+        withTimeoutOrNull(INFO_PAGES_OVERALL_TIMEOUT_MS) {
+            val registration = link.register(MultiLinkCodec.SERVICE_REGISTRATION, REGISTER_TIMEOUT_MS)
+            if (registration == null || registration.status != RegisterStatus.SUCCESS) {
+                Log.w(TAG, "REGISTRATION service refused (status ${registration?.status}); continuing without its info pages")
+                false
+            } else {
+                val handle = registration.handle
+                val answers = link.channelFor(handle)
+                for (page in MultiLinkCodec.INFO_PAGE_ORDER) {
+                    var answered = false
+                    for (attempt in 1..INFO_PAGE_ATTEMPTS) {
+                        link.write(byteArrayOf(handle.toByte(), page.toByte()))
+                        if (withTimeoutOrNull(INFO_PAGE_TIMEOUT_MS) { answers.receiveCatching().getOrNull() } != null) {
+                            answered = true
+                            break
+                        }
+                    }
+                    if (!answered) Log.w(TAG, "No answer to info page $page after $INFO_PAGE_ATTEMPTS attempts")
                 }
+                true
             }
-            if (!answered) Log.w(TAG, "No answer to info page $page after $INFO_PAGE_ATTEMPTS attempts")
-        }
-        return true
-    }
+        } ?: false
 
     companion object {
         private const val TAG = "GarminMultiLink"
@@ -136,9 +142,10 @@ internal class MultiLinkConnector(
         /** `nl2/d.java:224-231`: REGISTER waits up to 30 s, including PENDING_AUTH. */
         const val REGISTER_TIMEOUT_MS = 30_000L
 
-        /** `ml2/o.java` via §4.B.7: retried 5 times, 1 s per page. */
+        /** `ml2/o.java` via §4.B.7: retried 5 times, 1 s per page, 20 s for the whole query. */
         const val INFO_PAGE_ATTEMPTS = 5
         const val INFO_PAGE_TIMEOUT_MS = 1_000L
+        const val INFO_PAGES_OVERALL_TIMEOUT_MS = 20_000L
     }
 }
 

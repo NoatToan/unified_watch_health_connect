@@ -85,6 +85,7 @@ internal object GfdiMessageId {
     const val FIT_DATA = 5012
     const val BATTERY_STATUS = 5023
     const val DEVICE_INFORMATION = 5024
+    const val SET_DEVICE_SETTINGS = 5026
     const val SYSTEM_EVENT = 5030
     const val SYNC_REQUEST = 5037
     const val CONFIGURATION = 5050

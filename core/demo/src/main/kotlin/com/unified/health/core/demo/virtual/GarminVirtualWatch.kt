@@ -249,7 +249,7 @@ internal class GarminWatchLink(
     /** Answers one host-initiated message the way a real watch would (§8.B.5: never leave one un-ACKed). */
     private suspend fun answer(message: GarminWire.Message) {
         when (message.id) {
-            MSG_CONFIGURATION, MSG_SYSTEM_EVENT -> ack(message.id, GarminWire.STATUS_OK)
+            MSG_CONFIGURATION, MSG_SYSTEM_EVENT, MSG_SET_DEVICE_SETTINGS -> ack(message.id, GarminWire.STATUS_OK)
             MSG_DOWNLOAD_REQUEST -> answerDownloadRequest(message.payload)
             else -> {
                 Log.d(TAG, "Unsupported inbound message ${message.id}")
@@ -340,6 +340,9 @@ internal class GarminWatchLink(
         const val MSG_DEVICE_INFORMATION = 5024
         const val MSG_CONFIGURATION = 5050
         const val MSG_CURRENT_TIME_REQUEST = 5052
+
+        /** 5026 Set Device Settings: the driver's time-sync path when capability bit 71 is clear (our 5050 is empty). */
+        const val MSG_SET_DEVICE_SETTINGS = 5026
 
         const val SETTLE_MS = 200L
         const val REQUEST_TIMEOUT_MS = 10_000L

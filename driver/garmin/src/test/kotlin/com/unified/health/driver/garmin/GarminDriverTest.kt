@@ -3,14 +3,20 @@ package com.unified.health.driver.garmin
 import com.unified.health.core.ble.driver.RecognitionScore
 import com.unified.health.core.ble.gatt.StandardUuids
 import com.unified.health.core.ble.gatt.sigUuid
+import com.unified.health.core.ble.pairing.PairingCodeRequester
 import com.unified.health.core.ble.scan.Advertisement
+import com.unified.health.core.model.PairingCodeRequest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class GarminDriverTest {
 
-    private val driver = GarminDriver()
+    private val driver = GarminDriver(
+        object : PairingCodeRequester {
+            override suspend fun requestCode(request: PairingCodeRequest): String? = null
+        },
+    )
 
     private fun ad(
         name: String? = null,

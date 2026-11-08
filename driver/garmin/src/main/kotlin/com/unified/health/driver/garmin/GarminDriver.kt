@@ -7,6 +7,7 @@ import com.unified.health.core.ble.driver.SessionContext
 import com.unified.health.core.ble.driver.WearableDriver
 import com.unified.health.core.ble.driver.WearableSession
 import com.unified.health.core.ble.gatt.GattClient
+import com.unified.health.core.ble.pairing.PairingCodeRequester
 import com.unified.health.core.ble.scan.Advertisement
 import com.unified.health.core.model.WearableVendor
 import com.unified.health.driver.garmin.codec.HostIdentity
@@ -16,12 +17,17 @@ import javax.inject.Inject
  * Garmin watches over GFDI (dedicated GFDI service or Multi-Link), syncing FIT files
  * (`GARMIN_DEVICE_PROTOCOL.md` §8.B). Requires an OS bond; no user credentials.
  */
-class GarminDriver @Inject constructor() : WearableDriver {
+class GarminDriver @Inject constructor(
+    private val pairingCodes: PairingCodeRequester,
+) : WearableDriver {
 
     override val vendor = WearableVendor.GARMIN
 
-    /** Bond before the handshake (§2.2, §5.1 [V]); MTU 515 as Garmin Connect requests (§3.2 [V], `pj2/g.java:18`). */
-    override val linkRequirements = LinkRequirements(bond = true, mtu = REQUESTED_MTU)
+    /**
+     * Bond before the handshake (§2.2, §5.1 [V]); MTU 515 as Garmin Connect requests (§3.2 [V], `pj2/g.java:18`).
+     * If the OS bond fails, continue unbonded so the watch can drive app-level Garmin Auth (5101).
+     */
+    override val linkRequirements = LinkRequirements(bond = true, bondOptional = true, mtu = REQUESTED_MTU)
 
     override fun recognize(advertisement: Advertisement): Int = when {
         advertisement.manufacturerData.keys.any { it == GarminUuids.GARMIN_COMPANY_ID || it == GarminUuids.GARMIN_COMPANY_ID_SWAPPED } ->
@@ -37,7 +43,17 @@ class GarminDriver @Inject constructor() : WearableDriver {
         }
 
     override suspend fun openSession(gatt: GattClient, context: SessionContext): WearableSession =
-        GarminSession.open(gatt, GarminSessionConfig(host = hostIdentity(), multiLinkClientId = MULTI_LINK_CLIENT_ID))
+        GarminSession.open(
+            gatt,
+            GarminSessionConfig(
+                host = hostIdentity(),
+                multiLinkClientId = MULTI_LINK_CLIENT_ID,
+                address = context.address,
+                credentials = context.credentials,
+                credentialWriter = context.credentialWriter,
+                pairingCodes = pairingCodes,
+            ),
+        )
 
     private fun hostIdentity() = HostIdentity(
         appVersion = HOST_APP_VERSION,

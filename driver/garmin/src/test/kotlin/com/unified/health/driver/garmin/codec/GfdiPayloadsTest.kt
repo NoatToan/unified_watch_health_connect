@@ -1,5 +1,6 @@
 package com.unified.health.driver.garmin.codec
 
+import com.unified.health.core.ble.protocol.ByteReader
 import com.unified.health.core.ble.protocol.MalformedPayloadException
 import com.unified.health.core.ble.protocol.buildBytes
 import com.unified.health.core.ble.protocol.hexToBytes
@@ -58,20 +59,71 @@ class GfdiPayloadsTest {
     }
 
     @Test
-    fun `provisional 5023 battery status decodes the inferred layout`() {
-        // 64 % | status 6 (charging) | timestamp 0x12345678 LE
-        val battery = BatteryStatus.decode("400678563412".hexToBytes())
-        assertEquals(BatteryStatus(percent = 64, status = 6, fitTimestamp = 0x12345678L), battery)
-        assertTrue(battery!!.isCharging)
-        assertEquals(BatteryStatus(100, 2, 0), BatteryStatus.decode("640200000000".hexToBytes() + byteArrayOf(9)))
+    fun `5023 battery status masks the flags byte and reads percent at offset 2`() {
+        // status 0x20 (good) | ignored | 74 % | timestamp 0x12345678 LE
+        val battery = BatteryStatus.decode("20ff4a78563412".hexToBytes())
+        assertEquals(BatteryStatus(percent = 74, status = BatteryStatus.STATUS_GOOD, fitTimestamp = 0x12345678L), battery)
+        // Other flag bits in byte 0 do not leak into the status: 0xCC & 0x70 = 0x40 (low).
+        assertEquals(
+            BatteryStatus(percent = 40, status = BatteryStatus.STATUS_LOW, fitTimestamp = 0),
+            BatteryStatus.decode("cc0028000000".hexToBytes()),
+        )
     }
 
     @Test
-    fun `5023 that does not fit the inferred layout is rejected`() {
-        assertEquals(null, BatteryStatus.decode("4006".hexToBytes())) // too short
-        assertEquals(null, BatteryStatus.decode("ff0200000000".hexToBytes())) // 0xFF = unknown percent
-        assertEquals(null, BatteryStatus.decode("650200000000".hexToBytes())) // 101 %
-        assertEquals(null, BatteryStatus.decode("400900000000".hexToBytes())) // status out of range
+    fun `5023 with invalid status length or percent is rejected`() {
+        assertEquals(null, BatteryStatus.decode("2000".hexToBytes())) // too short
+        assertEquals(null, BatteryStatus.decode("2000ff000000".hexToBytes())) // percent 0xFF
+        assertEquals(null, BatteryStatus.decode("200065000000".hexToBytes())) // 101 %
+        assertEquals(null, BatteryStatus.decode("000028000000".hexToBytes())) // status 0x00
+        assertEquals(null, BatteryStatus.decode("600028000000".hexToBytes())) // status 0x60 not reported
+        assertEquals(null, BatteryStatus.decode("700028000000".hexToBytes())) // status 0x70 (invalid)
+    }
+
+    @Test
+    fun `time sync selects TIME_UPDATED from capability bit 71 and 5026 otherwise`() {
+        val bit71 = GfdiPayloads.capabilityBitmask(setOf(0, 71))
+        assertEquals(TimeSyncMode.TIME_UPDATED, GfdiPayloads.timeSyncMode(bit71))
+        assertTrue(GfdiPayloads.hasCapability(bit71, 71))
+        assertFalse(GfdiPayloads.hasCapability(bit71, 70))
+
+        val without = GfdiPayloads.capabilityBitmask(setOf(0, 3, 4, 5, 29))
+        assertEquals(TimeSyncMode.SET_DEVICE_SETTINGS, GfdiPayloads.timeSyncMode(without))
+        assertEquals(TimeSyncMode.SET_DEVICE_SETTINGS, GfdiPayloads.timeSyncMode(ByteArray(0)))
+    }
+
+    @Test
+    fun `5026 time settings is five TLVs in the vendor order`() {
+        val now = Instant.parse("2026-03-01T00:00:00Z")
+        assertEquals(
+            "05" + "0104" + "80350644" + "0204" + "00000000" + "0304" + "100e0000" +
+                "0404" + "902d2b44" + "0504" + "90084045",
+            GfdiPayloads.setDeviceSettings(now, ZoneId.of("Europe/Berlin")).toHex(),
+        )
+    }
+
+    @Test
+    fun `5026 reports the current DST savings and UTC offset`() {
+        val summer = GfdiPayloads.setDeviceSettings(Instant.parse("2026-07-01T00:00:00Z"), ZoneId.of("Europe/Berlin"))
+        assertEquals(3600L, ByteReader(summer, 9).u32le()) // tag 2: DST savings
+        assertEquals(7200L, ByteReader(summer, 15).u32le()) // tag 3: UTC offset
+    }
+
+    @Test
+    fun `packet budget subtracts COBS overhead and framing`() {
+        // 254 -> one COBS block, 254-1-8; 255 needs a second block; 512 -> ceil(512/254)=3.
+        assertEquals(245, GfdiPacketBudget.usablePayload(254))
+        assertEquals(245, GfdiPacketBudget.usablePayload(255))
+        assertEquals(501, GfdiPacketBudget.usablePayload(512))
+        assertEquals(11, GfdiPacketBudget.usablePayload(20))
+    }
+
+    @Test
+    fun `encrypted packet budget reserves 18 bytes and aligns to four`() {
+        // The vendor aligns (budget + 18) to 4 bytes: 491 -> 490, 235 -> 234, 238 -> 236.
+        assertEquals(490, GfdiPacketBudget.usablePayload(512, encrypted = true))
+        assertEquals(234, GfdiPacketBudget.usablePayload(254, encrypted = true))
+        assertEquals(236, GfdiPacketBudget.usablePayload(258, encrypted = true))
     }
 
     @Test

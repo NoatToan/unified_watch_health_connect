@@ -12,6 +12,7 @@ import com.unified.health.driver.garmin.GarminUuids
 import com.unified.health.driver.garmin.codec.Cobs
 import com.unified.health.driver.garmin.codec.CobsFrameAccumulator
 import com.unified.health.driver.garmin.codec.GarminCrc16
+import com.unified.health.driver.garmin.codec.GarminSystemEvent
 import com.unified.health.driver.garmin.codec.GfdiAck
 import com.unified.health.driver.garmin.codec.GfdiMessage
 import com.unified.health.driver.garmin.codec.GfdiMessageId
@@ -58,6 +59,9 @@ internal class FakeGarminWatch(
     /** Answer to REGISTER of REGISTRATION (service 4). */
     var registrationStatus = RegisterStatus.SUCCESS
 
+    /** When false, REGISTER of REGISTRATION gets no answer at all (watch without service 4). */
+    var answerRegistrationService = true
+
     /** Info pages that get no answer on the first N requests each (to exercise retries). */
     var silentInfoPageRequests = 0
 
@@ -74,7 +78,12 @@ internal class FakeGarminWatch(
     val closedHandles = mutableListOf<Pair<Int, Int>>()
     var sendDeviceInformation = true
     var systemEventStatus = GfdiStatus.ACK
-    val configuration = byteArrayOf(0x0F, 0x00, 0x01)
+
+    /** Answer 5030 TIME_UPDATED with the watch's own 5052 request (bit-71 time-sync path). */
+    var sendTimeRequestOnTimeUpdated = true
+
+    /** Watch 5050 capability bitmask (without the length prefix). */
+    var configuration = byteArrayOf(0x0F, 0x00, 0x01)
 
     /** Files served by 5002, by index; index 0 is the directory. */
     val files = mutableMapOf<Int, ByteArray>()
@@ -131,7 +140,9 @@ internal class FakeGarminWatch(
                         if (statuses.last() == RegisterStatus.SUCCESS) sendDeviceInformation()
                     }
                     MultiLinkCodec.SERVICE_REGISTRATION ->
-                        notifyRaw(registerResponse(clientId, serviceId, registrationStatus, REGISTRATION_HANDLE))
+                        if (answerRegistrationService) {
+                            notifyRaw(registerResponse(clientId, serviceId, registrationStatus, REGISTRATION_HANDLE))
+                        }
                     MultiLinkCodec.SERVICE_REAL_TIME_HR ->
                         realtimeRegisterStatus?.let { notifyRaw(registerResponse(clientId, serviceId, it, REALTIME_HANDLE)) }
                 }
@@ -191,7 +202,14 @@ internal class FakeGarminWatch(
         when (message.id) {
             GfdiMessageId.ACK -> onAppAck(GfdiAck.decode(message.payload))
             GfdiMessageId.CONFIGURATION -> ack(message.id, GfdiStatus.ACK)
-            GfdiMessageId.SYSTEM_EVENT -> ack(message.id, systemEventStatus)
+            GfdiMessageId.SYSTEM_EVENT -> {
+                ack(message.id, systemEventStatus)
+                val event = message.payload.firstOrNull()?.toInt()
+                if (sendTimeRequestOnTimeUpdated && systemEventStatus == GfdiStatus.ACK && event == GarminSystemEvent.TIME_UPDATED) {
+                    send(GfdiMessageId.CURRENT_TIME_REQUEST, byteArrayOf(1, 2, 3, 4))
+                }
+            }
+            GfdiMessageId.SET_DEVICE_SETTINGS -> ack(message.id, GfdiStatus.ACK)
             GfdiMessageId.DOWNLOAD_REQUEST -> onDownloadRequest(ByteReader(message.payload).u16le())
             else -> ack(message.id, GfdiStatus.UNKNOWN_OR_NOT_SUPPORTED)
         }
