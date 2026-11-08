@@ -146,7 +146,7 @@ class HuaweiDriverTest {
 
         val sink = RecordingSink()
         var progress = 0f
-        val count = session.sync(SyncRequest(since = null, now = clock.instant()), sink) { progress = it }
+        val count = session.sync(SyncRequest(since = null, now = clock.instant()), sink) { fraction, _ -> progress = fraction }
         assertEquals(0, count)
         assertEquals(1f, progress)
         // The sweep fires every documented service-7 request once, in order, after the handshake.
@@ -170,7 +170,7 @@ class HuaweiDriverTest {
         val session = driver(setOf(FakeAuthenticator())).openSession(watch.gatt, context)
 
         val sink = RecordingSink()
-        val count = session.sync(SyncRequest(since = null, now = clock.instant()), sink) { }
+        val count = session.sync(SyncRequest(since = null, now = clock.instant()), sink) { _, _ -> }
         assertEquals(0, count)
         val raws = sink.ofType<HealthRecord.RawPayload>()
         assertEquals(setOf(HuaweiSession.RAW_TODAY_TOTAL, HuaweiSession.RAW_SAMPLE_FRAME_COUNT, HuaweiSession.RAW_STATUS_FRAME_COUNT), raws.map { it.kind }.toSet())
@@ -270,13 +270,13 @@ class HuaweiDriverTest {
         testScheduler.advanceUntilIdle()
 
         val sink = RecordingSink()
-        session.sync(SyncRequest(since = null, now = clock.instant()), sink) { }
+        session.sync(SyncRequest(since = null, now = clock.instant()), sink) { _, _ -> }
         val kinds = sink.ofType<HealthRecord.RawPayload>().map { it.kind }
         assertTrue(kinds.toString(), kinds.containsAll(listOf("huawei_watch_fitness_0708", "huawei_watch_device_status_0108")))
         assertEquals("0708010148", sink.ofType<HealthRecord.RawPayload>().single { it.kind == "huawei_watch_fitness_0708" }.bytes.toHex())
         // Drained: a second sync does not repeat them.
         val again = RecordingSink()
-        session.sync(SyncRequest(since = null, now = clock.instant()), again) { }
+        session.sync(SyncRequest(since = null, now = clock.instant()), again) { _, _ -> }
         assertTrue(again.ofType<HealthRecord.RawPayload>().none { it.kind.startsWith("huawei_watch_") })
         session.close()
     }

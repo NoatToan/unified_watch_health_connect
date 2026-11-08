@@ -67,6 +67,7 @@ internal class GarminFileSync(
 
     /** @return number of non-raw records delivered. */
     suspend fun sync(request: SyncRequest, sink: HealthRecordSink, progress: SyncProgress): Int {
+        progress.report(0f, "Đang đọc danh sách file...")
         val wellnessSince = request.effectiveSince()
         // D-1092: METRICS (subtype 44, "BIOMETRIC" per docs/re-evidence/garmin — vo2_max,
         // recovery_time, race predictions, performance capacity) is written far less often than
@@ -104,7 +105,7 @@ internal class GarminFileSync(
                 "activity alreadyDownloaded=$activityAlreadyKnown new=${newActivities.size} " +
                 "thisSync=${activityThisSync.size} deferredToNextSync=$activityDeferred cap=$ACTIVITY_CATCH_UP_CAP)",
         )
-        progress.report(DIRECTORY_SHARE)
+        progress.report(DIRECTORY_SHARE, "Đang đọc danh sách file...")
 
         val daily = DailyActivityAccumulator()
         var delivered = 0
@@ -136,14 +137,17 @@ internal class GarminFileSync(
                 sink.onRecords(listOf(HealthRecord.RawPayload(WearableVendor.GARMIN, type.kind, entry.timestamp, bytes)) + outcome.records)
                 delivered += outcome.records.size
             }
-            progress.report(DIRECTORY_SHARE + (1f - DIRECTORY_SHARE) * (index + 1) / wanted.size)
+            progress.report(
+                DIRECTORY_SHARE + (1f - DIRECTORY_SHARE) * (index + 1) / wanted.size,
+                "Đang tải dữ liệu từ đồng hồ (${index + 1}/${wanted.size} file)...",
+            )
         }
         val days = daily.build()
         if (days.isNotEmpty()) {
             sink.onRecords(days)
             delivered += days.size
         }
-        progress.report(1f)
+        progress.report(1f, "Đang xử lý...")
         Log.i(
             TAG,
             "Sync finished: downloaded ${downloaded.size}/${wanted.size} files ${countsOf(downloaded)}, " +

@@ -1766,3 +1766,15 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   vẫn dừng đúng mép trên của `bottomBar` như cũ qua `padding` Scaffold tính sẵn) — chỉ đổi đúng 1 màu
   nền theo đúng phạm vi quyết định yêu cầu, tránh risk làm vỡ layout các màn khác nếu đổi luôn cơ chế
   padding/overlay.
+
+- **D-1126** · 2026-11-08 · `SyncProgress.report(fraction, stage)` không có default value cho `stage` — **Chốt**
+  D-1121 đặc tả chữ ký mới là `fun report(fraction: Float, stage: String? = null)`, nhưng Kotlin
+  không cho phép default value trên abstract method của `fun interface` (lỗi compiler
+  `FUN_INTERFACE_ABSTRACT_METHOD_WITH_DEFAULT_VALUE`) — xác nhận bằng cách build thật
+  (`:core:ble:compileDebugKotlin` fail ngay). Sửa: bỏ `= null`, giữ `stage: String?` (vẫn nullable,
+  chỉ không có default) — mọi call site trong `sync()` của từng driver (`garmin`, `huawei`, `zepp`,
+  `coros`, `standard`), `core/demo/MockWatchDriver`, và `MultiVendorHealthDataSync` đều phải truyền
+  tường minh cả 2 tham số. Cập nhật kèm theo: mọi lambda `SyncProgress` trong test (`core/demo`,
+  `driver:*`) đổi từ 1 tham số/`{}` sang `{ fraction, stage -> ... }` hoặc `{ _, _ -> }` vì SAM lambda
+  phải khớp đúng số tham số của method trừu tượng (default value trên interface không miễn trừ số
+  tham số bắt buộc khi convert từ lambda).

@@ -94,7 +94,7 @@ internal class StandardProfileSession(
      * is rethrown afterwards so the UI reports it.
      */
     override suspend fun sync(request: SyncRequest, sink: HealthRecordSink, progress: SyncProgress): Int {
-        progress.report(0f)
+        progress.report(0f, "Đang tải dữ liệu đã lưu trên thiết bị...")
         val storedError = storedRecords?.let { reader ->
             try {
                 if (!reader.reportAll()) Log.d(TAG, "Pulse oximeter has no stored records")
@@ -104,18 +104,21 @@ internal class StandardProfileSession(
                 e
             }
         }
-        progress.report(STORED_RECORDS_PROGRESS)
+        progress.report(STORED_RECORDS_PROGRESS, "Đang xử lý dữ liệu...")
         pumps.forEach { it.flush() }
         recorder.flushDerived()
         val snapshot = buffer.snapshot()
         val batches = snapshot.records.chunked(BATCH_SIZE)
         batches.forEachIndexed { i, batch ->
             sink.onRecords(batch)
-            progress.report(STORED_RECORDS_PROGRESS + (1 - STORED_RECORDS_PROGRESS) * (i + 1) / batches.size)
+            progress.report(
+                STORED_RECORDS_PROGRESS + (1 - STORED_RECORDS_PROGRESS) * (i + 1) / batches.size,
+                "Đang lưu dữ liệu (${i + 1}/${batches.size})...",
+            )
         }
         buffer.commit(snapshot)
         if (buffer.dropped > 0) Log.w(TAG, "${buffer.dropped} buffered records were dropped (buffer full)")
-        progress.report(1f)
+        progress.report(1f, "Hoàn tất")
         storedError?.let { throw it }
         return snapshot.records.count { it !is HealthRecord.RawPayload }
     }

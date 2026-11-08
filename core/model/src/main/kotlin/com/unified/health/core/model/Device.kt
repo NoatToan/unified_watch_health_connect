@@ -133,7 +133,7 @@ data class SyncResult(
 
 sealed interface SyncState {
     data object Idle : SyncState
-    data class InProgress(val progress: Float) : SyncState
+    data class InProgress(val progress: Float, val stage: String? = null) : SyncState
     data class Done(val result: SyncResult) : SyncState
     data class Failed(val reason: String) : SyncState
 }

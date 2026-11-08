@@ -378,6 +378,14 @@ private fun PairedDeviceCard(
             )
             if (connected && syncState is SyncState.InProgress) {
                 LinearProgressIndicator(progress = { syncState.progress }, modifier = Modifier.fillMaxWidth())
+                syncState.stage?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.testTag("sync_stage_${device.macAddress}"),
+                    )
+                }
             }
             (device.connectionState as? ConnectionState.Error)?.let {
                 Text(it.reason, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)

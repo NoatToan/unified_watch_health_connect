@@ -186,7 +186,16 @@ private fun DeviceDetailContent(
                     Text(it.reason, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
                 }
                 if (syncing) {
-                    LinearProgressIndicator(progress = { (state.syncState as SyncState.InProgress).progress }, modifier = Modifier.fillMaxWidth())
+                    val inProgress = state.syncState as SyncState.InProgress
+                    LinearProgressIndicator(progress = { inProgress.progress }, modifier = Modifier.fillMaxWidth())
+                    inProgress.stage?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.testTag("detail_sync_stage"),
+                        )
+                    }
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                     if (connected) {
