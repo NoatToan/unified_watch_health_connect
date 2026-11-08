@@ -1995,3 +1995,14 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   báo lại rõ ràng theo đúng lời mời của quyết định ("flag clearly if impractical") thay vì tự ý đoán
   hoặc làm 1 bản blur vô nghĩa cho có. Bán trong suốt + viền sáng vẫn tạo được cảm giác "kính" ở mức
   chấp nhận được mà không cần đổi kiến trúc.
+
+- **D-1142** · 2026-11-08 · Race card: ảnh thật quá nhiều tỉ lệ khác nhau — dời ảnh rõ nét vào góc trên-phải, giữ nguyên tỉ lệ gốc — **Chốt**
+  D-1131/1136 (ảnh rõ nét full-width ở trên + blur làm nền phần text) gặp vấn đề thật: ảnh race crawl
+  được (D-1111) có tỉ lệ khung hình rất khác nhau giữa các nguồn (poster dọc, banner ngang, ảnh vuông…)
+  — ép vào 1 band ngang cố định ở trên làm ảnh bị crop/méo không đẹp. Sửa: **ảnh nền blur (ambient
+  backdrop) phủ TOÀN BỘ card** (không chỉ phần dưới nữa) — xử lý tốt sẵn mọi tỉ lệ vì nó bị blur/phóng
+  to che hết. **Ảnh rõ nét** dời thành 1 khối nhỏ ở **góc trên-phải** của card, kích thước giữ **đúng
+  tỉ lệ gốc của ảnh** (`ContentScale.Fit`/`FillHeight` trong 1 khung bo góc giới hạn kích thước tối đa,
+  không ép vuông/ép ngang) — giống kiểu thumbnail/badge, không còn là hero band full-width. Tên giải/
+  ngày/cự ly/giá/CTA vẫn nằm trên nền blur, tránh đè lên góc có ảnh rõ nét. Race chưa có ảnh thật vẫn
+  giữ gradient-theo-terrain full card như cũ (D-1131 đã quyết, không đổi).
