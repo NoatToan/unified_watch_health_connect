@@ -33,19 +33,30 @@ internal object HuaweiSimUuids {
 
 /**
  * In-memory GATT link of the simulated Huawei watch. Speaks just enough of
- * `docs/protocols/HUAWEI_DEVICE_PROTOCOL.md` for the real `:driver:huawei` transport to complete a
- * full handshake and sync sweep against it: 0x0101 link negotiation, the debug-only 0x0113
- * challenge/work-key exchange ([com.unified.health.driver.huawei.auth.debug.HuaweiSimulatorAuthenticator]),
- * then 0x0107 version (§11.1 TLVs), 0x0105 time, 0x0132 time-zone id, 0x0102/0x0103 capability
- * consult (§11.3-11.4), one watch-initiated message (§11.5), and the service-7 probes
- * `HuaweiSession.sync()` fires (cmd 3/4/10/12). Service-7 reply bodies are arbitrary filler: their
- * REAL layouts are undocumented (§11.6, NEEDS-REAL-WATCH) and the driver does not decode them.
+ * `docs/protocols/HUAWEI_DEVICE_PROTOCOL.md` for the real `:driver:huawei` transport to complete the
+ * `authenticVersion == 0` path end to end: 0x0101 link negotiation (authVersion 0, no app auth,
+ * clear text), then 0x0107 version (§11.1 TLVs), 0x0105 time, 0x0102/0x0103 capability consult
+ * (§11.3-11.4), 0x0137/0x013C/0x0132/0x0112 optional steps, the 0x0108 battery query, one
+ * watch-initiated message (§11.5), the service 7 probes `HuaweiSession.sync()` fires (cmd 3/4/10/12)
+ * and the service 23 cmd 18 live-HR report with cmd 3 notifications (§11.8).
+ *
+ * With [authVersion] != 0 this same link reports a modern watch's link parameters (authType 2,
+ * HiChainLite) and stops after 0x0101, which is all the driver needs to fail fast with a clear
+ * "app-level authentication required" error. No authentication or payload encryption is simulated:
+ * the no-auth branch has no work key, and the auth-required branch never gets past negotiation.
+ *
+ * Service-7 reply bodies are arbitrary filler: their REAL layouts are undocumented (§11.6,
+ * NEEDS-REAL-WATCH) and the driver does not decode them.
  *
  * Also exposes the standard Device Information (0x180A) and Battery (0x180F) services so
  * `StandardGattReader` (used by every driver, including Huawei's `readDeviceInfo`) returns real
  * values.
  */
-internal class HuaweiVirtualGattClient(override val address: String) : GattClient {
+internal class HuaweiVirtualGattClient(
+    override val address: String,
+    private val authVersion: Int = HuaweiVirtualDevice.AUTH_VERSION,
+    private val authType: Int = HuaweiVirtualDevice.AUTH_TYPE,
+) : GattClient {
 
     private val _connected = MutableStateFlow(true)
     override val connected: StateFlow<Boolean> = _connected.asStateFlow()
@@ -122,19 +133,19 @@ internal class HuaweiVirtualGattClient(override val address: String) : GattClien
         val serviceId = payload[0].toInt() and 0xFF
         val commandId = payload[1].toInt() and 0xFF
         val tag = "%02X%02X".format(serviceId, commandId)
-        // Decrypting validates the envelope round-trips with the real PayloadCipher even though the
-        // (undocumented, so arbitrary) TLV content below is never inspected.
-        runCatching { HuaweiSimCipher.decryptIfNeeded(payload) }
-            .onFailure { Log.w(TAG, "Could not decrypt $tag (key/IV mismatch?)", it) }
         val reply = try {
             when (tag) {
                 LINK_NEGOTIATION_TAG -> linkNegotiationReply()
-                SIMULATOR_AUTH_TAG -> authReply()
-                DEVICE_VERSION_TAG -> encrypted(serviceId, commandId, deviceVersionTlvs())
-                SERVICE_CAPABILITY_TAG -> encrypted(serviceId, commandId, listOf(HuaweiSimTlv(1, byteArrayOf(1, 1)))) // services 1 and 7
-                TIME_SYNC_TAG, TIME_ZONE_TAG, COMMAND_CAPABILITY_TAG -> encrypted(serviceId, commandId, listOf(successTlv()))
+                DEVICE_VERSION_TAG -> reply(serviceId, commandId, deviceVersionTlvs())
+                SERVICE_CAPABILITY_TAG -> reply(serviceId, commandId, listOf(HuaweiSimTlv(1, byteArrayOf(1, 1, 1)))) // services 1, 7 and 23
+                TIME_SYNC_TAG, TIME_ZONE_TAG -> reply(serviceId, commandId, listOf(successTlv()))
+                COMMAND_CAPABILITY_TAG -> reply(serviceId, commandId, commandSupportTlvs())
+                EXPAND_CAPABILITY_TAG -> reply(serviceId, commandId, expandCapabilityTlvs())
+                DUAL_CHANNEL_TAG, ACTIVITY_TYPE_TAG -> reply(serviceId, commandId, listOf(successTlv()))
+                BATTERY_TAG -> reply(serviceId, commandId, listOf(HuaweiSimTlv(1, byteArrayOf(HuaweiVirtualDevice.BATTERY_PERCENT.toByte()))))
+                LIVE_HR_REPORT_TAG -> reply(serviceId, commandId, listOf(successTlv()))
                 TODAY_TOTAL_TAG, HEALTH_FRAME_COUNT_TAG, SAMPLE_FRAME_COUNT_TAG, STATUS_FRAME_COUNT_TAG ->
-                    encryptedFiller(serviceId, commandId)
+                    reply(serviceId, commandId, listOf(HuaweiSimTlv(1, byteArrayOf(1, 2, 3, 4))))
                 else -> null
             }
         } catch (e: Exception) {
@@ -142,52 +153,112 @@ internal class HuaweiVirtualGattClient(override val address: String) : GattClien
             null
         }
         reply?.let(::sendFrame)
+        if (tag == LIVE_HR_REPORT_TAG && reportOpened(payload)) {
+            LIVE_HR_SAMPLES.forEach { bpm -> sendFrame(liveHeartRateNotice(bpm)) }
+        }
         // After the last handshake step, push one watch-initiated message so the driver's
         // dispatcher path runs too (an arbitrary filler body: real unsolicited layouts are unknown).
-        if (tag == COMMAND_CAPABILITY_TAG) sendFrame(encryptedFiller(SERVICE_DEVICE_CONFIG, UNSOLICITED_COMMAND))
+        if (tag == ACTIVITY_TYPE_TAG) sendFrame(filler(SERVICE_DEVICE_CONFIG, UNSOLICITED_COMMAND))
     }
 
-    /** 0x0107 reply TLVs (§11.1): firmware (1), hardware (2), serial (9), battery (12), product model (20), capability bitmap (22). */
+    /** 0x0107 reply TLVs (§11.1): firmware (1), hardware (2), serial (9), name (12), model (20), BT mode (22). */
     private fun deviceVersionTlvs(): List<HuaweiSimTlv> = listOf(
         HuaweiSimTlv(1, HuaweiVirtualDevice.FIRMWARE.toByteArray()),
         HuaweiSimTlv(2, "HW-UHSIM-1".toByteArray()),
         HuaweiSimTlv(9, HuaweiVirtualDevice.SERIAL.toByteArray()),
-        HuaweiSimTlv(12, byteArrayOf(HuaweiVirtualDevice.BATTERY_PERCENT.toByte())),
+        HuaweiSimTlv(12, HuaweiVirtualDevice.NAME.toByteArray()),
         HuaweiSimTlv(20, HuaweiVirtualDevice.MODEL.toByteArray()),
-        HuaweiSimTlv(22, byteArrayOf(0x0F)),
+        HuaweiSimTlv(22, "BLE".toByteArray()),
     )
+
+    /**
+     * 0x0103 reply: one nested father per service, child TLV 2 = serviceId, child TLV 4 = one
+     * support byte per command the driver announced. The driver announces 9 commands for service 1
+     * (link negotiation, capability consult ×2, time, version, time zone, battery, expand
+     * capability, activity type), 4 for service 7 and 1 for service 23.
+     */
+    private fun commandSupportTlvs(): List<HuaweiSimTlv> {
+        fun group(service: Int, commandCount: Int) = HuaweiSimTlv(
+            0x81,
+            HuaweiSimTlvCodec.encode(
+                listOf(
+                    HuaweiSimTlv(2, byteArrayOf(service.toByte())),
+                    HuaweiSimTlv(4, ByteArray(commandCount) { 1 }),
+                ),
+            ),
+        )
+        return listOf(group(SERVICE_DEVICE_CONFIG, 9), group(SERVICE_FITNESS, 4), group(SERVICE_WORKOUT, 1))
+    }
+
+    /**
+     * 0x0137 reply: child TLV 1 = ASCII hex expand-capability bitmap with only bit 56 set (dual
+     * socket, no extend socket), so the driver follows with 0x013C TLVs 1/2 [V] `ckj`, `ckk`, `cqd`.
+     */
+    private fun expandCapabilityTlvs(): List<HuaweiSimTlv> {
+        val bitmap = ByteArray(8).also { it[7] = 1 } // bit 56 = byte 7, bit 0
+        val hex = bitmap.joinToString("") { "%02x".format(it) }.toByteArray(Charsets.US_ASCII)
+        return listOf(HuaweiSimTlv(0x81, HuaweiSimTlvCodec.encode(listOf(HuaweiSimTlv(1, hex)))))
+    }
 
     /** TLV 0x7F carrying the app's success status 100000 (`HuaweiCommand.SUCCESS_CODE`). */
     private fun successTlv() = HuaweiSimTlv(0x7F, byteArrayOf(0x00, 0x01, 0x86.toByte(), 0xA0.toByte()))
 
-    private fun encrypted(serviceId: Int, commandId: Int, tlvs: List<HuaweiSimTlv>): ByteArray =
-        HuaweiSimCipher.encrypt(byteArrayOf(serviceId.toByte(), commandId.toByte()), HuaweiSimTlvCodec.encode(tlvs), random)
+    /** Clear-text reply: the no-auth branch has no work key, so nothing is encrypted. */
+    private fun reply(serviceId: Int, commandId: Int, tlvs: List<HuaweiSimTlv>): ByteArray =
+        byteArrayOf(serviceId.toByte(), commandId.toByte()) + HuaweiSimTlvCodec.encode(tlvs)
 
-    /** 0x0101: frame sizes generous enough that the driver never needs to slice, legacy-HMAC bucket, the simulator marker. */
+    /** 0x0101: frame sizes generous enough that the driver never needs to slice, plus the auth fields. */
     private fun linkNegotiationReply(): ByteArray {
         val randA = ByteArray(16).also(random::nextBytes)
-        val authField = byteArrayOf(0x00, 0x01) + randA // 2-byte authVersion + 16-byte randA = 18 bytes
+        val authField = byteArrayOf((authVersion ushr 8).toByte(), authVersion.toByte()) + randA
         val tlvs = listOf(
             HuaweiSimTlv(2, HuaweiWireCodec.u16(FRAME_SIZE)),
             HuaweiSimTlv(3, HuaweiWireCodec.u16(FRAME_SIZE)),
             HuaweiSimTlv(4, HuaweiWireCodec.u16(0)),
             HuaweiSimTlv(5, authField),
-            HuaweiSimTlv(7, byteArrayOf(SIMULATOR_AUTH_TYPE.toByte())),
+            HuaweiSimTlv(7, byteArrayOf(authType.toByte())),
             HuaweiSimTlv(12, byteArrayOf(0)), // AES-CBC, not GCM
-            HuaweiSimTlv(SIMULATOR_MARKER_TAG, SIMULATOR_MARKER_VALUE),
         )
         return byteArrayOf(0x01, 0x01) + HuaweiSimTlvCodec.encode(tlvs)
     }
 
-    /** 0x0113: clear reply handing back the fixed test work key, see [HuaweiSimCipher]/`HuaweiSimulatorAuthenticator`. */
-    private fun authReply(): ByteArray =
-        byteArrayOf(0x01, 0x13) + HuaweiSimTlvCodec.encode(listOf(HuaweiSimTlv(1, HuaweiWireCodec.TEST_WORK_KEY)))
-
-    /** Encrypted ack with a small filler TLV: the real response body is undocumented, see class doc. */
-    private fun encryptedFiller(serviceId: Int, commandId: Int): ByteArray {
-        val clearTail = HuaweiSimTlvCodec.encode(listOf(HuaweiSimTlv(1, byteArrayOf(1, 2, 3, 4))))
-        return HuaweiSimCipher.encrypt(byteArrayOf(serviceId.toByte(), commandId.toByte()), clearTail, random)
+    /** True when service 23 cmd 18 requested operator 1 (open). */
+    private fun reportOpened(payload: ByteArray): Boolean {
+        val operator = runCatching { HuaweiSimTlvCodec.decode(payload, 2).findTag(1)?.value?.firstOrNull() }.getOrNull() ?: return false
+        return (operator.toInt() and 0xFF) == 1
     }
+
+    /**
+     * Service 23 cmd 3 notification shaped as in the app's reader [V]
+     * `HwHeartRateManager.configHeartRateNotice`: nested sections, leaf TLV 3 = bpm, TLV 4 = epoch
+     * seconds, TLV 5 = credibility.
+     */
+    private fun liveHeartRateNotice(bpm: Int): ByteArray {
+        val now = (System.currentTimeMillis() / 1000).toInt()
+        val time = byteArrayOf((now ushr 24).toByte(), (now ushr 16).toByte(), (now ushr 8).toByte(), now.toByte())
+        val section = HuaweiSimTlv(
+            0x81,
+            HuaweiSimTlvCodec.encode(
+                listOf(
+                    HuaweiSimTlv(
+                        0x82,
+                        HuaweiSimTlvCodec.encode(
+                            listOf(
+                                HuaweiSimTlv(3, byteArrayOf(bpm.toByte())),
+                                HuaweiSimTlv(4, time),
+                                HuaweiSimTlv(5, byteArrayOf(100.toByte())),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        )
+        return byteArrayOf(SERVICE_WORKOUT.toByte(), LIVE_HR_NOTICE.toByte()) + HuaweiSimTlvCodec.encode(listOf(section))
+    }
+
+    /** An unsolicited filler message (real unsolicited layouts are unknown). */
+    private fun filler(serviceId: Int, commandId: Int): ByteArray =
+        reply(serviceId, commandId, listOf(HuaweiSimTlv(1, byteArrayOf(1, 2, 3, 4))))
 
     /** Wraps [payload] (service+command+TLVs) in a single 0x5A frame and chunks it onto the notify channel. */
     private fun sendFrame(payload: ByteArray) {
@@ -207,20 +278,26 @@ internal class HuaweiVirtualGattClient(override val address: String) : GattClien
         const val MAX_MTU = 247
         const val FRAME_SIZE = 200
 
-        /** Any value `HuaweiAuthMode.candidatesFor` does not special-case falls into the legacy-HMAC bucket. */
-        const val SIMULATOR_AUTH_TYPE = 99
-        const val SIMULATOR_MARKER_TAG = 0x11
-        val SIMULATOR_MARKER_VALUE = "UHSIM".toByteArray(Charsets.US_ASCII)
-
         const val LINK_NEGOTIATION_TAG = "0101"
-        const val SIMULATOR_AUTH_TAG = "0113"
         const val TIME_SYNC_TAG = "0105"
         const val DEVICE_VERSION_TAG = "0107"
         const val TIME_ZONE_TAG = "0132"
         const val SERVICE_CAPABILITY_TAG = "0102"
         const val COMMAND_CAPABILITY_TAG = "0103"
+        const val BATTERY_TAG = "0108"
+        const val ACTIVITY_TYPE_TAG = "0112"
+        const val EXPAND_CAPABILITY_TAG = "0137"
+        const val DUAL_CHANNEL_TAG = "013C"
+        const val LIVE_HR_REPORT_TAG = "1712"
+
         const val SERVICE_DEVICE_CONFIG = 0x01
+        const val SERVICE_FITNESS = 0x07
+        const val SERVICE_WORKOUT = 23
+        const val LIVE_HR_NOTICE = 3
         const val UNSOLICITED_COMMAND = 0x08
+
+        /** Two samples emitted for each open report; enough to exercise the typed live-HR path. */
+        val LIVE_HR_SAMPLES = listOf(72, 74)
 
         const val GATT_FALLBACK_MODEL = "gatt-fallback-model"
         const val GATT_FALLBACK_FIRMWARE = "gatt-fallback-fw"

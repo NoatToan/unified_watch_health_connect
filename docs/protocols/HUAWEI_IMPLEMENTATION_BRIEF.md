@@ -7,32 +7,43 @@ See `docs/re-evidence/huawei/` for byte-level evidence with class:line citations
 Status codes: **RESOLVED** (byte layout confirmed, can implement), **PARTIAL** (layout known
 but one sub-field missing), **NEEDS-REAL-WATCH** (requires HCI snoop log or hardware access).
 
+> **Update 2026-11-08:** corrected against `docs/analysis/HUAWEI_CONNECTION_ANALYSIS.md` and
+> `docs/analysis/HUAWEI_AUTH_CRYPTO_ANALYSIS.md`: 0x0107 type 12 = deviceName, type 22 =
+> deviceBtMode (no battery/capability bitmap); battery = service 1 cmd 8; live HR = service 23
+> cmd 18 + notify cmd 3 TLV 4; BLE post-auth order 0107→0105→0102→0103→0137→013C→0132→0112
+> (0x0116 is BR-only).
+
 ---
 
 ## Priority 1 – Blockers in `HuaweiSession.kt`
 
-### TODO 1 of 3 – 0x0107 version response TLV layout
+### TODO 1 of 4 – 0x0107 version response TLV layout
 **File**: `driver/huawei/src/main/kotlin/.../HuaweiSession.kt`
-**Status: RESOLVED**
+**Status: RESOLVED (field map; corrected 2026-11-08)**
 
-The 29 response TLV type IDs are now mapped (see §11.1 of protocol doc and
-`docs/re-evidence/huawei/version_tlv_types.md`).
+The response TLV field map is now verified (see §11.1 of protocol doc and
+`docs/analysis/HUAWEI_CONNECTION_ANALYSIS.md` §3). **0x0107 contains neither battery nor a
+capability bitmap.**
 
 Action items:
-- Parse type 22 (capabilityBitmap) from 0x0107 response; store in `HuaweiSession.capabilities`.
-- Parse type 12 (batteryLevel, int 0-100); emit `HealthRecord.DeviceStatus(batteryPercent)`.
+- Parse type 12 as **deviceName** (string) and type 22 as **deviceBtMode** (int); store in `DeviceInfo`.
 - Parse types 1, 3, 7, 25 (firmware strings); store in `DeviceInfo` passed to `SessionContext`.
+- Do **not** use 0x0107 for battery or capabilities. Battery = service 1 cmd 8 (TODO 4);
+  capabilities = 0x0102/0x0103 responses.
 - Remove the first TODO comment in `HuaweiSession` and replace with the parse logic.
 
-Test vector: Manufacture a fake 0x0107 response frame with TLV `{type=12, len=1, value=0x4B}` (75%)
-and verify `HuaweiSession` emits a `DeviceStatus` record with `batteryPercent = 75`. Add to
-`HuaweiDriverTest.kt`.
+Test vector: Manufacture a fake 0x0107 response with TLV `{type=12, value="Watch"}` and
+`{type=22, len=1, value=0x01}`; verify `deviceName` and `deviceBtMode` are parsed. Add to
+`HuaweiDriverTest.kt`. The old battery assertion on type 12 is removed.
 
 ---
 
-### TODO 2 of 3 – 0x0132/0x0102/0x0103 steps in handshake
+### TODO 2 of 4 – 0x0132/0x0102/0x0103 steps in handshake
 **File**: `driver/huawei/src/main/kotlin/.../HuaweiSession.kt`
-**Status: PARTIAL**
+**Status: RESOLVED**
+
+Post-auth order on BLE: **0107 → 0105 → 0102 → 0103 → (0137) → (013C) → (0132) → (0112)**;
+`0x0116` is BR-only. Source: `docs/analysis/HUAWEI_CONNECTION_ANALYSIS.md` §1.5.
 
 Sub-items:
 - **0x0102 ServiceCapabilityConsult – RESOLVED**
@@ -41,17 +52,17 @@ Sub-items:
   Implement: send request with minimal service list {7}, parse response bitmap, record
   which services the watch reports as supported.
 
-- **0x0103 CommandCapabilityConsult – RESOLVED (request), PARTIAL (response)**
+- **0x0103 CommandCapabilityConsult – RESOLVED**
   Request: nested TLV header 0x81 + per-service {TLV(0x02,svcId), TLV(0x03,cmdCount,cmdIds)}.
-  Response parsing sequence `d → b → a` confirmed [V]; byte layout of response body is [I].
-  Implement the request side now; response can be parsed opportunistically (store raw TLVs
-  and log until confirmed with real device).
+  Response: nested TLV per service, child TLV 2 = serviceId, child TLV 4 = ASCII hex support
+  vector (2 hex chars per command, 0x01 supported / 0x00 not) [V] (`cki.java:165-249`,
+  `cle.java:33-60`). Implement both request and response parsing.
 
-- **0x0132 SetDeviceTimeZoneId – PARTIAL**
-  TLV(0x03, IANA_tz_utf8) is RESOLVED [V]. TLV(0x01, 50-byte cku.c() output) is PARTIAL –
-  the 50-byte internal layout is not yet confirmed.
-  Implement: skip TLV(0x01) or send 50 zero bytes as placeholder; send TLV(0x03) with correct
-  IANA ID. Mark with `// TODO(huawei-protocol): confirm 50-byte cku.c() layout via HCI log`.
+- **0x0132 SetDeviceTimeZoneId – RESOLVED**
+  `01 32` is the service/command header, not a TLV. Payload = TLV(0x01, 4-byte epoch BE),
+  TLV(0x02, 2-byte zone offset), TLV(0x03, IANA_tz_utf8) [V] (`ckw.java:30-133`,
+  `cku.java:154-225`). Compare the echoed epoch and resend once on ≥1 s drift.
+  Remove the old "50-byte cku.c()" placeholder.
 
 ---
 
@@ -71,6 +82,20 @@ Blocking on: HCI snoop log capture while Huawei Health syncs. Steps:
 4. Open in Wireshark with BTLE dissector; filter `btle.advertising_header.pdu_type == 0`
    then filter by ATT Write/Notify on UUID 0000FE01/FE02-...
 5. Decode 0x5A frames from notify packets; look for serviceId=7 responses to cmd 3/4/8
+
+---
+
+### TODO 4 of 4 – Battery (service 1 cmd 8) + live HR (service 23 cmd 18)
+**File**: `HuaweiSession.kt`, `codec/FitnessCommands.kt`
+**Status: RESOLVED (source) / NEEDS-REAL-WATCH (notification nesting, `<op>` values)**
+
+- **Battery**: service 1 cmd 8 request `01 08` + `01 00` (earbuds use TLV 2/3 when capability
+  112). Response has two formats [V] (`mev.java:155-179`, `mer.java:240-346`):
+  protocol 0 = raw level byte at offset 14; newer = TLV 1 level 0-100, TLV 2/3 earbud
+  levels/status. Emit `HealthRecord.DeviceStatus`.
+- **Live HR**: service 23 cmd 18 payload `01 01 <op>`; notifications cmd 3 with TLV 4 = HR
+  (TLV 3 speed, TLV 6 calories, TLV 7 distance). Continuous samples: service 7 cmd 10/11
+  (`HwHeartRateManager.java:248-271`, `HwWorkoutServiceManager.java:386-425`, `lxw.java:154-179`).
 
 ---
 
@@ -107,14 +132,17 @@ watchInitiatedHandler?.onWatchInitiated(serviceId, commandId, payload)
 Affected test file: `driver/huawei/src/test/kotlin/.../HuaweiDriverTest.kt`
 
 New test cases needed:
-1. `parse_0x0107_response_battery_and_firmware` – inject fake response, assert `batteryPercent`
-   and `firmwareVersion` are parsed correctly.
+1. `parse_0x0107_response_device_name_bt_mode_and_firmware` – inject fake response, assert
+   `deviceName` (type 12), `deviceBtMode` (type 22) and `firmwareVersion` are parsed correctly.
 2. `parse_0x0102_response_bitmap_single_service` – hex bitmap `"0100"` → service 1 not supported,
    service 2 supported (bit 0 of byte at index 1 = 1).
-3. `send_0x0132_request_contains_iana_tz` – capture outbound frame, assert TLV type=3 value
-   equals `TimeZone.getDefault().id.toByteArray(Charsets.UTF_8)`.
+3. `send_0x0132_request_contains_epoch_zone_and_iana_tz` – capture outbound frame, assert
+   `01 32` header, TLV type=1 (4-byte epoch BE), TLV type=2 (2-byte zone) and TLV type=3
+   value equals `TimeZone.getDefault().id.toByteArray(Charsets.UTF_8)`.
 4. `watch_initiated_hr_alert_dispatched` – inject unsolicited notify payload for svc=7,
    assert `WatchInitiatedHandler.onWatchInitiated` called with correct serviceId/commandId.
+5. `parse_battery_service1_cmd8_both_formats` – protocol-0 raw byte 14 and newer TLV 1 format.
+6. `parse_live_hr_service23_notify_tlv4` – notify cmd 3 with TLV 4 → `HeartRateSample`.
 
 ---
 
@@ -122,12 +150,14 @@ New test cases needed:
 
 | Item | File | Status | Effort |
 |---|---|---|---|
-| 0x0107 TLV type table | HuaweiSession.kt | RESOLVED | ~2h |
+| 0x0107 TLV type table | HuaweiSession.kt | RESOLVED (field map; no battery/capability) | ~2h |
 | 0x0102 request+response | HuaweiSession.kt | RESOLVED | ~3h |
 | 0x0103 request | HuaweiSession.kt | RESOLVED | ~2h |
-| 0x0103 response byte layout | HuaweiSession.kt | PARTIAL [I] | ~1h + verify |
-| 0x0132 TLV(0x01) 50-byte | HuaweiSession.kt | NEEDS-REAL-WATCH | — |
-| 0x0132 TLV(0x03) IANA tz | HuaweiSession.kt | RESOLVED | included above |
+| 0x0103 response byte layout | HuaweiSession.kt | RESOLVED [V] | ~1h |
+| 0x0132 TLV1 epoch + TLV2 zone | HuaweiSession.kt | RESOLVED [V] | ~1h |
+| 0x0132 TLV3 IANA tz | HuaweiSession.kt | RESOLVED [V] | included above |
+| Battery (service 1 cmd 8) | HuaweiSession.kt | RESOLVED / NEEDS-REAL-WATCH (formats) | ~2h |
+| Live HR (service 23 cmd 18) | HuaweiSession.kt | RESOLVED / NEEDS-REAL-WATCH (nesting) | ~3h |
 | Service 7 response layout | FitnessCommands.kt + Session | NEEDS-REAL-WATCH | — |
 | Watch-initiated routing | HuaweiTransport.kt | RESOLVED (design) | ~2h |
-| Unit tests (above 4 cases) | HuaweiDriverTest.kt | Not started | ~3h |
+| Unit tests (above 6 cases) | HuaweiDriverTest.kt | Not started | ~3h |

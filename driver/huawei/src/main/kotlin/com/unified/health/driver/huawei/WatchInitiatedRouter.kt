@@ -5,6 +5,9 @@ import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.WearableVendor
 import com.unified.health.driver.huawei.codec.HuaweiCommand
 import com.unified.health.driver.huawei.transport.WatchInitiatedHandler
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import java.time.Clock
 import java.time.Instant
 
@@ -20,7 +23,12 @@ import java.time.Instant
  * also confirm whether the watch expects an ACK for any of them (the app's `MessageReceiveCallback`
  * suggests the receiving layer acknowledges, layout unknown).
  *
- * Thread-safe: [onWatchInitiated] runs on the transport reader, [drain] on the sync caller.
+ * The typed live-HR path consumes service 23 command 3 notifications through [events] while the
+ * same message is still buffered raw for the next sync (the raw copy is harmless and keeps the
+ * "decode later with better evidence" option open).
+ *
+ * Thread-safe: [onWatchInitiated] runs on the transport reader, [drain] on the sync caller and
+ * [events] has an internal buffer.
  */
 internal class WatchInitiatedRouter(
     private val clock: Clock,
@@ -52,6 +60,10 @@ internal class WatchInitiatedRouter(
     private class Received(val command: HuaweiCommand, val at: Instant)
 
     private val buffer = ArrayDeque<Received>()
+    private val _events = MutableSharedFlow<HuaweiCommand>(extraBufferCapacity = EVENT_BUFFER)
+
+    /** Live view of watch-initiated commands, for typed consumers such as the live-HR stream. */
+    val events: SharedFlow<HuaweiCommand> = _events.asSharedFlow()
 
     override fun onWatchInitiated(command: HuaweiCommand) {
         val category = Category.of(command.serviceId)
@@ -60,6 +72,7 @@ internal class WatchInitiatedRouter(
             if (buffer.size == capacity) buffer.removeFirst()
             buffer.addLast(Received(command, clock.instant()))
         }
+        _events.tryEmit(command)
     }
 
     /** Everything received since the previous call, as raw payloads, oldest first. */
@@ -78,6 +91,7 @@ internal class WatchInitiatedRouter(
     companion object {
         private const val TAG = "HuaweiWatchEvents"
         const val DEFAULT_CAPACITY = 256
+        private const val EVENT_BUFFER = 64
 
         const val SERVICE_DEVICE_CONFIG = 1
         const val SERVICE_NOTIFY = 2

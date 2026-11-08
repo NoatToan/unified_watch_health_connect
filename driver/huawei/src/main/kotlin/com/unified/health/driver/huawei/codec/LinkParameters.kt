@@ -9,9 +9,14 @@ import com.unified.health.core.ble.protocol.MalformedPayloadException
  * @property maxFrameSize TLV 2: largest 0x5A frame; drives slicing (`coa.java:51,62`).
  * @property singleFrameSize TLV 3: largest chunk per BLE write; frames are cut at this size (`coa.java:53,70-101`).
  * @property intervalMs TLV 4: pause after a frame (`coa.java:52,82`). [I] the unit is milliseconds.
- * @property authVersion first 2 bytes of TLV 5; 0 is rejected by the app as "invalid device version".
- * @property randA last 16 bytes of TLV 5: the watch challenge for authentication.
+ * @property authVersion first 2 bytes of TLV 5 (`authenticVersion u16 BE`); 0 selects the vendor's
+ *  "device does not need authentication" branch, which continues straight to 0x0107 (`cke.c`).
+ * @property randA last 16 bytes of TLV 5 (`RandA[16]`): the watch challenge for authentication.
  * @property authType TLV 7 ("deviceSupportType"): selects the auth mechanism (`cke.java:38-43`), see `HuaweiAuthMode`.
+ * @property authKeyInfoFlag TLV 17, diagnostic only. `HUAWEI_AUTH_CRYPTO_ANALYSIS.md` §1.1 calls
+ *  TLV 17 the auth type, but the verified code reads the selection type from TLV 7: `cke.d()` uses
+ *  `cml.j()`, which TLV 7 fills via `cml.m()`. TLV 17 fills `cml.g()` (`cml.j(int)`) and is only
+ *  read in `ckx.java:70` to decide whether 0x0133 carries an extra key-info TLV [V] `ckv.java:240-268`.
  * @property bondStatus TLV 9; 2 means the watch lost the bond keys while the phone is still bonded (`ckv.java:113`).
  * @property encryptionMethod TLV 12; 1 selects AES-GCM for payloads (`cjy.java:193`).
  * @property singleFrameSizeDevice TLV 15 (logged only by the app).
@@ -24,6 +29,7 @@ internal class LinkParameters(
     val authVersion: Int,
     val randA: ByteArray?,
     val authType: Int,
+    val authKeyInfoFlag: Int?,
     val bondStatus: Int?,
     val encryptionMethod: Int,
     val singleFrameSizeDevice: Int?,
@@ -35,7 +41,8 @@ internal class LinkParameters(
 
     override fun toString(): String =
         "LinkParameters(maxFrame=$maxFrameSize, singleFrame=$singleFrameSize, interval=$intervalMs, " +
-            "authVersion=$authVersion, authType=$authType, bondStatus=$bondStatus, encryption=$encryptionMethod)"
+            "authVersion=$authVersion, authType=$authType, authKeyInfoFlag=$authKeyInfoFlag, " +
+            "bondStatus=$bondStatus, encryption=$encryptionMethod)"
 
     companion object {
         const val SERVICE_ID = 0x01
@@ -54,6 +61,7 @@ internal class LinkParameters(
         private const val TAG_AUTH = 5
         private const val TAG_AUTH_TYPE = 7
         private const val TAG_BOND_STATUS = 9
+        private const val TAG_AUTH_KEY_INFO = 17
         private const val TAG_ENCRYPTION = 12
         private const val TAG_SINGLE_FRAME_DEVICE = 15
         private const val TAG_DEMO_WATCH = 16
@@ -81,8 +89,10 @@ internal class LinkParameters(
                 throw LinkNegotiationException("watch is in retail demo mode")
             }
             val auth = tlvs.find(TAG_AUTH)?.value?.takeIf { it.size == TAG_AUTH_LENGTH }
-            val authVersion = auth?.let { ((it[0].toInt() and 0xFF) shl 8) or (it[1].toInt() and 0xFF) } ?: 0
-            if (authVersion == 0) throw LinkNegotiationException("watch did not report an authentication version (TLV 5)")
+            if (auth == null) throw LinkNegotiationException("watch did not report TLV 5 (auth version + RandA)")
+            // 0 = the vendor's "Device do not need authentic after check device available" branch
+            // ([V] cke.java:60-65); non-zero means the watch demands one of the Huawei auth flows.
+            val authVersion = ((auth[0].toInt() and 0xFF) shl 8) or (auth[1].toInt() and 0xFF)
 
             var maxFrame = tlvs.find(TAG_MAX_FRAME)?.let(::intOrNull) ?: DEFAULT_FRAME_SIZE
             var singleFrame = tlvs.find(TAG_SINGLE_FRAME)?.let(::intOrNull) ?: DEFAULT_FRAME_SIZE
@@ -100,8 +110,9 @@ internal class LinkParameters(
                 singleFrameSize = singleFrame,
                 intervalMs = interval.coerceAtLeast(0),
                 authVersion = authVersion,
-                randA = auth?.copyOfRange(2, 2 + RAND_A_SIZE),
+                randA = auth.copyOfRange(2, 2 + RAND_A_SIZE),
                 authType = tlvs.find(TAG_AUTH_TYPE)?.let(::intOrNull) ?: 0,
+                authKeyInfoFlag = tlvs.find(TAG_AUTH_KEY_INFO)?.let(::intOrNull),
                 bondStatus = tlvs.find(TAG_BOND_STATUS)?.let(::intOrNull),
                 encryptionMethod = tlvs.find(TAG_ENCRYPTION)?.let(::intOrNull) ?: 0,
                 singleFrameSizeDevice = tlvs.find(TAG_SINGLE_FRAME_DEVICE)?.let(::intOrNull),

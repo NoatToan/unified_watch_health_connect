@@ -19,27 +19,49 @@ import com.unified.health.driver.huawei.auth.HuaweiAuthMode
 import com.unified.health.driver.huawei.auth.HuaweiAuthenticator
 import com.unified.health.driver.huawei.auth.selectFor
 import com.unified.health.driver.huawei.codec.CipherMode
+import com.unified.health.driver.huawei.codec.DeviceConfigCommands
 import com.unified.health.driver.huawei.codec.FitnessCommands
 import com.unified.health.driver.huawei.codec.HuaweiCommand
 import com.unified.health.driver.huawei.codec.IvGenerator
 import com.unified.health.driver.huawei.codec.LinkNegotiationException
 import com.unified.health.driver.huawei.codec.LinkParameters
+import com.unified.health.driver.huawei.codec.LiveHeartRateCommands
+import com.unified.health.driver.huawei.codec.LiveHeartRateParser
 import com.unified.health.driver.huawei.codec.PayloadCipher
 import com.unified.health.driver.huawei.transport.FrameSettings
 import com.unified.health.driver.huawei.transport.HuaweiTransport
 import com.unified.health.driver.huawei.transport.TransportTimeouts
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import java.time.Clock
 import java.time.Instant
 
 /**
- * An authenticated Huawei link. Built by [open], which runs the handshake of
- * HUAWEI_DEVICE_PROTOCOL.md §5.1 as far as this driver can: 0x0101 link negotiation →
- * authenticator selection → authentication → [DeviceConfigurator] (0x0107, 0x0105, 0x0132,
- * 0x0102, 0x0103). Watch-initiated messages are routed to [router] for the whole session.
+ * A Huawei link. Built by [open], which runs the handshake of HUAWEI_CONNECTION_ANALYSIS.md
+ * §1.3-1.5 as far as this driver can: 0x0101 link negotiation → (only when the watch reports a
+ * non-zero authenticVersion) authenticator selection and authentication → [DeviceConfigurator]
+ * (0x0107, 0x0105, 0x0102, 0x0103, optional 0x0137/0x013C/0x0132/0x0112; 0x0116 is BR-only).
+ *
+ * A watch that reports `authenticVersion == 0` takes the vendor's "no app auth" branch
+ * ([V] `cke.java:60-65`): the driver skips authentication, sends the handshake in clear text and
+ * works with the full session. A non-zero version without a matching [HuaweiAuthenticator]
+ * (production ships none) fails fast with a precise [UnsupportedDeviceException] — this driver
+ * deliberately has no CAK/HiChain implementation.
+ *
+ * Watch-initiated messages are routed to [router] for the whole session; service 23 command 3
+ * notifications additionally feed [liveHeartRate].
  */
 internal class HuaweiSession private constructor(
     private val gatt: GattClient,
@@ -49,33 +71,42 @@ internal class HuaweiSession private constructor(
     private val router: WatchInitiatedRouter,
     /** What the handshake learned; exposed for diagnostics and tests. */
     val configuration: DeviceConfiguration,
+    /** True when an authenticator installed a work key; false on the authVersion == 0 path. */
+    private val encrypted: Boolean,
 ) : WearableSession {
 
     /**
-     * No [DeviceCapability.HISTORY_SYNC] or [DeviceCapability.LIVE_HEART_RATE]: [sync] cannot
-     * decode a single typed [HealthRecord] yet (see below) and the document gives no evidence that
-     * Huawei watches also expose the Bluetooth SIG Heart Rate service (§3.1 only lists
-     * FE86/0x181C/0x1805). [DeviceCapability.BATTERY_LEVEL] is real: 0x0107 type 12 (§11.1) or the
-     * standard GATT Battery service. The 0x0107 capability bitmap (type 22) is NOT mapped onto
-     * these flags: its bit meanings are undocumented.
+     * Battery level (service 1 cmd 8 when 0x0103 announces it, or the standard GATT Battery
+     * service) and live heart rate (service 23 cmd 18 report + cmd 3 notifications, when 0x0103
+     * announces command 23/18).
+     *
+     * No [DeviceCapability.HISTORY_SYNC]: [sync] cannot decode a single typed [HealthRecord] yet
+     * (see below).
      */
     override val capabilities: Set<DeviceCapability> = buildSet {
         val gattBattery = gatt.findCharacteristic(StandardUuids.BATTERY_LEVEL, StandardUuids.BATTERY_SERVICE) != null
-        if (gattBattery || configuration.version?.batteryPercent != null) add(DeviceCapability.BATTERY_LEVEL)
+        val protocolBattery = configuration.commandSupport
+            ?.supports(DeviceConfigCommands.SERVICE_ID, DeviceConfigCommands.GET_BATTERY) == true
+        if (gattBattery || protocolBattery) add(DeviceCapability.BATTERY_LEVEL)
+        val liveHeartRate = configuration.commandSupport
+            ?.supports(LiveHeartRateCommands.SERVICE_ID, LiveHeartRateCommands.COMMAND_ID) == true
+        if (liveHeartRate) add(DeviceCapability.LIVE_HEART_RATE)
     }
 
     /**
-     * Fresh 0x0107 (model type 20/3, firmware type 1, serial type 9, battery type 12, §11.1) with
-     * standard GATT Device Information / Battery filling whatever the watch does not report.
+     * Fresh 0x0107 (model type 20/3, firmware type 1, serial type 9, device name type 12, BT mode
+     * type 22) with the service 1 cmd 8 battery query and standard GATT Device Information /
+     * Battery filling whatever the watch does not report.
      */
     override suspend fun readDeviceInfo(): DeviceInfo {
-        val version = DeviceConfigurator.readVersion(transport)
+        val version = DeviceConfigurator.readVersion(transport, encrypted)
+        val protocolBattery = if (capabilities.contains(DeviceCapability.BATTERY_LEVEL)) DeviceConfigurator.readBattery(transport, encrypted) else null
         val gattInfo = StandardGattReader.readDeviceInfo(gatt)
         return DeviceInfo(
             model = version?.productModel ?: gattInfo.model,
             firmwareVersion = version?.firmwareVersion ?: gattInfo.firmwareVersion,
             serialNumber = version?.serialNumber ?: gattInfo.serialNumber,
-            batteryPercent = version?.batteryPercent ?: gattInfo.batteryPercent,
+            batteryPercent = protocolBattery?.levelPercent ?: gattInfo.batteryPercent,
         )
     }
 
@@ -114,9 +145,59 @@ internal class HuaweiSession private constructor(
         return 0
     }
 
+    /**
+     * Live heart rate from the vendor's on-demand report: service 23 command 18 opens it (operator
+     * 1) and command 3 notifications carry the samples; cancelling the collection sends the close
+     * (operator 0). Only available when 0x0103 announced command 23/18.
+     *
+     * KDoc with the exact evidence for the request/notification layouts is in
+     * [com.unified.health.driver.huawei.codec.LiveHeartRateCommands] /
+     * [com.unified.health.driver.huawei.codec.LiveHeartRateParser]. The subscription is started
+     * before the open request so a sample sent with the open acknowledgment is not lost; the close
+     * is best-effort and bounded so it cannot delay teardown indefinitely.
+     */
+    override val liveHeartRate: Flow<HealthRecord.HeartRate> =
+        if (capabilities.contains(DeviceCapability.LIVE_HEART_RATE)) liveHeartRateFlow() else emptyFlow()
+
+    private fun liveHeartRateFlow(): Flow<HealthRecord.HeartRate> = channelFlow {
+        val forward = launch(start = CoroutineStart.UNDISPATCHED) {
+            router.events.collect { command ->
+                LiveHeartRateParser.parse(command, Instant.now(clock))?.let { send(it) }
+            }
+        }
+        var opened = false
+        try {
+            val reply = transport.request(LiveHeartRateCommands.report(open = true), encrypted)
+            val error = reply.errorCode()
+            if (error != null && error != HuaweiCommand.SUCCESS_CODE) {
+                Log.w(TAG, "Watch rejected the live-HR report (error $error)")
+                return@channelFlow
+            }
+            opened = true
+            awaitCancellation()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: WearableProtocolException) {
+            Log.w(TAG, "Live-HR report failed: ${e.message}")
+        } finally {
+            forward.cancel()
+            if (opened) closeHeartRateReport()
+        }
+    }
+
+    private suspend fun closeHeartRateReport() {
+        withContext(NonCancellable) {
+            runCatching {
+                withTimeoutOrNull(CLOSE_REPORT_TIMEOUT_MS) {
+                    transport.request(LiveHeartRateCommands.report(open = false), encrypted)
+                }
+            }.onFailure { Log.w(TAG, "Live-HR report close failed: ${it.message}") }
+        }
+    }
+
     /** Sends one probe command; stores a successful reply, logs and skips a rejected one. */
     private suspend fun probe(kind: String, command: HuaweiCommand, sink: HealthRecordSink) {
-        val response = transport.request(command, encrypted = true)
+        val response = transport.request(command, encrypted)
         val error = response.errorCode()
         if (error != null && error != HuaweiCommand.SUCCESS_CODE) {
             Log.w(TAG, "Huawei watch rejected $kind (${response.tag}) with error $error")
@@ -132,6 +213,13 @@ internal class HuaweiSession private constructor(
 
     companion object {
         private const val TAG = "HuaweiSession"
+
+        /** Vendor branch "Device do not need authentic after check device available" [V] `cke.java:60-65`. */
+        private const val NO_APP_AUTH_VERSION = 0
+
+        /** Bound on the best-effort close report sent when live-HR collection ends. */
+        private const val CLOSE_REPORT_TIMEOUT_MS = 2_000L
+
         const val RAW_TODAY_TOTAL = "huawei_fitness_today_total"
         const val RAW_HEALTH_FRAME_COUNT = "huawei_fitness_health_frame_count"
         const val RAW_SAMPLE_FRAME_COUNT = "huawei_fitness_sample_frame_count"
@@ -161,16 +249,30 @@ internal class HuaweiSession private constructor(
                 transport.start()
                 val link = negotiateLink(transport)
                 transport.frameSettings = FrameSettings(link)
+                Log.i(
+                    TAG,
+                    "Auth capability: authVersion=%d (0x%04x), authType=%d, TLV17=%s, bondStatus=%s, encryption=%d".format(
+                        link.authVersion, link.authVersion, link.authType, link.authKeyInfoFlag, link.bondStatus, link.encryptionMethod,
+                    ),
+                )
 
-                val authenticator = authenticators.selectFor(link) ?: throw unsupportedAuth(link)
-                Log.i(TAG, "Authenticating with ${authenticator.mode.label}")
-                val keys = authenticator.authenticate(transport, link, context)
-                val cipherMode = keys.cipherMode
-                    ?: if (authenticator.mode == HuaweiAuthMode.HICHAIN3) CipherMode.AES_GCM else link.cipherMode
-                transport.cipher = PayloadCipher(keys.workKey, cipherMode, IvGenerator(keys.ivCounterSeed))
+                // The vendor still generates randB/token before checking authVersion, but only this
+                // branch matters: version 0 means "device does not need authentic" [V] cke.java:60-65.
+                val encrypted = if (link.authVersion == NO_APP_AUTH_VERSION) {
+                    Log.i(TAG, "authVersion 0: watch requires no app authentication; continuing in clear text")
+                    false
+                } else {
+                    val authenticator = authenticators.selectFor(link) ?: throw unsupportedAuth(link)
+                    Log.i(TAG, "Authenticating with ${authenticator.mode.label}")
+                    val keys = authenticator.authenticate(transport, link, context)
+                    val cipherMode = keys.cipherMode
+                        ?: if (authenticator.mode == HuaweiAuthMode.HICHAIN3) CipherMode.AES_GCM else link.cipherMode
+                    transport.cipher = PayloadCipher(keys.workKey, cipherMode, IvGenerator(keys.ivCounterSeed))
+                    true
+                }
 
-                val configuration = DeviceConfigurator.configure(transport, clock)
-                return HuaweiSession(gatt, transport, scope, clock, router, configuration)
+                val configuration = DeviceConfigurator.configure(transport, clock, link, encrypted)
+                return HuaweiSession(gatt, transport, scope, clock, router, configuration, encrypted)
             } catch (e: Throwable) { // includes CancellationException, which is rethrown unchanged
                 scope.cancel()
                 throw e
@@ -190,11 +292,12 @@ internal class HuaweiSession private constructor(
 
         private fun unsupportedAuth(link: LinkParameters): UnsupportedDeviceException {
             val modes = HuaweiAuthMode.candidatesFor(link.authType).joinToString(" / ") { it.label }
+            val auth = "auth type ${link.authType}, auth version 0x%04x".format(link.authVersion)
             val keyHint = if (link.keyMissing) " The watch also reports lost bond keys: unpair it in Android Bluetooth settings." else ""
             return UnsupportedDeviceException(
-                "Huawei $modes authentication is not supported yet (watch auth type ${link.authType}, " +
-                    "auth version 0x%04x). Sync this watch through Huawei Health and Health Connect instead.".format(link.authVersion) +
-                    keyHint,
+                "Direct BLE is not available for this watch because it requires Huawei's app-level authentication " +
+                    "($modes; $auth). This driver does not implement CAK/HiChain authentication; " +
+                    "sync this watch through Huawei Health and Health Connect instead." + keyHint,
             )
         }
     }

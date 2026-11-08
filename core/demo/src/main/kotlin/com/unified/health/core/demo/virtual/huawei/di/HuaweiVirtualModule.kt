@@ -2,6 +2,7 @@ package com.unified.health.core.demo.virtual.huawei.di
 
 import com.unified.health.core.ble.virtual.VirtualDevice
 import com.unified.health.core.demo.BuildConfig
+import com.unified.health.core.demo.virtual.huawei.HuaweiAuthRequiredVirtualDevice
 import com.unified.health.core.demo.virtual.huawei.HuaweiVirtualWatch
 import dagger.Module
 import dagger.Provides
@@ -20,5 +21,17 @@ import dagger.multibindings.ElementsIntoSet
 internal object HuaweiVirtualModule {
     @Provides
     @ElementsIntoSet
-    fun huaweiVirtualDevice(): Set<VirtualDevice> = if (BuildConfig.MOCK_DEVICE) setOf(HuaweiVirtualWatch()) else emptySet()
+    fun huaweiVirtualDevice(): Set<VirtualDevice> = if (BuildConfig.MOCK_DEVICE) {
+        setOf(
+            HuaweiVirtualWatch(),
+            HuaweiVirtualWatch(
+                address = HuaweiAuthRequiredVirtualDevice.ADDRESS,
+                name = HuaweiAuthRequiredVirtualDevice.NAME,
+                authVersion = HuaweiAuthRequiredVirtualDevice.AUTH_VERSION,
+                authType = HuaweiAuthRequiredVirtualDevice.AUTH_TYPE,
+            ),
+        )
+    } else {
+        emptySet()
+    }
 }

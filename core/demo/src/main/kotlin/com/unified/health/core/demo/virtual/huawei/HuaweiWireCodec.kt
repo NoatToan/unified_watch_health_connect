@@ -1,21 +1,14 @@
 package com.unified.health.core.demo.virtual.huawei
 
 import java.io.ByteArrayOutputStream
-import javax.crypto.Cipher
-import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.SecretKeySpec
 
 /**
  * A from-scratch, minimal re-implementation of the wire shapes described in
- * `docs/protocols/HUAWEI_DEVICE_PROTOCOL.md` §4 (0x5A framing, CRC-16/XMODEM, TLV) and §6.4 (the
- * AES-CBC payload envelope) — enough for [HuaweiVirtualGattClient] to hold a conversation with the
- * real `:driver:huawei` transport. Deliberately independent of `:driver:huawei`'s own codec (which
- * is `internal` to that module and not meant to be reused by a test double): CRC-16/XMODEM and
- * AES-CBC/PKCS5 are public, vendor-neutral algorithms, not vendor secrets, so re-describing them
- * here is not a shortcut around D-004 (no vendor secrets) — the only "secret" below,
- * [HuaweiWireCodec.TEST_WORK_KEY], is a fixed constant this file invents for the simulator and
- * [com.unified.health.driver.huawei.auth.debug.HuaweiSimulatorAuthenticator] both know; it has
- * nothing to do with Huawei's real CAK/HiChain material.
+ * `docs/protocols/HUAWEI_DEVICE_PROTOCOL.md` §4 (0x5A framing, CRC-16/XMODEM, TLV) — enough for
+ * [HuaweiVirtualGattClient] to hold a clear-text conversation with the real `:driver:huawei`
+ * transport on the vendor's `authenticVersion == 0` branch. Deliberately independent of
+ * `:driver:huawei`'s own codec (which is `internal` to that module and not meant to be reused by a
+ * test double): CRC-16/XMODEM is a public, vendor-neutral algorithm, not a vendor secret.
  *
  * Only single (unsliced) 0x5A frames are produced and understood: every request/reply exchanged
  * with the simulator is a few dozen bytes, far under the generous `maxFrame` the simulator
@@ -25,9 +18,6 @@ import javax.crypto.spec.SecretKeySpec
  */
 internal object HuaweiWireCodec {
     const val MAGIC = 0x5A
-
-    /** 16-byte AES-128 key the simulator and [com.unified.health.driver.huawei.auth.debug.HuaweiSimulatorAuthenticator] agree on out of band; test-only. */
-    val TEST_WORK_KEY: ByteArray = "UHSIMULATORTESTK".toByteArray(Charsets.US_ASCII)
 
     fun u16(value: Int): ByteArray = byteArrayOf((value ushr 8).toByte(), value.toByte())
 
@@ -122,36 +112,3 @@ internal object HuaweiSimTlvCodec {
 }
 
 internal fun List<HuaweiSimTlv>.findTag(tag: Int): HuaweiSimTlv? = firstOrNull { it.tag == tag }
-
-/** AES-CBC/PKCS5Padding with [HuaweiWireCodec.TEST_WORK_KEY], matching the envelope shape of §6.4 (TLV 0x7C/0x7D/0x7E). */
-internal object HuaweiSimCipher {
-    private const val TAG_ENCRYPTED = 0x7C
-    private const val TAG_IV = 0x7D
-    private const val TAG_CIPHERTEXT = 0x7E
-    private const val IV_SIZE = 16
-
-    /** @param clearTail everything after the 2-byte service/command header, cleartext. */
-    fun encrypt(header: ByteArray, clearTail: ByteArray, random: java.security.SecureRandom): ByteArray {
-        val iv = ByteArray(IV_SIZE).also(random::nextBytes)
-        val cipherText = cipher(Cipher.ENCRYPT_MODE, iv).doFinal(clearTail)
-        return header + HuaweiSimTlvCodec.encode(
-            listOf(HuaweiSimTlv(TAG_ENCRYPTED, byteArrayOf(1)), HuaweiSimTlv(TAG_IV, iv), HuaweiSimTlv(TAG_CIPHERTEXT, cipherText)),
-        )
-    }
-
-    /** @return the header (2 bytes) + decrypted tail, or [payload] unchanged when it is not encrypted. */
-    fun decryptIfNeeded(payload: ByteArray): ByteArray {
-        if (payload.size < 2) return payload
-        val tlvs = runCatching { HuaweiSimTlvCodec.decode(payload, 2) }.getOrNull() ?: return payload
-        val flag = tlvs.findTag(TAG_ENCRYPTED)?.value ?: return payload
-        if (flag.size != 1 || flag[0].toInt() != 1) return payload
-        val iv = tlvs.findTag(TAG_IV)?.value ?: return payload
-        val cipherText = tlvs.findTag(TAG_CIPHERTEXT)?.value ?: return payload
-        val clear = cipher(Cipher.DECRYPT_MODE, iv).doFinal(cipherText)
-        return payload.copyOf(2) + clear
-    }
-
-    private fun cipher(opMode: Int, iv: ByteArray) = Cipher.getInstance("AES/CBC/PKCS5Padding").apply {
-        init(opMode, SecretKeySpec(HuaweiWireCodec.TEST_WORK_KEY, "AES"), IvParameterSpec(iv))
-    }
-}

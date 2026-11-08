@@ -78,7 +78,7 @@ Lớp legacy song song: `defpackage/lob` ("BTDeviceBLEService", cùng FE86/FE01/
 2. BLE (`cld`): `connectGatt(ctx, false, cb, TRANSPORT_LE=2)` (`cld.java:283`). Sau `onConnectionStateChange` CONNECTED, gọi `discoverServices`.
 3. `onServicesDiscovered`: lấy service FE86, characteristic FE01 (write) và FE02 (notify) (`cld.java:780-790`), bật notify bằng cách ghi `ENABLE_NOTIFICATION_VALUE` vào descriptor 0x2902 (`cld.java:800-811`).
 4. Khi channel sẵn sàng, ConnectStrategy khởi động chuỗi handshake (`startHandshake`). Mỗi lệnh handshake tạo frame 0x5A, gửi qua FE01, nhận phản hồi qua FE02.
-5. Chuỗi handshake chạy tuần tự theo `mNextCommand` (chi tiết mục 5). Khi tới lệnh auth, nếu thiết bị hỗ trợ HiChain thì chuyển sang module native `deviceauth`.
+5. Chuỗi handshake chạy tuần tự theo `mNextCommand` (chi tiết mục 5). Khi tới lệnh auth, nhánh được chọn từ TLV 5/17 của 0x0101 (mục 5.4); nếu thiết bị hỗ trợ HiChain thì chuyển sang module native `deviceauth`.
 6. Sau handshake thành công (time sync, capability negotiation), `DeviceHandshakeCallback` báo connected. App bắt đầu gửi lệnh nghiệp vụ (service 7 fitness, v.v.).
 
 ---
@@ -217,29 +217,31 @@ Mỗi lệnh kế thừa `HandshakeCommandBase` (`getDeviceCommand` dựng frame
 
 ### 5.1 Chuỗi lệnh (service 0x01 = DeviceConfig) theo thứ tự thực thi
 
-Dựa vào `getTag()` và `mNextCommand`:
+Dựa vào `getTag()` và `mNextCommand`. Thứ tự **post-auth trên BLE** đã xác minh:
+**0107 → 0105 → 0102 → 0103 → (0137) → (013C) → (0132) → (0112)**; các bước trong ngoặc chỉ
+chạy khi capability tương ứng bật. `0x0116 QueryAvailableCommand` **chỉ chạy trên BR/EDR**; trên
+BLE app đi thẳng từ 0101 sang chọn auth (`cke`). [V] `ckq.java:101-107`, `ckz.java:84-91`,
+`ckn.java:50-54`, `cki.java:100-118`, `ckl.java:285-294`, `ckw.java:58-88`, `ckv.java:131-141`.
+
+> **Đính chính 2026-11-08:** bảng cũ xếp 0116 là bước 2 trên mọi transport và đặt 0132 trước
+> 0102/0103. Trật tự đúng là 0107→0105→0102→0103→0137→013C→0132→0112; 0116 bị bỏ qua trên BLE.
+> Nguồn: `docs/analysis/HUAWEI_CONNECTION_ANALYSIS.md` §1.3-1.5.
 
 | Thứ tự | Lớp | Tag (svc.cmd) | Tên (từ log) | Ghi chú |
 |---|---|---|---|---|
 | 1 | `ckv` | 0101 | LinkNegotiationCommand (Link Param) | TLV type 1..17; lấy MTU/interval/randA/authVersion |
-| 2 | `ckr` (ext `ckt`) | 0116 | QueryAvailableCommand | hỏi device available; nhánh tới cke/HiChain |
-| - | `cke` | (helper) | DealWithHiChain | chọn HiChain / HiChainLite / legacy |
-| 3a | `ckx` | 0133 | SecurityNegotiationCommand | đàm phán chế độ auth (1/2/4), gửi phone info |
-| 3b | `ckp` | 012C | GetDevicePinCodeCommand (5.1.44) | lấy/giải mã PIN |
-| 3c | `ckd` | 0113 | AccessValidityAuthCommand (5.1.19) | challenge-response HMAC token |
-| 3d | `ckc` | 010E | BindRequestCommand (5.1.14) | bind, trao đổi key material |
-| 3e | `cla` | 010F | QueryBtBindStatusCommand (5.1.15) | |
-| 3f | `clb` | 012D | UpdateDeviceKeyCommand (5.1.45) | cập nhật secret key |
-| 4 | `ckq` | 0107 | GetDeviceVersionCommand | lấy version/capability bitmap |
-| 5 | `ckz` | 0105 | SetDeviceDateAndTimeCommand | time sync (TLV 1=time, 2=zone) |
-| 6 | `ckw` | 0132 | SetDeviceTimeZoneIdCommand | tz id |
-| 7 | `ckn` | 0102 | DeviceServiceCapabilityConsultCommand | đàm phán service được hỗ trợ |
-| 8 | `cki` | 0103 | DeviceCommandCapabilityConsultCommand | đàm phán command per-service |
-| - | `cks` | 0128 | HiChainDataTransmitCommand (5.1.40) | kênh truyền dữ liệu HiChain |
+| 2 | `cke` + `ckx`/`ckp`/`ckd`/`cla`/`clb`/`ckc` | 0133 / 012C / 0113 / 010F / 012D / 010E | Auth branch | Chọn theo authType; 0128 là kênh relay HiChain |
+| 3 | `ckq` | 0107 | GetDeviceVersionCommand | device info/version; **không** chứa battery hay capability bitmap |
+| 4 | `ckz` | 0105 | SetDeviceDateAndTimeCommand | time sync (TLV 1=time, 2=zone) |
+| 5 | `ckn` | 0102 | DeviceServiceCapabilityConsultCommand | đàm phán service được hỗ trợ |
+| 6 | `cki` | 0103 | DeviceCommandCapabilityConsultCommand | đàm phán command per-service; response TLV 2/4 |
+| 7 | `ckj` | 0137 | DeviceExpandCapabilitySimpleCommand | optional, khi `isSupportExpandCapability` |
+| 8 | `ckk/ckl` | 013C | DeviceCreateDualChannelCommand | optional, khi dual-socket |
+| 9 | `ckw` | 0132 | SetDeviceTimeZoneIdCommand | optional, khi `isSupportZoneId`; header `01 32` + TLV 1/2/3 |
+| 10 | `cko` | 0112 | DeviceSupportActivityTypeCommand | optional, khi `isSupportActivityType` |
+| - | `cks` | 0128 | HiChainDataTransmitCommand (5.1.40) | kênh truyền dữ liệu HiChain (trong auth) |
 | - | `ckh` | (0101 family) | DeviceAvailableNotifyCommand | |
-| - | `ckj` | 0137 | DeviceExpandCapabilitySimpleCommand | |
-| - | `cko` | 0112 | DeviceSupportActivityTypeCommand | |
-| - | `ckk/ckl` | 013C | DeviceCreateDualChannelCommand | tạo kênh thứ 2 (BR) |
+| - | `ckr` (ext `ckt`) | 0116 | QueryAvailableCommand | **chỉ BR/EDR**; BLE bỏ qua |
 
 Các lệnh cân (HandshakeSimpleCommandBase): `cky` 40101 RequestAuthenticCommand, `ckf` 40102 AccessAuthenticCommand, `ckm` 40103 EncryptNegotiationCommand (chuỗi `cky -> ckf -> ckm -> ckj`).
 
@@ -262,11 +264,32 @@ Các lệnh cân (HandshakeSimpleCommandBase): `cky` 40101 RequestAuthenticComma
 
 `cku.c()` dựng payload time: TLV type 1 len 4 = epoch seconds (big-endian), TLV type 2 len 2 = zone offset (giờ<<8 + phút, bù 128 cho âm) (`cku.java:154-204`).
 
+### 5.4 Chọn nhánh xác thực từ 0x0101 (auth selection) [V]
+
+Phản hồi 0x0101 cung cấp hai trường quyết định:
+- **TLV 5** (36 hex): `authenticVersion u16 BE || RandA[16]` (`cml.b()`, `cml.g()`).
+- **TLV 17**: `authType` (`cml.j()`).
+
+`cke.d()` chọn:
+
+| Điều kiện | Nhánh |
+|---|---|
+| `authType ∈ {1,3}` | HiChain (native) |
+| `authType ∈ {2,8}` | HiChainLite |
+| `authType == 4` | HiChain3 |
+| khác, `authenticVersion != 0` | Legacy HMAC truyền thống |
+| `authenticVersion == 0` | Không cần app auth — vào thẳng 0x0107 |
+
+Nguồn: `docs/analysis/HUAWEI_AUTH_CRYPTO_ANALYSIS.md` §1.1; `cke.java:26-50`,
+`cnc.java:16-18`, `cni.java:18-20`, `cmz.java:9-11`. Hệ quả: chỉ đồng hồ báo
+`authenticVersion == 0` mới nói BLE trực tiếp được mà không cần vật liệu Huawei; watch đời mới
+thường báo authType 1/2/4 [I, cần capture 0x0101 thật].
+
 ---
 
 ## 6. Xác thực và mã hóa
 
-Có 3 cơ chế, chọn trong `cke.d(...)` và `ckx` dựa vào capability device:
+Có 3 cơ chế, chọn trong `cke.d(...)` và `ckx` dựa vào TLV 5/17 của 0x0101 (mục 5.4):
 
 ### 6.1 Legacy HMAC challenge-response (CAK nhúng app)
 
@@ -354,7 +377,7 @@ Aw70 variants: `defpackage/mpl`, `mps`, `lyv`, `myn` (FitnessSendCommandAw70Util
 
 ### 7.3 Service 23 (Workout/HR nâng cao)
 
-`com/huawei/hwdevice/phoneprocess/mgr/exercise/utils/HwExerciseCommandUtil.java`, `HwWorkoutServiceAw70Manager.java`, `HwHeartRateManager.java` (cmd 15/18). Dữ liệu tập luyện chi tiết.
+`com/huawei/hwdevice/phoneprocess/mgr/exercise/utils/HwExerciseCommandUtil.java`, `HwWorkoutServiceAw70Manager.java`, `HwHeartRateManager.java` (cmd 15/18). Dữ liệu tập luyện chi tiết. Live HR: service 23 cmd 18 + notify cmd 3 TLV 4 (xem §11.8).
 
 ### 7.4 Truyền file lớn (Service 28/40/44 – CommonFile, Service 10 – Sleep/DFX)
 
@@ -445,7 +468,7 @@ Kết luận Option B: khả thi cho vòng tay/đồng hồ ĐỜI CŨ dùng HiC
 1. BLE: scan, connect FE86, lấy FE01 (write) + FE02 (notify), bật CCCD 0x2902.
 2. Vận chuyển: implement đóng/mở frame 0x5A (mục 4), CRC16/XMODEM (`cov`), TLV encode/decode (`cph`/`cqe`), slicing theo maxFrame/singleFrame.
 3. Handshake tối thiểu: gửi 0101 (link param) -> parse MTU/randA/authVersion; 0107 (version); 0105 (time).
-4. Auth: xác định cơ chế từ 0116/0133; nếu HiChainLite, lấy PIN user nhập (0x012C flow), PBKDF2 (`cni`), tính token (0x0113), bind (0x010E).
+4. Auth: xác định cơ chế từ 0x0101 TLV 5/17 (authVersion/authType — mục 5.4); nếu HiChainLite, lấy PIN user nhập (0x012C flow), PBKDF2 (`cni`), tính token (0x0113), bind (0x010E).
 5. Nghiệp vụ: service 7 cmd 3 (today total), cmd 4+5/8 (history frames), cmd 10+11 (samples HR/SpO2). Mã hóa payload bằng work key = session/secret key (mục 6.4, TLV 7C/7D/7E, AES-CBC hoặc GCM).
 
 Bộ lớp/ID tối thiểu cần tham chiếu: `cmj` (UUID), `coa`+`cov`+`cph`+`cqe` (frame/TLV/CRC), `ckv`/`cml` (link param), `ckq` (version), `ckz` (time), `cke`/`cni`/`ckp`/`ckd`/`ckc` (auth HiChainLite), `cjy`+`ckg` (mã hóa), `lxw`+`lxp` (fitness).
@@ -454,7 +477,7 @@ Bộ lớp/ID tối thiểu cần tham chiếu: `cmj` (UUID), `coa`+`cov`+`cph`+
 
 ## 10. Câu hỏi mở và mức độ tin cậy
 
-- [?] Thứ tự chính xác và nhánh điều kiện của toàn bộ chuỗi handshake phụ thuộc capability từng model; báo cáo đã trace các nhánh chính nhưng chưa vét hết mọi device type (bảng 5.1 là [V] về tag/next, [I] về thứ tự tuyệt đối).
+- [V] Thứ tự post-auth trên BLE đã xác minh: 0107→0105→0102→0103→0137→013C→0132→0112; 0116 chỉ BR/EDR. Nhánh auth vẫn phụ thuộc authType/authenticVersion từng model (§5.4); chưa vét hết mọi device type.
 - [?] Chi tiết protocol HiChain ISO/PAKE nằm trong native `.so` (chỉ xem strings, [I]). Chưa RE sâu trao đổi khóa.
 - [?] Các hằng số CAK/root-key trong white-box: xác nhận tồn tại và cách gọi [V], KHÔNG trích giá trị (ghi chú bảo mật).
 - [?] Cấu trúc nội dung từng frame dữ liệu health (layout byte của sample HR/SpO2/sleep) chưa giải mã ở tầng nội dung; mới xác định được lệnh và khung TLV request ([V] cho request, [?] cho response payload chi tiết).
@@ -468,32 +491,64 @@ Phần này bổ sung các mục còn thiếu được xác định trong vòng 
 `defpackage/ckq`, `ckw`, `ckn`, `cki`, `coa`. Bằng chứng ngắn gọn tại
 `docs/re-evidence/huawei/`.
 
+> **Đính chính 2026-11-08:** các mục §11.1, §11.2, §11.4 được sửa theo
+> `docs/analysis/HUAWEI_CONNECTION_ANALYSIS.md` và `docs/analysis/HUAWEI_AUTH_CRYPTO_ANALYSIS.md`;
+> §11.7-11.8 bổ sung pin và live HR.
+
 ### 11.1 0x0107 GetDeviceVersion – layout response TLV
 
 Request payload: `{0x01, 0x07, type1_lo, type1_hi, type2_lo, type2_hi, ...}` – danh sách
 type ID muốn hỏi, mỗi type là uint16-LE (giá trị < 128 nên byte cao = 0). [V]
 
-Response: outer TLV container parse bởi `cku.e(bArr)`, sau đó mỗi child TLV được dispatch:
+> **Đính chính 2026-11-08:** bản cũ ghi type 22 = capabilityBitmap và type 12 = batteryLevel
+> (0-100). Cả hai đều SAI: 0x0107 **không chứa battery và không chứa capability bitmap**.
+> Type 12 = **deviceName**, type 22 = **deviceBtMode**. Capability lấy từ 0x0102/0x0103;
+> battery lấy từ service 1 cmd 8 (§11.7). Nguồn: `docs/analysis/HUAWEI_CONNECTION_ANALYSIS.md`
+> §3; `ckq.java:139-298`.
 
-| Nhóm sub-handler | Type IDs (decimal) | Ghi chú |
-|---|---|---|
-| `ckq.d` | 1, 3, 7, 25, 36, 37, 38, 39, 40, 41 | firmwareVersion, productModel, healthFw, bleVersion, extended meta [I semantic] |
-| `ckq.b` | 2, 10, 14, 17, 18, 22, 26 | hwVersion, sdkVersion, sysVersion, bootVersion, modemVersion, **capabilityBitmap**, configVersion [I semantic] |
-| `ckq.c` | 9, 12, 15, 20, 21, 27, 29, 30, 31, 32, 33, 34, 35 | SN, **batteryLevel**, alias, productModel, screen, country/lang/region, factory info [I semantic] |
+Response: outer TLV container parse bởi `cku.e(bArr)`, sau đó mỗi child TLV được dispatch.
+Field map đã xác minh:
 
-type 22 = capability bitmap là trường quan trọng nhất – quyết định service nào device hỗ trợ.
-type 12 = batteryLevel (int, 0-100). Semantic của các type còn lại là [I] (suy từ tên field DeviceInfo).
+| Type ID | Ý nghĩa |
+|---|---|
+| 1 | btVersion |
+| 2 | deviceType |
+| 3 | deviceVersion |
+| 7 | soft version |
+| 9 | SN |
+| 10 | deviceMode |
+| 12 | **deviceName** |
+| 15 | OTA package |
+| 20 | OTA area type |
+| 21 | hilinkId |
+| 22 | **deviceBtMode** |
+| 25 | subProdId |
+| 27 | sportVersion |
+| 32 | country |
+| 33 | EMUI |
+| 34 | multiLinkBleMac |
+| 35 | field list |
+| 36-41 | extended |
+| 42-45 | OS/API/ABI |
+
+Semantic của các type ngoài 12/22 vẫn có thể là [I] nếu tên field `DeviceInfo` không đủ rõ.
 
 ### 11.2 0x0132 SetDeviceTimeZoneId – layout request
 
+`01 32` là **serviceId + commandId header**, không phải TLV. Payload sau header:
+
 ```
-Frame body:
-  TLV type=0x01, len=50, value = cku.c() output (50 byte, layout chưa xác định) [I]
-  TLV type=0x03, len=N,  value = IANA timezone ID UTF-8 (vd "Asia/Ho_Chi_Minh")  [V]
+TLV type=0x01, len=4, value = epoch seconds (u32 BE)
+TLV type=0x02, len=2, value = zone offset (hours<<8 | minutes, +0x80 cho âm)
+TLV type=0x03, len=N, value = IANA timezone ID UTF-8 (vd "Asia/Ho_Chi_Minh")
 ```
 
-`cku.c()` không tham số (overload 3) trả `byte[]` 50 byte; nội dung bên trong chưa decompile
-được trong đợt RE này. Có thể chứa epoch + offset + regional flags. NEEDS-REAL-WATCH để xác minh.
+App so sánh epoch trong response với giờ phone; lệch ≥1 s thì gửi lại một lần. (Nhánh dùng
+network time chỉ có ở 0x0105.) [V] `ckw.java:30-133`, `cku.java:154-225`.
+
+> **Đính chính 2026-11-08:** bản cũ đọc `01 32` thành "TLV type=0x01 len=50" và coi 50 byte là
+> layout chưa rõ. Đó là header service/command; payload là 3 TLV như trên. Nguồn:
+> `docs/analysis/HUAWEI_CONNECTION_ANALYSIS.md` §3.
 
 ### 11.3 0x0102 ServiceCapabilityConsult – layout đầy đủ
 
@@ -527,13 +582,18 @@ Per supported service (từ danh sách 0x0102 response):
 `cmdId` list lấy từ `cor.d(flag)` → `Map<Integer,List<Integer>>`.
 
 **Response** (xử lý trong `cki.processReceivedData`) [V]:
-Gọi theo thứ tự:
+Danh sách nested TLV; mỗi phần tử có:
+```
+child TLV type=0x02, len=1, value = serviceId
+child TLV type=0x04, len=M, value = ASCII hex support vector,
+                                  2 ký tự hex cho mỗi command (0x01 = supported, 0x00 = not)
+```
+App dựng map `"service.command"` boolean rồi `cle.a` map sang `DeviceCapability`. Gọi theo thứ tự:
 1. `d(bArrD, deviceCapability)` – parse response, điền DeviceCapability.
 2. `b(map, deviceCapability)` – giao nhau phone-supported ∩ device-supported.
 3. `a(deviceCapability, cmhVar)` – ghi kết quả vào session context, kết thúc handshake.
 
-Cấu trúc byte response mirror request (nested TLV per-service capability bitmap) [I – chưa
-trace đến byte-level phía response, chỉ trace qua tên method].
+Nguồn: `cki.java:165-249`, `cle.java:33-60`; `docs/analysis/HUAWEI_CONNECTION_ANALYSIS.md` §1.5.
 
 ### 11.5 Watch-initiated command routing
 
@@ -558,6 +618,27 @@ Driver hiện tại (`HuaweiTransport.kt:174`) bỏ qua frame không có pending
 TLV type IDs dùng để populate từng field từ service 7 response frame: **KHÔNG tìm thấy trong
 đợt RE này** (lớp parser `lxp` / frame decoder không decompile được với phần jadx hiện có).
 Cần chụp HCI snoop log khi Huawei Health sync với đồng hồ thật để xác minh.
+
+### 11.7 Pin – service 1 cmd 8 [V]
+
+Request `01 08` + `01 00` (hoặc TLV 2/3 cho earbuds khi capability 112) (`mev.java:155-179`).
+Hai dạng response (`mer.java:240-346`):
+
+| Dạng | Layout |
+|---|---|
+| protocol 0 (cũ) | byte thô tại offset 14 = mức pin |
+| protocol mới | TLV 1 = level 0-100; TLV 2/3 = level/status riêng cho earbud |
+
+Đây là nguồn pin đúng; **không** lấy type 12 của 0x0107 (type 12 là deviceName).
+
+### 11.8 Live HR – service 23 cmd 18 + notify cmd 3 TLV 4 [V]
+
+- Mở/đóng report: service 23 cmd 18, payload `01 01 <op>` (`HwHeartRateManager.java:248-271`).
+- Notification: cmd 3, TLV 4 = heart rate; TLV 3 = speed, TLV 6 = calories, TLV 7 = distance
+  (`HwWorkoutServiceManager.java:386-425`).
+- Mẫu liên tục: service 7 cmd 10 (count) / cmd 11 (frames) (`lxw.java:154-179`).
+
+Giá trị `<op>` và cách lồng TLV trong notification cần capture thật để xác nhận.
 
 ---
 
