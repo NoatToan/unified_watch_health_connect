@@ -1,21 +1,20 @@
 package com.unified.health.core.domain
 
+import com.unified.health.core.domain.model.DefaultMetricThresholds
 import com.unified.health.core.model.StepsSummary
 import com.unified.health.core.model.StressLevel
-import com.unified.health.core.model.StressReading
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.time.Instant
 import java.time.LocalDate
 
 class StressReadingTest {
     @Test
     fun `stress score maps to level bands`() {
-        val now = Instant.EPOCH
-        assertEquals(StressLevel.RELAXED, StressReading(now, 10).level)
-        assertEquals(StressLevel.NORMAL, StressReading(now, 45).level)
-        assertEquals(StressLevel.MEDIUM, StressReading(now, 70).level)
-        assertEquals(StressLevel.HIGH, StressReading(now, 95).level)
+        val thresholds = DefaultMetricThresholds.VALUES
+        assertEquals(StressLevel.RELAXED, thresholds.stressLevelFor(10))
+        assertEquals(StressLevel.NORMAL, thresholds.stressLevelFor(45))
+        assertEquals(StressLevel.MEDIUM, thresholds.stressLevelFor(70))
+        assertEquals(StressLevel.HIGH, thresholds.stressLevelFor(95))
     }
 
     @Test

@@ -26,6 +26,8 @@ class DataStoreUserPreferencesRepository @Inject constructor(
         val themeMode = stringPreferencesKey("theme_mode")
         val dynamicColor = booleanPreferencesKey("dynamic_color")
         val stepGoal = intPreferencesKey("daily_step_goal")
+        val calorieGoalOverride = intPreferencesKey("active_calorie_goal_override")
+        val sleepGoalHoursOverride = intPreferencesKey("sleep_goal_hours_override")
 
         /** Comma-separated [HealthMetricType] names, in display order. */
         val pinnedMetrics = stringPreferencesKey("pinned_metrics")
@@ -45,6 +47,8 @@ class DataStoreUserPreferencesRepository @Inject constructor(
             themeMode = p[Keys.themeMode]?.let { runCatching { ThemeMode.valueOf(it) }.getOrNull() } ?: defaults.themeMode,
             useDynamicColor = p[Keys.dynamicColor] ?: defaults.useDynamicColor,
             dailyStepGoal = p[Keys.stepGoal] ?: defaults.dailyStepGoal,
+            activeCalorieGoalOverride = p[Keys.calorieGoalOverride],
+            sleepGoalHoursOverride = p[Keys.sleepGoalHoursOverride],
             pinnedMetrics = p[Keys.pinnedMetrics]?.let(::parseMetrics) ?: defaults.pinnedMetrics,
             feedCardOrder = p[Keys.feedCardOrder]?.let(::parseFeedCardOrder) ?: defaults.feedCardOrder,
             hiddenFeedCards = p[Keys.hiddenFeedCards]?.let(::parseFeedCardIds)?.toSet() ?: defaults.hiddenFeedCards,
@@ -70,6 +74,16 @@ class DataStoreUserPreferencesRepository @Inject constructor(
     override suspend fun setDailyStepGoal(steps: Int) {
         require(steps > 0) { "Step goal must be positive" }
         dataStore.edit { it[Keys.stepGoal] = steps }
+    }
+
+    override suspend fun setActiveCalorieGoalOverride(kcal: Int?) {
+        require(kcal == null || kcal > 0) { "Calorie goal must be positive" }
+        dataStore.edit { if (kcal == null) it.remove(Keys.calorieGoalOverride) else it[Keys.calorieGoalOverride] = kcal }
+    }
+
+    override suspend fun setSleepGoalHoursOverride(hours: Int?) {
+        require(hours == null || hours > 0) { "Sleep goal must be positive" }
+        dataStore.edit { if (hours == null) it.remove(Keys.sleepGoalHoursOverride) else it[Keys.sleepGoalHoursOverride] = hours }
     }
 
     override suspend fun setPinnedMetrics(metrics: List<HealthMetricType>) {

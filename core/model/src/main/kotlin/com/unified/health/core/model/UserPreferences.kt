@@ -10,6 +10,10 @@ data class UserPreferences(
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val useDynamicColor: Boolean = true,
     val dailyStepGoal: Int = 8_000,
+    /** Overrides `MetricThresholds.defaultActiveCalorieGoal`; null uses the default (docs/DECISIONS.md D-1030). */
+    val activeCalorieGoalOverride: Int? = null,
+    /** Overrides `MetricThresholds.sleepDurationHours`'s target; null uses the default (docs/DECISIONS.md D-1030). */
+    val sleepGoalHoursOverride: Int? = null,
     /** Metrics pinned to the top of Summary, in display order. */
     val pinnedMetrics: List<HealthMetricType> = DEFAULT_PINNED_METRICS,
     /** Card order on the flat Health feed (see [FeedCardId] for the non-metric card ids). */

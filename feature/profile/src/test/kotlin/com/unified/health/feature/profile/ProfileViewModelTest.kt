@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -38,7 +39,15 @@ class ProfileViewModelTest {
         override suspend fun setUnitSystem(unitSystem: UnitSystem) = Unit
         override suspend fun setThemeMode(themeMode: ThemeMode) = Unit
         override suspend fun setUseDynamicColor(enabled: Boolean) = Unit
-        override suspend fun setDailyStepGoal(steps: Int) = Unit
+        override suspend fun setDailyStepGoal(steps: Int) {
+            userPreferences.update { it.copy(dailyStepGoal = steps) }
+        }
+        override suspend fun setActiveCalorieGoalOverride(kcal: Int?) {
+            userPreferences.update { it.copy(activeCalorieGoalOverride = kcal) }
+        }
+        override suspend fun setSleepGoalHoursOverride(hours: Int?) {
+            userPreferences.update { it.copy(sleepGoalHoursOverride = hours) }
+        }
         override suspend fun setPinnedMetrics(metrics: List<HealthMetricType>) = Unit
         override suspend fun setFeedCards(order: List<String>, hidden: Set<String>) = Unit
     }
@@ -172,5 +181,34 @@ class ProfileViewModelTest {
         viewModel.dismissDialog()
         assertNull(viewModel.dialog.value)
         assertEquals(0, demo.clearCalls)
+    }
+
+    @Test
+    fun `step goal is persisted directly, calorie and sleep goals are nullable overrides`() = runTest(dispatcher) {
+        val prefs = FakeUserPreferences()
+        val viewModel = ProfileViewModel(prefs, Optional.empty(), Optional.empty())
+        backgroundScope.launch { viewModel.prefs.collect {} }
+
+        viewModel.setStepGoal(10_000)
+        assertEquals(10_000, viewModel.prefs.value.dailyStepGoal)
+        assertNull("no override yet", viewModel.prefs.value.activeCalorieGoalOverride)
+        assertNull("no override yet", viewModel.prefs.value.sleepGoalHoursOverride)
+
+        viewModel.setCalorieGoalOverride(600)
+        viewModel.setSleepGoalOverride(8)
+        assertEquals(600, viewModel.prefs.value.activeCalorieGoalOverride)
+        assertEquals(8, viewModel.prefs.value.sleepGoalHoursOverride)
+
+        viewModel.setCalorieGoalOverride(null)
+        assertNull("clearing an override falls back to the default", viewModel.prefs.value.activeCalorieGoalOverride)
+    }
+
+    @Test
+    fun `thresholds expose the D-1030 industry defaults, not user-adjustable in this round`() {
+        val viewModel = vm()
+        assertEquals(60..100, viewModel.thresholds.restingHeartRate)
+        assertEquals(5, viewModel.thresholds.heartRateZones.size)
+        assertEquals(7..9, viewModel.thresholds.sleepDurationHours)
+        assertEquals(95..100, viewModel.thresholds.spo2.normal)
     }
 }

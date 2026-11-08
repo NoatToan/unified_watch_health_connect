@@ -1,5 +1,6 @@
 package com.unified.health.notifications
 
+import com.unified.health.core.domain.model.DefaultMetricThresholds
 import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.NotificationPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
@@ -38,6 +39,9 @@ class HealthAlertsMonitor @Inject constructor(
     private val notifier: HealthAlertNotifier,
 ) {
 
+    /** Not user-adjustable in this round; see docs/DECISIONS.md D-1030. */
+    private val thresholds = DefaultMetricThresholds.VALUES
+
     /** Suspends until cancelled. */
     suspend fun run() = coroutineScope {
         launch { watchBattery() }
@@ -48,7 +52,7 @@ class HealthAlertsMonitor @Inject constructor(
         combine(devices.pairedDevices, preferences.preferences.map { it.lowWatchBattery }.distinctUntilChanged()) { list, enabled -> list to enabled }
             .collect { (list, enabled) ->
                 val alerted = preferences.lowBatteryAlertedDevices.first()
-                val decision = WatchAlertRules.lowBattery(list, alerted)
+                val decision = WatchAlertRules.lowBattery(list, alerted, thresholds)
                 // While disabled the state still advances, so turning the switch on does not replay old alerts.
                 if (enabled) decision.notify.forEach { notifier.lowBattery(it.id, it.name, it.batteryPercent ?: 0) }
                 if (decision.alerted != alerted) preferences.setLowBatteryAlertedDevices(decision.alerted)

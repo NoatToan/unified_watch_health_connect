@@ -4,6 +4,7 @@ import com.unified.health.core.data.database.HealthRecordDao
 import com.unified.health.core.data.database.HealthSampleEntity
 import com.unified.health.core.data.database.SampleType
 import com.unified.health.core.data.database.WorkoutEntity
+import com.unified.health.core.domain.model.DefaultMetricThresholds
 import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.model.CaloriesSummary
@@ -77,10 +78,10 @@ class LocalHealthDataRepository internal constructor(
                 stress = HealthAggregation.latest(samples, SampleType.STRESS)?.let { StressReading(Instant.ofEpochMilli(it.startEpochMs), it.value.roundToInt()) },
                 calories = CaloriesSummary(
                     activeKcal = HealthAggregation.dailyMax(samples, SampleType.DAILY_ACTIVE_KCAL)?.roundToInt() ?: 0,
-                    goalKcal = DEFAULT_ACTIVE_KCAL_GOAL,
+                    goalKcal = prefs.activeCalorieGoalOverride ?: DefaultMetricThresholds.VALUES.activeCalorieGoal(profile = null),
                 ),
                 activeMinutes = HealthAggregation.dailyMax(samples, SampleType.DAILY_EXERCISE_MINUTES)?.roundToInt() ?: 0,
-                activeMinutesGoal = DEFAULT_ACTIVE_MINUTES_GOAL,
+                activeMinutesGoal = DefaultMetricThresholds.VALUES.defaultActiveMinutesGoal,
                 hrvMs = HealthAggregation.latest(samples, SampleType.HRV)?.value?.roundToInt(),
             )
         }
@@ -218,8 +219,6 @@ class LocalHealthDataRepository internal constructor(
             SampleType.DAILY_STEPS, SampleType.DAILY_ACTIVE_KCAL, SampleType.DAILY_DISTANCE,
             SampleType.DAILY_EXERCISE_MINUTES, SampleType.RESTING_HEART_RATE, SampleType.HRV,
         )
-        const val DEFAULT_ACTIVE_KCAL_GOAL = 500
-        const val DEFAULT_ACTIVE_MINUTES_GOAL = 30
         const val WORKOUT_LIMIT = 200
         const val LATEST_LOOKBACK_DAYS = 30L
         const val SLEEP_ROWS_PER_NIGHT = 40

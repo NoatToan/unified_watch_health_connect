@@ -13,6 +13,12 @@ interface UserPreferencesRepository {
     suspend fun setThemeMode(themeMode: ThemeMode)
     suspend fun setUseDynamicColor(enabled: Boolean)
     suspend fun setDailyStepGoal(steps: Int)
+
+    /** Null resets to `MetricThresholds.defaultActiveCalorieGoal` (docs/DECISIONS.md D-1030). */
+    suspend fun setActiveCalorieGoalOverride(kcal: Int?)
+
+    /** Null resets to the default sleep target (docs/DECISIONS.md D-1030). */
+    suspend fun setSleepGoalHoursOverride(hours: Int?)
     suspend fun setPinnedMetrics(metrics: List<HealthMetricType>)
 
     /** Persists the Health feed's "Edit cards": [order] (every known card id, in display order) and [hidden] ids. */
