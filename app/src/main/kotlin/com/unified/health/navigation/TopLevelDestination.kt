@@ -22,7 +22,7 @@ enum class TopLevelDestination(
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
 ) {
-    HOME("Summary", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder),
+    HOME("Home", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder),
     ACTIVITY("Activity", Icons.AutoMirrored.Filled.DirectionsRun, Icons.AutoMirrored.Outlined.DirectionsRun),
     DEVICES("Devices", Icons.Filled.Watch, Icons.Outlined.Watch),
     PROFILE("Profile", Icons.Filled.Person, Icons.Outlined.Person),

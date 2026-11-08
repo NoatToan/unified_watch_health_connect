@@ -1543,3 +1543,13 @@ kit/design system nào tải về được). Thay vào đó dùng skill nội b�
   `PillBottomNavigation`/`TopLevelDestination`) vì "Home" thân thiện hơn — chỉ đổi label/string hiển
   thị, không đổi route/composable name nội bộ (`HomeScreen`, `HomeDestination`... giữ nguyên để không
   phải sửa lan man) trừ khi cấn.
+
+- **D-1111** · 2026-11-08 · Thực thi D-1110 — **Chốt**
+  (1) Dời block `RacesCarousel` trong `Summary()` (`HomeScreen.kt`) từ ngay sau `item { RingsCard(...) }`
+  xuống sau block `Highlights` (cuối `LazyColumn`, trước khi đóng) — logic hiển thị (chỉ render khi
+  `RacesState.Success` non-empty) giữ nguyên nguyên văn, chỉ đổi vị trí. (2) Đổi đúng 2 chỗ string hiển
+  thị: `TopLevelDestination.HOME` label `"Summary"` → `"Home"` (`app/.../navigation/TopLevelDestination.kt`,
+  dùng chung bởi `PillBottomNavigation`) và `TopAppBar`'s `title = { Text("Summary") }` → `Text("Home")`
+  trong `HomeScreen()`. Không đổi `app/src/androidTest/.../UserJourneyE2ETest.kt` (chuỗi `"summary"`/
+  `"Summary"` ở đó chỉ là label bước báo cáo E2E, không phải assertion trên text màn hình — ngoài phạm
+  vi android-coder theo quy ước CLAUDE.md, để `e2e-flows` xử lý nếu cần).

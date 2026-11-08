@@ -202,7 +202,7 @@ internal fun HomeScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
-                title = { Text("Summary") },
+                title = { Text("Home") },
                 actions = {
                     // Only ever visible together with the TopAppBar itself, which is exactly the
                     // "once the header is visible" condition D-1083 asks for — enterAlwaysScrollBehavior
@@ -291,12 +291,6 @@ private fun Summary(
             )
         }
         item { RingsCard(state.summary, onClick = { onMetricClick(HealthMetricType.CALORIES) }) }
-        // D-1105: "Giải chạy sắp tới" carousel — rendered only on a non-empty Success, never a
-        // visible empty/error placeholder, since the sibling data source may not be live yet.
-        val racesSuccess = racesState as? RacesState.Success
-        if (racesSuccess != null && racesSuccess.races.isNotEmpty()) {
-            item { RacesCarousel(races = racesSuccess.races, onOpenRaces = onOpenRaces) }
-        }
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 SectionHeader("All metrics", Modifier.weight(1f))
@@ -334,6 +328,14 @@ private fun Summary(
             items(state.highlights, key = { "highlight_${it.metric.name}" }) { highlight ->
                 HighlightCard(highlight, onClick = { onMetricClick(highlight.metric) })
             }
+        }
+        // D-1110: moved to the end of the content (was right after RingsCard, D-1105) — marketing/
+        // discovery content shouldn't sit above the user's own health data. Still rendered only on a
+        // non-empty Success, never a visible empty/error placeholder, since the sibling data source
+        // may not be live yet.
+        val racesSuccess = racesState as? RacesState.Success
+        if (racesSuccess != null && racesSuccess.races.isNotEmpty()) {
+            item { RacesCarousel(races = racesSuccess.races, onOpenRaces = onOpenRaces) }
         }
     }
     if (editingFeed) {
