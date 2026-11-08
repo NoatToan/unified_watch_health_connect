@@ -120,8 +120,14 @@ class DefaultWearableDeviceRepository @Inject constructor(
         if (connection.state.value != ConnectionState.Connected || connection.activeAddress.value != entity.macAddress) {
             return Result.failure(IllegalStateException("Device is not connected"))
         }
+        val knownRawPayloadTimestamps = rawPayloads.list(entity.id).mapNotNull { it.createdAt }.toSet()
         return healthDataSync
-            .sync(entity.macAddress, entity.lastSyncedAtEpochMs?.let(Instant::ofEpochMilli), sinkFactory.create(entity.id))
+            .sync(
+                entity.macAddress,
+                entity.lastSyncedAtEpochMs?.let(Instant::ofEpochMilli),
+                sinkFactory.create(entity.id),
+                knownRawPayloadTimestamps,
+            )
             .map { result -> dao.updateLastSynced(deviceId, result.syncedAt.toEpochMilli()) }
     }
 

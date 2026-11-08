@@ -13,7 +13,18 @@ import java.time.Instant
 interface HealthDataSync {
     val state: StateFlow<SyncState>
 
-    suspend fun sync(macAddress: String, since: Instant?, sink: HealthRecordSink): Result<SyncResult>
+    /**
+     * @param knownRawPayloadTimestamps timestamps of raw files `:core:data` already has on disk for
+     *  this device (any kind), so a driver that re-lists discrete files on every sync (e.g. Garmin's
+     *  ACTIVITY catch-up window, D-422) can skip ones it already downloaded instead of re-pulling
+     *  them over BLE every time. Empty by default; drivers that have no use for it simply ignore it.
+     */
+    suspend fun sync(
+        macAddress: String,
+        since: Instant?,
+        sink: HealthRecordSink,
+        knownRawPayloadTimestamps: Set<Instant> = emptySet(),
+    ): Result<SyncResult>
 }
 
 /** Receives decoded records from a sync. Implemented by `:core:data`; must be idempotent. */

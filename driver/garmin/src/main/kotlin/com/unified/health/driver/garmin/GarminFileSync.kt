@@ -24,7 +24,6 @@ import com.unified.health.driver.garmin.transport.GfdiDispatcher
 import com.unified.health.driver.garmin.transport.InboundReply
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.withTimeoutOrNull
-import java.time.Instant
 import java.time.ZoneId
 
 /** The watch refused or aborted one file transfer; other files may still be fine. */
@@ -42,9 +41,15 @@ internal class FileDownloadException(val fileIndex: Int, message: String) : Wear
  * one because it happened before the rolling wellness window, or before the very first sync's
  * 7-day default, otherwise hides it forever — `since` only moves forward after each sync, so a
  * workout older than the window at the moment it was first seen is never retried (D-419).
- * Re-listing/re-downloading an already-synced activity on every sync is deliberate and cheap: the
- * watch's own directory only ever holds the handful of FIT files still on its limited storage, and
- * [sink] upserts on `(deviceId, startEpochMs)`, so redelivering the same workout is a no-op.
+ *
+ * Within that window, an ACTIVITY entry is only downloaded once (D-422): entries whose timestamp is
+ * already in [SyncRequest.knownRawPayloadTimestamps] are skipped, since `:core:data` already has
+ * that file on disk. Without this, every sync would re-pull every activity still listed in the
+ * watch's directory over BLE — fine for the rare *new* workout, not for a watch holding months of
+ * history. The remaining *new* entries (never downloaded before) are capped per sync at
+ * [ACTIVITY_CATCH_UP_CAP], newest first, so a large backlog (e.g. right after this fix ships, or a
+ * first pair on a watch with a full history) catches up gradually over several syncs instead of one
+ * long BLE transfer; anything beyond the cap is simply still "new" next sync and gets reconsidered.
  */
 internal class GarminFileSync(
     private val dispatcher: GfdiDispatcher,
@@ -67,13 +72,22 @@ internal class GarminFileSync(
         val directory = GarminDirectory.parse(download(GarminDirectory.DIRECTORY_FILE_INDEX))
             .filter { it.fileIndex != GarminDirectory.DIRECTORY_FILE_INDEX }
         val typed = directory.mapNotNull { entry -> GarminFitFileType.of(entry)?.let { entry to it } }
-        val wanted = typed
-            .filter { (entry, type) -> entry.timestamp.isAfter(sinceFor(type, wellnessSince, activitySince)) }
-            .sortedBy { it.first.timestamp }
+
+        val nonActivity = typed.filter { (entry, type) -> type != GarminFitFileType.ACTIVITY && entry.timestamp.isAfter(wellnessSince) }
+        val activityCandidates = typed.filter { (entry, type) -> type == GarminFitFileType.ACTIVITY && entry.timestamp.isAfter(activitySince) }
+        val newActivities = activityCandidates.filterNot { (entry, _) -> entry.timestamp in request.knownRawPayloadTimestamps }
+            .sortedByDescending { it.first.timestamp }
+        val activityAlreadyKnown = activityCandidates.size - newActivities.size
+        val activityThisSync = newActivities.take(ACTIVITY_CATCH_UP_CAP)
+        val activityDeferred = newActivities.size - activityThisSync.size
+
+        val wanted = (nonActivity + activityThisSync).sortedBy { it.first.timestamp }
         Log.i(
             TAG,
             "Directory: ${directory.size} entries, ${typed.size} FIT of interest ${countsByType(typed)}; " +
-                "${wanted.size} newer than cutoff (wellness since=$wellnessSince, activity since=$activitySince)",
+                "${wanted.size} to sync (wellness since=$wellnessSince, activity since=$activitySince, " +
+                "activity alreadyDownloaded=$activityAlreadyKnown new=${newActivities.size} " +
+                "thisSync=${activityThisSync.size} deferredToNextSync=$activityDeferred cap=$ACTIVITY_CATCH_UP_CAP)",
         )
         progress.report(DIRECTORY_SHARE)
 
@@ -114,10 +128,6 @@ internal class GarminFileSync(
         )
         return delivered
     }
-
-    /** ACTIVITY uses [activitySince]; every other FIT type keeps the normal wellness window. */
-    private fun sinceFor(type: GarminFitFileType, wellnessSince: Instant, activitySince: Instant): Instant =
-        if (type == GarminFitFileType.ACTIVITY) activitySince else wellnessSince
 
     private fun countsByType(entries: List<Pair<GarminFileEntry, GarminFitFileType>>): Map<GarminFitFileType, Int> =
         entries.groupingBy { it.second }.eachCount()
@@ -192,6 +202,14 @@ internal class GarminFileSync(
          */
         const val ACTIVITY_LOOKBACK_DAYS = 365L
         private const val SECONDS_PER_DAY = 86_400L
+
+        /**
+         * Most never-downloaded ACTIVITY files fetched in one sync (D-422). Bounds BLE time/battery
+         * on a catch-up sync (e.g. right after this fix ships, or a first pair against a watch with
+         * months of un-archived history); anything beyond the cap is still "new" and is picked up by
+         * a later sync, newest-first.
+         */
+        const val ACTIVITY_CATCH_UP_CAP = 50
     }
 }
 

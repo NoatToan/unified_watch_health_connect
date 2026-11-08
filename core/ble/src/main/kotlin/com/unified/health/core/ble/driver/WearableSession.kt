@@ -34,10 +34,13 @@ interface WearableSession {
 /**
  * @property since last successful sync, or null for a first sync (drivers then fetch a bounded
  *  window, see [DEFAULT_FIRST_SYNC_WINDOW_DAYS]).
+ * @property knownRawPayloadTimestamps see [com.unified.health.core.ble.HealthDataSync.sync]; carried
+ *  on the request so a driver can use it inside [WearableSession.sync].
  */
 data class SyncRequest(
     val since: Instant?,
     val now: Instant = Instant.now(),
+    val knownRawPayloadTimestamps: Set<Instant> = emptySet(),
 ) {
     fun effectiveSince(): Instant = since ?: now.minusSeconds(DEFAULT_FIRST_SYNC_WINDOW_DAYS * 86_400L)
 
