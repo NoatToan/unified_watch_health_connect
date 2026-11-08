@@ -1009,3 +1009,18 @@ tránh 2 agent sửa song song cùng file.
   **Đã thêm ngay:** log `byKind=<map tên record → số lượng>` vào dòng "Sync finished" của
   `GarminFileSync.kt` (trước đây chỉ có tổng `totalRecords`) — lần sync tới (đặc biệt sau 1 đêm ngủ)
   sẽ thấy ngay chính xác loại nào có/không, không cần đoán nữa.
+
+- **D-1071** · 2026-11-08 · VO2max vẫn không ra dù user nói đồng hồ đã có số — **Tạm**
+  Log thật từ build có `byKind` (D-1070) cho thấy đã có 1 file `METRICS` được tải + giải mã thành
+  công trong 1 lần sync (`downloaded 2/2 files {METRICS=1, MONITORING=1}, decoded=2 decodeFailures=0
+  ... byKind={HeartRate=6, Stress=7}`) — **0 Vo2Max**, dù METRICS chính là loại file [Ext] mà
+  `MESG_USER_METRICS`(140) được kỳ vọng nằm trong đó. Vì user xác nhận đồng hồ thật đang có số
+  VO2max, nhiều khả năng field number 140/42/field-7 (`[Ext]`, đoán theo Profile.xlsx công khai,
+  D-1000) sai, hoặc thứ tự message khiến `lastTimestamp` null lúc gặp msg 140 (dòng
+  `lastTimestamp?.let { mapVo2Max(...) }` bỏ qua silent nếu null) — **chưa xác nhận được cái nào**.
+  **Đã thêm log sâu hơn** (`decode()` trong `GarminFileSync.kt`): mỗi file giải mã giờ log toàn bộ
+  histogram `globalNumbers` thật có trong file (trước khi `FitHealthMapper` lọc bớt), và log riêng
+  bất kỳ message nào có `globalNumber` 140/42 kèm `value(field 7)` thật đọc được — lần sync tới sẽ
+  thấy ngay: (a) msg 140/42 có xuất hiện trong file thật không, (b) nếu có thì field 7 đọc ra giá
+  trị gì (đúng VO2max / sai field / không có field này). Không sửa mù field number khi chưa có bằng
+  chứng — chờ log thật rồi vá đúng chỗ.

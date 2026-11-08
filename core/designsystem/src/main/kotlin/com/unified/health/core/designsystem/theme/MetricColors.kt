@@ -20,6 +20,7 @@ data class MetricColors(
     val weight: Color,
     val exercise: Color,
     val hrv: Color,
+    val vo2Max: Color,
 ) {
     fun forMetric(metric: HealthMetricType): Color = when (metric) {
         HealthMetricType.STEPS -> steps
@@ -33,6 +34,7 @@ data class MetricColors(
         HealthMetricType.EXERCISE_MINUTES -> exercise
         HealthMetricType.RESTING_HEART_RATE -> heartRate
         HealthMetricType.HRV -> hrv
+        HealthMetricType.VO2_MAX -> vo2Max
     }
 
     /** Hypnogram colours, awake → deep. */
@@ -54,6 +56,7 @@ internal val LightMetricColors = MetricColors(
     weight = Color(0xFF6A4C93),
     exercise = Color(0xFF558B2F),
     hrv = Color(0xFF00695C),
+    vo2Max = Color(0xFF5E35B1),
 )
 
 internal val DarkMetricColors = MetricColors(
@@ -66,6 +69,7 @@ internal val DarkMetricColors = MetricColors(
     weight = Color(0xFFCFB8F0),
     exercise = Color(0xFFC5E1A5),
     hrv = Color(0xFF80CBC4),
+    vo2Max = Color(0xFFB39DDB),
 )
 
 val LocalMetricColors = staticCompositionLocalOf { LightMetricColors }

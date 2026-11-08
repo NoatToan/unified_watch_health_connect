@@ -13,6 +13,7 @@ import androidx.compose.material.icons.outlined.SelfImprovement
 import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.unified.health.core.model.HealthMetricType
 
@@ -28,6 +29,7 @@ fun HealthMetricType.icon(): ImageVector = when (this) {
     HealthMetricType.EXERCISE_MINUTES -> Icons.AutoMirrored.Outlined.DirectionsRun
     HealthMetricType.RESTING_HEART_RATE -> Icons.Outlined.Favorite
     HealthMetricType.HRV -> Icons.Outlined.MonitorHeart
+    HealthMetricType.VO2_MAX -> Icons.Outlined.Speed
 }
 
 /** Display name, following Apple Health's wording. */
@@ -43,6 +45,7 @@ fun HealthMetricType.label(): String = when (this) {
     HealthMetricType.EXERCISE_MINUTES -> "Exercise minutes"
     HealthMetricType.RESTING_HEART_RATE -> "Resting heart rate"
     HealthMetricType.HRV -> "Heart rate variability"
+    HealthMetricType.VO2_MAX -> "VO2max"
 }
 
 /** Unit shown next to a formatted value (see [formatValue]). */
@@ -57,6 +60,7 @@ fun HealthMetricType.unit(): String = when (this) {
     HealthMetricType.DISTANCE -> "km"
     HealthMetricType.EXERCISE_MINUTES -> "min"
     HealthMetricType.HRV -> "ms"
+    HealthMetricType.VO2_MAX -> "mL/kg/min"
 }
 
 /** Short explanation shown under a metric's chart. */
@@ -72,4 +76,5 @@ fun HealthMetricType.about(): String = when (this) {
     HealthMetricType.EXERCISE_MINUTES -> "Every full minute of movement at the intensity of a brisk walk or more counts towards Exercise."
     HealthMetricType.RESTING_HEART_RATE -> "Resting heart rate is your average heart rate while at rest, estimated once a day."
     HealthMetricType.HRV -> "Heart rate variability is the variation in time between heartbeats, measured overnight."
+    HealthMetricType.VO2_MAX -> "VO2max estimates the maximum oxygen your body can use during exercise, a common marker of cardio fitness."
 }

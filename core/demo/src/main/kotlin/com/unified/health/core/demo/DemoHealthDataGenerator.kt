@@ -73,6 +73,9 @@ class DemoHealthDataGenerator(
             if (!at(date, RESTING_HR_READY_HOUR, 0).isAfter(cutoff)) {
                 records += HealthRecord.RestingHeartRate(date, plan.restingHr)
             }
+            if (!at(date, VO2MAX_READY_HOUR, 0).isAfter(cutoff)) {
+                records += HealthRecord.Vo2Max(at(date, VO2MAX_READY_HOUR, 0), plan.vo2Max)
+            }
             val fraction = if (steps == 0) 0.0 else steps.toDouble() / plan.hourlySteps.sum().coerceAtLeast(1)
             records += HealthRecord.DailyActivity(
                 date = date,
@@ -101,6 +104,7 @@ class DemoHealthDataGenerator(
     private class DayPlan(
         val activity: Double,
         val restingHr: Int,
+        val vo2Max: Int,
         val hourlySteps: List<Int>,
         val briskMinutes: Int,
         val workout: WorkoutPlan?,
@@ -128,7 +132,9 @@ class DemoHealthDataGenerator(
             count.roundToInt()
         }
         val wake = sleepPlan(date).let { (_, wakeAt) -> wakeAt.atZone(zone).toLocalTime().toSecondOfDay() / 60 }
-        return DayPlan(activity, restingHr, hourly, (activity * rnd.nextInt(8, 22)).roundToInt(), workout, wake)
+        // Slow-moving fitness trend (VO2max barely changes day to day), loosely tracking the activity trend.
+        val vo2Max = (42 + 10 * trend + rnd.nextInt(-1, 2)).roundToInt().coerceIn(VO2MAX_MIN, VO2MAX_MAX)
+        return DayPlan(activity, restingHr, vo2Max, hourly, (activity * rnd.nextInt(8, 22)).roundToInt(), workout, wake)
     }
 
     private fun workoutFor(date: LocalDate, rnd: Random, weekend: Boolean): WorkoutPlan? {
@@ -259,6 +265,9 @@ class DemoHealthDataGenerator(
         private const val STRESS_FIRST_HOUR = 8
         private const val STRESS_LAST_HOUR = 22
         private const val RESTING_HR_READY_HOUR = 8
+        private const val VO2MAX_READY_HOUR = 7
+        private const val VO2MAX_MIN = 25
+        private const val VO2MAX_MAX = 60
         private const val BASE_STEPS_PER_HOUR = 620.0
         private const val KCAL_PER_STEP = 0.042
         private const val STRIDE_METERS = 0.76

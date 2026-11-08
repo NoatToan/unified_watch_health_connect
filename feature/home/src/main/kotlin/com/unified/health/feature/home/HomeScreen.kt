@@ -73,6 +73,7 @@ import com.unified.health.core.designsystem.component.ConnectionStatusChip
 import com.unified.health.core.designsystem.component.ErrorState
 import com.unified.health.core.designsystem.component.HealthBarChart
 import com.unified.health.core.designsystem.component.HealthRangeChart
+import com.unified.health.core.designsystem.component.LiveDot
 import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.RingSpec
 import com.unified.health.core.designsystem.component.SectionHeader
@@ -126,9 +127,11 @@ internal fun HomeRoute(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val refreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     val live by viewModel.liveHeartRate.collectAsStateWithLifecycle()
+    val liveMetrics by viewModel.liveMetrics.collectAsStateWithLifecycle()
     HomeScreen(
         state = state,
         liveHeartRate = live,
+        liveMetrics = liveMetrics,
         isRefreshing = refreshing,
         onRefresh = viewModel::refresh,
         onMetricClick = onMetricClick,
@@ -149,6 +152,7 @@ internal fun HomeRoute(
 internal fun HomeScreen(
     state: HomeUiState,
     liveHeartRate: LiveHeartRate? = null,
+    liveMetrics: Set<HealthMetricType> = emptySet(),
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onMetricClick: (HealthMetricType) -> Unit,
@@ -170,7 +174,7 @@ internal fun HomeScreen(
                 onRefresh = onRefresh,
                 modifier = Modifier.fillMaxSize().padding(padding),
             ) {
-                Summary(state, liveHeartRate, onMetricClick, onOpenDevices, onOpenWorkouts, onPinnedChange, onFeedCardsChanged)
+                Summary(state, liveHeartRate, liveMetrics, onMetricClick, onOpenDevices, onOpenWorkouts, onPinnedChange, onFeedCardsChanged)
             }
         }
     }
@@ -180,6 +184,7 @@ internal fun HomeScreen(
 private fun Summary(
     state: HomeUiState.Success,
     liveHeartRate: LiveHeartRate?,
+    liveMetrics: Set<HealthMetricType>,
     onMetricClick: (HealthMetricType) -> Unit,
     onOpenDevices: () -> Unit,
     onOpenWorkouts: () -> Unit,
@@ -215,6 +220,7 @@ private fun Summary(
                 timeLabel = if (live) "Live" else reading?.let { timeLabel(pinned.metric, it) },
                 onClick = { onMetricClick(pinned.metric) },
                 modifier = Modifier.testTag("summary_card_${pinned.metric.name}"),
+                isLive = pinned.metric.liveDotOrNull(liveMetrics),
             )
         }
         item {
@@ -226,18 +232,29 @@ private fun Summary(
         if (state.feedCards.isEmpty()) {
             item { Text("Every card was hidden. Tap Edit to bring some back.", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("feed_empty")) }
         }
-        items(state.feedCards, key = { "feed_${it.id}" }) { card ->
-            when (card) {
-                is FeedCardData.Workouts -> WorkoutsFeedCard(
-                    recent = card.recent,
-                    onClick = onOpenWorkouts,
-                    modifier = Modifier.testTag("card_${card.id}"),
-                )
-                is FeedCardData.Metric -> MetricFeedCard(
-                    card = card,
-                    onClick = { onMetricClick(card.metric) },
-                    modifier = Modifier.testTag("card_${card.id}"),
-                )
+        // D-1050: a 2-column grid instead of one card per row — a plain Row per pair (not a nested
+        // LazyVerticalGrid, which cannot be sized inside this LazyColumn) keeps the existing per-card
+        // composables and "Edit cards" ordering untouched.
+        items(state.feedCards.chunked(2), key = { pair -> pair.joinToString("_") { it.id } }) { pair ->
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                pair.forEach { card ->
+                    Box(Modifier.weight(1f)) {
+                        when (card) {
+                            is FeedCardData.Workouts -> WorkoutsFeedCard(
+                                recent = card.recent,
+                                onClick = onOpenWorkouts,
+                                modifier = Modifier.testTag("card_${card.id}"),
+                            )
+                            is FeedCardData.Metric -> MetricFeedCard(
+                                card = card,
+                                onClick = { onMetricClick(card.metric) },
+                                modifier = Modifier.testTag("card_${card.id}"),
+                                isLive = card.metric.liveDotOrNull(liveMetrics),
+                            )
+                        }
+                    }
+                }
+                if (pair.size == 1) Spacer(Modifier.weight(1f))
             }
         }
         if (state.highlights.isNotEmpty()) {
@@ -360,6 +377,13 @@ private fun freshBpm(live: LiveHeartRate?): Int? {
 
 private val LIVE_MAX_AGE: Duration = Duration.ofSeconds(15)
 
+/** Metrics with a live mode at all (D-1054); only these ever show the green/gray dot. */
+private val METRICS_WITH_LIVE_MODE = setOf(HealthMetricType.HEART_RATE)
+
+/** Null (no dot) for a metric with no live mode; otherwise whether it is live right now. */
+private fun HealthMetricType.liveDotOrNull(liveMetrics: Set<HealthMetricType>): Boolean? =
+    if (this in METRICS_WITH_LIVE_MODE) this in liveMetrics else null
+
 @Composable
 private fun DeviceBanner(device: WearableDevice?, deviceCount: Int, onOpenDevices: () -> Unit) {
     Card(
@@ -474,7 +498,7 @@ private fun WorkoutRow(workout: Workout) {
 private val WORKOUT_DATE: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
 
 @Composable
-private fun MetricFeedCard(card: FeedCardData.Metric, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun MetricFeedCard(card: FeedCardData.Metric, onClick: () -> Unit, modifier: Modifier = Modifier, isLive: Boolean? = null) {
     val metric = card.metric
     val accent = UnifiedHealthTheme.metricColors.forMetric(metric)
     if (!card.hasData) {
@@ -487,10 +511,11 @@ private fun MetricFeedCard(card: FeedCardData.Metric, onClick: () -> Unit, modif
         append(metric.label()).append(", ")
         append(card.reading?.let { "${metric.formatValue(it.value)} ${metric.unit()}".trim() } ?: "no reading today")
         insight?.let { append(", ").append(it) }
+        if (isLive != null) append(if (isLive) ", live" else ", not live")
     }
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().semantics(mergeDescendants = true) { contentDescription = description }) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-            FeedCardHeader(metric, accent, card.reading)
+            FeedCardHeader(metric, accent, card.reading, isLive)
             card.restingBpm?.let {
                 Text("Resting $it bpm", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
@@ -509,11 +534,16 @@ private fun MetricFeedCard(card: FeedCardData.Metric, onClick: () -> Unit, modif
 }
 
 @Composable
-private fun FeedCardHeader(metric: HealthMetricType, accent: Color, reading: MetricReading?) {
+private fun FeedCardHeader(metric: HealthMetricType, accent: Color, reading: MetricReading?, isLive: Boolean? = null) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(metric.icon(), contentDescription = null, tint = accent, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(Spacing.sm))
-        Text(metric.label(), style = MaterialTheme.typography.titleSmall, color = accent, modifier = Modifier.weight(1f))
+        Text(metric.label(), style = MaterialTheme.typography.titleSmall, color = accent)
+        if (isLive != null) {
+            Spacer(Modifier.width(Spacing.xs))
+            LiveDot(isLive)
+        }
+        Spacer(Modifier.weight(1f))
         reading?.let { Text(timeLabel(metric, it), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
     }
     Row(verticalAlignment = Alignment.Bottom) {

@@ -81,6 +81,9 @@ class HomeViewModel @Inject constructor(
     /** Collected only while Home is visible, which is what turns the watch sensor on. */
     val liveHeartRate: StateFlow<LiveHeartRate?> = liveHealth.heartRate
 
+    /** D-1054: metrics actively streaming right now, for the green/gray dot on their cards. */
+    val liveMetrics: StateFlow<Set<HealthMetricType>> = liveHealth.liveMetrics
+
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
 

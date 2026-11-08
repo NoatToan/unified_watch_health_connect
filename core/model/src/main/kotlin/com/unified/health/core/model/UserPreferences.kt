@@ -40,6 +40,7 @@ data class UserPreferences(
             HealthMetricType.STRESS.name,
             HealthMetricType.SPO2.name,
             HealthMetricType.HRV.name,
+            HealthMetricType.VO2_MAX.name,
             FeedCardId.WORKOUTS,
             HealthMetricType.RESTING_HEART_RATE.name,
             HealthMetricType.CALORIES.name,
