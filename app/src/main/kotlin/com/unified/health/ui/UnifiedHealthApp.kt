@@ -1,5 +1,7 @@
 package com.unified.health.ui
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.rememberPagerState
@@ -12,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -56,6 +59,18 @@ fun UnifiedHealthApp(
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
     val onMainPager = currentDestination?.hasRoute(MainPagerDestination::class) == true
+
+    // D-1179: at the root of the back stack (one of the 4 top-level tabs, nothing left to pop) the
+    // system back press must minimize the app rather than fall through to Android's default of
+    // finishing the Activity — the app keeps a BLE connection + a foreground sync service running,
+    // and killing the process is more disruptive than necessary. Only enabled on the main pager;
+    // detail screens pushed on top (MetricDetailScreen, DeviceDetailScreen, ...) have onMainPager ==
+    // false here, so this handler is disabled there and back falls through to NavHost's own pop, same
+    // as before this change.
+    val activity = LocalContext.current as? Activity
+    BackHandler(enabled = onMainPager) {
+        activity?.moveTaskToBack(true)
+    }
 
     val pagerState = rememberPagerState { TopLevelDestination.entries.size }
     val coroutineScope = rememberCoroutineScope()

@@ -2646,6 +2646,64 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   `WorkoutDetailDestination`, `RaceDetailScreen`, v.v.) vẫn phải giữ nguyên hành vi back bình thường
   (pop về màn trước đó), không bị đổi thành minimize.
 
+- **D-1181** · 2026-11-09 · Thực thi D-1173: `RacesCarousel` ở Home tự động next 2 lần khi vào viewport
+  rồi ngưng hẳn, huỷ ngay nếu user tự vuốt — **Chốt**
+  Phạm vi đúng như D-1173 giới hạn: chỉ sửa `RacesCarousel` trong `HomeScreen.kt` (~dòng 651 cũ) và
+  state nó đã dùng sẵn — không đụng `core/domain`/`core/data` hay `RacesViewModel`/`RacesScreen` (agent
+  khác đang đổi sort order ở đó, D-1175/D-1177, xác nhận qua `git show --stat` không đụng chung file).
+  **"Vào viewport"**: tái dùng đúng `LazyListState.layoutInfo.visibleItemsInfo` của `Summary`'s
+  `LazyColumn` ngoài cùng (đã truyền sẵn xuống `Summary` dưới tên `listState`, giờ truyền tiếp vào
+  `RacesCarousel` dưới tên `homeListState`) — khớp qua 1 key ổn định mới thêm,
+  `item(key = RACES_CAROUSEL_ITEM_KEY)` thay cho `item { ... }` trống, vì các item phía trên
+  (rings/metrics/highlights) có số lượng thay đổi nên không thể dựa vào index. Không viết thêm
+  `onGloballyPositioned`/tracker riêng — đúng yêu cầu tái dùng cơ chế đã có.
+  **"Pager" của carousel**: `RacesCarousel` vốn không dùng `HorizontalPager` thật (là `LazyRow` +
+  `rememberSnapFlingBehavior`, D-1133) — `listState.animateScrollToItem(nextIndex)` đóng vai trò tương
+  đương `animateScrollToPage` như D-1173 chấp nhận ("hoặc tương đương").
+  **Trình tự**: 1 `LaunchedEffect(homeListState, races)` dùng `snapshotFlow { ... }.first { it }` đợi
+  đúng lúc item có key trên xuất hiện trong `visibleItemsInfo`, rồi `repeat(2) { delay(3s);
+  animateScrollToItem(currentIndex + 1) }` — dừng sớm nếu đã ở card cuối (`nextIndex > races.lastIndex`)
+  hoặc nếu `userInteracted == true`. **Huỷ khi user tự vuốt**: 1 `LaunchedEffect` riêng collect
+  `listState.interactionSource.interactions`, set `userInteracted = true` ngay khi thấy
+  `DragInteraction.Start` — do `rememberLazyListState()`'s `interactionSource` (public API, xác nhận
+  tồn tại qua `javap` trên `foundation-api.jar` trong Gradle cache, cùng instance mà gesture scroll nội
+  bộ của `LazyRow` đã báo qua) là đúng tín hiệu "user đang kéo thật", không cần `pointerInput` riêng.
+  Dùng `remember` thường (không `rememberSaveable`) cho mọi state này — đúng ý D-1173 "rời Home quay lại
+  coi như vào viewport lại từ đầu": khi `RacesCarousel` rời composition (rời tab Home) rồi quay lại, toàn
+  bộ state (kể cả đã auto-advance bao nhiêu lần) mất đi tự nhiên, không cần cờ "đã từng hiện" lưu riêng.
+  Đã đổi số quyết định 2 lần giữa chừng do làm việc song song với các agent khác cùng ghi vào
+  `docs/DECISIONS.md`: bắt đầu dùng D-1177 theo gợi ý ban đầu trong brief, nhưng agent khác đã dùng xong
+  số đó cho việc sort race (commit `6a13b85`) trước khi tôi commit xong, nên đổi sang D-1179 (số trống
+  lúc đó); rồi phát hiện tiếp 1 agent khác nữa cũng vừa chiếm D-1179 cho một quyết định khác (backfill
+  workout detail) ngay trước khi tôi kịp commit — đổi lần cuối sang **D-1181** (re-check lại
+  `docs/DECISIONS.md` ngay trước khi ghi, thấy D-1180 là số lớn nhất) trước khi commit thật. Đổi toàn bộ
+  comment/hằng số (`RACES_CAROUSEL_ITEM_KEY` và các docstring liên quan) trong `HomeScreen.kt` sang
+  đúng D-1181 bằng `sed` rồi build lại (`:feature:home:compileDebugUnitTestKotlin --rerun-tasks`) để
+  chắc chắn không phải cache cũ che giấu lỗi, trước khi commit.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest` và `./gradlew
+  assembleDebug` — cả hai `BUILD SUCCESSFUL`, rerun `:feature:home:compileDebugUnitTestKotlin
+  --rerun-tasks` riêng sau lần sửa số quyết định để chắc chắn không phải cache cũ che giấu lỗi compile,
+  XML test-result sinh mới (`TEST-...MetricInsightTextTest.xml`, timestamp khớp lần chạy), APK
+  `app-debug.apk` sinh lại (`app:packageDebug` chạy thật, không UP-TO-DATE).
+  **Xác nhận trực quan trên máy thật** (`99251FFAZ003T3`, cài qua `adb install -r`): 1 lần chạy sạch,
+  liên tục, không reload giữa chừng xác nhận đúng chuỗi mong muốn — cuộn carousel vào viewport (card 1,
+  "Vnexpress Marathon Hanoi Midnight") → ~3s sau tự next sang card 2 ("Sơn Trà City Trail") → ~3s sau tự
+  next sang card 3 ("Nghệ An Legacy Marathon") → chờ thêm 6s, không còn next nào nữa (dừng hẳn đúng sau
+  2 lần, không lặp). **Hạn chế khi xác nhận "vuốt tay huỷ auto-advance"**: nhiều lần thử lặp lại trên
+  cùng máy thật bị nhiễu bởi các sự kiện ngoài ý muốn không liên quan đến diff này (app tự thoát ra
+  launcher, tự nhảy sang `RacesScreen`/màn chi tiết workout dù không có input nào trong khoảng chờ) —
+  nghi nhiều khả năng do bug đã biết D-1178 (back hệ thống ở tab chính hiện tại kill hẳn activity thay vì
+  minimize, chưa được fix) kết hợp với các thao tác `adb input swipe` bắt đầu gần mép phải màn hình bị hệ
+  điều hướng gesture của máy hiểu nhầm thành vuốt back. Về mặt code, cơ chế huỷ (`userInteracted` set
+  bởi `DragInteraction.Start`, kiểm tra trước mỗi lần `animateScrollToItem`) chắc chắn đúng theo API đã
+  xác nhận tồn tại; ảnh chụp trực tiếp (không bị nhiễu) ghi nhận được 1 lần: vuốt tay khi đang hiện card 1
+  dịch chuyển carousel đúng theo hướng/lực vuốt (sang card 2 hoặc xa hơn tuỳ lực), không bị "kéo ngược"
+  lại bởi auto-advance — không quan sát được auto-advance tiếp diễn sau 1 lần vuốt tay sạch (không bị
+  nhiễu bởi điều hướng lạ) trong thời gian còn lại của phiên thử. Không đủ thời gian lặp lại nhiều lần
+  trong môi trường sạch hơn (máy thật riêng, tắt gesture nav) do giới hạn tài nguyên phiên làm việc — nếu
+  cần xác nhận chắc chắn hơn, nên test lại sau khi D-1178 được fix (loại bỏ khả năng bug ngoài gây nhiễu)
+  hoặc test trên emulator thay vì máy thật có gesture nav.
+
 - **D-1179** · 2026-11-09 · Thực thi D-1176 (backfill workout detail từ raw FIT đã lưu) — **Chốt**
   Fix mapper + thêm cơ chế backfill: `WorkoutDetailBackfill.kt` mới (`core/data/.../sync/`) gồm
   `WorkoutDetailBackfillFilter` (lọc bỏ record đã có lap/sample rồi, chống trùng) và
@@ -2660,3 +2718,23 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   **User xác nhận trên máy thật qua nút "Reprocess downloaded files": workout cũ giờ đã có data** (splits/
   HR-zone/trend chart hiện ra đúng D-1093). Verify: `testDebugUnitTest`/`assembleDebug` xanh, cài
   `app-debug.apk` lên `99251FFAZ003T3`.
+
+- **D-1180** · 2026-11-09 · Thực thi D-1178 (back ở 4 tab chính minimize thay vì kill) — **Chốt**
+  Thêm `BackHandler(enabled = onMainPager) { activity?.moveTaskToBack(true) }` trong
+  `UnifiedHealthApp.kt`, `activity` lấy qua `LocalContext.current as? Activity`. Chỉ sửa 1 file này —
+  `onMainPager` đã có sẵn (D-1178 brief), không cần thêm logic kiểm tra back stack riêng vì 4 tab
+  chính là start destination của `NavHost`, không còn gì để pop khi `onMainPager == true`. Màn chi
+  tiết (`onMainPager == false`) không bật `BackHandler` này nên back vẫn pop `NavHost` bình thường,
+  không đổi hành vi. Onboarding (`startWithOnboarding`) không nằm trong `MainPagerDestination` nên
+  `onMainPager` luôn `false` ở đó — không đụng tới, không cần sửa.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug` →
+  BUILD SUCCESSFUL (`app:compileDebugKotlin` chạy thật, không UP-TO-DATE, ở lần build đầu; `:app` không
+  có unit test — NO-SOURCE, đúng với layout hiện tại chỉ có test ở `core/model`/`core/domain`). Cài
+  `app-debug.apk` lên `emulator-5554` và test thủ công qua `adb`/`dumpsys activity activities`: ở tab
+  Home (gốc, `onMainPager == true`), bấm back → task vẫn tồn tại (`visible=false`,
+  `visibleRequested=false`, không bị finish), process vẫn sống (`pidof` trả PID), app khác lên
+  foreground — đúng hành vi minimize, không kill. Mở lại app (`am start` lại, task cũ được bring-to-
+  front, không tạo task mới) → vào `MetricDetailScreen` ("Active energy") → bấm back → quay lại Home,
+  pill nav hiện lại bình thường — xác nhận detail screen không bị đổi hành vi.
+  (Thử trên máy thật `99251FFAZ003T3` trước nhưng có hoạt động vật lý không kiểm soát được trên máy
+  (task number đổi giữa 2 lần kiểm tra) làm nhiễu kết quả, nên dùng emulator để có môi trường xác định.)
