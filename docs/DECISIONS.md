@@ -1813,8 +1813,10 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   đều, agent tự chọn kiểu hợp với layout chữ hiện có) để tên giải/ngày/CTA luôn đọc được rõ trên nền
   ảnh thật, không chỉ đẹp trên nền gradient như trước.
 
-- **D-1130** · 2026-11-08 · Sửa đúng D-1128 — bỏ `fillBleed` (hack constraint), chuyển inset ngang
-  sang từng item thay vì `LazyColumn` cha — **Chốt**
+- **D-1131** · 2026-11-08 · Sửa đúng D-1128 — bỏ `fillBleed` (hack constraint), chuyển inset ngang
+  sang từng item thay vì `LazyColumn` cha — **Chốt** (đánh số lại từ D-1130 ban đầu vì trùng với
+  D-1130 "ảnh đồng hồ to trên Devices" do agent/phiên khác log song song cùng lúc — nội dung không
+  đổi, chỉ đổi số để hết trùng.)
   `fillBleed` (D-1122, `Modifier.layout{}` đo con rộng hơn rồi `place()` lệch âm) dựa vào việc Compose
   "không hard-clamp" kích thước `layout()` trả về so với constraint đã nhận — đúng về mặt lý thuyết
   compiler nhưng không đáng tin cậy trong thực tế trên máy thật (D-1128 xác nhận lại lệch cả 2 đầu).
@@ -1846,3 +1848,17 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   trên, text bên dưới, giống bố cục "About this device") khi `connected = true`. Việc này liên quan
   trực tiếp D-1115 (DeviceBanner Home copy style Devices) — làm xong cái này trước thì D-1115 copy
   theo sẽ tự động to theo, không cần sửa 2 lần.
+
+- **D-1131** · 2026-11-08 · Bố cục lại race card: ảnh rõ nét ở trên, nền blur màu ảnh ở dưới thay vì overlay+scrim — **Chốt**
+  Sau khi thấy ảnh thật (D-1129) khá đẹp, user muốn đổi hướng bố cục thay vì ảnh làm nền full-bleed có
+  scrim tối phủ chữ lên: (1) **Ảnh thật hiển thị rõ, không bị scrim**, nằm ở phần **trên** của card
+  (dùng `ContentScale.Crop` cho gọn khung ảnh, không cần giữ nguyên tỉ lệ như D-1129 nữa vì giờ ảnh
+  không phải nền chữ đè lên). (2) **Phần dưới** (tên giải, ngày, cự ly, giá, CTA) có nền là bản
+  **blur** của chính ảnh đó (Compose `Modifier.blur(...)`, kèm 1 lớp scrim nhẹ nếu cần tương phản chữ
+  — giờ dễ đảm bảo tương phản hơn hẳn vì không phải scrim cả ảnh gốc) — tạo hiệu ứng "ambient
+  color/backdrop" lấy từ chính ảnh giải, đẹp và hiện đại hơn overlay cũ.
+  Lưu ý kỹ thuật: `Modifier.blur()` chỉ chạy blur thật từ Android 12 (API 31) trở lên — dưới đó
+  Compose tự fallback về không-blur (không crash), app minSdk 26 nên chấp nhận máy cũ không có hiệu
+  ứng blur, không cần tự viết fallback thủ công. Race **chưa có ảnh thật** (gradient theo terrain) thì
+  giữ nguyên cách hiển thị cũ (gradient làm cả nền, không áp dụng bố cục 2 phần này) — chỉ race có
+  `imageUrl` thật mới dùng layout mới.
