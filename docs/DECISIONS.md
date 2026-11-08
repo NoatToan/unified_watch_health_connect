@@ -1834,3 +1834,15 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   tiếp như yêu cầu — đã rà lại toán constraint/placement từng bước bằng tay (ghi trong code comment
   tại `RacesCarousel`/`Summary`) thay vì chỉ tin code compile được; nhờ người dùng xác nhận lại trên
   máy thật lần nữa.
+
+- **D-1130** · 2026-11-08 · Ảnh đồng hồ trên màn Devices (list) phải to như ở "About this device" — **Chốt**
+  Kiểm tra thật: `DeviceDetailScreen.kt:159` ("About this device") dùng `WatchImage(size = 180.dp)`
+  to, giữa card; còn `DevicesScreen.kt:328` (card trong "My devices", màn Devices chính) chỉ dùng
+  `size = if (connected) 88.dp else 56.dp` — nhỏ hơn nhiều. User chỉ ra: sau khi kết nối lần đầu,
+  user hiếm khi mở lại "About this device" — màn Devices chính mới là nơi họ thực sự nhìn thấy
+  thường xuyên, nên ảnh đồng hồ ở đó cần to, đập vào mắt, đúng như ở "About this device". Sửa: tăng
+  size ảnh ở `DevicesScreen.kt` card "My devices" lên tương đương 180.dp (hoặc gần đó, agent tự cân
+  đối lại layout Row/Column cho hợp — có thể cần đổi từ `Row` ngang ảnh+text sang `Column` ảnh lớn ở
+  trên, text bên dưới, giống bố cục "About this device") khi `connected = true`. Việc này liên quan
+  trực tiếp D-1115 (DeviceBanner Home copy style Devices) — làm xong cái này trước thì D-1115 copy
+  theo sẽ tự động to theo, không cần sửa 2 lần.
