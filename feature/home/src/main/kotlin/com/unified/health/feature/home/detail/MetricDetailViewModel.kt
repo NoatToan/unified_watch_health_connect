@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.unified.health.core.domain.repository.HealthDataRepository
+import com.unified.health.core.domain.usecase.HighlightCalculator
 import com.unified.health.core.domain.usecase.MetricStats
 import com.unified.health.core.domain.usecase.MetricStatsCalculator
 import com.unified.health.core.model.ChartPoint
@@ -12,6 +13,7 @@ import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.MetricAggregation
 import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.TimeRange
+import com.unified.health.feature.home.insight.metricInsightLine
 import com.unified.health.feature.home.navigation.MetricDetailDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,6 +39,8 @@ data class MetricDetailUiState(
     /** The night shown by the stage chart (sleep, D only). */
     val sleepSession: SleepSession? = null,
     val periodLabel: String = "",
+    /** One-line analysis, Huawei Health style: week-over-week when there's enough history, else this week's own average/range. */
+    val insight: String? = null,
     val isLoading: Boolean = true,
 )
 
@@ -54,7 +58,11 @@ class MetricDetailViewModel @Inject constructor(
         .flatMapLatest { r ->
             val today = LocalDate.now()
             val night = if (metric.aggregation == MetricAggregation.SLEEP && r == TimeRange.DAY) repository.observeSleep(today) else flowOf(null)
-            combine(repository.observeMetricSeries(metric, r, today), night) { points, session ->
+            // Fixed MONTH window for the analysis line, independent of the selected D/W/M/6M/Y tab
+            // (so switching ranges doesn't make the insight jump around).
+            val monthly = repository.observeMetricSeries(metric, TimeRange.MONTH, today)
+            combine(repository.observeMetricSeries(metric, r, today), night, monthly) { points, session, monthPoints ->
+                val weekPoints = monthPoints.takeLast(7)
                 MetricDetailUiState(
                     metric = metric,
                     range = r,
@@ -62,6 +70,7 @@ class MetricDetailViewModel @Inject constructor(
                     stats = MetricStatsCalculator.of(metric, r, points),
                     sleepSession = session,
                     periodLabel = periodLabel(r, today),
+                    insight = metricInsightLine(metric, HighlightCalculator.compute(metric, monthPoints), MetricStatsCalculator.of(metric, TimeRange.WEEK, weekPoints)),
                     isLoading = false,
                 )
             }

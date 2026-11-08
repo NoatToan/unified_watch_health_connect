@@ -72,11 +72,11 @@ class StandardWatchE2ETest : E2EBase() {
                 waitForTag("data_row_0")
                 waitForText(StandardVirtualWatch.NAME)
             }
-            step("spo2-history", "Back, Browse › Respiratory › Blood oxygen, W", "SpO2 history from the band's stored spot-checks (RACP), clock set via CTS") {
-                backUntilTag("nav_BROWSE")
-                clickTag("nav_BROWSE")
-                clickTag("category_Respiratory")
-                clickTag("browse_metric_SPO2")
+            step("spo2-history", "Back, Health feed › Blood oxygen card, W", "SpO2 history from the band's stored spot-checks (RACP), clock set via CTS") {
+                backUntilTag("nav_HEALTH")
+                clickTag("nav_HEALTH")
+                compose.onNodeWithTag("feed_list").performScrollToNode(hasTestTag("card_SPO2"))
+                clickTag("card_SPO2")
                 clickTag("range_WEEK")
                 waitFor(hasTestTag("metric_header") and hasContentDescription("AVERAGE", substring = true), what = "SpO2 average header")
             }

@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.unified.health.core.domain.repository.UserPreferencesRepository
+import com.unified.health.core.model.FeedCardId
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.ThemeMode
 import com.unified.health.core.model.UnitSystem
@@ -28,6 +29,12 @@ class DataStoreUserPreferencesRepository @Inject constructor(
 
         /** Comma-separated [HealthMetricType] names, in display order. */
         val pinnedMetrics = stringPreferencesKey("pinned_metrics")
+
+        /** Comma-separated feed card ids ([FeedCardId] or [HealthMetricType] names), in display order. */
+        val feedCardOrder = stringPreferencesKey("feed_card_order")
+
+        /** Comma-separated feed card ids hidden from the feed. */
+        val hiddenFeedCards = stringPreferencesKey("hidden_feed_cards")
     }
 
     override val userPreferences: Flow<UserPreferences> = dataStore.data.map { p ->
@@ -39,6 +46,8 @@ class DataStoreUserPreferencesRepository @Inject constructor(
             useDynamicColor = p[Keys.dynamicColor] ?: defaults.useDynamicColor,
             dailyStepGoal = p[Keys.stepGoal] ?: defaults.dailyStepGoal,
             pinnedMetrics = p[Keys.pinnedMetrics]?.let(::parseMetrics) ?: defaults.pinnedMetrics,
+            feedCardOrder = p[Keys.feedCardOrder]?.let(::parseFeedCardOrder) ?: defaults.feedCardOrder,
+            hiddenFeedCards = p[Keys.hiddenFeedCards]?.let(::parseFeedCardIds)?.toSet() ?: defaults.hiddenFeedCards,
         )
     }
 
@@ -67,7 +76,25 @@ class DataStoreUserPreferencesRepository @Inject constructor(
         dataStore.edit { it[Keys.pinnedMetrics] = metrics.distinct().joinToString(",") { m -> m.name } }
     }
 
+    override suspend fun setFeedCards(order: List<String>, hidden: Set<String>) {
+        dataStore.edit {
+            it[Keys.feedCardOrder] = order.filter(::isKnownFeedCard).distinct().joinToString(",")
+            it[Keys.hiddenFeedCards] = hidden.filter(::isKnownFeedCard).distinct().joinToString(",")
+        }
+    }
+
     /** Unknown names (a metric removed in a later version) are skipped. */
     private fun parseMetrics(raw: String): List<HealthMetricType> =
         raw.split(',').filter { it.isNotBlank() }.mapNotNull { name -> HealthMetricType.entries.firstOrNull { it.name == name } }
+
+    private fun parseFeedCardIds(raw: String): List<String> = raw.split(',').filter { it.isNotBlank() && isKnownFeedCard(it) }
+
+    /** Stored order, with any card id added after this install (app upgrade) appended at the end. */
+    private fun parseFeedCardOrder(raw: String): List<String> {
+        val stored = parseFeedCardIds(raw)
+        return stored + (UserPreferences.DEFAULT_FEED_CARD_ORDER - stored.toSet())
+    }
+
+    private fun isKnownFeedCard(id: String): Boolean =
+        id == FeedCardId.ACTIVITY_RINGS || id == FeedCardId.WORKOUTS || HealthMetricType.entries.any { it.name == id }
 }

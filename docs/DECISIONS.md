@@ -120,6 +120,26 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   Module `feature/sleep` (SleepScreen placeholder, không ai điều hướng tới) bị xoá khỏi `settings.gradle.kts`, `app` và NavHost. Giấc ngủ giữ ở Browse › Sleep (`MetricDetailScreen`: hypnogram D, xu hướng W/M/6M/Y, Show all data) theo D-208.
   Lý do: đã có màn đầy đủ hơn; giữ route mồ côi chỉ là nợ kỹ thuật.
 
+- **D-809** · 2026-11-08 · Thay Browse (category → metric) bằng feed dẹt "Health" (tham chiếu Huawei Health) — **Chốt**
+  Người dùng phản hồi Browse (category list) khó dùng. Xoá `feature/home/browse/BrowseScreen.kt` và
+  `BrowseDestination`; tab đáy đổi `BROWSE` → `HEALTH` (`FeedDestination`, nhãn "Health", icon Dashboard),
+  nội dung là `feature/home/feed/FeedScreen.kt`: một `LazyColumn` dẹt duy nhất, mỗi `HealthMetricType` một
+  card (`card_<METRIC>`) gồm icon/nhãn/giờ đọc, mini chart (tái dùng `HealthBarChart`/`HealthRangeChart`,
+  stage bar tái dùng `SleepStageChart` thu nhỏ cho Sleep) và một dòng phân tích (`metricInsightLine`,
+  `feature/home/insight/MetricInsightText.kt` — thuần Kotlin, có unit test), cộng card Activity rings và
+  card Workouts (3 bài gần nhất). Metric chưa có dữ liệu vẫn hiện (không ẩn) nhưng dạng gọn
+  (`ListItem` một dòng "No data yet") thay vì card to trống. Thứ tự/ẩn-hiện card ("Edit cards": tăng/giảm
+  bằng mũi tên lên-xuống + checkbox, không dùng drag-drop) lưu qua `UserPreferences.feedCardOrder` /
+  `hiddenFeedCards` (DataStore, `UserPreferencesRepository.setFeedCards`, giống cơ chế `pinnedMetrics` sẵn
+  có). `MetricDetailScreen` (D/W/M/6M/Y) thêm thẻ "Insight" dùng lại `HighlightCalculator`/`MetricStatsCalculator`
+  đã có, không thêm calculator domain mới (phân tích là ghép chữ ở tầng feature, không phải logic domain mới).
+  Các E2E dùng `nav_BROWSE`/`browse_search`/`category_*`/`browse_metric_*` (Demo/Garmin/Standard/Zepp/UserJourney)
+  đổi sang `nav_HEALTH` + cuộn `feed_list` tới `card_<METRIC>`, không còn tìm bằng ô search (feed không có ô tìm,
+  giống tham chiếu Huawei).
+  Lý do: tôn trọng layering `feature` chỉ phụ thuộc `domain`/`designsystem` — không để `feature/home` phụ
+  thuộc `feature/activity` (icon/label bài tập được chép cục bộ trong `feed/WorkoutFeedUi.kt`). Không chọn
+  drag-drop để tránh thêm thư viện/độ phức tạp test khi mũi tên lên/xuống đã đủ đạt yêu cầu "editable order".
+
 - **D-014** · 2026-11-06 · Dùng chung emulator — **Chốt**
   Chỉ chạy 1 emulator (`emulator-5554`) để tiết kiệm RAM. Mọi lần chạy test instrumented, `adb install` hoặc `pm clear` phải đi qua
   khoá `emu-lock.sh` (dùng `mkdir` làm mutex), vì các agent chạy chồng nhau sẽ gỡ APK của nhau giữa chừng.

@@ -10,7 +10,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
-import androidx.compose.ui.test.performTextInput
 import com.unified.health.core.demo.virtual.GarminVirtualWatchIdentity
 import com.unified.health.core.model.WearableVendor
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -21,7 +20,7 @@ import org.junit.Test
  * GFDI service, §3.1/§4.C): scan → recognised as Garmin (manufacturer id 0x0087) → pair (bond,
  * handshake, no credential) → connected (device info/firmware/battery) → sync (steps/distance/
  * calories, heart rate, resting heart rate, HRV, stress, SpO2, sleep stages, one workout, via FIT
- * files over GFDI) → Summary/Browse show the data with Garmin source attribution → unpair.
+ * files over GFDI) → Summary/Health feed show the data with Garmin source attribution → unpair.
  * Exercises the real scan → `GarminDriver.recognize` → `openSession` → `sync` → Room pipeline
  * (see `docs/DECISIONS.md` D-4xx).
  */
@@ -77,23 +76,24 @@ class GarminWatchE2ETest : E2EBase() {
                 waitForText(name)
                 waitForText(WearableVendor.GARMIN.displayName, substring = true)
             }
-            step("resting-hr-and-hrv", "Back twice, Browse → Heart", "Resting heart rate and HRV both have values from the synced FIT file") {
+            step("resting-hr-and-hrv", "Back twice, Health feed → Heart rate cards", "Resting heart rate and HRV both have values from the synced FIT file") {
                 device.pressBack()
                 device.pressBack()
                 waitForTag("summary_list")
-                clickTag("nav_BROWSE")
-                clickTag("category_Heart")
-                clickTag("browse_metric_RESTING_HEART_RATE")
+                clickTag("nav_HEALTH")
+                compose.onNodeWithTag("feed_list").performScrollToNode(hasTestTag("card_RESTING_HEART_RATE"))
+                clickTag("card_RESTING_HEART_RATE")
                 waitFor(hasTestTag("metric_header") and !hasContentDescription("No data"), what = "resting HR with data")
                 device.pressBack()
-                clickTag("browse_metric_HRV")
+                compose.onNodeWithTag("feed_list").performScrollToNode(hasTestTag("card_HRV"))
+                clickTag("card_HRV")
                 waitFor(hasTestTag("metric_header") and hasContentDescription("ms", substring = true), what = "HRV header in ms")
             }
-            step("sleep-and-workout", "Back, Browse → Sleep › D, then Activity › workout", "Sleep stages and the synced running workout both show up") {
+            step("sleep-and-workout", "Back, Health feed → Sleep card › D, then Activity › workout", "Sleep stages and the synced running workout both show up") {
                 device.pressBack()
-                waitForTag("browse_search")
-                compose.onNodeWithTag("browse_search").performTextInput("sleep")
-                clickTag("browse_metric_SLEEP")
+                waitForTag("feed_list")
+                compose.onNodeWithTag("feed_list").performScrollToNode(hasTestTag("card_SLEEP"))
+                clickTag("card_SLEEP")
                 clickTag("range_DAY")
                 waitForTag("sleep_stage_chart")
                 device.pressBack()
