@@ -2259,3 +2259,23 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   nav bar như cũ, chỉ phần margin *sau* inset đó bị co lại.
   **Verify (cả D-1155+D-1156)**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest
   assembleDebug` — build thành công, `app-debug.apk` build lại (timestamp mới).
+
+- **D-1160** · 2026-11-09 · Bottom nav: ẩn khi scroll xuống, animate hiện lại khi scroll lên (như header) — **Chốt**
+  D-1149 vừa sửa để pill chỉ phản ứng với scroll dọc (không phải pager swipe) — nhưng hiện pill vẫn ẩn
+  bất kể **hướng** scroll dọc, rồi tự hiện lại sau khi dừng (theo `pillVisible`/timer hiện có). User muốn
+  đổi sang pattern "header ẩn/hiện theo hướng cuộn" quen thuộc: **cuộn xuống (nội dung đi lên) → ẩn
+  pill**, **cuộn lên (nội dung đi xuống) → hiện lại pill ngay**, không cần đợi dừng cuộn mới hiện. Đây là
+  thay đổi về *điều kiện* trigger ẩn/hiện (chuyển từ "đang cuộn hay không" sang "hướng cuộn gần nhất"),
+  không đổi lại phần vừa sửa ở D-1149 (vẫn chỉ phản ứng scroll dọc, không phản ứng pager swipe). Animation
+  hiện/ẩn (`tween`/`alpha`, D-1134) giữ nguyên, chỉ đổi điều kiện gọi `visible = true/false`.
+
+- **D-1161** · 2026-11-09 · Race item ở Home: ảnh đang chiếm content xấu, cần chụp màn hình thật + tự đề xuất re-layout — **Chốt**
+  User nhận xét `RaceCard`'s ảnh góc dưới-phải (D-1142/1146, vừa tăng gấp đôi size) đang che/chiếm nội
+  dung trông xấu trên máy thật — **không chỉ định hướng sửa cụ thể**, yêu cầu agent **tự dùng
+  `adb exec-out screencap`** chụp màn hình Home (carousel giải chạy thật) trên thiết bị/emulator đang kết
+  nối, nhìn trực tiếp ảnh chụp, rồi **tự đề xuất bố cục lại** `RaceCardWithPhoto` (`core/designsystem/
+  .../RaceCard.kt`) cho đẹp hơn — có thể là đổi lại vị trí/kích thước ảnh, cách scrim/overlay, bố cục
+  text, hoặc hướng tiếp cận khác hẳn D-1142/1146 nếu nhìn ảnh chụp thấy cần. **Giữ nguyên tỉ lệ nội dung
+  hiện tại** (kích thước chữ tên/ngày/khoảng cách/giá/CTA so với nhau) — user xác nhận phần đó đã ổn,
+  chỉ sửa cách ảnh được bố trí/hiển thị. Agent phải chụp ảnh thật để tự đánh giá, không đoán mò qua đọc
+  code — lặp lại chụp sau khi sửa để tự xác nhận kết quả đẹp hơn trước khi báo cáo xong.
