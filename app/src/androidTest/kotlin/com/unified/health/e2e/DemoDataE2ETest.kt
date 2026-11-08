@@ -16,8 +16,9 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Test
 
 /**
- * Debug menu: Profile › Developer › Seed demo data writes 90 days into Room, every chart renders,
- * then Clear health data empties it again. No device involved.
+ * Debug menu: Profile › Developer › Fill demo data writes 90 days into Room, every chart renders,
+ * then Clear demo data empties it again (confirmed through its dialog). Demo mode is already on,
+ * forced by [E2EBase]. No device involved.
  */
 @HiltAndroidTest
 class DemoDataE2ETest : E2EBase() {
@@ -37,16 +38,16 @@ class DemoDataE2ETest : E2EBase() {
     fun seedEveryChartThenClear() {
         val report = report("DemoDataE2ETest")
 
-        report.flow(7, "debug-seed", "Profile › Developer: seed demo data") {
-            step("profile-developer", "Finish onboarding, open Profile", "Developer section (debug only) with Seed / Clear") {
+        report.flow(7, "debug-seed", "Profile › Developer: fill demo data") {
+            step("profile-developer", "Finish onboarding, open Profile", "Developer section (debug only), demo mode already on, with Fill / Clear") {
                 skipOnboarding(grant = false)
                 clickTag("nav_PROFILE")
-                waitForTag("seed_demo_data")
-                compose.onNodeWithTag("seed_demo_data").performScrollTo()
+                waitForTag("fill_demo_data")
+                compose.onNodeWithTag("fill_demo_data").performScrollTo()
             }
-            step("seeded", "Tap \"Seed demo data\"", "Status reports the records written") {
-                clickTag("seed_demo_data")
-                waitFor(hasTestTag("developer_status") and hasText("Seeded", substring = true), timeoutMs = 60_000, what = "seed finished")
+            step("seeded", "Tap \"Fill demo data\"", "Status reports the records written") {
+                clickTag("fill_demo_data")
+                waitFor(hasTestTag("developer_status") and hasText("Filled", substring = true), timeoutMs = 60_000, what = "fill finished")
             }
             step("summary", "Open Summary", "Pinned metrics show seeded values") {
                 clickTag("nav_HOME")
@@ -85,12 +86,13 @@ class DemoDataE2ETest : E2EBase() {
             }
         }
 
-        report.flow(9, "clear-data", "Profile › Developer: clear health data") {
-            step("cleared", "Profile › \"Clear health data\"", "Status confirms the wipe") {
+        report.flow(9, "clear-data", "Profile › Developer: clear demo data") {
+            step("cleared", "Profile › \"Clear demo data\" › confirm", "Status confirms the wipe; real watch data would have been kept") {
                 backToBrowse()
                 clickTag("nav_PROFILE")
-                compose.onNodeWithTag("clear_health_data").performScrollTo()
-                clickTag("clear_health_data")
+                compose.onNodeWithTag("clear_demo_data").performScrollTo()
+                clickTag("clear_demo_data")
+                clickTag("confirm_clear_demo_data")
                 waitFor(hasTestTag("developer_status") and hasText("cleared", substring = true), what = "cleared status")
             }
             step("summary-empty", "Open Summary", "Pinned cards show \"No data\"") {

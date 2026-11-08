@@ -160,7 +160,7 @@ echo "sdk.dir=$HOME/Library/Android/sdk" > local.properties
 scripts/e2e.sh [serial]           # build → fresh install → run E2E → build/e2e-report/index.html
 ```
 
-Debug installs as `com.unified.health.debug`. Disable the demo watch with `-PunifiedHealth.mockDevice=false`. To refresh the published report, copy `build/e2e-report/` to `docs/e2e-report/`.
+Debug installs as `com.unified.health.debug`. Virtual/demo watches are off by default; turn them on at runtime in Profile › Developer › Demo mode (debug builds only), then "Fill demo data" to seed ~90 days for every chart. To refresh the published report, copy `build/e2e-report/` to `docs/e2e-report/`.
 
 ---
 

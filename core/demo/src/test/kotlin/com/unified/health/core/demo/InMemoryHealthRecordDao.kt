@@ -52,4 +52,12 @@ class InMemoryHealthRecordDao : HealthRecordDao {
     override suspend fun deleteAllWorkouts() {
         workouts.value = emptyMap()
     }
+
+    override suspend fun deleteSamplesForDevices(deviceIds: List<String>) {
+        samples.value = samples.value.filterValues { it.deviceId !in deviceIds }
+    }
+
+    override suspend fun deleteWorkoutsForDevices(deviceIds: List<String>) {
+        workouts.value = workouts.value.filterValues { it.deviceId !in deviceIds }
+    }
 }

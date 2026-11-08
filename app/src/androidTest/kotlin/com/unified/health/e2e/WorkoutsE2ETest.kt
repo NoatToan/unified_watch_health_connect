@@ -27,12 +27,12 @@ class WorkoutsE2ETest : E2EBase() {
                 waitForTag("workouts_empty")
                 waitForText("No workouts yet")
             }
-            step("seeded", "Profile › Developer › \"Seed demo data\"", "90 days of data written, including ~4 workouts a week") {
+            step("seeded", "Profile › Developer › \"Fill demo data\"", "90 days of data written, including ~4 workouts a week") {
                 clickTag("nav_PROFILE")
-                waitForTag("seed_demo_data")
-                compose.onNodeWithTag("seed_demo_data").performScrollTo()
-                clickTag("seed_demo_data")
-                waitFor(hasTestTag("developer_status") and hasText("Seeded", substring = true), timeoutMs = 60_000, what = "seed finished")
+                waitForTag("fill_demo_data")
+                compose.onNodeWithTag("fill_demo_data").performScrollTo()
+                clickTag("fill_demo_data")
+                waitFor(hasTestTag("developer_status") and hasText("Filled", substring = true), timeoutMs = 60_000, what = "fill finished")
             }
             step("activity-load", "Open the Activity tab", "Weekly activity load card: value, trend vs. the last 4 weeks, 8-week chart") {
                 clickTag("nav_ACTIVITY")

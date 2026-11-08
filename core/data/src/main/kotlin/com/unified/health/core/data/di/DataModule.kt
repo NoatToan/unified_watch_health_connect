@@ -29,6 +29,7 @@ import com.unified.health.core.domain.repository.NotificationPreferencesReposito
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.domain.repository.DemoDataController
+import com.unified.health.core.domain.repository.DemoModeController
 import dagger.Binds
 import dagger.BindsOptionalOf
 import dagger.Module
@@ -81,6 +82,10 @@ internal abstract class DataBindingsModule {
     /** Bound only in debug builds (`:core:demo`); release injects `Optional.empty()`. */
     @BindsOptionalOf
     abstract fun optionalDemoDataController(): DemoDataController
+
+    /** Bound only in debug builds (`:core:demo`); release injects `Optional.empty()`. */
+    @BindsOptionalOf
+    abstract fun optionalDemoModeController(): DemoModeController
 }
 
 @Module
