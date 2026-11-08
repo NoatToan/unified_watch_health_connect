@@ -2098,3 +2098,14 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   blur nền đã có từ `RaceCard`/`RaceImageBackdrop`, D-1131/1136, không viết lại blur mới). Trong lúc
   ảnh đang tải xong (chưa biết ratio), dùng placeholder 16:9 làm mặc định tạm — chuyển sang ratio thật
   ngay khi ảnh load xong.
+
+- **D-1151** · 2026-11-08 · `RaceDetailScreen`: nội dung cuối bị che bởi system navigation bar — áp dụng chuẩn insets toàn app — **Chốt**
+  User xác nhận trên máy thật: phần cuối màn Race Detail (CTA đăng ký/nút cuối) bị thanh điều hướng hệ
+  thống (system navigation bar / gesture bar) của thiết bị che mất — màn hình thiếu
+  `WindowInsets.navigationBars` padding ở đáy nội dung cuộn. Cùng agent đang làm D-1150 trên file này
+  xử lý luôn (không tách agent riêng, tránh đụng file). **"tính toán để không gặp việc tương tự"** — agent
+  cần kiểm tra thêm các màn full-screen/scrollable khác trong app (đặc biệt các màn mới thêm gần đây:
+  Devices, Home, Races list) xem có thiếu padding đáy tương tự không, và áp dụng nhất quán — tham khảo
+  pattern insets đã đúng ở `PillBottomNavigation` (D-1084, `windowInsetsPadding(WindowInsets.navigationBars...)`)
+  làm chuẩn. Không cần sửa toàn bộ app trong 1 lần nếu phát hiện phạm vi quá rộng — ưu tiên `RaceDetailScreen`
+  trước, agent tự quyết định mở rộng thêm bao nhiêu mà vẫn giữ an toàn/đúng phạm vi.
