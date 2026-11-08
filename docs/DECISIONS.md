@@ -2086,3 +2086,15 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   rõ 2 nguồn trigger (scroll nội dung vs. pager swipe) và chỉ cho nguồn đầu ảnh hưởng tới ẩn/hiện. Việc
   này thuộc cùng khu vực file với D-1144 (`UnifiedHealthApp.kt`, `PillBottomNavigation.kt`) — gộp chung
   vào agent đang xử lý D-1144/D-1147 thay vì agent riêng, tránh đụng file.
+
+- **D-1150** · 2026-11-08 · Ảnh cover màn Race Detail: đọc đúng ratio ảnh gốc, ảnh vuông thì mặc định 16:9 + blur nền — **Chốt**
+  `RaceDetailScreen` hiện đang hiển thị ảnh cover theo tỉ lệ cố định (không khớp ratio gốc ảnh crawl
+  được, vốn rất đa dạng — như đã gặp ở `RaceCard`/D-1131/1136/1142). Sửa: **đọc kích thước gốc của ảnh**
+  (qua Coil — ví dụ `AsyncImagePainter`/`SubcomposeAsyncImage` lấy `intrinsicSize`, hoặc decode bounds)
+  và set container theo đúng tỉ lệ đó (`Modifier.aspectRatio(w/h)`), ảnh hiển thị full, không crop méo.
+  **Trường hợp đặc biệt: ảnh vuông (ratio ~1:1)** — không hiển thị vuông thô, mà dùng khung mặc định
+  **16:9** cho container, ảnh gốc đặt giữa theo đúng tỉ lệ thật của nó (`ContentScale.Fit`, không
+  crop/méo), phần nền thừa trong khung 16:9 lấp bằng **backdrop blur** của chính ảnh đó (tái dùng pattern
+  blur nền đã có từ `RaceCard`/`RaceImageBackdrop`, D-1131/1136, không viết lại blur mới). Trong lúc
+  ảnh đang tải xong (chưa biết ratio), dùng placeholder 16:9 làm mặc định tạm — chuyển sang ratio thật
+  ngay khi ảnh load xong.
