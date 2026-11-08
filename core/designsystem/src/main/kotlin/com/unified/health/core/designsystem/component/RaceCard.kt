@@ -64,12 +64,13 @@ import java.time.format.DateTimeFormatter
  * (docs/DECISIONS.md D-1105) so both render identically; the caller only controls width via
  * [modifier] (a fixed width for the carousel, `fillMaxWidth()` for the list).
  *
- * D-1136/D-1142: a real photo now gets its own layout ([RaceCardWithPhoto]) — a full-card blurred
- * "ambient backdrop" of the photo behind the text, plus a small sharp corner thumbnail of the same
+ * D-1136/D-1142/D-1146: a real photo now gets its own layout ([RaceCardWithPhoto]) — a full-card
+ * blurred "ambient backdrop" of the photo behind the text, plus a sharp corner thumbnail of the same
  * photo at its native aspect ratio (D-1142 moved the thumbnail off a fixed-ratio full-width hero band,
- * which cropped/distorted the feed's very inconsistent real image ratios) — instead of D-1129's
- * full-bleed overlay+scrim. A race still on the terrain-gradient fallback keeps the original
- * single-layer look ([RaceCardWithGradient]), unchanged by either D-1136 or D-1142.
+ * which cropped/distorted the feed's very inconsistent real image ratios; D-1146 then moved it to the
+ * bottom-right corner and doubled its size after user feedback that D-1142's version read too small)
+ * — instead of D-1129's full-bleed overlay+scrim. A race still on the terrain-gradient fallback keeps
+ * the original single-layer look ([RaceCardWithGradient]), unchanged by any of D-1136/D-1142/D-1146.
  */
 @Composable
 fun RaceCard(race: Race, onClick: () -> Unit, modifier: Modifier = Modifier) {
@@ -85,15 +86,17 @@ fun RaceCard(race: Race, onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 /**
- * D-1142: layout for a race with a real photo. The feed's real crawled images (D-1111) come in very
- * inconsistent aspect ratios (tall posters, wide banners, squares); forcing them into a fixed-ratio
- * full-width hero band (D-1136's original approach) cropped/distorted many of them badly. Instead:
- * a blurred, scaled-to-fill copy of the photo covers the *entire* card as an ambient backdrop
+ * D-1142/D-1146: layout for a race with a real photo. The feed's real crawled images (D-1111) come in
+ * very inconsistent aspect ratios (tall posters, wide banners, squares); forcing them into a
+ * fixed-ratio full-width hero band (D-1136's original approach) cropped/distorted many of them badly.
+ * Instead: a blurred, scaled-to-fill copy of the photo covers the *entire* card as an ambient backdrop
  * ([RaceImageBackdrop]) — this handles any ratio gracefully, since it's blurred and scaled rather than
- * shown as-is — and a small sharp thumbnail of the same photo, sized to its own native aspect ratio
- * (never forced square or full-width), sits in the top-right corner as a badge-like accent. All of the
- * card's text stays on the blurred backdrop, with the top block's width capped short of the thumbnail
- * so the race name never runs underneath/behind it.
+ * shown as-is — and a sharp thumbnail of the same photo, sized to its own native aspect ratio (never
+ * forced square or full-width), sits in the **bottom-right** corner as a badge-like accent (D-1146;
+ * D-1142 originally put it top-right at half this size, but that read too small). All of the card's
+ * text stays on the blurred backdrop; the whole text column's width is capped short of the thumbnail
+ * (not just the bottom info row) because the doubled thumbnail is tall enough on a portrait-oriented
+ * photo to reach up alongside the name/date block too, not just the distances/price/CTA row below it.
  */
 @Composable
 private fun RaceCardWithPhoto(race: Race, imageUrl: String, today: LocalDate) {
@@ -101,7 +104,7 @@ private fun RaceCardWithPhoto(race: Race, imageUrl: String, today: LocalDate) {
         RaceImageBackdrop(imageUrl, Modifier.fillMaxSize())
         Box(
             modifier = Modifier
-                .align(Alignment.TopEnd)
+                .align(Alignment.BottomEnd)
                 .padding(Spacing.sm)
                 .sizeIn(maxWidth = RaceThumbnailMaxSize, maxHeight = RaceThumbnailMaxSize)
                 .clip(RoundedCornerShape(Spacing.xs)),
@@ -110,13 +113,14 @@ private fun RaceCardWithPhoto(race: Race, imageUrl: String, today: LocalDate) {
             // aspect ratio within the sizeIn cap above, instead of a fixed square/full-size footprint.
             RaceHeroImage(imageUrl, contentScale = ContentScale.Fit)
         }
-        Column(modifier = Modifier.fillMaxSize().padding(Spacing.lg), verticalArrangement = Arrangement.SpaceBetween) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(Spacing.xs),
-                // D-1142: reserves space for the corner thumbnail so the badge/name/date block wraps
-                // to its left instead of running underneath it.
-                modifier = Modifier.padding(end = RaceThumbnailReservedWidth),
-            ) {
+        Column(
+            // D-1146: reserves space along the *whole* right edge of the text column (not only next to
+            // the bottom info row) — the thumbnail is bottom-right now and twice as large, so a tall
+            // portrait-oriented photo can reach up far enough to sit behind the name/date block too.
+            modifier = Modifier.fillMaxSize().padding(Spacing.lg).padding(end = RaceThumbnailReservedWidth),
+            verticalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                 TerrainBadge(race.terrain)
                 RaceNameText(race.name, style = MaterialTheme.typography.titleLarge, maxLines = 2)
                 Text(raceDateLine(race, today), style = MaterialTheme.typography.bodyMedium, color = Color.White.copy(alpha = 0.92f))
@@ -126,10 +130,11 @@ private fun RaceCardWithPhoto(race: Race, imageUrl: String, today: LocalDate) {
     }
 }
 
-private val RaceThumbnailMaxSize = 64.dp
+/** D-1146: doubled from D-1142's original 64dp — the small thumbnail read too small at that size. */
+private val RaceThumbnailMaxSize = 128.dp
 
 /** Thumbnail's own [RaceThumbnailMaxSize] plus its outer padding and a little breathing room. */
-private val RaceThumbnailReservedWidth = 88.dp
+private val RaceThumbnailReservedWidth = 152.dp
 
 /** D-1106: unchanged by D-1136 — a race with no real image yet keeps the original full-bleed
  *  gradient-background-with-overlaid-text look. */
