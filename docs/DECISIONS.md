@@ -2588,3 +2588,25 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   cho cả carousel ở Home và màn "Tất cả giải" (`RacesScreen`) — 1 nguồn sort logic dùng chung (ví dụ
   trong `RacesViewModel`/repository/use-case, không viết riêng 2 chỗ) để tránh lệch thứ tự giữa 2 nơi
   hiển thị cùng dữ liệu.
+
+- **D-1176** · 2026-11-09 · Workout detail kiểu Huawei (D-1093) không hiện với workout cũ — nguyên nhân thật: dedup sync bỏ qua re-parse, cần backfill từ raw FIT đã lưu — **Chốt**
+  User mở workout detail trên máy thật, không thấy splits/HR-zone/cadence/elevation/trend chart mới
+  (D-1093) — nghi code chưa làm, nhưng **đọc code xác nhận code đã có đủ** (`WorkoutDetailScreen.kt`:
+  `SplitsCard`, `HrZonesCard`, cadence/elevation tiles, `TrendSeries` pace/HR/elevation — tất cả đúng
+  D-1093). **Nguyên nhân thật**: `GarminFileSync.kt`'s dedup ACTIVITY download (D-422,
+  `knownRawPayloadTimestamps`) coi mọi workout **đã từng tải trước đây** là "known" nên **không tải/parse
+  lại** — nghĩa là mọi workout sync trước khi D-1093 ra đời chỉ có dữ liệu session cũ (không có
+  `HealthRecord.WorkoutLap`/`WorkoutSample`), nên UI đúng theo thiết kế "ẩn hẳn section khi không có data"
+  (comment dòng ~143 `WorkoutDetailScreen.kt`) — không phải bug UI, mà là **dữ liệu lịch sử chưa được
+  parse lại**.
+  **Tin tốt**: file FIT gốc mỗi workout vẫn được lưu nguyên trên máy qua `RawPayloadStore`
+  (`core/data/.../sync/RoomHealthRecordSink.kt`, thư mục `wearable_raw/<deviceId>/`) — có thể **backfill**
+  bằng cách đọc lại các `StoredRawPayload` ACTIVITY đã lưu, chạy qua đúng parser lap(19)/record(20) mới
+  (D-1093) để tạo `WorkoutLap`/`WorkoutSample` cho các workout cũ, **không cần đồng bộ lại qua BLE từ
+  đồng hồ**. Cần: (1) một cơ chế backfill (one-time migration chạy lúc app khởi động lần kế tiếp sau khi
+  cài bản mới, hoặc 1 nút "Reprocess workouts"/action thủ công trong Devices/Profile — agent tự quyết
+  UX nào hợp lý hơn, ưu tiên tự động nếu an toàn/rẻ) đọc `RawPayloadStore.list(deviceId)`, lọc đúng loại
+  ACTIVITY, chạy qua parser hiện có, ghi `WorkoutLap`/`WorkoutSample` cho các `workoutId` tương ứng (bỏ
+  qua nếu đã có data rồi, tránh backfill lặp lại mỗi lần mở app). (2) Verify bằng cách cài lên máy thật,
+  mở lại đúng workout cũ mà user vừa xem, xác nhận splits/HR-zone/trend chart giờ đã hiện — không chỉ
+  tin code compile.
