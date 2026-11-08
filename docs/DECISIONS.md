@@ -2409,3 +2409,17 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   trong `feature/devices` (`DevicesScreen.kt`, `DeviceDetailScreen.kt`) nên sửa thẳng trong file dùng
   chung là đủ, không cần tham số hoá riêng cho từng màn. Cùng khu vực file với D-1148/D-1162/D-1167
   (agent đang xử lý Devices) — gộp chung, không tách agent riêng.
+
+- **D-1170** · 2026-11-09 · `RaceCardBottomInfo`: CTA nhiều trạng thái bị mất chữ — bố cục lại CTA góc phải-dưới, giá/thông tin giải góc trái-dưới — **Chốt**
+  User xác nhận trên máy thật: CTA (`RaceCallToAction` — 4 trạng thái khác nhau qua `ctaLabel()`: "Đăng
+  ký ngay", **"Đã đóng đăng ký"** (dài nhất), "Hết vé", "Xem chi tiết") đang bị **cắt/mất chữ** ở một số
+  trạng thái. Nghi ngờ nguyên nhân: `Row` chứa giá hiện đang để `Modifier.weight(1f)` một mình (không có
+  sibling khác cùng hàng — có vẻ là tàn dư từ lần sửa trước khi CTA từng nằm chung hàng rồi bị tách ra),
+  khiến bố cục hiện tại ngẫu nhiên đúng nhưng dễ vỡ nếu CTA/giá đổi cách ghép hàng. **Yêu cầu bố cục rõ
+  ràng**: 1 hàng dưới cùng của card — **góc trái**: giá (`priceFromVnd`) + có thể cả thông tin giải khác
+  (`DistancePills` nếu hợp lý gộp vào đây, hoặc giữ pills ở trên như hiện tại, agent tự quyết) chiếm phần
+  còn lại, cho phép truncate/ellipsis hoặc xuống dòng nếu dài — **góc phải**: CTA pill, **ưu tiên tuyệt
+  đối không bao giờ bị cắt chữ** (dùng `Modifier.wrapContentWidth()`/không gán `weight` cho CTA, để nó
+  luôn đủ chỗ hiện hết "Đã đóng đăng ký" — label dài nhất — trên 1 dòng; bên trái nhường chỗ bằng
+  `weight(1f, fill = false)` hoặc tương tự nếu cần). Kiểm tra lại cả 4 trạng thái CTA bằng cách tự tạo
+  dữ liệu test hoặc preview, không chỉ thấy 1 trạng thái "Đăng ký ngay" rồi coi là xong.
