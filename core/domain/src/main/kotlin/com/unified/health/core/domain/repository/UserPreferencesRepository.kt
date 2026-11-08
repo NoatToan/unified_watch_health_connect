@@ -1,6 +1,7 @@
 package com.unified.health.core.domain.repository
 
 import com.unified.health.core.model.HealthMetricType
+import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.ThemeMode
 import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.UserPreferences
@@ -23,4 +24,7 @@ interface UserPreferencesRepository {
 
     /** Persists the Health feed's "Edit cards": [order] (every known card id, in display order) and [hidden] ids. */
     suspend fun setFeedCards(order: List<String>, hidden: Set<String>)
+
+    /** D-1074: persists the List/Grid toggle (D-1073) on Home's "All metrics" section. */
+    suspend fun setHomeMetricsViewMode(mode: HomeMetricsViewMode)
 }

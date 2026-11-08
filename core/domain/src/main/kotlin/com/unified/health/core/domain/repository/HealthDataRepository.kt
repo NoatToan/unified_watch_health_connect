@@ -8,6 +8,8 @@ import com.unified.health.core.model.MetricReading
 import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.Workout
+import com.unified.health.core.model.WorkoutLap
+import com.unified.health.core.model.WorkoutSample
 import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 import java.time.LocalDate
@@ -20,6 +22,12 @@ interface HealthDataRepository {
 
     /** One workout by [Workout.id]; emits null when it does not exist (or was deleted). */
     fun observeWorkout(id: String): Flow<Workout?>
+
+    /** Splits recorded for the workout [Workout.id] (D-1093), in lap order; empty when none were recorded. */
+    fun observeWorkoutLaps(workoutId: String): Flow<List<WorkoutLap>>
+
+    /** Per-second-ish samples recorded for the workout [Workout.id] (D-1093), oldest first. */
+    fun observeWorkoutSamples(workoutId: String): Flow<List<WorkoutSample>>
 
     /**
      * Heart-rate samples with `from <= time < to`, oldest first. With [deviceId], only that device's

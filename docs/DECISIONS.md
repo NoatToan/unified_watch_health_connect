@@ -1009,3 +1009,424 @@ tránh 2 agent sửa song song cùng file.
   **Đã thêm ngay:** log `byKind=<map tên record → số lượng>` vào dòng "Sync finished" của
   `GarminFileSync.kt` (trước đây chỉ có tổng `totalRecords`) — lần sync tới (đặc biệt sau 1 đêm ngủ)
   sẽ thấy ngay chính xác loại nào có/không, không cần đoán nữa.
+
+- **D-1071** · 2026-11-08 · VO2max vẫn không ra dù user nói đồng hồ đã có số — **Tạm**
+  Log thật từ build có `byKind` (D-1070) cho thấy đã có 1 file `METRICS` được tải + giải mã thành
+  công trong 1 lần sync (`downloaded 2/2 files {METRICS=1, MONITORING=1}, decoded=2 decodeFailures=0
+  ... byKind={HeartRate=6, Stress=7}`) — **0 Vo2Max**, dù METRICS chính là loại file [Ext] mà
+  `MESG_USER_METRICS`(140) được kỳ vọng nằm trong đó. Vì user xác nhận đồng hồ thật đang có số
+  VO2max, nhiều khả năng field number 140/42/field-7 (`[Ext]`, đoán theo Profile.xlsx công khai,
+  D-1000) sai, hoặc thứ tự message khiến `lastTimestamp` null lúc gặp msg 140 (dòng
+  `lastTimestamp?.let { mapVo2Max(...) }` bỏ qua silent nếu null) — **chưa xác nhận được cái nào**.
+  **Đã thêm log sâu hơn** (`decode()` trong `GarminFileSync.kt`): mỗi file giải mã giờ log toàn bộ
+  histogram `globalNumbers` thật có trong file (trước khi `FitHealthMapper` lọc bớt), và log riêng
+  bất kỳ message nào có `globalNumber` 140/42 kèm `value(field 7)` thật đọc được — lần sync tới sẽ
+  thấy ngay: (a) msg 140/42 có xuất hiện trong file thật không, (b) nếu có thì field 7 đọc ra giá
+  trị gì (đúng VO2max / sai field / không có field này). Không sửa mù field number khi chưa có bằng
+  chứng — chờ log thật rồi vá đúng chỗ.
+
+- **D-1072** · 2026-11-08 · Bỏ hẳn section "Pinned" khỏi Home — **Chốt**
+  Không chỉ dời hay gộp — xoá hẳn section "Pinned" (card ghim) khỏi `HomeScreen.kt` sau khi gộp
+  Summary+Health (D-1010). Lý do: user phản hồi trực tiếp; "All metrics"/full feed (gộp từ
+  `FeedScreen` theo D-1010) đã hiển thị mọi chỉ số rồi, Pinned chỉ là tập con trùng lặp không cần
+  thiết. Thứ tự Home còn lại: DeviceBanner → RingsCard → "All metrics" (xem D-1073/1074).
+- **D-1073** · 2026-11-08 · Nút chuyển chế độ hiển thị cho "All metrics" — **Chốt**
+  Thêm nút switch 2 chế độ hiển thị cho section "All metrics" (đặt cạnh tiêu đề section): **List**
+  — mỗi metric chiếm 1 row full-width, có chart; **Grid** — 2 cột như hiện tại (D-1050), không có
+  hoặc chart rất nhỏ, chỉ tên + giá trị. Áp dụng ngay tại chỗ, không cần màn riêng.
+- **D-1074** · 2026-11-08 · Lưu chế độ hiển thị vào `UserPreferences` — **Chốt**
+  Thêm field mới trong `UserPreferences`/DataStore (enum 2 giá trị, ví dụ `homeMetricsViewMode`:
+  `LIST` | `GRID`), mặc định `GRID` (giữ hành vi hiện tại không đổi cho user cũ), lưu theo đúng
+  pattern các preference khác (`dailyStepGoal`...) — đổi 1 lần, nhớ mãi, không hỏi lại mỗi lần mở
+  app.
+- **D-1075** · 2026-11-08 · Hiện "Last synced" luôn trên Home/Summary — **Chốt**
+  Thêm dòng/label "Last synced: <thời điểm>" hiển thị thường trực trên màn Home (gần `DeviceBanner`,
+  không phải chỉ trong Device Detail) — lấy từ `lastSyncedAt` đã có ở `PairedDeviceDao`/model, format
+  tương đối ("2 phút trước") giống style cũ, cập nhật realtime khi có sync mới. Lý do: user muốn dễ
+  nhìn trạng thái đồng bộ ngay trên Summary thay vì phải vào Device Detail mới thấy.
+  Lưu ý: chưa implement trong đợt android-coder hiện tại (D-1076..1081 dưới đây) — quyết định này
+  được log bởi agent/phiên khác trong lúc android-coder đang làm dở D-1050..1054, không nằm trong
+  brief gửi cho android-coder lần này nên **không** động vào để tránh đụng việc của người khác; cần
+  một lượt riêng để implement.
+
+## Thực thi D-1050..1054 + D-1072..1074 (grid/list toggle, pill nav, pager, edge-swipe, live dot) — D-107x
+
+- **D-1076** · 2026-11-08 · Kiến trúc gộp 4 tab top-level vào 1 `HorizontalPager` — **Chốt**
+  Thay vì 4 `composable<>` NavHost destination riêng (Home/Activity/Devices/Profile), tạo 1 destination
+  duy nhất `MainPagerDestination` (`app/.../navigation/MainPagerDestination.kt`) chứa `HorizontalPager`
+  với 4 trang gọi thẳng composable của từng feature. Mỗi feature module thêm 1 wrapper public mới
+  (`HomeTabContent`, `ActivityTabContent`, `DevicesTabContent`, `ProfileTabContent`) vì composable
+  `...Route` gốc là `internal` (chỉ app module mới cần gọi xuyên module để nhúng vào pager — không
+  đổi `internal` của `...Route` để giữ nguyên tắc encapsulation). Các destination con (MetricDetail,
+  MetricData, WorkoutDetail, DeviceDetail, NotificationSettings) giữ nguyên, vẫn push/pop trên cùng
+  `NavHost` như cũ — chỉ 4 destination top-level bị gộp. `PagerState` được hoist ở `UnifiedHealthApp`
+  (phía trên `NavHost`), nên khi push/pop 1 màn con, tab đang chọn không bị mất — không cần thêm state
+  riêng để nhớ tab trước đó. `TopLevelDestination` enum bỏ `route`/`routeClass` (không còn là NavHost
+  destination riêng), `entries` order = thứ tự trang trong pager (index = `ordinal`).
+- **D-1077** · 2026-11-08 · Pill indicator theo `PagerState` trực tiếp, không `animateDpAsState` thêm — **Chốt**
+  D-1051 gợi ý `animateFloatAsState`/`animateDpAsState`; thực tế dùng trực tiếp
+  `pagerState.currentPage + pagerState.currentPageOffsetFraction` (giá trị liên tục, cùng cách Google
+  dùng cho pager indicator mẫu) làm vị trí pill, vì `pagerState` tự animate mượt khi tap
+  (`animateScrollToPage`) và update 1:1 theo ngón tay khi vuốt — bọc thêm 1 lớp animate riêng sẽ làm
+  pill trễ hơn ngón tay lúc đang vuốt thật. Tab được tô màu "đang chọn" = index gần vị trí liên tục
+  nhất (`position.roundToInt()`), không phải tab đang hiển thị đầy đủ trên màn (khớp cảm giác "đang
+  kéo sang tab nào" khi còn nửa chừng). Chiều cao thanh pill cố định 72dp (không least-size) vì pill
+  indicator con dùng `fillMaxHeight()`, cần constraint hữu hạn từ cha.
+- **D-1078** · 2026-11-08 · Chi tiết `View.systemGestureExclusionRects` cho D-1053 — **Tạm**
+  `EdgeGestureExclusion` (`app/.../ui/EdgeGestureExclusion.kt`) chỉ bật khi `currentDestination` đang
+  là `MainPagerDestination` (tự tắt + xoá rects ngay khi có màn con được push lên trên, nhờ
+  `DisposableEffect(enabled, ...)`), 2 dải cạnh trái/phải rộng 32dp, cao full màn hình, tự tính lại khi
+  `View.OnLayoutChangeListener` báo đổi kích thước (xoay máy, đổi inset), guard `Build.VERSION.SDK_INT
+  >= Q` (API thấp hơn không có gesture nav để tắt). Vẫn **Tạm** như D-1053 đã đánh dấu — chưa có máy
+  thật/emulator ở chế độ gesture-nav để xác nhận 32dp đủ thắng vùng edge-swipe mặc định của OEM (một số
+  máy Samsung/OEM khác có vùng edge rộng hơn AOSP); 3-button nav không bị ảnh hưởng (không có gesture
+  để exclude).
+- **D-1079** · 2026-11-08 · `LiveHealthRepository.liveMetrics` tính theo độ mới (freshness), không theo trạng thái connect — **Chốt**
+  `heartRate` (`StateFlow`) vốn giữ giá trị cuối ngay cả sau khi mất kết nối (theo đúng thiết kế đã có,
+  "collector trễ vẫn thấy giá trị gần nhất") — nên KHÔNG thể dùng `heartRate.value != null` hay
+  `connection.state == Connected` để suy ra "đang live", vì cả hai đều có thể true trong khi giá trị
+  hiển thị thực ra đã cũ. Thêm `liveWhileFresh(maxAge)` (`DefaultLiveHealthRepository.kt`): true ngay
+  khi có reading mới, tự chuyển false sau 15s (cùng hằng số `LIVE_MAX_AGE` mà `HomeScreen.freshBpm` đã
+  dùng) nếu không có reading mới hơn — dùng `flatMapLatest` + `delay` 1-shot, không phải vòng lặp tick.
+  Hiện chỉ `HEART_RATE` có live mode (driver chỉ expose `liveHeartRate`); thêm metric live khác sau này
+  chỉ cần lặp lại pattern `liveWhileFresh` cho stream riêng của nó rồi `combine` vào `liveMetrics`.
+  Giá trị bpm live cũng ghi đè lên value/time hiển thị của card heart-rate trong "All metrics" (cả List
+  lẫn Grid) — hành vi này trước đây chỉ có ở card "Pinned" (đã xoá theo D-1072), nay chuyển sang card
+  chính để không mất tính năng.
+- **D-1080** · 2026-11-08 · Thêm `HealthMetricType.VO2_MAX` để có card VO2max (D-1050) — **Tạm**
+  D-1050 yêu cầu card VO2max nhưng domain model chưa có `HealthMetricType.VO2_MAX` (mới chỉ có
+  `HealthRecord.Vo2Max`/`SampleType.VO2_MAX` ở tầng lưu trữ theo D-1000/D-1060) — thêm entry mới
+  (aggregation `DISCRETE`, icon/label/unit/màu riêng ở `core/designsystem`, `MetricSeriesBuilder.typesFor
+  VO2_MAX -> [SampleType.VO2_MAX]`, thêm vào `UserPreferences.DEFAULT_FEED_CARD_ORDER`) — tự động có
+  card trong "All metrics" vì `HomeViewModel.ALL_METRICS = HealthMetricType.entries` đã lặp hết mọi
+  metric từ trước. `DemoHealthDataGenerator` seed thêm 1 reading VO2max/ngày (giá trị suy ra từ activity
+  trend, không phải thuật toán thật — D-803) để demo data / `DemoDataSeederTest` có dữ liệu hiển thị.
+  Đánh dấu Tạm vì field number/mapping FIT thật của VO2max (D-1060) vẫn còn `NEEDS-REAL-WATCH`; phần
+  Tạm ở đây chỉ là việc thêm `HealthMetricType` mới, không phải lại nghi vấn field FIT.
+- **D-1081** · 2026-11-08 · Card nào lên grid, card nào gộp — tái dùng nguyên hệ feed card cũ — **Chốt**
+  Theo D-1050 "agent tự chọn chỉ số nào lên card riêng vs gộp vào pinned/highlights đã có": chọn tái
+  dùng toàn bộ hệ `FeedCardData`/"All metrics" đã có (mọi `HealthMetricType` + Workouts, không lọc bớt)
+  thay vì tạo 1 danh sách card con mới — đơn giản hơn, không trùng lặp code, và D-1072 vừa xoá "Pinned"
+  nên feed này giờ là nơi duy nhất hiển thị từng metric. List mode = card đầy đủ hiện có (chart, dòng
+  resting bpm/sleep score, insight 1 dòng). Grid mode (compact) = cùng card nhưng ẩn resting bpm/sleep
+  score/insight, chart thu nhỏ còn 36–48dp (`MiniChart(tiny = true)`), theo đúng yêu cầu D-1073 "không
+  có hoặc chart rất nhỏ, chỉ tên + giá trị". `WorkoutsFeedCard` compact tương tự: chỉ số lượng gần đây +
+  1 dòng workout gần nhất, bỏ danh sách đầy đủ.
+
+- **D-1082** · 2026-11-08 · Tìm ra field/message number SAI cho resting HR, HRV, VO2max qua jadx evidence đã có — **Chốt**
+  (Đánh số lại từ D-1080 ban đầu vì trùng với D-1080 "thêm `HealthMetricType.VO2_MAX`" do agent
+  redesign Home log song song cùng lúc — nội dung không đổi, chỉ đổi số để hết trùng.)
+  Theo đúng feedback của user ("update rules không đoán, tất cả đã có trong docs/re-evidence") — đọc
+  qua `claude-personal -p` (DeepSeek, D-003) các class FIT profile bundle sẵn trong Garmin Connect
+  Mobile tại `docs/re-evidence/garmin/jadx-base/sources/bs2/*.java` (đã có từ trước, không cần RE
+  thêm). Kết quả xác nhận **[V]** bằng source thật:
+  - `monitoring_hr_data` = **211** (không phải 273 như đoán cũ) — `bs2/uk.java`: `new bk("monitoring_hr_data", 211)`.
+  - `hrv_status_summary` = **370** (không phải 389) — `bs2/wg.java`; field `last_night_average` = **1** (không phải 4), scale 128.
+  - VO2max **không nằm trong `user_metrics`(140)/`user_profile`(42)** như đoán cũ (2 message đó xác
+    nhận KHÔNG BAO GIỜ xuất hiện trong 63 file sync thật từ đồng hồ — D-1071/D-1070) — mà nằm trong
+    message riêng **`max_met_data` = 229** (`bs2/pj.java`), field **2** `vo2_max`, scale **10** (raw÷10
+    → mL/kg/min, không phải "plain integer" như đoán cũ), và message này có field 0 `update_time`
+    (date_time) riêng — không dùng field 253 chuẩn như các message khác.
+  - Đối chiếu công khai: 5 class DTO của Garmin Connect app (`UserDailySummaryDTO`,
+    `CurrentTrainingStatusDTO`, `TrainingStatusReportDTO`, `BiometricProfileDTO`,
+    `VO2MaxReportsActivity`) xác nhận app Garmin Connect lấy các số này từ **REST cloud**
+    (`usersummary-service`, `metrics-service`...), nhưng FIT profile bundle sẵn trong app vẫn có đủ
+    `max_met_data`/`stress_level`/`sleep_level`/`monitoring_hr_data`/`hrv_status_summary` — nghĩa là
+    **cùng dữ liệu khả dụng qua local BLE (GFDI file manager → FIT)**, không cần cloud/Garmin Connect
+    Developer Program.
+  - Đã sửa `FitHealthMapper.kt` theo đúng 3 giá trị trên + scale VO2max, cập nhật
+    `FitHealthMapperTest.kt` theo field/scale mới, xoá nhánh `MESG_USER_METRICS`/`MESG_USER_PROFILE`.
+  **Rule mới cho mọi việc RE Garmin/vendor khác sau này (áp dụng ngay, không chỉ lần này):** không
+  được đoán message/field number FIT và gắn nhãn `[Ext]` khi chưa kiểm tra `docs/re-evidence/<brand>`
+  trước — app Garmin Connect (và tương tự Huawei Health/Zepp/COROS) luôn bundle sẵn FIT profile đầy đủ
+  của chính nó trong APK, nên gần như chắc chắn evidence thật đã nằm sẵn trong `docs/re-evidence/`
+  (ở dạng jadx, đọc qua `claude-personal -p` theo D-003) trước khi phải đoán hoặc hỏi thêm. Xem CLAUDE.md.
+
+- **D-1083** · 2026-11-08 · Animation thu nhỏ device row khi scroll trên Home/Summary — **Chốt**
+  Khi scroll xuống: row thiết bị (`DeviceBanner`, full-size) co lại dần thành dạng nhỏ — chỉ tên
+  đồng hồ + ảnh — rồi "nhảy" lên góc phải của top app bar/header (nếu header đang hiện khi đã scroll
+  đủ xa). Ở đầu trang (chưa scroll): row thiết bị đầy đủ + header tách biệt như hiện tại, không đổi.
+  Hiệu ứng liên tục theo % scroll (không phải bật/tắt đột ngột). Cùng nhóm việc Home với D-1075 (Last
+  synced luôn hiện) — cả hai đều chưa làm, giao lại cho agent đã làm D-1050-1054/1072-1074 (đã có
+  context `HomeScreen.kt`/`MainPagerDestination` mới nhất) tiếp tục thay vì agent mới.
+
+- **D-1084** · 2026-11-08 · `PillBottomNavigation` chưa né navigation bar hệ thống của Android — **Chốt**
+  User test thật thấy bottom nav mới (D-1051, pill nổi) không tính tới system navigation bar của
+  Android (gesture-nav pill hoặc 3-nút) — cần padding/inset đúng (`WindowInsets.navigationBars`,
+  giống cách `NavigationBar` Material 3 mặc định vẫn làm) để pill không bị đè/che bởi thanh điều
+  hướng hệ thống, đúng trên cả 2 chế độ điều hướng (gesture và 3-nút). Không đụng tới phần né
+  edge-swipe-back (D-1053/1078) — đó là vấn đề khác (cạnh trái/phải, không phải cạnh dưới).
+- **D-1085** · 2026-11-08 · Grid mode (compact) xấu — bỏ hẳn chart, viết tắt tên chỉ số — **Chốt**
+  Phản hồi trực tiếp sau khi thấy Grid mode compact (D-1050/1073, mini chart 36–48dp) trên máy thật:
+  xấu, cần sửa lại. Grid mode: **bỏ hẳn** mini chart (không phải thu nhỏ nữa) — chỉ tên chỉ số
+  (viết tắt gọn, ví dụ "Heart rate" → "HR", "Active calories" → "Cal", "Resting HR" → "RHR" — agent
+  tự chọn viết tắt hợp lý, dễ nhận ra) + giá trị lớn, layout 2 cột đơn giản dễ nhìn. List mode (D-1073)
+  giữ nguyên full chart + chi tiết như đã làm, không đổi.
+
+- **D-1086** · 2026-11-08 · Kiểm lại `session`(18) cho activities/workout qua re-evidence — đúng, không cần sửa — **Chốt**
+  User hỏi lại "activities thì sao, check lại re-evidence" sau khi D-1082 tìm ra 2/3 field number sai
+  cho resting HR/HRV/VO2max — kiểm tra luôn `session` message (activities/workout, D-1086 mới) theo
+  đúng quy trình mới (CLAUDE.md, không đoán). Đọc `docs/re-evidence/garmin/jadx-base/sources/bs2/fs.java`
+  qua `claude-personal`: `session` = **18** (đúng), và cả 7 field ta đang dùng đều khớp 100% bằng chứng
+  thật — `start_time`=2, `sport`=5, `total_elapsed_time`=7 (scale 1000), `total_distance`=9 (scale 100),
+  `total_calories`=11 (không scale), `avg_heart_rate`=16, `max_heart_rate`=17. **Không có bug** ở phần
+  field number cho activities — khác với resting HR/HRV/VO2max. Đổi comment trong `FitHealthMapper.kt`
+  từ `[Ext]` sang `[V]` cho khối field này. Phần activities trước đó "chưa sync về" (báo cáo ban đầu
+  của user) là do bug sync-window/dedup đã fix ở `a29ea95`/`22e81d2` (trước phiên này), không phải do
+  field number sai.
+
+## Thực thi D-1075/1083/1084/1085 (Last synced, collapsing device banner, pill nav insets, grid cleanup) — D-108x
+
+- **D-1087** · 2026-11-08 · "Last synced" trên Home: label tương đối tự làm mới — **Chốt**
+  Thêm dòng "Last synced ..." vào `DeviceBanner` (`HomeScreen.kt`), lấy thẳng từ `state.device.lastSyncedAt`
+  đã có sẵn trong luồng dữ liệu hiện tại (không cần sửa ViewModel/repository — `observePrimaryDevice()`
+  đã reactive theo Room). Không có formatter tương đối có sẵn nào trong code (Devices/Device Detail chỉ
+  format tuyệt đối "Nov 8, 5:30 PM") nên viết mới `relativeTimeLabel`: "just now" / "N minute(s) ago" /
+  "N hour(s) ago" / "N day(s) ago" / ngày tuyệt đối sau 7 ngày. `rememberRelativeSyncLabel` tự làm mới
+  mỗi 30s (`LaunchedEffect` keyed theo `lastSyncedAt`, restart ngay khi có giá trị mới) để nhãn không bị
+  cũ khi màn hình mở lâu mà không sync — đáp ứng "update realtime khi có sync mới" mà không cần tick mỗi
+  giây (lãng phí, D-1075 không yêu cầu độ chính xác giây).
+- **D-1088** · 2026-11-08 · Hiệu ứng thu nhỏ DeviceBanner: transform hình ảnh, không resize layout — **Chốt**
+  Cách làm: `LazyListState` được hoist lên `HomeScreen` (trước đó chỉ tồn tại trong `Summary`), tính
+  `deviceBannerCollapseFraction` (0..1) từ `firstVisibleItemScrollOffset / deviceBannerHeightPx` (đo qua
+  `Modifier.onSizeChanged` ngay trên `DeviceBanner`) khi item 0 còn trong viewport, = 1 khi đã scroll
+  qua. Áp fraction này vào `Modifier.graphicsLayer { scaleX/scaleY/alpha }` trên `DeviceBanner` — **chỉ
+  biến đổi hình ảnh, không đổi kích thước layout thật sự** của item trong `LazyColumn`, để tránh vòng lặp
+  phản hồi (kích thước phụ thuộc scroll, scroll lại phụ thuộc kích thước — anti-pattern Compose đã biết).
+  Chip nhỏ (ảnh + tên) đặt thẳng trong `actions` của `TopAppBar` (fade theo cùng fraction qua
+  `graphicsLayer { alpha }`) — nhờ nằm trong `TopAppBar` nên tự động chỉ hiện khi header đang hiện (đúng
+  yêu cầu D-1083 "nếu header đang hiện"), không cần logic riêng theo dõi trạng thái ẩn/hiện của
+  `enterAlwaysScrollBehavior`. Không làm shared-element transition thật (banner "biến hình" liền mạch
+  thành chip) — độ phức tạp không tương xứng ở quy mô này, và bản thân D-1083 đã chủ động dùng từ "nhảy"
+  (có ngoặc kép) khi mô tả bước chip xuất hiện ở header, ngụ ý chấp nhận một bước nhảy rời rạc miễn phần
+  thu nhỏ chính (0→100%) mượt theo scroll — đúng những gì bản này làm.
+- **D-1089** · 2026-11-08 · `PillBottomNavigation` né system navigation bar — **Chốt**
+  Thêm `Modifier.windowInsetsPadding(WindowInsets.navigationBars.only(Horizontal + Bottom))` vào
+  `Surface` ngoài cùng của pill nav, trước padding lề (`Spacing.lg`/`Spacing.md`) đã có — giống cách
+  `NavigationBar` chuẩn của Material 3 tự né `NavigationBarDefaults.windowInsets`. `Scaffold` ở
+  `UnifiedHealthApp.kt` đặt `contentWindowInsets = WindowInsets(0)` (để mỗi `TopAppBar` con tự quản insets
+  riêng) nhưng không ảnh hưởng gì ở đây — `WindowInsets.navigationBars` đọc thẳng từ hệ thống qua
+  `LocalView`, độc lập với tham số đó. Không đụng tới phần né edge-swipe-back trái/phải (D-1053/1078).
+- **D-1090** · 2026-11-08 · Grid mode: bỏ hẳn chart, viết tắt theo bảng sau — **Chốt**
+  Theo đúng D-1085: Grid card giờ chỉ có icon + tên viết tắt (+ dot live nếu có) + giá trị lớn, không
+  còn gọi `MiniChart` (trước đó còn gọi với `tiny = true`, nay `MiniChart` bỏ hẳn tham số `tiny`, chỉ
+  List mode mới gọi). Bảng viết tắt (`HealthMetricType.compactLabel()`, agent tự chọn theo gợi ý trong
+  quyết định): Heart rate→**HR**, Active energy→**Cal**, Resting heart rate→**RHR**, Exercise
+  minutes→**Exercise**; các chỉ số còn lại (Steps/Sleep/SpO2/Stress/Distance/HRV/VO2max) giữ nguyên tên
+  đầy đủ vì đã đủ ngắn cho 2 cột. List mode không đổi gì (vẫn full chart + chi tiết).
+
+- **D-1091** · 2026-11-08 · Tắt ripple trên `PillBottomNavigation` — **Chốt**
+  `PillNavItem` dùng `Modifier.selectable(...)` mặc định có ripple từ `LocalIndication`; user phản hồi
+  tắt đi vì đã có pill trượt làm feedback trực quan rồi, ripple thừa/xấu. Sửa: truyền
+  `interactionSource = remember { MutableInteractionSource() }` + `indication = null` vào
+  `selectable()`.
+- **D-1092** · 2026-11-08 · Mở rộng lookback cho file METRICS (BIOMETRIC, chứa VO2max) giống ACTIVITY — **Tạm**
+  User báo sync xong vẫn chưa thấy VO2max lẫn activities. Điều tra qua `claude-personal` đọc tiếp
+  `docs/re-evidence/garmin` (theo đúng rule mới, D-1082): subtype 44 thật sự tên là **BIOMETRIC**
+  trong Garmin Connect (`cl2/c.java:476-477`), chứa đúng họ message `metrics_info`(241)/
+  `recovery_time`(284)/`race_predictions_run`(339)/`performance_capacity_results`(356) — **không bị
+  gán nhãn sai**, và 229 (`max_met_data`) vẫn đúng thuộc họ này dù APK không có bảng tĩnh
+  subtype→message (tên subtype lấy động từ phản hồi 5031 của chính đồng hồ). subtype 49 xác nhận
+  đúng là **SLEEP_DATA** (hằng thật `bs2/ad.java:90`), không phải "wellness" chung chung như tên biến
+  cũ `WELLNESS_49` gợi ý (đổi tên để sau, không gấp).
+  **Activities = 0 vì đồng hồ hiện chưa có file ACTIVITY nào trong directory** (log thật: "FIT of
+  interest {MONITORING=56, METRICS=24, WELLNESS_49=2}" — không có khoá `ACTIVITY` nào) — nghĩa là
+  user chưa ghi nhận buổi tập nào trên đúng đồng hồ test này; không phải bug.
+  **VO2max vẫn không thấy** dù 24 file METRICS(44) trong 7 ngày gần nhất đã sync đủ và không file nào
+  chứa message 229 — giả thuyết hợp lý nhất: giá trị VO2max hiện có trên đồng hồ được tính từ **trước
+  đó quá 7 ngày** (`wellnessSince` mặc định dùng chung `DEFAULT_FIRST_SYNC_WINDOW_DAYS=7`,
+  `core/ble/.../WearableSession.kt`), nằm trong 1 file METRICS cũ hơn mà driver chưa từng tải vì nằm
+  ngoài cửa sổ 7 ngày — cùng pattern bug đã từng xảy ra với ACTIVITY (fix bằng
+  `ACTIVITY_LOOKBACK_DAYS=365` ở `a29ea95`/`22e81d2`). **Đã sửa:** `GarminFileSync.sync()` giờ cho
+  `GarminFitFileType.METRICS` dùng cùng lookback dài 365 ngày như ACTIVITY (biến `metricsSince`),
+  dedup qua `knownRawPayloadTimestamps` y hệt activity (vì lookback cố định, không theo cursor tăng
+  dần, nếu không sẽ tải lại y hệt các file cũ mỗi lần sync mãi mãi). Đánh dấu Tạm vì chưa test trên
+  máy thật có ra VO2max hay không sau khi mở rộng cửa sổ — nếu vẫn không ra nghĩa là giả thuyết sai,
+  cần điều tra tiếp (có thể do `update_time` field 0 thay vì 253 khiến logic timestamp-từ-đâu có vấn
+  đề khác, hoặc giá trị thật sự chưa từng được watch ghi vào bất kỳ file nào qua đường BLE này).
+
+**Cập nhật 18:5x:** user xác nhận VO2max + workouts đã ra sau fix D-1092 — giả thuyết đúng, Tạm → Chốt.
+
+## Workout detail chi tiết kiểu Huawei Health (D-1093+)
+
+User thấy màn chi tiết workout hiện tại ("Workout detail" theo D-804) quá sơ sài so với Huawei Health.
+Điều tra qua `claude-personal` theo đúng quy trình (không đoán):
+
+- **`docs/re-evidence/huawei/jadx-out`**: Huawei Health model 1 workout rất giàu —
+  `HiTrackMetaData.java` (avgPace/bestPace, avgStepRate, paceMap, **partTimeMap = split theo km**,
+  max/min altitude, total descent, max/min SpO2, running dynamics: ground contact time, vertical
+  oscillation/eversion/swing angle, strike pattern); `MotionData.java` (chuỗi theo giây: HR, pace,
+  speed, altitude, cadence, power, SpO2 — nguồn vẽ graph); `WorkoutRecordPaceMap.java` (bảng split
+  mỗi km: distance/pace/pointIndex); `MotionPathDetail.java` (route GPS: lat/long/altitude/timestamp);
+  `WorkoutRecord.java` (`intensityZone` = HR zone breakdown). **Không có** field VO2max riêng theo
+  từng workout, không có stride-length field thật (chỉ có string resource).
+- **`docs/re-evidence/garmin/jadx-base`**: FIT `lap`(19, `bs2/ti.java`) có đủ `total_elapsed_time`(7,
+  scale 1000)/`total_distance`(9, scale 100)/`total_calories`(11)/`avg_speed`(13)/`max_speed`(14,
+  scale 1000)/`avg_heart_rate`(15)/`max_heart_rate`(16)/`avg_cadence`(17)/`max_cadence`(18)/
+  `total_ascent`(21)/`total_descent`(22) — đủ để làm **bảng split theo lap/km** giống
+  `WorkoutRecordPaceMap` của Huawei. FIT `record`(20, `bs2/zp.java`) có `timestamp`(253)/
+  `position_lat`(0)/`position_long`(1)/`altitude`(2, scale 5 offset 500)/`heart_rate`(3)/`cadence`(4)/
+  `distance`(5, accumulate)/`speed`(6, scale 1000)/`power`(7)/`temperature`(13) — đủ để vẽ **graph
+  pace/HR/elevation theo thời gian** và **route GPS** giống `MotionData`/`MotionPathDetail`. Cả 2
+  message này nằm chung file ACTIVITY (FIT_TYPE_4) đã tải sẵn — **chưa parse**, chỉ `FitHealthMapper`
+  mới đọc `session`(18) cho tới giờ.
+
+- **D-1093** · 2026-11-08 · Scope v1 cho workout detail chi tiết — **Chốt**
+  Làm trong khả năng dữ liệu Garmin thật có (không bịa): (1) Parse `lap`(19) → bảng split mỗi lap/km
+  (thời gian, pace, HR TB, cadence TB, độ cao lên/xuống) — thêm `HealthRecord.WorkoutLap` liên kết
+  `workoutId`. (2) Parse `record`(20) → chuỗi theo giây cho pace/HR/elevation (route GPS CÓ parse
+  luôn vì field rẻ, nhưng **render bản đồ route để P2** — cần thư viện map, không làm vòng này) —
+  thêm `HealthRecord.WorkoutSample` (timestamp, lat?, long?, altitudeM?, heartRate?, cadence?, paceMps?).
+  (3) `WorkoutDetailScreen` thêm: graph pace+HR+elevation theo thời gian (dùng lại `HealthCharts`),
+  bảng split theo lap, HR zone breakdown thời gian (% mỗi zone, tính từ chuỗi HR + `MetricThresholds`
+  đã có D-1030 — không cần field riêng), cadence TB/max, tổng lên/xuống dốc.
+  **Không làm** (lý do): route map hiển thị (P2, cần map SDK); Training Effect/Load/Recovery/Running
+  Score kiểu Huawei (tên + công thức độc quyền, D-803); running dynamics sâu (ground contact
+  time/vertical oscillation...) vì Garmin FIT `record`/`lap` chuẩn không có các field này (Garmin có
+  message riêng `event`/`length` cho running dynamics nhưng chưa xác nhận qua re-evidence — để P2 nếu
+  cần).
+- **D-1094** · 2026-11-08 · Trend line trên chart — **Chốt**
+  Thêm optional trend line (hồi quy tuyến tính đơn giản, hoặc moving-average N điểm — agent tự chọn
+  cái nào hợp với từng loại chart) overlay lên `HealthBarChart`/`HealthRangeChart` hiện có trong
+  `HealthCharts.kt`, màu nhạt hơn data chính, bật mặc định ở chart xu hướng dài hạn (W/M/6M/Y), tắt ở
+  D (chart ngày quá ngắn để có trend).
+- **D-1095** · 2026-11-08 · Nghiên cứu chart chuẩn + mô tả ý nghĩa sức khỏe từng chỉ số — giao Opus — **Chốt**
+  Theo yêu cầu "Opus research" của user — giao task cho agent model Opus (không phải Sonnet, khác quy
+  ước coding thường của dự án) vì đây là nghiên cứu/tổng hợp, không phải code. Output: (a) design
+  pattern chart chuẩn cho từng loại chỉ số sức khỏe (line/bar/range, có trend line hay không, có
+  average/zone-shading hay không) tham khảo Apple Health/Garmin Connect/Huawei Health; (b) mô tả ngắn
+  gọn ý nghĩa sức khỏe + ngưỡng bình thường cho mỗi chỉ số app có (đối chiếu lại `MetricThresholds`
+  D-1030 đã có sẵn ngưỡng số, chỉ cần viết mô tả dễ hiểu bằng tiếng Việt để hiện trong UI, mỗi mục 2-3
+  câu). Dùng cho `MetricDetailScreen` section mới "Về chỉ số này".
+- **D-1096** · 2026-11-08 · Màn chọn ngôn ngữ (tiếng Việt) vẫn CHƯA làm — **Tạm**
+  User nhận ra chưa thấy — đúng, D-1040 (locale EN/VI) mới chỉ ở mức quyết định/plan, chưa từng giao
+  agent implement (bị trì hoãn nhiều lần vì ưu tiên các fix Garmin + redesign Home). Việc tiếp theo
+  sau khi các task UI/workout đang chạy ổn định.
+
+## Thực thi D-1093 (workout detail) + D-1094 (trend line) — D-1102
+
+- **D-1102** · 2026-11-08 · Các điểm chưa chốt cụ thể khi implement D-1093/D-1094 — **Chốt**
+  (Đánh số lại từ D-1097 ban đầu vì trùng với D-1097 "Kết quả nghiên cứu Opus" do agent khác log gần
+  cùng lúc — nội dung không đổi, chỉ đổi số để hết trùng, giống cách đã xử lý D-1080/D-1082 trước đó.)
+  D-1093/D-1094 đã chốt phạm vi; các điểm implementation cụ thể dưới đây agent tự quyết vì không có
+  trong 2 quyết định gốc:
+  1. **Khoá lap/sample vào workout cha**: `HealthRecord.WorkoutLap`/`WorkoutSample` mang
+     `workoutStart: Instant` (= `Workout.start`) thay vì chuỗi id đầy đủ, vì `FitHealthMapper.map()`
+     không biết `deviceId`. `RoomHealthRecordSink` ghép `deviceId` (đã có sẵn trong sink) +
+     `workoutStart` thành khoá `(deviceId, workoutStartEpochMs, lapIndex/timeEpochMs)` — đúng cặp
+     `(deviceId, startEpochMs)` đã là khoá chính của `WorkoutEntity` (D-804), không tạo quy ước id mới.
+     Lap/record trong file FIT được buffer theo thứ tự xuất hiện và "flush" vào danh sách kết quả khi
+     gặp `session`(18) đóng segment đó — khớp đúng thứ tự thật trong file ACTIVITY (record/lap trước,
+     session tổng kết sau mỗi segment), nên cũng xử lý đúng file multi-sport nhiều session mà không
+     cần field tham chiếu session rõ ràng (lap/record FIT chuẩn không có field đó).
+  2. **Room schema**: bump `UnifiedHealthDatabase` version 2 → 3, thêm 2 bảng mới
+     (`workout_laps`, `workout_samples`) thuần cộng thêm → dùng `AutoMigration(from = 2, to = 3)`,
+     không cần `Migration` thủ công. `3.json` tự sinh khi build (KSP), không viết tay.
+  3. **HR zone breakdown cần %HRmax nhưng app chưa thu thập tuổi** (`BodyProfile` chưa được
+     onboarding thu thập — xem D-1030): thêm `MetricThresholds.estimatedMaxHeartRateBpm(profile)` =
+     công thức Fox "220 − tuổi" phổ biến, dùng tuổi tham chiếu 35 khi không có `BodyProfile` — tái
+     dùng đúng quy ước "người lớn tham chiếu" D-1030 đã dùng cho `activeCalorieGoal` mặc định, không
+     bịa model mới.
+  4. **Trend line (D-1094) chọn thuật toán khác nhau theo loại chart**: `HealthBarChart` (dữ liệu dạng
+     cột, nhiều điểm rời rạc như bước chân/calo theo ngày) dùng **moving average** (mượt nhiễu ngày
+     qua ngày dễ đọc hơn); `HealthRangeChart` (dữ liệu dạng min–max capsule, vốn nhiễu điểm-điểm hơn
+     như nhịp tim/SpO2) dùng **hồi quy tuyến tính** (một đường thẳng thể hiện xu hướng tăng/giảm rõ
+     hơn moving average khi dữ liệu đã nhiễu sẵn). Cả 2 vẽ nhạt hơn + nét liền để phân biệt với đường
+     trung bình nét đứt (`average`) đã có sẵn trong `HealthBarChart`.
+  5. **`WorkoutDetailScreen` không build chart-line component mới**: 3 mini chart pace/độ cao/nhịp tim
+     theo giây (từ `record` D-1093) tái dùng `HealthRangeChart` (D-1093 yêu cầu "reuse HealthCharts
+     components", app chưa có component line-chart riêng) — mỗi chỉ số một chart riêng vì đơn vị khác
+     nhau (giây/km, mét, bpm) không chia sẻ chung 1 trục y được. Bảng split hiển thị dạng danh sách
+     `ListItem` (lap # + thời gian ở headline, các chỉ số còn lại ở supporting text) thay vì bảng lưới
+     thật — đủ cho 1 lap trên màn hình điện thoại hẹp mà không cần cuộn ngang.
+  6. **Không mở rộng demo-data generator** (`DemoHealthDataGenerator`) để sinh lap/sample mẫu — ngoài
+     phạm vi D-1093 (chỉ parse dữ liệu Garmin thật); `DemoDataSeeder.clearDemoData()` vẫn được cập
+     nhật xoá 2 bảng mới cho vệ sinh dữ liệu dù demo generator chưa ghi vào đó.
+
+- **D-1097** · 2026-11-08 · Kết quả nghiên cứu Opus (D-1095) — lưu vào `docs/analysis/CHART_DESIGN_AND_METRIC_COPY.md` — **Chốt**
+  Agent Opus trả về report đầy đủ (chart pattern theo từng loại chỉ số + bảng trend-line-theo-range +
+  12 đoạn mô tả tiếng Việt cho "Về chỉ số này"). Lưu nguyên văn vào
+  `docs/analysis/CHART_DESIGN_AND_METRIC_COPY.md` thay vì nhét vào DECISIONS.md (quá dài). Lưu ý quan
+  trọng từ report: 3 đoạn text (bước chân/calo/giấc ngủ) phải đọc goal **override của user** thay vì
+  số mặc định nếu user đã tự đặt; số "830 kcal" là tính toán runtime chứ không phải hằng số; chưa có
+  text cho Weight (ngoài phạm vi brief ban đầu, cần bổ sung sau). Việc implement (wire trend line theo
+  bảng, thêm section "Về chỉ số này" vào `MetricDetailScreen`) để sau khi agent workout-detail (đang
+  chạy, cũng đụng `HealthCharts.kt`) xong — tránh đụng file.
+
+- **D-1098** · 2026-11-08 · Chip device trong header (D-1083) dùng hiệu ứng xoay-vào 3D giống `WatchImage` — **Chốt**
+  User thấy hiệu ứng fade/scale hiện tại (D-1083/1088) của chip tên+ảnh thiết bị trong header (khi
+  scroll) chưa đẹp — yêu cầu đổi sang hiệu ứng "xoay xoay" giống bên Devices. Đây chính là hiệu ứng 3D
+  giả lập đã có sẵn ở `WatchImage` (D-803, 2026-11-08 — `rotationY` từ -90° khi "lật vào" lúc
+  `revealKey` đổi + nghiêng phối cảnh khi kéo). Dùng lại đúng component/kiểu animation đó cho chip
+  trong header thay vì tự viết fade/scale riêng — đồng bộ ngôn ngữ hình ảnh với Devices.
+
+- **D-1099** · 2026-11-08 · Grid mode: title bị cắt giữa chữ + "No data yet" xuống 2 dòng — xấu, sửa ngay — **Chốt**
+  Chụp màn hình thật qua `adb screencap` ngay trên máy xác nhận bug cụ thể (không phải suy đoán):
+  title bị ellipsis giữa chữ ở nhiều card — "Blood ..." (Blood oxygen/SpO2), "Heart ..." (Heart rate
+  variability/HRV), "Exerci..." (Exercise minutes — dù D-1090 đã rút gọn thành "Exercise" nhưng vẫn
+  còn dài quá so với bề ngang cột + icon + chevron), "Walking + runnin..." (Distance) — nghĩa là bảng
+  viết tắt ở D-1090 **chưa phủ hết mọi loại chỉ số**, chỉ có HR/Cal/RHR/Exercise. VO2max và Workouts
+  đã **có data thật** (50 mL/kg/min, 1 workout "Last running: Nov 8") — xác nhận fix D-1092 hoạt động.
+  **Fix cần làm:**
+  1. Bổ sung đầy đủ bảng viết tắt cho MỌI loại chỉ số dùng trong Grid (không chỉ 4 cái cũ): Blood
+     oxygen→**SpO2**, Heart rate variability→**HRV**, Walking+running distance→**Distance**, Exercise
+     minutes→ rút ngắn hơn nữa (ví dụ **"Active"** hoặc bỏ hẳn chevron/icon-gap để còn chỗ) — tự đo lại
+     xem "Exercise" có thực sự vừa không, nếu không thì rút ngắn tiếp.
+  2. Text giá trị placeholder "No data yet" phải giới hạn `maxLines = 1` + `TextOverflow.Ellipsis`
+     (hoặc đổi label ngắn hơn, ví dụ "No data"/"—") — tuyệt đối không để xuống 2 dòng làm card lệch
+     cao thấp so với card bên cạnh trong cùng hàng.
+  3. Ngày trong card Workouts ("Last running: Nov 8, 20...") cũng bị cắt xấu — rút ngắn format ngày
+     (bỏ năm nếu là năm hiện tại, ví dụ chỉ "Nov 8") hoặc bỏ hẳn label "Last running:" chỉ còn ngày.
+
+## Thực thi D-1098/D-1099 (chip flip-in 3D, grid truncation fixes) — D-110x
+
+- **D-1100** · 2026-11-08 · Chip header dùng `WatchImage(interactive = true)` thay fade/scale — **Chốt**
+  `DeviceChip` (`HomeScreen.kt`, D-1083/1088) giờ gọi `WatchImage(..., interactive = true, revealKey =
+  isVisible)` thay vì chỉ có ảnh tĩnh — tái dùng đúng hiệu ứng flip rotationY-từ-(-90°) đã có sẵn ở
+  `WatchImage.tilt3d()` (D-803, dùng ở Devices). `isVisible = alphaFraction > 0f` làm `revealKey`: vì
+  `DeviceChip` `return` sớm khi `alphaFraction <= 0f` (ảnh/toàn bộ chip không được compose khi ẩn), mỗi
+  lần chip thật sự xuất hiện trở lại là một lần compose mới của `WatchImage`, nên chỉ cần key = true là
+  đủ kích hiệu ứng mỗi lần "xuất hiện" mà không chạy lại liên tục trong lúc chip đã hiện sẵn và người
+  dùng còn đang scroll (fraction đổi liên tục nhưng component không bị remount). Phần còn lại của
+  D-1083/1088 (thời điểm/tốc độ co lại, vị trí chip, label "Last synced") giữ nguyên không đổi — chỉ
+  thay hiệu ứng vào của riêng ảnh đồng hồ.
+- **D-1101** · 2026-11-08 · Mở rộng bảng viết tắt Grid mode đủ 12 metric, sửa "No data"/ngày Workouts — **Chốt**
+  Theo đúng D-1099: (1) `compactLabel()` giờ liệt kê tường minh cả 12 `HealthMetricType` (trước chỉ 4,
+  phần còn lại rơi về `label()` đầy đủ gây cắt chữ giữa từ) — SpO2/HRV/Dist theo đúng gợi ý của user,
+  riêng "Distance" (8 ký tự, dài bằng "Exercise" vừa bị lỗi) **không** dùng như gợi ý ban đầu mà đổi
+  thành "Dist" (4 ký tự) vì user tự nhắc "đừng chỉ đoán chuỗi ngắn hơn là vừa" — chọn theo độ dài tối đa
+  đã biết là vừa ("Stress"/"SpO2", 6 ký tự) thay vì đoán; "Exercise"→"Active" (6 ký tự, cũng theo cùng
+  giới hạn). (2) `EmptyMetricCard`: "No data yet" → "No data" + `maxLines = 1`/`Ellipsis` để không bao
+  giờ wrap 2 dòng làm lệch chiều cao hàng. (3) `WorkoutsFeedCard` compact: bỏ hẳn prefix "Last
+  <loại>: ", chỉ còn ngày — bỏ năm khi là năm hiện tại (`shortWorkoutDate`, ví dụ "Nov 8"), giữ năm khi
+  khác năm hiện tại.
+
+- **D-1103** · 2026-11-08 · Audit `docs/re-analysis/garmin-analysis` — không bỏ sót gì, không phải lỗ hổng pháp lý — **Chốt**
+  User yêu cầu kiểm tra lại vì lo sợ bỏ sót thông tin. Kết quả kiểm tra bằng diff thật (không đoán):
+  - `docs/re-analysis/garmin-analysis/` **không được track trong git** (`.gitignore:35`), chưa từng
+    commit — không phải lỗ hổng vi phạm D-016 (không commit APK/dex vendor).
+  - `CONNECTION_ANALYSIS.md`/`AUTH_CRYPTO_ANALYSIS.md` trong đó **byte-identical 100%** với
+    `docs/analysis/GARMIN_CONNECTION_ANALYSIS.md`/`GARMIN_AUTH_CRYPTO_ANALYSIS.md` đã commit — không
+    mất nội dung.
+  - `docs/re-evidence/garmin/` là **superset** của `docs/re-analysis/garmin-analysis/rea-output/`:
+    mọi file chung diff ra giống hệt (`cls_proto_generated.json`, `cls_gfdi.json`,
+    `cls_device_filetransfer.json`, `cls_device_multilink.json`, `cls_AuthRegistry.json` — đã check
+    5 file lớn nhất), và `re-evidence` có thêm `battery_status_5023.md`/`config_capability_bits.md`/
+    `registration_service4.md`/`jadx-base`/`jadx-gcm` (bằng chứng được bổ sung SAU, không phải bị mất).
+  - Đọc kỹ 2 file MD tìm các điểm `[I]` (suy luận, chưa xác nhận trực tiếp) được flag rõ — 2 điểm nghe
+    có vẻ là gap thật đã **kiểm tra chéo với code hiện tại và xác nhận đã được xử lý đúng từ trước**:
+    (a) "driver so trực tiếp encoded frame với maxPacketSize, có thể vượt giới hạn watch thật" —
+    `GfdiPacketBudget.usablePayload()` (`GfdiPayloads.kt:300`) đã copy đúng công thức vendor
+    (`us2/b.java:221-235`: trừ COBS overhead + 8/18 byte framing/encryption + align 4 byte) và
+    `GfdiDispatcher.send()` so `payload.size` với budget này trước khi encode — đúng như khuyến nghị,
+    không phải bug còn tồn tại. (b) "driver request MTU vô điều kiện, cần fail non-fatal" —
+    `GattConnector.kt:106-107` đã `runCatching { requestMtu }.onFailure { Log.w(...) }`, không throw
+    — đã non-fatal sẵn. **Kết luận: không có gap nào cần vá thêm từ `docs/re-analysis/garmin-analysis`.**
+
+- **D-1104** · 2026-11-08 · Bật GitHub Pages cho repo (serve từ README) — **Chốt**
+  Bật qua GitHub API (`POST /repos/NoatToan/unified_watch_health_connect/pages`, dùng token sẵn có
+  trong credential helper `osxkeychain` của git, không cần cài `gh` CLI) — `source: {branch: main,
+  path: /}`. GitHub Pages tự render `README.md` ở root bằng theme Jekyll mặc định thành trang chủ.
+  URL: `https://noattoan.github.io/unified_watch_health_connect/`. Lần build đầu tiên mất vài phút
+  sau khi bật, chưa verify live ngay lúc bật (API trả 201 xác nhận config đã lưu, nhưng
+  `curl` tới URL vẫn 404 ngay sau đó — bình thường, GitHub Pages build bất đồng bộ).

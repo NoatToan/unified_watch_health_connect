@@ -4,6 +4,15 @@ enum class UnitSystem { METRIC, IMPERIAL }
 
 enum class ThemeMode { SYSTEM, LIGHT, DARK }
 
+/** How Home's "All metrics" section lays out its cards (D-1073). */
+enum class HomeMetricsViewMode {
+    /** One metric per full-width row, chart visible. */
+    LIST,
+
+    /** 2-column grid (D-1050): name + value, no chart or a tiny one. */
+    GRID,
+}
+
 data class UserPreferences(
     val onboardingCompleted: Boolean = false,
     val unitSystem: UnitSystem = UnitSystem.METRIC,
@@ -20,6 +29,8 @@ data class UserPreferences(
     val feedCardOrder: List<String> = DEFAULT_FEED_CARD_ORDER,
     /** Card ids hidden from the Health feed via "Edit cards"; empty shows every card. */
     val hiddenFeedCards: Set<String> = emptySet(),
+    /** D-1074: persists the List/Grid toggle (D-1073) on Home's "All metrics" section. */
+    val homeMetricsViewMode: HomeMetricsViewMode = HomeMetricsViewMode.GRID,
 ) {
     companion object {
         val DEFAULT_PINNED_METRICS: List<HealthMetricType> = listOf(
@@ -40,6 +51,7 @@ data class UserPreferences(
             HealthMetricType.STRESS.name,
             HealthMetricType.SPO2.name,
             HealthMetricType.HRV.name,
+            HealthMetricType.VO2_MAX.name,
             FeedCardId.WORKOUTS,
             HealthMetricType.RESTING_HEART_RATE.name,
             HealthMetricType.CALORIES.name,

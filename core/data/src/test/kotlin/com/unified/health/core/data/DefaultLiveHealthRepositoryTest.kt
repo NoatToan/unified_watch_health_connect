@@ -6,6 +6,7 @@ import com.unified.health.core.data.live.DefaultLiveHealthRepository
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.DeviceCapability
 import com.unified.health.core.model.DeviceInfo
+import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.WearableVendor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -55,7 +56,7 @@ class DefaultLiveHealthRepositoryTest {
     private fun TestScope.repo(connection: FakeConnection, sink: RecordingBatches, atSize: Int = 3) =
         DefaultLiveHealthRepository(connection, { sink }, backgroundScope, flushEveryMs = 60_000, flushAtSize = atSize)
 
-    private fun hr(bpm: Int) = HealthRecord.HeartRate(Instant.EPOCH, bpm)
+    private fun hr(bpm: Int, time: Instant = Instant.EPOCH) = HealthRecord.HeartRate(time, bpm)
 
     @Test
     fun `does not touch the sensor without observers and replays the last value to late ones`() = runTest {
@@ -105,5 +106,31 @@ class DefaultLiveHealthRepositoryTest {
         assertEquals(0, connection.collectors)
         assertNull(repo.heartRate.value)
         observer.cancel()
+    }
+
+    @Test
+    fun `liveMetrics marks heart rate live only while a reading is fresh (D-1054)`() = runTest {
+        val connection = FakeConnection()
+        val repo = repo(connection, RecordingBatches())
+        val hrObserver = launch { repo.heartRate.collect { } }
+        val liveObserver = launch { repo.liveMetrics.collect { } }
+        runCurrent()
+
+        assertEquals(emptySet<HealthMetricType>(), repo.liveMetrics.value)
+
+        // A real (not EPOCH) timestamp: liveWhileFresh compares it against wall-clock Instant.now().
+        connection.samples.emit(hr(72, Instant.now()))
+        runCurrent()
+        assertEquals(setOf(HealthMetricType.HEART_RATE), repo.liveMetrics.value)
+        // The value itself stays cached (unrelated to liveness) well past the live window.
+        assertEquals(72, repo.heartRate.value?.bpm)
+
+        advanceTimeBy(DefaultLiveHealthRepository.LIVE_MAX_AGE.toMillis() + 1_000)
+        runCurrent()
+        assertEquals(emptySet<HealthMetricType>(), repo.liveMetrics.value)
+        assertEquals(72, repo.heartRate.value?.bpm)
+
+        hrObserver.cancel()
+        liveObserver.cancel()
     }
 }

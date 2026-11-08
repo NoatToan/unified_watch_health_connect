@@ -17,6 +17,13 @@ are in Vietnamese; code, comments and commit messages are in English.
 - After an agent finishes, review its diff and re-run the checks below before reporting done.
 - Decide autonomously and log each decision in `docs/DECISIONS.md` (`D-<area><nn>`, date,
   **Chốt** = settled / **Tạm** = provisional, then the reasoning).
+- **Never guess a vendor protocol/message/field number and tag it `[Ext]` without checking
+  `docs/re-evidence/<brand>/` first.** Every vendor's own companion app (Garmin Connect, Huawei
+  Health, Zepp, …) bundles its full FIT/protocol profile inside the APK, so the real answer is
+  almost always already sitting in `docs/re-evidence/<brand>/jadx-base/` — read it (via
+  `claude-personal -p`, D-003) before inventing a field number from memory or general docs. D-1082
+  is the cautionary example: three FIT message/field numbers were guessed `[Ext]` and two of three
+  turned out wrong, discoverable by grepping evidence already on disk.
 
 ## Build & test
 ```

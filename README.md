@@ -55,6 +55,26 @@ Own a Garmin for running and an Amazfit for sleep? That's two apps, two accounts
 
 ---
 
+## 📹 Real watch, real app
+
+No simulator here — a Garmin Forerunner 165, paired over BLE, synced, charted.
+
+<div align="center">
+<img src="docs/real-device-demo/home-demo.gif" width="260" alt="Live demo: scrolling Summary, switching List/Grid">
+</div>
+
+| Summary | Activity (real workout) | Workout detail |
+|:---:|:---:|:---:|
+| <img src="docs/real-device-demo/home-summary.png" width="200"> | <img src="docs/real-device-demo/activity-weekly-load.png" width="200"> | <img src="docs/real-device-demo/workout-detail.png" width="200"> |
+
+| Devices | Profile · health ranges | Trend line on a metric |
+|:---:|:---:|:---:|
+| <img src="docs/real-device-demo/devices-paired.png" width="200"> | <img src="docs/real-device-demo/profile-thresholds.png" width="200"> | <img src="docs/real-device-demo/metric-detail-trend-line.png" width="200"> |
+
+Captured straight off the connected device with `adb shell screencap`/`screenrecord` — this is what pairing a real Garmin watch looks like today, not a mock. [Full write-up →](docs/real-device-demo/README.md)
+
+---
+
 ## 📱 Screens
 
 | Pair any watch | Summary | Browse | Heart-rate range |

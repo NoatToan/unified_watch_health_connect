@@ -36,6 +36,54 @@ data class WorkoutEntity(
     val maxHeartRate: Int?,
 )
 
+/**
+ * One split/lap of a workout (D-1093). Keyed to its parent [WorkoutEntity] by
+ * (`deviceId`, `workoutStartEpochMs`) — the same pair that is [WorkoutEntity]'s own primary key.
+ */
+@Entity(
+    tableName = "workout_laps",
+    primaryKeys = ["deviceId", "workoutStartEpochMs", "lapIndex"],
+    indices = [Index(value = ["deviceId", "workoutStartEpochMs"])],
+)
+data class WorkoutLapEntity(
+    val deviceId: String,
+    val workoutStartEpochMs: Long,
+    val lapIndex: Int,
+    val startEpochMs: Long,
+    val endEpochMs: Long,
+    val distanceMeters: Double?,
+    val calories: Int?,
+    val avgSpeedMps: Double?,
+    val maxSpeedMps: Double?,
+    val avgHeartRate: Int?,
+    val maxHeartRate: Int?,
+    val avgCadence: Int?,
+    val maxCadence: Int?,
+    val ascentMeters: Double?,
+    val descentMeters: Double?,
+)
+
+/**
+ * One instantaneous sample recorded during a workout (D-1093), keyed the same way as
+ * [WorkoutLapEntity]. `timeEpochMs` is part of the key so re-delivered samples overwrite in place.
+ */
+@Entity(
+    tableName = "workout_samples",
+    primaryKeys = ["deviceId", "workoutStartEpochMs", "timeEpochMs"],
+    indices = [Index(value = ["deviceId", "workoutStartEpochMs"])],
+)
+data class WorkoutSampleEntity(
+    val deviceId: String,
+    val workoutStartEpochMs: Long,
+    val timeEpochMs: Long,
+    val latitude: Double?,
+    val longitude: Double?,
+    val altitudeMeters: Double?,
+    val heartRate: Int?,
+    val cadence: Int?,
+    val speedMps: Double?,
+)
+
 /** Values of [HealthSampleEntity.type]. Stored as text, so never rename an existing one. */
 object SampleType {
     const val HEART_RATE = "heart_rate"
@@ -64,6 +112,12 @@ interface HealthRecordDao {
     @Upsert
     suspend fun upsertWorkouts(workouts: List<WorkoutEntity>)
 
+    @Upsert
+    suspend fun upsertWorkoutLaps(laps: List<WorkoutLapEntity>)
+
+    @Upsert
+    suspend fun upsertWorkoutSamples(samples: List<WorkoutSampleEntity>)
+
     @Query("SELECT * FROM health_samples WHERE type = :type AND startEpochMs >= :fromEpochMs AND startEpochMs < :toEpochMs ORDER BY startEpochMs")
     suspend fun samples(type: String, fromEpochMs: Long, toEpochMs: Long): List<HealthSampleEntity>
 
@@ -75,6 +129,12 @@ interface HealthRecordDao {
 
     @Query("SELECT * FROM workouts WHERE deviceId = :deviceId AND startEpochMs = :startEpochMs")
     fun observeWorkout(deviceId: String, startEpochMs: Long): Flow<WorkoutEntity?>
+
+    @Query("SELECT * FROM workout_laps WHERE deviceId = :deviceId AND workoutStartEpochMs = :workoutStartEpochMs ORDER BY lapIndex")
+    fun observeWorkoutLaps(deviceId: String, workoutStartEpochMs: Long): Flow<List<WorkoutLapEntity>>
+
+    @Query("SELECT * FROM workout_samples WHERE deviceId = :deviceId AND workoutStartEpochMs = :workoutStartEpochMs ORDER BY timeEpochMs")
+    fun observeWorkoutSamples(deviceId: String, workoutStartEpochMs: Long): Flow<List<WorkoutSampleEntity>>
 
     @Query("SELECT * FROM health_samples WHERE type = :type AND deviceId = :deviceId AND startEpochMs >= :fromEpochMs AND startEpochMs < :toEpochMs ORDER BY startEpochMs")
     fun observeDeviceSamples(type: String, deviceId: String, fromEpochMs: Long, toEpochMs: Long): Flow<List<HealthSampleEntity>>
@@ -92,10 +152,22 @@ interface HealthRecordDao {
     @Query("DELETE FROM workouts")
     suspend fun deleteAllWorkouts()
 
+    @Query("DELETE FROM workout_laps")
+    suspend fun deleteAllWorkoutLaps()
+
+    @Query("DELETE FROM workout_samples")
+    suspend fun deleteAllWorkoutSamples()
+
     /** Scoped delete used by the debug-only "Clear demo data" tool: only rows of [deviceIds] are removed. */
     @Query("DELETE FROM health_samples WHERE deviceId IN (:deviceIds)")
     suspend fun deleteSamplesForDevices(deviceIds: List<String>)
 
     @Query("DELETE FROM workouts WHERE deviceId IN (:deviceIds)")
     suspend fun deleteWorkoutsForDevices(deviceIds: List<String>)
+
+    @Query("DELETE FROM workout_laps WHERE deviceId IN (:deviceIds)")
+    suspend fun deleteWorkoutLapsForDevices(deviceIds: List<String>)
+
+    @Query("DELETE FROM workout_samples WHERE deviceId IN (:deviceIds)")
+    suspend fun deleteWorkoutSamplesForDevices(deviceIds: List<String>)
 }

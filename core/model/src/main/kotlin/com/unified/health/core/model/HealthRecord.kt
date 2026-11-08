@@ -61,6 +61,47 @@ sealed interface HealthRecord {
     ) : HealthRecord
 
     /**
+     * One completed lap/split within a workout (e.g. Garmin FIT `lap`, global mesg 19, D-1093).
+     * Keyed to its parent [Workout] by [workoutStart] (that workout's own [Workout.start]) — the
+     * sink pairs it with the device id the same way it does for every other [HealthRecord], which
+     * together give the same `<deviceId>@<startEpochMs>` primary key [Workout] itself uses
+     * (docs/DECISIONS.md D-804).
+     */
+    data class WorkoutLap(
+        val workoutStart: Instant,
+        /** 0-based position of this lap within the workout, in recording order. */
+        val index: Int,
+        val start: Instant,
+        val end: Instant,
+        val distanceMeters: Double? = null,
+        val calories: Int? = null,
+        val avgSpeedMps: Double? = null,
+        val maxSpeedMps: Double? = null,
+        val avgHeartRate: Int? = null,
+        val maxHeartRate: Int? = null,
+        val avgCadence: Int? = null,
+        val maxCadence: Int? = null,
+        val ascentMeters: Double? = null,
+        val descentMeters: Double? = null,
+    ) : HealthRecord
+
+    /**
+     * One instantaneous reading recorded during a workout (e.g. Garmin FIT `record`, global mesg 20,
+     * D-1093), keyed to its parent [Workout] the same way as [WorkoutLap]. [latitude]/[longitude] are
+     * parsed and stored for a future route-map view but have no map UI yet (docs/DECISIONS.md D-1093).
+     */
+    data class WorkoutSample(
+        val workoutStart: Instant,
+        val time: Instant,
+        val latitude: Double? = null,
+        val longitude: Double? = null,
+        val altitudeMeters: Double? = null,
+        val heartRate: Int? = null,
+        val cadence: Int? = null,
+        val speedMps: Double? = null,
+    ) : HealthRecord
+
+    /**
      * Original vendor payload (e.g. a Garmin FIT file) kept so it can be re-decoded when a parser
      * improves. [kind] is a driver-defined, filesystem-safe label such as `fit_monitoring`.
      */

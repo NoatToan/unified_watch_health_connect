@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -23,6 +24,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -33,10 +35,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -46,14 +51,20 @@ import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.StatTile
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
+import com.unified.health.core.domain.usecase.HeartRateZoneShare
+import com.unified.health.core.model.ChartPoint
+import com.unified.health.core.model.WorkoutLap
+import com.unified.health.core.model.WorkoutType
 import com.unified.health.feature.activity.icon
 import com.unified.health.feature.activity.kilometers
 import com.unified.health.feature.activity.label
 import com.unified.health.feature.activity.paceOrSpeed
+import com.unified.health.feature.activity.paceOrSpeedLabel
 import com.unified.health.feature.activity.stopwatch
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import kotlin.math.roundToInt
 
 @Composable
 internal fun WorkoutDetailRoute(onBack: () -> Unit, viewModel: WorkoutDetailViewModel = hiltViewModel()) {
@@ -129,6 +140,24 @@ private fun WorkoutDetailContent(state: WorkoutDetailUiState.Success, modifier: 
             }
         }
 
+        // Cadence + elevation summary (D-1093), from lap(19)/record(20) data; omitted entirely when
+        // the device reported none of it (e.g. an older file with session(18) only).
+        val cadenceTiles = listOf(
+            Triple("Avg. cadence", state.avgCadence?.toString(), "spm"),
+            Triple("Max. cadence", state.maxCadence?.toString(), "spm"),
+            Triple("Elevation gain", state.totalAscentMeters?.roundToInt()?.toString(), "m"),
+            Triple("Elevation loss", state.totalDescentMeters?.roundToInt()?.toString(), "m"),
+        )
+        if (cadenceTiles.any { it.second != null }) {
+            Column(Modifier.testTag("workout_cadence_elevation"), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                cadenceTiles.chunked(2).forEach { row ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                        row.forEach { (label, value, unit) -> StatTile(label, value, Modifier.weight(1f), unit = unit) }
+                    }
+                }
+            }
+        }
+
         Card(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 Text("Heart rate", style = MaterialTheme.typography.titleMedium, color = heartColor)
@@ -152,6 +181,18 @@ private fun WorkoutDetailContent(state: WorkoutDetailUiState.Success, modifier: 
             }
         }
 
+        if (state.hasSampleTrend) {
+            TrendCard(state, accent, heartColor)
+        }
+
+        if (state.hasSplits) {
+            SplitsCard(state.laps, workout.type, accent)
+        }
+
+        if (state.hasHrZones) {
+            HrZonesCard(state.hrZones, heartColor)
+        }
+
         ElevatedCard(Modifier.fillMaxWidth()) {
             ListItem(
                 modifier = Modifier.testTag("workout_source"),
@@ -164,6 +205,117 @@ private fun WorkoutDetailContent(state: WorkoutDetailUiState.Success, modifier: 
         Spacer(Modifier.height(Spacing.xl))
     }
 }
+
+/**
+ * Pace/elevation/heart-rate over the course of the workout (D-1093), built from FIT `record`
+ * samples via [com.unified.health.core.domain.usecase.WorkoutSampleSeries]. Reuses [HealthRangeChart]
+ * (no dedicated line-chart component exists yet) — each series is its own mini chart since they use
+ * unrelated units (sec/km, meters, bpm) that don't share one y-axis.
+ */
+@Composable
+private fun TrendCard(state: WorkoutDetailUiState.Success, accent: Color, heartColor: Color) {
+    Card(Modifier.fillMaxWidth().testTag("workout_trend")) {
+        Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
+            Text("Trends", style = MaterialTheme.typography.titleMedium, color = accent)
+            if (state.paceSeries.any { it.hasData }) {
+                TrendSeries("Pace (lower is faster)", state.paceSeries, accent, "workout_trend_pace") { paceLabel(it) }
+            }
+            if (state.elevationSeries.any { it.hasData }) {
+                TrendSeries("Elevation", state.elevationSeries, accent, "workout_trend_elevation") { "${it.roundToInt()} m" }
+            }
+            if (state.sampleHeartRateSeries.any { it.hasData }) {
+                TrendSeries("Heart rate", state.sampleHeartRateSeries, heartColor, "workout_trend_hr") { "${it.roundToInt()} bpm" }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TrendSeries(title: String, points: List<ChartPoint>, color: Color, testTag: String, axisLabel: (Float) -> String) {
+    Column {
+        Text(title, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        HealthRangeChart(points, color, Modifier.testTag(testTag), height = 120.dp, axisLabel = axisLabel)
+    }
+}
+
+/** "5'30\"" from a seconds/km value, "--" when not finite (e.g. a bucket with no moving sample). */
+private fun paceLabel(secondsPerKm: Float): String {
+    if (secondsPerKm <= 0f || secondsPerKm.isNaN() || secondsPerKm.isInfinite()) return "--"
+    val total = secondsPerKm.roundToInt()
+    return "%d'%02d\"".format(total / 60, total % 60)
+}
+
+/** One row per lap (D-1093): duration, distance, pace/speed, avg HR/cadence, elevation gain/loss. */
+@Composable
+private fun SplitsCard(laps: List<WorkoutLap>, type: WorkoutType, accent: Color) {
+    Card(Modifier.fillMaxWidth().testTag("workout_splits")) {
+        Column(Modifier.padding(vertical = Spacing.sm)) {
+            Text(
+                "Splits",
+                style = MaterialTheme.typography.titleMedium,
+                color = accent,
+                modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.sm),
+            )
+            laps.forEach { lap ->
+                ListItem(
+                    modifier = Modifier.testTag("workout_lap_${lap.index}"),
+                    colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+                    headlineContent = { Text("Lap ${lap.index + 1} · ${lap.duration.stopwatch()}") },
+                    supportingContent = { Text(lapSummary(lap, type), maxLines = 2, overflow = TextOverflow.Ellipsis) },
+                )
+            }
+        }
+    }
+}
+
+private fun lapSummary(lap: WorkoutLap, type: WorkoutType): String {
+    val parts = mutableListOf<String>()
+    lap.distanceMeters?.takeIf { it > 0 }?.let { parts += "${kilometers(it)} km" }
+    lap.paceOrSpeedLabel(type)?.let { parts += it }
+    lap.avgHeartRate?.let { parts += "$it bpm" }
+    lap.avgCadence?.let { parts += "$it spm" }
+    if (lap.ascentMeters != null || lap.descentMeters != null) {
+        parts += "↑${(lap.ascentMeters ?: 0.0).roundToInt()}m ↓${(lap.descentMeters ?: 0.0).roundToInt()}m"
+    }
+    return parts.joinToString(" · ").ifEmpty { "No details recorded" }
+}
+
+/** % of the workout's time in each HR zone (D-1030 thresholds), from the FIT `record` HR series. */
+@Composable
+private fun HrZonesCard(zones: List<HeartRateZoneShare>, heartColor: Color) {
+    Card(Modifier.fillMaxWidth().testTag("workout_hr_zones")) {
+        Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+            Text("Time in heart rate zones", style = MaterialTheme.typography.titleMedium, color = heartColor)
+            zones.forEach { share -> HrZoneRow(share) }
+        }
+    }
+}
+
+@Composable
+private fun HrZoneRow(share: HeartRateZoneShare) {
+    val zone = share.zone
+    val percent = share.percentOfTime.roundToInt()
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .semantics(mergeDescendants = true) { contentDescription = "Zone ${zone.zone} ${zone.label}, $percent percent of workout time" },
+    ) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text("Z${zone.zone} · ${zone.label}", style = MaterialTheme.typography.bodyMedium)
+            Text("$percent%", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        Spacer(Modifier.height(Spacing.xs))
+        LinearProgressIndicator(
+            progress = { (share.percentOfTime / 100.0).toFloat().coerceIn(0f, 1f) },
+            modifier = Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(3.dp)),
+            color = ZONE_COLORS.getOrElse(zone.zone - 1) { MaterialTheme.colorScheme.primary },
+            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+        )
+    }
+}
+
+/** Z1 (warm up) → Z5 (max), cool to hot — a generic effort gradient, not a vendor palette. */
+private val ZONE_COLORS = listOf(Color(0xFF42A5F5), Color(0xFF66BB6A), Color(0xFFFFCA28), Color(0xFFFF7043), Color(0xFFE53935))
 
 private val DATE: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
 private val TIME: DateTimeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)

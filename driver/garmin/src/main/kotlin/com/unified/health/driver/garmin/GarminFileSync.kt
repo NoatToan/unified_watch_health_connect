@@ -68,12 +68,27 @@ internal class GarminFileSync(
     /** @return number of non-raw records delivered. */
     suspend fun sync(request: SyncRequest, sink: HealthRecordSink, progress: SyncProgress): Int {
         val wellnessSince = request.effectiveSince()
+        // D-1092: METRICS (subtype 44, "BIOMETRIC" per docs/re-evidence/garmin — vo2_max,
+        // recovery_time, race predictions, performance capacity) is written far less often than
+        // daily MONITORING, so a VO2max update can easily be older than the default 7-day
+        // wellnessSince window and silently never get synced. Give it the same long lookback as
+        // ACTIVITY files, for the same reason (D-418/419/422).
+        val metricsSince = request.now.minusSeconds(ACTIVITY_LOOKBACK_DAYS * SECONDS_PER_DAY)
         val activitySince = request.now.minusSeconds(ACTIVITY_LOOKBACK_DAYS * SECONDS_PER_DAY)
         val directory = GarminDirectory.parse(download(GarminDirectory.DIRECTORY_FILE_INDEX))
             .filter { it.fileIndex != GarminDirectory.DIRECTORY_FILE_INDEX }
         val typed = directory.mapNotNull { entry -> GarminFitFileType.of(entry)?.let { entry to it } }
 
-        val nonActivity = typed.filter { (entry, type) -> type != GarminFitFileType.ACTIVITY && entry.timestamp.isAfter(wellnessSince) }
+        val dailyWellness = typed.filter { (entry, type) ->
+            type != GarminFitFileType.ACTIVITY && type != GarminFitFileType.METRICS && entry.timestamp.isAfter(wellnessSince)
+        }
+        // Unlike dailyWellness (bounded by the advancing wellnessSince cursor), metricsSince is a
+        // fixed rolling window re-applied on every sync, so dedup against already-downloaded
+        // timestamps explicitly — otherwise every METRICS file in the window gets re-fetched on
+        // every single sync, forever.
+        val metrics = typed.filter { (entry, type) -> type == GarminFitFileType.METRICS && entry.timestamp.isAfter(metricsSince) }
+            .filterNot { (entry, _) -> entry.timestamp in request.knownRawPayloadTimestamps }
+        val nonActivity = dailyWellness + metrics
         val activityCandidates = typed.filter { (entry, type) -> type == GarminFitFileType.ACTIVITY && entry.timestamp.isAfter(activitySince) }
         val newActivities = activityCandidates.filterNot { (entry, _) -> entry.timestamp in request.knownRawPayloadTimestamps }
             .sortedByDescending { it.first.timestamp }
@@ -85,7 +100,7 @@ internal class GarminFileSync(
         Log.i(
             TAG,
             "Directory: ${directory.size} entries, ${typed.size} FIT of interest ${countsByType(typed)}; " +
-                "${wanted.size} to sync (wellness since=$wellnessSince, activity since=$activitySince, " +
+                "${wanted.size} to sync (wellness since=$wellnessSince, metrics since=$metricsSince, activity since=$activitySince, " +
                 "activity alreadyDownloaded=$activityAlreadyKnown new=${newActivities.size} " +
                 "thisSync=${activityThisSync.size} deferredToNextSync=$activityDeferred cap=$ACTIVITY_CATCH_UP_CAP)",
         )
@@ -145,7 +160,14 @@ internal class GarminFileSync(
         types.groupingBy { it }.eachCount()
 
     private fun decode(entry: GarminFileEntry, bytes: ByteArray, daily: DailyActivityAccumulator): DecodeOutcome = try {
-        DecodeOutcome(FitHealthMapper.map(FitDecoder.decode(bytes), zone(), daily), decoded = true)
+        val file = FitDecoder.decode(bytes)
+        // D-1071/D-1080 diagnostic: raw message-number histogram (before FitHealthMapper drops
+        // anything it doesn't recognize), so a "message genuinely absent on this watch/firmware"
+        // is distinguishable from "message present but our field guess is wrong" for any future
+        // [Ext]-tagged constant, without needing another logging round-trip.
+        val histogram = file.messages.groupingBy { it.globalNumber }.eachCount()
+        Log.d(TAG, "File ${entry.fileIndex} raw globalNumbers=$histogram")
+        DecodeOutcome(FitHealthMapper.map(file, zone(), daily), decoded = true)
     } catch (e: FitDecodeException) {
         Log.w(TAG, "File ${entry.fileIndex} is not decodable (${e.message}); keeping the raw payload only")
         DecodeOutcome(emptyList(), decoded = false)

@@ -7,6 +7,8 @@ import com.unified.health.core.data.database.HealthRecordDao
 import com.unified.health.core.data.database.HealthSampleEntity
 import com.unified.health.core.data.database.SampleType
 import com.unified.health.core.data.database.WorkoutEntity
+import com.unified.health.core.data.database.WorkoutLapEntity
+import com.unified.health.core.data.database.WorkoutSampleEntity
 import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.WearableVendor
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -38,6 +40,8 @@ internal class RoomHealthRecordSink(
     override suspend fun onRecords(batch: List<HealthRecord>) {
         val samples = mutableListOf<HealthSampleEntity>()
         val workouts = mutableListOf<WorkoutEntity>()
+        val workoutLaps = mutableListOf<WorkoutLapEntity>()
+        val workoutSamples = mutableListOf<WorkoutSampleEntity>()
         for (record in batch) {
             when (record) {
                 is HealthRecord.HeartRate -> samples += point(SampleType.HEART_RATE, record.time.toEpochMilli(), record.bpm.toDouble())
@@ -76,11 +80,41 @@ internal class RoomHealthRecordSink(
                     avgHeartRate = record.avgHeartRate,
                     maxHeartRate = record.maxHeartRate,
                 )
+                is HealthRecord.WorkoutLap -> workoutLaps += WorkoutLapEntity(
+                    deviceId = deviceId,
+                    workoutStartEpochMs = record.workoutStart.toEpochMilli(),
+                    lapIndex = record.index,
+                    startEpochMs = record.start.toEpochMilli(),
+                    endEpochMs = record.end.toEpochMilli(),
+                    distanceMeters = record.distanceMeters,
+                    calories = record.calories,
+                    avgSpeedMps = record.avgSpeedMps,
+                    maxSpeedMps = record.maxSpeedMps,
+                    avgHeartRate = record.avgHeartRate,
+                    maxHeartRate = record.maxHeartRate,
+                    avgCadence = record.avgCadence,
+                    maxCadence = record.maxCadence,
+                    ascentMeters = record.ascentMeters,
+                    descentMeters = record.descentMeters,
+                )
+                is HealthRecord.WorkoutSample -> workoutSamples += WorkoutSampleEntity(
+                    deviceId = deviceId,
+                    workoutStartEpochMs = record.workoutStart.toEpochMilli(),
+                    timeEpochMs = record.time.toEpochMilli(),
+                    latitude = record.latitude,
+                    longitude = record.longitude,
+                    altitudeMeters = record.altitudeMeters,
+                    heartRate = record.heartRate,
+                    cadence = record.cadence,
+                    speedMps = record.speedMps,
+                )
                 is HealthRecord.RawPayload -> rawStore.save(deviceId, record)
             }
         }
         if (samples.isNotEmpty()) dao.upsertSamples(samples)
         if (workouts.isNotEmpty()) dao.upsertWorkouts(workouts)
+        if (workoutLaps.isNotEmpty()) dao.upsertWorkoutLaps(workoutLaps)
+        if (workoutSamples.isNotEmpty()) dao.upsertWorkoutSamples(workoutSamples)
     }
 
     private fun point(type: String, epochMs: Long, value: Double) = HealthSampleEntity(deviceId, type, epochMs, epochMs, value)

@@ -241,6 +241,7 @@ internal class MetricSeriesBuilder(
             HealthMetricType.HEART_RATE -> listOf(SampleType.HEART_RATE)
             HealthMetricType.RESTING_HEART_RATE -> listOf(SampleType.RESTING_HEART_RATE)
             HealthMetricType.HRV -> listOf(SampleType.HRV)
+            HealthMetricType.VO2_MAX -> listOf(SampleType.VO2_MAX)
             HealthMetricType.SPO2 -> listOf(SampleType.SPO2)
             HealthMetricType.STRESS -> listOf(SampleType.STRESS)
             HealthMetricType.SLEEP -> listOf(SampleType.SLEEP_STAGE)

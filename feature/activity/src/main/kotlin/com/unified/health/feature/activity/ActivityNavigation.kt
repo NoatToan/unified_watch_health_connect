@@ -1,25 +1,26 @@
 package com.unified.health.feature.activity
 
+import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.unified.health.feature.activity.detail.WorkoutDetailRoute
 import kotlinx.serialization.Serializable
-
-@Serializable
-data object ActivityDestination
 
 /** [workoutId] is `Workout.id`; read back by name in [com.unified.health.feature.activity.detail.WorkoutDetailViewModel]. */
 @Serializable
 data class WorkoutDetailDestination(val workoutId: String)
 
-fun NavController.navigateToActivity(navOptions: NavOptions? = null) = navigate(ActivityDestination, navOptions)
-
 fun NavController.navigateToWorkoutDetail(workoutId: String) = navigate(WorkoutDetailDestination(workoutId))
 
-fun NavGraphBuilder.activityScreen(onWorkoutClick: (String) -> Unit) {
-    composable<ActivityDestination> { ActivityRoute(onWorkoutClick = onWorkoutClick) }
+/**
+ * Public entry point for [com.unified.health.navigation.MainPagerDestination]'s `HorizontalPager`
+ * (D-1052) — see [com.unified.health.feature.home.navigation.HomeTabContent] for why this wrapper
+ * exists (`ActivityRoute` itself stays internal).
+ */
+@Composable
+fun ActivityTabContent(onWorkoutClick: (String) -> Unit) {
+    ActivityRoute(onWorkoutClick = onWorkoutClick)
 }
 
 fun NavGraphBuilder.workoutDetailScreen(onBack: () -> Unit) {

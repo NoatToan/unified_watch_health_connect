@@ -37,6 +37,8 @@ fun SummaryMetricCard(
     timeLabel: String?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    /** D-1054: null for metrics with no live mode (no dot shown); true/false for heart rate. */
+    isLive: Boolean? = null,
 ) {
     val accent = UnifiedHealthTheme.metricColors.forMetric(metric)
     val description = buildString {
@@ -49,7 +51,12 @@ fun SummaryMetricCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(metric.icon(), contentDescription = null, tint = accent, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(Spacing.sm))
-                Text(metric.label(), style = MaterialTheme.typography.titleSmall, color = accent, modifier = Modifier.weight(1f))
+                Text(metric.label(), style = MaterialTheme.typography.titleSmall, color = accent)
+                if (isLive != null) {
+                    Spacer(Modifier.width(Spacing.xs))
+                    LiveDot(isLive)
+                }
+                Spacer(Modifier.weight(1f))
                 timeLabel?.let { Text(it, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                 Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }

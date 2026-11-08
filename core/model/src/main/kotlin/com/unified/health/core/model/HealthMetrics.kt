@@ -26,6 +26,9 @@ enum class HealthMetricType {
 
     /** Heart rate variability (ms). */
     HRV,
+
+    /** Maximal oxygen uptake (mL/kg/min), D-1050/D-1060. Categorized only, never scored (D-803). */
+    VO2_MAX,
     ;
 
     /** How values of this metric combine over time. */
@@ -33,7 +36,7 @@ enum class HealthMetricType {
         get() = when (this) {
             STEPS, CALORIES, DISTANCE, EXERCISE_MINUTES -> MetricAggregation.CUMULATIVE
             SLEEP -> MetricAggregation.SLEEP
-            HEART_RATE, SPO2, STRESS, WEIGHT, RESTING_HEART_RATE, HRV -> MetricAggregation.DISCRETE
+            HEART_RATE, SPO2, STRESS, WEIGHT, RESTING_HEART_RATE, HRV, VO2_MAX -> MetricAggregation.DISCRETE
         }
 }
 
