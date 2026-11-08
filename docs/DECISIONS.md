@@ -1303,9 +1303,11 @@ User thấy màn chi tiết workout hiện tại ("Workout detail" theo D-804) q
   agent implement (bị trì hoãn nhiều lần vì ưu tiên các fix Garmin + redesign Home). Việc tiếp theo
   sau khi các task UI/workout đang chạy ổn định.
 
-## Thực thi D-1093 (workout detail) + D-1094 (trend line) — D-1097
+## Thực thi D-1093 (workout detail) + D-1094 (trend line) — D-1102
 
-- **D-1097** · 2026-11-08 · Các điểm chưa chốt cụ thể khi implement D-1093/D-1094 — **Chốt**
+- **D-1102** · 2026-11-08 · Các điểm chưa chốt cụ thể khi implement D-1093/D-1094 — **Chốt**
+  (Đánh số lại từ D-1097 ban đầu vì trùng với D-1097 "Kết quả nghiên cứu Opus" do agent khác log gần
+  cùng lúc — nội dung không đổi, chỉ đổi số để hết trùng, giống cách đã xử lý D-1080/D-1082 trước đó.)
   D-1093/D-1094 đã chốt phạm vi; các điểm implementation cụ thể dưới đây agent tự quyết vì không có
   trong 2 quyết định gốc:
   1. **Khoá lap/sample vào workout cha**: `HealthRecord.WorkoutLap`/`WorkoutSample` mang
