@@ -1141,3 +1141,11 @@ tránh 2 agent sửa song song cùng file.
   trước — app Garmin Connect (và tương tự Huawei Health/Zepp/COROS) luôn bundle sẵn FIT profile đầy đủ
   của chính nó trong APK, nên gần như chắc chắn evidence thật đã nằm sẵn trong `docs/re-evidence/`
   (ở dạng jadx, đọc qua `claude-personal -p` theo D-003) trước khi phải đoán hoặc hỏi thêm. Xem CLAUDE.md.
+
+- **D-1083** · 2026-11-08 · Animation thu nhỏ device row khi scroll trên Home/Summary — **Chốt**
+  Khi scroll xuống: row thiết bị (`DeviceBanner`, full-size) co lại dần thành dạng nhỏ — chỉ tên
+  đồng hồ + ảnh — rồi "nhảy" lên góc phải của top app bar/header (nếu header đang hiện khi đã scroll
+  đủ xa). Ở đầu trang (chưa scroll): row thiết bị đầy đủ + header tách biệt như hiện tại, không đổi.
+  Hiệu ứng liên tục theo % scroll (không phải bật/tắt đột ngột). Cùng nhóm việc Home với D-1075 (Last
+  synced luôn hiện) — cả hai đều chưa làm, giao lại cho agent đã làm D-1050-1054/1072-1074 (đã có
+  context `HomeScreen.kt`/`MainPagerDestination` mới nhất) tiếp tục thay vì agent mới.
