@@ -624,6 +624,19 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
 
 ## Release readiness (D-7xx)
 
+- **D-710** · 2026-11-08 · Demo mode — runtime switch — **Chốt**
+  Thêm `DemoModeController` (interface ở `:core:domain`, `enabled: StateFlow<Boolean>` + `setEnabled`), implement + bind ở `:core:demo` (`DemoModeControllerImpl`, DataStore key `demo_mode_enabled`, mặc định **false**), optional-bind ở `:core:data` (`@BindsOptionalOf`, giống `DemoDataController`). UI: Profile › Developer (debug only) có switch "Demo mode" (`feature/profile`), ẩn hẳn khi `Optional` rỗng (release).
+  Lý do: yêu cầu "mock chỉ bật khi tôi bật trong Settings" — thay cờ build-time mặc định bật bằng switch runtime mặc định tắt. Supersede phần "mặc định bật ở debug" của D-006/D-201/D-203 (các quyết định đó về việc code mock không có trong release vẫn giữ nguyên).
+- **D-711** · 2026-11-08 · Demo mode — cơ chế tắt/mở khi đang chạy — **Chốt**
+  Thêm `VirtualDevice.isActive` (default `true`) vào `:core:ble`; `VirtualAwareBleScanner`/`VirtualAwareGattConnector` lọc theo nó mỗi lần quét/connect. `:core:demo` bọc mọi `VirtualDevice` bằng `GatedVirtualDevice` (đọc `DemoModeController.enabled.value`) trước khi `@ElementsIntoSet`; xoá hẳn `BuildConfig.MOCK_DEVICE`/`-PunifiedHealth.mockDevice` (build-time).
+  Lý do: `:core:ble` không cần biết gì về demo (chỉ thêm một thuộc tính generic); đổi switch có hiệu lực ngay khi đang chạy (không cần khởi động lại) vì `isActive` được đọc lại ở mỗi vòng quét. `MockWatchDriver.recognize()` không cần gate riêng: quảng bá của nó không còn được emit khi tắt nên driver không bao giờ thấy nó.
+- **D-712** · 2026-11-08 · Demo mode — tách dữ liệu demo khỏi dữ liệu thật — **Chốt**
+  `DemoDataController.clearHealthData()` (xoá hết `health_samples`/`workouts`) đổi thành `clearDemoData()`: chỉ xoá theo `deviceId` nằm trong `DemoDeviceIds.ALL` (địa chỉ của 6 đồng hồ ảo: demo watch, Garmin/Zepp/Huawei ×2/SIG band). Thêm `HealthRecordDao.deleteSamplesForDevices`/`deleteWorkoutsForDevices` (`:core:data`).
+  Lý do: yêu cầu "không bao giờ xoá dữ liệu đồng hồ thật" — bảng `health_samples`/`workouts` đã có cột `deviceId` nên tag theo thiết bị ảo là đủ, không cần thêm cột/migration. Test `DemoDataSeederTest` kiểm tra dữ liệu của một "đồng hồ thật" giả định sống sót qua `clearDemoData()`.
+- **D-713** · 2026-11-08 · Demo mode — UI xác nhận và luồng E2E — **Chốt**
+  Profile › Developer: bật "Demo mode" là tức thì; tắt luôn hỏi trước (dialog "Turn off, keep data" / "Turn off and clear data"); "Fill demo data" (90 ngày, mọi metric) và "Clear demo data" đều chỉ hiện khi đang bật; Clear có dialog xác nhận riêng. E2E: `E2EBase` tự `setEnabled(true)` qua `Optional<DemoModeController>` thật (field inject) trước khi mở `MainActivity`, nên các test ghép đồng hồ ảo không cần bấm switch; `DemoDataE2ETest`/`WorkoutsE2ETest` đổi tag `seed_demo_data`→`fill_demo_data`, `clear_health_data`→`clear_demo_data` (+ tap `confirm_clear_demo_data`). `scripts/e2e.sh` không đổi.
+  Lý do: "Show confirmations; never delete real watch data" cho hành động phá hủy; E2E dùng đúng cơ chế production (`DemoModeController`) thay vì cờ test riêng, nên bản thân cơ chế bật demo cũng được test qua CI.
+
 ## Watch model images (D-8xx)
 
 - **D-801** · 2026-11-08 · Ảnh sản phẩm official đóng gói WebP trong `:core:designsystem` — **Chốt**

@@ -19,6 +19,7 @@ import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.PrivacyTip
 import androidx.compose.material.icons.outlined.Straighten
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -28,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,6 +46,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.domain.repository.DemoDataController
+import com.unified.health.core.domain.repository.DemoModeController
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.UserPreferences
@@ -82,20 +85,58 @@ fun NavGraphBuilder.notificationSettingsScreen(onBack: () -> Unit) {
 class ProfileViewModel @Inject constructor(
     private val preferences: UserPreferencesRepository,
     demoData: Optional<DemoDataController>,
+    demoMode: Optional<DemoModeController>,
 ) : ViewModel() {
     val prefs: StateFlow<UserPreferences> =
         preferences.userPreferences.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UserPreferences())
 
-    /** Present in debug builds only (see `:core:demo`); the Developer section is hidden otherwise. */
+    /** Present only in debug/androidTest builds (see `:core:demo`); the Developer section is hidden otherwise. */
     private val demo: DemoDataController? = demoData.orElse(null)
-    val developerToolsAvailable: Boolean get() = demo != null
+    private val mode: DemoModeController? = demoMode.orElse(null)
+    val developerToolsAvailable: Boolean get() = demo != null && mode != null
+
+    /** Default OFF when the controller is absent (release/no Developer section), mirroring its persisted default. */
+    val demoModeEnabled: StateFlow<Boolean> = mode?.enabled ?: MutableStateFlow(false).asStateFlow()
 
     private val _developerStatus = MutableStateFlow<DeveloperStatus>(DeveloperStatus.Idle)
     val developerStatus: StateFlow<DeveloperStatus> = _developerStatus.asStateFlow()
 
-    fun seedDemoData() = runDeveloperTask("Seeding…") { "Seeded ${it.seed()} records (90 days)" }
+    private val _dialog = MutableStateFlow<DeveloperDialog?>(null)
+    val dialog: StateFlow<DeveloperDialog?> = _dialog.asStateFlow()
 
-    fun clearHealthData() = runDeveloperTask("Clearing…") { it.clearHealthData(); "Health data cleared" }
+    /** The switch itself only ever turns demo mode on directly; turning it off always asks first (never silently drops data). */
+    fun onDemoModeSwitch(turnOn: Boolean) {
+        val controller = mode ?: return
+        if (turnOn) {
+            viewModelScope.launch { controller.setEnabled(true) }
+        } else {
+            _dialog.value = DeveloperDialog.ConfirmTurnOffDemoMode
+        }
+    }
+
+    fun confirmTurnOffDemoMode(alsoClearData: Boolean) {
+        val controller = mode ?: return
+        _dialog.value = null
+        viewModelScope.launch {
+            if (alsoClearData) demo?.clearDemoData()
+            controller.setEnabled(false)
+        }
+    }
+
+    fun requestClearDemoData() {
+        _dialog.value = DeveloperDialog.ConfirmClearDemoData
+    }
+
+    fun confirmClearDemoData() {
+        _dialog.value = null
+        runDeveloperTask("Clearing…") { it.clearDemoData(); "Demo data cleared" }
+    }
+
+    fun dismissDialog() {
+        _dialog.value = null
+    }
+
+    fun fillDemoData() = runDeveloperTask("Filling…") { "Filled ${it.seed()} records (90 days)" }
 
     private fun runDeveloperTask(working: String, task: suspend (DemoDataController) -> String) {
         val controller = demo ?: return
@@ -121,12 +162,20 @@ sealed interface DeveloperStatus {
     data class Done(val message: String) : DeveloperStatus
 }
 
+/** Confirmation dialogs the Developer section can be showing; never act without one for a destructive step. */
+sealed interface DeveloperDialog {
+    data object ConfirmTurnOffDemoMode : DeveloperDialog
+    data object ConfirmClearDemoData : DeveloperDialog
+}
+
 /** Placeholder settings list; most rows are not wired yet (see FEATURES.md §Profile & settings). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ProfileRoute(onOpenNotifications: () -> Unit, viewModel: ProfileViewModel = hiltViewModel()) {
     val prefs by viewModel.prefs.collectAsStateWithLifecycle()
     val developer by viewModel.developerStatus.collectAsStateWithLifecycle()
+    val demoModeEnabled by viewModel.demoModeEnabled.collectAsStateWithLifecycle()
+    val dialog by viewModel.dialog.collectAsStateWithLifecycle()
     Scaffold(topBar = { TopAppBar(title = { Text("Profile") }) }) { padding ->
         Column(Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState())) {
             SettingRow(Icons.Outlined.Person, "Personal info", "Height, weight, birthday (coming soon)")
@@ -156,9 +205,23 @@ internal fun ProfileRoute(onOpenNotifications: () -> Unit, viewModel: ProfileVie
             SettingRow(Icons.Outlined.FileDownload, "Export data", "Coming soon")
             SettingRow(Icons.Outlined.DeleteForever, "Delete all data", "Coming soon", destructive = true)
             if (viewModel.developerToolsAvailable) {
-                DeveloperSection(developer, onSeed = viewModel::seedDemoData, onClear = viewModel::clearHealthData)
+                DeveloperSection(
+                    demoModeEnabled = demoModeEnabled,
+                    status = developer,
+                    onToggleDemoMode = viewModel::onDemoModeSwitch,
+                    onFill = viewModel::fillDemoData,
+                    onRequestClear = viewModel::requestClearDemoData,
+                )
             }
         }
+    }
+    dialog?.let { current ->
+        DeveloperDialogHost(
+            dialog = current,
+            onConfirmTurnOff = viewModel::confirmTurnOffDemoMode,
+            onConfirmClear = viewModel::confirmClearDemoData,
+            onDismiss = viewModel::dismissDialog,
+        )
     }
 }
 
@@ -182,9 +245,19 @@ private fun SettingRow(
 
 private fun Modifier.clickableRow(onClick: () -> Unit): Modifier = clickable(onClick = onClick)
 
-/** Debug builds only: fill or wipe local storage so every chart can be inspected. */
+/**
+ * Debug builds only: "Demo mode" (default off, persisted) controls whether virtual watches show up
+ * in scan; while it is on, "Fill demo data" / "Clear demo data" fill or wipe only demo-tagged rows
+ * so every chart can be inspected without ever touching real watch data.
+ */
 @Composable
-private fun DeveloperSection(status: DeveloperStatus, onSeed: () -> Unit, onClear: () -> Unit) {
+private fun DeveloperSection(
+    demoModeEnabled: Boolean,
+    status: DeveloperStatus,
+    onToggleDemoMode: (Boolean) -> Unit,
+    onFill: () -> Unit,
+    onRequestClear: () -> Unit,
+) {
     HorizontalDivider(Modifier.padding(vertical = Spacing.sm))
     Text(
         "Developer (debug build)",
@@ -194,17 +267,32 @@ private fun DeveloperSection(status: DeveloperStatus, onSeed: () -> Unit, onClea
     )
     val busy = status is DeveloperStatus.Working
     ListItem(
-        modifier = Modifier.clickable(enabled = !busy, onClick = onSeed).testTag("seed_demo_data"),
+        modifier = Modifier.testTag("demo_mode_row"),
         leadingContent = { Icon(Icons.Outlined.Science, contentDescription = null) },
-        headlineContent = { Text("Seed demo data") },
-        supportingContent = { Text("Write 90 days of deterministic data into local storage") },
+        headlineContent = { Text("Demo mode") },
+        supportingContent = { Text("Show virtual watches (Garmin, Zepp, Huawei, SIG band, generic) in scan") },
+        trailingContent = {
+            Switch(
+                checked = demoModeEnabled,
+                onCheckedChange = onToggleDemoMode,
+                modifier = Modifier.testTag("demo_mode_switch"),
+            )
+        },
     )
-    ListItem(
-        modifier = Modifier.clickable(enabled = !busy, onClick = onClear).testTag("clear_health_data"),
-        leadingContent = { Icon(Icons.Outlined.DeleteSweep, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
-        headlineContent = { Text("Clear health data", color = MaterialTheme.colorScheme.error) },
-        supportingContent = { Text("Delete every stored sample and workout (paired devices are kept)") },
-    )
+    if (demoModeEnabled) {
+        ListItem(
+            modifier = Modifier.clickable(enabled = !busy, onClick = onFill).testTag("fill_demo_data"),
+            leadingContent = { Icon(Icons.Outlined.Science, contentDescription = null) },
+            headlineContent = { Text("Fill demo data") },
+            supportingContent = { Text("Write ~90 days of every metric into local storage") },
+        )
+        ListItem(
+            modifier = Modifier.clickable(enabled = !busy, onClick = onRequestClear).testTag("clear_demo_data"),
+            leadingContent = { Icon(Icons.Outlined.DeleteSweep, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
+            headlineContent = { Text("Clear demo data", color = MaterialTheme.colorScheme.error) },
+            supportingContent = { Text("Delete only demo-seeded data; real watch data is kept") },
+        )
+    }
     when (status) {
         DeveloperStatus.Idle -> Unit
         is DeveloperStatus.Working -> LinearProgressIndicator(Modifier.fillMaxWidth().padding(horizontal = Spacing.lg))
@@ -212,6 +300,41 @@ private fun DeveloperSection(status: DeveloperStatus, onSeed: () -> Unit, onClea
             status.message,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(horizontal = Spacing.lg).testTag("developer_status"),
+        )
+    }
+}
+
+@Composable
+private fun DeveloperDialogHost(
+    dialog: DeveloperDialog,
+    onConfirmTurnOff: (alsoClearData: Boolean) -> Unit,
+    onConfirmClear: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    when (dialog) {
+        DeveloperDialog.ConfirmTurnOffDemoMode -> AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text("Turn off demo mode?") },
+            text = { Text("Virtual watches will stop appearing in scan. You can also clear the demo data they filled.") },
+            confirmButton = {
+                TextButton(onClick = { onConfirmTurnOff(true) }, modifier = Modifier.testTag("confirm_turn_off_and_clear")) {
+                    Text("Turn off and clear data")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { onConfirmTurnOff(false) }, modifier = Modifier.testTag("confirm_turn_off_keep_data")) {
+                    Text("Turn off, keep data")
+                }
+            },
+        )
+        DeveloperDialog.ConfirmClearDemoData -> AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text("Clear demo data?") },
+            text = { Text("This removes only demo-seeded data; any real watch data is kept.") },
+            confirmButton = {
+                TextButton(onClick = onConfirmClear, modifier = Modifier.testTag("confirm_clear_demo_data")) { Text("Clear") }
+            },
+            dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
         )
     }
 }

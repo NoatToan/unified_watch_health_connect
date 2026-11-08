@@ -36,7 +36,7 @@ object HuaweiAuthRequiredVirtualDevice {
  * `HuaweiDriver.recognize`/`NAME_PREFIXES`) and is reached through an in-memory GATT link instead
  * of the radio, so pairing it exercises the app's real scan → `HuaweiDriver.recognize` →
  * `HuaweiSession.open` → sync → Room pipeline (docs/DECISIONS.md D-201/D-203). Debug/test builds
- * only, gated the same way as the generic demo watch (`BuildConfig.MOCK_DEVICE`).
+ * only, gated the same way as the generic demo watch (the "Demo mode" switch, see `HuaweiVirtualModule`).
  */
 internal class HuaweiVirtualWatch(
     private val address: String = HuaweiVirtualDevice.ADDRESS,
