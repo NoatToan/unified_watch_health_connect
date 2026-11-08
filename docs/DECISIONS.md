@@ -2631,3 +2631,17 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest` → `core:data`
   `RemoteRacesRepositoryTest` 9/9 pass (fresh XML, không UP-TO-DATE); `./gradlew assembleDebug` →
   BUILD SUCCESSFUL. Commit local, chưa push.
+
+- **D-1178** · 2026-11-09 · Nút back hệ thống ở 4 tab chính: minimize app thay vì đóng hẳn — **Chốt**
+  Hiện `MainActivity`/`UnifiedHealthApp.kt` không có `BackHandler`/`OnBackPressedCallback` tuỳ chỉnh nào
+  — khi user bấm nút back hệ thống lúc đang ở 1 trong 4 tab chính (Home/Activity/Devices/Profile, tức
+  `onMainPager == true`, đã có sẵn biến này trong `UnifiedHealthApp.kt`) và không còn gì để pop trong
+  back stack, hành vi mặc định Android sẽ **đóng hẳn Activity** (kill app) — không mong muốn, vì app có
+  BLE connection + sync service đang chạy nền, đóng hẳn dễ làm gián đoạn. Đổi sang: bấm back ở trạng thái
+  đó thì **minimize app** (đưa về background, `moveTaskToBack(true)` ở `MainActivity`, hoặc cơ chế tương
+  đương ở tầng Compose như `BackHandler` gọi ra activity) — giống hành vi chuẩn của phần lớn app Android
+  tốt, không để back ở màn gốc tự kill tiến trình.
+  **Chỉ áp dụng khi ở gốc** (`onMainPager == true` và back stack của `NavHost` không còn gì để pop) —
+  các màn chi tiết đẩy chồng lên trên (`MetricDetailScreen`, `DeviceDetailScreen`,
+  `WorkoutDetailDestination`, `RaceDetailScreen`, v.v.) vẫn phải giữ nguyên hành vi back bình thường
+  (pop về màn trước đó), không bị đổi thành minimize.
