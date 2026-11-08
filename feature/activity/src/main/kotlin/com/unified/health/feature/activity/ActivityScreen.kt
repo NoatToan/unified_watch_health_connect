@@ -184,7 +184,7 @@ private fun WorkoutItem(workout: Workout, onClick: () -> Unit, modifier: Modifie
 /** "2h 11m" / "45m": fits a third-width tile without wrapping. */
 private fun java.time.Duration.compact(): String {
     val h = toHours()
-    val m = toMinutesPart()
+    val m = (toMinutes() % 60).toInt()
     return if (h > 0) "${h}h ${m}m" else "${m}m"
 }
 
