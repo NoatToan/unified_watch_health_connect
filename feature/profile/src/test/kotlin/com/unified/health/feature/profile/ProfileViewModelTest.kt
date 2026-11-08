@@ -4,6 +4,7 @@ import com.unified.health.core.domain.repository.DemoDataController
 import com.unified.health.core.domain.repository.DemoModeController
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.model.HealthMetricType
+import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.ThemeMode
 import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.UserPreferences
@@ -50,6 +51,7 @@ class ProfileViewModelTest {
         }
         override suspend fun setPinnedMetrics(metrics: List<HealthMetricType>) = Unit
         override suspend fun setFeedCards(order: List<String>, hidden: Set<String>) = Unit
+        override suspend fun setHomeMetricsViewMode(mode: HomeMetricsViewMode) = Unit
     }
 
     private class FakeDemoDataController : DemoDataController {

@@ -16,12 +16,11 @@ import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.DailyHealthSummary
 import com.unified.health.core.model.FeedCardId
 import com.unified.health.core.model.HealthMetricType
+import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.LiveHeartRate
-import com.unified.health.core.model.MetricReading
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.WearableDevice
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,29 +31,27 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
-data class PinnedReading(val metric: HealthMetricType, val reading: MetricReading?)
-
 sealed interface HomeUiState {
     data object Loading : HomeUiState
     data class Success(
         val summary: DailyHealthSummary,
         val device: WearableDevice?,
-        val pinned: List<PinnedReading> = emptyList(),
         val highlights: List<Highlight> = emptyList(),
         val deviceCount: Int = if (device == null) 0 else 1,
-        /** The full metric feed (D-1010: merged from the old Health tab), in the user's order. */
+        /** The full metric feed (D-1010: merged from the old Health tab; D-1072 dropped the
+         *  "Pinned" subset, since this feed already shows every metric), in the user's order. */
         val feedCards: List<FeedCardData> = emptyList(),
         /** Every known feed card id, in the user's order (including hidden ones, for the Edit dialog). */
         val feedOrder: List<String> = emptyList(),
         val hiddenFeedCards: Set<String> = emptySet(),
+        /** D-1073/1074: List vs Grid layout for the "All metrics" section. */
+        val metricsViewMode: HomeMetricsViewMode = HomeMetricsViewMode.GRID,
     ) : HomeUiState
     data class Error(val message: String) : HomeUiState
 }
@@ -66,7 +63,6 @@ private data class FeedBundle(
     val hidden: Set<String>,
 )
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     observeTodaySummary: ObserveTodaySummaryUseCase,
@@ -86,18 +82,6 @@ class HomeViewModel @Inject constructor(
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
-
-    private val pinnedMetrics: Flow<List<HealthMetricType>> =
-        preferences.userPreferences.map { it.pinnedMetrics }.distinctUntilChanged()
-
-    private val pinned: Flow<List<PinnedReading>> = pinnedMetrics.flatMapLatest { metrics ->
-        if (metrics.isEmpty()) {
-            flowOf(emptyList())
-        } else {
-            val today = LocalDate.now()
-            combine(metrics.map { m -> healthData.observeLatestReading(m, today).map { PinnedReading(m, it) } }) { it.toList() }
-        }
-    }
 
     private val metricCards = combine(ALL_METRICS.map(::metricCardFlow)) { it.toList() }
 
@@ -122,14 +106,16 @@ class HomeViewModel @Inject constructor(
         observeTodaySummary(),
         observePrimaryDevice(),
         deviceRepository.pairedDevices.map { it.size },
-        pinned,
         observeHighlights(),
-    ) { summary, device, count, pinnedReadings, highlights ->
-        HomeUiState.Success(summary, device, pinnedReadings, highlights, count)
+    ) { summary, device, count, highlights ->
+        HomeUiState.Success(summary, device, highlights, count)
     }
 
+    private val metricsViewMode: Flow<HomeMetricsViewMode> =
+        preferences.userPreferences.map { it.homeMetricsViewMode }.distinctUntilChanged()
+
     val uiState: StateFlow<HomeUiState> =
-        combine(header, feedBundle) { state, feed ->
+        combine(header, feedBundle, metricsViewMode) { state, feed, viewMode ->
             val enriched = feed.cards.map { card ->
                 when {
                     card !is FeedCardData.Metric -> card
@@ -138,7 +124,7 @@ class HomeViewModel @Inject constructor(
                     else -> card
                 }
             }
-            state.copy(feedCards = enriched, feedOrder = feed.order, hiddenFeedCards = feed.hidden) as HomeUiState
+            state.copy(feedCards = enriched, feedOrder = feed.order, hiddenFeedCards = feed.hidden, metricsViewMode = viewMode) as HomeUiState
         }
             .catch { emit(HomeUiState.Error(it.message ?: "Unable to load data")) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeUiState.Loading)
@@ -157,13 +143,14 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun setPinned(metrics: List<HealthMetricType>) {
-        viewModelScope.launch { preferences.setPinnedMetrics(metrics) }
-    }
-
     /** "Edit cards" on the full metric feed: persists the new order (every id) and the hidden set. */
     fun setFeedCards(order: List<String>, hidden: Set<String>) {
         viewModelScope.launch { preferences.setFeedCards(order, hidden) }
+    }
+
+    /** D-1073/1074: List/Grid toggle on "All metrics". */
+    fun setMetricsViewMode(mode: HomeMetricsViewMode) {
+        viewModelScope.launch { preferences.setHomeMetricsViewMode(mode) }
     }
 
     /** Pull-to-refresh: syncs every connected device. */

@@ -6,6 +6,7 @@ import com.unified.health.core.demo.seed.DemoDataSeeder
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.usecase.MetricStatsCalculator
 import com.unified.health.core.model.HealthMetricType
+import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.ThemeMode
 import com.unified.health.core.model.TimeRange
@@ -42,6 +43,7 @@ class DemoDataSeederTest {
         override suspend fun setSleepGoalHoursOverride(hours: Int?) = Unit
         override suspend fun setPinnedMetrics(metrics: List<HealthMetricType>) = Unit
         override suspend fun setFeedCards(order: List<String>, hidden: Set<String>) = Unit
+        override suspend fun setHomeMetricsViewMode(mode: HomeMetricsViewMode) = Unit
     }
     private val repository = LocalHealthDataRepository(dao, prefs)
     private val charted = HealthMetricType.entries - HealthMetricType.WEIGHT

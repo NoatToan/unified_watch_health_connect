@@ -3,29 +3,30 @@ package com.unified.health.ui
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
-import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.unified.health.feature.home.navigation.HomeDestination
+import com.unified.health.navigation.MainPagerDestination
 import com.unified.health.navigation.TopLevelDestination
 import com.unified.health.navigation.UnifiedHealthNavHost
+import kotlinx.coroutines.launch
 
 /**
- * Root scaffold: bottom NavigationBar for the 4 top-level destinations; hidden on onboarding
- * and detail screens. Each screen owns its TopAppBar.
+ * Root scaffold: the pill bottom nav (D-1051) for the 4 top-level tabs, hidden on onboarding and on
+ * any detail screen pushed on top of them. The 4 tabs themselves live inside one [HorizontalPager]
+ * (D-1052, built in [com.unified.health.navigation.MainPagerDestination]); [pagerState] is hoisted
+ * here, above the NavHost, so it survives pushing/popping detail screens on top — swiping back from
+ * `MetricDetailScreen` to Home always lands back on whichever tab was active before, with no extra
+ * bookkeeping needed. Each screen owns its own TopAppBar.
  */
 @Composable
 fun UnifiedHealthApp(
@@ -36,53 +37,33 @@ fun UnifiedHealthApp(
     val startWithOnboarding = rememberSaveable { !onboardingCompleted }
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
-    val showBottomBar = TopLevelDestination.entries.any { currentDestination.isOn(it) }
+    val onMainPager = currentDestination?.hasRoute(MainPagerDestination::class) == true
 
-    val navigateToTopLevel: (TopLevelDestination) -> Unit = { destination ->
-        navController.navigateToTopLevel(destination)
+    val pagerState = rememberPagerState { TopLevelDestination.entries.size }
+    val coroutineScope = rememberCoroutineScope()
+    val switchTab: (TopLevelDestination) -> Unit = remember(pagerState, coroutineScope) {
+        { destination -> coroutineScope.launch { pagerState.animateScrollToPage(destination.ordinal) } }
     }
+
+    // D-1053: the pager's own horizontal drag must win over the system's edge-swipe-back gesture on
+    // the 4 top-level tabs, but a detail screen pushed on top (MetricDetailScreen, DeviceDetailScreen,
+    // WorkoutDetailDestination...) keeps normal edge-swipe-back — see EdgeGestureExclusion's doc.
+    EdgeGestureExclusion(enabled = onMainPager)
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         bottomBar = {
-            if (showBottomBar) {
-                NavigationBar {
-                    TopLevelDestination.entries.forEach { destination ->
-                        val selected = currentDestination.isOn(destination)
-                        NavigationBarItem(
-                            modifier = Modifier.testTag("nav_${destination.name}"),
-                            selected = selected,
-                            onClick = { navigateToTopLevel(destination) },
-                            icon = {
-                                Icon(
-                                    if (selected) destination.selectedIcon else destination.unselectedIcon,
-                                    contentDescription = null,
-                                )
-                            },
-                            label = { Text(destination.label) },
-                        )
-                    }
-                }
+            if (onMainPager) {
+                PillBottomNavigation(pagerState = pagerState, onSelect = switchTab)
             }
         },
     ) { padding ->
         UnifiedHealthNavHost(
             navController = navController,
             startWithOnboarding = startWithOnboarding,
-            onNavigateToTopLevel = navigateToTopLevel,
+            pagerState = pagerState,
+            onSwitchTab = switchTab,
             modifier = Modifier.padding(padding).consumeWindowInsets(padding),
         )
-    }
-}
-
-private fun NavDestination?.isOn(destination: TopLevelDestination): Boolean =
-    this?.hierarchy?.any { it.hasRoute(destination.routeClass) } == true
-
-private fun NavHostController.navigateToTopLevel(destination: TopLevelDestination) {
-    navigate(destination.route) {
-        // Home is the root of the main graph once onboarding has been popped.
-        popUpTo<HomeDestination> { saveState = true }
-        launchSingleTop = true
-        restoreState = true
     }
 }

@@ -55,7 +55,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.domain.model.DefaultMetricThresholds
@@ -78,19 +77,20 @@ import kotlinx.serialization.Serializable
 import java.util.Optional
 import javax.inject.Inject
 
-@Serializable
-data object ProfileDestination
-
 /** Profile › Notifications. */
 @Serializable
 data object NotificationSettingsDestination
 
-fun NavController.navigateToProfile(navOptions: NavOptions? = null) = navigate(ProfileDestination, navOptions)
-
 fun NavController.navigateToNotificationSettings() = navigate(NotificationSettingsDestination)
 
-fun NavGraphBuilder.profileScreen(onOpenNotifications: () -> Unit) {
-    composable<ProfileDestination> { ProfileRoute(onOpenNotifications = onOpenNotifications) }
+/**
+ * Public entry point for [com.unified.health.navigation.MainPagerDestination]'s `HorizontalPager`
+ * (D-1052) — see [com.unified.health.feature.home.navigation.HomeTabContent] for why this wrapper
+ * exists (`ProfileRoute` itself stays internal).
+ */
+@Composable
+fun ProfileTabContent(onOpenNotifications: () -> Unit) {
+    ProfileRoute(onOpenNotifications = onOpenNotifications)
 }
 
 fun NavGraphBuilder.notificationSettingsScreen(onBack: () -> Unit) {

@@ -1,7 +1,6 @@
 package com.unified.health.feature.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,7 +23,9 @@ import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.outlined.TrendingDown
 import androidx.compose.material.icons.automirrored.outlined.TrendingFlat
 import androidx.compose.material.icons.automirrored.outlined.TrendingUp
+import androidx.compose.material.icons.automirrored.outlined.ViewList
 import androidx.compose.material.icons.outlined.BatteryStd
+import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.AlertDialog
@@ -60,7 +61,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
@@ -99,9 +99,9 @@ import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.DailyHealthSummary
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.HeartRateSummary
+import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.LiveHeartRate
 import com.unified.health.core.model.MetricAggregation
-import com.unified.health.core.model.MetricReading
 import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.StepsSummary
 import com.unified.health.core.model.WatchModelMatcher
@@ -137,15 +137,15 @@ internal fun HomeRoute(
         onMetricClick = onMetricClick,
         onOpenDevices = onOpenDevices,
         onOpenWorkouts = onOpenWorkouts,
-        onPinnedChange = viewModel::setPinned,
         onFeedCardsChanged = viewModel::setFeedCards,
+        onMetricsViewModeChange = viewModel::setMetricsViewMode,
     )
 }
 
 /**
  * Apple Health's Summary merged with the Huawei Health-style flat feed (D-1010): device banner,
- * activity rings, pinned metrics, every metric's own card, then highlights — one scrolling list,
- * no separate "Health" tab.
+ * activity rings, every metric's own card, then highlights — one scrolling list, no separate
+ * "Health" tab. The "Pinned" subset was dropped (D-1072): this feed already shows every metric.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -158,8 +158,8 @@ internal fun HomeScreen(
     onMetricClick: (HealthMetricType) -> Unit,
     onOpenDevices: () -> Unit,
     onOpenWorkouts: () -> Unit = {},
-    onPinnedChange: (List<HealthMetricType>) -> Unit = {},
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit = { _, _ -> },
+    onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit = {},
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
@@ -174,7 +174,7 @@ internal fun HomeScreen(
                 onRefresh = onRefresh,
                 modifier = Modifier.fillMaxSize().padding(padding),
             ) {
-                Summary(state, liveHeartRate, liveMetrics, onMetricClick, onOpenDevices, onOpenWorkouts, onPinnedChange, onFeedCardsChanged)
+                Summary(state, liveHeartRate, liveMetrics, onMetricClick, onOpenDevices, onOpenWorkouts, onFeedCardsChanged, onMetricsViewModeChange)
             }
         }
     }
@@ -188,11 +188,13 @@ private fun Summary(
     onMetricClick: (HealthMetricType) -> Unit,
     onOpenDevices: () -> Unit,
     onOpenWorkouts: () -> Unit,
-    onPinnedChange: (List<HealthMetricType>) -> Unit,
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit,
+    onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit,
 ) {
-    var editingPinned by rememberSaveable { mutableStateOf(false) }
     var editingFeed by rememberSaveable { mutableStateOf(false) }
+    // The live bpm (while fresh) used to override the Pinned heart-rate card's value; now that Pinned
+    // is gone (D-1072) it overrides the heart-rate feed card's value/timestamp instead, so the "Live"
+    // reading is still visible somewhere on Home, next to the green dot (D-1054).
     val liveBpm = freshBpm(liveHeartRate)
     LazyColumn(
         modifier = Modifier.fillMaxSize().testTag("summary_list"),
@@ -203,58 +205,34 @@ private fun Summary(
         item { RingsCard(state.summary, onClick = { onMetricClick(HealthMetricType.CALORIES) }) }
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                SectionHeader("Pinned", Modifier.weight(1f))
-                TextButton(onClick = { editingPinned = true }, modifier = Modifier.testTag("edit_pinned")) { Text("Edit") }
-            }
-        }
-        if (state.pinned.isEmpty()) {
-            item { Text("Pin the metrics you care about most.", color = MaterialTheme.colorScheme.onSurfaceVariant) }
-        }
-        items(state.pinned, key = { "pinned_${it.metric.name}" }) { pinned ->
-            val reading = pinned.reading
-            val live = pinned.metric == HealthMetricType.HEART_RATE && liveBpm != null
-            SummaryMetricCard(
-                metric = pinned.metric,
-                value = if (live) liveBpm.toString() else reading?.let { pinned.metric.formatValue(it.value) },
-                unit = pinned.metric.unit(),
-                timeLabel = if (live) "Live" else reading?.let { timeLabel(pinned.metric, it) },
-                onClick = { onMetricClick(pinned.metric) },
-                modifier = Modifier.testTag("summary_card_${pinned.metric.name}"),
-                isLive = pinned.metric.liveDotOrNull(liveMetrics),
-            )
-        }
-        item {
-            Row(verticalAlignment = Alignment.CenterVertically) {
                 SectionHeader("All metrics", Modifier.weight(1f))
+                ViewModeToggle(
+                    mode = state.metricsViewMode,
+                    onChange = onMetricsViewModeChange,
+                    modifier = Modifier.testTag("metrics_view_mode_toggle"),
+                )
                 TextButton(onClick = { editingFeed = true }, modifier = Modifier.testTag("edit_feed_cards")) { Text("Edit") }
             }
         }
         if (state.feedCards.isEmpty()) {
             item { Text("Every card was hidden. Tap Edit to bring some back.", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("feed_empty")) }
         }
-        // D-1050: a 2-column grid instead of one card per row — a plain Row per pair (not a nested
-        // LazyVerticalGrid, which cannot be sized inside this LazyColumn) keeps the existing per-card
-        // composables and "Edit cards" ordering untouched.
-        items(state.feedCards.chunked(2), key = { pair -> pair.joinToString("_") { it.id } }) { pair ->
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
-                pair.forEach { card ->
-                    Box(Modifier.weight(1f)) {
-                        when (card) {
-                            is FeedCardData.Workouts -> WorkoutsFeedCard(
-                                recent = card.recent,
-                                onClick = onOpenWorkouts,
-                                modifier = Modifier.testTag("card_${card.id}"),
-                            )
-                            is FeedCardData.Metric -> MetricFeedCard(
-                                card = card,
-                                onClick = { onMetricClick(card.metric) },
-                                modifier = Modifier.testTag("card_${card.id}"),
-                                isLive = card.metric.liveDotOrNull(liveMetrics),
-                            )
+        when (state.metricsViewMode) {
+            HomeMetricsViewMode.LIST -> items(state.feedCards, key = { "feed_${it.id}" }) { card ->
+                FeedCard(card, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = false, modifier = Modifier.testTag("card_${card.id}"))
+            }
+            // D-1050/1073: 2-column grid — a plain Row per pair (not a nested LazyVerticalGrid, which
+            // cannot be sized inside this LazyColumn) keeps the existing per-card composables and
+            // "Edit cards" ordering untouched; cards render in their compact (no/tiny chart) form.
+            HomeMetricsViewMode.GRID -> items(state.feedCards.chunked(2), key = { pair -> pair.joinToString("_") { it.id } }) { pair ->
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                    pair.forEach { card ->
+                        Box(Modifier.weight(1f)) {
+                            FeedCard(card, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = true, modifier = Modifier.testTag("card_${card.id}"))
                         }
                     }
+                    if (pair.size == 1) Spacer(Modifier.weight(1f))
                 }
-                if (pair.size == 1) Spacer(Modifier.weight(1f))
             }
         }
         if (state.highlights.isNotEmpty()) {
@@ -263,13 +241,6 @@ private fun Summary(
                 HighlightCard(highlight, onClick = { onMetricClick(highlight.metric) })
             }
         }
-    }
-    if (editingPinned) {
-        EditPinnedDialog(
-            pinned = state.pinned.map { it.metric },
-            onDone = { onPinnedChange(it); editingPinned = false },
-            onDismiss = { editingPinned = false },
-        )
     }
     if (editingFeed) {
         EditFeedCardsDialog(
@@ -281,30 +252,40 @@ private fun Summary(
     }
 }
 
+/** D-1073: switches "All metrics" between List (full-width, chart visible) and Grid (D-1050, compact). */
 @Composable
-private fun EditPinnedDialog(pinned: List<HealthMetricType>, onDone: (List<HealthMetricType>) -> Unit, onDismiss: () -> Unit) {
-    val selected = remember { mutableStateListOf<HealthMetricType>().apply { addAll(pinned) } }
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Pinned metrics") },
-        text = {
-            Column(Modifier.verticalScroll(rememberScrollState())) {
-                HealthMetricType.entries.filter { it != HealthMetricType.WEIGHT }.forEach { metric ->
-                    val checked = metric in selected
-                    ListItem(
-                        headlineContent = { Text(metric.label()) },
-                        // The whole row toggles; the checkbox only mirrors the state.
-                        leadingContent = { Checkbox(checked = checked, onCheckedChange = null) },
-                        modifier = Modifier
-                            .toggleable(value = checked, role = Role.Checkbox) { if (it) selected += metric else selected -= metric }
-                            .testTag("pin_${metric.name}"),
-                    )
-                }
-            }
-        },
-        confirmButton = { TextButton(onClick = { onDone(selected.toList()) }) { Text("Done") } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
-    )
+private fun ViewModeToggle(mode: HomeMetricsViewMode, onChange: (HomeMetricsViewMode) -> Unit, modifier: Modifier = Modifier) {
+    val target = if (mode == HomeMetricsViewMode.GRID) HomeMetricsViewMode.LIST else HomeMetricsViewMode.GRID
+    IconButton(onClick = { onChange(target) }, modifier = modifier) {
+        Icon(
+            if (mode == HomeMetricsViewMode.GRID) Icons.AutoMirrored.Outlined.ViewList else Icons.Outlined.GridView,
+            contentDescription = if (target == HomeMetricsViewMode.GRID) "Switch to grid view" else "Switch to list view",
+        )
+    }
+}
+
+/** Dispatches to the Workouts/Metric card, in its full ([compact] = false, List) or compact (Grid) form. */
+@Composable
+private fun FeedCard(
+    card: FeedCardData,
+    onMetricClick: (HealthMetricType) -> Unit,
+    onOpenWorkouts: () -> Unit,
+    liveMetrics: Set<HealthMetricType>,
+    liveBpm: Int?,
+    compact: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    when (card) {
+        is FeedCardData.Workouts -> WorkoutsFeedCard(recent = card.recent, onClick = onOpenWorkouts, compact = compact, modifier = modifier)
+        is FeedCardData.Metric -> MetricFeedCard(
+            card = card,
+            onClick = { onMetricClick(card.metric) },
+            modifier = modifier,
+            isLive = card.metric.liveDotOrNull(liveMetrics),
+            liveBpm = liveBpm.takeIf { card.metric == HealthMetricType.HEART_RATE },
+            compact = compact,
+        )
+    }
 }
 
 @Composable
@@ -454,17 +435,31 @@ private fun RingLegend(label: String, value: String, color: Color) {
 // ---------------------------------------------------------------- full metric feed (merged from the old Health tab, D-1010)
 
 @Composable
-private fun WorkoutsFeedCard(recent: List<Workout>, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun WorkoutsFeedCard(recent: List<Workout>, onClick: () -> Unit, compact: Boolean = false, modifier: Modifier = Modifier) {
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("Workouts", style = MaterialTheme.typography.titleSmall, color = UnifiedHealthTheme.metricColors.exercise, modifier = Modifier.weight(1f))
                 Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            if (recent.isEmpty()) {
-                Text("No workouts yet. They appear here after your watch syncs one.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            } else {
-                recent.forEach { workout -> WorkoutRow(workout) }
+            when {
+                recent.isEmpty() -> Text(
+                    "No workouts yet. They appear here after your watch syncs one.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                // Grid (D-1073): just name + value — the count of recent workouts, no per-workout rows.
+                compact -> {
+                    Text("${recent.size}", style = MetricValueTextStyle)
+                    Text(
+                        "Last ${recent.first().type.feedLabel().lowercase()}: ${WORKOUT_DATE.format(recent.first().start.atZone(ZoneId.systemDefault()))}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+                else -> recent.forEach { workout -> WorkoutRow(workout) }
             }
         }
     }
@@ -498,7 +493,17 @@ private fun WorkoutRow(workout: Workout) {
 private val WORKOUT_DATE: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
 
 @Composable
-private fun MetricFeedCard(card: FeedCardData.Metric, onClick: () -> Unit, modifier: Modifier = Modifier, isLive: Boolean? = null) {
+private fun MetricFeedCard(
+    card: FeedCardData.Metric,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    isLive: Boolean? = null,
+    /** Overrides [FeedCardData.Metric.reading] with the live bpm while fresh (D-1054); only ever
+     *  non-null for [HealthMetricType.HEART_RATE] — see [FeedCard]. */
+    liveBpm: Int? = null,
+    /** D-1073: Grid — name + value and a tiny chart only, no resting-bpm/sleep-score/insight lines. */
+    compact: Boolean = false,
+) {
     val metric = card.metric
     val accent = UnifiedHealthTheme.metricColors.forMetric(metric)
     if (!card.hasData) {
@@ -507,34 +512,40 @@ private fun MetricFeedCard(card: FeedCardData.Metric, onClick: () -> Unit, modif
     }
     val insight = metricInsightLine(metric, card.highlight, card.weekStats)
     val sleepSession = card.sleepSession
+    val value = if (liveBpm != null) liveBpm.toString() else card.reading?.let { metric.formatValue(it.value) }
+    val cardTimeLabel = if (liveBpm != null) "Live" else card.reading?.let { timeLabel(metric, it) }
     val description = buildString {
         append(metric.label()).append(", ")
-        append(card.reading?.let { "${metric.formatValue(it.value)} ${metric.unit()}".trim() } ?: "no reading today")
-        insight?.let { append(", ").append(it) }
+        append(value?.let { "$it ${metric.unit()}".trim() } ?: "no reading today")
+        if (!compact) insight?.let { append(", ").append(it) }
         if (isLive != null) append(if (isLive) ", live" else ", not live")
     }
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().semantics(mergeDescendants = true) { contentDescription = description }) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-            FeedCardHeader(metric, accent, card.reading, isLive)
-            card.restingBpm?.let {
-                Text("Resting $it bpm", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            FeedCardHeader(metric, accent, value, metric.unit(), cardTimeLabel, isLive)
+            if (!compact) {
+                card.restingBpm?.let {
+                    Text("Resting $it bpm", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                sleepSession?.score?.let {
+                    Text("Sleep score $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
             }
-            sleepSession?.score?.let {
-                Text("Sleep score $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            MiniChart(metric, card.weekPoints, sleepSession, accent)
-            if (metric.aggregation == MetricAggregation.SLEEP && sleepSession != null) {
-                SleepStageLegend(sleepSession, Modifier.testTag("feed_sleep_legend"))
-            }
-            if (insight != null) {
-                Text(insight, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            MiniChart(metric, card.weekPoints, sleepSession, accent, tiny = compact)
+            if (!compact) {
+                if (metric.aggregation == MetricAggregation.SLEEP && sleepSession != null) {
+                    SleepStageLegend(sleepSession, Modifier.testTag("feed_sleep_legend"))
+                }
+                if (insight != null) {
+                    Text(insight, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
             }
         }
     }
 }
 
 @Composable
-private fun FeedCardHeader(metric: HealthMetricType, accent: Color, reading: MetricReading?, isLive: Boolean? = null) {
+private fun FeedCardHeader(metric: HealthMetricType, accent: Color, value: String?, unit: String, timeLabel: String?, isLive: Boolean? = null) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(metric.icon(), contentDescription = null, tint = accent, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(Spacing.sm))
@@ -544,14 +555,14 @@ private fun FeedCardHeader(metric: HealthMetricType, accent: Color, reading: Met
             LiveDot(isLive)
         }
         Spacer(Modifier.weight(1f))
-        reading?.let { Text(timeLabel(metric, it), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+        timeLabel?.let { Text(it, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
     }
     Row(verticalAlignment = Alignment.Bottom) {
-        Text(reading?.let { metric.formatValue(it.value) } ?: "--", style = MetricValueTextStyle)
-        if (reading != null && metric.unit().isNotEmpty()) {
+        Text(value ?: "--", style = MetricValueTextStyle)
+        if (value != null && unit.isNotEmpty()) {
             Spacer(Modifier.width(Spacing.xs))
             Text(
-                metric.unit(),
+                unit,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 4.dp),
@@ -560,25 +571,28 @@ private fun FeedCardHeader(metric: HealthMetricType, accent: Color, reading: Met
     }
 }
 
-/** Bars for cumulative metrics, min–max capsules for discrete ones, a compact stage bar for sleep. */
+/** Bars for cumulative metrics, min–max capsules for discrete ones, a compact stage bar for sleep.
+ *  [tiny] (D-1073 Grid) shrinks it to a small accent visual with no axis labels. */
 @Composable
 private fun MiniChart(
     metric: HealthMetricType,
     weekPoints: List<ChartPoint>,
     sleepSession: SleepSession?,
     accent: Color,
+    tiny: Boolean = false,
 ) {
     val axis: (Float) -> String = when (metric) {
         HealthMetricType.DISTANCE -> { v -> compactNumber(v / 1000f) }
         else -> ::compactNumber
     }
+    val height = if (tiny) 36.dp else 90.dp
     when {
         metric.aggregation == MetricAggregation.SLEEP && sleepSession != null ->
-            SleepStageChart(sleepSession, Modifier.testTag("feed_sleep_chart"), height = 110.dp)
+            SleepStageChart(sleepSession, Modifier.testTag("feed_sleep_chart"), height = if (tiny) 48.dp else 110.dp)
         metric.aggregation == MetricAggregation.DISCRETE ->
-            HealthRangeChart(weekPoints, accent, Modifier.testTag("feed_mini_range"), height = 90.dp, axisLabel = axis)
+            HealthRangeChart(weekPoints, accent, Modifier.testTag("feed_mini_range"), height = height, axisLabel = axis)
         else ->
-            HealthBarChart(weekPoints, accent, Modifier.testTag("feed_mini_bar"), height = 90.dp, axisLabel = axis)
+            HealthBarChart(weekPoints, accent, Modifier.testTag("feed_mini_bar"), height = height, axisLabel = axis)
     }
 }
 
@@ -672,7 +686,6 @@ private fun HomeScreenPreview() {
             state = HomeUiState.Success(
                 summary,
                 WearableDevice("1", "Demo Watch", "00:11", WearableVendor.GARMIN, batteryPercent = 76, connectionState = ConnectionState.Connected),
-                pinned = listOf(PinnedReading(HealthMetricType.STEPS, MetricReading(HealthMetricType.STEPS, 6240.0, Instant.now()))),
             ),
             isRefreshing = false,
             onRefresh = {},

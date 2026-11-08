@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.model.FeedCardId
 import com.unified.health.core.model.HealthMetricType
+import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.ThemeMode
 import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.UserPreferences
@@ -37,6 +38,9 @@ class DataStoreUserPreferencesRepository @Inject constructor(
 
         /** Comma-separated feed card ids hidden from the feed. */
         val hiddenFeedCards = stringPreferencesKey("hidden_feed_cards")
+
+        /** D-1074: [HomeMetricsViewMode] name. */
+        val homeMetricsViewMode = stringPreferencesKey("home_metrics_view_mode")
     }
 
     override val userPreferences: Flow<UserPreferences> = dataStore.data.map { p ->
@@ -52,6 +56,8 @@ class DataStoreUserPreferencesRepository @Inject constructor(
             pinnedMetrics = p[Keys.pinnedMetrics]?.let(::parseMetrics) ?: defaults.pinnedMetrics,
             feedCardOrder = p[Keys.feedCardOrder]?.let(::parseFeedCardOrder) ?: defaults.feedCardOrder,
             hiddenFeedCards = p[Keys.hiddenFeedCards]?.let(::parseFeedCardIds)?.toSet() ?: defaults.hiddenFeedCards,
+            homeMetricsViewMode = p[Keys.homeMetricsViewMode]?.let { runCatching { HomeMetricsViewMode.valueOf(it) }.getOrNull() }
+                ?: defaults.homeMetricsViewMode,
         )
     }
 
@@ -95,6 +101,10 @@ class DataStoreUserPreferencesRepository @Inject constructor(
             it[Keys.feedCardOrder] = order.filter(::isKnownFeedCard).distinct().joinToString(",")
             it[Keys.hiddenFeedCards] = hidden.filter(::isKnownFeedCard).distinct().joinToString(",")
         }
+    }
+
+    override suspend fun setHomeMetricsViewMode(mode: HomeMetricsViewMode) {
+        dataStore.edit { it[Keys.homeMetricsViewMode] = mode.name }
     }
 
     /** Unknown names (a metric removed in a later version) are skipped. */

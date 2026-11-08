@@ -3,6 +3,7 @@ package com.unified.health.feature.profile
 import com.unified.health.core.domain.repository.NotificationPreferencesRepository
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.model.HealthMetricType
+import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.NotificationPreferences
 import com.unified.health.core.model.ThemeMode
 import com.unified.health.core.model.UnitSystem
@@ -52,6 +53,7 @@ class NotificationSettingsViewModelTest {
         override suspend fun setSleepGoalHoursOverride(hours: Int?) = Unit
         override suspend fun setPinnedMetrics(metrics: List<HealthMetricType>) = Unit
         override suspend fun setFeedCards(order: List<String>, hidden: Set<String>) = Unit
+        override suspend fun setHomeMetricsViewMode(mode: HomeMetricsViewMode) = Unit
     }
 
     private val notifications = FakeNotifications()

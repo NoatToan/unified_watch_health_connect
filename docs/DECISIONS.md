@@ -1039,3 +1039,76 @@ tránh 2 agent sửa song song cùng file.
   `LIST` | `GRID`), mặc định `GRID` (giữ hành vi hiện tại không đổi cho user cũ), lưu theo đúng
   pattern các preference khác (`dailyStepGoal`...) — đổi 1 lần, nhớ mãi, không hỏi lại mỗi lần mở
   app.
+- **D-1075** · 2026-11-08 · Hiện "Last synced" luôn trên Home/Summary — **Chốt**
+  Thêm dòng/label "Last synced: <thời điểm>" hiển thị thường trực trên màn Home (gần `DeviceBanner`,
+  không phải chỉ trong Device Detail) — lấy từ `lastSyncedAt` đã có ở `PairedDeviceDao`/model, format
+  tương đối ("2 phút trước") giống style cũ, cập nhật realtime khi có sync mới. Lý do: user muốn dễ
+  nhìn trạng thái đồng bộ ngay trên Summary thay vì phải vào Device Detail mới thấy.
+  Lưu ý: chưa implement trong đợt android-coder hiện tại (D-1076..1081 dưới đây) — quyết định này
+  được log bởi agent/phiên khác trong lúc android-coder đang làm dở D-1050..1054, không nằm trong
+  brief gửi cho android-coder lần này nên **không** động vào để tránh đụng việc của người khác; cần
+  một lượt riêng để implement.
+
+## Thực thi D-1050..1054 + D-1072..1074 (grid/list toggle, pill nav, pager, edge-swipe, live dot) — D-107x
+
+- **D-1076** · 2026-11-08 · Kiến trúc gộp 4 tab top-level vào 1 `HorizontalPager` — **Chốt**
+  Thay vì 4 `composable<>` NavHost destination riêng (Home/Activity/Devices/Profile), tạo 1 destination
+  duy nhất `MainPagerDestination` (`app/.../navigation/MainPagerDestination.kt`) chứa `HorizontalPager`
+  với 4 trang gọi thẳng composable của từng feature. Mỗi feature module thêm 1 wrapper public mới
+  (`HomeTabContent`, `ActivityTabContent`, `DevicesTabContent`, `ProfileTabContent`) vì composable
+  `...Route` gốc là `internal` (chỉ app module mới cần gọi xuyên module để nhúng vào pager — không
+  đổi `internal` của `...Route` để giữ nguyên tắc encapsulation). Các destination con (MetricDetail,
+  MetricData, WorkoutDetail, DeviceDetail, NotificationSettings) giữ nguyên, vẫn push/pop trên cùng
+  `NavHost` như cũ — chỉ 4 destination top-level bị gộp. `PagerState` được hoist ở `UnifiedHealthApp`
+  (phía trên `NavHost`), nên khi push/pop 1 màn con, tab đang chọn không bị mất — không cần thêm state
+  riêng để nhớ tab trước đó. `TopLevelDestination` enum bỏ `route`/`routeClass` (không còn là NavHost
+  destination riêng), `entries` order = thứ tự trang trong pager (index = `ordinal`).
+- **D-1077** · 2026-11-08 · Pill indicator theo `PagerState` trực tiếp, không `animateDpAsState` thêm — **Chốt**
+  D-1051 gợi ý `animateFloatAsState`/`animateDpAsState`; thực tế dùng trực tiếp
+  `pagerState.currentPage + pagerState.currentPageOffsetFraction` (giá trị liên tục, cùng cách Google
+  dùng cho pager indicator mẫu) làm vị trí pill, vì `pagerState` tự animate mượt khi tap
+  (`animateScrollToPage`) và update 1:1 theo ngón tay khi vuốt — bọc thêm 1 lớp animate riêng sẽ làm
+  pill trễ hơn ngón tay lúc đang vuốt thật. Tab được tô màu "đang chọn" = index gần vị trí liên tục
+  nhất (`position.roundToInt()`), không phải tab đang hiển thị đầy đủ trên màn (khớp cảm giác "đang
+  kéo sang tab nào" khi còn nửa chừng). Chiều cao thanh pill cố định 72dp (không least-size) vì pill
+  indicator con dùng `fillMaxHeight()`, cần constraint hữu hạn từ cha.
+- **D-1078** · 2026-11-08 · Chi tiết `View.systemGestureExclusionRects` cho D-1053 — **Tạm**
+  `EdgeGestureExclusion` (`app/.../ui/EdgeGestureExclusion.kt`) chỉ bật khi `currentDestination` đang
+  là `MainPagerDestination` (tự tắt + xoá rects ngay khi có màn con được push lên trên, nhờ
+  `DisposableEffect(enabled, ...)`), 2 dải cạnh trái/phải rộng 32dp, cao full màn hình, tự tính lại khi
+  `View.OnLayoutChangeListener` báo đổi kích thước (xoay máy, đổi inset), guard `Build.VERSION.SDK_INT
+  >= Q` (API thấp hơn không có gesture nav để tắt). Vẫn **Tạm** như D-1053 đã đánh dấu — chưa có máy
+  thật/emulator ở chế độ gesture-nav để xác nhận 32dp đủ thắng vùng edge-swipe mặc định của OEM (một số
+  máy Samsung/OEM khác có vùng edge rộng hơn AOSP); 3-button nav không bị ảnh hưởng (không có gesture
+  để exclude).
+- **D-1079** · 2026-11-08 · `LiveHealthRepository.liveMetrics` tính theo độ mới (freshness), không theo trạng thái connect — **Chốt**
+  `heartRate` (`StateFlow`) vốn giữ giá trị cuối ngay cả sau khi mất kết nối (theo đúng thiết kế đã có,
+  "collector trễ vẫn thấy giá trị gần nhất") — nên KHÔNG thể dùng `heartRate.value != null` hay
+  `connection.state == Connected` để suy ra "đang live", vì cả hai đều có thể true trong khi giá trị
+  hiển thị thực ra đã cũ. Thêm `liveWhileFresh(maxAge)` (`DefaultLiveHealthRepository.kt`): true ngay
+  khi có reading mới, tự chuyển false sau 15s (cùng hằng số `LIVE_MAX_AGE` mà `HomeScreen.freshBpm` đã
+  dùng) nếu không có reading mới hơn — dùng `flatMapLatest` + `delay` 1-shot, không phải vòng lặp tick.
+  Hiện chỉ `HEART_RATE` có live mode (driver chỉ expose `liveHeartRate`); thêm metric live khác sau này
+  chỉ cần lặp lại pattern `liveWhileFresh` cho stream riêng của nó rồi `combine` vào `liveMetrics`.
+  Giá trị bpm live cũng ghi đè lên value/time hiển thị của card heart-rate trong "All metrics" (cả List
+  lẫn Grid) — hành vi này trước đây chỉ có ở card "Pinned" (đã xoá theo D-1072), nay chuyển sang card
+  chính để không mất tính năng.
+- **D-1080** · 2026-11-08 · Thêm `HealthMetricType.VO2_MAX` để có card VO2max (D-1050) — **Tạm**
+  D-1050 yêu cầu card VO2max nhưng domain model chưa có `HealthMetricType.VO2_MAX` (mới chỉ có
+  `HealthRecord.Vo2Max`/`SampleType.VO2_MAX` ở tầng lưu trữ theo D-1000/D-1060) — thêm entry mới
+  (aggregation `DISCRETE`, icon/label/unit/màu riêng ở `core/designsystem`, `MetricSeriesBuilder.typesFor
+  VO2_MAX -> [SampleType.VO2_MAX]`, thêm vào `UserPreferences.DEFAULT_FEED_CARD_ORDER`) — tự động có
+  card trong "All metrics" vì `HomeViewModel.ALL_METRICS = HealthMetricType.entries` đã lặp hết mọi
+  metric từ trước. `DemoHealthDataGenerator` seed thêm 1 reading VO2max/ngày (giá trị suy ra từ activity
+  trend, không phải thuật toán thật — D-803) để demo data / `DemoDataSeederTest` có dữ liệu hiển thị.
+  Đánh dấu Tạm vì field number/mapping FIT thật của VO2max (D-1060) vẫn còn `NEEDS-REAL-WATCH`; phần
+  Tạm ở đây chỉ là việc thêm `HealthMetricType` mới, không phải lại nghi vấn field FIT.
+- **D-1081** · 2026-11-08 · Card nào lên grid, card nào gộp — tái dùng nguyên hệ feed card cũ — **Chốt**
+  Theo D-1050 "agent tự chọn chỉ số nào lên card riêng vs gộp vào pinned/highlights đã có": chọn tái
+  dùng toàn bộ hệ `FeedCardData`/"All metrics" đã có (mọi `HealthMetricType` + Workouts, không lọc bớt)
+  thay vì tạo 1 danh sách card con mới — đơn giản hơn, không trùng lặp code, và D-1072 vừa xoá "Pinned"
+  nên feed này giờ là nơi duy nhất hiển thị từng metric. List mode = card đầy đủ hiện có (chart, dòng
+  resting bpm/sleep score, insight 1 dòng). Grid mode (compact) = cùng card nhưng ẩn resting bpm/sleep
+  score/insight, chart thu nhỏ còn 36–48dp (`MiniChart(tiny = true)`), theo đúng yêu cầu D-1073 "không
+  có hoặc chart rất nhỏ, chỉ tên + giá trị". `WorkoutsFeedCard` compact tương tự: chỉ số lượng gần đây +
+  1 dòng workout gần nhất, bỏ danh sách đầy đủ.
