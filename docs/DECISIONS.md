@@ -2371,3 +2371,33 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   ảnh thu nhỏ lại về trạng thái ban đầu (không giữ nguyên size đang dở, không đóng modal) — user có thể
   thử giữ lại. Cùng khu vực file với D-1148/D-1162 (agent đang xử lý Devices fullscreen viewer) — gộp
   chung, không tách agent riêng.
+
+- **D-1168** · 2026-11-09 · Thực thi D-1161: `RaceCardWithPhoto` - ảnh góc dưới-phải (128dp, D-1146) đổi
+  thành chip nhỏ ở hàng trên, cạnh `TerrainBadge` — **Chốt**
+  Chụp màn hình Home thật (`adb exec-out screencap`) trên `emulator-5554` theo đúng yêu cầu D-1161, nhìn
+  trực tiếp: ảnh góc dưới-phải 128dp (D-1146) tạo thành 1 khối chữ nhật lớn chiếm gần nửa chiều rộng và
+  khoảng 1/3 chiều cao card, nằm sát ngay cạnh pill CTA ("Đã đóng đăng ký"/"Xem chi tiết") làm hàng dưới
+  cùng bị chật; bản thân ảnh poster còn có chữ/logo riêng (vd "Together we run further") cạnh tranh thị
+  giác với chữ của card — đúng như user mô tả "chiếm content xấu". **Sửa**: bỏ hẳn vị trí góc dưới-phải
+  + kích thước 128dp (sizeIn vuông duy nhất) của D-1146. Ảnh rõ nét giờ là 1 **chip nhỏ nằm cùng hàng với
+  `TerrainBadge`** ở trên cùng card (`Row` `SpaceBetween`: terrain bên trái, ảnh bên phải), kích thước cap
+  **độc lập theo cả 2 chiều** (`RaceThumbnailMaxWidth=72dp`/`RaceThumbnailMaxHeight=56dp`, không còn 1 cap
+  vuông duy nhất) để dù ảnh nguồn ngang/dọc/vuông thế nào cũng không bao giờ phình to thành khối lớn —
+  vẫn `ContentScale.Fit` giữ tỉ lệ gốc (D-1142 không đổi). Thêm viền trắng mờ + nền trắng mờ nhẹ quanh chip
+  (giống ngôn ngữ hình ảnh của `TerrainBadge`/`DistancePills`) để nó đọc như 1 badge có chủ đích, không
+  phải 1 miếng ảnh cắt thô dán lên card. Vì ảnh giờ chỉ nằm ở hàng trên cùng (không còn trải dọc hết chiều
+  cao card như D-1146), **bỏ hẳn phần dành chỗ `padding(end = ...)`** ở cả khối tên/ngày lẫn
+  `RaceCardBottomInfo` — khối giá/CTA ở dưới cùng lấy lại **toàn bộ chiều rộng card**, đây mới là điểm
+  sửa chính giải quyết đúng cảm giác "chiếm/chật" user thấy, không chỉ đơn thuần giảm số dp. Tỉ lệ nội
+  dung (cỡ chữ tên/ngày/khoảng cách/giá/CTA so với nhau) giữ nguyên 100% theo đúng ràng buộc D-1161 — chỉ
+  đổi cách bố trí/hiển thị ảnh. Đã tự chụp lại sau khi sửa (Home carousel + `RacesScreen` full-width list,
+  cả ảnh ngang/dọc/gần-vuông khác nhau) và xác nhận bằng mắt: card gọn hơn hẳn, chip ảnh đọc như 1 logo/
+  poster-accent nhỏ, không còn tranh chỗ với CTA/giá, tên giải giờ wrap đủ 2 dòng thoải mái không cần né.
+  Phạm vi chỉ sửa `core/designsystem/.../RaceCard.kt` theo đúng brief D-1161 — không đụng `HomeScreen.kt`,
+  `UnifiedHealthApp.kt`, `PillBottomNavigation.kt`, `feature/devices`, `RaceDetailScreen.kt` (các agent
+  khác đang làm song song trong các file đó; hai file `ActivityRings.kt`/`UnifiedHealthApp.kt` đang dở dang
+  thiếu import của phiên khác được `git stash` tạm để build qua, rồi `stash pop` lại nguyên trạng sau khi
+  xong — không commit kèm).
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest` (rerun đầy đủ, 438 task
+  thực thi lại, `RaceCardTest` 4/4 pass) và `./gradlew assembleDebug` — cả hai xanh; cài `app-debug.apk`
+  lên `emulator-5554` và chụp màn hình thật trước/sau để tự xác nhận bằng mắt theo đúng yêu cầu D-1161.

@@ -1,6 +1,7 @@
 package com.unified.health.core.designsystem.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -64,13 +65,14 @@ import java.time.format.DateTimeFormatter
  * (docs/DECISIONS.md D-1105) so both render identically; the caller only controls width via
  * [modifier] (a fixed width for the carousel, `fillMaxWidth()` for the list).
  *
- * D-1136/D-1142/D-1146: a real photo now gets its own layout ([RaceCardWithPhoto]) — a full-card
- * blurred "ambient backdrop" of the photo behind the text, plus a sharp corner thumbnail of the same
- * photo at its native aspect ratio (D-1142 moved the thumbnail off a fixed-ratio full-width hero band,
- * which cropped/distorted the feed's very inconsistent real image ratios; D-1146 then moved it to the
- * bottom-right corner and doubled its size after user feedback that D-1142's version read too small)
- * — instead of D-1129's full-bleed overlay+scrim. A race still on the terrain-gradient fallback keeps
- * the original single-layer look ([RaceCardWithGradient]), unchanged by any of D-1136/D-1142/D-1146.
+ * D-1136/D-1142/D-1146/D-1161: a real photo now gets its own layout ([RaceCardWithPhoto]) - a full-card
+ * blurred "ambient backdrop" of the photo behind the text, plus a small sharp thumbnail of the same
+ * photo at its native aspect ratio as a top-row accent chip next to [TerrainBadge] (D-1142 moved the
+ * thumbnail off a fixed-ratio full-width hero band, which cropped/distorted the feed's very inconsistent
+ * real image ratios; D-1146 then moved it to a large bottom-right corner slab, which a real-device
+ * screenshot showed crowding the card's own content; D-1161 moved it back to a small top-row chip)
+ * - instead of D-1129's full-bleed overlay+scrim. A race still on the terrain-gradient fallback keeps
+ * the original single-layer look ([RaceCardWithGradient]), unchanged by any of D-1136/D-1142/D-1146/D-1161.
  */
 @Composable
 fun RaceCard(race: Race, onClick: () -> Unit, modifier: Modifier = Modifier) {
@@ -86,42 +88,40 @@ fun RaceCard(race: Race, onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 /**
- * D-1142/D-1146: layout for a race with a real photo. The feed's real crawled images (D-1111) come in
- * very inconsistent aspect ratios (tall posters, wide banners, squares); forcing them into a
+ * D-1142/D-1146/D-1161: layout for a race with a real photo. The feed's real crawled images (D-1111)
+ * come in very inconsistent aspect ratios (tall posters, wide banners, squares); forcing them into a
  * fixed-ratio full-width hero band (D-1136's original approach) cropped/distorted many of them badly.
  * Instead: a blurred, scaled-to-fill copy of the photo covers the *entire* card as an ambient backdrop
- * ([RaceImageBackdrop]) — this handles any ratio gracefully, since it's blurred and scaled rather than
- * shown as-is — and a sharp thumbnail of the same photo, sized to its own native aspect ratio (never
- * forced square or full-width), sits in the **bottom-right** corner as a badge-like accent (D-1146;
- * D-1142 originally put it top-right at half this size, but that read too small). All of the card's
- * text stays on the blurred backdrop; the whole text column's width is capped short of the thumbnail
- * (not just the bottom info row) because the doubled thumbnail is tall enough on a portrait-oriented
- * photo to reach up alongside the name/date block too, not just the distances/price/CTA row below it.
+ * ([RaceImageBackdrop]) - this handles any ratio gracefully, since it's blurred and scaled rather than
+ * shown as-is - and a small sharp thumbnail of the same photo ([RaceThumbnailBadge]), sized to its own
+ * native aspect ratio (never forced square or full-width), sits as a compact accent chip in the *top
+ * row*, next to [TerrainBadge].
+ *
+ * D-1142 put this top-right at 64dp (user: too small). D-1146 doubled it to 128dp and moved it
+ * bottom-right, spanning most of the card's height so both the name/date block and the bottom
+ * price/CTA row had to reserve end-padding to avoid it. A real-device screenshot taken for D-1161
+ * showed that version overwhelming the card: the slab visually crowded the price/CTA row sitting right
+ * beside it, and the thumbnail's own busy poster content (logos, banner text) competed with the card's
+ * own typography. D-1161 moved it back to the top row at a much smaller, independently-width/height
+ * capped size ([RaceThumbnailMaxWidth]/[RaceThumbnailMaxHeight]) so it never stretches into a slab
+ * regardless of the source photo's aspect ratio. Living only in the top row - not spanning the card's
+ * full height - means the name/date block and the bottom distances/price/CTA row both get their full
+ * card width back; no end-padding reservation is needed anywhere any more.
  */
 @Composable
 private fun RaceCardWithPhoto(race: Race, imageUrl: String, today: LocalDate) {
     Box(Modifier.fillMaxSize()) {
         RaceImageBackdrop(imageUrl, Modifier.fillMaxSize())
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(Spacing.sm)
-                .sizeIn(maxWidth = RaceThumbnailMaxSize, maxHeight = RaceThumbnailMaxSize)
-                .clip(RoundedCornerShape(Spacing.xs)),
-        ) {
-            // Fit (not Crop/fillMaxSize) so this block's own measured size follows the image's native
-            // aspect ratio within the sizeIn cap above, instead of a fixed square/full-size footprint.
-            RaceHeroImage(imageUrl, contentScale = ContentScale.Fit)
-        }
-        Column(
-            // D-1146: reserves space along the *whole* right edge of the text column (not only next to
-            // the bottom info row) — the thumbnail is bottom-right now and twice as large, so a tall
-            // portrait-oriented photo can reach up far enough to sit behind the name/date block too.
-            modifier = Modifier.fillMaxSize().padding(Spacing.lg).padding(end = RaceThumbnailReservedWidth),
-            verticalArrangement = Arrangement.SpaceBetween,
-        ) {
+        Column(modifier = Modifier.fillMaxSize().padding(Spacing.lg), verticalArrangement = Arrangement.SpaceBetween) {
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                TerrainBadge(race.terrain)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Top,
+                ) {
+                    TerrainBadge(race.terrain)
+                    RaceThumbnailBadge(imageUrl)
+                }
                 RaceNameText(race.name, style = MaterialTheme.typography.titleLarge, maxLines = 2)
                 Text(raceDateLine(race, today), style = MaterialTheme.typography.bodyMedium, color = Color.White.copy(alpha = 0.92f))
             }
@@ -130,11 +130,31 @@ private fun RaceCardWithPhoto(race: Race, imageUrl: String, today: LocalDate) {
     }
 }
 
-/** D-1146: doubled from D-1142's original 64dp — the small thumbnail read too small at that size. */
-private val RaceThumbnailMaxSize = 128.dp
+/**
+ * D-1161: the sharp-photo accent, now a small chip in the top row next to TerrainBadge instead of the
+ * large bottom-right slab D-1146 left it as. A thin translucent-white border and background keep it
+ * reading as a deliberate little "badge" (same visual language as TerrainBadge/DistancePills' pills)
+ * rather than a raw cropped rectangle of someone else's poster pasted on top of the card.
+ */
+@Composable
+private fun RaceThumbnailBadge(imageUrl: String) {
+    Box(
+        modifier = Modifier
+            .sizeIn(maxWidth = RaceThumbnailMaxWidth, maxHeight = RaceThumbnailMaxHeight)
+            .clip(RoundedCornerShape(Spacing.xs))
+            .background(Color.White.copy(alpha = 0.12f))
+            .border(1.dp, Color.White.copy(alpha = 0.4f), RoundedCornerShape(Spacing.xs)),
+    ) {
+        // Fit (not Crop/fillMaxSize) so this block's own measured size follows the image's native
+        // aspect ratio within the sizeIn cap above, instead of a fixed square/full-size footprint.
+        RaceHeroImage(imageUrl, contentScale = ContentScale.Fit)
+    }
+}
 
-/** Thumbnail's own [RaceThumbnailMaxSize] plus its outer padding and a little breathing room. */
-private val RaceThumbnailReservedWidth = 152.dp
+/** D-1161: capped on both axes independently (unlike D-1142/D-1146's single square cap) so even a wide
+ *  landscape source photo stays a compact top-row chip instead of stretching wide across the card. */
+private val RaceThumbnailMaxWidth = 72.dp
+private val RaceThumbnailMaxHeight = 56.dp
 
 /** D-1106: unchanged by D-1136 — a race with no real image yet keeps the original full-bleed
  *  gradient-background-with-overlaid-text look. */
