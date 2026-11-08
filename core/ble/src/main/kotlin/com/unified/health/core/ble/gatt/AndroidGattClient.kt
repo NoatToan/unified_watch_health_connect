@@ -34,6 +34,7 @@ import java.util.concurrent.ConcurrentHashMap
 @SuppressLint("MissingPermission")
 internal class AndroidGattClient private constructor(
     private val device: BluetoothDevice,
+    private val options: GattOptions,
 ) : GattClient {
 
     override val address: String = device.address
@@ -128,11 +129,13 @@ internal class AndroidGattClient private constructor(
     private suspend fun open(context: Context, timeoutMs: Long) {
         val waiter = CompletableDeferred<Unit>()
         connectWaiter = waiter
-        gatt = device.connectGatt(context, false, callback, BluetoothDevice.TRANSPORT_LE)
+        val link = device.connectGatt(context, false, callback, BluetoothDevice.TRANSPORT_LE)
             ?: throw GattException("connectGatt returned null")
+        gatt = link
         try {
             withTimeout(timeoutMs) { waiter.await() }
-            operation("discoverServices", DISCOVERY_TIMEOUT_MS) { it.discoverServices() }
+            if (options.refreshCacheBeforeDiscovery) refreshGattCache(link)
+            operation("discoverServices", options.discoveryTimeoutMs) { it.discoverServices() }
         } catch (t: Throwable) {
             close()
             throw if (t is GattException || t is CancellationException) t else GattException("Connecting to $address failed: ${t.message}", t)
@@ -274,7 +277,7 @@ internal class AndroidGattClient private constructor(
      */
     private suspend fun operation(
         name: String,
-        timeoutMs: Long = OPERATION_TIMEOUT_MS,
+        timeoutMs: Long? = null,
         start: (BluetoothGatt) -> Boolean,
     ): GattEvent = operationLock.withLock {
         val g = gatt ?: throw GattDisconnectedException()
@@ -282,7 +285,8 @@ internal class AndroidGattClient private constructor(
         pending = deferred
         try {
             if (!start(g)) throw GattException("$name was rejected by the Bluetooth stack")
-            val event = withTimeoutOrNull(timeoutMs) { deferred.await() } ?: throw GattException("$name timed out")
+            val timeout = timeoutMs ?: options.operationTimeoutMs
+            val event = withTimeoutOrNull(timeout) { deferred.await() } ?: throw GattException("$name timed out")
             if (event.status != BluetoothGatt.GATT_SUCCESS) throw GattException("$name failed (status ${event.status})")
             event
         } finally {
@@ -290,12 +294,28 @@ internal class AndroidGattClient private constructor(
         }
     }
 
+    /**
+     * Refreshes the hidden GATT service cache (`BluetoothGatt.refresh()`), the vendor app's
+     * workaround for stale services / status 133 (`GattPeripheral.java:235-249`, `a0.java:994-1008`).
+     * Guarded to API 28+ and best effort: hidden-API enforcement or a missing method must not fail
+     * the connection.
+     */
+    private fun refreshGattCache(gatt: BluetoothGatt) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) return
+        try {
+            val method = BluetoothGatt::class.java.getDeclaredMethod("refresh")
+            method.isAccessible = true
+            method.invoke(gatt)
+            Log.d(TAG, "Refreshed GATT cache for $address before service discovery")
+        } catch (e: Exception) {
+            Log.w(TAG, "GATT cache refresh unavailable: ${e.message}")
+        }
+    }
+
     companion object {
         private const val TAG = "AndroidGattClient"
-        private const val OPERATION_TIMEOUT_MS = 10_000L
-        private const val DISCOVERY_TIMEOUT_MS = 20_000L
 
-        suspend fun connect(context: Context, device: BluetoothDevice, timeoutMs: Long): AndroidGattClient =
-            AndroidGattClient(device).also { it.open(context, timeoutMs) }
+        suspend fun connect(context: Context, device: BluetoothDevice, options: GattOptions): AndroidGattClient =
+            AndroidGattClient(device, options).also { it.open(context, options.connectTimeoutMs) }
     }
 }

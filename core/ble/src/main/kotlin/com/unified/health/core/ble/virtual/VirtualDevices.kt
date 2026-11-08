@@ -4,6 +4,7 @@ import android.util.Log
 import com.unified.health.core.ble.gatt.AndroidGattConnector
 import com.unified.health.core.ble.gatt.GattClient
 import com.unified.health.core.ble.gatt.GattConnector
+import com.unified.health.core.ble.gatt.GattOptions
 import com.unified.health.core.ble.scan.Advertisement
 import com.unified.health.core.ble.scan.AndroidBleScanner
 import com.unified.health.core.ble.scan.BleScanner
@@ -61,9 +62,15 @@ internal class VirtualAwareGattConnector @Inject constructor(
     private val virtualDevices: Set<@JvmSuppressWildcards VirtualDevice>,
 ) : GattConnector {
 
-    override suspend fun connect(address: String, bond: Boolean, mtu: Int?): GattClient {
+    override suspend fun connect(
+        address: String,
+        bond: Boolean,
+        mtu: Int?,
+        options: GattOptions,
+        bondOptional: Boolean,
+    ): GattClient {
         val virtual = virtualDevices.firstOrNull { it.advertisement.address.equals(address, ignoreCase = true) }
-            ?: return real.connect(address, bond, mtu)
+            ?: return real.connect(address, bond, mtu, options, bondOptional)
         val client = virtual.connect()
         if (mtu != null) runCatching { client.requestMtu(mtu) }
         return client

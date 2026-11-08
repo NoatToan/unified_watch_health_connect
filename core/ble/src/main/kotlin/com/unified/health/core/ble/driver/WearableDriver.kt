@@ -1,6 +1,7 @@
 package com.unified.health.core.ble.driver
 
 import com.unified.health.core.ble.gatt.GattClient
+import com.unified.health.core.ble.gatt.GattOptions
 import com.unified.health.core.ble.scan.Advertisement
 import com.unified.health.core.model.CredentialRequirement
 import com.unified.health.core.model.WearableVendor
@@ -39,11 +40,30 @@ interface WearableDriver {
 /**
  * @property bond create an OS-level bond (SMP pairing) before the handshake.
  * @property mtu ATT MTU to request after connecting, or null to keep the default.
+ * @property connectTimeoutMs how long `connectGatt` may take before the attempt fails.
+ * @property discoveryTimeoutMs how long service discovery may take.
+ * @property operationTimeoutMs per read/write/descriptor operation.
+ * @property refreshGattCacheBeforeDiscovery refresh the hidden GATT service cache on API 28+
+ *   before `discoverServices` (vendor workaround for stale services / status 133; no-op below 28).
  */
 data class LinkRequirements(
     val bond: Boolean = false,
+    /** When true, a failed OS bond is logged and the link continues unbonded (Garmin Auth fallback). */
+    val bondOptional: Boolean = false,
     val mtu: Int? = null,
-)
+    val connectTimeoutMs: Long = GattOptions.DEFAULT_CONNECT_TIMEOUT_MS,
+    val discoveryTimeoutMs: Long = GattOptions.DEFAULT_DISCOVERY_TIMEOUT_MS,
+    val operationTimeoutMs: Long = GattOptions.DEFAULT_OPERATION_TIMEOUT_MS,
+    val refreshGattCacheBeforeDiscovery: Boolean = false,
+) {
+    /** The GATT-layer subset, consumed by [com.unified.health.core.ble.gatt.GattConnector]. */
+    internal fun toGattOptions() = GattOptions(
+        connectTimeoutMs = connectTimeoutMs,
+        discoveryTimeoutMs = discoveryTimeoutMs,
+        operationTimeoutMs = operationTimeoutMs,
+        refreshCacheBeforeDiscovery = refreshGattCacheBeforeDiscovery,
+    )
+}
 
 /** Shared scale for [WearableDriver.recognize] so drivers rank consistently. */
 object RecognitionScore {

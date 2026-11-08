@@ -26,13 +26,45 @@ import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Per-link GATT timing and workaround knobs. The defaults preserve the app-wide behaviour; a
+ * driver overrides them through its [com.unified.health.core.ble.driver.LinkRequirements].
+ *
+ * @property refreshCacheBeforeDiscovery call the hidden `BluetoothGatt.refresh()` before
+ *   `discoverServices` on API 28+ (no-op below 28). The Zepp app does this after every connect.
+ */
+data class GattOptions(
+    val connectTimeoutMs: Long = DEFAULT_CONNECT_TIMEOUT_MS,
+    val discoveryTimeoutMs: Long = DEFAULT_DISCOVERY_TIMEOUT_MS,
+    val operationTimeoutMs: Long = DEFAULT_OPERATION_TIMEOUT_MS,
+    val refreshCacheBeforeDiscovery: Boolean = false,
+) {
+    init {
+        require(connectTimeoutMs > 0 && discoveryTimeoutMs > 0 && operationTimeoutMs > 0) {
+            "GATT timeouts must be positive"
+        }
+    }
+
+    companion object {
+        const val DEFAULT_CONNECT_TIMEOUT_MS = 20_000L
+        const val DEFAULT_DISCOVERY_TIMEOUT_MS = 20_000L
+        const val DEFAULT_OPERATION_TIMEOUT_MS = 10_000L
+    }
+}
+
 /** Opens GATT links. Abstracted so the connection manager can be tested without Android. */
 interface GattConnector {
     /**
      * Connects to [address], discovers services, then optionally bonds and requests an MTU.
      * Retries once on the transient connect failures common on Android (e.g. status 133).
      */
-    suspend fun connect(address: String, bond: Boolean, mtu: Int?): GattClient
+    suspend fun connect(
+        address: String,
+        bond: Boolean,
+        mtu: Int?,
+        options: GattOptions = GattOptions(),
+        bondOptional: Boolean = false,
+    ): GattClient
 }
 
 @Singleton
@@ -42,7 +74,13 @@ internal class AndroidGattConnector @Inject constructor(
     private val pairingCodes: PairingCodeRequester,
 ) : GattConnector {
 
-    override suspend fun connect(address: String, bond: Boolean, mtu: Int?): GattClient {
+    override suspend fun connect(
+        address: String,
+        bond: Boolean,
+        mtu: Int?,
+        options: GattOptions,
+        bondOptional: Boolean,
+    ): GattClient {
         requireConnectPermission()
         val adapter = context.getSystemService(BluetoothManager::class.java)?.adapter
             ?: throw BluetoothUnavailableException("This device has no Bluetooth adapter")
@@ -51,12 +89,19 @@ internal class AndroidGattConnector @Inject constructor(
         val device = adapter.getRemoteDevice(address)
 
         val client = try {
-            connectWithRetry(device)
+            connectWithRetry(device, options)
         } catch (e: SecurityException) {
             throw BluetoothUnavailableException("Bluetooth permission was revoked", e)
         }
         try {
-            if (bond) ensureBonded(device)
+            if (bond) {
+                try {
+                    ensureBonded(device)
+                } catch (e: Exception) {
+                    if (!bondOptional) throw e
+                    Log.w(TAG, "OS bond with $address failed; continuing unbonded for app-level auth", e)
+                }
+            }
             if (mtu != null) {
                 runCatching { client.requestMtu(mtu) }
                     .onFailure { Log.w(TAG, "MTU $mtu request failed, keeping ${client.mtu}", it) }
@@ -68,16 +113,16 @@ internal class AndroidGattConnector @Inject constructor(
         return client
     }
 
-    private suspend fun connectWithRetry(device: BluetoothDevice): GattClient {
+    private suspend fun connectWithRetry(device: BluetoothDevice, options: GattOptions): GattClient {
         repeat(CONNECT_ATTEMPTS - 1) { attempt ->
             try {
-                return AndroidGattClient.connect(context, device, CONNECT_TIMEOUT_MS)
+                return AndroidGattClient.connect(context, device, options)
             } catch (e: GattException) {
                 Log.w(TAG, "Connect attempt ${attempt + 1} to ${device.address} failed: ${e.message}")
                 delay(RETRY_DELAY_MS)
             }
         }
-        return AndroidGattClient.connect(context, device, CONNECT_TIMEOUT_MS)
+        return AndroidGattClient.connect(context, device, options)
     }
 
     /**
@@ -160,7 +205,6 @@ internal class AndroidGattConnector @Inject constructor(
     private companion object {
         const val TAG = "AndroidGattConnector"
         const val CONNECT_ATTEMPTS = 2
-        const val CONNECT_TIMEOUT_MS = 20_000L
         const val RETRY_DELAY_MS = 600L
         const val BOND_TIMEOUT_MS = 60_000L
         const val PASSKEY_LENGTH = 6

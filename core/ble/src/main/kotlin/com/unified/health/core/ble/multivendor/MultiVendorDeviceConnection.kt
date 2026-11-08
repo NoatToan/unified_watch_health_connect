@@ -78,7 +78,13 @@ class MultiVendorDeviceConnection @Inject internal constructor(
         var gatt: GattClient? = null
         try {
             val requirements = driver.linkRequirements
-            gatt = connector.connect(macAddress, bond = requirements.bond, mtu = requirements.mtu)
+            gatt = connector.connect(
+                macAddress,
+                bond = requirements.bond,
+                mtu = requirements.mtu,
+                options = requirements.toGattOptions(),
+                bondOptional = requirements.bondOptional,
+            )
             _state.value = ConnectionState.Authenticating
             val session = driver.openSession(gatt, SessionContext(macAddress, credentials.readerFor(macAddress), credentials.writerFor(macAddress)))
             activate(macAddress, session, gatt)
