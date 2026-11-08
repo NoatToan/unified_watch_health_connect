@@ -30,6 +30,14 @@ interface WearableDriver {
     fun recognize(advertisement: Advertisement): Int
 
     /**
+     * Vendor-specific identifiers this driver can read out of [advertisement] (e.g. Garmin's
+     * product number from manufacturer data), surfaced on [com.unified.health.core.model.DiscoveredDevice.vendorIdentifiers]
+     * so the UI can disambiguate between several nearby candidates of the same vendor during
+     * QR-code pairing. Default: none. Must be cheap and side-effect free, like [recognize].
+     */
+    fun identifiers(advertisement: Advertisement): Map<String, String> = emptyMap()
+
+    /**
      * Runs the vendor handshake/authentication on an already connected [gatt] link and returns a
      * ready session. Throw [WearableProtocolException] (or a subclass) on failure; the caller
      * closes [gatt]. Must honour coroutine cancellation.
