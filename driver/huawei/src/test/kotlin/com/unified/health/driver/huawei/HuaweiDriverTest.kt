@@ -41,6 +41,7 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.Clock
@@ -79,7 +80,10 @@ class HuaweiDriverTest {
             assertEquals("$name", RecognitionScore.NONE, driver.recognize(Advertisement("A", name, -60)))
         }
         assertEquals(RecognitionScore.NONE, driver.recognize(Advertisement("A", "Polar", -60, serviceUuids = setOf(StandardUuids.HEART_RATE_SERVICE))))
-        assertTrue(driver.linkRequirements.bond)
+        // §1.2: TLV 9 of the 0x0101 response decides bonding (0 = none, 1/2 = bond when BOND_NONE),
+        // so the link requirement must not bond before the handshake. There is no GattClient bond
+        // operation to run the TLV 9 branch afterwards; see TODO(huawei-bond) in HuaweiDriver.
+        assertFalse(driver.linkRequirements.bond)
         assertEquals(null, driver.linkRequirements.mtu)
     }
 

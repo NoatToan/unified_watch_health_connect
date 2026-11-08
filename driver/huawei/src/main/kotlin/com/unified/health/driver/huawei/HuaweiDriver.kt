@@ -38,7 +38,8 @@ import javax.inject.Inject
  * (§7.6, §9 Option A).
  *
  * ## What is implemented and unit-tested
- * - Recognition by advertised name prefix and the FE86 service UUID; bonding as link requirement.
+ * - Recognition by advertised name prefix and the FE86 service UUID; no fixed pre-bond (the
+ *   watch's TLV 9 after 0x0101 decides, see [linkRequirements]).
  * - 0x5A framing: single and sliced frames (flags 1/2/3 + index), CRC-16/XMODEM, chunking at the
  *   negotiated single-frame size, reassembly of notifications (§4.1-4.3).
  * - TLVs with base-128 varint lengths and nested (≥ 0x80) tags (§4.4).
@@ -89,12 +90,22 @@ class HuaweiDriver internal constructor(
     override val vendor = WearableVendor.HUAWEI
 
     /**
-     * The app creates an OS bond when pairing (`pairDevice`/`createSystemBond`,
-     * [V] `DevicesManagementService.java:174-191`) and the watch reports lost bond keys in link
-     * parameter 9 (§3.4). No ATT MTU request: the app never calls `requestMtu` and negotiates frame
-     * sizes in 0x0101 instead (§3.1).
+     * No fixed OS bond: bonding is watch-parameter-driven. After the 0x0101 response, TLV 9
+     * (`bondStatus`) decides — 0 = no bond; 1/2 = bond when the phone is `BOND_NONE`
+     * ([V] `ckv.java:101-121`, `coi.java:576-605`; HUAWEI_CONNECTION_ANALYSIS.md §1.2). The vendor
+     * calls `createBond()` at that point, after discovery and before auth selection; TLV 9 = 2 while
+     * already bonded is "key-miss" (unpair, status 56, reconnect). Requiring a bond up front (the
+     * previous `bond = true`) bonded watches whose TLV 9 is 0, which the vendor never does.
+     *
+     * TODO(huawei-bond): [com.unified.health.core.ble.gatt.GattClient] exposes no bond operation,
+     * so this driver cannot run the TLV 9 ∈ {1,2} branch after the handshake. That needs a
+     * per-link bond request from core (not added here). The supported `authVersion == 0` path
+     * continues to work on watches that do not require a bond.
+     *
+     * No ATT MTU request: the app never calls `requestMtu` and negotiates frame sizes in 0x0101
+     * instead (§3.1).
      */
-    override val linkRequirements = LinkRequirements(bond = true, mtu = null)
+    override val linkRequirements = LinkRequirements(bond = false, mtu = null)
 
     override fun recognize(advertisement: Advertisement): Int = when {
         advertisement.hasService(HuaweiUuids.SERVICE) -> RecognitionScore.VENDOR_SERVICE
