@@ -2610,3 +2610,24 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   qua nếu đã có data rồi, tránh backfill lặp lại mỗi lần mở app). (2) Verify bằng cách cài lên máy thật,
   mở lại đúng workout cũ mà user vừa xem, xác nhận splits/HR-zone/trend chart giờ đã hiện — không chỉ
   tin code compile.
+
+- **D-1177** · 2026-11-09 · Dispatch D-1175 (sort giải chạy: OPEN trước, rồi theo ngày) — 1 chỗ sort dùng
+  chung, không đụng `RacesCarousel`/pager (D-1173) — **Chốt**
+  **Sort cũ**: `RemoteRacesRepository.toState()` chỉ `races.sortedBy { it.startDate }` (1 cấp, theo ngày
+  gần nhất trước, không phân biệt trạng thái đăng ký) — đây là chỗ duy nhất sort trong pipeline;
+  `HomeViewModel`/`RacesViewModel` đều đọc trực tiếp `racesRepository.races` (qua `RacesState.Success`)
+  không tự sort/re-sort gì thêm, `HomeScreen`'s `RacesCarousel` cũng không `.take(N)` cắt bớt (chỉ
+  `.filter { raceStatus == UPCOMING }`) — nên sort ở repository là đủ, không cần sửa 2 nơi.
+  **Sort mới**: cùng `toState()`, đổi thành `sortedWith(compareBy({ it.registrationStatus !=
+  RaceRegistrationStatus.OPEN }, { it.startDate }))` — tái dùng đúng `RaceRegistrationStatus` (D-1106),
+  không thêm field/enum mới. OPEN lên đầu, còn lại (`CLOSED`/`SOLD_OUT`/`UNKNOWN`) xuống sau; trong mỗi
+  nhóm, ngày gần nhất trước.
+  **Không đụng** `HomeScreen.kt`'s `RacesCarousel` composable — agent khác đang sửa auto-scroll/pager
+  của nó (D-1173) song song.
+  **Test**: sửa test cũ `RemoteRacesRepositoryTest` (`fresh fetch keeps every valid race sorted by
+  startDate…`) để không còn lẫn registrationStatus khác nhau (chỉ còn so ngày, cùng 1 tier UNKNOWN), và
+  thêm test mới `D-1177 OPEN races sort ahead of CLOSED SOLD_OUT and UNKNOWN regardless of date` (mix
+  OPEN/CLOSED/SOLD_OUT/UNKNOWN với ngày xen kẽ, assert đúng thứ tự 2 cấp).
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest` → `core:data`
+  `RemoteRacesRepositoryTest` 9/9 pass (fresh XML, không UP-TO-DATE); `./gradlew assembleDebug` →
+  BUILD SUCCESSFUL. Commit local, chưa push.

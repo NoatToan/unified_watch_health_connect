@@ -62,15 +62,18 @@ class RemoteRacesRepositoryTest {
         RemoteRacesRepository(store, httpClient, backgroundScope, Dispatchers.Unconfined)
 
     @Test
-    fun `fresh fetch keeps every valid race sorted by startDate, dropping malformed entries`() = runTest {
+    fun `fresh fetch keeps every valid race sorted by startDate within a registration tier, dropping malformed entries`() = runTest {
         // D-1125: past races are no longer dropped here (D-1113 needs them available for
         // RacesScreen's "show past races" toggle) — only malformed entries (no registrationUrl) are.
+        // All three races below share the default UNKNOWN registrationStatus tier (D-1177), so this
+        // test is purely about the startDate ordering within one tier; see the dedicated D-1177
+        // tests below for the registration-status tiering itself.
         val store = newStore("prefs1.preferences_pb")
         val json = """
             {
               "races": [
                 { "id": "past", "name": "Past race", "startDate": "2020-01-01", "registrationUrl": "https://example.com/past", "raceStatus": "past" },
-                { "id": "future-2", "name": "Later race", "startDate": "2026-12-25", "registrationUrl": "https://example.com/later", "terrain": "trail", "registrationStatus": "open" },
+                { "id": "future-2", "name": "Later race", "startDate": "2026-12-25", "registrationUrl": "https://example.com/later", "terrain": "trail" },
                 { "id": "future-1", "name": "Sooner race", "startDate": "2026-11-20", "registrationUrl": "https://example.com/sooner" },
                 { "id": "malformed", "name": "No registrationUrl", "startDate": "2026-12-01" }
               ]
@@ -81,6 +84,31 @@ class RemoteRacesRepositoryTest {
         runCurrent()
         val state = repository.races.first() as RacesState.Success
         assertEquals(listOf("past", "future-1", "future-2"), state.races.map { it.id })
+    }
+
+    @Test
+    fun `D-1177 OPEN races sort ahead of CLOSED SOLD_OUT and UNKNOWN regardless of date`() = runTest {
+        val store = newStore("prefs9.preferences_pb")
+        val json = """
+            {
+              "races": [
+                { "id": "closed-soon", "name": "Closed, soon", "startDate": "2026-11-10", "registrationUrl": "https://example.com/a", "registrationStatus": "closed" },
+                { "id": "open-late", "name": "Open, late", "startDate": "2026-12-30", "registrationUrl": "https://example.com/b", "registrationStatus": "open" },
+                { "id": "sold-out-soon", "name": "Sold out, soon", "startDate": "2026-11-12", "registrationUrl": "https://example.com/c", "registrationStatus": "sold_out" },
+                { "id": "open-soon", "name": "Open, soon", "startDate": "2026-11-15", "registrationUrl": "https://example.com/d", "registrationStatus": "open" },
+                { "id": "unknown-soon", "name": "Unknown, soon", "startDate": "2026-11-11", "registrationUrl": "https://example.com/e" }
+              ]
+            }
+        """.trimIndent()
+        val repository = repository(store, client { request -> jsonResponse(request, json) })
+
+        runCurrent()
+        val state = repository.races.first() as RacesState.Success
+        // Both OPEN races first (soonest first), then the non-OPEN races in startDate order.
+        assertEquals(
+            listOf("open-soon", "open-late", "closed-soon", "unknown-soon", "sold-out-soon"),
+            state.races.map { it.id },
+        )
     }
 
     @Test

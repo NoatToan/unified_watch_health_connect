@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.unified.health.core.domain.repository.RacesRepository
 import com.unified.health.core.domain.repository.RacesState
 import com.unified.health.core.model.Race
+import com.unified.health.core.model.RaceRegistrationStatus
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -40,9 +41,14 @@ private object RacesCacheKeys {
  * DataStore so the app never needs to re-fetch more than once a day, and a slow/offline/404 network
  * call never blocks the UI: the last-known-good cache stays on screen while a fetch is retried.
  *
- * Every parseable race (past or upcoming) is kept, sorted by [Race.startDate] (D-1125 — superseding
- * the D-1109 date-based drop, now that D-1113 lets `RacesScreen` show past races on request); the
- * "upcoming by default" filter lives in the UI layer, on [Race.raceStatus].
+ * Every parseable race (past or upcoming) is kept, sorted two-tier (D-1177): races whose
+ * [Race.registrationStatus] is [RaceRegistrationStatus.OPEN] ("registerable now") come first, then
+ * everything else (`CLOSED`/`SOLD_OUT`/`UNKNOWN`); within each tier, soonest [Race.startDate] first.
+ * This is the single sort applied before either consumer sees the list, so Home's carousel
+ * (`HomeViewModel`) and the full "Tất cả giải" list (`RacesViewModel`/`RacesScreen`) never disagree
+ * on order (D-1125 — superseding the D-1109 date-based drop, now that D-1113 lets `RacesScreen` show
+ * past races on request); the "upcoming by default" filter still lives in the UI layer, on
+ * [Race.raceStatus].
  */
 @Singleton
 class RemoteRacesRepository(
@@ -128,9 +134,14 @@ class RemoteRacesRepository(
      * since D-1113 lets the user opt into seeing past races on `RacesScreen`) — "upcoming by default"
      * is now a UI-layer filter on [Race.raceStatus], not something the repository hides from callers.
      * [RacesState.Empty] means the feed had no valid race at all, not "no upcoming race".
+     *
+     * Sort (D-1177): [RaceRegistrationStatus.OPEN] races first, then the rest, each tier by soonest
+     * [Race.startDate] — the single shared ordering both Home's carousel and `RacesScreen` render.
      */
     private fun toState(races: List<Race>): RacesState {
-        val sorted = races.sortedBy { it.startDate }
+        val sorted = races.sortedWith(
+            compareBy({ it.registrationStatus != RaceRegistrationStatus.OPEN }, { it.startDate }),
+        )
         return if (sorted.isEmpty()) RacesState.Empty else RacesState.Success(sorted)
     }
 
