@@ -129,6 +129,33 @@ class DevicesViewModelTest {
     }
 
     @Test
+    fun `find sheet carries the hint vendor and name, then the matched device once found`() = runTest(dispatcher) {
+        val vm = viewModel()
+        val qrFindStates = mutableListOf<QrFindUiState?>()
+        backgroundScope.launch { vm.uiState.collect { qrFindStates += it.qrFind } }
+        val device = huawei("HUAWEI Band 8 Pro")
+        repository.scanFlow.value = listOf(device)
+
+        vm.onQrCodeScanned("t=71&n=HUAWEI Band 8 Pro&r=123456")
+
+        val scanning = qrFindStates.first { it?.status == QrFindStatus.SCANNING }
+        assertEquals(WearableVendor.HUAWEI, scanning?.vendor)
+        assertEquals("HUAWEI Band 8 Pro", scanning?.hintName)
+        val found = qrFindStates.first { it?.status == QrFindStatus.FOUND }
+        assertEquals(device, found?.matchedDevice)
+    }
+
+    @Test
+    fun `manual MAC find has no vendor hint`() = runTest(dispatcher) {
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+
+        vm.findByMacAddress("aa:bb:cc:dd:ee:ff")
+
+        assertNull(vm.uiState.value.qrFind?.vendor)
+    }
+
+    @Test
     fun `Garmin QR hint matches by product number when the advertisement carries one`() = runTest(dispatcher) {
         val vm = viewModel()
         backgroundScope.launch { vm.uiState.collect {} }

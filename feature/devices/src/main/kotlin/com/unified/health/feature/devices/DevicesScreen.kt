@@ -556,12 +556,23 @@ private fun ManualMacDialog(onDismiss: () -> Unit, onSubmit: (String) -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun QrFindSheet(state: QrFindUiState, onCancel: () -> Unit, onRetry: () -> Unit, onChooseFromList: () -> Unit) {
+    val matchedDevice = state.matchedDevice
+    // Best guess from the QR hint until the watch is actually found over BLE, then the real device wins.
+    val watchModel = remember(state.vendor, state.hintName, matchedDevice) {
+        matchedDevice?.let { WatchModelMatcher.match(it) } ?: state.vendor?.let { WatchModelMatcher.match(it, state.hintName) }
+    }
     ModalBottomSheet(onDismissRequest = onCancel, modifier = Modifier.testTag("qr_find_sheet")) {
         Column(
             modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(Spacing.lg),
             verticalArrangement = Arrangement.spacedBy(Spacing.sm),
         ) {
-            Text("Looking for ${state.label}", style = MaterialTheme.typography.titleMedium)
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                WatchImage(model = watchModel, size = 64.dp, interactive = true, revealKey = matchedDevice != null)
+                Text(
+                    watchModel?.takeUnless { it.isGeneric }?.displayName ?: "Looking for ${state.label}",
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            }
             when (state.status) {
                 QrFindStatus.SCANNING -> {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
@@ -572,6 +583,12 @@ private fun QrFindSheet(state: QrFindUiState, onCancel: () -> Unit, onRetry: () 
                         Text("Code on the watch: $it", style = MaterialTheme.typography.bodyMedium)
                     }
                     TextButton(onClick = onCancel, modifier = Modifier.testTag("qr_find_cancel")) { Text("Cancel") }
+                }
+                QrFindStatus.FOUND -> {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                        CircularProgressIndicator(modifier = Modifier.size(20.dp))
+                        Text("Found it — pairing…", style = MaterialTheme.typography.bodyMedium)
+                    }
                 }
                 QrFindStatus.TIMED_OUT -> {
                     Text(

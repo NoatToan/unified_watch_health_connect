@@ -43,17 +43,24 @@ data class DevicesUiState(
 /** A key the app just created and is about to write to the watch; shown once so the user can back it up. */
 data class GeneratedKey(val deviceName: String, val label: String, val hex: String)
 
-enum class QrFindStatus { SCANNING, TIMED_OUT }
+enum class QrFindStatus { SCANNING, FOUND, TIMED_OUT }
 
 /**
  * State for the "Looking for <watch>" bottom sheet. [huaweiPin] is set only for a Huawei QR scan
  * that carried a PIN; it is never persisted and never logged (`docs/DECISIONS.md` D-902) — shown
  * once here, for this attempt only, so the user can type it on the watch if asked.
+ *
+ * [vendor]/[hintName] let the sheet guess a product image before the watch is found (null vendor
+ * for the manual-MAC fallback, which has no brand hint); once [matchedDevice] is set, the sheet
+ * switches to [WatchModelMatcher.match] on the real device.
  */
 data class QrFindUiState(
     val label: String,
     val status: QrFindStatus,
     val huaweiPin: String? = null,
+    val vendor: WearableVendor? = null,
+    val hintName: String? = null,
+    val matchedDevice: DiscoveredDevice? = null,
 )
 
 private data class ScanState(
@@ -109,14 +116,19 @@ class DevicesViewModel @Inject constructor(
 
     fun pair(device: DiscoveredDevice) = launchWithMessage(success = "Added ${device.name}") {
         stopScan()
-        repository.pair(device).map { }
+        repository.pair(device).map { }.also { scan.update { state -> state.copy(qrFind = null) } }
     }
 
     /** "Pair with QR code": parse the scanned text and, for a recognised vendor, start looking for that watch. */
     fun onQrCodeScanned(raw: String) {
         val hint = QrPairingParser.parse(raw)
         if (hint != null) {
-            startFind(label = labelFor(hint), huaweiPin = (hint as? QrPairingHint.Huawei)?.pin) { discovered -> selectMatch(discovered, hint) }
+            startFind(
+                label = labelFor(hint),
+                vendor = vendorFor(hint),
+                hintName = (hint as? QrPairingHint.Huawei)?.btName,
+                huaweiPin = (hint as? QrPairingHint.Huawei)?.pin,
+            ) { discovered -> selectMatch(discovered, hint) }
             return
         }
         val brand = QrPairingParser.isLikelyVendorQr(raw)
@@ -153,22 +165,35 @@ class DevicesViewModel @Inject constructor(
         startScan()
     }
 
-    private fun startFind(label: String, huaweiPin: String? = null, select: (List<DiscoveredDevice>) -> DiscoveredDevice?) {
+    private fun startFind(
+        label: String,
+        vendor: WearableVendor? = null,
+        hintName: String? = null,
+        huaweiPin: String? = null,
+        select: (List<DiscoveredDevice>) -> DiscoveredDevice?,
+    ) {
         stopScan()
         qrFindJob?.cancel()
-        pendingQrRetry = { startFind(label, huaweiPin, select) }
-        scan.update { it.copy(qrFind = QrFindUiState(label, QrFindStatus.SCANNING, huaweiPin)) }
+        pendingQrRetry = { startFind(label, vendor, hintName, huaweiPin, select) }
+        scan.update { it.copy(qrFind = QrFindUiState(label, QrFindStatus.SCANNING, huaweiPin, vendor, hintName)) }
         qrFindJob = viewModelScope.launch {
             val match = withTimeoutOrNull(QR_FIND_TIMEOUT_MS) {
                 repository.scan().mapNotNull(select).firstOrNull()
             }
             if (match != null) {
-                scan.update { it.copy(qrFind = null) }
+                scan.update { it.copy(qrFind = it.qrFind?.copy(status = QrFindStatus.FOUND, matchedDevice = match)) }
                 pair(match)
             } else {
                 scan.update { it.copy(qrFind = it.qrFind?.copy(status = QrFindStatus.TIMED_OUT)) }
             }
         }
+    }
+
+    /** Maps a QR hint to the vendor it was parsed for (same list [selectMatch] switches on). */
+    private fun vendorFor(hint: QrPairingHint): WearableVendor = when (hint) {
+        is QrPairingHint.Zepp -> WearableVendor.ZEPP
+        is QrPairingHint.Huawei -> WearableVendor.HUAWEI
+        is QrPairingHint.Garmin -> WearableVendor.GARMIN
     }
 
     /** Per-vendor match rule (`QR_PAIRING_ANALYSIS.md` §6.2): Zepp by exact MAC, Huawei by advertised
