@@ -2064,3 +2064,25 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   dot đã có (D-1054), không tạo component dot mới.
   D-1130 (ảnh to 180dp ở "My devices"/"About this device") và D-1115's style-sync cho Devices **không
   đổi** — D-1147 chỉ ảnh hưởng Home. D-1143 (auto-collapse) giờ xoá hẳn vì không còn gì để collapse.
+
+- **D-1148** · 2026-11-08 · Devices: tap ảnh thiết bị → mở fullscreen kiểu Android, kèm animation mời tap — **Chốt**
+  User muốn ảnh thiết bị (180dp, D-1130) trên màn Devices/"About this device" tap được: tap vào thì mở
+  lên dạng fullscreen (pattern Android quen thuộc: ảnh phóng to che toàn màn hình, nền tối lại, tap lần
+  nữa/back để đóng — kiểu Material `Dialog`/overlay full-screen với ảnh zoom-able, không nhất thiết phải
+  pinch-zoom phức tạp nếu không cần thiết, nhưng transition mở/đóng phải mượt, catchy). Vì ảnh giờ tap
+  được nhưng không có gì gợi ý điều đó, **thêm 1 animation nhẹ, lặp lại (subtle pulse/breathing hoặc
+  tương tự)** trên ảnh để gợi ý user nên tap vào — không được gây rối mắt, giữ tinh tế (gợi ý: scale nhẹ
+  1.0↔1.03 hoặc elevation/shadow nhấp nháy nhẹ, chu kỳ vài giây, agent tự chọn kiểu phù hợp thẩm mỹ hiện
+  tại). Mở fullscreen nên có hiệu ứng transition (shared-element kiểu ảnh phóng to từ đúng vị trí ban đầu
+  nếu dễ làm với Compose hiện có, hoặc fade+scale đơn giản nếu shared-element phức tạp quá — ưu tiên làm
+  đúng, không ép buộc shared-element bằng mọi giá).
+
+- **D-1149** · 2026-11-08 · Bottom nav: không ẩn khi swipe đổi tab, chỉ ẩn khi scroll nội dung — **Chốt**
+  Hiện tại pill bottom nav đang ẩn đi (fade out) ngay cả khi user **swipe ngang để đổi tab** (pager
+  swipe) — không mong muốn. Chỉ nên ẩn/fade khi user **scroll dọc nội dung bên trong 1 tab** (để tối ưu
+  diện tích xem, đúng mục đích ban đầu D-1134/1141); khi đang swipe ngang đổi trang (pager gesture) thì
+  **giữ nguyên pill luôn hiện**, vì lúc đó user đang tương tác trực tiếp với điều hướng, ẩn đi là phản tác
+  dụng. Cần rà lại logic đang điều khiển biến `visible`/`pillVisible` trong `UnifiedHealthApp.kt` — tách
+  rõ 2 nguồn trigger (scroll nội dung vs. pager swipe) và chỉ cho nguồn đầu ảnh hưởng tới ẩn/hiện. Việc
+  này thuộc cùng khu vực file với D-1144 (`UnifiedHealthApp.kt`, `PillBottomNavigation.kt`) — gộp chung
+  vào agent đang xử lý D-1144/D-1147 thay vì agent riêng, tránh đụng file.
