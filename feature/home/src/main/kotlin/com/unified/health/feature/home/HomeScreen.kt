@@ -36,7 +36,6 @@ import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,6 +46,7 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -618,7 +618,17 @@ private fun RingsCard(summary: DailyHealthSummary, onClick: () -> Unit, modifier
         RingSpec("Exercise", exerciseProgress, colors.exercise),
         RingSpec("Steps", summary.steps.progress, colors.steps),
     )
-    Card(onClick = onClick, modifier = modifier.fillMaxWidth().testTag("activity_rings")) {
+    // D-1157: no background box behind the rings on Home — they sit directly on Home's own
+    // background. Surface(color = Color.Transparent) instead of a plain Modifier.clickable so onClick
+    // keeps its ripple + semantics/role exactly as the old Card gave it, just with zero fill/elevation
+    // of its own to paint.
+    Surface(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth().testTag("activity_rings"),
+        color = Color.Transparent,
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+    ) {
         Row(modifier = Modifier.padding(Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
             ActivityRings(rings = rings, size = 120.dp, strokeWidth = 12.dp)
             Spacer(Modifier.width(Spacing.xl))

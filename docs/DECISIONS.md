@@ -2296,3 +2296,62 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   `connectionState == false` (chưa connected, nhánh `else` dòng ~372) không bắt buộc đổi theo (không có
   ảnh lớn để đặt chip nổi lên trên) — agent tự quyết có áp dụng tương tự hay giữ nguyên Row cũ cho nhánh
   đó, miễn nhất quán/hợp lý.
+
+## Thực thi D-1157/D-1158/D-1159/D-1160 (RingsCard bỏ nền + animate, pill bỏ shadow + sliding indicator, hiện/ẩn theo hướng cuộn) — D-116x
+
+- **D-1163** · 2026-11-09 · Thực thi D-1157 (RingsCard bỏ nền + animate ring lần đầu) — **Chốt**
+  `RingsCard` (`HomeScreen.kt`): đổi `Card(onClick = onClick, ...)` sang
+  `Surface(onClick = onClick, color = Color.Transparent, tonalElevation = 0.dp, shadowElevation = 0.dp,
+  ...)` — giữ nguyên `onClick`/ripple/semantics (Material3 `Surface` có đúng overload nhận `onClick`),
+  không còn khối nền hình chữ nhật/bo góc nào vẽ ra (tonalElevation/shadowElevation set về 0 để chắc
+  chắn không có tint/bóng nào lộ ra dù `color` đã transparent). Import `Card` (hết dùng trong file) đổi
+  thành `Surface`.
+  `ActivityRings` (`core/designsystem/.../ActivityRings.kt`): thêm `Animatable(0f)` cho mỗi ring (giữ
+  qua `remember`, không reset khi `rings` đổi do data mới), `LaunchedEffect(Unit)` (chạy đúng 1 lần theo
+  vòng đời composable, không re-key theo `rings`) animate từng ring từ 0 lên đúng % thật, stagger 120ms
+  giữa các ring, mỗi ring 800ms `EaseOutCubic`. Cờ `introDone` (mặc định `false`) chỉ bật `true` sau khi
+  `joinAll()` mọi animation con xong — Canvas vẽ `animatedProgress[index].value` khi `!introDone`, vẽ
+  thẳng `ring.progress` (không animation) khi `introDone == true`, để tránh 2 lỗi có thể xảy ra nếu làm
+  ẩu: (1) animate lại mỗi lần data mới (đã tránh nhờ `LaunchedEffect(Unit)` không re-key), (2) *đứng
+  hình* ở giá trị animate-vào ban đầu mãi mãi khi data thật đổi sau đó (nếu chỉ dùng `Animatable` mà
+  không có `introDone` để chuyển sang đọc `ring.progress` sống) — lỗi (2) dễ bị bỏ sót nếu chỉ đọc yêu
+  cầu "animate 1 lần" theo nghĩa đen mà không nghĩ tiếp chuyện gì xảy ra SAU lần animate đó.
+
+- **D-1164** · 2026-11-09 · Thực thi D-1158 (bỏ shadow pill nav) — **Chốt**
+  `PillBottomNavigation.kt`: `shadowElevation` đổi từ `6.dp` xuống `0.dp` (giữ tham số thay vì xoá hẳn,
+  để rõ ràng là cố ý = 0 chứ không phải quên set). `tonalElevation = 3.dp` và `border` giữ nguyên không
+  đổi, đúng yêu cầu.
+
+- **D-1165** · 2026-11-09 · Thực thi D-1159 (bỏ sliding indicator, chọn tab = màu + bold) — **Chốt**
+  `PillBottomNavigation.kt`: xoá hẳn khối `Surface` nền trượt (`offset(x = tabWidth * position)`,
+  `color = primaryContainer`) cùng biến `tabWidth` (chỉ dùng cho khối đó, hết tác dụng sau khi xoá) và
+  đổi `BoxWithConstraints` (chỉ cần để đo `maxWidth` cho `tabWidth`) thành `Box` thường (không còn gì
+  cần đo). Giữ nguyên `rawPosition`/`position`/`selectedIndex` — vẫn cần để xác định `PillNavItem` nào
+  đang `selected`, đúng như quyết định lường trước. `PillNavItem`: màu "selected" đổi từ
+  `onPrimaryContainer` sang `MaterialTheme.colorScheme.primary` (không còn container để tương phản,
+  cần màu tự thân nổi bật hơn), label nhận thêm `fontWeight = if (selected) FontWeight.Bold else null`
+  (`null` = giữ nguyên weight mặc định của `labelSmall`, không phải "non-bold" cứng — để đúng tinh thần
+  "label bình thường khi không chọn", không override không cần thiết).
+  **Lưu ý ngoài phạm vi chính**: `core:designsystem:compileDebugKotlin` fail lúc build thử vì
+  `RaceCard.kt` (file của phiên khác đang làm D-1161, dùng `Modifier.border(...)` nhưng thiếu import
+  `androidx.compose.foundation.border`) — thêm đúng 1 dòng import còn thiếu đó để gỡ chặn build chung
+  (không sửa gì khác trong file, không thuộc phạm vi D-1157/1158/1159/1160), **không add vào commit của
+  lượt này** — để nguyên uncommitted cho phiên đang làm D-1161 tự commit cùng phần việc của họ.
+
+- **D-1166** · 2026-11-09 · Thực thi D-1160 (pill hiện/ẩn theo hướng cuộn thay vì theo trạng thái
+  đang-cuộn-hay-không) — **Chốt**
+  `UnifiedHealthApp.kt`'s `scrollFadeConnection`: bỏ hẳn cơ chế debounce-timer cũ (`fadeScope`,
+  `pillFadeInJob`, `delay(400)` trước khi set lại `pillVisible = true`) — thay bằng đọc dấu của
+  `available.y` ngay trong cùng `onPreScroll` đã lọc trục từ D-1149: `available.y < 0f` (nội dung cuộn
+  lên, tức user đang cuộn xuống đọc tiếp) → `pillVisible = false`; `available.y > 0f` (nội dung cuộn
+  xuống, user cuộn lên lại) → `pillVisible = true` ngay lập tức, không cần đợi dừng cuộn. Quy ước dấu
+  tham khảo đúng theo `TopAppBarDefaults.enterAlwaysScrollBehavior()` đã dùng sẵn ở `HomeScreen.kt`
+  (cùng ý nghĩa "cuộn xuống ẩn header, cuộn lên hiện header ngay"). Phần lọc trục D-1149
+  (`abs(available.y) <= abs(available.x)` → bỏ qua, không đụng `pillVisible`) giữ nguyên không đổi —
+  pager swipe vẫn không ảnh hưởng gì tới pill. Animation fade alpha/tween 220ms ở `PillBottomNavigation.kt`
+  (D-1134) không đổi gì — chỉ đổi điều kiện gọi `visible = true/false` đúng theo yêu cầu.
+  **Verify (D-1163→1166)**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest
+  assembleDebug` — build + mọi test pass (test-result XML mới sinh ra ở `feature/home`,
+  `core/designsystem` (gồm cả `RaceCardTest` của phiên khác — vẫn xanh sau khi thêm import thiếu),
+  `feature/activity`, `feature/profile`, `feature/races`, `feature/devices`), `app-debug.apk` build lại
+  thành công.

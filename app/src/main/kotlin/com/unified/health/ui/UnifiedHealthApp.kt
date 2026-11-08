@@ -24,8 +24,6 @@ import com.unified.health.navigation.MainPagerDestination
 import com.unified.health.navigation.TopLevelDestination
 import com.unified.health.navigation.UnifiedHealthNavHost
 import kotlin.math.abs
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -70,41 +68,35 @@ fun UnifiedHealthApp(
     // WorkoutDetailDestination...) keeps normal edge-swipe-back — see EdgeGestureExclusion's doc.
     EdgeGestureExclusion(enabled = onMainPager)
 
-    // D-1134: the pill fades out while the user is scrolling vertically inside a tab's own content,
-    // and fades back in ~400ms after the last such scroll event — regardless of which tab (or even a
-    // detail screen) is showing, since this connection sits above the whole NavHost rather than inside
-    // any one screen's own list (the same NestedScrollConnection-based approach TopAppBarDefaults' own
-    // scroll behaviors use, and the same idea D-1083 applied locally to Home's DeviceBanner — since
-    // removed, D-1147).
+    // D-1134/D-1160: the pill fades out/in with a typical collapsing-header pattern, driven by the
+    // *direction* of vertical scroll inside a tab's own content — scrolling down (content moving up)
+    // hides it, scrolling up (content moving down) shows it again immediately, no need to wait for
+    // scrolling to stop. This connection sits above the whole NavHost rather than inside any one
+    // screen's own list (the same NestedScrollConnection-based approach TopAppBarDefaults' own
+    // enterAlways scroll behavior uses — same sign convention for [available].y below — and the same
+    // idea D-1083 applied locally to Home's DeviceBanner — since removed, D-1147).
     //
     // D-1149: that same ancestor connection also receives the HorizontalPager's own horizontal drag
     // (D-1052, swiping Home/Activity/Devices/Profile) — nested scroll bubbles up regardless of axis,
-    // so without filtering, swiping tabs faded the pill out exactly while the user was actively using
-    // it to navigate, which is the opposite of D-1134/1141's intent (reclaim space while *reading*, not
+    // so without filtering, swiping tabs toggled the pill exactly while the user was actively using it
+    // to navigate, which is the opposite of D-1134/1141's intent (reclaim space while *reading*, not
     // while navigating). Every scrollable here is axis-locked (the pager is horizontal-only; every
     // tab's own list/column is vertical-only), so each dispatch's [available] offset is effectively
     // single-axis — a vertical-dominant delta reliably means "tab content scrolled", a
     // horizontal-dominant one means "pager dragged" (or a tab's own horizontal carousel, e.g. Home's
-    // RacesCarousel — also left alone here, since it isn't "reading a list" either). Only the former
-    // touches pillVisible/the fade-in timer; the pager (and any horizontal content scroll) leaves both
-    // completely untouched rather than, say, resetting the timer to "stay visible".
-    //
-    // onPreScroll fires for every scroll delta a descendant dispatches — both during a drag and during
-    // a fling's own per-frame scrolling — so returning Offset.Zero (take nothing, just observe) and
-    // restarting the debounce each time correctly treats a fling as "still scrolling" until it actually
-    // decelerates to a stop.
+    // RacesCarousel — also left alone here, since it isn't "reading a list" either); only the former
+    // is allowed to touch pillVisible at all.
     var pillVisible by remember { mutableStateOf(true) }
-    val fadeScope = rememberCoroutineScope()
-    var pillFadeInJob by remember { mutableStateOf<Job?>(null) }
     val scrollFadeConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 if (abs(available.y) <= abs(available.x)) return Offset.Zero
-                pillVisible = false
-                pillFadeInJob?.cancel()
-                pillFadeInJob = fadeScope.launch {
-                    delay(400)
-                    pillVisible = true
+                // Negative y = content scrolling up (user scrolling down the list) = hide; positive y
+                // = content scrolling down (user scrolling back up) = show right away. A ~0 delta
+                // (shouldn't really happen once the axis check above passes) is simply ignored.
+                when {
+                    available.y < 0f -> pillVisible = false
+                    available.y > 0f -> pillVisible = true
                 }
                 return Offset.Zero
             }

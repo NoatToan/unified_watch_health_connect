@@ -5,7 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -13,11 +13,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.selection.selectable
@@ -37,18 +35,21 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.navigation.TopLevelDestination
 import kotlin.math.roundToInt
 
 /**
- * Floating pill-shaped bottom nav (D-1051), reference-screenshot style: a rounded bar with a smaller
- * pill behind the selected tab that slides to follow it. The slide is driven directly by
- * [pagerState]'s own continuous `currentPage + currentPageOffsetFraction` rather than a second
- * `animateDpAsState` layered on top — [pagerState] already animates that value smoothly on a tap
- * (`animateScrollToPage`) and updates it 1:1 with a drag, so wrapping it in another animation would
- * only add lag while swiping (see D-1077 in docs/DECISIONS.md).
+ * Floating pill-shaped bottom nav (D-1051), reference-screenshot style. The selected tab used to be
+ * marked by a smaller pill sliding behind it (driven directly by [pagerState]'s own continuous
+ * `currentPage + currentPageOffsetFraction`, see D-1077 in docs/DECISIONS.md) — **D-1159 removed that
+ * sliding container entirely**; selection is shown purely via [PillNavItem]'s own icon/text color
+ * (`primary` when selected) plus a bold label, no background needed. [pagerState] is still read
+ * directly (not mirrored into a second `animateDpAsState`/similar) purely to compute which tab counts
+ * as selected while a swipe is mid-drag, for the same reason D-1077 gave for the old indicator: it
+ * already animates smoothly on a tap and updates 1:1 with a drag, so duplicating it would only add lag.
  *
  * D-1084: unlike Material3's own `NavigationBar` (which pads itself against the system navigation
  * bar automatically), this hand-rolled `Surface` needs that inset applied explicitly, or the pill
@@ -76,7 +77,7 @@ fun PillBottomNavigation(
     val destinations = TopLevelDestination.entries
     val alpha by animateFloatAsState(if (visible) 1f else 0f, animationSpec = tween(220), label = "pillVisibility")
     Surface(
-        // A fixed height (rather than wrap-content) is required: the sliding indicator below uses
+        // A fixed height (rather than wrap-content) is required: the nav item Row below uses
         // fillMaxHeight(), which needs a bounded constraint to resolve against.
         modifier = modifier
             .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom))
@@ -96,24 +97,22 @@ fun PillBottomNavigation(
         // of the Liquid Glass look.
         color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = GLASS_ALPHA),
         tonalElevation = 3.dp,
-        shadowElevation = 6.dp,
+        // D-1158: dropped — user confirmed on a real device that animating this Surface's alpha
+        // (D-1134's show/hide fade) together with a shadow was causing frame drops. tonalElevation and
+        // the border below are untouched.
+        shadowElevation = 0.dp,
         border = BorderStroke(1.dp, Color.White.copy(alpha = 0.28f)),
     ) {
-        BoxWithConstraints(Modifier.padding(Spacing.xs)) {
-            val tabWidth = maxWidth / destinations.size
+        // D-1159: no longer needs BoxWithConstraints — that was only ever used to measure `maxWidth`
+        // for the sliding selected-tab indicator removed below, nothing else here depends on it.
+        Box(Modifier.padding(Spacing.xs)) {
+            // D-1159: the sliding `primaryContainer` Surface that used to mark the selected tab is
+            // gone — selection is now shown purely via PillNavItem's own icon/text color + bold label,
+            // no container needed. rawPosition/position/selectedIndex survive unchanged: selectedIndex
+            // still decides which PillNavItem renders as selected below.
             val rawPosition = pagerState.currentPage + pagerState.currentPageOffsetFraction
             val position = rawPosition.coerceIn(0f, (destinations.size - 1).toFloat())
             val selectedIndex = position.roundToInt().coerceIn(0, destinations.lastIndex)
-
-            Surface(
-                modifier = Modifier
-                    .offset(x = tabWidth * position)
-                    .width(tabWidth)
-                    .fillMaxHeight()
-                    .padding(Spacing.xxs),
-                shape = RoundedCornerShape(50),
-                color = MaterialTheme.colorScheme.primaryContainer,
-            ) {}
 
             Row(
                 Modifier.fillMaxWidth().fillMaxHeight().selectableGroup(),
@@ -139,13 +138,16 @@ private fun PillNavItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+    // D-1159: selection used to be shown by a sliding primaryContainer Surface behind the tab (now
+    // removed) plus onPrimaryContainer tint; with no container to sit on, selected now reads as a
+    // solid accent color (primary) + a bold label instead.
+    val color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
     Column(
         modifier = modifier
             .selectable(
                 selected = selected,
                 interactionSource = remember { MutableInteractionSource() },
-                indication = null, // D-1091: no ripple on the pill tabs — the sliding indicator is the feedback
+                indication = null, // D-1091: no ripple on the pill tabs — the color/weight change is the feedback
                 onClick = onClick,
                 role = Role.Tab,
             )
@@ -155,7 +157,12 @@ private fun PillNavItem(
         verticalArrangement = Arrangement.spacedBy(Spacing.xxs),
     ) {
         Icon(if (selected) destination.selectedIcon else destination.unselectedIcon, contentDescription = null, tint = color)
-        Text(destination.label, style = MaterialTheme.typography.labelSmall, color = color)
+        Text(
+            destination.label,
+            style = MaterialTheme.typography.labelSmall,
+            color = color,
+            fontWeight = if (selected) FontWeight.Bold else null,
+        )
     }
 }
 
