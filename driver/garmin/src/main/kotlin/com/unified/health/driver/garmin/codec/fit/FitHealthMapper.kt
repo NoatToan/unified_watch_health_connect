@@ -33,6 +33,12 @@ internal object FitHealthMapper {
     /** Nightly HRV status, a newer message not in every firmware's FIT profile [Ext]. */
     const val MESG_HRV_STATUS_SUMMARY = 389
 
+    /** Fitness metrics incl. `vo2_max`, synced in a METRICS file (§6.1 FIT_TYPE_44) [Ext]. */
+    const val MESG_USER_METRICS = 140
+
+    /** Some firmware reports `vo2_max` on `user_profile` instead of [MESG_USER_METRICS] [Ext] (D-1000). */
+    const val MESG_USER_PROFILE = 42
+
     // monitoring (55) fields [Ext].
     private const val MON_DISTANCE = 2 // uint32, scale 100 → m, cumulative per activity type
     private const val MON_CYCLES = 3 // uint32; "steps" sub-field for walking/running
@@ -55,6 +61,14 @@ internal object FitHealthMapper {
     // hrv_status_summary (389) fields [Ext]: one record per night, scale 128 -> milliseconds.
     private const val HRV_LAST_NIGHT_AVERAGE = 4 // uint16, scale 128
     private const val HRV_SCALE = 128.0
+
+    // user_metrics (140) / user_profile (42) fields [Ext]; same field number assumed on both
+    // messages — only the user_metrics one is confirmed against the public FIT SDK profile, the
+    // user_profile fallback is a guess pending a real file that actually carries it (D-1000).
+    private const val VO2_MAX = 7 // plain integer (no scale), mL/kg/min
+
+    /** Plausible human VO2max range used to reject garbage/sentinel values [Ext]. */
+    private val VO2_MAX_RANGE = 10..95
 
     // session (18) fields [Ext].
     private const val SESSION_START_TIME = 2
@@ -100,6 +114,7 @@ internal object FitHealthMapper {
                     sleepLevels += time to level.toInt()
                 }
                 MESG_SESSION -> mapSession(message)?.let(records::add)
+                MESG_USER_METRICS, MESG_USER_PROFILE -> lastTimestamp?.let { mapVo2Max(message, it) }?.let(records::add)
             }
         }
         records += sleepIntervals(sleepLevels)
@@ -175,6 +190,19 @@ internal object FitHealthMapper {
         val raw = message.value(HRV_LAST_NIGHT_AVERAGE) ?: return null
         val milliseconds = (raw / HRV_SCALE).roundToInt().takeIf { it in 1..300 } ?: return null
         return HealthRecord.HeartRateVariability(FitTime.toInstant(time), milliseconds)
+    }
+
+    /**
+     * user_metrics (140), or user_profile (42) on firmware that reports it there instead [Ext] —
+     * both read as the device's own VO2max estimate, never recomputed here (D-1000, D-803). Neither
+     * message reliably carries its own `timestamp` (253) field, so the record is stamped with the
+     * last timestamp seen earlier in the file.
+     * TODO(garmin-protocol): NEEDS-REAL-WATCH — confirm field number 7 on a real METRICS file and
+     * whether user_profile (42) ever actually carries vo2_max in practice.
+     */
+    private fun mapVo2Max(message: FitMessage, time: Long): HealthRecord? {
+        val value = message.value(VO2_MAX)?.toInt()?.takeIf { it in VO2_MAX_RANGE } ?: return null
+        return HealthRecord.Vo2Max(FitTime.toInstant(time), value)
     }
 
     private fun mapSession(message: FitMessage): HealthRecord? {

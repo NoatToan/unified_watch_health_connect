@@ -69,6 +69,10 @@ class MultiVendorDeviceConnection @Inject internal constructor(
     override val liveHeartRate: Flow<HealthRecord.HeartRate> =
         active.flatMapLatest { it?.session?.liveHeartRate ?: emptyFlow() }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val batteryUpdates: Flow<Int> =
+        active.flatMapLatest { it?.session?.batteryUpdates ?: emptyFlow() }
+
     override suspend fun connect(macAddress: String, vendor: WearableVendor): Result<Unit> = lock.withLock {
         teardown()
         _activeAddress.value = macAddress

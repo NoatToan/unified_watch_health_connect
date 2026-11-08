@@ -25,6 +25,9 @@ object RuntimePermissions {
             emptyList()
         }
 
+    /** "Pair with QR code" camera preview. */
+    val camera: List<String> get() = listOf(Manifest.permission.CAMERA)
+
     fun allGranted(context: Context, permissions: List<String>): Boolean =
         permissions.all { ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED }
 }

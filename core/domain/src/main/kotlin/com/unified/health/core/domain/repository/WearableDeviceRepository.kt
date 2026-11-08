@@ -28,6 +28,14 @@ interface WearableDeviceRepository {
     suspend fun syncNow(deviceId: String): Result<Unit>
 
     /**
+     * Re-decodes raw vendor payloads already stored for [deviceId] (e.g. `fit_activity` files a
+     * driver downloaded but could not decode at the time) and writes any records recovered. Runs
+     * offline: does not need the device to be connected.
+     * @return number of records recovered.
+     */
+    suspend fun reprocessRawPayloads(deviceId: String): Result<Int>
+
+    /**
      * Stores a secret listed in [WearableDevice.credentialRequirements] (e.g. the Zepp auth key).
      * Validates [value] against the requirement's format.
      */

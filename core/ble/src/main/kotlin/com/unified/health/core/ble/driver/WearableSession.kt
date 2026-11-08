@@ -27,6 +27,13 @@ interface WearableSession {
 
     val liveHeartRate: Flow<HealthRecord.HeartRate> get() = emptyFlow()
 
+    /**
+     * Battery percent (0..100) every time the session gets a fresh on-device reading outside of
+     * [readDeviceInfo] (e.g. periodic polling). Lets the caller keep stored battery info fresh
+     * without re-running [readDeviceInfo] (D-1001). Default: no such telemetry.
+     */
+    val batteryUpdates: Flow<Int> get() = emptyFlow()
+
     /** Releases protocol resources. Must not throw; the GATT link is closed by the caller. */
     suspend fun close()
 }
@@ -34,10 +41,13 @@ interface WearableSession {
 /**
  * @property since last successful sync, or null for a first sync (drivers then fetch a bounded
  *  window, see [DEFAULT_FIRST_SYNC_WINDOW_DAYS]).
+ * @property knownRawPayloadTimestamps see [com.unified.health.core.ble.HealthDataSync.sync]; carried
+ *  on the request so a driver can use it inside [WearableSession.sync].
  */
 data class SyncRequest(
     val since: Instant?,
     val now: Instant = Instant.now(),
+    val knownRawPayloadTimestamps: Set<Instant> = emptySet(),
 ) {
     fun effectiveSince(): Instant = since ?: now.minusSeconds(DEFAULT_FIRST_SYNC_WINDOW_DAYS * 86_400L)
 

@@ -16,9 +16,10 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   Tác vụ reverse-engineering / tái hiện cơ chế kết nối chạy bằng `model: sonnet` (= Claude Sonnet 5, `claude-sonnet-5`;
   không tồn tại `claude-sonnet-5-5`). Áp dụng cho `.claude/agents/device-protocol-re.md` và `wearable-driver-engineer.md`.
   Muốn pin Sonnet 4.6: đổi `model:` thành `claude-sonnet-4-6`.
-- **D-003** · 2026-11-06 · rea — **Chốt**
+- **D-003** · 2026-11-06 · rea — **Chốt** (cập nhật 2026-11-08)
   Dùng `rea` đã cài sẵn (`~/.volta/bin/rea`), không clone repo. Mọi việc liên quan rea chạy trong sub-agent (lỗi không ảnh hưởng session chính).
   Output thô (APK ghép lại, dump decompile) để ngoài git ở `../rea-output/<brand>/`; chỉ bằng chứng đã chắt lọc vào `docs/re-evidence/<brand>/`.
+  **Cập nhật 2026-11-08:** việc đọc output thô của rea/jadx (`../rea-output/<brand>/`, `docs/re-evidence/<brand>/`) để chắt lọc bằng chứng không giao cho agent Sonnet đọc trực tiếp — chạy `claude-personal -p "<prompt>"` (model DeepSeek) để đọc/tóm tắt dump trước, agent Sonnet chỉ nhận lại phần đã chắt lọc. Lý do: dump rea/jadx rất lớn, dùng model rẻ hơn (DeepSeek) để nhai thô, giữ ngữ cảnh/chi phí của Sonnet cho việc viết code và ra quyết định.
 - **D-004** · 2026-11-06 · Pháp lý — **Chốt**
   Không copy code GPL (Gadgetbridge…), không trích xuất/nhúng key bí mật của vendor; credential chỉ đến từ người dùng (`SessionContext.credentials`).
   Chỉ phục vụ kết nối đồng hồ của chính người dùng.
@@ -119,6 +120,26 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
 - **D-808** · 2026-11-06 · Xoá `:feature:sleep` (P0-6) — **Chốt**
   Module `feature/sleep` (SleepScreen placeholder, không ai điều hướng tới) bị xoá khỏi `settings.gradle.kts`, `app` và NavHost. Giấc ngủ giữ ở Browse › Sleep (`MetricDetailScreen`: hypnogram D, xu hướng W/M/6M/Y, Show all data) theo D-208.
   Lý do: đã có màn đầy đủ hơn; giữ route mồ côi chỉ là nợ kỹ thuật.
+
+- **D-809** · 2026-11-08 · Thay Browse (category → metric) bằng feed dẹt "Health" (tham chiếu Huawei Health) — **Chốt**
+  Người dùng phản hồi Browse (category list) khó dùng. Xoá `feature/home/browse/BrowseScreen.kt` và
+  `BrowseDestination`; tab đáy đổi `BROWSE` → `HEALTH` (`FeedDestination`, nhãn "Health", icon Dashboard),
+  nội dung là `feature/home/feed/FeedScreen.kt`: một `LazyColumn` dẹt duy nhất, mỗi `HealthMetricType` một
+  card (`card_<METRIC>`) gồm icon/nhãn/giờ đọc, mini chart (tái dùng `HealthBarChart`/`HealthRangeChart`,
+  stage bar tái dùng `SleepStageChart` thu nhỏ cho Sleep) và một dòng phân tích (`metricInsightLine`,
+  `feature/home/insight/MetricInsightText.kt` — thuần Kotlin, có unit test), cộng card Activity rings và
+  card Workouts (3 bài gần nhất). Metric chưa có dữ liệu vẫn hiện (không ẩn) nhưng dạng gọn
+  (`ListItem` một dòng "No data yet") thay vì card to trống. Thứ tự/ẩn-hiện card ("Edit cards": tăng/giảm
+  bằng mũi tên lên-xuống + checkbox, không dùng drag-drop) lưu qua `UserPreferences.feedCardOrder` /
+  `hiddenFeedCards` (DataStore, `UserPreferencesRepository.setFeedCards`, giống cơ chế `pinnedMetrics` sẵn
+  có). `MetricDetailScreen` (D/W/M/6M/Y) thêm thẻ "Insight" dùng lại `HighlightCalculator`/`MetricStatsCalculator`
+  đã có, không thêm calculator domain mới (phân tích là ghép chữ ở tầng feature, không phải logic domain mới).
+  Các E2E dùng `nav_BROWSE`/`browse_search`/`category_*`/`browse_metric_*` (Demo/Garmin/Standard/Zepp/UserJourney)
+  đổi sang `nav_HEALTH` + cuộn `feed_list` tới `card_<METRIC>`, không còn tìm bằng ô search (feed không có ô tìm,
+  giống tham chiếu Huawei).
+  Lý do: tôn trọng layering `feature` chỉ phụ thuộc `domain`/`designsystem` — không để `feature/home` phụ
+  thuộc `feature/activity` (icon/label bài tập được chép cục bộ trong `feed/WorkoutFeedUi.kt`). Không chọn
+  drag-drop để tránh thêm thư viện/độ phức tạp test khi mũi tên lên/xuống đã đủ đạt yêu cầu "editable order".
 
 - **D-014** · 2026-11-06 · Dùng chung emulator — **Chốt**
   Chỉ chạy 1 emulator (`emulator-5554`) để tiết kiệm RAM. Mọi lần chạy test instrumented, `adb install` hoặc `pm clear` phải đi qua
@@ -540,7 +561,92 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   Garmin Auth (5101) thay vì đóng kết nối. Các brand khác giữ mặc định `false`. Đây là điều kiện để
   fallback auth thực sự chạy trên đồng hồ; vẫn cần kiểm trên watch thật.
 
-## Zepp driver (D-5xx)
+- **D-418** · 2026-11-08 · Root cause "không có activity Garmin nào": cửa sổ sync, không phải FIT decoder — **Chốt**
+  Điều tra "không thấy workout Garmin" (real watch): `GarminFileSync.sync()` lọc mọi loại file FIT bằng
+  một `since` duy nhất = `SyncRequest.effectiveSince()` (mặc định `now − 7 ngày` ở lần sync đầu,
+  `core/ble/.../driver/WearableSession.kt`), rồi `since` tiến dần theo mỗi lần sync thành công
+  (`DefaultWearableDeviceRepository.syncNow` dùng `lastSyncedAtEpochMs`). ACTIVITY (FIT_TYPE_4) là file
+  hiếm — một buổi tập có thể cách lần "lần đầu mở app" hơn 7 ngày (rất phổ biến: người dùng đã đeo đồng
+  hồ một thời gian trước khi cài app) → bị bỏ qua ngay từ sync đầu tiên, và vì `since` chỉ tiến về phía
+  trước, activity đó **không bao giờ được thử lại**. Đã tải 3 file FIT ACTIVITY thật từ FIT SDK công khai
+  của Garmin (`garmin/fit-python-sdk`, `driver/garmin/src/test/resources/fit-samples/`, xem `SOURCE.txt`)
+  và decode bằng `FitDecoder`/`FitHealthMapper` hiện có (`RealFitSampleDecodeTest`): cả 3 decode thành
+  công, 2 file có session (18) ra đúng Workout (sport/distance/calories/HR hợp lý). Vậy `FitDecoder`
+  (H2) và field mapping của session 18 (H3: start_time=2, sport=5, total_elapsed_time=7 scale 1000,
+  total_distance=9 scale 100, total_calories=11, avg_hr=16, max_hr=17 — đối chiếu đúng FIT profile công
+  khai) đều đúng trên dữ liệu thật; root cause là cửa sổ thời gian (H1), không phải decoder.
+
+- **D-419** · 2026-11-08 · ACTIVITY dùng cửa sổ riêng 365 ngày, không phụ thuộc `since` — **Chốt** (sửa D-418;
+  **đã sửa tiếp bởi D-422** — xem đó để biết cơ chế chống tải lại mỗi lần sync)
+  `GarminFileSync.sync()` tách cutoff theo loại file: MONITORING/METRICS/WELLNESS_49 vẫn dùng
+  `request.effectiveSince()` (không đổi hành vi); riêng ACTIVITY dùng `request.now − ACTIVITY_LOOKBACK_DAYS`
+  (365 ngày) **mọi lần sync**, không chỉ lần đầu. Lý do chọn "mọi lần" thay vì chỉ "lần sync đầu" (dù §H1
+  gợi ý vậy): nếu chỉ sửa lần-đầu, người dùng **đã** pair trước khi có bản sửa này (since đã trôi qua) sẽ
+  không bao giờ được cứu lại — cửa sổ phụ thuộc "mọi lần" tự sửa luôn cho cả hai trường hợp, không cần
+  thêm hành động thủ công. Thêm test hồi quy `GarminSessionTest."activity files far outside the wellness
+  window are still synced, unlike monitoring"` và `Log.i` tổng kết (file theo loại được liệt kê/tải/decode,
+  số workout) để đọc logcat thật xác nhận.
+  ⚠️ Bản đầu của entry này từng nói "tải lại file ACTIVITY đã tải mỗi lần sync là chấp nhận được" — review
+  trước khi merge chỉ ra điều đó không ổn trên đồng hồ thật (vài trăm activity × 50–500 KB → vài phút
+  truyền BLE + hao pin mỗi lần sync). D-422 thêm cơ chế chống tải lại; mục này giữ lại phần "cửa sổ 365
+  ngày, áp dụng mọi lần" vì phần đó vẫn đúng, chỉ phần "tải lại" là sai và đã được D-422 thay.
+
+- **D-420** · 2026-11-08 · Thêm `WearableDriver.reprocess()` để tái decode raw payload ngoại tuyến — **Chốt**
+  `core/ble/.../driver/WearableDriver.kt` thêm method mới với default `= emptyList()` (tương thích
+  ngược 100% — Huawei/Zepp/Coros/Standard không cần đổi gì). `GarminDriver.reprocess()` chỉ xử lý kind
+  `fit_activity` (bỏ qua monitoring/metrics/wellness vì các loại đó cần gộp nhiều file theo ngày —
+  `DailyActivityAccumulator` — nên chỉ an toàn tái decode trong một `sync()` thật, không tái decode đơn
+  lẻ). Mục đích: nếu một bug decode FIT khác xuất hiện trên đồng hồ thật sau khi phát hành (khác D-418,
+  vì 3 file mẫu thật decode được), bản sửa decoder sau này có thể phục hồi dữ liệu đã tải mà không cần
+  người dùng pair/sync lại — raw payload đã lưu sẵn đúng với mục đích ghi trong doc comment của
+  `HealthRecord.RawPayload` ("kept so it can be re-decoded when a parser improves").
+- **D-421** · 2026-11-08 · "Reprocess downloaded files": quy ước tên file làm chỉ mục, không thêm bảng Room — **Chốt**
+  `RawPayloadStore.list()` (core/data) liệt kê lại file dưới `files/wearable_raw/<device>/` bằng quy ước
+  tên đã có sẵn (`<vendor>_<kind>_<epochMs>.bin`, tách ra `RawPayloadFileNaming` để test được mà không
+  cần Android `Context`), thay vì thêm bảng Room mới + migration. `RawPayloadStore` là nơi viết file duy
+  nhất nên tự đọc lại tên là an toàn; đổi lại tránh rủi ro migration cho một tính năng khôi phục dữ liệu
+  phụ. `WearableDeviceRepository.reprocessRawPayloads(deviceId)` (mới trong `core/domain`, implement ở
+  `DefaultWearableDeviceRepository`) duyệt file đã lưu → `DriverRegistry[vendor].reprocess(...)` → ghi
+  record mới qua `HealthRecordSinkFactory`, không cần thiết bị đang kết nối. UI: nút "Reprocess downloaded
+  files" trong `feature/devices/.../DeviceDetailScreen.kt`, chỉ hiện khi `device.vendor == GARMIN` (vendor
+  duy nhất có `reprocess()` hiện thực), `testTag("detail_reprocess")`, không đụng `feature/home`/`feature/activity`.
+
+- **D-422** · 2026-11-08 · Chống tải lại ACTIVITY mỗi sync: dedup theo timestamp + cap "bắt kịp" 50 file/lần — **Chốt**
+  (sửa phần "tải lại là chấp nhận được" của D-419, theo review trước khi merge)
+  Vấn đề: D-419 giữ cửa sổ 365 ngày cho ACTIVITY nhưng không nhớ file nào đã tải — mỗi sync lại tải lại
+  **toàn bộ** file ACTIVITY còn trong cửa sổ, kể cả khi đã tải hôm qua. Trên đồng hồ thật giữ vài trăm
+  activity chưa archive (bình thường nếu người dùng không gỡ Garmin Connect), mỗi file 50–500 KB → vài
+  phút truyền BLE + hao pin **mỗi lần sync**, không chấp nhận được cho production.
+  Sửa: `SyncRequest` (core/ble, `WearableSession.kt`) thêm field `knownRawPayloadTimestamps: Set<Instant> =
+  emptySet()` — tương thích ngược vì có default; `HealthDataSync.sync()` (core/ble) thêm tham số cùng tên,
+  cùng default, driver duy nhất implement interface này (`MultiVendorHealthDataSync`) được sửa theo.
+  `DefaultWearableDeviceRepository.syncNow()` tính set này từ `RawPayloadStore.list(deviceId)` (đã có từ
+  D-421, không filter theo `kind` để không rò thêm tên hằng số riêng của Garmin lên core/data — rủi ro
+  trùng timestamp giữa hai *loại file khác nhau của cùng một thiết bị* là không đáng kể) và truyền xuống.
+  `GarminFileSync.sync()`: với mỗi ACTIVITY entry trong cửa sổ 365 ngày, bỏ qua nếu
+  `entry.timestamp in request.knownRawPayloadTimestamps` (đã có raw payload trên máy cho đúng file đó,
+  theo tên file `RawPayloadFileNaming` đã lưu khi download lần trước — xem D-421). Phần còn lại ("file mới,
+  chưa từng tải") giới hạn `ACTIVITY_CATCH_UP_CAP = 50` file/lần, ưu tiên mới nhất trước
+  (`sortedByDescending { timestamp }.take(50)`) — hợp lý vì lần "bắt kịp" đầu tiên (ngay sau khi bản vá
+  này lên, hoặc lần đầu pair một đồng hồ có sẵn nhiều lịch sử) không nên dồn hết vào một lần sync; phần dư
+  vẫn "chưa từng tải" và tự được xét lại ở lần sync kế tiếp cho tới khi bắt kịp hết. `Log.i` tổng kết thêm
+  `alreadyDownloaded`/`new`/`thisSync`/`deferredToNextSync` để đọc logcat thật xác nhận tốc độ bắt kịp.
+  Idempotent/an toàn: `WorkoutEntity` vẫn `@Upsert` trên `(deviceId, startEpochMs)` nên nếu dedup lệch
+  (vd. do giờ hệ thống đổi) thì tải lại cũng không tạo dữ liệu trùng, chỉ tốn băng thông — dedup là tối ưu
+  hiệu năng, không phải điều kiện đúng/sai của dữ liệu.
+  Test: `GarminSessionTest` — "second sync skips an activity already known…", "a newly appeared old
+  activity is still fetched…" (một file cũ đã biết bị bỏ, một file cũ khác chưa biết vẫn được tải, cùng
+  cửa sổ), "activity catch-up is capped per sync, newest first, continuing next sync" (55 file mới, lần 1
+  tải đúng 50 file mới nhất, 5 file cũ nhất bị trễ; lần 2 tải đúng 5 file còn lại).
+  Ghi chú kỹ thuật phụ phát hiện khi viết test: `GarminFileSync.sync()` sắp xếp `wanted` theo timestamp
+  **tăng dần** (cũ nhất trước) trước khi tải — bài test đầu viết sai thứ tự kỳ vọng (tưởng tải theo thứ tự
+  liệt kê trong `directory`), khiến `assertEquals` sai lệch ném `AssertionError` **trước** khi gọi
+  `session.close()`; vì scope polling pin (`startBatteryPolling`, D-411) không phải con cấu trúc của
+  `runTest`, nó bị "rò" sống trên `TestCoroutineScheduler` dùng chung và vòng lặp tự-lên-lịch lại của nó
+  (`delay` 10 phút) khiến `advanceUntilIdle` của `runTest` chạy mãi không dừng — test "treo" (CPU 100%,
+  nhiều phút) trông giống deadlock dù bug thật chỉ là thứ tự assert sai. Đã sửa assert và bọc mọi
+  `session.sync()`/assert trong `try { … } finally { session.close() }` ở 3 test này để một assertion sai
+  trong tương lai thất bại nhanh, không treo CI.
 
 - **D-501** · 2026-11-06 · Zepp giao thức — **Chốt**
   Auth decision KHÔNG dựa vào phiên bản channel (v1/v2) mà dựa vào danh sách module: `supportModule(0x80) || supportModule(0x82)` → channel-based; không có → char 0x0009.
@@ -623,3 +729,283 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   `:core:demo` có `StandardVirtualWatch` ("SIG Pulse Band", `02:5D:00:00:18:0D`): GATT trong bộ nhớ chỉ nói các service SIG (HR 1 Hz + RR, Battery, DIS, CTS ghi được, PLX spot-check + RACP với 7 ngày × 3 lần đo, RSC), không có mock driver — được `:driver:standard` thật phục vụ. Module Hilt riêng (`StandardVirtualWatchModule`), tắt cùng cờ `MOCK_DEVICE`. E2E `StandardWatchE2ETest`, flow `60-standard-watch`.
 
 ## Release readiness (D-7xx)
+
+- **D-710** · 2026-11-08 · Demo mode — runtime switch — **Chốt**
+  Thêm `DemoModeController` (interface ở `:core:domain`, `enabled: StateFlow<Boolean>` + `setEnabled`), implement + bind ở `:core:demo` (`DemoModeControllerImpl`, DataStore key `demo_mode_enabled`, mặc định **false**), optional-bind ở `:core:data` (`@BindsOptionalOf`, giống `DemoDataController`). UI: Profile › Developer (debug only) có switch "Demo mode" (`feature/profile`), ẩn hẳn khi `Optional` rỗng (release).
+  Lý do: yêu cầu "mock chỉ bật khi tôi bật trong Settings" — thay cờ build-time mặc định bật bằng switch runtime mặc định tắt. Supersede phần "mặc định bật ở debug" của D-006/D-201/D-203 (các quyết định đó về việc code mock không có trong release vẫn giữ nguyên).
+- **D-711** · 2026-11-08 · Demo mode — cơ chế tắt/mở khi đang chạy — **Chốt**
+  Thêm `VirtualDevice.isActive` (default `true`) vào `:core:ble`; `VirtualAwareBleScanner`/`VirtualAwareGattConnector` lọc theo nó mỗi lần quét/connect. `:core:demo` bọc mọi `VirtualDevice` bằng `GatedVirtualDevice` (đọc `DemoModeController.enabled.value`) trước khi `@ElementsIntoSet`; xoá hẳn `BuildConfig.MOCK_DEVICE`/`-PunifiedHealth.mockDevice` (build-time).
+  Lý do: `:core:ble` không cần biết gì về demo (chỉ thêm một thuộc tính generic); đổi switch có hiệu lực ngay khi đang chạy (không cần khởi động lại) vì `isActive` được đọc lại ở mỗi vòng quét. `MockWatchDriver.recognize()` không cần gate riêng: quảng bá của nó không còn được emit khi tắt nên driver không bao giờ thấy nó.
+- **D-712** · 2026-11-08 · Demo mode — tách dữ liệu demo khỏi dữ liệu thật — **Chốt**
+  `DemoDataController.clearHealthData()` (xoá hết `health_samples`/`workouts`) đổi thành `clearDemoData()`: chỉ xoá theo `deviceId` nằm trong `DemoDeviceIds.ALL` (địa chỉ của 6 đồng hồ ảo: demo watch, Garmin/Zepp/Huawei ×2/SIG band). Thêm `HealthRecordDao.deleteSamplesForDevices`/`deleteWorkoutsForDevices` (`:core:data`).
+  Lý do: yêu cầu "không bao giờ xoá dữ liệu đồng hồ thật" — bảng `health_samples`/`workouts` đã có cột `deviceId` nên tag theo thiết bị ảo là đủ, không cần thêm cột/migration. Test `DemoDataSeederTest` kiểm tra dữ liệu của một "đồng hồ thật" giả định sống sót qua `clearDemoData()`.
+- **D-713** · 2026-11-08 · Demo mode — UI xác nhận và luồng E2E — **Chốt**
+  Profile › Developer: bật "Demo mode" là tức thì; tắt luôn hỏi trước (dialog "Turn off, keep data" / "Turn off and clear data"); "Fill demo data" (90 ngày, mọi metric) và "Clear demo data" đều chỉ hiện khi đang bật; Clear có dialog xác nhận riêng. E2E: `E2EBase` tự `setEnabled(true)` qua `Optional<DemoModeController>` thật (field inject) trước khi mở `MainActivity`, nên các test ghép đồng hồ ảo không cần bấm switch; `DemoDataE2ETest`/`WorkoutsE2ETest` đổi tag `seed_demo_data`→`fill_demo_data`, `clear_health_data`→`clear_demo_data` (+ tap `confirm_clear_demo_data`). `scripts/e2e.sh` không đổi.
+  Lý do: "Show confirmations; never delete real watch data" cho hành động phá hủy; E2E dùng đúng cơ chế production (`DemoModeController`) thay vì cờ test riêng, nên bản thân cơ chế bật demo cũng được test qua CI.
+
+## Watch model images (D-8xx)
+
+- **D-801** · 2026-11-08 · Ảnh sản phẩm official đóng gói WebP trong `:core:designsystem` — **Chốt**
+  Đóng gói trực tiếp (`drawable-nodpi/watch_<id>.webp`, trong suốt, ≤ 512px) thay vì tải qua mạng, vì app không xin quyền INTERNET (offline, riêng tư cho app sức khoẻ).
+  Lý do: bản quyền ảnh thuộc hãng sản xuất; chỉ dùng để giúp người dùng nhận diện thiết bị của chính họ, không dùng cho mục đích thương mại/quảng cáo. Nguồn từng ảnh liệt kê ở `docs/watch-catalog.md`.
+- **D-802** · 2026-11-08 · Nhận diện model: regex DIS rồi BLE name — **Tạm**
+  Mỗi `WatchModel` có một `namePattern` khớp (không phân biệt hoa/thường) trước tiên vào chuỗi model đọc từ Device Information Service, sau đó vào tên quảng bá BLE; pattern lấy từ tên thiết bị trong Gadgetbridge (codeberg.org/Freeyourgadget/Gadgetbridge, chỉ lấy pattern tên, không copy code) kết hợp RE của project cho vendor service/manufacturer data.
+  Lý do: một số pattern độ tin cậy thấp vì suy luận chứ chưa có bằng chứng xác nhận trực tiếp — đánh dấu `bleNameConfidence: "low"` trong `docs/research/watch_catalog.json` cho COROS PACE 4 / PACE 4 Pro / APEX 4 / NOMAD / VERTIX 2S và Wahoo TICKR; cần xác minh trên máy thật.
+- **D-803** · 2026-11-08 · Hiệu ứng 3D giả lập trong `WatchImage` — **Chốt**
+  Không hãng nào (Garmin, Huawei, Honor, Amazfit/Zepp, Xiaomi, COROS, Polar) công bố asset 3D official (GLB/GLTF/USDZ) hay bộ ảnh xoay 360° cho sản phẩm của họ, nên `WatchImage` giả 3D trên ảnh 2D phẳng: nghiêng phối cảnh (`graphicsLayer` rotationX/Y) khi kéo, lật vào (`rotationY` từ -90°) khi `revealKey` đổi (lúc kết nối), và một vệt sáng chạy theo hướng nghiêng.
+  Lý do: vẫn cho cảm giác sản phẩm "sống" mà không cần tải model 3D (giữ offline, không quyền INTERNET) hay tự dựng model trái phép.
+- **D-804** · 2026-11-08 · Xiaomi Smart Band 8/9/10 (và 7 Pro) giữ trong catalog chỉ để hiển thị — **Tạm**
+  Các model này dùng giao thức riêng của Xiaomi, không phải Huami/Zepp (chỉ Mi Band 5/6 và Xiaomi Smart Band 7 là Huami/Zepp thật); vẫn giữ trong `WatchCatalog` (vendor `ZEPP`) để hiện đúng tên và ảnh khi nhận ra tên quảng bá.
+  Lý do: driver `:driver:zepp` (giao thức Huami) nhiều khả năng không nói chuyện được với các model này dù nhận diện được tên; cần driver Xiaomi riêng hoặc xác nhận trên máy thật trước khi coi là hỗ trợ đầy đủ.
+
+## Pair with QR code (D-9xx)
+
+- **D-900** · 2026-11-08 · Camera/scanner stack — **Chốt**
+  Quét QR dùng CameraX (`camera-core/camera2/lifecycle/view` 1.6.1) + ZXing `core` 3.5.3, không
+  dùng MLKit/Barcode Scanning API — MLKit cần Google Play Services, Huawei không có GMS. ZXing
+  decode trực tiếp trên Y-plane của `ImageAnalysis` (`PlanarYUVLuminanceSource`), không cần
+  chuyển YUV→RGB. `feature/devices/.../qr/QrCodeAnalyzer.kt`, `QrScannerScreen.kt`. Nguồn:
+  `docs/analysis/QR_PAIRING_ANALYSIS.md` §1.1, §2.1 (cả Huawei Health và Zepp dùng camera scan
+  QR nội bộ app, không qua hệ thống).
+- **D-901** · 2026-11-08 · Phạm vi parser (`QrPairingParser`) — **Chốt**
+  `core/model/QrPairingHint.kt` + `QrPairingParser.kt`: 3 sub-parser theo thứ tự Zepp → Huawei →
+  Garmin, thuần Kotlin/JVM (dùng `java.net.URI`/`URLDecoder`, không Android). Zepp: MAC 12-hex bắt
+  buộc, `pnpNumber`/`pnpVersion` coi là optional cho app này (khác app Zepp gốc bắt buộc cả 3).
+  Huawei: `t`/`n`|`bt_name`/`r`|`PIN`, bare `key=value` hoặc URL, giá trị URL-decode. Garmin: App
+  Link `{connect,connecttest}.garmin.{com,cn}/mobile-link/gcm/pair-device`, lấy `deviceId` +
+  `productNumber`; `applicationKey` **luôn bị bỏ qua** — không parse vào hint, không lưu, không
+  log (đây là OAuth scope id trên cloud Garmin, không phải secret BLE). Nguồn: §6.1, §4.3.
+- **D-902** · 2026-11-08 · Huawei PIN — **Tạm**
+  Vai trò PIN trong handshake Huawei (HiChain) chưa xác nhận được ở mức byte (§1.4, §6.3.1 của
+  research doc nói PIN có thể là input PAKE, không chỉ mã xác nhận BT). Driver `driver/huawei`
+  hiện KHÔNG dùng PIN trong handshake, nên PIN từ QR chỉ giữ trong `QrFindUiState.huaweiPin`
+  (state trong RAM của `DevicesViewModel`) để hiển thị "Code on the watch: 123456" cho người
+  dùng tự nhập vào máy nếu được hỏi — không ghi Room/DataStore, không log. Khi driver Huawei cần
+  PIN thật cho handshake, phải nối lại pipeline này (xem `docs/DECISIONS.md` D-3xx khi đó).
+- **D-903** · 2026-11-08 · Garmin match bằng unitId/productNumber — **Tạm**
+  Layout byte của manufacturer-specific data Garmin (`dk2/d.java:362-520`) bị jadx làm hỏng (nhiều
+  block trùng/inline do lỗi decompile) ngay sau đoạn đọc company id — chỉ phần đọc company id +
+  2 byte đầu (big-endian u16) là tin được. `GarminUuids.productNumberFrom()` trả về **thập phân
+  của 2 byte đó**, không phải bảng tra `productNumber` thật của Garmin Connect (bảng tra đó không
+  có trong dump). Dùng giá trị này làm `DiscoveredDevice.vendorIdentifiers["garmin.productNumber"]`
+  để so khớp "tốt nhất có thể"; `DevicesViewModel.selectMatch` chỉ coi là khớp chắc khi giá trị
+  này bằng `productNumber` trong QR, còn không thì rơi về "đúng 1 candidate Garmin gần đó" — nhiều
+  candidate không xác định được thì chờ timeout và để người dùng "Choose from list", **không đoán
+  bừa**. Cần xác nhận lại bằng QR thật + HCI snoop log trên đồng hồ Garmin thật (xem §6.3.6 trong
+  research doc).
+- **D-904** · 2026-11-08 · `WearableDriver.identifiers()` — **Chốt**
+  Thêm method mặc định `identifiers(Advertisement): Map<String, String> = emptyMap()` vào
+  `core/ble/driver/WearableDriver` + field `DiscoveredDevice.vendorIdentifiers` (mặc định rỗng) —
+  không phá driver khác (Huawei/Zepp/Coros/Standard không override). `MultiVendorDeviceScanner`
+  gọi `registry[vendor]?.identifiers(advertisement)` khi gộp kết quả scan, giữ giá trị cũ nếu bản
+  quảng bá mới (ví dụ từ bond list) không có manufacturer data. Chỉ `GarminDriver` override hiện
+  tại.
+- **D-905** · 2026-11-08 · Luồng tìm theo hint + timeout — **Chốt**
+  `DevicesViewModel.startFind()`: dừng scan thường, chạy `repository.scan()` với
+  `withTimeoutOrNull(30_000)` (giống timeout address-filtered scan 30s của vendor Zepp, §2.3/§6.2),
+  khớp đầu tiên theo `selectMatch()` thì gọi lại đúng `pair()` hiện có (đã tự `connect()` khi không
+  thiếu credential) — không viết lại luồng pair/connect. Hết giờ → sheet "Looking for …" chuyển
+  sang trạng thái `TIMED_OUT` với "Try again" (gọi lại cùng hint) / "Choose from list" (đóng sheet,
+  chạy scan thường). "Enter MAC address" dùng chung `startFind()` với bộ so khớp theo địa chỉ
+  chính xác, validate qua `MacAddressFormat.normalizeOrNull` (chấp nhận có/không dấu `:`/`-`).
+- **D-906** · 2026-11-08 · Không có ảnh/model watch trong sheet — **Tạm**
+  `WatchModel`/`WatchModelMatcher`/`WatchImage` (nhánh `feat/watch-model-images`, chưa merge vào
+  `main` lúc làm task này) chưa có trên worktree này → sheet "Looking for …" chỉ hiện icon
+  `Icons.Outlined.Watch` + tên vendor/mac/btName/productNumber dạng text, không có ảnh sản phẩm
+  thật. Khi nhánh đó merge, nối `WatchModelMatcher` vào `DevicesViewModel.labelFor()`/`QrFindSheet`
+  (map `productNumber`→model cho Garmin, `pnpNumber/pnpVersion`→model cho Zepp) là việc còn lại,
+  không cần đổi kiến trúc đã làm ở đây.
+
+## Garmin sync gaps, Summary/Health UI, ngưỡng chỉ số, tiếng Việt (D-10xx)
+
+Batch quyết định 2026-11-08 từ yêu cầu "check Garmin + UI + config + tiếng Việt" của user. Dùng ID
+4 chữ số (D-10xx) thay vì tái dùng một prefix 1 chữ số đã có (ví dụ `D-8xx` đã bị dùng trùng cho 2
+batch khác nhau ở trên — "Gộp màn hình" và "Watch model images" — để tránh gây nhầm thêm lần nữa.
+
+- **D-1000** · 2026-11-08 · Garmin VO2 max — đọc giá trị thiết bị đã tính, không tái tạo thuật toán — **Chốt**
+  Thêm mapper đọc field `vo2_max` trong FIT message 140 (`user_metrics`, kiểm tra thêm msg 42
+  `user_profile` tùy firmware) tại `FitHealthMapper` (`driver/garmin`), thêm biến thể mới trong
+  `core/model/.../HealthRecord.kt` (ví dụ `HealthRecord.Vo2Max`). D-803 (2026-11-06) chỉ cấm tái
+  tạo thuật toán Firstbeat độc quyền (không có trong FIT dump) — đây là đọc số watch đã tự tính và
+  xuất sẵn trong file FIT, không vi phạm D-803. Hiện tại không có record VO2max nào được map — đây
+  là khoảng trống thật, không phải lỗi parse. Nguồn: fork investigation 2026-11-08, `docs/protocols/GARMIN_DEVICE_PROTOCOL.md`.
+- **D-1001** · 2026-11-08 · Garmin pin bị cũ sau lần connect đầu — ghi lại mỗi lần poll vào Room — **Chốt**
+  `GarminSession.startBatteryPolling()` (SIG `0x180F` + fallback 5023, mỗi 10 phút) hiện chỉ cập
+  nhật `provisionalBattery` trong RAM của session; `DefaultWearableDeviceRepository.connect()` chỉ
+  gọi `dao.updateInfo(...)` đúng 1 lần lúc connect. Sửa: mỗi lần poll có giá trị mới phải ghi luôn
+  xuống `PairedDeviceDao`; nếu lần đọc lúc connect fail/null (hay gặp ngay sau khi pair) thì giá trị
+  được điền ở lần poll kế tiếp thay vì treo `null` tới khi disconnect/reconnect lại. Nguồn: fork
+  investigation 2026-11-08 — `GarminSession.kt`, `DefaultWearableDeviceRepository.kt`.
+- **D-1002** · 2026-11-08 · Xác minh lại việc dọn `feature/sleep` theo D-808 — **Tạm**
+  D-808 (2026-11-06) ghi là đã xoá `feature/sleep` khỏi `settings.gradle.kts`/`app`/NavHost, nhưng
+  fork UI đợt này vẫn thấy `feature/sleep/SleepScreen.kt` còn đăng ký trong nav host, không ai gọi
+  `navigateToSleep` tới. Cần agent implement kiểm tra lại trạng thái thật (có thể bị merge revert
+  hoặc D-808 chưa áp dụng hết) và hoàn tất xoá nếu đúng là mồ côi — không phải việc mới, chỉ là
+  đóng nốt D-808.
+- **D-1010** · 2026-11-08 · Gộp Summary + Health thành 1 destination — **Chốt**
+  Giữ `TopLevelDestination.HOME`, xoá `HEALTH` (`FeedDestination`, được tạo ở D-809 2026-11-08 cùng
+  ngày — đổi ý trong cùng phiên làm việc vì lý do khác: trùng lặp ring + user muốn gộp lại 1 màn).
+  Gộp nội dung `FeedScreen` (feature/home/feed) vào `HomeScreen` thành 1 list cuộn: DeviceBanner →
+  RingsCard (dời lên ngay sau DeviceBanner, xem D-1011) → pinned metrics → full metric feed (từ
+  FeedScreen) → highlights/workouts. Xoá `ActivityRingsFeedCard` (trùng lặp hoàn toàn với
+  `RingsCard`, cùng dựng `RingSpec` từ `DailyHealthSummary`). Chỉ ảnh hưởng `feature/home`; cập nhật
+  `UnifiedHealthNavHost.kt` bỏ route `feedScreen`. Nguồn: fork investigation 2026-11-08 —
+  `HomeScreen.kt`, `FeedScreen.kt`, `TopLevelDestination.kt`, `UnifiedHealthNavHost.kt`.
+- **D-1011** · 2026-11-08 · Vị trí Activity Rings trong Summary — **Chốt**
+  Dời `RingsCard` lên ngay sau `DeviceBanner` trong list của Home (trước "Pinned"), thay vì nằm
+  dưới section Pinned như hiện tại — khớp phản hồi "ring bị đẩy xuống dưới device". Data binding
+  của ring (đọc `DailyHealthSummary` qua `HomeViewModel`) đã đúng, không cần sửa; ring trống chỉ do
+  thiết bị Garmin chưa sync đủ (xem D-1000/D-1001 và phần activities/calories/sleep ở trên).
+- **D-1020** · 2026-11-08 · Thanh scrub cho chart — **Chốt**
+  Thêm gesture kéo-xem-giá-trị (`detectDragGestures`/`detectTapGestures` qua `pointerInput`) vào
+  `HealthBarChart`/`HealthRangeChart` trong `core/designsystem/.../HealthCharts.kt` (chart dùng ở
+  `MetricDetailScreen` — không làm cho mini-card trong feed vì quá nhỏ để scrub). Map tọa độ x →
+  điểm dữ liệu gần nhất bằng đúng hàm `slot`/`plot` đã có sẵn trong `ChartFrame.drawAxes`; vẽ thêm
+  vạch dọc + nhãn giá trị tại điểm đang chọn. Xoá `SimpleBarChart.kt` (dead code, tự có TODO
+  "replace with Vico") sau khi agent tự grep xác nhận không còn nơi nào dùng.
+- **D-1030** · 2026-11-08 · Config ngưỡng "bình thường" cho các chỉ số sức khỏe — **Chốt**
+  Thêm `core/domain/model/MetricThresholds.kt` + `DefaultMetricThresholds`: resting HR 60-100, 5
+  vùng nhịp tim theo %HRmax (Z1 50-60% khởi động, Z2 60-70% đốt mỡ, Z3 70-80% hiếu khí, Z4 80-90%
+  yếm khí, Z5 90-100% tối đa), bước chân mặc định giữ nguyên `dailyStepGoal` đã có, ngủ 7-9h, SpO2
+  95-100% (báo động <90%), VO2max theo bảng band tuổi/giới (không có công thức chuẩn chung — chỉ
+  categorize, không tính điểm — tránh đụng D-803), calorie dựa trên BMR×hệ số hoạt động thay vì
+  hằng số cố định. `UserPreferences` thêm field override nullable theo đúng pattern `dailyStepGoal`
+  đã dùng (mặc định dùng `DefaultMetricThresholds`, user có thể ghi đè). Dời `StressLevel` band
+  (hiện hardcode trong `HealthMetrics.kt`) và các hằng số `DEFAULT_ACTIVE_KCAL_GOAL`/
+  `DEFAULT_ACTIVE_MINUTES_GOAL` (`LocalHealthDataRepository.kt`) vào config mới này.
+  `HealthAlertsMonitor`/`WatchAlertRules` đọc threshold từ config thay vì hardcode. Vòng đầu: Profile
+  chỉ cần xem được tất cả threshold + chỉnh được step/calorie/sleep goal (đã có pattern); HR
+  zone/SpO2/VO2max band hiển thị read-only, chưa cần UI chỉnh — mở rộng sau nếu cần. Nguồn: fork
+  investigation 2026-11-08 — `UserPreferences.kt`, `HealthMetrics.kt`, `LocalHealthDataRepository.kt`.
+- **D-1040** · 2026-11-08 · Giao diện tiếng Việt — locale mặc định + cấu trúc resource — **Chốt**
+  `values/` (mặc định) = tiếng Anh, thêm `values-vi/` = tiếng Việt (thêm, không thay thế — khớp
+  CLAUDE.md "code/comment tiếng Anh", string UI tiếng Anh làm baseline nhất quán). String dùng
+  chung nhiều màn (OK/Cancel/Retry/Connect/Disconnect/Try again...) đặt ở
+  `core/designsystem/src/main/res/values(-vi)/strings.xml` — mọi feature module đã phụ thuộc
+  designsystem sẵn. String đặc thù từng màn hình đặt trong `res/` riêng của mỗi module `feature/*`
+  (devices, home, profile, activity, onboarding — đều dùng `AndroidFeatureConventionPlugin` nên tự
+  thêm `res/` được). String cấp app/notification ở `app/src/main/res/values(-vi)/strings.xml`
+  (hiện chỉ có `app_name`). Thứ tự triển khai theo khối lượng + mức độ người dùng thấy:
+  `feature/devices` (58 chỗ `Text("...")` hardcode) → `feature/home` (27) → `feature/profile` (21)
+  → `app/.../notifications/` (1, nhưng là text hệ thống luôn hiển thị) → `feature/activity` (6) →
+  `feature/onboarding` (4). Cơ chế chuyển locale: `AppCompatDelegate.setApplicationLocales` + toggle
+  EN/VI trong Profile (không theo system locale mặc định) — vì user Việt Nam hay để máy ở English
+  nhưng muốn riêng app này tiếng Việt. Nguồn: fork investigation 2026-11-08 (0 `stringResource` nào
+  trong code thật trước khi có quyết định này, chỉ có `app/src/main/res/values/strings.xml` với
+  đúng 1 string).
+
+## Giao diện Home sau khi gộp — grid card, bottom nav animation, swipe, live dot (D-105x)
+
+User gửi 3 ảnh tham khảo (`~/Downloads/IMG_1001.png`, `IMG_1002.png`, `IMG_1003.jpg` — giao diện
+Health của một app vendor khác) làm reference về layout/animation, **không** tham khảo tính năng
+độc quyền của họ (Health Clovers, Emotional wellbeing... — những card này KHÔNG được copy, D-803
+vẫn áp dụng: chỉ lấy pattern UI chung, không lấy tên/thuật toán/tính năng gamification riêng của
+hãng khác). Việc implement các mục dưới đây **chờ** agent đang làm D-1010/1011/1020 (gộp
+Summary+Health, dời ring, thêm chart scrub) xong trước, vì cùng đụng `HomeScreen.kt` và nav host —
+tránh 2 agent sửa song song cùng file.
+
+- **D-1050** · 2026-11-08 · Layout dạng grid 2 cột cho Home sau khi gộp — **Tạm**
+  Khi có thiết bị đã kết nối: card ring full-width ở đầu (giữ `RingsCard` đã dời lên theo D-1011) +
+  thanh "Today's steps"-style ngay dưới, rồi tới grid 2 cột các card metric (mỗi card: tên chỉ số,
+  giá trị mới nhất to, 1 mini-visual nếu có — line chart nhỏ/route map/hypnogram thu nhỏ — giống bố
+  cục ảnh tham khảo). **Chỉ map vào các chỉ số app này thực sự có** (steps/calo/active-minutes đã
+  có trong ring, heart rate, sleep, SpO2, VO2max — mới thêm D-1000 —, workouts/exercise records);
+  KHÔNG tạo card giả cho Weight/Emotional wellbeing/Blood pressure vì app chưa thu thập các dữ liệu
+  này — để trống/không hiện card đó thay vì bịa. Agent implement tự quyết số cột/kích thước theo
+  Material 3, tự chọn chỉ số nào lên card riêng vs gộp vào pinned/highlights đã có.
+- **D-1051** · 2026-11-08 · Bottom navigation dạng pill, animation khi đổi tab — **Chốt**
+  Đổi bottom nav hiện tại (Material 3 `NavigationBar` tiêu chuẩn) sang dạng pill nổi giống ảnh tham
+  khảo: nền pill bo tròn cho toàn thanh, tab đang chọn có icon+label màu nhấn + nền pill nhỏ di
+  chuyển mượt (animate) theo tab khi đổi, tab khác chỉ icon xám. 4 tab sau khi gộp D-1010: Home
+  (Summary+Health), Activity, Devices, Profile.
+- **D-1052** · 2026-11-08 · Vuốt ngang để chuyển tab — **Chốt**
+  Bọc 4 màn hình top-level trong `HorizontalPager` (Compose Foundation), đồng bộ 2 chiều với bottom
+  nav: vuốt đổi trang thì pill nhảy theo, bấm pill thì pager animate-scroll sang trang đó.
+- **D-1053** · 2026-11-08 · Tắt gesture back-vuốt-cạnh mặc định của Android ở các tab cha — **Tạm**
+  Vì vuốt ngang giờ dùng để đổi tab (D-1052), gesture back-vuốt-từ-cạnh-trái mặc định của Android
+  (predictive back / gesture nav) phải bị vô hiệu hoá trên các màn top-level để khỏi đánh nhau với
+  `HorizontalPager`, nhưng vẫn phải hoạt động bình thường ở các màn con (MetricDetailScreen,
+  DeviceDetailScreen, WorkoutDetailDestination...). Cách làm gợi ý (agent tự xác nhận khi code):
+  `View.setSystemGestureExclusionRects()` loại trừ vùng cạnh trái/phải khỏi gesture hệ thống ngay
+  trên Compose host của 4 màn top-level; không ảnh hưởng máy dùng nút back 3-nút (không có edge
+  gesture để tắt). Đánh dấu Tạm vì cần test trên máy thật ở cả 2 chế độ điều hướng.
+- **D-1054** · 2026-11-08 · Dot xanh/xám cho dữ liệu đang live — **Chốt**
+  Các chỉ số có "live mode" (đọc liên tục khi đang kết nối, ví dụ heart rate) hiện dot màu xanh lá
+  cạnh tên khi đang thực sự nhận dữ liệu live từ thiết bị; dot màu xám khi không live (giá trị cũ/
+  cache, không có live stream đang chạy cho đúng chỉ số đó — khác với "thiết bị có đang connect hay
+  không" vì từng chỉ số có thể live độc lập nhau). Dùng lại `core/domain/repository/LiveHealthRepository.kt`
+  + `core/data/.../live/DefaultLiveHealthRepository.kt` đã có sẵn khái niệm "live" trong kiến trúc —
+  expose state live theo từng metric (không chỉ 1 cờ live chung) nếu repository hiện tại chưa làm
+  vậy, rồi bind dot màu vào đúng state đó trên mỗi card Home.
+- **D-1055** · 2026-11-08 · Hai quyết định nhỏ khi thực thi D-1010/1011/1020 — **Chốt**
+  (1) Bỏ hẳn nút "Show all health data" (`onBrowseAll`) khỏi `HomeScreen.kt`/`HomeNavigation.kt`/
+  `UnifiedHealthNavHost.kt` thay vì "repoint" sang Home — sau khi gộp, nút này nằm ngay trên màn
+  Home và sẽ trỏ về chính nó (no-op gây rối UI), nên không còn lý do giữ. Grep xác nhận không có
+  nơi nào khác (feature khác) tham chiếu `onBrowseAll`/`FeedDestination`/`TopLevelDestination.HEALTH`
+  trước khi xoá. (2) Khi gộp `FeedViewModel` vào `HomeViewModel`, lọc bỏ id `FeedCardId.ACTIVITY_RINGS`
+  khỏi danh sách hiển thị trong dialog "Edit cards" (`feature/home` only, filter tại chỗ dùng —
+  không sửa schema `UserPreferences`/`FeedCardId` ở `core/model` vì D-1010 ghi rõ "chỉ ảnh hưởng
+  feature/home"); card Activity rings giờ cố định ngay sau `DeviceBanner` (D-1011) nên không còn
+  cần một vị trí trong `feedCardOrder` nữa — id cũ trong dữ liệu đã lưu của người dùng cũ chỉ bị bỏ
+  qua (`mapNotNull`), không gây lỗi.
+  Lưu ý cho người review: `app/src/androidTest/kotlin/com/unified/health/e2e/*.kt` (DemoDataE2ETest,
+  StandardWatchE2ETest, ZeppWatchE2ETest, GarminWatchE2ETest, UserJourneyE2ETest) vẫn còn tham chiếu
+  tag cũ (`nav_HEALTH`, `feed_list`, `card_ACTIVITY_RINGS`) từ trước khi gộp — ngoài phạm vi
+  android-coder (chỉ build `testDebugUnitTest` + `assembleDebug`, không chạy `connectedAndroidTest`/
+  `scripts/e2e.sh`); cần một lượt sửa riêng bởi `e2e-flows` theo quy ước CLAUDE.md trước khi chạy E2E.
+
+## Garmin D-1000/D-1001/D-1002 — implementation (D-106x)
+
+- **D-1060** · 2026-11-08 · VO2 max field number — **Tạm**
+  Triển khai đúng theo D-1000: `FitHealthMapper.MESG_USER_METRICS = 140`, `MESG_USER_PROFILE = 42`,
+  cả hai đọc field số 7 (`vo2_max`) dạng số nguyên thường (không scale), lọc theo khoảng hợp lý
+  10..95 mL/kg/min để loại giá trị rác (không phải sentinel 0xFF — FIT đã tự lọc sentinel ở tầng
+  decode). Record gắn timestamp bằng `lastTimestamp` của message trước đó trong file (hai message
+  này thường không tự mang field 253). Field number 7 và việc `user_profile` (42) thực sự có mang
+  `vo2_max` hay không là suy đoán [Ext] chưa có file FIT thật xác minh —
+  `TODO(garmin-protocol): NEEDS-REAL-WATCH` giữ trong `FitHealthMapper.mapVo2Max`. Không cần đổi gì
+  ở `GarminFileSync`/`GarminFitFileType`: METRICS (subType 44) đã được liệt kê và tải về từ trước,
+  chỉ là chưa ai parse message 140/42 bên trong.
+- **D-1061** · 2026-11-08 · Battery poll → Room qua `batteryUpdates` Flow — **Chốt**
+  Thêm `WearableSession.batteryUpdates: Flow<Int>` (mặc định `emptyFlow()`, giống pattern
+  `liveHeartRate` đã có) + `DeviceConnection.batteryUpdates` (mặc định rỗng) +
+  `MultiVendorDeviceConnection.batteryUpdates` (flatMapLatest theo session đang active). Chỉ
+  `GarminSession` override thật: mỗi tick 10 phút của `startBatteryPolling()` vẫn gửi 5023 như cũ
+  (không đổi hành vi/test cũ) nhưng giờ cũng tự đọc SIG 0x180F ngay trong tick đó; giá trị đọc được
+  (SIG hoặc 5023 giải mã được, qua `onMessage`) đều `tryEmit` vào `MutableSharedFlow<Int>(replay=1)`.
+  `DefaultWearableDeviceRepository` collect flow này trong `init{}` (CoroutineScope riêng của
+  repository, không cancel — cùng kiểu với scope nội bộ của `MultiVendorDeviceConnection`), ghi
+  bằng `PairedDeviceDao.updateBattery(id, battery)` mới (chỉ update cột battery, không đụng
+  firmware/model như `updateInfo`) với `deviceId = connection.activeAddress.value` (bằng
+  `macAddress`, đúng bằng `entity.id` theo cách `pair()` tạo). Hệ quả: pin không còn treo `null`
+  tới khi disconnect/reconnect nếu lần đọc lúc connect() thất bại — lần poll kế tiếp (tối đa 10
+  phút sau) sẽ tự điền. Không sửa `Huawei/Standard/Zepp/Coros Session` vì `batteryUpdates` có default
+  rỗng, không bắt buộc override.
+- **D-1062** · 2026-11-08 · D-1002 (`feature/sleep`) — xác nhận đã dọn sạch — **Chốt**
+  Kiểm tra lại: không còn thư mục `feature/sleep` nào trên đĩa (ngoài thư mục decompile Zepp không
+  liên quan ở `docs/re-evidence/`), không có dòng nào nhắc `sleep` trong `settings.gradle.kts` hay
+  `app/build.gradle.kts`, và `UnifiedHealthNavHost.kt` hiện tại không có route/import nào liên quan
+  `SleepScreen`/`navigateToSleep`. D-808 đã áp dụng đầy đủ từ trước — không có gì để xoá thêm ở
+  đợt này; nghi ngờ trong D-1002 (lo sợ bị merge revert) không xảy ra trên nhánh hiện tại.
+
+- **D-1070** · 2026-11-08 · Chẩn đoán trực tiếp trên máy thật: sleep/resting HR/SpO2 vẫn trống — **Tạm**
+  User báo sau khi cài APK thật và kết nối Garmin thật, 3 chỉ số sleep/resting HR/SpO2 vẫn chưa
+  hiện. Đọc `adb logcat` trực tiếp: `GarminFileSync` log "Directory: 59 entries, ... {MONITORING=31,
+  METRICS=23, WELLNESS_49=2}" — `WELLNESS_49` (2 file, theo `docs/protocols/GARMIN_DEVICE_PROTOCOL.md`
+  §... ghi `[I]` là "nhiều khả năng sleep/wellness", chưa xác nhận) giữ nguyên số lượng qua nhiều vòng
+  sync, cursor `wellness since` đã đi qua 2 file đó từ trước (giờ 10:5x cùng ngày) — nghĩa là 2 file
+  này đã được tải/giải mã từ sớm hơn hôm nay, không phải đang bị bỏ qua. Đọc code xác nhận
+  `GarminFileSync.sync()` cho MỌI loại file non-activity (kể cả `WELLNESS_49`) đi qua đúng 1 pipeline
+  `FitHealthMapper.map()` — không có nhánh nào bỏ qua `SLEEP_LEVEL`(275)/`SPO2_DATA`(269)/
+  `MONITORING_HR_DATA`(273) theo loại file; code không phải nguyên nhân thiếu dữ liệu. `decodeFailures=0`
+  suốt log — không có file nào giải mã lỗi.
+  **Kết luận tạm thời (chưa xác nhận 100%, cần quan sát thêm):** nhiều khả năng đây là giới hạn dữ
+  liệu từ chính đồng hồ chứ không phải bug: (1) Sleep cần qua 1 đêm ngủ thật với đồng hồ đeo mới có
+  file mới; test đang làm vào buổi chiều cùng ngày pairing nên chưa có gì để sync. (2) Resting HR
+  Garmin thường tính 1 lần vào sáng sớm dựa trên đêm trước; pairing mới trong ngày chưa có giá trị
+  này. (3) SpO2 "all-day"/Pulse Ox trên đa số đồng hồ Garmin **mặc định TẮT** để tiết kiệm pin — cần
+  user tự bật trong cài đặt trên đồng hồ (Settings → Sensors → Pulse Ox → All-day) thì máy mới sinh
+  ra message `SPO2_DATA`(269) để app đọc được.
+  **Đã thêm ngay:** log `byKind=<map tên record → số lượng>` vào dòng "Sync finished" của
+  `GarminFileSync.kt` (trước đây chỉ có tổng `totalRecords`) — lần sync tới (đặc biệt sau 1 đêm ngủ)
+  sẽ thấy ngay chính xác loại nào có/không, không cần đoán nữa.

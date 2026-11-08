@@ -6,18 +6,16 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.feature.home.HomeRoute
-import com.unified.health.feature.home.browse.BrowseRoute
 import com.unified.health.feature.home.detail.MetricDataRoute
 import com.unified.health.feature.home.detail.MetricDetailRoute
 import kotlinx.serialization.Serializable
 
-/** Summary (Apple Health's first tab). */
+/**
+ * Summary (Apple Health's first tab), merged with the old flat Health feed per D-1010: device
+ * banner, activity rings, pinned metrics, every metric's own card, then highlights.
+ */
 @Serializable
 data object HomeDestination
-
-/** Browse: categories → metrics. */
-@Serializable
-data object BrowseDestination
 
 /** The metric is passed by enum name so the route has no enum serializer to keep under R8. */
 @Serializable
@@ -40,18 +38,11 @@ fun NavController.navigateToMetricData(metric: HealthMetricType) = navigate(Metr
 fun NavGraphBuilder.homeScreen(
     onMetricClick: (HealthMetricType) -> Unit,
     onOpenDevices: () -> Unit,
-    onBrowseAll: () -> Unit,
-) {
-    composable<HomeDestination> {
-        HomeRoute(onMetricClick = onMetricClick, onOpenDevices = onOpenDevices, onBrowseAll = onBrowseAll)
-    }
-}
-
-fun NavGraphBuilder.browseScreen(
-    onMetricClick: (HealthMetricType) -> Unit,
     onOpenWorkouts: () -> Unit,
 ) {
-    composable<BrowseDestination> { BrowseRoute(onMetricClick = onMetricClick, onOpenWorkouts = onOpenWorkouts) }
+    composable<HomeDestination> {
+        HomeRoute(onMetricClick = onMetricClick, onOpenDevices = onOpenDevices, onOpenWorkouts = onOpenWorkouts)
+    }
 }
 
 fun NavGraphBuilder.metricDetailScreen(onBack: () -> Unit, onShowAllData: (HealthMetricType) -> Unit) {

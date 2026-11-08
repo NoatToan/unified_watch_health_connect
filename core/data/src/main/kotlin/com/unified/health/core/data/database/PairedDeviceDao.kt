@@ -19,6 +19,10 @@ interface PairedDeviceDao {
     @Query("UPDATE paired_devices SET batteryPercent = :battery, firmwareVersion = :firmware, model = :model WHERE id = :id")
     suspend fun updateInfo(id: String, battery: Int?, firmware: String?, model: String?)
 
+    /** Battery-only write for a periodic poll result (D-1001) — does not touch firmware/model. */
+    @Query("UPDATE paired_devices SET batteryPercent = :battery WHERE id = :id")
+    suspend fun updateBattery(id: String, battery: Int)
+
     @Query("UPDATE paired_devices SET lastSyncedAtEpochMs = :epochMs WHERE id = :id")
     suspend fun updateLastSynced(id: String, epochMs: Long)
 

@@ -50,6 +50,7 @@ object SampleType {
     /** One row per day, stored at local midnight. */
     const val RESTING_HEART_RATE = "resting_heart_rate"
     const val HRV = "hrv_ms"
+    const val VO2_MAX = "vo2_max"
 
     /** Value is the [com.unified.health.core.model.SleepStage] ordinal. */
     const val SLEEP_STAGE = "sleep_stage"
@@ -90,4 +91,11 @@ interface HealthRecordDao {
 
     @Query("DELETE FROM workouts")
     suspend fun deleteAllWorkouts()
+
+    /** Scoped delete used by the debug-only "Clear demo data" tool: only rows of [deviceIds] are removed. */
+    @Query("DELETE FROM health_samples WHERE deviceId IN (:deviceIds)")
+    suspend fun deleteSamplesForDevices(deviceIds: List<String>)
+
+    @Query("DELETE FROM workouts WHERE deviceId IN (:deviceIds)")
+    suspend fun deleteWorkoutsForDevices(deviceIds: List<String>)
 }

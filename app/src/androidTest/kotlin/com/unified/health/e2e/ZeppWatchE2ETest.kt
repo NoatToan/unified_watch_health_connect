@@ -11,8 +11,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
-import androidx.compose.ui.test.performTextClearance
-import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.semantics.SemanticsProperties
 import com.unified.health.core.demo.virtual.ZeppVirtualWatchIdentity
 import com.unified.health.core.model.WearableVendor
@@ -22,7 +20,7 @@ import org.junit.Test
 /**
  * The Zepp/Amazfit driver against the simulated watch from `:core:demo` (`ZeppVirtualWatch`, legacy
  * auth path, §5.5): pair → enter credential → generate + locally bind a key → connected → sync
- * (steps, heart rate, SpO2, stress via GDSP) → Summary/Browse show the data with Zepp source
+ * (steps, heart rate, SpO2, stress via GDSP) → Summary/Health feed show the data with Zepp source
  * attribution → unpair. Exercises the real scan → `ZeppDriver.recognize` → `openSession` → `sync` →
  * Room pipeline (see `docs/DECISIONS.md` D-5xx).
  */
@@ -88,7 +86,7 @@ class ZeppWatchE2ETest : E2EBase() {
             }
         }
 
-        report.flow(22, "zepp-summary", "Summary and Browse show the synced data with Zepp source attribution") {
+        report.flow(22, "zepp-summary", "Summary and the Health feed show the synced data with Zepp source attribution") {
             step("summary", "Open Summary", "Pinned heart rate and steps cards show synced values") {
                 clickTag("nav_HOME")
                 waitForTag("summary_card_HEART_RATE")
@@ -105,22 +103,21 @@ class ZeppWatchE2ETest : E2EBase() {
                 waitForText(name)
                 waitForText(WearableVendor.ZEPP.displayName, substring = true)
             }
-            step("browse-spo2", "Back twice, Browse → search \"oxygen\" → open", "Blood oxygen has a value from the synced SpO2 points") {
+            step("feed-spo2", "Back twice, Health feed → Blood oxygen card", "Blood oxygen has a value from the synced SpO2 points") {
                 device.pressBack()
                 device.pressBack()
                 waitForTag("summary_list")
-                clickTag("nav_BROWSE")
-                waitForTag("browse_search")
-                compose.onNodeWithTag("browse_search").performTextInput("oxygen")
-                clickTag("browse_metric_SPO2")
+                clickTag("nav_HEALTH")
+                waitForTag("feed_list")
+                compose.onNodeWithTag("feed_list").performScrollToNode(hasTestTag("card_SPO2"))
+                clickTag("card_SPO2")
                 waitFor(hasTestTag("metric_header") and !hasContentDescription("No data"), what = "SpO2 header with data")
             }
-            step("browse-stress", "Back, search \"stress\" → open", "Stress has a value from the synced all-day stress data") {
+            step("feed-stress", "Back, Health feed → Stress card", "Stress has a value from the synced all-day stress data") {
                 device.pressBack()
-                waitForTag("browse_search")
-                compose.onNodeWithTag("browse_search").performTextClearance()
-                compose.onNodeWithTag("browse_search").performTextInput("stress")
-                clickTag("browse_metric_STRESS")
+                waitForTag("feed_list")
+                compose.onNodeWithTag("feed_list").performScrollToNode(hasTestTag("card_STRESS"))
+                clickTag("card_STRESS")
                 waitFor(hasTestTag("metric_header") and !hasContentDescription("No data"), what = "Stress header with data")
             }
         }

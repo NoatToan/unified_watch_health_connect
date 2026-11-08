@@ -57,7 +57,7 @@ import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.permission.RuntimePermissions
 import com.unified.health.core.designsystem.theme.Spacing
-import com.unified.health.core.domain.usecase.WatchAlertRules
+import com.unified.health.core.domain.model.DefaultMetricThresholds
 import java.text.NumberFormat
 
 @Composable
@@ -149,7 +149,7 @@ internal fun NotificationSettingsScreen(
                     tag = "notif_battery",
                     icon = Icons.Outlined.BatteryAlert,
                     title = "Low watch battery",
-                    subtitle = "When a paired watch reports ${WatchAlertRules.LOW_BATTERY_PERCENT}% or less",
+                    subtitle = "When a paired watch reports ${DefaultMetricThresholds.VALUES.lowBatteryPercent}% or less",
                     checked = prefs.lowWatchBattery,
                     onChange = onLowWatchBattery,
                 )

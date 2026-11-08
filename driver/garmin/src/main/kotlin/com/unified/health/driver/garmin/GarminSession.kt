@@ -39,9 +39,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -85,6 +87,14 @@ internal class GarminSession private constructor(
     /** Last 5023 that passed [BatteryStatus.decode]'s checks; only a fallback (§10.3 [V]). */
     @Volatile
     private var provisionalBattery: BatteryStatus? = null
+
+    /**
+     * Every fresh battery reading [startBatteryPolling] or an unsolicited 5023 produces, so the
+     * caller can persist it without waiting for [readDeviceInfo] (D-1001). Replay 1 so a collector
+     * that starts after the first reading still sees the latest value.
+     */
+    private val _batteryUpdates = MutableSharedFlow<Int>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    override val batteryUpdates: Flow<Int> = _batteryUpdates
 
     /** The watch's own 5050 capability bitmask, kept to select the vendor time-sync command. */
     @Volatile
@@ -193,11 +203,19 @@ internal class GarminSession private constructor(
         }
     }
 
-    /** 5023 fallback polling every 10 minutes, like the vendor's battery timer (§4.3 [V], `ha2/a.java:201-215`). */
+    /**
+     * SIG Battery (0x180F) primary + 5023 fallback, every 10 minutes like the vendor's own timer
+     * (§4.3 [V], `ha2/a.java:201-215`). Both sources are tried on every tick (not just at connect):
+     * a plain GATT read of 0x180F when present, plus the 5023 poll request regardless, since its
+     * watch-pushed reply only lands later via [onMessage]. Either source that succeeds is published
+     * on [batteryUpdates] so a fresh reading reaches storage even when the connect-time read in
+     * [readDeviceInfo] failed or returned null (D-1001).
+     */
     private fun startBatteryPolling() {
         scope.launch {
             while (isActive) {
                 delay(BATTERY_POLL_INTERVAL_MS)
+                StandardGattReader.readBatteryPercent(gatt)?.let { _batteryUpdates.tryEmit(it) }
                 try {
                     val ack = dispatcher.request(GfdiMessageId.BATTERY_STATUS, batteryStatusPoll(), REQUEST_TIMEOUT_MS)
                     if (!ack.isAck) Log.d(TAG, "Battery status poll answered with ${GfdiStatus.name(ack.status)}")
@@ -242,6 +260,7 @@ internal class GarminSession private constructor(
                 Log.d(TAG, "5023 (${message.payload.size} bytes) does not match the provisional layout; ignored")
             } else {
                 provisionalBattery = battery
+                _batteryUpdates.tryEmit(battery.percent)
             }
             InboundReply()
         }

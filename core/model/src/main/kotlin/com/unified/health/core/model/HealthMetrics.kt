@@ -127,16 +127,12 @@ data class SpO2Reading(val time: Instant, val percent: Int)
 
 enum class StressLevel { RELAXED, NORMAL, MEDIUM, HIGH }
 
-data class StressReading(val time: Instant, val score: Int) {
-    /** Score bands follow the common 0..100 convention used by wearables. */
-    val level: StressLevel
-        get() = when (score) {
-            in 0..29 -> StressLevel.RELAXED
-            in 30..59 -> StressLevel.NORMAL
-            in 60..79 -> StressLevel.MEDIUM
-            else -> StressLevel.HIGH
-        }
-}
+/**
+ * Score follows the common 0..100 convention used by wearables. The score-to-[StressLevel] band
+ * boundaries live in `MetricThresholds` (`:core:domain`), not here — see
+ * `MetricThresholds.stressLevelFor` (docs/DECISIONS.md D-1030).
+ */
+data class StressReading(val time: Instant, val score: Int)
 
 data class CaloriesSummary(val activeKcal: Int, val goalKcal: Int) {
     val progress: Float get() = if (goalKcal <= 0) 0f else (activeKcal.toFloat() / goalKcal).coerceIn(0f, 1f)

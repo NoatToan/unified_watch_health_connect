@@ -22,6 +22,13 @@ import javax.inject.Singleton
  * tests); the set is empty in release builds, where the wrappers below are pure pass-throughs.
  */
 interface VirtualDevice {
+    /**
+     * Whether this device currently counts as "present". Checked fresh on every scan/connect
+     * attempt, so a contributor can gate it on a runtime switch (e.g. a debug-only "Demo mode"
+     * setting) without this interface or its callers knowing anything about that switch.
+     */
+    val isActive: Boolean get() = true
+
     /** What the device "advertises"; a driver must recognise it like any real advertisement. */
     val advertisement: Advertisement
 
@@ -40,7 +47,7 @@ internal class VirtualAwareBleScanner @Inject constructor(
         if (virtualDevices.isEmpty()) return real.advertisements()
         val virtual = flow {
             delay(VIRTUAL_ADVERTISEMENT_DELAY_MS) // Shows up like a nearby device, not instantly.
-            virtualDevices.forEach { emit(it.advertisement) }
+            virtualDevices.forEach { if (it.isActive) emit(it.advertisement) }
         }
         // Without a usable radio (emulator, Bluetooth off, permission missing) virtual devices still appear.
         val radio = real.advertisements().catch { Log.i(TAG, "Real BLE scan unavailable: ${it.message}") }
@@ -69,7 +76,7 @@ internal class VirtualAwareGattConnector @Inject constructor(
         options: GattOptions,
         bondOptional: Boolean,
     ): GattClient {
-        val virtual = virtualDevices.firstOrNull { it.advertisement.address.equals(address, ignoreCase = true) }
+        val virtual = virtualDevices.firstOrNull { it.isActive && it.advertisement.address.equals(address, ignoreCase = true) }
             ?: return real.connect(address, bond, mtu, options, bondOptional)
         val client = virtual.connect()
         if (mtu != null) runCatching { client.requestMtu(mtu) }

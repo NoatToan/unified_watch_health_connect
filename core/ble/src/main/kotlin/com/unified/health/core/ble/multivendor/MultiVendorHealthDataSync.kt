@@ -24,7 +24,12 @@ class MultiVendorHealthDataSync @Inject internal constructor(
     private val _state = MutableStateFlow<SyncState>(SyncState.Idle)
     override val state: StateFlow<SyncState> = _state.asStateFlow()
 
-    override suspend fun sync(macAddress: String, since: Instant?, sink: HealthRecordSink): Result<SyncResult> = lock.withLock {
+    override suspend fun sync(
+        macAddress: String,
+        since: Instant?,
+        sink: HealthRecordSink,
+        knownRawPayloadTimestamps: Set<Instant>,
+    ): Result<SyncResult> = lock.withLock {
         val session = connection.sessionFor(macAddress)
             ?: return@withLock Result.failure<SyncResult>(IllegalStateException("Device is not connected")).also {
                 _state.value = SyncState.Failed("Device is not connected")
@@ -32,7 +37,7 @@ class MultiVendorHealthDataSync @Inject internal constructor(
         _state.value = SyncState.InProgress(0f)
         runCatchingNonCancellation {
             val count = connection.withHighThroughput(macAddress) {
-                session.sync(SyncRequest(since), sink) { fraction ->
+                session.sync(SyncRequest(since, knownRawPayloadTimestamps = knownRawPayloadTimestamps), sink) { fraction ->
                     _state.value = SyncState.InProgress(fraction.coerceIn(0f, 1f))
                 }
             }

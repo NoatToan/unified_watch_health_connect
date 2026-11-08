@@ -48,7 +48,10 @@ class NotificationSettingsViewModelTest {
         override suspend fun setThemeMode(themeMode: ThemeMode) = Unit
         override suspend fun setUseDynamicColor(enabled: Boolean) = Unit
         override suspend fun setDailyStepGoal(steps: Int) = Unit
+        override suspend fun setActiveCalorieGoalOverride(kcal: Int?) = Unit
+        override suspend fun setSleepGoalHoursOverride(hours: Int?) = Unit
         override suspend fun setPinnedMetrics(metrics: List<HealthMetricType>) = Unit
+        override suspend fun setFeedCards(order: List<String>, hidden: Set<String>) = Unit
     }
 
     private val notifications = FakeNotifications()

@@ -20,17 +20,24 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
 import com.unified.health.MainActivity
+import com.unified.health.core.domain.repository.DemoModeController
 import dagger.hilt.android.testing.HiltAndroidRule
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import java.io.File
+import java.util.Optional
 import java.util.regex.Pattern
+import javax.inject.Inject
 
 /**
  * Shared setup: wipes local storage before the activity starts (each test runs in its own process
- * under the orchestrator, so nothing has opened the DB or DataStore yet), then launches [MainActivity]
- * on the real Hilt graph, which in debug includes the simulated watch from `:core:demo`.
+ * under the orchestrator, so nothing has opened the DB or DataStore yet), force-enables "Demo mode"
+ * through the real `DemoModeController` (present because `:app`'s androidTest variant depends on
+ * `:core:demo`, same as debug) so the simulated watches from every flow show up in scan without any
+ * test having to drive the Settings switch itself, then launches [MainActivity] on the real Hilt
+ * graph.
  */
 abstract class E2EBase {
 
@@ -39,6 +46,9 @@ abstract class E2EBase {
 
     @get:Rule(order = 1)
     val compose: ComposeTestRule = createEmptyComposeRule()
+
+    @Inject
+    lateinit var demoMode: Optional<DemoModeController>
 
     protected val context: Context get() = InstrumentationRegistry.getInstrumentation().targetContext
     protected val device: UiDevice get() = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
@@ -50,6 +60,7 @@ abstract class E2EBase {
         File(context.filesDir, "datastore").deleteRecursively()
         File(context.filesDir, "wearable_raw").deleteRecursively()
         hiltRule.inject()
+        runBlocking { demoMode.orElse(null)?.setEnabled(true) }
         scenario = ActivityScenario.launch(MainActivity::class.java)
     }
 

@@ -6,6 +6,7 @@ import com.unified.health.core.demo.seed.DemoDataSeeder
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.usecase.MetricStatsCalculator
 import com.unified.health.core.model.HealthMetricType
+import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.ThemeMode
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.UnitSystem
@@ -37,7 +38,10 @@ class DemoDataSeederTest {
         override suspend fun setThemeMode(themeMode: ThemeMode) = Unit
         override suspend fun setUseDynamicColor(enabled: Boolean) = Unit
         override suspend fun setDailyStepGoal(steps: Int) = Unit
+        override suspend fun setActiveCalorieGoalOverride(kcal: Int?) = Unit
+        override suspend fun setSleepGoalHoursOverride(hours: Int?) = Unit
         override suspend fun setPinnedMetrics(metrics: List<HealthMetricType>) = Unit
+        override suspend fun setFeedCards(order: List<String>, hidden: Set<String>) = Unit
     }
     private val repository = LocalHealthDataRepository(dao, prefs)
     private val charted = HealthMetricType.entries - HealthMetricType.WEIGHT
@@ -101,8 +105,28 @@ class DemoDataSeederTest {
     @Test
     fun `clearing removes every record`() = runTest {
         seeder.seed(10)
-        seeder.clearHealthData()
+        seeder.clearDemoData()
         assertEquals(0, dao.sampleCount())
         assertTrue(repository.observeLatestReading(HealthMetricType.STEPS, today).first() == null)
+    }
+
+    @Test
+    fun `clearDemoData through the real device-scoped delete leaves other devices' rows alone`() = runTest {
+        // The production `clearDemo` lambda (scoped to DemoDeviceIds.ALL), not the test's own all-deleting one.
+        val scopedSeeder = DemoDataSeeder(
+            sinkFor = sinks::create,
+            clearDemo = { dao.deleteSamplesForDevices(DemoDeviceIds.ALL); dao.deleteWorkoutsForDevices(DemoDeviceIds.ALL) },
+            generator = DemoHealthDataGenerator(zone = zone),
+            now = { now },
+        )
+        scopedSeeder.seed(5)
+        val realWatchId = "AA:BB:CC:DD:EE:FF"
+        sinks.create(realWatchId).onRecords(listOf(HealthRecord.HeartRate(now, 61)))
+        assertTrue(dao.allSamples.any { it.deviceId == realWatchId })
+
+        scopedSeeder.clearDemoData()
+
+        assertTrue("demo rows should be gone", dao.allSamples.none { it.deviceId == DemoDevice.ADDRESS })
+        assertTrue("other devices' rows (real watch or another virtual watch) must survive", dao.allSamples.any { it.deviceId == realWatchId })
     }
 }

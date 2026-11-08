@@ -2,6 +2,8 @@ package com.unified.health.core.designsystem.component
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +17,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
@@ -23,6 +29,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextMeasurer
@@ -62,7 +69,14 @@ fun HealthBarChart(
 ) {
     val frame = rememberChartFrame()
     val maxValue = niceCeil(points.maxOfOrNull { it.value } ?: 0f)
-    Canvas(modifier.fillMaxWidth().height(height).semantics { contentDescription = describe(points) }) {
+    var scrubX by remember(points) { mutableStateOf<Float?>(null) }
+    Canvas(
+        modifier
+            .fillMaxWidth()
+            .height(height)
+            .semantics { contentDescription = describe(points) }
+            .chartScrubGestures(points.isNotEmpty()) { scrubX = it },
+    ) {
         val plot = frame.drawAxes(this, 0f, maxValue, points.map { it.label }, axisLabel)
         val slot = plot.width / points.size.coerceAtLeast(1)
         val barWidth = (slot * 0.62f).coerceAtMost(28.dp.toPx())
@@ -79,6 +93,9 @@ fun HealthBarChart(
         average?.takeIf { it > 0f }?.let { avg ->
             val y = plot.bottom - plot.height * (avg / maxValue)
             drawLine(color.copy(alpha = 0.8f), Offset(plot.left, y), Offset(plot.right, y), 1.5.dp.toPx(), pathEffect = PathEffect.dashPathEffect(floatArrayOf(8f, 8f)))
+        }
+        frame.drawScrub(this, plot, points, scrubX, color) { p ->
+            if (p.value <= 0f) "${p.label}: no data" else "${p.label}: ${axisLabel(p.value)}"
         }
     }
 }
@@ -99,7 +116,14 @@ fun HealthRangeChart(
     val pad = ((high - low) * 0.15f).coerceAtLeast(2f)
     val yMin = niceFloor(max(0f, low - pad))
     val yMax = niceCeil(high + pad)
-    Canvas(modifier.fillMaxWidth().height(height).semantics { contentDescription = describe(points) }) {
+    var scrubX by remember(points) { mutableStateOf<Float?>(null) }
+    Canvas(
+        modifier
+            .fillMaxWidth()
+            .height(height)
+            .semantics { contentDescription = describe(points) }
+            .chartScrubGestures(points.isNotEmpty()) { scrubX = it },
+    ) {
         val plot = frame.drawAxes(this, yMin, yMax, points.map { it.label }, axisLabel)
         val slot = plot.width / points.size.coerceAtLeast(1)
         val w = (slot * 0.5f).coerceIn(3.dp.toPx(), 10.dp.toPx())
@@ -113,6 +137,15 @@ fun HealthRangeChart(
                 drawCircle(color, radius = w / 2 + 1.dp.toPx(), center = Offset(cx, (top + bottom) / 2))
             } else {
                 drawRoundRect(color, Offset(cx - w / 2, top), Size(w, bottom - top), CornerRadius(w / 2))
+            }
+        }
+        frame.drawScrub(this, plot, points, scrubX, color) { p ->
+            val min = p.min
+            val max = p.max
+            when {
+                !p.hasData -> "${p.label}: no data"
+                min != null && max != null && max != min -> "${p.label}: ${axisLabel(min)}–${axisLabel(max)}"
+                else -> "${p.label}: ${axisLabel(p.value)}"
             }
         }
     }
@@ -191,9 +224,21 @@ fun SleepStage.displayName(): String = when (this) {
 private class PlotArea(val left: Float, val top: Float, val right: Float, val bottom: Float) {
     val width get() = right - left
     val height get() = bottom - top
+
+    /** Index of the bucket nearest [x] (canvas-space pixels), using the same slot width [ChartFrame.drawAxes] laid out. */
+    fun nearestIndex(x: Float, count: Int): Int {
+        val slot = width / count.coerceAtLeast(1)
+        return (((x - left) / slot).toInt()).coerceIn(0, count - 1)
+    }
 }
 
-private class ChartFrame(val measurer: TextMeasurer, val labelStyle: TextStyle, val gridColor: Color) {
+private class ChartFrame(
+    val measurer: TextMeasurer,
+    val labelStyle: TextStyle,
+    val gridColor: Color,
+    val scrubBubbleColor: Color,
+    val onScrubBubbleColor: Color,
+) {
 
     /** Draws 3 gridlines with values on the right and non-overlapping x labels; returns the plot area. */
     fun drawAxes(scope: DrawScope, yMin: Float, yMax: Float, xLabels: List<String>, axisLabel: (Float) -> String): PlotArea = with(scope) {
@@ -219,6 +264,32 @@ private class ChartFrame(val measurer: TextMeasurer, val labelStyle: TextStyle, 
         }
         plot
     }
+
+    /**
+     * D-1020: vertical indicator line + a value bubble at the bucket nearest [scrubX] (canvas-space
+     * pixels, from [chartScrubGestures], or null while not scrubbing). Uses the exact [PlotArea]
+     * [drawAxes] just laid out, so the indicator always lines up with the bars/capsules it covers.
+     */
+    fun <T> drawScrub(scope: DrawScope, plot: PlotArea, points: List<T>, scrubX: Float?, accent: Color, valueText: (T) -> String) {
+        if (scrubX == null || points.isEmpty()) return
+        val index = plot.nearestIndex(scrubX, points.size)
+        val slot = plot.width / points.size.coerceAtLeast(1)
+        val cx = plot.left + index * slot + slot / 2
+        with(scope) {
+            drawLine(accent, Offset(cx, plot.top), Offset(cx, plot.bottom), 1.5.dp.toPx(), pathEffect = PathEffect.dashPathEffect(floatArrayOf(6f, 4f)))
+            val text = measurer.measure(valueText(points[index]), labelStyle.copy(color = onScrubBubbleColor))
+            val padding = 4.dp.toPx()
+            val bubbleWidth = text.size.width + 2 * padding
+            val left = (cx - bubbleWidth / 2).coerceIn(0f, (size.width - bubbleWidth).coerceAtLeast(0f))
+            drawRoundRect(
+                color = scrubBubbleColor,
+                topLeft = Offset(left, plot.top),
+                size = Size(bubbleWidth, text.size.height + 2 * padding),
+                cornerRadius = CornerRadius(4.dp.toPx()),
+            )
+            drawText(text, topLeft = Offset(left + padding, plot.top + padding))
+        }
+    }
 }
 
 @Composable
@@ -226,7 +297,38 @@ private fun rememberChartFrame(): ChartFrame = ChartFrame(
     measurer = rememberTextMeasurer(),
     labelStyle = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
     gridColor = MaterialTheme.colorScheme.outlineVariant,
+    scrubBubbleColor = MaterialTheme.colorScheme.inverseSurface,
+    onScrubBubbleColor = MaterialTheme.colorScheme.inverseOnSurface,
 )
+
+/**
+ * D-1020: drag (or tap-and-hold) to scrub a chart. Reports the pointer's x in the same canvas-space
+ * pixels [ChartFrame.drawAxes]/[ChartFrame.drawScrub] use, or null once released so the indicator
+ * disappears. Only [HealthBarChart]/[HealthRangeChart] (the full-size charts on `MetricDetailScreen`)
+ * use this — the feed's mini-chart cards are too small to be worth scrubbing.
+ */
+private fun Modifier.chartScrubGestures(enabled: Boolean, onScrub: (Float?) -> Unit): Modifier {
+    if (!enabled) return this
+    return this
+        .pointerInput(Unit) {
+            detectDragGestures(
+                onDragEnd = { onScrub(null) },
+                onDragCancel = { onScrub(null) },
+            ) { change, _ ->
+                change.consume()
+                onScrub(change.position.x)
+            }
+        }
+        .pointerInput(Unit) {
+            detectTapGestures(
+                onPress = { offset ->
+                    onScrub(offset.x)
+                    tryAwaitRelease()
+                    onScrub(null)
+                },
+            )
+        }
+}
 
 private fun describe(points: List<ChartPoint>): String =
     points.filter { it.hasData }.joinToString(limit = 31) { "${it.label}: ${it.value.toInt()}" }.ifEmpty { "No data" }

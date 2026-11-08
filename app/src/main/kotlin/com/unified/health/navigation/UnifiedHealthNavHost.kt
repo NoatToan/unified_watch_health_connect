@@ -11,7 +11,6 @@ import com.unified.health.feature.devices.navigation.deviceDetailScreen
 import com.unified.health.feature.devices.navigation.devicesScreen
 import com.unified.health.feature.devices.navigation.navigateToDeviceDetail
 import com.unified.health.feature.home.navigation.HomeDestination
-import com.unified.health.feature.home.navigation.browseScreen
 import com.unified.health.feature.home.navigation.homeScreen
 import com.unified.health.feature.home.navigation.metricDataScreen
 import com.unified.health.feature.home.navigation.metricDetailScreen
@@ -45,10 +44,6 @@ fun UnifiedHealthNavHost(
         homeScreen(
             onMetricClick = navController::navigateToMetricDetail,
             onOpenDevices = { onNavigateToTopLevel(TopLevelDestination.DEVICES) },
-            onBrowseAll = { onNavigateToTopLevel(TopLevelDestination.BROWSE) },
-        )
-        browseScreen(
-            onMetricClick = navController::navigateToMetricDetail,
             onOpenWorkouts = { onNavigateToTopLevel(TopLevelDestination.ACTIVITY) },
         )
         metricDetailScreen(onBack = navController::popBackStack, onShowAllData = navController::navigateToMetricData)

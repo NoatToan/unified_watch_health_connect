@@ -50,6 +50,7 @@ class FakeWearableDeviceRepository : WearableDeviceRepository {
     override suspend fun disconnect(deviceId: String) = Unit
     override suspend fun unpair(deviceId: String) = Unit
     override suspend fun syncNow(deviceId: String): Result<Unit> = Result.success(Unit)
+    override suspend fun reprocessRawPayloads(deviceId: String): Result<Int> = Result.success(0)
     override suspend fun setCredential(deviceId: String, key: String, value: String): Result<Unit> = Result.success(Unit)
     override suspend fun generateCredential(deviceId: String, key: String): Result<String> = Result.success("")
 }

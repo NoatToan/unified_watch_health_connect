@@ -4,6 +4,7 @@ import com.unified.health.core.ble.HealthRecordSink
 import com.unified.health.core.data.database.HealthRecordDao
 import com.unified.health.core.data.sync.HealthRecordSinkFactory
 import com.unified.health.core.demo.DemoDevice
+import com.unified.health.core.demo.DemoDeviceIds
 import com.unified.health.core.demo.DemoHealthDataGenerator
 import com.unified.health.core.domain.repository.DemoDataController
 import kotlinx.coroutines.Dispatchers
@@ -15,11 +16,13 @@ import javax.inject.Singleton
 /**
  * Writes demo data into the real Room store through the same [HealthRecordSink] a wearable sync
  * uses, under the simulated watch's id (so a later mock sync overwrites rather than duplicates).
+ * [clearDemoData] only deletes rows tagged with one of [DemoDeviceIds.ALL] — a real paired watch's
+ * data is a different `deviceId` and is never touched.
  */
 @Singleton
 class DemoDataSeeder internal constructor(
     private val sinkFor: (deviceId: String) -> HealthRecordSink,
-    private val clearAll: suspend () -> Unit,
+    private val clearDemo: suspend () -> Unit,
     private val generator: DemoHealthDataGenerator,
     private val now: () -> Instant,
 ) : DemoDataController {
@@ -27,9 +30,9 @@ class DemoDataSeeder internal constructor(
     @Inject
     constructor(sinkFactory: HealthRecordSinkFactory, dao: HealthRecordDao) : this(
         sinkFor = sinkFactory::create,
-        clearAll = {
-            dao.deleteAllSamples()
-            dao.deleteAllWorkouts()
+        clearDemo = {
+            dao.deleteSamplesForDevices(DemoDeviceIds.ALL)
+            dao.deleteWorkoutsForDevices(DemoDeviceIds.ALL)
         },
         generator = DemoHealthDataGenerator(),
         now = Instant::now,
@@ -46,5 +49,5 @@ class DemoDataSeeder internal constructor(
         written
     }
 
-    override suspend fun clearHealthData() = withContext(Dispatchers.IO) { clearAll() }
+    override suspend fun clearDemoData() = withContext(Dispatchers.IO) { clearDemo() }
 }

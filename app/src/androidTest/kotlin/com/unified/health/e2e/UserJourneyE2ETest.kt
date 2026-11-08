@@ -12,7 +12,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
-import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.semantics.SemanticsProperties
 import com.unified.health.core.demo.DemoDevice
 import com.unified.health.core.model.TimeRange
@@ -22,7 +21,7 @@ import org.junit.Test
 /**
  * The whole first-run journey on the real app graph, one flow after another so state carries over:
  * onboarding → permissions (system dialog) → Devices → scan → pair the simulated watch → connected →
- * sync → Summary with data → metric detail D/W/M/6M/Y → Show All Data → Browse → unpair.
+ * sync → Summary with data → metric detail D/W/M/6M/Y → Show All Data → Health feed → unpair.
  */
 @HiltAndroidTest
 class UserJourneyE2ETest : E2EBase() {
@@ -163,33 +162,27 @@ class UserJourneyE2ETest : E2EBase() {
             }
         }
 
-        report.flow(5, "browse", "Browse: categories → metrics") {
-            step("categories", "Back to Summary, open the Browse tab", "Health categories: Activity, Heart, Respiratory, Sleep…") {
+        report.flow(5, "health-feed", "Health feed: every metric flattened onto one screen") {
+            step("feed", "Back to Summary, open the Health tab", "Activity rings and every metric card, one screen, no category menu") {
                 device.pressBack() // leave the Sleep page (detail screens hide the bottom bar)
-                clickTag("nav_BROWSE")
-                waitForTag("category_Heart")
-                waitForTag("category_Respiratory")
+                clickTag("nav_HEALTH")
+                waitForTag("card_ACTIVITY_RINGS")
+                compose.onNodeWithTag("feed_list").performScrollToNode(hasTestTag("card_RESTING_HEART_RATE"))
             }
-            step("heart-category", "Tap Heart", "Heart rate, Resting heart rate and HRV listed") {
-                clickTag("category_Heart")
-                waitForTag("browse_metric_RESTING_HEART_RATE")
-                waitForTag("browse_metric_HRV")
-            }
-            step("resting-heart-rate", "Tap Resting heart rate", "Average resting heart rate with a daily chart") {
-                clickTag("browse_metric_RESTING_HEART_RATE")
+            step("resting-heart-rate", "Tap the Resting heart rate card", "Average resting heart rate with a daily chart") {
+                clickTag("card_RESTING_HEART_RATE")
                 waitFor(hasTestTag("metric_header") and hasContentDescription("AVERAGE", substring = true), what = "average header")
             }
-            step("search", "Back, search \"oxygen\"", "Blood oxygen is the only match") {
+            step("spo2-card", "Back, scroll to the Blood oxygen card", "Blood oxygen card shows a value") {
                 device.pressBack()
-                waitForTag("browse_search")
-                compose.onNodeWithTag("browse_search").performTextInput("oxygen")
-                waitForTag("browse_metric_SPO2")
+                waitForTag("feed_list")
+                compose.onNodeWithTag("feed_list").performScrollToNode(hasTestTag("card_SPO2"))
+                waitForTag("card_SPO2")
             }
         }
 
         report.flow(6, "unpair", "Devices → unpair") {
             step("device-menu", "Open Devices, tap ⋮ on the watch", "Menu with Unpair") {
-                device.pressBack() // close the keyboard left by the search field
                 clickTag("nav_DEVICES")
                 clickTag("more_$watch")
                 waitForTag("unpair_menu_item")
