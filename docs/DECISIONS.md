@@ -1849,10 +1849,12 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   trực tiếp D-1115 (DeviceBanner Home copy style Devices) — làm xong cái này trước thì D-1115 copy
   theo sẽ tự động to theo, không cần sửa 2 lần.
 
-- **D-1132** · 2026-11-08 · Bố cục lại race card: ảnh rõ nét ở trên, nền blur màu ảnh ở dưới thay vì overlay+scrim — **Chốt**
-  (Đánh số lại từ D-1131 ban đầu vì trùng với D-1131 "Sửa đúng D-1128 — bỏ `fillBleed`" do agent/phiên
-  khác log song song cùng lúc — nội dung không đổi, chỉ đổi số để hết trùng, giống cách D-1130→D-1131
-  đã tự xử lý ở trên.)
+- **D-1136** · 2026-11-08 · Bố cục lại race card: ảnh rõ nét ở trên, nền blur màu ảnh ở dưới thay vì overlay+scrim — **Chốt**
+  (Đánh số lại 2 lần: D-1131 ban đầu → trùng D-1131 "Sửa đúng D-1128 — bỏ `fillBleed`" → đổi sang
+  D-1132 → lại trùng tiếp D-1132 "Tắt scrub-theo-ngày trên mini chart ở Home" do một agent/phiên khác
+  log gần như cùng lúc. Nội dung không đổi qua các lần đổi số — giống cách D-1130→D-1131 và D-1116→
+  D-1122→D-1125 đã tự xử lý trước đó. D-1136 chọn vì D-1135 là số cao nhất thấy được tại thời điểm
+  phát hiện trùng lần 2.)
   Sau khi thấy ảnh thật (D-1129) khá đẹp, user muốn đổi hướng bố cục thay vì ảnh làm nền full-bleed có
   scrim tối phủ chữ lên: (1) **Ảnh thật hiển thị rõ, không bị scrim**, nằm ở phần **trên** của card
   (dùng `ContentScale.Crop` cho gọn khung ảnh, không cần giữ nguyên tỉ lệ như D-1129 nữa vì giờ ảnh

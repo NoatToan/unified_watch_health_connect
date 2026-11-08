@@ -39,8 +39,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.unified.health.core.designsystem.component.DistancePills
 import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.LoadingState
+import com.unified.health.core.designsystem.component.RaceGradientBackground
+import com.unified.health.core.designsystem.component.RaceHeroImage
 import com.unified.health.core.designsystem.component.RaceNameText
-import com.unified.health.core.designsystem.component.RaceVisualBackground
 import com.unified.health.core.designsystem.component.TerrainBadge
 import com.unified.health.core.designsystem.component.ctaLabel
 import com.unified.health.core.designsystem.component.formatVnd
@@ -93,23 +94,33 @@ private val RaceDateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/
 private val HeaderHeight = 280.dp
 private val CtaHeight = 56.dp
 
+/**
+ * D-1136: unlike [com.unified.health.core.designsystem.component.RaceCard]'s photo layout, this
+ * screen's hero doesn't need the blurred-backdrop trick — there's already a whole plain-background
+ * content column below for text, so the hero is simply the clean, uncropped-by-overlay photo (or the
+ * terrain gradient when there's no real image yet) with nothing drawn over it; the terrain badge and
+ * race name move down into that content column instead of sitting on top of the hero.
+ */
 @Composable
 private fun RaceDetailContent(race: Race, modifier: Modifier = Modifier) {
     val context = LocalContext.current
+    val imageUrl = race.imageUrl
     Column(modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-        Box(Modifier.fillMaxWidth().height(HeaderHeight)) {
-            RaceVisualBackground(race, Modifier.fillMaxSize(), terrainIconSize = 220.dp)
-            Column(
-                modifier = Modifier.fillMaxSize().padding(Spacing.lg),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.Start,
-            ) {
-                TerrainBadge(race.terrain)
-                Spacer(Modifier.height(Spacing.xs))
-                RaceNameText(race.name, style = MaterialTheme.typography.headlineMedium, maxLines = 3)
-            }
+        if (imageUrl != null) {
+            RaceHeroImage(imageUrl, Modifier.fillMaxWidth().height(HeaderHeight))
+        } else {
+            RaceGradientBackground(race.terrain, Modifier.fillMaxWidth().height(HeaderHeight), terrainIconSize = 220.dp)
         }
         Column(Modifier.fillMaxWidth().padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.lg)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                TerrainBadge(race.terrain)
+                RaceNameText(
+                    race.name,
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    maxLines = 3,
+                )
+            }
             Text(RaceDateFormat.format(race.startDate), style = MaterialTheme.typography.titleMedium)
 
             val place = race.location ?: race.province

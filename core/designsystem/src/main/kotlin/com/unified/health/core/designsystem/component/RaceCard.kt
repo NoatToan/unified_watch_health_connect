@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -57,105 +58,166 @@ import java.time.format.DateTimeFormatter
 /**
  * Catchy marketing card for one [Race] (docs/DECISIONS.md D-1106): a real [Race.imageUrl] via Coil
  * when present, otherwise a gradient background keyed by [RaceTerrain] with a large faint terrain
- * icon behind the text — never a blank/placeholder-gray card, since most races in the feed
- * currently have no image. Shared as-is by the Home carousel and the full `RacesScreen` list
+ * icon behind the text — never a blank/placeholder-gray card, since some races in the feed still
+ * have no image. Shared as-is by the Home carousel and the full `RacesScreen` list
  * (docs/DECISIONS.md D-1105) so both render identically; the caller only controls width via
  * [modifier] (a fixed width for the carousel, `fillMaxWidth()` for the list).
+ *
+ * D-1136: a real photo now gets its own two-part layout ([RaceCardWithPhoto]) instead of D-1129's
+ * full-bleed overlay+scrim; a race still on the terrain-gradient fallback keeps the original
+ * single-layer look ([RaceCardWithGradient]), unchanged by D-1136.
  */
 @Composable
 fun RaceCard(race: Race, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val today = rememberToday()
+    val imageUrl = race.imageUrl
     Card(onClick = onClick, modifier = modifier.height(RaceCardHeight)) {
-        Box(Modifier.fillMaxSize()) {
-            RaceVisualBackground(race, Modifier.fillMaxSize())
-            Column(modifier = Modifier.fillMaxSize().padding(Spacing.lg), verticalArrangement = Arrangement.SpaceBetween) {
+        if (imageUrl != null) {
+            RaceCardWithPhoto(race, imageUrl, today)
+        } else {
+            RaceCardWithGradient(race, today)
+        }
+    }
+}
+
+/**
+ * D-1136: two-part layout for a race with a real photo — a clean, sharp hero image on top (nothing
+ * drawn over it, so [ContentScale.Crop] is fine, unlike D-1129's uncropped [ContentScale.Fit] which
+ * only mattered when the image doubled as a text background) and all of the card's text below, on a
+ * blurred copy of the same photo as an "ambient backdrop" ([RaceImageBackdrop]) — far easier to keep
+ * legible than fighting a sharp photo underneath, per D-1136's scrim note.
+ */
+@Composable
+private fun RaceCardWithPhoto(race: Race, imageUrl: String, today: LocalDate) {
+    Column(Modifier.fillMaxSize()) {
+        RaceHeroImage(imageUrl, Modifier.weight(1f).fillMaxWidth())
+        // The bottom section isn't weighted: its height comes from the text Column's own content, and
+        // the blurred backdrop (matchParentSize) simply fills whatever that turns out to be — no fixed
+        // split between the two halves to tune/guess.
+        Box(Modifier.fillMaxWidth()) {
+            RaceImageBackdrop(imageUrl, Modifier.matchParentSize())
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(Spacing.sm),
+            ) {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                     TerrainBadge(race.terrain)
                     RaceNameText(race.name, style = MaterialTheme.typography.titleLarge, maxLines = 2)
                     Text(raceDateLine(race, today), style = MaterialTheme.typography.bodyMedium, color = Color.White.copy(alpha = 0.92f))
                 }
-                Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-                    if (race.distances.isNotEmpty()) DistancePills(race.distances)
-                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                        race.priceFromVnd?.let {
-                            Text(
-                                "Từ ${formatVnd(it)}",
-                                style = MaterialTheme.typography.labelLarge,
-                                color = Color.White,
-                                modifier = Modifier.weight(1f),
-                            )
-                        } ?: Spacer(Modifier.weight(1f))
-                    }
-                    RaceCallToAction(race.registrationStatus)
-                }
+                RaceCardBottomInfo(race)
             }
         }
     }
 }
 
-/**
- * Shared full-bleed visual for a [Race] (D-1106/D-1125/D-1129): a real [Race.imageUrl] via Coil with
- * a strengthened scrim so overlaid white text stays legible, or — since most races in the feed have
- * no image — a gradient keyed by [RaceTerrain] with a large faint terrain icon. Reused as-is by
- * [RaceCard] and `RaceDetailScreen` (D-1114) so both render the exact same fallback, not two
- * hand-maintained copies of this rule. Fills whatever [modifier] gives it (typically `fillMaxSize()`
- * inside a `Box` of the caller's chosen height).
- */
+/** D-1106: unchanged by D-1136 — a race with no real image yet keeps the original full-bleed
+ *  gradient-background-with-overlaid-text look. */
 @Composable
-fun RaceVisualBackground(race: Race, modifier: Modifier = Modifier, terrainIconSize: Dp = 140.dp) {
-    Box(modifier) {
-        if (race.imageUrl != null) {
-            // D-1129: the terrain gradient is still the base layer here, not skipped — real
-            // promotional images are no longer cropped (ContentScale.Contain, below), so an image
-            // whose aspect ratio doesn't match the card leaves letterboxed space; this gradient is
-            // what shows through there instead of a blank/black gap.
-            Box(Modifier.fillMaxSize().background(race.terrain.gradient()))
-            AsyncImage(
-                model = race.imageUrl,
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                // D-1129: Crop → Fit (Compose's ContentScale for CSS-style "contain" scaling) —
-                // official race images often carry logos/text at fixed positions that cropping could
-                // cut off; the whole image is always shown now, letterboxed instead of cropped.
-                contentScale = ContentScale.Fit,
-            )
-            // D-1129: strengthened vs. the original 0f→0.72f (tuned for the flat gradient fallback,
-            // not a busy real photo) — darker throughout (not just near-transparent at the top) since
-            // the race name/terrain badge sit near the top of the card, not only the CTA at the
-            // bottom; still bottom-heaviest to match the gradient-only fallback's look.
-            Box(
-                Modifier.fillMaxSize().background(
-                    Brush.verticalGradient(
-                        0f to Color.Black.copy(alpha = 0.45f),
-                        0.5f to Color.Black.copy(alpha = 0.55f),
-                        1f to Color.Black.copy(alpha = 0.88f),
-                    ),
-                ),
-            )
-        } else {
-            Box(Modifier.fillMaxSize().background(race.terrain.gradient()))
-            Icon(
-                race.terrain.icon(),
-                contentDescription = null,
-                tint = Color.White.copy(alpha = 0.18f),
-                modifier = Modifier.align(Alignment.BottomEnd).padding(Spacing.xs).size(terrainIconSize),
-            )
+private fun RaceCardWithGradient(race: Race, today: LocalDate) {
+    Box(Modifier.fillMaxSize()) {
+        RaceGradientBackground(race.terrain, Modifier.fillMaxSize())
+        Column(modifier = Modifier.fillMaxSize().padding(Spacing.lg), verticalArrangement = Arrangement.SpaceBetween) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                TerrainBadge(race.terrain)
+                RaceNameText(race.name, style = MaterialTheme.typography.titleLarge, maxLines = 2)
+                Text(raceDateLine(race, today), style = MaterialTheme.typography.bodyMedium, color = Color.White.copy(alpha = 0.92f))
+            }
+            RaceCardBottomInfo(race)
         }
     }
 }
+
+/** Distances/price/CTA block, identical in both [RaceCardWithPhoto] and [RaceCardWithGradient]. */
+@Composable
+private fun RaceCardBottomInfo(race: Race) {
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        if (race.distances.isNotEmpty()) DistancePills(race.distances)
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+            race.priceFromVnd?.let {
+                Text(
+                    "Từ ${formatVnd(it)}",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = Color.White,
+                    modifier = Modifier.weight(1f),
+                )
+            } ?: Spacer(Modifier.weight(1f))
+        }
+        RaceCallToAction(race.registrationStatus)
+    }
+}
+
+/**
+ * D-1106/D-1136: terrain-keyed gradient + a large faint terrain icon — the background for a race
+ * with no real [Race.imageUrl] yet. Used both for [RaceCardWithGradient] and `RaceDetailScreen`'s
+ * hero when a race has no image (D-1114). Before D-1136 this composable (then named
+ * `RaceVisualBackground`) also handled the real-image case as a full-bleed background; D-1136 moved
+ * that case onto [RaceCardWithPhoto]/[RaceImageBackdrop] instead, since a real photo no longer sits
+ * *behind* overlaid text the same way, so this is gradient-only now.
+ */
+@Composable
+fun RaceGradientBackground(terrain: RaceTerrain, modifier: Modifier = Modifier, terrainIconSize: Dp = 140.dp) {
+    Box(modifier) {
+        Box(Modifier.fillMaxSize().background(terrain.gradient()))
+        Icon(
+            terrain.icon(),
+            contentDescription = null,
+            tint = Color.White.copy(alpha = 0.18f),
+            modifier = Modifier.align(Alignment.BottomEnd).padding(Spacing.xs).size(terrainIconSize),
+        )
+    }
+}
+
+/**
+ * A race's own promotional photo, shown plain with no scrim/overlay — the "clean hero" half of
+ * D-1136's two-part [RaceCardWithPhoto] layout, also used by `RaceDetailScreen`'s header (D-1114).
+ * Kept here, not a direct Coil call in feature modules, so `core/designsystem` stays the only module
+ * depending on Coil (D-1109).
+ */
+@Composable
+fun RaceHeroImage(imageUrl: String, modifier: Modifier = Modifier, contentScale: ContentScale = ContentScale.Crop) {
+    AsyncImage(model = imageUrl, contentDescription = null, modifier = modifier, contentScale = contentScale)
+}
+
+/**
+ * D-1136: a blurred copy of the race's own photo plus a light scrim — the "ambient backdrop" behind
+ * [RaceCardWithPhoto]'s text section. Much less contrast to guarantee than D-1129's heavier scrim,
+ * since this sits over a deliberately softened version of the image rather than the sharp original.
+ *
+ * `Modifier.blur()` only performs a real blur from API 31 onward; below that (down to this app's
+ * minSdk 26) Compose silently skips it rather than crashing — a documented, acceptable platform
+ * degradation (no manual fallback needed), leaving just the scrim over the unblurred photo there.
+ */
+@Composable
+fun RaceImageBackdrop(imageUrl: String, modifier: Modifier = Modifier) {
+    Box(modifier) {
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize().blur(RaceBackdropBlurRadius),
+            contentScale = ContentScale.Crop,
+        )
+        Box(Modifier.fillMaxSize().background(Color.Black.copy(alpha = RaceBackdropScrimAlpha)))
+    }
+}
+
+private val RaceBackdropBlurRadius = 24.dp
+private const val RaceBackdropScrimAlpha = 0.35f
 
 /**
  * The race-name [Text], auto-sized instead of ellipsized (D-1112/D-1125): shrinks down to
  * [RaceNameMinFontSize] to fit [maxLines] before ever truncating, and never grows past [style]'s own
  * font size. Shared by [RaceCard] and `RaceDetailScreen` so both use the exact same technique.
+ * [color] defaults to white (both of [RaceCard]'s layouts put this over a dark image/gradient/backdrop)
+ * but `RaceDetailScreen` (D-1136) overrides it when the name sits on the plain page background instead.
  */
 @Composable
-fun RaceNameText(name: String, modifier: Modifier = Modifier, style: TextStyle = MaterialTheme.typography.titleLarge, maxLines: Int = 2) {
+fun RaceNameText(name: String, modifier: Modifier = Modifier, style: TextStyle = MaterialTheme.typography.titleLarge, color: Color = Color.White, maxLines: Int = 2) {
     Text(
         name,
         style = style,
         fontWeight = FontWeight.Bold,
-        color = Color.White,
+        color = color,
         maxLines = maxLines,
         autoSize = TextAutoSize.StepBased(minFontSize = RaceNameMinFontSize, maxFontSize = style.fontSize, stepSize = 1.sp),
         modifier = modifier,
