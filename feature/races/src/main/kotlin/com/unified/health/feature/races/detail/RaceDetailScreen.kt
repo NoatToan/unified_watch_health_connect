@@ -39,8 +39,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.unified.health.core.designsystem.component.DistancePills
 import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.LoadingState
+import com.unified.health.core.designsystem.component.RaceCoverImage
 import com.unified.health.core.designsystem.component.RaceGradientBackground
-import com.unified.health.core.designsystem.component.RaceHeroImage
 import com.unified.health.core.designsystem.component.RaceNameText
 import com.unified.health.core.designsystem.component.TerrainBadge
 import com.unified.health.core.designsystem.component.ctaLabel
@@ -85,7 +85,16 @@ internal fun RaceDetailScreen(state: RaceDetailUiState, onBack: () -> Unit) {
                 message = "Giải chạy này có thể đã bị gỡ khỏi danh sách.",
                 modifier = Modifier.padding(padding),
             )
-            is RaceDetailUiState.Success -> RaceDetailContent(state.race, Modifier.padding(top = padding.calculateTopPadding()))
+            is RaceDetailUiState.Success -> RaceDetailContent(
+                state.race,
+                // D-1151: this screen previously took only the top inset here, silently dropping the
+                // bottom one Scaffold's own `padding` already computes (status/nav bar + topBar height)
+                // — the CTA button at the end of the scrollable content ended up hidden behind the
+                // system navigation bar on gesture-nav devices. Horizontal is still intentionally left
+                // out (unlike the full `Modifier.padding(padding)` other screens use) so the header
+                // image above stays edge-to-edge; only top+bottom are applied.
+                Modifier.padding(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding()),
+            )
         }
     }
 }
@@ -100,6 +109,10 @@ private val CtaHeight = 56.dp
  * content column below for text, so the hero is simply the clean, uncropped-by-overlay photo (or the
  * terrain gradient when there's no real image yet) with nothing drawn over it; the terrain badge and
  * race name move down into that content column instead of sitting on top of the hero.
+ *
+ * D-1150: a real photo now sizes itself to its own true aspect ratio via [RaceCoverImage] instead of
+ * the fixed [HeaderHeight] band (still used only by the no-image gradient fallback below, which has
+ * no intrinsic ratio of its own to read).
  */
 @Composable
 private fun RaceDetailContent(race: Race, modifier: Modifier = Modifier) {
@@ -107,7 +120,7 @@ private fun RaceDetailContent(race: Race, modifier: Modifier = Modifier) {
     val imageUrl = race.imageUrl
     Column(modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         if (imageUrl != null) {
-            RaceHeroImage(imageUrl, Modifier.fillMaxWidth().height(HeaderHeight))
+            RaceCoverImage(imageUrl, Modifier.fillMaxWidth())
         } else {
             RaceGradientBackground(race.terrain, Modifier.fillMaxWidth().height(HeaderHeight), terrainIconSize = 220.dp)
         }

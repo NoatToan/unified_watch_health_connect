@@ -2423,3 +2423,43 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   luôn đủ chỗ hiện hết "Đã đóng đăng ký" — label dài nhất — trên 1 dòng; bên trái nhường chỗ bằng
   `weight(1f, fill = false)` hoặc tương tự nếu cần). Kiểm tra lại cả 4 trạng thái CTA bằng cách tự tạo
   dữ liệu test hoặc preview, không chỉ thấy 1 trạng thái "Đăng ký ngay" rồi coi là xong.
+
+- **D-1171** · 2026-11-09 · Thực thi D-1150 (ảnh cover Race Detail theo tỉ lệ gốc) + D-1151 (nav bar che CTA) — **Chốt**
+  **D-1150**: thêm `RaceCoverImage` mới trong `core/designsystem/.../component/RaceCoverImage.kt` (file
+  riêng, không sửa `RaceCard.kt` — đúng ràng buộc phạm vi vì agent khác đang làm trong file đó) —
+  `feature/races` không tự gọi Coil trực tiếp được (D-1109: chỉ `core/designsystem` phụ thuộc Coil), nên
+  logic đọc `intrinsicSize` phải nằm ở `core/designsystem`, không thể viết thẳng trong
+  `RaceDetailScreen.kt`. Cơ chế: `AsyncImage` với `onSuccess` đọc `painter.intrinsicSize`, lưu
+  `width/height` vào state; container `Modifier.aspectRatio(...)` animate (`animateFloatAsState`) từ
+  16:9 mặc định (lúc ảnh chưa tải xong) sang tỉ lệ thật khi có. Ảnh gần vuông (tỉ lệ trong khoảng
+  **0.85–1.15**, hằng số `SquareishAspectRatioRange`, chọn rộng hơn 1:1 đúng 1 chút để ảnh crop lệch nhẹ
+  kiểu 4:5/5:4 vẫn được xử lý như "gần vuông" thay vì hiện khung méo khó coi) giữ khung 16:9 cố định,
+  `ContentScale.Fit` ảnh căn giữa, phần nền thừa lấp bằng `RaceImageBackdrop` (tái dùng nguyên, không
+  viết lại blur, đúng yêu cầu D-1150). `RaceDetailScreen.kt` đổi `RaceHeroImage(..., height(HeaderHeight))`
+  cũ sang `RaceCoverImage(imageUrl, Modifier.fillMaxWidth())`; `HeaderHeight` 280dp vẫn giữ nguyên chỉ
+  cho nhánh gradient-fallback (race chưa có ảnh thật — không có intrinsic ratio để đọc).
+  **D-1151** (phát hiện thêm giữa chừng, user xác nhận trên máy thật, gộp luôn vì cùng file): CTA cuối
+  `RaceDetailContent` bị che bởi system nav bar — nguyên nhân do dòng gọi `RaceDetailContent` chỉ lấy
+  `padding.calculateTopPadding()` từ `Scaffold`, bỏ hẳn phần bottom mà `Scaffold` đã tự tính (so sánh với
+  `HomeScreen`/`DevicesScreen`/`AllMetricsScreen`/`DeviceDetailScreen` — tất cả đều dùng trọn
+  `Modifier.padding(padding)`, chỉ riêng `RaceDetailScreen` cherry-pick thiếu bottom). Sửa: thêm
+  `bottom = padding.calculateBottomPadding()` vào cùng modifier đó — vẫn **không** thêm `start`/`end` (để
+  ảnh cover ở trên giữ edge-to-edge, đúng tinh thần cũ của màn này). Đã rà các màn full-screen khác theo
+  yêu cầu "tính toán để không gặp việc tương tự": `RacesScreen` (list) đã dùng
+  `Modifier.fillMaxSize().padding(padding)` trọn vẹn — không có lỗi tương tự; `HomeScreen`/
+  `DevicesScreen`/`AllMetricsScreen`/`DeviceDetailScreen` (đọc qua, không sửa — thuộc file của agent
+  khác) cũng đều dùng `padding` trọn vẹn — `RaceDetailScreen` là trường hợp duy nhất thiếu.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest` và `./gradlew
+  assembleDebug` — cả hai xanh (test XML có sinh ra, không phải chạy im lặng giả). Cài lên máy thật
+  (Pixel 4, `99251FFAZ003T3`, nav bar 3 nút) qua `adb install -r`: xác nhận bằng mắt ảnh cover tỉ lệ
+  ngang thật (Lâm Đông Trail, Sơn Trà City Trail — ảnh rõ, không crop/méo, không còn band 280dp cố định
+  cũ) và CTA giờ có khoảng trống rõ phía trên nav bar 3 nút (trước đó bị che sát). **Nhánh ảnh gần-vuông
+  không tự chụp được trực tiếp**: xác nhận qua data crawl thật (`races/latest.json`) rằng nhiều ảnh race
+  thật đúng là 1:1 vuông (vd `Trang An Marathon`, `Prenn Trail Summit`, `Ultra Trail Cao Bang` — tải và đo
+  bằng PIL, kích thước 283×283/284×284/288×288px), nên nhánh này chắc chắn được dùng trong thực tế; việc
+  điều hướng thủ công qua `adb input swipe/tap` tới đúng màn chi tiết của 1 trong các giải này bị gián
+  đoạn liên tục bởi hành vi điều hướng không mong muốn trên máy thật trong phiên làm việc (tab/scroll tự
+  đổi không khớp input gửi đi — nghi do tương tác giữa pager/nested-scroll của app, không phải do code
+  D-1150/1151) — sau nhiều lần thử không thành công trong thời gian hợp lý, xác nhận nhánh này bằng đọc
+  kỹ code thay vì ảnh chụp: tái dùng y nguyên `RaceImageBackdrop` (component đã chạy đúng và được xác
+  nhận trực quan ở `RaceCardWithPhoto`, D-1131/1136/1142) nên rủi ro thấp.
