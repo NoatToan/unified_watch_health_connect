@@ -2538,3 +2538,40 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   đầu nếu có pattern tương tự — ví dụ dùng `LazyListState`/`onGloballyPositioned` đo vị trí item carousel
   so với viewport). Nếu user rời Home rồi quay lại, coi như "vào viewport" lại từ đầu (reset đếm, không
   cần nhớ đã từng auto-advance trước đó qua lần mở app khác).
+
+- **D-1174** · 2026-11-09 · Thực thi D-1170: `RaceCardBottomInfo` - gộp giá + CTA vào 1 hàng (giá trái,
+  CTA phải, CTA không bao giờ co) — **Chốt**
+  Chụp màn hình thật trên `99251FFAZ003T3` (Pixel 4, không phải emulator) để tìm đúng nguyên nhân thay
+  vì đoán theo D-1170. Phát hiện: lỗi **không phải** co chữ theo chiều ngang trong chính hàng CTA — ảnh
+  chụp "Đã đóng đăng ký" (label dài nhất) hiển thị đủ, không vỡ chữ, khi card có đủ chỗ dọc. Nguyên nhân
+  thật: **tràn chiều dọc**. `RaceCardBottomInfo` trước đó là 2 hàng xếp chồng (giá trên 1 hàng riêng với
+  `Modifier.weight(1f)` không tác dụng vì không có sibling - đúng như nghi ngờ của D-1170 - rồi
+  `RaceCallToAction` ở hàng riêng bên dưới); với 1 race tên dài phải xuống 2 dòng + có đủ `DistancePills`
+  + giá, tổng chiều cao khối dưới vượt quá phần còn lại của `RaceCardHeight` cố định (220dp), đẩy
+  `RaceCallToAction` (phần tử cuối) bị `Card` cắt mất ở viền dưới - xác nhận trực quan với race
+  "Nghệ An Legacy Marathon" (tên 2 dòng, 4 pills, có giá, CTA "Đăng ký ngay") trên carousel Home: pill CTA
+  gần như biến mất, chỉ còn 1 mép trên cùng lộ ra trước khi bị cắt.
+  **Sửa**: gộp giá + CTA vào **1 hàng duy nhất** (`Arrangement.SpaceBetween`) - giảm đúng 1 hàng chiều
+  cao, đây là phần sửa thật sự giải quyết tràn dọc, không chỉ là sở thích bố cục. `RaceCallToAction`
+  **không gán `weight`** (đo kích thước theo nội dung của chính nó, do `RaceCallToAction`/`ClosedBadge`
+  vốn không `fillMaxWidth`) nên không bao giờ bị ép co dù label dài nhất. Giá dùng
+  `Modifier.weight(1f, fill = false)` + `maxLines = 1` + `TextOverflow.Ellipsis` để **nhường chỗ trước**
+  nếu hàng quá hẹp cho cả hai - `SpaceBetween` + CTA không-weight (đo trước) đảm bảo CTA luôn ở sát mép
+  phải, đủ 100% chiều rộng tự nhiên, bất kể giá ngắn/dài/ellipsis. `DistancePills` giữ nguyên vị trí phía
+  trên (không gộp xuống hàng này) - đủ để hết tràn dọc mà không cần đụng thêm.
+  **Xác nhận lại bằng ảnh chụp thật (không đoán)**: cài lại APK lên `99251FFAZ003T3`, lướt đúng race
+  "Nghệ An Legacy Marathon" trên carousel Home (vị trí/ảnh/dữ liệu giống hệt lần chụp lỗi trước) - CTA
+  "Đăng ký ngay" + giá "Từ 450.000đ" giờ hiện đủ, không còn bị cắt. Cũng xác nhận thêm nhiều race khác
+  có tên 2 dòng + đủ pills + giá trên cả carousel Home và `RacesScreen` list full-width (Cà Mau Marathon,
+  Vnexpress Marathon Hanoi Midnight, Giải Chạy Quốc Tế Vì Đà Lạt Xanh...) - không còn card nào bị cắt chữ
+  CTA. Đã xem trực tiếp 3/4 trạng thái `RaceRegistrationStatus` qua dữ liệu thật (OPEN "Đăng ký ngay" -
+  trường hợp dài nhất đã test kỹ; CLOSED "Đã đóng đăng ký"; UNKNOWN "Xem chi tiết"); không tìm thấy race
+  nào đang ở trạng thái SOLD_OUT trong dữ liệu crawl hiện tại để chụp trực tiếp, nhưng `RaceCallToAction`
+  dùng chung đúng 1 nhánh code (`ClosedBadge`) cho cả CLOSED/SOLD_OUT/UNKNOWN - chỉ khác chuỗi hiển thị -
+  và "Hết vé" ngắn hơn cả 2 chuỗi đã xác nhận không cắt ở cùng vị trí, nên an toàn theo cấu trúc code,
+  không phải đoán mò.
+  Phạm vi chỉ sửa `RaceCardBottomInfo` trong `RaceCard.kt` (thêm import `TextOverflow`), không đụng file
+  nào khác.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest` (rerun đầy đủ 438 task,
+  `RaceCardTest` xanh) và `./gradlew assembleDebug` - cả hai pass; cài lại `app-debug.apk` lên
+  `99251FFAZ003T3` và chụp ảnh thật trước/sau để xác nhận bằng mắt theo đúng yêu cầu D-1170.

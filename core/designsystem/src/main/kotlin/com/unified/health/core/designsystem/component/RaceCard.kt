@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -173,22 +174,45 @@ private fun RaceCardWithGradient(race: Race, today: LocalDate) {
     }
 }
 
-/** Distances/price/CTA block, identical in both [RaceCardWithPhoto] and [RaceCardWithGradient]. */
+/**
+ * Distances/price/CTA block, identical in both [RaceCardWithPhoto] and [RaceCardWithGradient].
+ *
+ * D-1170: price and the CTA pill used to be two separate stacked rows (price alone on its own
+ * `fillMaxWidth()` row - its `Modifier.weight(1f)` was a no-op with no sibling to share the row with
+ * - then [RaceCallToAction] on its own full line below). On a real device, a longer race name that
+ * wraps to 2 lines combined with [DistancePills] + a price pushed this block's total height past what
+ * the card's fixed [RaceCardHeight] has room for, and the CTA pill - the last thing in the column -
+ * got clipped by the card's own bounds. Merging price and the CTA onto one row removes a whole row's
+ * worth of height, which is what actually fixes the clipping (not just a width/layout preference).
+ * The CTA is given no weight at all ([RaceCallToAction] sizes to its own content/`wrapContentWidth`
+ * by construction) so its label - even "Đã đóng đăng ký", the longest of the 4 - is never shrunk or
+ * clipped; price instead yields space via `Modifier.weight(1f, fill = false)` plus `maxLines = 1` +
+ * `TextOverflow.Ellipsis`, so *it* truncates first if the row is ever too narrow for both.
+ */
 @Composable
 private fun RaceCardBottomInfo(race: Race) {
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
         if (race.distances.isNotEmpty()) DistancePills(race.distances)
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            // SpaceBetween (not a fixed spacedBy gap) is what pins the CTA to the row's right edge at
+            // its own full natural width regardless of how wide the price text actually renders -
+            // price only ever gets the *leftover* width after the (unweighted, measured-first) CTA.
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
             race.priceFromVnd?.let {
                 Text(
                     "Từ ${formatVnd(it)}",
                     style = MaterialTheme.typography.labelLarge,
                     color = Color.White,
-                    modifier = Modifier.weight(1f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f, fill = false).padding(end = Spacing.sm),
                 )
-            } ?: Spacer(Modifier.weight(1f))
+            } ?: Spacer(Modifier.weight(1f, fill = false))
+            RaceCallToAction(race.registrationStatus)
         }
-        RaceCallToAction(race.registrationStatus)
     }
 }
 
