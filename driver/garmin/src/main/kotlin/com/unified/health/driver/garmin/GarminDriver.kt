@@ -9,6 +9,7 @@ import com.unified.health.core.ble.driver.WearableSession
 import com.unified.health.core.ble.gatt.GattClient
 import com.unified.health.core.ble.pairing.PairingCodeRequester
 import com.unified.health.core.ble.scan.Advertisement
+import com.unified.health.core.model.VendorIdentifierKeys
 import com.unified.health.core.model.WearableVendor
 import com.unified.health.driver.garmin.codec.HostIdentity
 import javax.inject.Inject
@@ -35,6 +36,15 @@ class GarminDriver @Inject constructor(
         hasGarminService(advertisement) -> RecognitionScore.VENDOR_SERVICE
         advertisement.name?.let { MODEL_NAME.containsMatchIn(it) } == true -> RecognitionScore.NAME
         else -> RecognitionScore.NONE
+    }
+
+    /**
+     * Product number for QR-code pairing (`DevicesViewModel`'s Garmin match), best-effort decoded
+     * from manufacturer data. See [GarminUuids.productNumberFrom] for the confidence caveat.
+     */
+    override fun identifiers(advertisement: Advertisement): Map<String, String> {
+        val productNumber = GarminUuids.productNumberFrom(advertisement.manufacturerData) ?: return emptyMap()
+        return mapOf(VendorIdentifierKeys.GARMIN_PRODUCT_NUMBER to productNumber)
     }
 
     private fun hasGarminService(advertisement: Advertisement): Boolean =

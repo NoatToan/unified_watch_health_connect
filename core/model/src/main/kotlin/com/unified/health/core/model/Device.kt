@@ -98,7 +98,25 @@ data class DiscoveredDevice(
     val rssi: Int?,
     val vendor: WearableVendor,
     val isBonded: Boolean = false,
+    /**
+     * Vendor-specific identifiers the driver could read out of the advertisement, keyed by
+     * [VendorIdentifierKeys] (e.g. Garmin's product number from manufacturer data). Used to
+     * disambiguate between several nearby candidates of the same vendor during QR-code pairing;
+     * empty for most vendors/drivers.
+     */
+    val vendorIdentifiers: Map<String, String> = emptyMap(),
 )
+
+/** Well-known keys for [DiscoveredDevice.vendorIdentifiers], shared between a driver (producer,
+ *  e.g. `GarminDriver`) and feature UI (consumer, e.g. QR-pairing match). */
+object VendorIdentifierKeys {
+    /**
+     * Garmin product/model number, best-effort decoded from the BLE advertisement's
+     * manufacturer-specific data (see `GarminUuids.productNumberFrom`). Absent when the
+     * advertisement did not carry Garmin manufacturer data, or on a bonded-but-not-heard device.
+     */
+    const val GARMIN_PRODUCT_NUMBER = "garmin.productNumber"
+}
 
 /** Static information read from a connected device. */
 data class DeviceInfo(

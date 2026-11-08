@@ -21,16 +21,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BatteryStd
 import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.automirrored.outlined.BluetoothSearching
+import androidx.compose.material.icons.outlined.Keyboard
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.Stop
 import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material.icons.outlined.Watch
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
@@ -42,6 +46,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
@@ -64,6 +69,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.unified.health.core.designsystem.component.ConnectionStatusChip
@@ -75,8 +82,10 @@ import com.unified.health.core.designsystem.permission.RuntimePermissions
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.DiscoveredDevice
+import com.unified.health.core.model.MacAddressFormat
 import com.unified.health.core.model.SyncState
 import com.unified.health.core.model.WearableDevice
+import com.unified.health.feature.devices.qr.QrScannerScreen
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -100,6 +109,11 @@ internal fun DevicesRoute(onOpenDevice: (String) -> Unit, viewModel: DevicesView
         onMessageShown = viewModel::messageShown,
         onPairingCode = viewModel::submitPairingCode,
         onPairingCodeCancel = viewModel::cancelPairingCode,
+        onQrCodeScanned = viewModel::onQrCodeScanned,
+        onFindByMacAddress = viewModel::findByMacAddress,
+        onRetryQrFind = viewModel::retryQrFind,
+        onCancelQrFind = viewModel::cancelQrFind,
+        onChooseFromListInsteadOfQr = viewModel::chooseFromListInsteadOfQr,
     )
 }
 
@@ -121,10 +135,17 @@ internal fun DevicesScreen(
     onMessageShown: () -> Unit,
     onPairingCode: (String) -> Unit,
     onPairingCodeCancel: () -> Unit,
+    onQrCodeScanned: (String) -> Unit,
+    onFindByMacAddress: (String) -> Unit,
+    onRetryQrFind: () -> Unit,
+    onCancelQrFind: () -> Unit,
+    onChooseFromListInsteadOfQr: () -> Unit,
 ) {
     val context = LocalContext.current
     val snackbar = remember { SnackbarHostState() }
     var permissionDenied by rememberSaveable { mutableStateOf(false) }
+    var showScanner by rememberSaveable { mutableStateOf(false) }
+    var showManualMacDialog by rememberSaveable { mutableStateOf(false) }
     val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
         permissionDenied = result.values.any { !it }
         if (!permissionDenied) onStartScan()
@@ -156,6 +177,31 @@ internal fun DevicesScreen(
 
     state.pairingCodeRequest?.let { request ->
         PairingCodeDialog(request = request, onSubmit = onPairingCode, onCancel = onPairingCodeCancel)
+    }
+
+    if (showScanner) {
+        Dialog(onDismissRequest = { showScanner = false }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+            QrScannerScreen(
+                onResult = { raw -> showScanner = false; onQrCodeScanned(raw) },
+                onCancel = { showScanner = false },
+            )
+        }
+    }
+
+    if (showManualMacDialog) {
+        ManualMacDialog(
+            onDismiss = { showManualMacDialog = false },
+            onSubmit = { mac -> showManualMacDialog = false; onFindByMacAddress(mac) },
+        )
+    }
+
+    state.qrFind?.let { qrFind ->
+        QrFindSheet(
+            state = qrFind,
+            onCancel = onCancelQrFind,
+            onRetry = onRetryQrFind,
+            onChooseFromList = onChooseFromListInsteadOfQr,
+        )
     }
 
     LaunchedEffect(state.userMessage) {
@@ -200,7 +246,7 @@ internal fun DevicesScreen(
             }
             item { SectionHeader("My devices") }
             if (state.pairedDevices.isEmpty()) {
-                item { NoPairedDeviceCard(onScan = requestScan) }
+                item { NoPairedDeviceCard(onScan = requestScan, onScanQrCode = { showScanner = true }) }
             } else {
                 items(state.pairedDevices, key = { it.id }) { device ->
                     PairedDeviceCard(
@@ -223,6 +269,21 @@ internal fun DevicesScreen(
                 }
                 if (state.isScanning) {
                     LinearProgressIndicator(Modifier.fillMaxWidth().padding(top = Spacing.sm))
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(top = Spacing.sm),
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
+                ) {
+                    OutlinedButton(onClick = { showScanner = true }, modifier = Modifier.testTag("qr_scan_button")) {
+                        Icon(Icons.Outlined.QrCodeScanner, contentDescription = null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(Spacing.xs))
+                        Text("Scan QR code")
+                    }
+                    OutlinedButton(onClick = { showManualMacDialog = true }, modifier = Modifier.testTag("manual_mac_button")) {
+                        Icon(Icons.Outlined.Keyboard, contentDescription = null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(Spacing.xs))
+                        Text("Enter MAC address")
+                    }
                 }
             }
             if (state.discovered.isEmpty()) {
@@ -429,7 +490,7 @@ private fun PairingCodeDialog(request: PairingCodeRequest, onSubmit: (String) ->
 }
 
 @Composable
-private fun NoPairedDeviceCard(onScan: () -> Unit) {
+private fun NoPairedDeviceCard(onScan: () -> Unit, onScanQrCode: () -> Unit) {
     OutlinedCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             Text("No device paired yet", style = MaterialTheme.typography.titleMedium)
@@ -438,7 +499,85 @@ private fun NoPairedDeviceCard(onScan: () -> Unit) {
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            FilledTonalButton(onClick = onScan) { Text("Scan for devices") }
+            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                FilledTonalButton(onClick = onScanQrCode, modifier = Modifier.testTag("qr_scan_button_empty")) {
+                    Icon(Icons.Outlined.QrCodeScanner, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(Spacing.xs))
+                    Text("Scan QR code")
+                }
+                OutlinedButton(onClick = onScan) { Text("Scan for devices") }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ManualMacDialog(onDismiss: () -> Unit, onSubmit: (String) -> Unit) {
+    var value by rememberSaveable { mutableStateOf("") }
+    val normalized = MacAddressFormat.normalizeOrNull(value)
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Enter MAC address") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                Text(
+                    "Find your watch directly by its Bluetooth address, e.g. from the box or the vendor app.",
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                OutlinedTextField(
+                    value = value,
+                    onValueChange = { value = it },
+                    singleLine = true,
+                    isError = value.isNotBlank() && normalized == null,
+                    label = { Text("AA:BB:CC:DD:EE:FF") },
+                    modifier = Modifier.testTag("manual_mac_input"),
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onSubmit(value) }, enabled = normalized != null, modifier = Modifier.testTag("manual_mac_confirm")) {
+                Text("Find")
+            }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun QrFindSheet(state: QrFindUiState, onCancel: () -> Unit, onRetry: () -> Unit, onChooseFromList: () -> Unit) {
+    ModalBottomSheet(onDismissRequest = onCancel, modifier = Modifier.testTag("qr_find_sheet")) {
+        Column(
+            modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(Spacing.sm),
+        ) {
+            Text("Looking for ${state.label}", style = MaterialTheme.typography.titleMedium)
+            when (state.status) {
+                QrFindStatus.SCANNING -> {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                        CircularProgressIndicator(modifier = Modifier.size(20.dp))
+                        Text("Keep the watch close to your phone…", style = MaterialTheme.typography.bodyMedium)
+                    }
+                    state.huaweiPin?.let {
+                        Text("Code on the watch: $it", style = MaterialTheme.typography.bodyMedium)
+                    }
+                    TextButton(onClick = onCancel, modifier = Modifier.testTag("qr_find_cancel")) { Text("Cancel") }
+                }
+                QrFindStatus.TIMED_OUT -> {
+                    Text(
+                        "Couldn't find it. Make sure the watch is powered on, close to your phone and not " +
+                            "already connected to another app.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                        OutlinedButton(onClick = onChooseFromList, modifier = Modifier.testTag("qr_find_choose_from_list")) {
+                            Text("Choose from list")
+                        }
+                        Button(onClick = onRetry, modifier = Modifier.testTag("qr_find_retry")) { Text("Try again") }
+                    }
+                }
+            }
         }
     }
 }
@@ -465,7 +604,7 @@ private fun signalLabel(rssi: Int): String = when {
 
 private val LAST_SYNC_FORMAT: DateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
 
-private fun Context.openAppSettings() {
+internal fun Context.openAppSettings() {
     startActivity(
         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, android.net.Uri.fromParts("package", packageName, null))
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),

@@ -60,4 +60,25 @@ internal object GarminUuids {
 
     /** 16-bit member service UUIDs carrying "GarminGenericServiceData". */
     val ADVERTISED_SERVICE_DATA: Set<UUID> = setOf(sigUuid(0x2401), sigUuid(0x3E10), sigUuid(0xFE1F))
+
+    /**
+     * Best-effort product-number extraction for QR-code pairing (`QR_PAIRING_ANALYSIS.md` §4.4-§4.5,
+     * `dk2/d.java:384-399` [V] for the clean part of this method; the decompiled source is corrupted
+     * by duplicated/inlined jadx blocks past this point, so the exact semantics of the bytes that
+     * follow are **not** trusted here [I]).
+     *
+     * The two bytes right after the company id form a big-endian u16 that the Garmin Connect app
+     * turns into a decimal "product number" string via a model lookup table we do not have. We
+     * return the raw decimal of those two bytes, which is close enough to disambiguate between
+     * different *models* advertising nearby but has not been verified byte-for-byte against a real
+     * device/QR capture (`docs/analysis/QR_PAIRING_ANALYSIS.md` §6.3.6). Callers must treat a
+     * mismatch as inconclusive, not as proof the device is wrong — see
+     * `DevicesViewModel`'s Garmin match fallback and `docs/DECISIONS.md` D-903.
+     */
+    fun productNumberFrom(manufacturerData: Map<Int, ByteArray>): String? {
+        val data = manufacturerData[GARMIN_COMPANY_ID] ?: manufacturerData[GARMIN_COMPANY_ID_SWAPPED]
+        if (data == null || data.size < 2) return null
+        val value = ((data[0].toInt() and 0xFF) shl 8) or (data[1].toInt() and 0xFF)
+        return value.toString()
+    }
 }

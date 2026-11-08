@@ -31,6 +31,7 @@ class MultiVendorDeviceScanner @Inject internal constructor(
     private fun MutableMap<String, DiscoveredDevice>.offer(advertisement: Advertisement): Boolean {
         val vendor = registry.identify(advertisement) ?: return false
         val previous = this[advertisement.address]
+        val identifiers = registry[vendor]?.identifiers(advertisement) ?: emptyMap()
         val merged = DiscoveredDevice(
             name = advertisement.name ?: previous?.name ?: advertisement.address,
             macAddress = advertisement.address,
@@ -38,6 +39,9 @@ class MultiVendorDeviceScanner @Inject internal constructor(
             // A specific advertisement beats a name guess made from the bond list.
             vendor = if (advertisement.rssi != null || previous == null) vendor else previous.vendor,
             isBonded = advertisement.isBonded || previous?.isBonded == true,
+            // A bonded-list snapshot (no manufacturer data) keeps whatever identifiers a previous
+            // advertisement already surfaced, instead of wiping them.
+            vendorIdentifiers = identifiers.ifEmpty { previous?.vendorIdentifiers ?: emptyMap() },
         )
         if (merged == previous) return false
         this[advertisement.address] = merged

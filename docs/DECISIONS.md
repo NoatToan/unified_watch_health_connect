@@ -623,3 +623,61 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   `:core:demo` có `StandardVirtualWatch` ("SIG Pulse Band", `02:5D:00:00:18:0D`): GATT trong bộ nhớ chỉ nói các service SIG (HR 1 Hz + RR, Battery, DIS, CTS ghi được, PLX spot-check + RACP với 7 ngày × 3 lần đo, RSC), không có mock driver — được `:driver:standard` thật phục vụ. Module Hilt riêng (`StandardVirtualWatchModule`), tắt cùng cờ `MOCK_DEVICE`. E2E `StandardWatchE2ETest`, flow `60-standard-watch`.
 
 ## Release readiness (D-7xx)
+
+## Pair with QR code (D-9xx)
+
+- **D-900** · 2026-11-08 · Camera/scanner stack — **Chốt**
+  Quét QR dùng CameraX (`camera-core/camera2/lifecycle/view` 1.6.1) + ZXing `core` 3.5.3, không
+  dùng MLKit/Barcode Scanning API — MLKit cần Google Play Services, Huawei không có GMS. ZXing
+  decode trực tiếp trên Y-plane của `ImageAnalysis` (`PlanarYUVLuminanceSource`), không cần
+  chuyển YUV→RGB. `feature/devices/.../qr/QrCodeAnalyzer.kt`, `QrScannerScreen.kt`. Nguồn:
+  `docs/analysis/QR_PAIRING_ANALYSIS.md` §1.1, §2.1 (cả Huawei Health và Zepp dùng camera scan
+  QR nội bộ app, không qua hệ thống).
+- **D-901** · 2026-11-08 · Phạm vi parser (`QrPairingParser`) — **Chốt**
+  `core/model/QrPairingHint.kt` + `QrPairingParser.kt`: 3 sub-parser theo thứ tự Zepp → Huawei →
+  Garmin, thuần Kotlin/JVM (dùng `java.net.URI`/`URLDecoder`, không Android). Zepp: MAC 12-hex bắt
+  buộc, `pnpNumber`/`pnpVersion` coi là optional cho app này (khác app Zepp gốc bắt buộc cả 3).
+  Huawei: `t`/`n`|`bt_name`/`r`|`PIN`, bare `key=value` hoặc URL, giá trị URL-decode. Garmin: App
+  Link `{connect,connecttest}.garmin.{com,cn}/mobile-link/gcm/pair-device`, lấy `deviceId` +
+  `productNumber`; `applicationKey` **luôn bị bỏ qua** — không parse vào hint, không lưu, không
+  log (đây là OAuth scope id trên cloud Garmin, không phải secret BLE). Nguồn: §6.1, §4.3.
+- **D-902** · 2026-11-08 · Huawei PIN — **Tạm**
+  Vai trò PIN trong handshake Huawei (HiChain) chưa xác nhận được ở mức byte (§1.4, §6.3.1 của
+  research doc nói PIN có thể là input PAKE, không chỉ mã xác nhận BT). Driver `driver/huawei`
+  hiện KHÔNG dùng PIN trong handshake, nên PIN từ QR chỉ giữ trong `QrFindUiState.huaweiPin`
+  (state trong RAM của `DevicesViewModel`) để hiển thị "Code on the watch: 123456" cho người
+  dùng tự nhập vào máy nếu được hỏi — không ghi Room/DataStore, không log. Khi driver Huawei cần
+  PIN thật cho handshake, phải nối lại pipeline này (xem `docs/DECISIONS.md` D-3xx khi đó).
+- **D-903** · 2026-11-08 · Garmin match bằng unitId/productNumber — **Tạm**
+  Layout byte của manufacturer-specific data Garmin (`dk2/d.java:362-520`) bị jadx làm hỏng (nhiều
+  block trùng/inline do lỗi decompile) ngay sau đoạn đọc company id — chỉ phần đọc company id +
+  2 byte đầu (big-endian u16) là tin được. `GarminUuids.productNumberFrom()` trả về **thập phân
+  của 2 byte đó**, không phải bảng tra `productNumber` thật của Garmin Connect (bảng tra đó không
+  có trong dump). Dùng giá trị này làm `DiscoveredDevice.vendorIdentifiers["garmin.productNumber"]`
+  để so khớp "tốt nhất có thể"; `DevicesViewModel.selectMatch` chỉ coi là khớp chắc khi giá trị
+  này bằng `productNumber` trong QR, còn không thì rơi về "đúng 1 candidate Garmin gần đó" — nhiều
+  candidate không xác định được thì chờ timeout và để người dùng "Choose from list", **không đoán
+  bừa**. Cần xác nhận lại bằng QR thật + HCI snoop log trên đồng hồ Garmin thật (xem §6.3.6 trong
+  research doc).
+- **D-904** · 2026-11-08 · `WearableDriver.identifiers()` — **Chốt**
+  Thêm method mặc định `identifiers(Advertisement): Map<String, String> = emptyMap()` vào
+  `core/ble/driver/WearableDriver` + field `DiscoveredDevice.vendorIdentifiers` (mặc định rỗng) —
+  không phá driver khác (Huawei/Zepp/Coros/Standard không override). `MultiVendorDeviceScanner`
+  gọi `registry[vendor]?.identifiers(advertisement)` khi gộp kết quả scan, giữ giá trị cũ nếu bản
+  quảng bá mới (ví dụ từ bond list) không có manufacturer data. Chỉ `GarminDriver` override hiện
+  tại.
+- **D-905** · 2026-11-08 · Luồng tìm theo hint + timeout — **Chốt**
+  `DevicesViewModel.startFind()`: dừng scan thường, chạy `repository.scan()` với
+  `withTimeoutOrNull(30_000)` (giống timeout address-filtered scan 30s của vendor Zepp, §2.3/§6.2),
+  khớp đầu tiên theo `selectMatch()` thì gọi lại đúng `pair()` hiện có (đã tự `connect()` khi không
+  thiếu credential) — không viết lại luồng pair/connect. Hết giờ → sheet "Looking for …" chuyển
+  sang trạng thái `TIMED_OUT` với "Try again" (gọi lại cùng hint) / "Choose from list" (đóng sheet,
+  chạy scan thường). "Enter MAC address" dùng chung `startFind()` với bộ so khớp theo địa chỉ
+  chính xác, validate qua `MacAddressFormat.normalizeOrNull` (chấp nhận có/không dấu `:`/`-`).
+- **D-906** · 2026-11-08 · Không có ảnh/model watch trong sheet — **Tạm**
+  `WatchModel`/`WatchModelMatcher`/`WatchImage` (nhánh `feat/watch-model-images`, chưa merge vào
+  `main` lúc làm task này) chưa có trên worktree này → sheet "Looking for …" chỉ hiện icon
+  `Icons.Outlined.Watch` + tên vendor/mac/btName/productNumber dạng text, không có ảnh sản phẩm
+  thật. Khi nhánh đó merge, nối `WatchModelMatcher` vào `DevicesViewModel.labelFor()`/`QrFindSheet`
+  (map `productNumber`→model cho Garmin, `pnpNumber/pnpVersion`→model cho Zepp) là việc còn lại,
+  không cần đổi kiến trúc đã làm ở đây.
