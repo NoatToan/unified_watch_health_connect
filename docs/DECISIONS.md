@@ -1594,3 +1594,94 @@ phía client, mặc định chỉ hiện upcoming.
   `registrationUrl` qua Chrome Custom Tabs (giữ đúng hành vi "đi vào detail hẳn mở webview" — chỉ là
   giờ có 1 bước trung gian thân thiện hơn trước khi rời app). Nếu `description` null (crawler chưa
   kịp lấy), vẫn hiện đủ thông tin cơ bản khác, không để trống xấu.
+
+- **D-1115** · 2026-11-08 · `DeviceBanner` trên Home dùng lại đúng style + animation của card thiết bị bên Devices — **Chốt**
+  User thấy `DeviceBanner` trên Home (box hiện thiết bị đang kết nối) khác với card thiết bị trong
+  "My devices" ở màn Devices (`feature/devices/DevicesScreen.kt`) — cả về style box (ảnh đồng hồ,
+  bo góc, elevation/border) lẫn hiệu ứng animation lúc xuất hiện (3D flip-in của `WatchImage`, đã
+  dùng cho header chip ở D-1098). Đồng bộ lại: `DeviceBanner` tái dùng đúng composable/animation đã
+  có ở Devices thay vì tự có style riêng — không viết lại từ đầu, chỉ gọi lại đúng component/style
+  function đã tồn tại.
+
+## Thực thi D-1112/1113/1114 (auto-size title, filter Races, Race Detail trong app) — D-1116
+
+- **D-1116** · 2026-11-08 · Các điểm chưa chốt cụ thể khi implement D-1112/D-1113/D-1114 — **Chốt**
+  1. **Auto-size dùng `Text(..., autoSize = TextAutoSize.StepBased(...))` thẳng trên
+     `androidx.compose.material3.Text`** (không cần `BasicText` riêng hay tự viết logic đo-giảm cỡ
+     chữ) — kiểm tra qua Context7/doc chính thức xác nhận Compose BOM `2026.09.00` (đã có trong
+     `gradle/libs.versions.toml`) có overload `Text(text: String, color: Color, autoSize:
+     TextAutoSize?, ...)`, đúng API D-1112 đã dự đoán. `minFontSize = 13.sp`/`maxFontSize` =
+     đúng cỡ chữ gốc của style truyền vào (`titleLarge` 22.sp cho card, `headlineMedium` 28.sp cho
+     detail) để không bao giờ to hơn thiết kế cũ — chỉ co nhỏ khi tên quá dài, không bao giờ to lên.
+     Giữ `maxLines = 2` (card)/`3` (detail), bỏ hẳn `overflow = TextOverflow.Ellipsis` cũ (mục tiêu
+     D-1112 là "không bao giờ truncate/ellipsis" — co chữ tới `minFontSize` là nỗ lực cuối cùng, chấp
+     nhận rủi ro lý thuyết text bị tràn nhẹ nếu tên giải cực dài vượt quá khả năng co, nhưng tên giải
+     chạy thực tế trong feed luôn ngắn hơn nhiều so với giới hạn này).
+  2. **Tách logic dùng chung giữa `RaceCard` và `RaceDetailScreen` vào `core/designsystem`** (đúng yêu
+     cầu "reuse, don't duplicate" của D-1114): `RaceVisualBackground(race, modifier, terrainIconSize)`
+     (ảnh thật qua Coil + scrim, hoặc gradient-theo-terrain + icon mờ khi `imageUrl` null — y hệt logic
+     cũ của `RaceCard`), `RaceNameText(name, modifier, style, maxLines)` (auto-size dùng chung), và
+     `RaceRegistrationStatus.ctaLabel()` (hàm thuần trả về đúng 4 nhãn tiếng Việt cũ: "Đăng ký
+     ngay"/"Đã đóng đăng ký"/"Hết vé"/"Xem chi tiết") — tách **nhãn** ra hàm riêng thay vì tái dùng
+     nguyên `RaceCallToAction` (vốn có màu/pill style chỉ hợp nền tối/gradient) cho nút CTA to ở
+     detail, vì nút đó không nhất thiết nằm đè lên gradient; `RaceCard` giờ cũng gọi `ctaLabel()`
+     thay vì hard-code lại chuỗi.
+  3. **`RacesRepository`/`RemoteRacesRepository` bỏ hẳn filter ẩn giải đã qua theo ngày** (khác với
+     D-1109 điểm 4) — giờ giữ **toàn bộ** race hợp lệ (chỉ loại record thật sự malformed), sắp theo
+     `startDate` tăng dần như cũ, không lọc theo ngày nữa. Lý do: D-1113 cần cho user bật xem lại giải
+     đã diễn ra (`raceStatus == past`) ở `RacesScreen`, nên tầng data không còn được phép âm thầm vứt
+     bỏ giải quá khứ — việc lọc "mặc định chỉ hiện upcoming" chuyển xuống tầng UI (`RacesViewModel` cho
+     `RacesScreen`, `Summary()`/`RacesCarousel` cho Home carousel — carousel Home **vẫn luôn** chỉ lọc
+     `raceStatus == upcoming`, không có toggle, đúng tinh thần quảng bá giải sắp diễn ra của D-1105).
+     `RacesState` (interface ở `core/domain`) giữ nguyên không đổi (`Empty` vẫn nghĩa là "feed không có
+     race hợp lệ nào", không phải "không có race upcoming nào" — trường hợp feed chỉ toàn race quá khứ
+     hiển thị `Success(races)` rỗng-sau-lọc ở UI, `RacesScreen` tự hiển thị thông báo "không có giải
+     khớp bộ lọc" riêng, khác với `RacesState.Empty` gốc).
+  4. **`raceStatus` thiếu/không nhận diện được → mặc định `RaceStatus.UPCOMING` ngay tại DTO mapper**
+     (`RaceDto.toDomainOrNull()`), đúng yêu cầu brief — không tính lại từ `startDate` so với ngày hôm
+     nay (khác cách cũ `RaceCountdown`/filter D-1109 vốn tự tính bằng ngày) vì field này giờ do crawler
+     tính sẵn, tính lại ở app dễ lệch với ý "raceStatus do crawler tự tính từ ngày crawl" nêu trong
+     brief — app chỉ cần fallback an toàn khi thiếu, không tự suy luận lại.
+  5. **Filter state (`province`/`month`/`showPast`) sống trong `RacesViewModel`, không phải domain** —
+     `RaceFilters`/`RacesUiState` mới (sealed interface riêng, không phải `RacesState` domain) định
+     nghĩa ngay trong `feature/races`, danh sách `province`/`month` khả dụng tính từ chính danh sách
+     race đã tải (`distinct().sorted()`) mỗi khi state đổi — không cache riêng, đơn giản vì dataset nhỏ
+     (~50 race). UI filter dùng `FilterChip` (Material3, dự án chưa dùng chip này ở đâu khác) thành 1
+     hàng cuộn ngang cho tỉnh/thành, 1 hàng cuộn ngang cho tháng (`"Tất cả"` + mỗi tháng dạng
+     `"Th.11/2026"`), và 1 `FilterChip` riêng "Đã diễn ra" bật/tắt — không dùng dropdown (Compose
+     `ExposedDropdownMenu` cồng kềnh hơn cho ít lựa chọn, chip row nhất quán với phong cách
+     card/pill đã có ở `RaceCard`).
+  6. **`RaceDetailScreen` tra race theo `raceId` bằng cách lọc `RacesRepository.races` hiện có**
+     (giống hệt pattern `WorkoutDetailViewModel`/`MetricDetailViewModel` đã dùng cho `savedStateHandle
+     .toRoute<...>()` + tra cứu list đã tải) — không thêm API/field `getRaceById` mới vào
+     `RacesRepository` vì state đã luôn có đủ danh sách race trong bộ nhớ, tra bằng `firstOrNull { it.id
+     == raceId }` là đủ, không cần network call riêng. `RacesState.Loading`/`Error` (chưa có cache) +
+     race không tìm thấy trong `Success` đều gộp chung thành 1 trạng thái `RaceDetailUiState.NotFound`
+     hiển thị `ErrorState` + nút quay lại — ca lỗi mạng ở đúng lúc user bấm sâu vào 1 race cụ thể hiếm
+     và không đáng tách riêng thêm 1 trạng thái Error với message khác biệt.
+  7. **Điều hướng xuyên suốt app**: thêm `RaceDetailDestination(raceId: String)` +
+     `navigateToRaceDetail`/`raceDetailScreen` trong `feature/races` (cùng pattern
+     `WorkoutDetailDestination`). Bấm card ở Home carousel giờ gọi `onOpenRaceDetail(race.id)` xuyên
+     `HomeRoute → HomeTabContent → MainPagerDestination → UnifiedHealthNavHost` (y hệt cách
+     `onOpenWorkoutClick` đã xuyên qua `ActivityTabContent`); bấm card ở `RacesScreen` gọi thẳng
+     `onOpenRaceDetail` được truyền vào từ `racesScreen(...)` ở `UnifiedHealthNavHost`. `onOpenRaces`
+     (nút "Xem tất cả" mở `RacesScreen`) giữ nguyên không đổi — chỉ hành vi bấm **card** đổi từ mở
+     Custom Tabs trực tiếp sang mở `RaceDetailScreen`; CTA trong màn đó mới là nơi duy nhất còn gọi
+     `launchInCustomTab`.
+
+- **D-1116** · 2026-11-08 · Crawler: phân loại marathon/trail chắc chắn hơn + best-effort thứ hạng top runner cho giải đã diễn ra — **Tạm** (giao `unified_health_service`)
+  Bổ sung cho D-1111 (đang chạy, gửi thêm yêu cầu cho cùng agent): (1) kiểm tra lại logic suy ra
+  `terrain` (road/trail) từ tên/mô tả giải bằng keyword tiếng Việt, tránh mặc định hết về 1 loại. (2)
+  Với giải `raceStatus == "past"`, tìm cách crawl thứ hạng top runner (iRace hoặc nền tảng
+  timing/kết quả riêng nếu có) — **best-effort, không bắt buộc mọi giải có**. Schema thêm (nếu crawl
+  được): `results: [{ "distance": "42km", "topFinishers": [{ "rank": 1, "name": "...",
+  "timeSeconds": 9240 }] }]`, `null` nếu không có nguồn khả thi. Đánh dấu Tạm vì chưa biết nguồn kết
+  quả thật có tồn tại/crawl được hay không cho tới khi agent báo cáo lại.
+
+- **D-1117** · 2026-11-08 · Carousel "Giải chạy sắp tới" phải scroll edge-to-edge, không bị margin che — **Chốt**
+  User thấy carousel hiện bị `Modifier.padding` ngang đối xứng che mất phần card kế tiếp khi scroll
+  (padding áp lên cả `LazyRow`, giới hạn cả vùng scroll chứ không chỉ vị trí nghỉ). Sửa: dùng
+  `contentPadding = PaddingValues(start = <lề content mặc định của Home>, end = <cùng giá trị>)` trên
+  chính `LazyRow` đó thay vì bọc ngoài bằng `Modifier.padding` — card đầu tiên vẫn thẳng hàng với lề
+  nội dung khác của Home lúc đứng yên, nhưng khi scroll ngang thì card có thể trượt ra sát mép màn
+  hình (full width), không bị cắt bởi padding cố định.
