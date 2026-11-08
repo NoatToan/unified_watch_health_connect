@@ -1603,9 +1603,15 @@ phía client, mặc định chỉ hiện upcoming.
   có ở Devices thay vì tự có style riêng — không viết lại từ đầu, chỉ gọi lại đúng component/style
   function đã tồn tại.
 
-## Thực thi D-1112/1113/1114 (auto-size title, filter Races, Race Detail trong app) — D-1116
+## Thực thi D-1112/1113/1114 (auto-size title, filter Races, Race Detail trong app) — D-1125
 
-- **D-1116** · 2026-11-08 · Các điểm chưa chốt cụ thể khi implement D-1112/D-1113/D-1114 — **Chốt**
+(Đánh số lại 2 lần vì nhiều agent chạy song song cùng log vào `docs/DECISIONS.md`: D-1116 ban đầu →
+trùng với D-1116 "Crawler: phân loại marathon/trail..."; đổi sang D-1122 → lại trùng tiếp với D-1122
+"`Modifier.fillBleed()`..." do một agent khác log ngay sau đó. Nội dung không đổi qua các lần đổi số,
+chỉ đổi số để hết trùng — giống cách đã xử lý D-1080/D-1082/D-1097 trước đó. Số D-1125 chọn vì D-1124
+là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.)
+
+- **D-1125** · 2026-11-08 · Các điểm chưa chốt cụ thể khi implement D-1112/D-1113/D-1114 — **Chốt**
   1. **Auto-size dùng `Text(..., autoSize = TextAutoSize.StepBased(...))` thẳng trên
      `androidx.compose.material3.Text`** (không cần `BasicText` riêng hay tự viết logic đo-giảm cỡ
      chữ) — kiểm tra qua Context7/doc chính thức xác nhận Compose BOM `2026.09.00` (đã có trong
@@ -1725,3 +1731,38 @@ phía client, mặc định chỉ hiện upcoming.
   4. `DevicesViewModel`/`DevicesScreen.kt` hiện `stage` (nếu có) thành dòng text nhỏ ngay dưới progress
      bar lúc đang sync — null thì ẩn dòng đó, không hiện trống.
   Mục đích: user ngồi chờ sync biết app đang làm gì với đồng hồ, bớt cảm giác "treo máy".
+
+## Thực thi D-1117/1119/1120 (carousel edge-to-edge, Metrics declutter + màn riêng, pill nền trong suốt) — D-112x
+
+- **D-1122** · 2026-11-08 · `Modifier.fillBleed()` để carousel thoát `contentPadding` của `LazyColumn` cha — **Chốt**
+  `Modifier.padding()` của Compose từ chối giá trị âm (`require >= 0`), nên không thể "trừ ngược" lề
+  `Spacing.lg` của `LazyColumn` cha (`Summary`) bằng padding âm thông thường. Viết
+  `Modifier.layout { measurable, constraints -> ... }` riêng (`fillBleed(amount)`): đo con với
+  `maxWidth` rộng hơn `amount*2`, rồi `place()` lệch trái `amount` — đúng kỹ thuật "full-bleed row
+  trong list có padding" chuẩn của Compose (Compose không hard-clamp kích thước `layout()` trả về theo
+  constraint nhận vào, đây là pattern được dùng rộng rãi, không phải hack). `LazyRow` của
+  `RacesCarousel` dùng `contentPadding = PaddingValues(horizontal = Spacing.lg)` + `.fillBleed(Spacing.lg)`
+  đúng theo D-1117 — card đầu/cuối vẫn thẳng lề lúc đứng yên, nhưng scroll được tới sát mép màn hình
+  thật. Không đổi `horizontalArrangement`/spacing giữa card (giữ `Spacing.md` như cũ).
+- **D-1123** · 2026-11-08 · Tách `feedCardItems` dùng chung giữa Home và màn "All metrics" mới — **Chốt**
+  Theo D-1119: đổi tên section "All metrics" → "Metrics"; thêm `FeedCardData.hasData()` (Metric dùng
+  field `hasData` có sẵn, Workouts dùng `recent.isNotEmpty()`) lọc card trên Home — ẩn hẳn khỏi
+  `LazyColumn`, không phải mờ/disable. Logic List/Grid cũ (`items`/`chunked(2)` + Row 2 cột) tách thành
+  1 hàm `LazyListScope.feedCardItems(cards, viewMode, ...)` dùng chung bởi cả `Summary` (gọi với danh
+  sách đã lọc `hasData`) lẫn `AllMetricsScreen` mới (gọi với `state.feedCards` nguyên văn, không lọc) —
+  đúng yêu cầu "tái dùng đúng component/list cũ, chỉ bỏ filter". `AllMetricsScreen`/`AllMetricsRoute`
+  đặt chung file `HomeScreen.kt` (để dùng được các composable `private` như `FeedCard`/`ViewModeToggle`
+  mà không phải public hoá), route mới `AllMetricsDestination` đăng ký thêm trong
+  `HomeNavigation.kt`/`UnifiedHealthNavHost.kt`, push lên trên `MainPagerDestination` như mọi màn con
+  khác (MetricDetail, DeviceDetail...). CTA "Xem tất cả" cạnh header "Metrics" dùng đúng pattern
+  `TextButton` đã dùng cho Races (D-1105). Thông báo rỗng khi Home không còn card nào qua lọc đổi
+  thành "No metrics with data yet..." (trước chỉ nói về việc bị ẩn qua Edit, giờ cũng đúng cho trường
+  hợp chưa có data).
+- **D-1124** · 2026-11-08 · `Scaffold.containerColor = Color.Transparent` cho D-1120 — **Chốt**
+  Đúng theo gợi ý trong quyết định: thêm `containerColor = Color.Transparent` vào `Scaffold` bao ngoài
+  ở `UnifiedHealthApp.kt` (không có `Surface` bọc riêng quanh `PillBottomNavigation` để xoá — pill tự
+  nó đã chỉ vẽ đúng hình pill, phần nền đặc là do `Scaffold` mặc định `containerColor =
+  MaterialTheme.colorScheme.background`). Không đổi cấu trúc padding/content behind-the-bar (nội dung
+  vẫn dừng đúng mép trên của `bottomBar` như cũ qua `padding` Scaffold tính sẵn) — chỉ đổi đúng 1 màu
+  nền theo đúng phạm vi quyết định yêu cầu, tránh risk làm vỡ layout các màn khác nếu đổi luôn cơ chế
+  padding/overlay.

@@ -7,6 +7,10 @@ import kotlinx.coroutines.flow.Flow
  * Loading/Success/Empty/Error for the races feed (D-1107), shared by the Home carousel (D-1105,
  * hides its section on anything but a non-empty [Success]) and the full [Race] list screen (which
  * also renders [Empty]/[Error] itself, since the user navigated there on purpose).
+ *
+ * [Success.races] holds every parseable race, past and upcoming (D-1125) — filtering down to
+ * "upcoming only" (or opting into past races) is a UI-layer concern on [Race.raceStatus], not
+ * something this state distinguishes; [Empty] means the feed had no valid race at all.
  */
 sealed interface RacesState {
     data object Loading : RacesState

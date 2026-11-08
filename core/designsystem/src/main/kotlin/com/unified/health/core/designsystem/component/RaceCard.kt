@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.DirectionsRun
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
@@ -37,9 +38,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.model.Race
@@ -62,42 +65,13 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun RaceCard(race: Race, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val today = rememberToday()
-    val terrain = race.terrain
     Card(onClick = onClick, modifier = modifier.height(RaceCardHeight)) {
         Box(Modifier.fillMaxSize()) {
-            if (race.imageUrl != null) {
-                AsyncImage(
-                    model = race.imageUrl,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop,
-                )
-                // Scrim so white text stays legible over an arbitrary photo.
-                Box(
-                    Modifier.fillMaxSize().background(
-                        Brush.verticalGradient(listOf(Color.Transparent, Color.Black.copy(alpha = 0.72f))),
-                    ),
-                )
-            } else {
-                Box(Modifier.fillMaxSize().background(terrain.gradient()))
-                Icon(
-                    terrain.icon(),
-                    contentDescription = null,
-                    tint = Color.White.copy(alpha = 0.18f),
-                    modifier = Modifier.align(Alignment.BottomEnd).padding(Spacing.xs).size(140.dp),
-                )
-            }
+            RaceVisualBackground(race, Modifier.fillMaxSize())
             Column(modifier = Modifier.fillMaxSize().padding(Spacing.lg), verticalArrangement = Arrangement.SpaceBetween) {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                    TerrainBadge(terrain)
-                    Text(
-                        race.name,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                    TerrainBadge(race.terrain)
+                    RaceNameText(race.name, style = MaterialTheme.typography.titleLarge, maxLines = 2)
                     Text(raceDateLine(race, today), style = MaterialTheme.typography.bodyMedium, color = Color.White.copy(alpha = 0.92f))
                 }
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
@@ -118,6 +92,61 @@ fun RaceCard(race: Race, onClick: () -> Unit, modifier: Modifier = Modifier) {
         }
     }
 }
+
+/**
+ * Shared full-bleed visual for a [Race] (D-1106/D-1125): a real [Race.imageUrl] via Coil with a
+ * bottom scrim so overlaid white text stays legible, or — since most races in the feed have no
+ * image — a gradient keyed by [RaceTerrain] with a large faint terrain icon. Reused as-is by
+ * [RaceCard] and `RaceDetailScreen` (D-1114) so both render the exact same fallback, not two
+ * hand-maintained copies of this rule. Fills whatever [modifier] gives it (typically `fillMaxSize()`
+ * inside a `Box` of the caller's chosen height).
+ */
+@Composable
+fun RaceVisualBackground(race: Race, modifier: Modifier = Modifier, terrainIconSize: Dp = 140.dp) {
+    Box(modifier) {
+        if (race.imageUrl != null) {
+            AsyncImage(
+                model = race.imageUrl,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
+            )
+            Box(
+                Modifier.fillMaxSize().background(
+                    Brush.verticalGradient(listOf(Color.Transparent, Color.Black.copy(alpha = 0.72f))),
+                ),
+            )
+        } else {
+            Box(Modifier.fillMaxSize().background(race.terrain.gradient()))
+            Icon(
+                race.terrain.icon(),
+                contentDescription = null,
+                tint = Color.White.copy(alpha = 0.18f),
+                modifier = Modifier.align(Alignment.BottomEnd).padding(Spacing.xs).size(terrainIconSize),
+            )
+        }
+    }
+}
+
+/**
+ * The race-name [Text], auto-sized instead of ellipsized (D-1112/D-1125): shrinks down to
+ * [RaceNameMinFontSize] to fit [maxLines] before ever truncating, and never grows past [style]'s own
+ * font size. Shared by [RaceCard] and `RaceDetailScreen` so both use the exact same technique.
+ */
+@Composable
+fun RaceNameText(name: String, modifier: Modifier = Modifier, style: TextStyle = MaterialTheme.typography.titleLarge, maxLines: Int = 2) {
+    Text(
+        name,
+        style = style,
+        fontWeight = FontWeight.Bold,
+        color = Color.White,
+        maxLines = maxLines,
+        autoSize = TextAutoSize.StepBased(minFontSize = RaceNameMinFontSize, maxFontSize = style.fontSize, stepSize = 1.sp),
+        modifier = modifier,
+    )
+}
+
+private val RaceNameMinFontSize = 13.sp
 
 /** Recomputed hourly so a card left open across midnight keeps an accurate "Còn N ngày" (D-1106). */
 @Composable
@@ -145,8 +174,9 @@ private fun raceDateLine(race: Race, today: LocalDate): String {
     return "${RaceDateFormat.format(race.startDate)} · $countdownText"
 }
 
+/** Reused by `RaceDetailScreen` (D-1114) over the header image, same as on [RaceCard]. */
 @Composable
-private fun TerrainBadge(terrain: RaceTerrain) {
+fun TerrainBadge(terrain: RaceTerrain) {
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(50))
@@ -162,8 +192,9 @@ private fun TerrainBadge(terrain: RaceTerrain) {
 
 private const val MAX_DISTANCE_PILLS = 4
 
+/** Reused by `RaceDetailScreen` (D-1114), same as on [RaceCard]. */
 @Composable
-private fun DistancePills(distances: List<RaceDistance>) {
+fun DistancePills(distances: List<RaceDistance>) {
     val shown = distances.sortedByDescending { it.km }.take(MAX_DISTANCE_PILLS)
     val extra = distances.size - shown.size
     Row(horizontalArrangement = Arrangement.spacedBy(Spacing.xs)) {
@@ -185,6 +216,19 @@ private fun Pill(text: String) {
     )
 }
 
+/**
+ * Vietnamese label for a race's CTA, by [RaceRegistrationStatus] (D-1106/D-1125) — the single source
+ * of these 4 strings, shared by [RaceCallToAction]'s in-card pill and `RaceDetailScreen`'s full-width
+ * CTA button (D-1114), which has its own styling and so reuses the label logic, not the pill itself.
+ */
+fun RaceRegistrationStatus.ctaLabel(): String = when (this) {
+    RaceRegistrationStatus.OPEN -> "Đăng ký ngay"
+    RaceRegistrationStatus.CLOSED -> "Đã đóng đăng ký"
+    RaceRegistrationStatus.SOLD_OUT -> "Hết vé"
+    // Status wasn't reported by the crawl; don't claim it's open, but the card/button is still tappable.
+    RaceRegistrationStatus.UNKNOWN -> "Xem chi tiết"
+}
+
 /** D-1106: closed/sold-out races show their state instead of a CTA — never invite a click that can't register. */
 @Composable
 private fun RaceCallToAction(status: RaceRegistrationStatus) {
@@ -197,13 +241,10 @@ private fun RaceCallToAction(status: RaceRegistrationStatus) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Spacing.xxs),
         ) {
-            Text("Đăng ký ngay", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold)
+            Text(status.ctaLabel(), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold)
             Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(18.dp))
         }
-        RaceRegistrationStatus.CLOSED -> ClosedBadge("Đã đóng đăng ký")
-        RaceRegistrationStatus.SOLD_OUT -> ClosedBadge("Hết vé")
-        // Status wasn't reported by the crawl; don't claim it's open, but the card is still tappable.
-        RaceRegistrationStatus.UNKNOWN -> ClosedBadge("Xem chi tiết")
+        RaceRegistrationStatus.CLOSED, RaceRegistrationStatus.SOLD_OUT, RaceRegistrationStatus.UNKNOWN -> ClosedBadge(status.ctaLabel())
     }
 }
 

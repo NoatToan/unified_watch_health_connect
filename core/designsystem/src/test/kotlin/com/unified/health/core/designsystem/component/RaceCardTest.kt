@@ -1,5 +1,6 @@
 package com.unified.health.core.designsystem.component
 
+import com.unified.health.core.model.RaceRegistrationStatus
 import com.unified.health.core.model.RaceTerrain
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -27,5 +28,14 @@ class RaceCardTest {
     @Test
     fun `terrain label is never blank`() {
         RaceTerrain.entries.forEach { terrain -> assertNotEquals("", terrain.label().trim()) }
+    }
+
+    @Test
+    fun `ctaLabel covers every registration status with a non-blank Vietnamese label`() {
+        assertEquals("Đăng ký ngay", RaceRegistrationStatus.OPEN.ctaLabel())
+        assertEquals("Đã đóng đăng ký", RaceRegistrationStatus.CLOSED.ctaLabel())
+        assertEquals("Hết vé", RaceRegistrationStatus.SOLD_OUT.ctaLabel())
+        assertEquals("Xem chi tiết", RaceRegistrationStatus.UNKNOWN.ctaLabel())
+        RaceRegistrationStatus.entries.forEach { status -> assertNotEquals("", status.ctaLabel().trim()) }
     }
 }

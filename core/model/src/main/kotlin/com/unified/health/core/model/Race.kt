@@ -25,7 +25,19 @@ data class Race(
     val organizer: String?,
     val registrationUrl: String,
     val imageUrl: String?,
+    /** Short blurb from the race's detail page (D-1111/D-1114), or null when the crawler hasn't
+     *  extracted one yet — the UI simply omits the section rather than showing an empty box. */
+    val description: String?,
+    /** Crawler-computed from `startDate` vs. crawl date (D-1111) — distinct from
+     *  [registrationStatus], which is about whether tickets are still on sale, not race timing. */
+    val raceStatus: RaceStatus,
 )
+
+/** D-1113: lets the UI default to upcoming-only while still allowing a "show past races" toggle. */
+enum class RaceStatus {
+    UPCOMING,
+    PAST,
+}
 
 data class RaceDistance(
     val label: String,

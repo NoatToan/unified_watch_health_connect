@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.unified.health.core.data.races.RemoteRacesRepository
 import com.unified.health.core.domain.repository.RacesState
+import com.unified.health.core.model.RaceStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -19,6 +20,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -60,12 +62,14 @@ class RemoteRacesRepositoryTest {
         RemoteRacesRepository(store, httpClient, backgroundScope, Dispatchers.Unconfined)
 
     @Test
-    fun `fresh fetch keeps only today-or-later races, sorted, dropping malformed entries`() = runTest {
+    fun `fresh fetch keeps every valid race sorted by startDate, dropping malformed entries`() = runTest {
+        // D-1125: past races are no longer dropped here (D-1113 needs them available for
+        // RacesScreen's "show past races" toggle) — only malformed entries (no registrationUrl) are.
         val store = newStore("prefs1.preferences_pb")
         val json = """
             {
               "races": [
-                { "id": "past", "name": "Past race", "startDate": "2020-01-01", "registrationUrl": "https://example.com/past" },
+                { "id": "past", "name": "Past race", "startDate": "2020-01-01", "registrationUrl": "https://example.com/past", "raceStatus": "past" },
                 { "id": "future-2", "name": "Later race", "startDate": "2026-12-25", "registrationUrl": "https://example.com/later", "terrain": "trail", "registrationStatus": "open" },
                 { "id": "future-1", "name": "Sooner race", "startDate": "2026-11-20", "registrationUrl": "https://example.com/sooner" },
                 { "id": "malformed", "name": "No registrationUrl", "startDate": "2026-12-01" }
@@ -76,7 +80,53 @@ class RemoteRacesRepositoryTest {
 
         runCurrent()
         val state = repository.races.first() as RacesState.Success
-        assertEquals(listOf("future-1", "future-2"), state.races.map { it.id })
+        assertEquals(listOf("past", "future-1", "future-2"), state.races.map { it.id })
+    }
+
+    @Test
+    fun `a missing or unrecognized raceStatus defaults to upcoming, never silently hiding a race`() = runTest {
+        val store = newStore("prefs7.preferences_pb")
+        val json = """
+            {
+              "races": [
+                { "id": "no-status", "name": "No status field", "startDate": "2026-12-01", "registrationUrl": "https://example.com/a" },
+                { "id": "garbled-status", "name": "Garbled status", "startDate": "2026-12-02", "registrationUrl": "https://example.com/b", "raceStatus": "not-a-real-value" },
+                { "id": "explicit-past", "name": "Explicit past", "startDate": "2026-12-03", "registrationUrl": "https://example.com/c", "raceStatus": "past" },
+                { "id": "explicit-upcoming", "name": "Explicit upcoming", "startDate": "2026-12-04", "registrationUrl": "https://example.com/d", "raceStatus": "UPCOMING" }
+              ]
+            }
+        """.trimIndent()
+        val repository = repository(store, client { request -> jsonResponse(request, json) })
+
+        runCurrent()
+        val state = repository.races.first() as RacesState.Success
+        val statusById = state.races.associate { it.id to it.raceStatus }
+        assertEquals(RaceStatus.UPCOMING, statusById["no-status"])
+        assertEquals(RaceStatus.UPCOMING, statusById["garbled-status"])
+        assertEquals(RaceStatus.PAST, statusById["explicit-past"])
+        assertEquals(RaceStatus.UPCOMING, statusById["explicit-upcoming"])
+    }
+
+    @Test
+    fun `description is parsed when present and null when absent or blank`() = runTest {
+        val store = newStore("prefs8.preferences_pb")
+        val json = """
+            {
+              "races": [
+                { "id": "with-desc", "name": "Has description", "startDate": "2026-12-01", "registrationUrl": "https://example.com/a", "description": "A scenic road race." },
+                { "id": "no-desc", "name": "No description", "startDate": "2026-12-02", "registrationUrl": "https://example.com/b" },
+                { "id": "blank-desc", "name": "Blank description", "startDate": "2026-12-03", "registrationUrl": "https://example.com/c", "description": "   " }
+              ]
+            }
+        """.trimIndent()
+        val repository = repository(store, client { request -> jsonResponse(request, json) })
+
+        runCurrent()
+        val state = repository.races.first() as RacesState.Success
+        val descriptionById = state.races.associate { it.id to it.description }
+        assertEquals("A scenic road race.", descriptionById["with-desc"])
+        assertNull(descriptionById["no-desc"])
+        assertNull(descriptionById["blank-desc"])
     }
 
     @Test

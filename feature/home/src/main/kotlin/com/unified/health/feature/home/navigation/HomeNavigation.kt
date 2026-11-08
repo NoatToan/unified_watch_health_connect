@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.unified.health.core.model.HealthMetricType
+import com.unified.health.feature.home.AllMetricsRoute
 import com.unified.health.feature.home.HomeRoute
 import com.unified.health.feature.home.detail.MetricDataRoute
 import com.unified.health.feature.home.detail.MetricDetailRoute
@@ -22,9 +23,15 @@ data class MetricDataDestination(val metricName: String) {
     val metric: HealthMetricType get() = HealthMetricType.valueOf(metricName)
 }
 
+/** D-1119: "Xem tất cả" from Home's "Metrics" section — every metric's card, including no-data ones. */
+@Serializable
+data object AllMetricsDestination
+
 fun NavController.navigateToMetricDetail(metric: HealthMetricType) = navigate(MetricDetailDestination(metric.name))
 
 fun NavController.navigateToMetricData(metric: HealthMetricType) = navigate(MetricDataDestination(metric.name))
+
+fun NavController.navigateToAllMetrics() = navigate(AllMetricsDestination)
 
 /**
  * Summary (Apple Health's first tab), merged with the old flat Health feed per D-1010: device
@@ -41,8 +48,17 @@ fun HomeTabContent(
     onOpenDevices: () -> Unit,
     onOpenWorkouts: () -> Unit,
     onOpenRaces: () -> Unit,
+    onOpenRaceDetail: (String) -> Unit,
+    onOpenAllMetrics: () -> Unit,
 ) {
-    HomeRoute(onMetricClick = onMetricClick, onOpenDevices = onOpenDevices, onOpenWorkouts = onOpenWorkouts, onOpenRaces = onOpenRaces)
+    HomeRoute(
+        onMetricClick = onMetricClick,
+        onOpenDevices = onOpenDevices,
+        onOpenWorkouts = onOpenWorkouts,
+        onOpenRaces = onOpenRaces,
+        onOpenRaceDetail = onOpenRaceDetail,
+        onOpenAllMetrics = onOpenAllMetrics,
+    )
 }
 
 fun NavGraphBuilder.metricDetailScreen(onBack: () -> Unit, onShowAllData: (HealthMetricType) -> Unit) {
@@ -53,4 +69,10 @@ fun NavGraphBuilder.metricDetailScreen(onBack: () -> Unit, onShowAllData: (Healt
 
 fun NavGraphBuilder.metricDataScreen(onBack: () -> Unit) {
     composable<MetricDataDestination> { MetricDataRoute(onBack = onBack) }
+}
+
+fun NavGraphBuilder.allMetricsScreen(onBack: () -> Unit, onMetricClick: (HealthMetricType) -> Unit, onOpenWorkouts: () -> Unit) {
+    composable<AllMetricsDestination> {
+        AllMetricsRoute(onBack = onBack, onMetricClick = onMetricClick, onOpenWorkouts = onOpenWorkouts)
+    }
 }

@@ -3,6 +3,7 @@ package com.unified.health.core.data.races
 import com.unified.health.core.model.Race
 import com.unified.health.core.model.RaceDistance
 import com.unified.health.core.model.RaceRegistrationStatus
+import com.unified.health.core.model.RaceStatus
 import com.unified.health.core.model.RaceTerrain
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
@@ -43,6 +44,8 @@ internal data class RaceDto(
     val organizer: String? = null,
     val registrationUrl: String? = null,
     val imageUrl: String? = null,
+    val description: String? = null,
+    val raceStatus: String? = null,
 )
 
 @Serializable
@@ -78,6 +81,8 @@ internal fun RaceDto.toDomainOrNull(): Race? {
         organizer = organizer?.takeIf { it.isNotBlank() },
         registrationUrl = safeRegistrationUrl,
         imageUrl = imageUrl?.takeIf { it.isNotBlank() },
+        description = description?.takeIf { it.isNotBlank() },
+        raceStatus = raceStatus.toRaceStatus(),
     )
 }
 
@@ -94,3 +99,9 @@ private fun String?.toTerrain(): RaceTerrain =
 private fun String?.toRegistrationStatus(): RaceRegistrationStatus =
     this?.let { raw -> RaceRegistrationStatus.entries.firstOrNull { it.name.equals(raw, ignoreCase = true) } }
         ?: RaceRegistrationStatus.UNKNOWN
+
+/** Missing/unrecognized `raceStatus` defaults to [RaceStatus.UPCOMING] (D-1111/D-1125) — the crawler
+ *  computes this from the crawl date, so a gap here (field not live yet, or a stray value) should
+ *  never silently hide a race the user would otherwise expect to see by default. */
+private fun String?.toRaceStatus(): RaceStatus =
+    this?.let { raw -> RaceStatus.entries.firstOrNull { it.name.equals(raw, ignoreCase = true) } } ?: RaceStatus.UPCOMING

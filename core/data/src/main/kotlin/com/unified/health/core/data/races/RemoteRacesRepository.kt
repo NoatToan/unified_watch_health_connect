@@ -25,7 +25,6 @@ import okhttp3.Request
 import java.io.IOException
 import java.time.Duration
 import java.time.Instant
-import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -41,9 +40,9 @@ private object RacesCacheKeys {
  * DataStore so the app never needs to re-fetch more than once a day, and a slow/offline/404 network
  * call never blocks the UI: the last-known-good cache stays on screen while a fetch is retried.
  *
- * Only races happening today or later are kept (D-1109): a crawled race whose date has passed is no
- * longer actionable for the "register now" purpose this feed exists for, so the one filtered/sorted
- * list here is shared as-is by both the Home carousel and the full `RacesScreen` list.
+ * Every parseable race (past or upcoming) is kept, sorted by [Race.startDate] (D-1125 — superseding
+ * the D-1109 date-based drop, now that D-1113 lets `RacesScreen` show past races on request); the
+ * "upcoming by default" filter lives in the UI layer, on [Race.raceStatus].
  */
 @Singleton
 class RemoteRacesRepository(
@@ -124,10 +123,15 @@ class RemoteRacesRepository(
     private fun parseOrNull(json: String): List<Race>? =
         runCatching { JSON.decodeFromString(RacesFeedDto.serializer(), json).races.mapNotNull { it.toDomainOrNull() } }.getOrNull()
 
+    /**
+     * Keeps every parseable race, past or upcoming (D-1125: the date-based drop here was removed
+     * since D-1113 lets the user opt into seeing past races on `RacesScreen`) — "upcoming by default"
+     * is now a UI-layer filter on [Race.raceStatus], not something the repository hides from callers.
+     * [RacesState.Empty] means the feed had no valid race at all, not "no upcoming race".
+     */
     private fun toState(races: List<Race>): RacesState {
-        val today = LocalDate.now()
-        val upcoming = races.filter { (it.endDate ?: it.startDate) >= today }.sortedBy { it.startDate }
-        return if (upcoming.isEmpty()) RacesState.Empty else RacesState.Success(upcoming)
+        val sorted = races.sortedBy { it.startDate }
+        return if (sorted.isEmpty()) RacesState.Empty else RacesState.Success(sorted)
     }
 
     private companion object {

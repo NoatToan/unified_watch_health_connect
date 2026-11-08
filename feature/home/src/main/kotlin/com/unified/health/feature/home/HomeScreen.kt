@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -23,6 +24,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.outlined.TrendingDown
 import androidx.compose.material.icons.automirrored.outlined.TrendingFlat
@@ -68,13 +70,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -102,7 +105,6 @@ import com.unified.health.core.designsystem.component.unit
 import com.unified.health.core.designsystem.theme.MetricValueTextStyle
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
-import com.unified.health.core.designsystem.util.launchInCustomTab
 import com.unified.health.core.domain.repository.RacesState
 import com.unified.health.core.domain.usecase.Highlight
 import com.unified.health.core.domain.usecase.Trend
@@ -116,6 +118,7 @@ import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.LiveHeartRate
 import com.unified.health.core.model.MetricAggregation
 import com.unified.health.core.model.Race
+import com.unified.health.core.model.RaceStatus
 import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.StepsSummary
 import com.unified.health.core.model.WatchModelMatcher
@@ -137,6 +140,8 @@ internal fun HomeRoute(
     onOpenDevices: () -> Unit,
     onOpenWorkouts: () -> Unit,
     onOpenRaces: () -> Unit,
+    onOpenRaceDetail: (String) -> Unit,
+    onOpenAllMetrics: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -155,6 +160,8 @@ internal fun HomeRoute(
         onOpenDevices = onOpenDevices,
         onOpenWorkouts = onOpenWorkouts,
         onOpenRaces = onOpenRaces,
+        onOpenRaceDetail = onOpenRaceDetail,
+        onOpenAllMetrics = onOpenAllMetrics,
         onFeedCardsChanged = viewModel::setFeedCards,
         onMetricsViewModeChange = viewModel::setMetricsViewMode,
     )
@@ -178,6 +185,8 @@ internal fun HomeScreen(
     onOpenDevices: () -> Unit,
     onOpenWorkouts: () -> Unit = {},
     onOpenRaces: () -> Unit = {},
+    onOpenRaceDetail: (String) -> Unit = {},
+    onOpenAllMetrics: () -> Unit = {},
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit = { _, _ -> },
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit = {},
 ) {
@@ -232,12 +241,90 @@ internal fun HomeScreen(
                     onOpenDevices = onOpenDevices,
                     onOpenWorkouts = onOpenWorkouts,
                     onOpenRaces = onOpenRaces,
+                    onOpenRaceDetail = onOpenRaceDetail,
+                    onOpenAllMetrics = onOpenAllMetrics,
                     onFeedCardsChanged = onFeedCardsChanged,
                     onMetricsViewModeChange = onMetricsViewModeChange,
                     listState = listState,
                     deviceBannerCollapseFraction = deviceBannerCollapseFraction,
                     onDeviceBannerSizeChanged = { deviceBannerHeightPx = it },
                 )
+            }
+        }
+    }
+}
+
+/**
+ * D-1119: "Xem tất cả" from Home's "Metrics" section — every metric's card, including the ones Home
+ * itself now hides for having no data. Shares a [HomeViewModel] instance (own copy, scoped to this
+ * destination) purely for its already-computed [HomeUiState.Success.feedCards]/`metricsViewMode`;
+ * reuses [feedCardItems] (same List/Grid rendering Home uses) unfiltered by [FeedCardData.hasData].
+ */
+@Composable
+internal fun AllMetricsRoute(
+    onBack: () -> Unit,
+    onMetricClick: (HealthMetricType) -> Unit,
+    onOpenWorkouts: () -> Unit,
+    viewModel: HomeViewModel = hiltViewModel(),
+) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val liveHeartRate by viewModel.liveHeartRate.collectAsStateWithLifecycle()
+    val liveMetrics by viewModel.liveMetrics.collectAsStateWithLifecycle()
+    AllMetricsScreen(
+        state = state,
+        liveHeartRate = liveHeartRate,
+        liveMetrics = liveMetrics,
+        onBack = onBack,
+        onMetricClick = onMetricClick,
+        onOpenWorkouts = onOpenWorkouts,
+        onMetricsViewModeChange = viewModel::setMetricsViewMode,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun AllMetricsScreen(
+    state: HomeUiState,
+    liveHeartRate: LiveHeartRate?,
+    liveMetrics: Set<HealthMetricType>,
+    onBack: () -> Unit,
+    onMetricClick: (HealthMetricType) -> Unit,
+    onOpenWorkouts: () -> Unit,
+    onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit = {},
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("All metrics") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    if (state is HomeUiState.Success) {
+                        ViewModeToggle(
+                            mode = state.metricsViewMode,
+                            onChange = onMetricsViewModeChange,
+                            modifier = Modifier.testTag("all_metrics_view_mode_toggle"),
+                        )
+                    }
+                },
+            )
+        },
+    ) { padding ->
+        when (state) {
+            HomeUiState.Loading -> LoadingState(Modifier.padding(padding))
+            is HomeUiState.Error -> ErrorState(state.message, Modifier.padding(padding))
+            is HomeUiState.Success -> {
+                val liveBpm = freshBpm(liveHeartRate)
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize().padding(padding).testTag("all_metrics_list"),
+                    contentPadding = PaddingValues(horizontal = Spacing.lg, vertical = Spacing.sm),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.md),
+                ) {
+                    feedCardItems(state.feedCards, state.metricsViewMode, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm)
+                }
             }
         }
     }
@@ -253,6 +340,8 @@ private fun Summary(
     onOpenDevices: () -> Unit,
     onOpenWorkouts: () -> Unit,
     onOpenRaces: () -> Unit,
+    onOpenRaceDetail: (String) -> Unit,
+    onOpenAllMetrics: () -> Unit,
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit,
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit,
     listState: LazyListState,
@@ -293,36 +382,33 @@ private fun Summary(
         item { RingsCard(state.summary, onClick = { onMetricClick(HealthMetricType.CALORIES) }) }
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                SectionHeader("All metrics", Modifier.weight(1f))
+                SectionHeader("Metrics", Modifier.weight(1f))
                 ViewModeToggle(
                     mode = state.metricsViewMode,
                     onChange = onMetricsViewModeChange,
                     modifier = Modifier.testTag("metrics_view_mode_toggle"),
                 )
+                // D-1119: escape hatch to the full list (incl. no-data cards, filtered out of Home
+                // below) — same "Xem tất cả" pattern as the Races carousel (D-1105).
+                TextButton(onClick = onOpenAllMetrics, modifier = Modifier.testTag("see_all_metrics")) { Text("Xem tất cả") }
                 TextButton(onClick = { editingFeed = true }, modifier = Modifier.testTag("edit_feed_cards")) { Text("Edit") }
             }
         }
-        if (state.feedCards.isEmpty()) {
-            item { Text("Every card was hidden. Tap Edit to bring some back.", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("feed_empty")) }
-        }
-        when (state.metricsViewMode) {
-            HomeMetricsViewMode.LIST -> items(state.feedCards, key = { "feed_${it.id}" }) { card ->
-                FeedCard(card, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = false, modifier = Modifier.testTag("card_${card.id}"))
-            }
-            // D-1050/1073: 2-column grid — a plain Row per pair (not a nested LazyVerticalGrid, which
-            // cannot be sized inside this LazyColumn) keeps the existing per-card composables and
-            // "Edit cards" ordering untouched; cards render in their compact (no/tiny chart) form.
-            HomeMetricsViewMode.GRID -> items(state.feedCards.chunked(2), key = { pair -> pair.joinToString("_") { it.id } }) { pair ->
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
-                    pair.forEach { card ->
-                        Box(Modifier.weight(1f)) {
-                            FeedCard(card, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = true, modifier = Modifier.testTag("card_${card.id}"))
-                        }
-                    }
-                    if (pair.size == 1) Spacer(Modifier.weight(1f))
-                }
+        // D-1119: Home only ever shows metrics that actually have data — decluttered, not just
+        // dimmed/grayed. Hidden-via-"Edit cards" filtering already happened in the ViewModel; this is
+        // an *additional* filter on top of it, specific to Home's own display (AllMetricsScreen,
+        // reached via "Xem tất cả" above, renders state.feedCards unfiltered by data).
+        val cardsWithData = state.feedCards.filter { it.hasData() }
+        if (cardsWithData.isEmpty()) {
+            item {
+                Text(
+                    "No metrics with data yet. Sync your watch, or tap Edit if one you expect is hidden.",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.testTag("feed_empty"),
+                )
             }
         }
+        feedCardItems(cardsWithData, state.metricsViewMode, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm)
         if (state.highlights.isNotEmpty()) {
             item { SectionHeader("Highlights") }
             items(state.highlights, key = { "highlight_${it.metric.name}" }) { highlight ->
@@ -333,9 +419,12 @@ private fun Summary(
         // discovery content shouldn't sit above the user's own health data. Still rendered only on a
         // non-empty Success, never a visible empty/error placeholder, since the sibling data source
         // may not be live yet.
-        val racesSuccess = racesState as? RacesState.Success
-        if (racesSuccess != null && racesSuccess.races.isNotEmpty()) {
-            item { RacesCarousel(races = racesSuccess.races, onOpenRaces = onOpenRaces) }
+        // D-1125: RacesRepository no longer drops past races itself (D-1113 needs them available for
+        // RacesScreen's toggle), so the carousel filters to upcoming-only here — it's pure marketing
+        // for races the user can still register for, never a toggle like the full list.
+        val upcomingRaces = (racesState as? RacesState.Success)?.races?.filter { it.raceStatus == RaceStatus.UPCOMING }
+        if (!upcomingRaces.isNullOrEmpty()) {
+            item { RacesCarousel(races = upcomingRaces, onOpenRaces = onOpenRaces, onOpenRaceDetail = onOpenRaceDetail) }
         }
     }
     if (editingFeed) {
@@ -381,6 +470,45 @@ private fun FeedCard(
             liveBpm = liveBpm.takeIf { card.metric == HealthMetricType.HEART_RATE },
             compact = compact,
         )
+    }
+}
+
+/** D-1119: whether this card has anything to show — Home filters to only these; [AllMetricsScreen] doesn't. */
+private fun FeedCardData.hasData(): Boolean = when (this) {
+    is FeedCardData.Metric -> hasData
+    is FeedCardData.Workouts -> recent.isNotEmpty()
+}
+
+/**
+ * D-1119: the List/Grid metric-card layout, factored out of [Summary] so [AllMetricsScreen] (reached
+ * via Home's "Xem tất cả") can render the exact same cards/list — just over a different, unfiltered
+ * [cards] collection — instead of duplicating this logic.
+ */
+private fun LazyListScope.feedCardItems(
+    cards: List<FeedCardData>,
+    viewMode: HomeMetricsViewMode,
+    onMetricClick: (HealthMetricType) -> Unit,
+    onOpenWorkouts: () -> Unit,
+    liveMetrics: Set<HealthMetricType>,
+    liveBpm: Int?,
+) {
+    when (viewMode) {
+        HomeMetricsViewMode.LIST -> items(cards, key = { "feed_${it.id}" }) { card ->
+            FeedCard(card, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = false, modifier = Modifier.testTag("card_${card.id}"))
+        }
+        // D-1050/1073: 2-column grid — a plain Row per pair (not a nested LazyVerticalGrid, which
+        // cannot be sized inside this LazyColumn) keeps the existing per-card composables and
+        // "Edit cards" ordering untouched; cards render in their compact (no/tiny chart) form.
+        HomeMetricsViewMode.GRID -> items(cards.chunked(2), key = { pair -> pair.joinToString("_") { it.id } }) { pair ->
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                pair.forEach { card ->
+                    Box(Modifier.weight(1f)) {
+                        FeedCard(card, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = true, modifier = Modifier.testTag("card_${card.id}"))
+                    }
+                }
+                if (pair.size == 1) Spacer(Modifier.weight(1f))
+            }
+        }
     }
 }
 
@@ -599,12 +727,11 @@ private fun RingsCard(summary: DailyHealthSummary, onClick: () -> Unit) {
 /**
  * "Giải chạy sắp tới" (D-1105): a horizontally-scrolling carousel of upcoming Vietnam races, right
  * after [RingsCard] and before "All metrics" — the marketing/discovery spot, not buried in the feed.
- * Each card opens its own `registrationUrl` in a Custom Tab directly (D-1105); "Xem tất cả" opens
- * the full [onOpenRaces] list screen instead.
+ * Each card opens the in-app [onOpenRaceDetail] screen first (D-1114, no longer a Custom Tab
+ * directly); "Xem tất cả" opens the full [onOpenRaces] list screen instead.
  */
 @Composable
-private fun RacesCarousel(races: List<Race>, onOpenRaces: () -> Unit) {
-    val context = LocalContext.current
+private fun RacesCarousel(races: List<Race>, onOpenRaces: () -> Unit, onOpenRaceDetail: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             SectionHeader("Giải chạy sắp tới", Modifier.weight(1f))
@@ -612,16 +739,40 @@ private fun RacesCarousel(races: List<Race>, onOpenRaces: () -> Unit) {
         }
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(Spacing.md),
-            modifier = Modifier.testTag("races_carousel"),
+            // D-1117: Home's LazyColumn insets every item by Spacing.lg via its own contentPadding
+            // (see Summary's LazyColumn), so this row previously only ever had (screen width - 2*lg)
+            // to scroll within — both ends stuck at that already-inset edge, never the real screen
+            // margin. Move the inset onto this LazyRow's own contentPadding instead (same value, so
+            // the first/last card still lines up with the rest of Home's content at rest) and widen
+            // the row itself by that same amount on each side so it can actually scroll edge-to-edge.
+            contentPadding = PaddingValues(horizontal = Spacing.lg),
+            modifier = Modifier
+                .fillBleed(Spacing.lg)
+                .testTag("races_carousel"),
         ) {
             items(races, key = { it.id }) { race ->
                 RaceCard(
                     race = race,
-                    onClick = { launchInCustomTab(context, race.registrationUrl) },
+                    onClick = { onOpenRaceDetail(race.id) },
                     modifier = Modifier.width(300.dp).testTag("race_card_${race.id}"),
                 )
             }
         }
+    }
+}
+
+/**
+ * D-1117: widens this element by [amount] on each side beyond whatever width its parent gave it,
+ * and shifts it left by [amount] so it stays centered on the same axis — the standard Compose trick
+ * for a full-bleed row nested inside an ancestor that insets everything via a shared horizontal
+ * padding/contentPadding (here, Home's own `LazyColumn`), without re-plumbing that ancestor's inset
+ * onto every other item individually (`Modifier.padding` itself rejects negative values).
+ */
+private fun Modifier.fillBleed(amount: Dp): Modifier = layout { measurable, constraints ->
+    val extraPx = (amount * 2).roundToPx()
+    val placeable = measurable.measure(constraints.copy(maxWidth = constraints.maxWidth + extraPx))
+    layout(placeable.width, placeable.height) {
+        placeable.place(-amount.roundToPx(), 0)
     }
 }
 
