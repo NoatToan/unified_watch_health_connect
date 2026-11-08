@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -61,6 +62,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -121,6 +123,8 @@ import com.unified.health.core.model.WearableVendor
 import com.unified.health.core.model.Workout
 import com.unified.health.feature.home.insight.metricInsightLine
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
@@ -399,7 +403,17 @@ private fun Summary(
         // for races the user can still register for, never a toggle like the full list.
         val upcomingRaces = (racesState as? RacesState.Success)?.races?.filter { it.raceStatus == RaceStatus.UPCOMING }
         if (!upcomingRaces.isNullOrEmpty()) {
-            item { RacesCarousel(races = upcomingRaces, onOpenRaces = onOpenRaces, onOpenRaceDetail = onOpenRaceDetail) }
+            // D-1181: a stable key (not just the default index-derived one) so RacesCarousel can find
+            // its own item inside listState.layoutInfo.visibleItemsInfo to detect "scrolled into
+            // Home's viewport", regardless of how many items sit above it.
+            item(key = RACES_CAROUSEL_ITEM_KEY) {
+                RacesCarousel(
+                    races = upcomingRaces,
+                    onOpenRaces = onOpenRaces,
+                    onOpenRaceDetail = onOpenRaceDetail,
+                    homeListState = listState,
+                )
+            }
         }
     }
     if (editingFeed) {
@@ -641,14 +655,35 @@ private fun RingsCard(summary: DailyHealthSummary, onClick: () -> Unit, modifier
     }
 }
 
+/** D-1181: the carousel's own key inside Home's `Summary` LazyColumn (see the `item(key = ...)` call
+ *  there) — matched against `homeListState.layoutInfo.visibleItemsInfo` below to tell whether this
+ *  item has actually scrolled into Home's viewport, as opposed to merely being composed. */
+private const val RACES_CAROUSEL_ITEM_KEY = "races_carousel_item"
+
+/** D-1181: how many times [RacesCarousel] nudges the user by auto-advancing once it enters the
+ *  viewport — twice, then never again for the life of this composable instance. */
+private const val RACES_CAROUSEL_AUTO_ADVANCES = 2
+private val RACES_CAROUSEL_AUTO_ADVANCE_DELAY: Duration = Duration.ofSeconds(3)
+
 /**
  * "Giải chạy sắp tới" (D-1105): a horizontally-scrolling carousel of upcoming Vietnam races, right
  * after [RingsCard] and before "All metrics" — the marketing/discovery spot, not buried in the feed.
  * Each card opens the in-app [onOpenRaceDetail] screen first (D-1114, no longer a Custom Tab
  * directly); "Xem tất cả" opens the full [onOpenRaces] list screen instead.
+ *
+ * D-1181: once this item actually scrolls into [homeListState]'s viewport (not just whenever Home
+ * composes), it nudges the user twice — wait 3s, animate to the next card, wait 3s again, animate to
+ * the card after that, then stop for good — so a passive user discovers there's more than one race
+ * without the carousel looping forever. A real drag on the carousel itself cancels whatever is left
+ * of that sequence immediately.
  */
 @Composable
-private fun RacesCarousel(races: List<Race>, onOpenRaces: () -> Unit, onOpenRaceDetail: (String) -> Unit) {
+private fun RacesCarousel(
+    races: List<Race>,
+    onOpenRaces: () -> Unit,
+    onOpenRaceDetail: (String) -> Unit,
+    homeListState: LazyListState,
+) {
     // D-1117/D-1128: Summary's own LazyColumn no longer applies a shared horizontal contentPadding
     // (see Summary) — every *other* item insets itself instead, specifically so this carousel can be
     // the one exception that gets the LazyColumn's true, unconstrained full width. A Modifier trick
@@ -661,7 +696,9 @@ private fun RacesCarousel(races: List<Race>, onOpenRaces: () -> Unit, onOpenRace
         }
         // D-1133: snap-to-card paging, so a fling always settles on one card (never halfway between
         // two) — pairs naturally with each card being ~80% of the viewport width below, which leaves
-        // a ~20% peek of the next card as a scroll affordance.
+        // a ~20% peek of the next card as a scroll affordance. D-1181 reuses this same LazyListState
+        // as its "pager" — animateScrollToItem is this carousel's equivalent of a PagerState's
+        // animateScrollToPage, since it's a snap-fling LazyRow rather than an actual HorizontalPager.
         val listState = rememberLazyListState()
         LazyRow(
             state = listState,
@@ -683,6 +720,36 @@ private fun RacesCarousel(races: List<Race>, onOpenRaces: () -> Unit, onOpenRace
                     // plus a ~20% peek of the next at rest.
                     modifier = Modifier.fillParentMaxWidth(0.8f).testTag("race_card_${race.id}"),
                 )
+            }
+        }
+
+        // D-1181: a real drag on the carousel cancels the rest of the auto-advance sequence — never
+        // fight the user's own input. `listState.interactionSource` is the same public interaction
+        // source the LazyRow's own scrollable gesture already reports through; no separate pointer-
+        // input handling needed.
+        var userInteracted by remember { mutableStateOf(false) }
+        LaunchedEffect(listState) {
+            listState.interactionSource.interactions.collect { interaction ->
+                if (interaction is DragInteraction.Start) userInteracted = true
+            }
+        }
+        // D-1181: "entered the viewport" reuses Home's own LazyListState.layoutInfo (the same
+        // position-tracking data D-1117/1133 already rely on for this item), matched by the stable
+        // key Summary's `item(key = RACES_CAROUSEL_ITEM_KEY)` gives this item — not a new
+        // onGloballyPositioned/viewport tracker. Plain `remember` (not rememberSaveable) for all this
+        // state is intentional: if the user leaves Home (this composable leaves composition) and
+        // comes back, it is recreated fresh and the whole sequence is eligible to run again, exactly
+        // as D-1181 asks — no explicit "already showed this nudge" flag to persist.
+        LaunchedEffect(homeListState, races) {
+            snapshotFlow {
+                homeListState.layoutInfo.visibleItemsInfo.any { it.key == RACES_CAROUSEL_ITEM_KEY }
+            }.first { isVisible -> isVisible }
+            repeat(RACES_CAROUSEL_AUTO_ADVANCES) {
+                delay(RACES_CAROUSEL_AUTO_ADVANCE_DELAY.toMillis())
+                if (userInteracted) return@LaunchedEffect
+                val nextIndex = listState.firstVisibleItemIndex + 1
+                if (nextIndex > races.lastIndex) return@LaunchedEffect
+                listState.animateScrollToItem(nextIndex)
             }
         }
     }
