@@ -1708,3 +1708,20 @@ phía client, mặc định chỉ hiện upcoming.
   (`containerColor = Color.Transparent` nếu dùng `Surface` bọc ngoài, hoặc bỏ hẳn `Surface`/background
   thừa quanh `PillBottomNavigation`) — chỉ còn đúng hình pill nổi, content phía sau scroll tràn hết
   xuống sát đáy màn hình (tối ưu diện tích hiển thị), không còn dải nền đặc phía sau pill.
+
+- **D-1121** · 2026-11-08 · Hiện label trạng thái bên dưới progress bar khi sync (Devices) — **Chốt** (giao agent riêng, không phải agent Home)
+  Kiểm tra: `SyncProgress` (`core/ble/.../WearableSession.kt`) hiện là `fun interface { fun
+  report(fraction: Float) }` — **thuần số, không có label trạng thái** — và `SyncState.InProgress`
+  (`core/model/Device.kt:136`) chỉ có `progress: Float`, không có field mô tả đang làm gì. Màn Devices
+  hiện chỉ hiện % mà không hiện "đang làm gì" — khả thi để thêm, cần sửa xuyên suốt:
+  1. `SyncProgress` thêm tham số `stage: String?` vào `report()` (vẫn giữ `fun interface`, SAM 1
+     phương thức, chỉ thêm tham số).
+  2. `SyncState.InProgress` thêm `val stage: String? = null`.
+  3. Mỗi driver (`garmin`, `huawei`, `zepp`, `coros`, `standard`) tự báo stage ở các mốc có ý nghĩa
+     trong `sync()` của mình — ví dụ Garmin: "Đang đọc danh sách file...", "Đang tải dữ liệu từ đồng
+     hồ (x/y file)...", "Đang xử lý..."; driver khác tự đặt stage phù hợp luồng sync riêng của nó
+     (không bắt buộc giống hệt nhau, miễn đúng thực tế đang làm gì ở bước đó). `core/demo/MockWatchDriver`
+     cũng cập nhật cho đồng bộ.
+  4. `DevicesViewModel`/`DevicesScreen.kt` hiện `stage` (nếu có) thành dòng text nhỏ ngay dưới progress
+     bar lúc đang sync — null thì ẩn dòng đó, không hiện trống.
+  Mục đích: user ngồi chờ sync biết app đang làm gì với đồng hồ, bớt cảm giác "treo máy".
