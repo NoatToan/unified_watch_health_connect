@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material.icons.Icons
@@ -63,9 +64,12 @@ import java.time.format.DateTimeFormatter
  * (docs/DECISIONS.md D-1105) so both render identically; the caller only controls width via
  * [modifier] (a fixed width for the carousel, `fillMaxWidth()` for the list).
  *
- * D-1136: a real photo now gets its own two-part layout ([RaceCardWithPhoto]) instead of D-1129's
- * full-bleed overlay+scrim; a race still on the terrain-gradient fallback keeps the original
- * single-layer look ([RaceCardWithGradient]), unchanged by D-1136.
+ * D-1136/D-1142: a real photo now gets its own layout ([RaceCardWithPhoto]) — a full-card blurred
+ * "ambient backdrop" of the photo behind the text, plus a small sharp corner thumbnail of the same
+ * photo at its native aspect ratio (D-1142 moved the thumbnail off a fixed-ratio full-width hero band,
+ * which cropped/distorted the feed's very inconsistent real image ratios) — instead of D-1129's
+ * full-bleed overlay+scrim. A race still on the terrain-gradient fallback keeps the original
+ * single-layer look ([RaceCardWithGradient]), unchanged by either D-1136 or D-1142.
  */
 @Composable
 fun RaceCard(race: Race, onClick: () -> Unit, modifier: Modifier = Modifier) {
@@ -81,35 +85,51 @@ fun RaceCard(race: Race, onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 /**
- * D-1136: two-part layout for a race with a real photo — a clean, sharp hero image on top (nothing
- * drawn over it, so [ContentScale.Crop] is fine, unlike D-1129's uncropped [ContentScale.Fit] which
- * only mattered when the image doubled as a text background) and all of the card's text below, on a
- * blurred copy of the same photo as an "ambient backdrop" ([RaceImageBackdrop]) — far easier to keep
- * legible than fighting a sharp photo underneath, per D-1136's scrim note.
+ * D-1142: layout for a race with a real photo. The feed's real crawled images (D-1111) come in very
+ * inconsistent aspect ratios (tall posters, wide banners, squares); forcing them into a fixed-ratio
+ * full-width hero band (D-1136's original approach) cropped/distorted many of them badly. Instead:
+ * a blurred, scaled-to-fill copy of the photo covers the *entire* card as an ambient backdrop
+ * ([RaceImageBackdrop]) — this handles any ratio gracefully, since it's blurred and scaled rather than
+ * shown as-is — and a small sharp thumbnail of the same photo, sized to its own native aspect ratio
+ * (never forced square or full-width), sits in the top-right corner as a badge-like accent. All of the
+ * card's text stays on the blurred backdrop, with the top block's width capped short of the thumbnail
+ * so the race name never runs underneath/behind it.
  */
 @Composable
 private fun RaceCardWithPhoto(race: Race, imageUrl: String, today: LocalDate) {
-    Column(Modifier.fillMaxSize()) {
-        RaceHeroImage(imageUrl, Modifier.weight(1f).fillMaxWidth())
-        // The bottom section isn't weighted: its height comes from the text Column's own content, and
-        // the blurred backdrop (matchParentSize) simply fills whatever that turns out to be — no fixed
-        // split between the two halves to tune/guess.
-        Box(Modifier.fillMaxWidth()) {
-            RaceImageBackdrop(imageUrl, Modifier.matchParentSize())
+    Box(Modifier.fillMaxSize()) {
+        RaceImageBackdrop(imageUrl, Modifier.fillMaxSize())
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(Spacing.sm)
+                .sizeIn(maxWidth = RaceThumbnailMaxSize, maxHeight = RaceThumbnailMaxSize)
+                .clip(RoundedCornerShape(Spacing.xs)),
+        ) {
+            // Fit (not Crop/fillMaxSize) so this block's own measured size follows the image's native
+            // aspect ratio within the sizeIn cap above, instead of a fixed square/full-size footprint.
+            RaceHeroImage(imageUrl, contentScale = ContentScale.Fit)
+        }
+        Column(modifier = Modifier.fillMaxSize().padding(Spacing.lg), verticalArrangement = Arrangement.SpaceBetween) {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(Spacing.lg),
-                verticalArrangement = Arrangement.spacedBy(Spacing.sm),
+                verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+                // D-1142: reserves space for the corner thumbnail so the badge/name/date block wraps
+                // to its left instead of running underneath it.
+                modifier = Modifier.padding(end = RaceThumbnailReservedWidth),
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                    TerrainBadge(race.terrain)
-                    RaceNameText(race.name, style = MaterialTheme.typography.titleLarge, maxLines = 2)
-                    Text(raceDateLine(race, today), style = MaterialTheme.typography.bodyMedium, color = Color.White.copy(alpha = 0.92f))
-                }
-                RaceCardBottomInfo(race)
+                TerrainBadge(race.terrain)
+                RaceNameText(race.name, style = MaterialTheme.typography.titleLarge, maxLines = 2)
+                Text(raceDateLine(race, today), style = MaterialTheme.typography.bodyMedium, color = Color.White.copy(alpha = 0.92f))
             }
+            RaceCardBottomInfo(race)
         }
     }
 }
+
+private val RaceThumbnailMaxSize = 64.dp
+
+/** Thumbnail's own [RaceThumbnailMaxSize] plus its outer padding and a little breathing room. */
+private val RaceThumbnailReservedWidth = 88.dp
 
 /** D-1106: unchanged by D-1136 — a race with no real image yet keeps the original full-bleed
  *  gradient-background-with-overlaid-text look. */
@@ -169,10 +189,10 @@ fun RaceGradientBackground(terrain: RaceTerrain, modifier: Modifier = Modifier, 
 }
 
 /**
- * A race's own promotional photo, shown plain with no scrim/overlay — the "clean hero" half of
- * D-1136's two-part [RaceCardWithPhoto] layout, also used by `RaceDetailScreen`'s header (D-1114).
- * Kept here, not a direct Coil call in feature modules, so `core/designsystem` stays the only module
- * depending on Coil (D-1109).
+ * A race's own promotional photo, shown plain with no scrim/overlay — [RaceCardWithPhoto]'s corner
+ * thumbnail (D-1142) and `RaceDetailScreen`'s header (D-1114) both use this. Kept here, not a direct
+ * Coil call in feature modules, so `core/designsystem` stays the only module depending on Coil
+ * (D-1109).
  */
 @Composable
 fun RaceHeroImage(imageUrl: String, modifier: Modifier = Modifier, contentScale: ContentScale = ContentScale.Crop) {
@@ -180,9 +200,12 @@ fun RaceHeroImage(imageUrl: String, modifier: Modifier = Modifier, contentScale:
 }
 
 /**
- * D-1136: a blurred copy of the race's own photo plus a light scrim — the "ambient backdrop" behind
- * [RaceCardWithPhoto]'s text section. Much less contrast to guarantee than D-1129's heavier scrim,
- * since this sits over a deliberately softened version of the image rather than the sharp original.
+ * D-1136/D-1142: a blurred copy of the race's own photo plus a light scrim — the "ambient backdrop"
+ * behind [RaceCardWithPhoto]. D-1142 widened this from just the text section to the *entire* card, so
+ * it also sits behind the small corner thumbnail there, handling any of the feed's wildly inconsistent
+ * real image ratios gracefully (it's blurred/scaled-to-fill, not shown as-is). Much less contrast to
+ * guarantee than D-1129's heavier scrim, since this sits over a deliberately softened version of the
+ * image rather than the sharp original.
  *
  * `Modifier.blur()` only performs a real blur from API 31 onward; below that (down to this app's
  * minSdk 26) Compose silently skips it rather than crashing — a documented, acceptable platform

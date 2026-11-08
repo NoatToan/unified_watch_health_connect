@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -205,7 +206,28 @@ internal fun HomeScreen(
             }
         }
     }
+    // D-1143: the big (180dp, D-1115/1130) banner shows its full "wow" size when Home first appears,
+    // then auto-collapses to the compact layout shortly after — without waiting for the user to
+    // scroll. Reuses D-1083's existing mechanism exactly (deviceBannerCollapseFraction above is a pure
+    // function of listState's real scroll position) by *programmatically scrolling* the list down by
+    // the banner's own height, rather than animating a second, separate "collapsed" property: this is
+    // what also makes the content below slide up to fill the freed space for free, same as a real
+    // scroll would. Conflict-free by construction — there is only one source of truth
+    // (listState's scroll offset) for both triggers to drive, and Compose's own scrollable gesture
+    // handling already cancels a lower-priority programmatic animation (this one) the instant the user
+    // starts a real drag, so a manual scroll beginning before the timer fires simply wins outright.
     val device = (state as? HomeUiState.Success)?.device
+    LaunchedEffect(listState, device?.connectionState) {
+        // Only the connected case is actually big (D-1115/1130) — nothing worth auto-collapsing
+        // otherwise, so skip the pointless tiny scroll nudge.
+        if (device?.connectionState != ConnectionState.Connected) return@LaunchedEffect
+        delay(2_000)
+        val bannerHeight = deviceBannerHeightPx
+        val stillAtRestAtTop = listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset == 0
+        if (bannerHeight > 0 && stillAtRestAtTop && !listState.isScrollInProgress) {
+            listState.animateScrollBy(bannerHeight.toFloat())
+        }
+    }
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
