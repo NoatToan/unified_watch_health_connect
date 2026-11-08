@@ -2026,3 +2026,27 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   tới `PillBottomNavigation` (không chỉ sửa đúng 1 chỗ đã nghi ngờ trước đó), đảm bảo **không còn bất
   kỳ lớp nào có màu nền đặc** ngoài chính hình pill — kiểm tra bằng Layout Inspector/đọc code kỹ từng
   modifier `background`/`Surface` trên đường đi, không đoán.
+  **Nguyên nhân thật (tự điều tra code, xác nhận):** `UnifiedHealthApp.kt` dùng
+  `Scaffold(bottomBar = {...})` chuẩn — `NavHost` được truyền `Modifier.padding(padding)` theo đúng
+  `innerPadding` Scaffold cấp, nghĩa là **content dừng lại trước vùng pill, không hề vẽ xuống dưới
+  đó** — pill/Scaffold trong suốt chỉ lộ ra nền app trơn (`background` theme), không phải content thật
+  đang cuộn. Vì vậy "trong suốt" không tạo được cảm giác pill nổi trên content như mong muốn — đúng
+  pattern mà agent trước đã cảnh báo khi từ chối làm blur thật (D-1141). **Sửa tận gốc**: bỏ hẳn
+  `Scaffold(bottomBar=...)`, chuyển sang `Box` — `NavHost` vẽ full-screen (content thật sự cuộn ra
+  sau vùng pill), `PillBottomNavigation` đặt đè lên trên bằng `Modifier.align(Alignment.BottomCenter)`
+  trong cùng `Box`. Làm xong việc này thì D-1141 (blur thật) cũng khả thi luôn vì giờ pill mới thực sự
+  là overlay trên content.
+
+- **D-1145** · 2026-11-08 · Revert `DeviceBanner` trên Home về bản gọn cũ (trước D-1115) — **Chốt**
+  User đổi ý sau khi thấy bản to+auto-collapse (D-1115/1143) trên Home — không cần nữa, muốn Home
+  dùng lại đúng layout `DeviceBanner` gọn nhỏ như **trước khi có D-1115**. Giữ nguyên D-1130 (ảnh to
+  180dp) ở màn Devices ("My devices") và "About this device" — chỉ revert riêng phần Home. Vì không
+  còn banner to trên Home nữa, cơ chế auto-collapse D-1143 (`LaunchedEffect` scroll-by sau 2s) cũng
+  hết tác dụng — xoá luôn phần code đó cho sạch thay vì để lại chết.
+
+- **D-1146** · 2026-11-08 · Ảnh góc trong race card: dời xuống góc dưới-phải, to gấp đôi — **Chốt**
+  D-1142 đặt ảnh rõ nét nhỏ ở góc trên-phải — user thấy nhỏ quá. Sửa: dời xuống **góc dưới-phải**, kích
+  thước tăng **gấp đôi** so với hiện tại (`RaceThumbnailMaxSize` nhân đôi hoặc giá trị tương đương) —
+  vẫn giữ `ContentScale.Fit` theo đúng tỉ lệ gốc ảnh (D-1142 không đổi), chỉ đổi vị trí + kích thước.
+  Kiểm tra lại bố cục text (CTA/giá thường nằm dưới cùng) không bị đè bởi ảnh to hơn ở góc mới — nhường
+  chỗ hợp lý.
