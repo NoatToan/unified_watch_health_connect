@@ -4,6 +4,7 @@ import com.unified.health.core.ble.gatt.GattClient
 import com.unified.health.core.ble.gatt.GattOptions
 import com.unified.health.core.ble.scan.Advertisement
 import com.unified.health.core.model.CredentialRequirement
+import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.WearableVendor
 
 /**
@@ -43,6 +44,15 @@ interface WearableDriver {
      * closes [gatt]. Must honour coroutine cancellation.
      */
     suspend fun openSession(gatt: GattClient, context: SessionContext): WearableSession
+
+    /**
+     * Re-decodes a [HealthRecord.RawPayload] this driver previously stored (e.g. via
+     * [com.unified.health.core.model.HealthRecord.RawPayload]'s own doc: "kept so it can be
+     * re-decoded when a parser improves"), without a live [GattClient] connection. Lets a fixed
+     * decoding bug recover already-downloaded data for a device that is not currently connected.
+     * Default: this driver keeps no reprocessable raw payloads.
+     */
+    suspend fun reprocess(payload: HealthRecord.RawPayload): List<HealthRecord> = emptyList()
 }
 
 /**

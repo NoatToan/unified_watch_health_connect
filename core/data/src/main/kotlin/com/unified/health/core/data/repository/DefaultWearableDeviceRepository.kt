@@ -10,11 +10,13 @@ import com.unified.health.core.data.database.PairedDeviceDao
 import com.unified.health.core.data.database.PairedDeviceEntity
 import com.unified.health.core.data.database.toModel
 import com.unified.health.core.data.sync.HealthRecordSinkFactory
+import com.unified.health.core.data.sync.RawPayloadStore
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.CredentialFormat
 import com.unified.health.core.model.CredentialRequirement
 import com.unified.health.core.model.DiscoveredDevice
+import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.SyncState
 import com.unified.health.core.model.WearableDevice
 import com.unified.health.core.model.WearableVendor
@@ -39,6 +41,7 @@ class DefaultWearableDeviceRepository @Inject constructor(
     private val registry: DriverRegistry,
     private val credentials: DeviceCredentialStore,
     private val sinkFactory: HealthRecordSinkFactory,
+    private val rawPayloads: RawPayloadStore,
 ) : WearableDeviceRepository {
 
     /** Bumped on every credential change so [pairedDevices] re-reads stored keys. */
@@ -117,9 +120,32 @@ class DefaultWearableDeviceRepository @Inject constructor(
         if (connection.state.value != ConnectionState.Connected || connection.activeAddress.value != entity.macAddress) {
             return Result.failure(IllegalStateException("Device is not connected"))
         }
+        val knownRawPayloadTimestamps = rawPayloads.list(entity.id).mapNotNull { it.createdAt }.toSet()
         return healthDataSync
-            .sync(entity.macAddress, entity.lastSyncedAtEpochMs?.let(Instant::ofEpochMilli), sinkFactory.create(entity.id))
+            .sync(
+                entity.macAddress,
+                entity.lastSyncedAtEpochMs?.let(Instant::ofEpochMilli),
+                sinkFactory.create(entity.id),
+                knownRawPayloadTimestamps,
+            )
             .map { result -> dao.updateLastSynced(deviceId, result.syncedAt.toEpochMilli()) }
+    }
+
+    override suspend fun reprocessRawPayloads(deviceId: String): Result<Int> = runCatching {
+        val entity = dao.getById(deviceId) ?: throw NoSuchElementException("Unknown device $deviceId")
+        val driver = registry[entity.wearableVendor]
+            ?: throw IllegalStateException("No driver registered for ${entity.wearableVendor}")
+        val sink = sinkFactory.create(entity.id)
+        var recovered = 0
+        for (stored in rawPayloads.list(entity.id)) {
+            val payload = HealthRecord.RawPayload(stored.vendor, stored.kind, stored.createdAt, stored.bytes)
+            val records = driver.reprocess(payload)
+            if (records.isNotEmpty()) {
+                sink.onRecords(records)
+                recovered += records.size
+            }
+        }
+        recovered
     }
 
     override suspend fun setCredential(deviceId: String, key: String, value: String): Result<Unit> {

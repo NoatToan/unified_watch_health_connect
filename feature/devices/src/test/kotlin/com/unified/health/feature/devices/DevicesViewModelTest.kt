@@ -48,6 +48,7 @@ class DevicesViewModelTest {
         override suspend fun syncNow(deviceId: String): Result<Unit> = Result.success(Unit)
         override suspend fun setCredential(deviceId: String, key: String, value: String): Result<Unit> = Result.success(Unit)
         override suspend fun generateCredential(deviceId: String, key: String): Result<String> = Result.success("")
+        override suspend fun reprocessRawPayloads(deviceId: String): Result<Int> = Result.success(0)
     }
 
     private class FakeBroker : PairingCodeBroker {

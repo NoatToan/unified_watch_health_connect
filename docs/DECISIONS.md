@@ -560,7 +560,92 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   Garmin Auth (5101) thay vì đóng kết nối. Các brand khác giữ mặc định `false`. Đây là điều kiện để
   fallback auth thực sự chạy trên đồng hồ; vẫn cần kiểm trên watch thật.
 
-## Zepp driver (D-5xx)
+- **D-418** · 2026-11-08 · Root cause "không có activity Garmin nào": cửa sổ sync, không phải FIT decoder — **Chốt**
+  Điều tra "không thấy workout Garmin" (real watch): `GarminFileSync.sync()` lọc mọi loại file FIT bằng
+  một `since` duy nhất = `SyncRequest.effectiveSince()` (mặc định `now − 7 ngày` ở lần sync đầu,
+  `core/ble/.../driver/WearableSession.kt`), rồi `since` tiến dần theo mỗi lần sync thành công
+  (`DefaultWearableDeviceRepository.syncNow` dùng `lastSyncedAtEpochMs`). ACTIVITY (FIT_TYPE_4) là file
+  hiếm — một buổi tập có thể cách lần "lần đầu mở app" hơn 7 ngày (rất phổ biến: người dùng đã đeo đồng
+  hồ một thời gian trước khi cài app) → bị bỏ qua ngay từ sync đầu tiên, và vì `since` chỉ tiến về phía
+  trước, activity đó **không bao giờ được thử lại**. Đã tải 3 file FIT ACTIVITY thật từ FIT SDK công khai
+  của Garmin (`garmin/fit-python-sdk`, `driver/garmin/src/test/resources/fit-samples/`, xem `SOURCE.txt`)
+  và decode bằng `FitDecoder`/`FitHealthMapper` hiện có (`RealFitSampleDecodeTest`): cả 3 decode thành
+  công, 2 file có session (18) ra đúng Workout (sport/distance/calories/HR hợp lý). Vậy `FitDecoder`
+  (H2) và field mapping của session 18 (H3: start_time=2, sport=5, total_elapsed_time=7 scale 1000,
+  total_distance=9 scale 100, total_calories=11, avg_hr=16, max_hr=17 — đối chiếu đúng FIT profile công
+  khai) đều đúng trên dữ liệu thật; root cause là cửa sổ thời gian (H1), không phải decoder.
+
+- **D-419** · 2026-11-08 · ACTIVITY dùng cửa sổ riêng 365 ngày, không phụ thuộc `since` — **Chốt** (sửa D-418;
+  **đã sửa tiếp bởi D-422** — xem đó để biết cơ chế chống tải lại mỗi lần sync)
+  `GarminFileSync.sync()` tách cutoff theo loại file: MONITORING/METRICS/WELLNESS_49 vẫn dùng
+  `request.effectiveSince()` (không đổi hành vi); riêng ACTIVITY dùng `request.now − ACTIVITY_LOOKBACK_DAYS`
+  (365 ngày) **mọi lần sync**, không chỉ lần đầu. Lý do chọn "mọi lần" thay vì chỉ "lần sync đầu" (dù §H1
+  gợi ý vậy): nếu chỉ sửa lần-đầu, người dùng **đã** pair trước khi có bản sửa này (since đã trôi qua) sẽ
+  không bao giờ được cứu lại — cửa sổ phụ thuộc "mọi lần" tự sửa luôn cho cả hai trường hợp, không cần
+  thêm hành động thủ công. Thêm test hồi quy `GarminSessionTest."activity files far outside the wellness
+  window are still synced, unlike monitoring"` và `Log.i` tổng kết (file theo loại được liệt kê/tải/decode,
+  số workout) để đọc logcat thật xác nhận.
+  ⚠️ Bản đầu của entry này từng nói "tải lại file ACTIVITY đã tải mỗi lần sync là chấp nhận được" — review
+  trước khi merge chỉ ra điều đó không ổn trên đồng hồ thật (vài trăm activity × 50–500 KB → vài phút
+  truyền BLE + hao pin mỗi lần sync). D-422 thêm cơ chế chống tải lại; mục này giữ lại phần "cửa sổ 365
+  ngày, áp dụng mọi lần" vì phần đó vẫn đúng, chỉ phần "tải lại" là sai và đã được D-422 thay.
+
+- **D-420** · 2026-11-08 · Thêm `WearableDriver.reprocess()` để tái decode raw payload ngoại tuyến — **Chốt**
+  `core/ble/.../driver/WearableDriver.kt` thêm method mới với default `= emptyList()` (tương thích
+  ngược 100% — Huawei/Zepp/Coros/Standard không cần đổi gì). `GarminDriver.reprocess()` chỉ xử lý kind
+  `fit_activity` (bỏ qua monitoring/metrics/wellness vì các loại đó cần gộp nhiều file theo ngày —
+  `DailyActivityAccumulator` — nên chỉ an toàn tái decode trong một `sync()` thật, không tái decode đơn
+  lẻ). Mục đích: nếu một bug decode FIT khác xuất hiện trên đồng hồ thật sau khi phát hành (khác D-418,
+  vì 3 file mẫu thật decode được), bản sửa decoder sau này có thể phục hồi dữ liệu đã tải mà không cần
+  người dùng pair/sync lại — raw payload đã lưu sẵn đúng với mục đích ghi trong doc comment của
+  `HealthRecord.RawPayload` ("kept so it can be re-decoded when a parser improves").
+- **D-421** · 2026-11-08 · "Reprocess downloaded files": quy ước tên file làm chỉ mục, không thêm bảng Room — **Chốt**
+  `RawPayloadStore.list()` (core/data) liệt kê lại file dưới `files/wearable_raw/<device>/` bằng quy ước
+  tên đã có sẵn (`<vendor>_<kind>_<epochMs>.bin`, tách ra `RawPayloadFileNaming` để test được mà không
+  cần Android `Context`), thay vì thêm bảng Room mới + migration. `RawPayloadStore` là nơi viết file duy
+  nhất nên tự đọc lại tên là an toàn; đổi lại tránh rủi ro migration cho một tính năng khôi phục dữ liệu
+  phụ. `WearableDeviceRepository.reprocessRawPayloads(deviceId)` (mới trong `core/domain`, implement ở
+  `DefaultWearableDeviceRepository`) duyệt file đã lưu → `DriverRegistry[vendor].reprocess(...)` → ghi
+  record mới qua `HealthRecordSinkFactory`, không cần thiết bị đang kết nối. UI: nút "Reprocess downloaded
+  files" trong `feature/devices/.../DeviceDetailScreen.kt`, chỉ hiện khi `device.vendor == GARMIN` (vendor
+  duy nhất có `reprocess()` hiện thực), `testTag("detail_reprocess")`, không đụng `feature/home`/`feature/activity`.
+
+- **D-422** · 2026-11-08 · Chống tải lại ACTIVITY mỗi sync: dedup theo timestamp + cap "bắt kịp" 50 file/lần — **Chốt**
+  (sửa phần "tải lại là chấp nhận được" của D-419, theo review trước khi merge)
+  Vấn đề: D-419 giữ cửa sổ 365 ngày cho ACTIVITY nhưng không nhớ file nào đã tải — mỗi sync lại tải lại
+  **toàn bộ** file ACTIVITY còn trong cửa sổ, kể cả khi đã tải hôm qua. Trên đồng hồ thật giữ vài trăm
+  activity chưa archive (bình thường nếu người dùng không gỡ Garmin Connect), mỗi file 50–500 KB → vài
+  phút truyền BLE + hao pin **mỗi lần sync**, không chấp nhận được cho production.
+  Sửa: `SyncRequest` (core/ble, `WearableSession.kt`) thêm field `knownRawPayloadTimestamps: Set<Instant> =
+  emptySet()` — tương thích ngược vì có default; `HealthDataSync.sync()` (core/ble) thêm tham số cùng tên,
+  cùng default, driver duy nhất implement interface này (`MultiVendorHealthDataSync`) được sửa theo.
+  `DefaultWearableDeviceRepository.syncNow()` tính set này từ `RawPayloadStore.list(deviceId)` (đã có từ
+  D-421, không filter theo `kind` để không rò thêm tên hằng số riêng của Garmin lên core/data — rủi ro
+  trùng timestamp giữa hai *loại file khác nhau của cùng một thiết bị* là không đáng kể) và truyền xuống.
+  `GarminFileSync.sync()`: với mỗi ACTIVITY entry trong cửa sổ 365 ngày, bỏ qua nếu
+  `entry.timestamp in request.knownRawPayloadTimestamps` (đã có raw payload trên máy cho đúng file đó,
+  theo tên file `RawPayloadFileNaming` đã lưu khi download lần trước — xem D-421). Phần còn lại ("file mới,
+  chưa từng tải") giới hạn `ACTIVITY_CATCH_UP_CAP = 50` file/lần, ưu tiên mới nhất trước
+  (`sortedByDescending { timestamp }.take(50)`) — hợp lý vì lần "bắt kịp" đầu tiên (ngay sau khi bản vá
+  này lên, hoặc lần đầu pair một đồng hồ có sẵn nhiều lịch sử) không nên dồn hết vào một lần sync; phần dư
+  vẫn "chưa từng tải" và tự được xét lại ở lần sync kế tiếp cho tới khi bắt kịp hết. `Log.i` tổng kết thêm
+  `alreadyDownloaded`/`new`/`thisSync`/`deferredToNextSync` để đọc logcat thật xác nhận tốc độ bắt kịp.
+  Idempotent/an toàn: `WorkoutEntity` vẫn `@Upsert` trên `(deviceId, startEpochMs)` nên nếu dedup lệch
+  (vd. do giờ hệ thống đổi) thì tải lại cũng không tạo dữ liệu trùng, chỉ tốn băng thông — dedup là tối ưu
+  hiệu năng, không phải điều kiện đúng/sai của dữ liệu.
+  Test: `GarminSessionTest` — "second sync skips an activity already known…", "a newly appeared old
+  activity is still fetched…" (một file cũ đã biết bị bỏ, một file cũ khác chưa biết vẫn được tải, cùng
+  cửa sổ), "activity catch-up is capped per sync, newest first, continuing next sync" (55 file mới, lần 1
+  tải đúng 50 file mới nhất, 5 file cũ nhất bị trễ; lần 2 tải đúng 5 file còn lại).
+  Ghi chú kỹ thuật phụ phát hiện khi viết test: `GarminFileSync.sync()` sắp xếp `wanted` theo timestamp
+  **tăng dần** (cũ nhất trước) trước khi tải — bài test đầu viết sai thứ tự kỳ vọng (tưởng tải theo thứ tự
+  liệt kê trong `directory`), khiến `assertEquals` sai lệch ném `AssertionError` **trước** khi gọi
+  `session.close()`; vì scope polling pin (`startBatteryPolling`, D-411) không phải con cấu trúc của
+  `runTest`, nó bị "rò" sống trên `TestCoroutineScheduler` dùng chung và vòng lặp tự-lên-lịch lại của nó
+  (`delay` 10 phút) khiến `advanceUntilIdle` của `runTest` chạy mãi không dừng — test "treo" (CPU 100%,
+  nhiều phút) trông giống deadlock dù bug thật chỉ là thứ tự assert sai. Đã sửa assert và bọc mọi
+  `session.sync()`/assert trong `try { … } finally { session.close() }` ở 3 test này để một assertion sai
+  trong tương lai thất bại nhanh, không treo CI.
 
 - **D-501** · 2026-11-06 · Zepp giao thức — **Chốt**
   Auth decision KHÔNG dựa vào phiên bản channel (v1/v2) mà dựa vào danh sách module: `supportModule(0x80) || supportModule(0x82)` → channel-based; không có → char 0x0009.
