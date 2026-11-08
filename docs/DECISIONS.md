@@ -1553,3 +1553,44 @@ kit/design system nào tải về được). Thay vào đó dùng skill nội b�
   trong `HomeScreen()`. Không đổi `app/src/androidTest/.../UserJourneyE2ETest.kt` (chuỗi `"summary"`/
   `"Summary"` ở đó chỉ là label bước báo cáo E2E, không phải assertion trên text màn hình — ngoài phạm
   vi android-coder theo quy ước CLAUDE.md, để `e2e-flows` xử lý nếu cần).
+
+## Races đợt 2: ảnh thật, mô tả chi tiết, filter, màn detail trong app (D-1111+)
+
+Mở rộng schema JSON của `unified_health_service` (repo riêng) — chốt ngay để 2 bên (crawler +
+app) làm song song không lệch nhau. Field mới thêm vào mỗi race trong `docs/races/latest.json`:
+```json
+{
+  "imageUrl": "https://.../banner.jpg",
+  "description": "Đoạn mô tả/giới thiệu giải, trích từ trang chi tiết qua regex, null nếu không trích được",
+  "raceStatus": "upcoming" | "past"
+}
+```
+`raceStatus` do crawler tự tính từ `startDate` so với ngày crawl — **khác** `registrationStatus`
+(open/closed/sold_out, nói về việc còn mua vé được không). Giữ **cả upcoming lẫn past** trong cùng
+`latest.json` (không tách file riêng) — dataset còn nhỏ (50 giải), đơn giản hơn 2 endpoint; app lọc
+phía client, mặc định chỉ hiện upcoming.
+
+- **D-1111** · 2026-11-08 · Crawler: thêm ảnh chính thức + mô tả giải qua regex, tính `raceStatus` — **Chốt** (giao `unified_health_service`)
+  Mỗi scraper cố lấy ảnh: ưu tiên ảnh thumbnail ngay trên trang listing nếu có, fallback sang
+  `<meta property="og:image">` của trang chi tiết race (hầu hết site đều có, không cần biết cấu trúc
+  riêng từng site) — cần 1 request thêm/race vào trang detail, vẫn tuân thủ rate-limit/robots.txt đã
+  có. Cùng lúc lấy ln đoạn mô tả giải (đoạn giới thiệu/nội dung chính) qua regex/parse text từ trang
+  detail đó luôn (đỡ phải crawl detail 2 lần). Field `raceStatus` tính tại bước merge/write, không
+  cần network thêm. Crawl càng nhiều ảnh thật càng tốt — đây là ưu tiên chính của đợt này (carousel
+  trong app dùng ảnh thật thay gradient).
+- **D-1112** · 2026-11-08 · App: title auto-size không truncate tên giải — **Chốt** (giao `unified_health_app`)
+  `RaceCard.kt` đổi tên giải sang auto-size text (API `BasicText`/`autoSize` nếu Compose BOM dự án đã
+  hỗ trợ — kiểm tra `gradle/libs.versions.toml`; nếu chưa có thì tự viết logic đo-và-giảm cỡ chữ tới
+  khi vừa khung, pattern phổ biến trước khi có API chính thức) — không bao giờ ellipsis/truncate tên
+  giải, co chữ lại thay vì cắt.
+- **D-1113** · 2026-11-08 · App: filter theo khu vực + tháng trên màn Races, filter thêm "đã diễn ra" — **Chốt** (giao `unified_health_app`)
+  `RacesScreen` thêm UI filter: chip/dropdown theo `province`, và theo tháng (`startDate`). Mặc định
+  chỉ hiện `raceStatus == "upcoming"`; thêm 1 toggle/filter riêng để user tự bật xem cả giải
+  `raceStatus == "past"` nếu muốn (không bắt buộc hiện mặc định).
+- **D-1114** · 2026-11-08 · App: màn Race Detail trong app trước khi mở webview đăng ký — **Chốt** (giao `unified_health_app`)
+  Bấm vào race card (Home carousel hoặc `RacesScreen`) giờ mở 1 màn **`RaceDetailScreen` trong app**
+  trước (ảnh lớn, tên, ngày, địa điểm, cự ly, giá, đoạn `description` crawl được) — **không** mở
+  thẳng webview như hiện tại nữa. Trong màn detail đó mới có nút CTA "Đăng ký ngay" mở
+  `registrationUrl` qua Chrome Custom Tabs (giữ đúng hành vi "đi vào detail hẳn mở webview" — chỉ là
+  giờ có 1 bước trung gian thân thiện hơn trước khi rời app). Nếu `description` null (crawler chưa
+  kịp lấy), vẫn hiện đủ thông tin cơ bản khác, không để trống xấu.
