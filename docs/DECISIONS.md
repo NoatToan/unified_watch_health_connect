@@ -1214,3 +1214,33 @@ tránh 2 agent sửa song song cùng file.
   quyết định): Heart rate→**HR**, Active energy→**Cal**, Resting heart rate→**RHR**, Exercise
   minutes→**Exercise**; các chỉ số còn lại (Steps/Sleep/SpO2/Stress/Distance/HRV/VO2max) giữ nguyên tên
   đầy đủ vì đã đủ ngắn cho 2 cột. List mode không đổi gì (vẫn full chart + chi tiết).
+
+- **D-1091** · 2026-11-08 · Tắt ripple trên `PillBottomNavigation` — **Chốt**
+  `PillNavItem` dùng `Modifier.selectable(...)` mặc định có ripple từ `LocalIndication`; user phản hồi
+  tắt đi vì đã có pill trượt làm feedback trực quan rồi, ripple thừa/xấu. Sửa: truyền
+  `interactionSource = remember { MutableInteractionSource() }` + `indication = null` vào
+  `selectable()`.
+- **D-1092** · 2026-11-08 · Mở rộng lookback cho file METRICS (BIOMETRIC, chứa VO2max) giống ACTIVITY — **Tạm**
+  User báo sync xong vẫn chưa thấy VO2max lẫn activities. Điều tra qua `claude-personal` đọc tiếp
+  `docs/re-evidence/garmin` (theo đúng rule mới, D-1082): subtype 44 thật sự tên là **BIOMETRIC**
+  trong Garmin Connect (`cl2/c.java:476-477`), chứa đúng họ message `metrics_info`(241)/
+  `recovery_time`(284)/`race_predictions_run`(339)/`performance_capacity_results`(356) — **không bị
+  gán nhãn sai**, và 229 (`max_met_data`) vẫn đúng thuộc họ này dù APK không có bảng tĩnh
+  subtype→message (tên subtype lấy động từ phản hồi 5031 của chính đồng hồ). subtype 49 xác nhận
+  đúng là **SLEEP_DATA** (hằng thật `bs2/ad.java:90`), không phải "wellness" chung chung như tên biến
+  cũ `WELLNESS_49` gợi ý (đổi tên để sau, không gấp).
+  **Activities = 0 vì đồng hồ hiện chưa có file ACTIVITY nào trong directory** (log thật: "FIT of
+  interest {MONITORING=56, METRICS=24, WELLNESS_49=2}" — không có khoá `ACTIVITY` nào) — nghĩa là
+  user chưa ghi nhận buổi tập nào trên đúng đồng hồ test này; không phải bug.
+  **VO2max vẫn không thấy** dù 24 file METRICS(44) trong 7 ngày gần nhất đã sync đủ và không file nào
+  chứa message 229 — giả thuyết hợp lý nhất: giá trị VO2max hiện có trên đồng hồ được tính từ **trước
+  đó quá 7 ngày** (`wellnessSince` mặc định dùng chung `DEFAULT_FIRST_SYNC_WINDOW_DAYS=7`,
+  `core/ble/.../WearableSession.kt`), nằm trong 1 file METRICS cũ hơn mà driver chưa từng tải vì nằm
+  ngoài cửa sổ 7 ngày — cùng pattern bug đã từng xảy ra với ACTIVITY (fix bằng
+  `ACTIVITY_LOOKBACK_DAYS=365` ở `a29ea95`/`22e81d2`). **Đã sửa:** `GarminFileSync.sync()` giờ cho
+  `GarminFitFileType.METRICS` dùng cùng lookback dài 365 ngày như ACTIVITY (biến `metricsSince`),
+  dedup qua `knownRawPayloadTimestamps` y hệt activity (vì lookback cố định, không theo cursor tăng
+  dần, nếu không sẽ tải lại y hệt các file cũ mỗi lần sync mãi mãi). Đánh dấu Tạm vì chưa test trên
+  máy thật có ra VO2max hay không sau khi mở rộng cửa sổ — nếu vẫn không ra nghĩa là giả thuyết sai,
+  cần điều tra tiếp (có thể do `update_time` field 0 thay vì 253 khiến logic timestamp-từ-đâu có vấn
+  đề khác, hoặc giá trị thật sự chưa từng được watch ghi vào bất kỳ file nào qua đường BLE này).
