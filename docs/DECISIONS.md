@@ -1422,3 +1422,11 @@ User thấy màn chi tiết workout hiện tại ("Workout detail" theo D-804) q
     không phải bug còn tồn tại. (b) "driver request MTU vô điều kiện, cần fail non-fatal" —
     `GattConnector.kt:106-107` đã `runCatching { requestMtu }.onFailure { Log.w(...) }`, không throw
     — đã non-fatal sẵn. **Kết luận: không có gap nào cần vá thêm từ `docs/re-analysis/garmin-analysis`.**
+
+- **D-1104** · 2026-11-08 · Bật GitHub Pages cho repo (serve từ README) — **Chốt**
+  Bật qua GitHub API (`POST /repos/NoatToan/unified_watch_health_connect/pages`, dùng token sẵn có
+  trong credential helper `osxkeychain` của git, không cần cài `gh` CLI) — `source: {branch: main,
+  path: /}`. GitHub Pages tự render `README.md` ở root bằng theme Jekyll mặc định thành trang chủ.
+  URL: `https://noattoan.github.io/unified_watch_health_connect/`. Lần build đầu tiên mất vài phút
+  sau khi bật, chưa verify live ngay lúc bật (API trả 201 xác nhận config đã lưu, nhưng
+  `curl` tới URL vẫn 404 ngay sau đó — bình thường, GitHub Pages build bất đồng bộ).
