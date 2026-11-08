@@ -1923,3 +1923,23 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
      không cần tự viết windowing riêng, chỉ cần đảm bảo không có gì phá vỡ tính lazy đó (ví dụ không
      dùng `Row` thường bọc ngoài danh sách dài). Không cần thêm thư viện/API phức tạp ngoài
      `LazyRow` chuẩn.
+
+- **D-1134** · 2026-11-08 · `PillBottomNavigation`: fade ẩn/hiện theo scroll + style "liquid glass" — **Chốt**
+  Đã đọc skill `liquid-glass-design` (viết cho iOS SwiftUI/UIKit, không áp code trực tiếp được) — dịch
+  nguyên tắc sang Compose/Android:
+  1. **Fade theo scroll**: đang cuộn (bất kỳ top-level screen nào trong `MainPagerDestination`) → pill
+     fade out dần (animation có timing, không biến mất đột ngột) để tối đa khung nhìn content. Dừng
+     cuộn (settle, có thể chờ ~300-500ms sau khi hết scroll để tránh nhấp nháy khi cuộn ngắt quãng) →
+     fade in lại. Tham khảo cơ chế đọc trạng thái scroll đã có ở D-1083 (DeviceBanner collapse theo
+     scroll của Home) — dùng pattern tương tự (`LazyListState.isScrollInProgress` hoặc
+     `NestedScrollConnection` ở cấp `Scaffold`/`MainPagerDestination`) áp dụng chung cho mọi tab, không
+     chỉ riêng Home.
+  2. **"Liquid glass" style cho pill**: dịch từ nguyên tắc iOS (vật liệu trong suốt, blur nội dung phía
+     sau, phản chiếu ánh sáng nhẹ ở viền, hình capsule — pill hiện tại đã đúng hình capsule) sang
+     Android: nền pill đổi từ màu đặc `surfaceContainerHigh` sang **bán trong suốt** (alpha thấp) +
+     **blur nội dung phía sau** bằng `Modifier.graphicsLayer { renderEffect =
+     RenderEffect.createBlurEffect(...).asComposeRenderEffect() }` (chỉ chạy blur thật từ API 31 trở
+     lên, dưới đó Compose tự bỏ qua blur — chấp nhận máy cũ chỉ thấy bán trong suốt không blur, không
+     cần fallback thủ công, giống D-1131) + 1 viền sáng mờ (border 1dp alpha thấp) tạo cảm giác
+     "ánh sáng viền kính" nhẹ. Giữ nguyên animation pill-slide-theo-tab (D-1077) và không-ripple
+     (D-1091) đã có — chỉ đổi phần vật liệu/nền, không đổi hành vi chọn tab.
