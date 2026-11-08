@@ -1804,3 +1804,11 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   pixel-perfect với mép trái của card "Metrics" ngay bên dưới nó lúc đứng yên, và card cuối cùng khi
   cuộn hết phải chạm sát mép phải màn hình (trừ đúng phần `contentPadding` cuối cùng = lề chuẩn, không
   thừa thêm margin nào khác chồng lên).
+
+- **D-1129** · 2026-11-08 · Ảnh nền race card: `ContentScale.Contain` + tăng scrim để chữ dễ đọc — **Chốt**
+  `RaceCard.kt` (`core/designsystem`) hiện vẽ `imageUrl` thật (khi có) kiểu fill/crop — đổi sang
+  `ContentScale.Contain` (ảnh giữ nguyên tỉ lệ, không crop mất phần quan trọng của ảnh quảng bá chính
+  thức) — gradient theo terrain vẫn làm nền phía sau để lấp khoảng trống khi ảnh không phủ hết card
+  (không để trống/đen xấu). Tăng độ đậm lớp scrim tối phủ lên ảnh (gradient đen từ dưới lên hoặc phủ
+  đều, agent tự chọn kiểu hợp với layout chữ hiện có) để tên giải/ngày/CTA luôn đọc được rõ trên nền
+  ảnh thật, không chỉ đẹp trên nền gradient như trước.
