@@ -2182,3 +2182,13 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   cả hai chạy thật (test-result XML mới sinh ra ở `feature/home`/`core/designsystem`/`feature/profile`/
   `feature/activity`/`feature/races`/`feature/devices`, không file nào `failures`/`errors` > 0;
   `app-debug.apk` build lại thành công) — không chỉ tin Gradle UP-TO-DATE im lặng.
+
+- **D-1154** · 2026-11-08 · Bottom nav pill: giảm padding vertical để tối ưu không gian — **Chốt**
+  User muốn pill bottom nav chiếm ít chiều cao hơn. Giảm `vertical` trong
+  `Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)` ở `PillBottomNavigation.kt` (bọc
+  ngoài `Surface`) — agent tự chọn giá trị nhỏ hơn hợp lý (gợi ý: `Spacing.sm` hoặc `Spacing.xs`), miễn
+  đảm bảo pill vẫn đủ khoảng cách với mép màn hình/system nav bar (D-1084's `windowInsetsPadding` không
+  đổi) và các icon/label bên trong (`NAV_HEIGHT = 72.dp`, `PillNavItem`'s `padding(vertical = Spacing.sm)`)
+  không bị bóp méo/chật — có thể cần giảm cả `NAV_HEIGHT` một chút nếu giảm riêng outer padding chưa đủ
+  "gọn" theo cảm nhận, agent tự cân đối. Cùng file với D-1149 (agent đang xử lý) — gộp chung, không tách
+  agent riêng.
