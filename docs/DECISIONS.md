@@ -1174,3 +1174,43 @@ tránh 2 agent sửa song song cùng file.
   từ `[Ext]` sang `[V]` cho khối field này. Phần activities trước đó "chưa sync về" (báo cáo ban đầu
   của user) là do bug sync-window/dedup đã fix ở `a29ea95`/`22e81d2` (trước phiên này), không phải do
   field number sai.
+
+## Thực thi D-1075/1083/1084/1085 (Last synced, collapsing device banner, pill nav insets, grid cleanup) — D-108x
+
+- **D-1087** · 2026-11-08 · "Last synced" trên Home: label tương đối tự làm mới — **Chốt**
+  Thêm dòng "Last synced ..." vào `DeviceBanner` (`HomeScreen.kt`), lấy thẳng từ `state.device.lastSyncedAt`
+  đã có sẵn trong luồng dữ liệu hiện tại (không cần sửa ViewModel/repository — `observePrimaryDevice()`
+  đã reactive theo Room). Không có formatter tương đối có sẵn nào trong code (Devices/Device Detail chỉ
+  format tuyệt đối "Nov 8, 5:30 PM") nên viết mới `relativeTimeLabel`: "just now" / "N minute(s) ago" /
+  "N hour(s) ago" / "N day(s) ago" / ngày tuyệt đối sau 7 ngày. `rememberRelativeSyncLabel` tự làm mới
+  mỗi 30s (`LaunchedEffect` keyed theo `lastSyncedAt`, restart ngay khi có giá trị mới) để nhãn không bị
+  cũ khi màn hình mở lâu mà không sync — đáp ứng "update realtime khi có sync mới" mà không cần tick mỗi
+  giây (lãng phí, D-1075 không yêu cầu độ chính xác giây).
+- **D-1088** · 2026-11-08 · Hiệu ứng thu nhỏ DeviceBanner: transform hình ảnh, không resize layout — **Chốt**
+  Cách làm: `LazyListState` được hoist lên `HomeScreen` (trước đó chỉ tồn tại trong `Summary`), tính
+  `deviceBannerCollapseFraction` (0..1) từ `firstVisibleItemScrollOffset / deviceBannerHeightPx` (đo qua
+  `Modifier.onSizeChanged` ngay trên `DeviceBanner`) khi item 0 còn trong viewport, = 1 khi đã scroll
+  qua. Áp fraction này vào `Modifier.graphicsLayer { scaleX/scaleY/alpha }` trên `DeviceBanner` — **chỉ
+  biến đổi hình ảnh, không đổi kích thước layout thật sự** của item trong `LazyColumn`, để tránh vòng lặp
+  phản hồi (kích thước phụ thuộc scroll, scroll lại phụ thuộc kích thước — anti-pattern Compose đã biết).
+  Chip nhỏ (ảnh + tên) đặt thẳng trong `actions` của `TopAppBar` (fade theo cùng fraction qua
+  `graphicsLayer { alpha }`) — nhờ nằm trong `TopAppBar` nên tự động chỉ hiện khi header đang hiện (đúng
+  yêu cầu D-1083 "nếu header đang hiện"), không cần logic riêng theo dõi trạng thái ẩn/hiện của
+  `enterAlwaysScrollBehavior`. Không làm shared-element transition thật (banner "biến hình" liền mạch
+  thành chip) — độ phức tạp không tương xứng ở quy mô này, và bản thân D-1083 đã chủ động dùng từ "nhảy"
+  (có ngoặc kép) khi mô tả bước chip xuất hiện ở header, ngụ ý chấp nhận một bước nhảy rời rạc miễn phần
+  thu nhỏ chính (0→100%) mượt theo scroll — đúng những gì bản này làm.
+- **D-1089** · 2026-11-08 · `PillBottomNavigation` né system navigation bar — **Chốt**
+  Thêm `Modifier.windowInsetsPadding(WindowInsets.navigationBars.only(Horizontal + Bottom))` vào
+  `Surface` ngoài cùng của pill nav, trước padding lề (`Spacing.lg`/`Spacing.md`) đã có — giống cách
+  `NavigationBar` chuẩn của Material 3 tự né `NavigationBarDefaults.windowInsets`. `Scaffold` ở
+  `UnifiedHealthApp.kt` đặt `contentWindowInsets = WindowInsets(0)` (để mỗi `TopAppBar` con tự quản insets
+  riêng) nhưng không ảnh hưởng gì ở đây — `WindowInsets.navigationBars` đọc thẳng từ hệ thống qua
+  `LocalView`, độc lập với tham số đó. Không đụng tới phần né edge-swipe-back trái/phải (D-1053/1078).
+- **D-1090** · 2026-11-08 · Grid mode: bỏ hẳn chart, viết tắt theo bảng sau — **Chốt**
+  Theo đúng D-1085: Grid card giờ chỉ có icon + tên viết tắt (+ dot live nếu có) + giá trị lớn, không
+  còn gọi `MiniChart` (trước đó còn gọi với `tiny = true`, nay `MiniChart` bỏ hẳn tham số `tiny`, chỉ
+  List mode mới gọi). Bảng viết tắt (`HealthMetricType.compactLabel()`, agent tự chọn theo gợi ý trong
+  quyết định): Heart rate→**HR**, Active energy→**Cal**, Resting heart rate→**RHR**, Exercise
+  minutes→**Exercise**; các chỉ số còn lại (Steps/Sleep/SpO2/Stress/Distance/HRV/VO2max) giữ nguyên tên
+  đầy đủ vì đã đủ ngắn cho 2 cột. List mode không đổi gì (vẫn full chart + chi tiết).

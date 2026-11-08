@@ -13,8 +13,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -49,7 +52,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,7 +64,10 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -162,9 +170,38 @@ internal fun HomeScreen(
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit = {},
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val listState = rememberLazyListState()
+    // D-1083: how far the full-size DeviceBanner (list item 0) has scrolled past the top, as a
+    // continuous 0..1 fraction — 0 while fully visible, 1 once it has scrolled a full banner-height
+    // or the list has scrolled past it entirely. Drives both the banner's own shrink/fade (in
+    // Summary) and the small chip fading in on the opposite end, in this composable's TopAppBar.
+    var deviceBannerHeightPx by remember { mutableIntStateOf(0) }
+    val deviceBannerCollapseFraction by remember {
+        derivedStateOf {
+            when {
+                listState.firstVisibleItemIndex > 0 -> 1f
+                deviceBannerHeightPx <= 0 -> 0f
+                else -> (listState.firstVisibleItemScrollOffset / deviceBannerHeightPx.toFloat()).coerceIn(0f, 1f)
+            }
+        }
+    }
+    val device = (state as? HomeUiState.Success)?.device
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { TopAppBar(title = { Text("Summary") }, scrollBehavior = scrollBehavior) },
+        topBar = {
+            TopAppBar(
+                title = { Text("Summary") },
+                actions = {
+                    // Only ever visible together with the TopAppBar itself, which is exactly the
+                    // "once the header is visible" condition D-1083 asks for — enterAlwaysScrollBehavior
+                    // already hides/shows the whole bar on scroll, so nothing extra is needed here.
+                    if (device != null) {
+                        DeviceChip(device, deviceBannerCollapseFraction, Modifier.testTag("device_chip"))
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+            )
+        },
     ) { padding ->
         when (state) {
             HomeUiState.Loading -> LoadingState(Modifier.padding(padding))
@@ -174,7 +211,19 @@ internal fun HomeScreen(
                 onRefresh = onRefresh,
                 modifier = Modifier.fillMaxSize().padding(padding),
             ) {
-                Summary(state, liveHeartRate, liveMetrics, onMetricClick, onOpenDevices, onOpenWorkouts, onFeedCardsChanged, onMetricsViewModeChange)
+                Summary(
+                    state = state,
+                    liveHeartRate = liveHeartRate,
+                    liveMetrics = liveMetrics,
+                    onMetricClick = onMetricClick,
+                    onOpenDevices = onOpenDevices,
+                    onOpenWorkouts = onOpenWorkouts,
+                    onFeedCardsChanged = onFeedCardsChanged,
+                    onMetricsViewModeChange = onMetricsViewModeChange,
+                    listState = listState,
+                    deviceBannerCollapseFraction = deviceBannerCollapseFraction,
+                    onDeviceBannerSizeChanged = { deviceBannerHeightPx = it },
+                )
             }
         }
     }
@@ -190,6 +239,9 @@ private fun Summary(
     onOpenWorkouts: () -> Unit,
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit,
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit,
+    listState: LazyListState,
+    deviceBannerCollapseFraction: Float,
+    onDeviceBannerSizeChanged: (Int) -> Unit,
 ) {
     var editingFeed by rememberSaveable { mutableStateOf(false) }
     // The live bpm (while fresh) used to override the Pinned heart-rate card's value; now that Pinned
@@ -197,11 +249,31 @@ private fun Summary(
     // reading is still visible somewhere on Home, next to the green dot (D-1054).
     val liveBpm = freshBpm(liveHeartRate)
     LazyColumn(
+        state = listState,
         modifier = Modifier.fillMaxSize().testTag("summary_list"),
         contentPadding = PaddingValues(start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.xxl),
         verticalArrangement = Arrangement.spacedBy(Spacing.md),
     ) {
-        item { DeviceBanner(state.device, state.deviceCount, onOpenDevices) }
+        item {
+            DeviceBanner(
+                device = state.device,
+                deviceCount = state.deviceCount,
+                onOpenDevices = onOpenDevices,
+                // D-1083: shrink + fade out continuously as this item scrolls past the top, in lock
+                // step with deviceBannerCollapseFraction (0 = full size, 1 = scrolled fully away).
+                // A visual-only transform (not a layout resize) avoids the item's measured height
+                // ever depending on the scroll position it also helps compute — no feedback loop.
+                modifier = Modifier
+                    .onSizeChanged { onDeviceBannerSizeChanged(it.height) }
+                    .graphicsLayer {
+                        val scale = 1f - 0.5f * deviceBannerCollapseFraction
+                        scaleX = scale
+                        scaleY = scale
+                        alpha = (1f - deviceBannerCollapseFraction * 1.3f).coerceIn(0f, 1f)
+                        transformOrigin = TransformOrigin(0f, 0f)
+                    },
+            )
+        }
         item { RingsCard(state.summary, onClick = { onMetricClick(HealthMetricType.CALORIES) }) }
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -366,11 +438,11 @@ private fun HealthMetricType.liveDotOrNull(liveMetrics: Set<HealthMetricType>): 
     if (this in METRICS_WITH_LIVE_MODE) this in liveMetrics else null
 
 @Composable
-private fun DeviceBanner(device: WearableDevice?, deviceCount: Int, onOpenDevices: () -> Unit) {
+private fun DeviceBanner(device: WearableDevice?, deviceCount: Int, onOpenDevices: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         onClick = onOpenDevices,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-        modifier = Modifier.fillMaxWidth().testTag("device_banner"),
+        modifier = modifier.fillMaxWidth().testTag("device_banner"),
     ) {
         Row(
             modifier = Modifier.padding(Spacing.lg),
@@ -395,10 +467,76 @@ private fun DeviceBanner(device: WearableDevice?, deviceCount: Int, onOpenDevice
                         ).joinToString(" · "),
                         style = MaterialTheme.typography.bodySmall,
                     )
+                    // D-1075: always visible on Home (not just Device Detail), relative + live-updating.
+                    Text(
+                        "Last synced ${rememberRelativeSyncLabel(device.lastSyncedAt)}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.testTag("last_synced"),
+                    )
                 }
                 ConnectionStatusChip(device.connectionState, onClick = onOpenDevices)
             }
         }
+    }
+}
+
+/**
+ * "Just now" / "N minutes ago" / ... (D-1075), re-evaluated every [REFRESH_INTERVAL_MS] so it stays
+ * current while the screen sits open, and immediately when [syncedAt] itself changes (a new sync
+ * completing writes a newer `lastSyncedAt`, which restarts this effect right away).
+ */
+@Composable
+private fun rememberRelativeSyncLabel(syncedAt: Instant?): String {
+    var now by remember(syncedAt) { mutableStateOf(Instant.now()) }
+    LaunchedEffect(syncedAt) {
+        while (true) {
+            now = Instant.now()
+            delay(REFRESH_INTERVAL_MS)
+        }
+    }
+    return relativeTimeLabel(syncedAt, now)
+}
+
+private const val REFRESH_INTERVAL_MS = 30_000L
+
+private fun relativeTimeLabel(time: Instant?, now: Instant): String {
+    if (time == null) return "never"
+    val seconds = Duration.between(time, now).seconds.coerceAtLeast(0)
+    return when {
+        seconds < 60 -> "just now"
+        seconds < 3_600 -> (seconds / 60).let { "$it minute${if (it == 1L) "" else "s"} ago" }
+        seconds < 86_400 -> (seconds / 3_600).let { "$it hour${if (it == 1L) "" else "s"} ago" }
+        seconds < 7 * 86_400 -> (seconds / 86_400).let { "$it day${if (it == 1L) "" else "s"} ago" }
+        else -> DATE_LABEL.format(time.atZone(ZoneId.systemDefault()))
+    }
+}
+
+private val DATE_LABEL: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+
+/**
+ * D-1083: small "landed" form of [DeviceBanner] — watch image + name only — that fades into the
+ * TopAppBar's top-right corner as [alphaFraction] (the banner's own collapse fraction) goes from 0
+ * to 1. Lives inside the TopAppBar's `actions`, so it only ever shows together with the bar itself.
+ */
+@Composable
+private fun DeviceChip(device: WearableDevice, alphaFraction: Float, modifier: Modifier = Modifier) {
+    if (alphaFraction <= 0f) return
+    Row(
+        modifier = modifier
+            .graphicsLayer { alpha = alphaFraction }
+            .padding(end = Spacing.md),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        WatchImage(model = remember(device.vendor, device.name, device.model) { WatchModelMatcher.match(device) }, size = 28.dp)
+        Spacer(Modifier.width(Spacing.xs))
+        Text(
+            device.name,
+            style = MaterialTheme.typography.labelMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.widthIn(max = 96.dp),
+        )
     }
 }
 
@@ -501,13 +639,15 @@ private fun MetricFeedCard(
     /** Overrides [FeedCardData.Metric.reading] with the live bpm while fresh (D-1054); only ever
      *  non-null for [HealthMetricType.HEART_RATE] — see [FeedCard]. */
     liveBpm: Int? = null,
-    /** D-1073: Grid — name + value and a tiny chart only, no resting-bpm/sleep-score/insight lines. */
+    /** D-1085: Grid — abbreviated name + value only, no chart at all (was a tiny chart per D-1073;
+     *  dropped after direct feedback that the shrunk chart looked bad). No resting-bpm/sleep-score/
+     *  insight lines either, same as before. */
     compact: Boolean = false,
 ) {
     val metric = card.metric
     val accent = UnifiedHealthTheme.metricColors.forMetric(metric)
     if (!card.hasData) {
-        EmptyMetricCard(metric, accent, onClick, modifier)
+        EmptyMetricCard(metric, accent, onClick, modifier, compact = compact)
         return
     }
     val insight = metricInsightLine(metric, card.highlight, card.weekStats)
@@ -522,7 +662,7 @@ private fun MetricFeedCard(
     }
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().semantics(mergeDescendants = true) { contentDescription = description }) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-            FeedCardHeader(metric, accent, value, metric.unit(), cardTimeLabel, isLive)
+            FeedCardHeader(metric, accent, value, metric.unit(), cardTimeLabel, isLive, compact = compact)
             if (!compact) {
                 card.restingBpm?.let {
                     Text("Resting $it bpm", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -530,9 +670,7 @@ private fun MetricFeedCard(
                 sleepSession?.score?.let {
                     Text("Sleep score $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-            }
-            MiniChart(metric, card.weekPoints, sleepSession, accent, tiny = compact)
-            if (!compact) {
+                MiniChart(metric, card.weekPoints, sleepSession, accent)
                 if (metric.aggregation == MetricAggregation.SLEEP && sleepSession != null) {
                     SleepStageLegend(sleepSession, Modifier.testTag("feed_sleep_legend"))
                 }
@@ -545,17 +683,33 @@ private fun MetricFeedCard(
 }
 
 @Composable
-private fun FeedCardHeader(metric: HealthMetricType, accent: Color, value: String?, unit: String, timeLabel: String?, isLive: Boolean? = null) {
+private fun FeedCardHeader(
+    metric: HealthMetricType,
+    accent: Color,
+    value: String?,
+    unit: String,
+    timeLabel: String?,
+    isLive: Boolean? = null,
+    /** D-1085: Grid shows [compactLabel] ("HR", "Cal", "RHR"...) instead of the full name, so a long
+     *  metric name never forces the 2-column card to wrap or overflow. */
+    compact: Boolean = false,
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(metric.icon(), contentDescription = null, tint = accent, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(Spacing.sm))
-        Text(metric.label(), style = MaterialTheme.typography.titleSmall, color = accent)
+        Text(
+            if (compact) metric.compactLabel() else metric.label(),
+            style = MaterialTheme.typography.titleSmall,
+            color = accent,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
         if (isLive != null) {
             Spacer(Modifier.width(Spacing.xs))
             LiveDot(isLive)
         }
         Spacer(Modifier.weight(1f))
-        timeLabel?.let { Text(it, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+        if (!compact) timeLabel?.let { Text(it, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
     }
     Row(verticalAlignment = Alignment.Bottom) {
         Text(value ?: "--", style = MetricValueTextStyle)
@@ -572,43 +726,54 @@ private fun FeedCardHeader(metric: HealthMetricType, accent: Color, value: Strin
 }
 
 /** Bars for cumulative metrics, min–max capsules for discrete ones, a compact stage bar for sleep.
- *  [tiny] (D-1073 Grid) shrinks it to a small accent visual with no axis labels. */
+ *  List mode only (D-1085 removed Grid's shrunk chart entirely after it looked bad). */
 @Composable
 private fun MiniChart(
     metric: HealthMetricType,
     weekPoints: List<ChartPoint>,
     sleepSession: SleepSession?,
     accent: Color,
-    tiny: Boolean = false,
 ) {
     val axis: (Float) -> String = when (metric) {
         HealthMetricType.DISTANCE -> { v -> compactNumber(v / 1000f) }
         else -> ::compactNumber
     }
-    val height = if (tiny) 36.dp else 90.dp
     when {
         metric.aggregation == MetricAggregation.SLEEP && sleepSession != null ->
-            SleepStageChart(sleepSession, Modifier.testTag("feed_sleep_chart"), height = if (tiny) 48.dp else 110.dp)
+            SleepStageChart(sleepSession, Modifier.testTag("feed_sleep_chart"), height = 110.dp)
         metric.aggregation == MetricAggregation.DISCRETE ->
-            HealthRangeChart(weekPoints, accent, Modifier.testTag("feed_mini_range"), height = height, axisLabel = axis)
+            HealthRangeChart(weekPoints, accent, Modifier.testTag("feed_mini_range"), height = 90.dp, axisLabel = axis)
         else ->
-            HealthBarChart(weekPoints, accent, Modifier.testTag("feed_mini_bar"), height = height, axisLabel = axis)
+            HealthBarChart(weekPoints, accent, Modifier.testTag("feed_mini_bar"), height = 90.dp, axisLabel = axis)
     }
 }
 
 /** Compact hint instead of a big empty card, per metric without data. */
 @Composable
-private fun EmptyMetricCard(metric: HealthMetricType, accent: Color, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun EmptyMetricCard(metric: HealthMetricType, accent: Color, onClick: () -> Unit, modifier: Modifier = Modifier, compact: Boolean = false) {
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
         ListItem(
             modifier = Modifier.testTag("feed_empty_${metric.name}"),
             colors = ListItemDefaults.colors(containerColor = Color.Transparent),
             leadingContent = { Icon(metric.icon(), contentDescription = null, tint = accent) },
-            headlineContent = { Text(metric.label(), color = accent) },
+            headlineContent = { Text(if (compact) metric.compactLabel() else metric.label(), color = accent, maxLines = 1, overflow = TextOverflow.Ellipsis) },
             supportingContent = { Text("No data yet") },
             trailingContent = { Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
         )
     }
+}
+
+/**
+ * D-1085: short form of a metric's name for the Grid card, chosen to stay legible at 2-column width
+ * ("Heart rate" → "HR", "Active energy" → "Cal", ...). [label] already fits comfortably for the rest
+ * (steps/sleep/SpO2/stress/distance/exercise/HRV/VO2max), so those pass through unchanged.
+ */
+private fun HealthMetricType.compactLabel(): String = when (this) {
+    HealthMetricType.HEART_RATE -> "HR"
+    HealthMetricType.CALORIES -> "Cal"
+    HealthMetricType.RESTING_HEART_RATE -> "RHR"
+    HealthMetricType.EXERCISE_MINUTES -> "Exercise"
+    else -> label()
 }
 
 // ---------------------------------------------------------------- edit feed cards

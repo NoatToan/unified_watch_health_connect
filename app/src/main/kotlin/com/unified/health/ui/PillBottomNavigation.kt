@@ -5,12 +5,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -37,6 +42,10 @@ import kotlin.math.roundToInt
  * `animateDpAsState` layered on top — [pagerState] already animates that value smoothly on a tap
  * (`animateScrollToPage`) and updates it 1:1 with a drag, so wrapping it in another animation would
  * only add lag while swiping (see D-1077 in docs/DECISIONS.md).
+ *
+ * D-1084: unlike Material3's own `NavigationBar` (which pads itself against the system navigation
+ * bar automatically), this hand-rolled `Surface` needs that inset applied explicitly, or the pill
+ * sits under/behind the system nav bar in both gesture-nav and 3-button modes.
  */
 @Composable
 fun PillBottomNavigation(
@@ -48,7 +57,10 @@ fun PillBottomNavigation(
     Surface(
         // A fixed height (rather than wrap-content) is required: the sliding indicator below uses
         // fillMaxHeight(), which needs a bounded constraint to resolve against.
-        modifier = modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md).height(NAV_HEIGHT),
+        modifier = modifier
+            .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom))
+            .padding(horizontal = Spacing.lg, vertical = Spacing.md)
+            .height(NAV_HEIGHT),
         shape = RoundedCornerShape(50),
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
         tonalElevation = 3.dp,
