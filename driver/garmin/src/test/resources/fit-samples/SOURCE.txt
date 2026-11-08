@@ -1,0 +1,10 @@
+Source: https://github.com/garmin/fit-python-sdk/tree/master/tests/fits (commit on the `master`
+branch, fetched 2026-11-08).
+
+Files: ActivityDevFields.fit, HrmPluginTestActivity.fit, WithGearChangeData.fit.
+
+License: Garmin's FIT Protocol License Agreement (see that repository's LICENSE.txt), the same
+license covering the public FIT SDK this driver's codec/fit package already relies on ([Ext] in
+code comments). These are Garmin's own sample/test FIT activity files, used here only to test this
+app's FIT decoder against real-world files, not redistributed as part of the FIT SDK itself.
+No GPL or other copyleft-licensed code or data is used (see wearable-driver-engineer rules).

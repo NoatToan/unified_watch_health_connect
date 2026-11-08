@@ -51,6 +51,7 @@ class DefaultDeviceLinkKeeperTest {
         override suspend fun disconnect(deviceId: String) { state.value = ConnectionState.Disconnected }
         override suspend fun unpair(deviceId: String) = Unit
         override suspend fun syncNow(deviceId: String): Result<Unit> { syncCalls++; return Result.success(Unit) }
+        override suspend fun reprocessRawPayloads(deviceId: String): Result<Int> = Result.success(0)
         override suspend fun generateCredential(deviceId: String, key: String) = Result.success("")
         override suspend fun setCredential(deviceId: String, key: String, value: String) = Result.success(Unit)
     }

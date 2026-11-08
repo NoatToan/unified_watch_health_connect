@@ -56,6 +56,20 @@ class DeviceDetailViewModel @Inject constructor(
 
     fun syncNow() = run(success = "Sync complete") { repository.syncNow(deviceId) }
 
+    /** Re-decodes raw vendor files already stored for this device (e.g. after a decoder fix). */
+    fun reprocessRawPayloads() {
+        if (local.value.busy) return
+        viewModelScope.launch {
+            local.update { it.copy(busy = true) }
+            val result = runCatching { repository.reprocessRawPayloads(deviceId) }.getOrElse { Result.failure(it) }
+            val message = result.fold(
+                onSuccess = { count -> "Recovered $count record(s)" },
+                onFailure = { it.message ?: "Operation failed" },
+            )
+            local.update { it.copy(busy = false, message = message) }
+        }
+    }
+
     fun connect() = run(success = null) { repository.connect(deviceId) }
 
     fun disconnect() = run(success = null) {

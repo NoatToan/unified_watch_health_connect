@@ -9,7 +9,9 @@ import com.unified.health.core.ble.driver.WearableSession
 import com.unified.health.core.ble.gatt.GattClient
 import com.unified.health.core.ble.pairing.PairingCodeRequester
 import com.unified.health.core.ble.scan.Advertisement
+import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.WearableVendor
+import com.unified.health.driver.garmin.codec.GarminFitFileType
 import com.unified.health.driver.garmin.codec.HostIdentity
 import javax.inject.Inject
 
@@ -54,6 +56,16 @@ class GarminDriver @Inject constructor(
                 pairingCodes = pairingCodes,
             ),
         )
+
+    /**
+     * Re-decodes a stored `fit_activity` payload (§6.1 [V], D-420); other raw kinds
+     * (monitoring/metrics/wellness) depend on cross-file daily accumulation, so they are only
+     * reprocessed as part of a real [openSession] sync, not here.
+     */
+    override suspend fun reprocess(payload: HealthRecord.RawPayload): List<HealthRecord> {
+        if (payload.vendor != WearableVendor.GARMIN || payload.kind != GarminFitFileType.ACTIVITY.kind) return emptyList()
+        return decodeGarminActivityWorkouts(payload.bytes)
+    }
 
     private fun hostIdentity() = HostIdentity(
         appVersion = HOST_APP_VERSION,

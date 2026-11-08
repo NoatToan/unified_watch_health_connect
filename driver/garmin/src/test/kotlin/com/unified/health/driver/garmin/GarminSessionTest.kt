@@ -23,6 +23,7 @@ import com.unified.health.driver.garmin.codec.fit.FitHealthMapper
 import com.unified.health.driver.garmin.testing.FakeGarminWatch
 import com.unified.health.driver.garmin.testing.FitFileBuilder
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.enum
+import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u16
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u32
 import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u8
 import com.unified.health.driver.garmin.transport.MultiLinkRegistrationException
@@ -125,6 +126,33 @@ class GarminSessionTest {
         assertEquals(listOf(0, 3, 6), watch.sent(GfdiMessageId.DOWNLOAD_REQUEST).map { ByteReader(it.payload).u16le() })
         assertEquals("0000", watch.sent(GfdiMessageId.SYSTEM_EVENT).last().payload.toHex())
         assertTrue(watch.received.none { it.id == 5006 || it.id == 5008 })
+        session.close()
+    }
+
+    @Test
+    fun `activity files far outside the wellness window are still synced, unlike monitoring`() = runTest {
+        val watch = FakeGarminWatch(multiLink = true)
+        watch.registerStatuses = listOf(RegisterStatus.SUCCESS)
+        val since = now.minusSeconds(86_400) // 1-day wellness window
+        val activityFile = FitFileBuilder()
+            .define(0, FitHealthMapper.MESG_SESSION, u32(253), u32(2), enum(5), u32(7), u32(9), u16(11), u8(16), u8(17))
+            .record(0, FitTime.fromInstant(now) - 40 * 86_400 + 1800, FitTime.fromInstant(now) - 40 * 86_400, 1, 1_800_000, 5_000_00, 300, 140, 170)
+            .build()
+        watch.files[0] = directory(
+            Triple(3, 4, now.minusSeconds(40 * 86_400L)), // ACTIVITY 40 days old: outside wellness window, inside the activity one
+            Triple(4, 32, now.minusSeconds(40 * 86_400L)), // MONITORING 40 days old: outside both -> skipped
+            Triple(5, 4, now.minusSeconds(400 * 86_400L)), // ACTIVITY 400 days old: outside even the activity window -> skipped
+        )
+        watch.files[3] = activityFile
+
+        val session = GarminSession.open(watch.gatt, config())
+        val sink = RecordingSink()
+        session.sync(SyncRequest(since = since, now = now), sink) {}
+
+        assertEquals(listOf(0, 3), watch.sent(GfdiMessageId.DOWNLOAD_REQUEST).map { ByteReader(it.payload).u16le() })
+        val workout = sink.ofType<HealthRecord.Workout>().single()
+        assertEquals("running", workout.sport)
+        assertEquals(300, workout.activeKcal)
         session.close()
     }
 

@@ -540,6 +540,56 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   Garmin Auth (5101) thay vì đóng kết nối. Các brand khác giữ mặc định `false`. Đây là điều kiện để
   fallback auth thực sự chạy trên đồng hồ; vẫn cần kiểm trên watch thật.
 
+- **D-418** · 2026-11-08 · Root cause "không có activity Garmin nào": cửa sổ sync, không phải FIT decoder — **Chốt**
+  Điều tra "không thấy workout Garmin" (real watch): `GarminFileSync.sync()` lọc mọi loại file FIT bằng
+  một `since` duy nhất = `SyncRequest.effectiveSince()` (mặc định `now − 7 ngày` ở lần sync đầu,
+  `core/ble/.../driver/WearableSession.kt`), rồi `since` tiến dần theo mỗi lần sync thành công
+  (`DefaultWearableDeviceRepository.syncNow` dùng `lastSyncedAtEpochMs`). ACTIVITY (FIT_TYPE_4) là file
+  hiếm — một buổi tập có thể cách lần "lần đầu mở app" hơn 7 ngày (rất phổ biến: người dùng đã đeo đồng
+  hồ một thời gian trước khi cài app) → bị bỏ qua ngay từ sync đầu tiên, và vì `since` chỉ tiến về phía
+  trước, activity đó **không bao giờ được thử lại**. Đã tải 3 file FIT ACTIVITY thật từ FIT SDK công khai
+  của Garmin (`garmin/fit-python-sdk`, `driver/garmin/src/test/resources/fit-samples/`, xem `SOURCE.txt`)
+  và decode bằng `FitDecoder`/`FitHealthMapper` hiện có (`RealFitSampleDecodeTest`): cả 3 decode thành
+  công, 2 file có session (18) ra đúng Workout (sport/distance/calories/HR hợp lý). Vậy `FitDecoder`
+  (H2) và field mapping của session 18 (H3: start_time=2, sport=5, total_elapsed_time=7 scale 1000,
+  total_distance=9 scale 100, total_calories=11, avg_hr=16, max_hr=17 — đối chiếu đúng FIT profile công
+  khai) đều đúng trên dữ liệu thật; root cause là cửa sổ thời gian (H1), không phải decoder.
+
+- **D-419** · 2026-11-08 · ACTIVITY dùng cửa sổ riêng 365 ngày, không phụ thuộc `since` — **Chốt** (sửa D-418)
+  `GarminFileSync.sync()` tách cutoff theo loại file: MONITORING/METRICS/WELLNESS_49 vẫn dùng
+  `request.effectiveSince()` (không đổi hành vi, không đổi contract `core/ble`); riêng ACTIVITY dùng
+  `request.now − ACTIVITY_LOOKBACK_DAYS` (365 ngày) **mọi lần sync**, không chỉ lần đầu. Lý do chọn "mọi
+  lần" thay vì chỉ "lần sync đầu" (dù §H1 gợi ý vậy): nếu chỉ sửa lần-đầu, người dùng **đã** pair trước
+  khi có bản sửa này (since đã trôi qua) sẽ không bao giờ được cứu lại — cửa sổ phụ thuộc "mọi lần" tự
+  sửa luôn cho cả hai trường hợp, không cần thêm hành động thủ công. Chi phí: tải lại file ACTIVITY đã
+  tải mỗi lần sync — chấp nhận được vì (a) activity file nhỏ và hiếm (nhiệm vụ cũng ghi vậy), (b) thư mục
+  file trên đồng hồ tự giới hạn bởi dung lượng lưu trữ của nó (không phải "toàn bộ lịch sử"), (c)
+  `WorkoutEntity` có `@Upsert` trên khoá `(deviceId, startEpochMs)` nên gửi lại cùng workout là no-op.
+  Không đổi `core/ble` (contract `SyncRequest`/`effectiveSince` y nguyên) → các driver khác không bị ảnh
+  hưởng. Thêm test hồi quy `GarminSessionTest."activity files far outside the wellness window are still
+  synced, unlike monitoring"` và `Log.i` tổng kết (file theo loại được liệt kê/tải/decode, số workout)
+  để đọc logcat thật xác nhận.
+
+- **D-420** · 2026-11-08 · Thêm `WearableDriver.reprocess()` để tái decode raw payload ngoại tuyến — **Chốt**
+  `core/ble/.../driver/WearableDriver.kt` thêm method mới với default `= emptyList()` (tương thích
+  ngược 100% — Huawei/Zepp/Coros/Standard không cần đổi gì). `GarminDriver.reprocess()` chỉ xử lý kind
+  `fit_activity` (bỏ qua monitoring/metrics/wellness vì các loại đó cần gộp nhiều file theo ngày —
+  `DailyActivityAccumulator` — nên chỉ an toàn tái decode trong một `sync()` thật, không tái decode đơn
+  lẻ). Mục đích: nếu một bug decode FIT khác xuất hiện trên đồng hồ thật sau khi phát hành (khác D-418,
+  vì 3 file mẫu thật decode được), bản sửa decoder sau này có thể phục hồi dữ liệu đã tải mà không cần
+  người dùng pair/sync lại — raw payload đã lưu sẵn đúng với mục đích ghi trong doc comment của
+  `HealthRecord.RawPayload` ("kept so it can be re-decoded when a parser improves").
+- **D-421** · 2026-11-08 · "Reprocess downloaded files": quy ước tên file làm chỉ mục, không thêm bảng Room — **Chốt**
+  `RawPayloadStore.list()` (core/data) liệt kê lại file dưới `files/wearable_raw/<device>/` bằng quy ước
+  tên đã có sẵn (`<vendor>_<kind>_<epochMs>.bin`, tách ra `RawPayloadFileNaming` để test được mà không
+  cần Android `Context`), thay vì thêm bảng Room mới + migration. `RawPayloadStore` là nơi viết file duy
+  nhất nên tự đọc lại tên là an toàn; đổi lại tránh rủi ro migration cho một tính năng khôi phục dữ liệu
+  phụ. `WearableDeviceRepository.reprocessRawPayloads(deviceId)` (mới trong `core/domain`, implement ở
+  `DefaultWearableDeviceRepository`) duyệt file đã lưu → `DriverRegistry[vendor].reprocess(...)` → ghi
+  record mới qua `HealthRecordSinkFactory`, không cần thiết bị đang kết nối. UI: nút "Reprocess downloaded
+  files" trong `feature/devices/.../DeviceDetailScreen.kt`, chỉ hiện khi `device.vendor == GARMIN` (vendor
+  duy nhất có `reprocess()` hiện thực), `testTag("detail_reprocess")`, không đụng `feature/home`/`feature/activity`.
+
 ## Zepp driver (D-5xx)
 
 - **D-501** · 2026-11-06 · Zepp giao thức — **Chốt**

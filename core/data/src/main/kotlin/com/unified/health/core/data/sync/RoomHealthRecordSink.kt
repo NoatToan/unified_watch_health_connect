@@ -8,10 +8,12 @@ import com.unified.health.core.data.database.HealthSampleEntity
 import com.unified.health.core.data.database.SampleType
 import com.unified.health.core.data.database.WorkoutEntity
 import com.unified.health.core.model.HealthRecord
+import com.unified.health.core.model.WearableVendor
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.time.Instant
 import java.time.ZoneId
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -87,16 +89,54 @@ fun interface RawPayloadSaver {
     suspend fun save(deviceId: String, payload: HealthRecord.RawPayload)
 }
 
+/** One raw payload previously saved by [RawPayloadStore.save], read back for [RawPayloadStore.list]. */
+data class StoredRawPayload(val vendor: WearableVendor, val kind: String, val createdAt: Instant?, val bytes: ByteArray)
+
+/**
+ * The file-name convention [RawPayloadStore] uses to recover [StoredRawPayload.vendor]/`kind`/
+ * timestamp without a side database (D-421): `<vendor>_<kind>_<epochMs>.bin`. Pulled out of
+ * [RawPayloadStore] so it is unit-testable without an Android [Context].
+ */
+internal object RawPayloadFileNaming {
+    fun fileName(vendor: WearableVendor, kind: String, stamp: Long) = "${vendor.name.lowercase()}_${safe(kind)}_$stamp.bin"
+
+    /** Null when [file]'s name does not follow [fileName] (e.g. a stray file dropped in the folder). */
+    fun parse(file: File): StoredRawPayload? {
+        val name = file.name.removeSuffix(".bin")
+        val parts = name.split("_")
+        if (parts.size < 3) return null
+        val vendor = runCatching { WearableVendor.valueOf(parts.first().uppercase()) }.getOrNull() ?: return null
+        val stamp = parts.last().toLongOrNull() ?: return null
+        val kind = parts.subList(1, parts.size - 1).joinToString("_")
+        return StoredRawPayload(vendor, kind, Instant.ofEpochMilli(stamp), file.readBytes())
+    }
+
+    fun safe(value: String) = value.replace(Regex("[^A-Za-z0-9_.-]"), "_")
+}
+
 /** Keeps original vendor files under `files/wearable_raw/<device>/` for later re-decoding. */
 @Singleton
 class RawPayloadStore @Inject constructor(@ApplicationContext private val context: Context) : RawPayloadSaver {
 
     override suspend fun save(deviceId: String, payload: HealthRecord.RawPayload): Unit = withContext(Dispatchers.IO) {
-        val dir = File(context.filesDir, "wearable_raw/${safe(deviceId)}").apply { mkdirs() }
+        val dir = deviceDir(deviceId).apply { mkdirs() }
         val stamp = payload.createdAt?.toEpochMilli() ?: System.currentTimeMillis()
-        val file = File(dir, "${payload.vendor.name.lowercase()}_${safe(payload.kind)}_$stamp.bin")
-        runCatching { file.writeBytes(payload.bytes) }.onFailure { Log.w("RawPayloadStore", "Could not save $file", it) }
+        val file = File(dir, RawPayloadFileNaming.fileName(payload.vendor, payload.kind, stamp))
+        runCatching { file.writeBytes(payload.bytes) }.onFailure { Log.w(TAG, "Could not save $file", it) }
     }
 
-    private fun safe(value: String) = value.replace(Regex("[^A-Za-z0-9_.-]"), "_")
+    /**
+     * Every raw payload still on disk for [deviceId], for [com.unified.health.core.ble.driver.WearableDriver.reprocess]
+     * (D-421). This store is the only writer of these file names, so parsing them back with
+     * [RawPayloadFileNaming.parse] is safe.
+     */
+    suspend fun list(deviceId: String): List<StoredRawPayload> = withContext(Dispatchers.IO) {
+        deviceDir(deviceId).listFiles()?.mapNotNull { file -> runCatching { RawPayloadFileNaming.parse(file) }.getOrNull() }.orEmpty()
+    }
+
+    private fun deviceDir(deviceId: String) = File(context.filesDir, "wearable_raw/${RawPayloadFileNaming.safe(deviceId)}")
+
+    private companion object {
+        const val TAG = "RawPayloadStore"
+    }
 }

@@ -5,7 +5,16 @@ import com.unified.health.core.ble.gatt.StandardUuids
 import com.unified.health.core.ble.gatt.sigUuid
 import com.unified.health.core.ble.pairing.PairingCodeRequester
 import com.unified.health.core.ble.scan.Advertisement
+import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.PairingCodeRequest
+import com.unified.health.core.model.WearableVendor
+import com.unified.health.driver.garmin.codec.fit.FitHealthMapper
+import com.unified.health.driver.garmin.testing.FitFileBuilder
+import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.enum
+import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u16
+import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u32
+import com.unified.health.driver.garmin.testing.FitFileBuilder.Companion.u8
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -59,5 +68,24 @@ class GarminDriverTest {
         assertTrue(driver.linkRequirements.bond)
         assertEquals(515, driver.linkRequirements.mtu)
         assertTrue(driver.credentialRequirements.isEmpty())
+    }
+
+    @Test
+    fun `reprocess recovers a workout from a stored fit_activity payload`() = runTest {
+        val bytes = FitFileBuilder()
+            .define(0, FitHealthMapper.MESG_SESSION, u32(253), u32(2), enum(5), u32(7), u32(9), u16(11), u8(16), u8(17))
+            .record(0, 4000, 0, 2, 1_800_000, 500_000, 300, 140, 170)
+            .build()
+        val records = driver.reprocess(HealthRecord.RawPayload(WearableVendor.GARMIN, "fit_activity", null, bytes))
+        val workout = records.filterIsInstance<HealthRecord.Workout>().single()
+        assertEquals("cycling", workout.sport)
+        assertEquals(300, workout.activeKcal)
+    }
+
+    @Test
+    fun `reprocess ignores other kinds and other vendors`() = runTest {
+        val bytes = ByteArray(0)
+        assertTrue(driver.reprocess(HealthRecord.RawPayload(WearableVendor.GARMIN, "fit_monitoring", null, bytes)).isEmpty())
+        assertTrue(driver.reprocess(HealthRecord.RawPayload(WearableVendor.HUAWEI, "fit_activity", null, bytes)).isEmpty())
     }
 }

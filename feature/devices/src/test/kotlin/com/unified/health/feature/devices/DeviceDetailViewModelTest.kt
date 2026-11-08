@@ -35,6 +35,7 @@ class DeviceDetailViewModelTest {
         val devices = MutableStateFlow(listOf(WearableDevice("W1", "Watch", "W1", WearableVendor.HUAWEI, connectionState = ConnectionState.Connected)))
         val calls = mutableListOf<String>()
         var syncResult: Result<Unit> = Result.success(Unit)
+        var reprocessResult: Result<Int> = Result.success(0)
         override val pairedDevices: Flow<List<WearableDevice>> = devices
         override val connectionState: Flow<ConnectionState> = MutableStateFlow(ConnectionState.Connected)
         override val syncState = MutableStateFlow<SyncState>(SyncState.Idle)
@@ -47,6 +48,7 @@ class DeviceDetailViewModelTest {
             devices.update { list -> list.filterNot { it.id == deviceId } }
         }
         override suspend fun syncNow(deviceId: String): Result<Unit> { calls += "sync:$deviceId"; return syncResult }
+        override suspend fun reprocessRawPayloads(deviceId: String): Result<Int> { calls += "reprocess:$deviceId"; return reprocessResult }
         override suspend fun setCredential(deviceId: String, key: String, value: String): Result<Unit> = Result.success(Unit)
         override suspend fun generateCredential(deviceId: String, key: String): Result<String> = Result.success("")
     }
@@ -107,6 +109,25 @@ class DeviceDetailViewModelTest {
         vm.unpair()
         assertTrue("unpair:W1" in repository.calls)
         assertEquals(DeviceDetailUiState.Gone(unpaired = true), vm.uiState.value)
+    }
+
+    @Test
+    fun `reprocess recovers stored raw payloads and reports how many records`() = runTest(dispatcher) {
+        repository.reprocessResult = Result.success(3)
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+        vm.reprocessRawPayloads()
+        assertEquals(listOf("reprocess:W1"), repository.calls)
+        assertEquals("Recovered 3 record(s)", (vm.uiState.value as DeviceDetailUiState.Success).message)
+    }
+
+    @Test
+    fun `failed reprocess surfaces the error`() = runTest(dispatcher) {
+        repository.reprocessResult = Result.failure(IllegalStateException("No driver registered"))
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+        vm.reprocessRawPayloads()
+        assertEquals("No driver registered", (vm.uiState.value as DeviceDetailUiState.Success).message)
     }
 
     @Test
