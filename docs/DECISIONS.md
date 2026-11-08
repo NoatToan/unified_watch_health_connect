@@ -1781,7 +1781,7 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   phải khớp đúng số tham số của method trừu tượng (default value trên interface không miễn trừ số
   tham số bắt buộc khi convert từ lambda).
 
-- **D-1128** · 2026-11-08 · Thực thi D-1115 — `DeviceBanner` đồng bộ style/animation với Devices — **Chốt**
+- **D-1137** · 2026-11-08 · Thực thi D-1115 — `DeviceBanner` đồng bộ style/animation với Devices — **Chốt**
   Bỏ sót ở 2 commit trước (`fd11f99`/`609299c`) — làm lại ngay khi được nhắc. `DeviceBanner`
   (`HomeScreen.kt`) đổi từ `Card` (nền `secondaryContainer` tự đặt riêng) sang `ElevatedCard` không
   màu tuỳ chỉnh — đúng loại card + shape/elevation mặc định mà `PairedDeviceCard`
@@ -1880,7 +1880,7 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   gì ngoài việc tắt hẳn phản hồi scrub, miễn thao tác kéo trên Home không làm gì cả thay vì giả vờ
   hoạt động rồi không hiện giá trị).
 
-- **D-1133** · 2026-11-08 · Thực thi D-1130 — ảnh đồng hồ to (180dp) khi connected trên Devices + Home — **Chốt**
+- **D-1138** · 2026-11-08 · Thực thi D-1130 — ảnh đồng hồ to (180dp) khi connected trên Devices + Home — **Chốt**
   (Số D-1130 "ảnh đồng hồ to" bị trùng với D-1131 bản gốc "sửa fillBleed" do 2 agent log song song —
   D-1131 đã tự đổi số; entry D-1130 "ảnh to" giữ nguyên số, đây chỉ là entry log việc *thực thi* nó.)
   `PairedDeviceCard` (`feature/devices/DevicesScreen.kt`): khi `connected`, đổi từ `Row` ngang (ảnh
@@ -1898,7 +1898,7 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   connected, giữ `Row` ngang nhỏ (56dp) như D-1115 đã làm. Làm theo đúng thứ tự user yêu cầu (D-1130
   trước, D-1115 kế thừa theo) thay vì phải sửa `DeviceBanner` 2 lần.
 
-- **D-1134** · 2026-11-08 · Thực thi D-1132 — tắt scrub-theo-ngày trên mini chart ở Home — **Chốt**
+- **D-1139** · 2026-11-08 · Thực thi D-1132 — tắt scrub-theo-ngày trên mini chart ở Home — **Chốt**
   Thêm tham số `scrubEnabled: Boolean = true` vào `HealthBarChart`/`HealthRangeChart`
   (`core/designsystem/HealthCharts.kt`), truyền thẳng vào `chartScrubGestures(scrubEnabled &&
   points.isNotEmpty())` — khi `false`, `chartScrubGestures` trả về `Modifier` gốc không gắn
