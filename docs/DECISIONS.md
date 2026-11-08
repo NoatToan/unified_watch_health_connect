@@ -135,6 +135,14 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   dump thô của rea (`*.json`, `*.txt`) và manifest của hãng. Lý do: đó là nội dung có bản quyền của hãng, không được
   phát tán công khai (D-004). Chỉ giữ tài liệu giao thức và bằng chứng `.md` đã chắt lọc; `scripts/restore-apks.sh` bị bỏ.
 
+- **D-017** · 2026-11-08 · Gom raw RE artifacts vào `docs/re-analysis/` — **Chốt**
+  Toàn bộ cây phân tích thô (`garmin-analysis/`, `zepp-analysis/`, `rea-output/`, `jadx-out.log`) được chuyển từ
+  workspace root vào `docs/re-analysis/` để chỉ còn một chỗ tra cứu. Thư mục này **gitignored** và không bao giờ
+  commit (APK/decompile/dump thô vẫn là nội dung có bản quyền, D-004/D-016). Tài liệu chắt lọc vẫn ở
+  `docs/analysis/`, `docs/protocols/`, `docs/re-evidence/`; các citation `rea-output/...`,
+  `garmin-analysis/...`, `zepp-analysis/...` trong dossier được hiểu là tương đối với workspace cũ và resolve
+  dưới `docs/re-analysis/`.
+
 <!-- Các agent thêm quyết định mới bên dưới, đánh số tiếp D-1xx (COROS) và D-2xx (E2E/UI). -->
 
 ## COROS driver

@@ -30,8 +30,9 @@ output-metadata.json
 Thumbs.db
 *.log
 
-# Vendor apps and raw analysis output are never committed (copyrighted; docs/DECISIONS.md D-010, D-016)
+# Vendor apps and raw analysis output are never committed (copyrighted; docs/DECISIONS.md D-010, D-016, D-017)
 docs/apks/
+docs/re-analysis/
 docs/re-evidence/*/jadx-*/
 docs/re-evidence/*/*.json
 docs/re-evidence/*/*.txt
