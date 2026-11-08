@@ -69,6 +69,7 @@ import com.unified.health.core.designsystem.component.SummaryMetricCard
 import com.unified.health.core.designsystem.component.WatchImage
 import com.unified.health.core.designsystem.component.formatValue
 import com.unified.health.core.designsystem.component.label
+import com.unified.health.core.designsystem.component.timeLabel
 import com.unified.health.core.designsystem.component.unit
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
@@ -90,9 +91,6 @@ import kotlinx.coroutines.delay
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 @Composable
 internal fun HomeRoute(
@@ -287,31 +285,6 @@ private fun ComparisonBar(label: String, value: Double, max: Double, metric: Hea
         )
     }
 }
-
-/** "Today 10:42", "Yesterday", "Last night", "Nov 2". */
-private fun timeLabel(metric: HealthMetricType, reading: MetricReading): String {
-    val zone = ZoneId.systemDefault()
-    val time = (reading.endTime ?: reading.time).atZone(zone)
-    val today = LocalDate.now(zone)
-    val date = time.toLocalDate()
-    return when (metric.aggregation) {
-        MetricAggregation.CUMULATIVE -> when (reading.time.atZone(zone).toLocalDate()) {
-            today -> "Today"
-            today.minusDays(1) -> "Yesterday"
-            else -> DATE.format(reading.time.atZone(zone))
-        }
-        MetricAggregation.SLEEP -> if (date == today) "Last night" else DATE.format(time)
-        // Resting heart rate is one value per day, stored at midnight: show the day, not "12:00 AM".
-        MetricAggregation.DISCRETE -> when {
-            metric == HealthMetricType.RESTING_HEART_RATE -> if (date == today) "Today" else DATE.format(time)
-            date == today -> TIME.format(time)
-            else -> DATE.format(time)
-        }
-    }
-}
-
-private val DATE: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
-private val TIME: DateTimeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
 
 /**
  * The live reading while it is recent. Each new reading restarts a one-shot timer that expires it, so

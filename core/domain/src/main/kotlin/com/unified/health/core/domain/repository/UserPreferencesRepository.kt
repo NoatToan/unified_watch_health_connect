@@ -14,4 +14,7 @@ interface UserPreferencesRepository {
     suspend fun setUseDynamicColor(enabled: Boolean)
     suspend fun setDailyStepGoal(steps: Int)
     suspend fun setPinnedMetrics(metrics: List<HealthMetricType>)
+
+    /** Persists the Health feed's "Edit cards": [order] (every known card id, in display order) and [hidden] ids. */
+    suspend fun setFeedCards(order: List<String>, hidden: Set<String>)
 }

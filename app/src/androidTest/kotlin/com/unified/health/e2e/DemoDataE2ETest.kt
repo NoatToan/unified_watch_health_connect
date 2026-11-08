@@ -6,9 +6,6 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
-import androidx.compose.ui.test.performTextClearance
-import androidx.compose.ui.test.performTextInput
-import com.unified.health.core.designsystem.component.label
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.MetricAggregation
 import com.unified.health.core.model.TimeRange
@@ -24,14 +21,14 @@ import org.junit.Test
 class DemoDataE2ETest : E2EBase() {
 
     /** The previous step leaves a metric page open (so its screenshot shows the chart); go back first. */
-    private fun backToBrowse() {
+    private fun backToFeed() {
         // The first Back may only hide the keyboard (it depends on the device), so retry a few times.
         repeat(3) {
             compose.waitForIdle()
             if (compose.onAllNodes(hasTestTag("metric_header"), useUnmergedTree = true).fetchSemanticsNodes().isEmpty()) return@repeat
             device.pressBack()
         }
-        waitForTag("browse_search")
+        waitForTag("feed_list")
     }
 
     @Test
@@ -58,14 +55,13 @@ class DemoDataE2ETest : E2EBase() {
 
         report.flow(8, "all-charts", "Every metric chart after seeding") {
             val metrics = HealthMetricType.entries - HealthMetricType.WEIGHT
-            clickTag("nav_BROWSE")
+            clickTag("nav_HEALTH")
             for (metric in metrics) {
                 val range = if (metric.aggregation == MetricAggregation.SLEEP) TimeRange.DAY else TimeRange.MONTH
-                step(metric.name.lowercase().replace('_', '-'), "Browse › search \"${metric.label()}\" › open › ${range.shortLabel}", "Header has a value and the chart has data") {
-                    backToBrowse()
-                    compose.onNodeWithTag("browse_search").performTextClearance()
-                    compose.onNodeWithTag("browse_search").performTextInput(metric.label())
-                    clickTag("browse_metric_${metric.name}")
+                step(metric.name.lowercase().replace('_', '-'), "Health feed › scroll to its card › open › ${range.shortLabel}", "Header has a value and the chart has data") {
+                    backToFeed()
+                    compose.onNodeWithTag("feed_list").performScrollToNode(hasTestTag("card_${metric.name}"))
+                    clickTag("card_${metric.name}")
                     clickTag("range_${range.name}")
                     waitFor(hasTestTag("metric_header") and !hasContentDescription("NO DATA", substring = true), what = "${metric.name} header")
                     val chart = when {
@@ -77,10 +73,9 @@ class DemoDataE2ETest : E2EBase() {
                 }
             }
             step("year-heart-rate", "Open Heart rate › Y", "Twelve monthly min–max ranges") {
-                backToBrowse()
-                compose.onNodeWithTag("browse_search").performTextClearance()
-                compose.onNodeWithTag("browse_search").performTextInput("Heart rate")
-                clickTag("browse_metric_HEART_RATE")
+                backToFeed()
+                compose.onNodeWithTag("feed_list").performScrollToNode(hasTestTag("card_HEART_RATE"))
+                clickTag("card_HEART_RATE")
                 clickTag("range_YEAR")
                 waitFor(hasTestTag("metric_header") and hasContentDescription("RANGE", substring = true), what = "range header")
             }
@@ -88,7 +83,7 @@ class DemoDataE2ETest : E2EBase() {
 
         report.flow(9, "clear-data", "Profile › Developer: clear demo data") {
             step("cleared", "Profile › \"Clear demo data\" › confirm", "Status confirms the wipe; real watch data would have been kept") {
-                backToBrowse()
+                backToFeed()
                 clickTag("nav_PROFILE")
                 compose.onNodeWithTag("clear_demo_data").performScrollTo()
                 clickTag("clear_demo_data")
