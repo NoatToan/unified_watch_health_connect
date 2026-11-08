@@ -2401,3 +2401,11 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest` (rerun đầy đủ, 438 task
   thực thi lại, `RaceCardTest` 4/4 pass) và `./gradlew assembleDebug` — cả hai xanh; cài `app-debug.apk`
   lên `emulator-5554` và chụp màn hình thật trước/sau để tự xác nhận bằng mắt theo đúng yêu cầu D-1161.
+
+- **D-1169** · 2026-11-09 · `ConnectionStatusChip` ("Connected" box) ở màn Devices: bỏ border — **Chốt**
+  `ConnectionStatusChip` (`core/designsystem/.../ConnectionStatusChip.kt`) dùng `AssistChip` mặc định —
+  M3 `AssistChip` tự có viền (`AssistChipDefaults.assistChipBorder()`) khi không truyền `border` tường
+  minh. Bỏ viền này đi — truyền `border = null` vào `AssistChip(...)`. Component này hiện chỉ được dùng
+  trong `feature/devices` (`DevicesScreen.kt`, `DeviceDetailScreen.kt`) nên sửa thẳng trong file dùng
+  chung là đủ, không cần tham số hoá riêng cho từng màn. Cùng khu vực file với D-1148/D-1162/D-1167
+  (agent đang xử lý Devices) — gộp chung, không tách agent riêng.
