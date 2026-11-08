@@ -2016,3 +2016,13 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   khoảng trống khi banner co lại. Có thể tái dùng chung animation/trigger với D-1083 (chỉ khác: tự
   trigger sau delay thay vì chờ scroll), agent tự quyết thời gian delay hợp lý (gợi ý: 1.5-2.5s) và
   cách phối hợp 2 cơ chế (tự co + co-theo-scroll) không xung đột nhau.
+
+- **D-1144** · 2026-11-08 · Bottom nav vẫn còn box/nền đặc phía sau pill dù đã sửa D-1120/D-1134 — **Chốt**
+  User xác nhận trên máy thật: vẫn thấy 1 khối nền màu riêng (dải màu khác content) ngay phía sau/
+  dưới pill, dù `Scaffold(containerColor = Color.Transparent)` (D-1120) và pill bán trong suốt
+  (D-1134/1141) đã làm. Nghi ngờ: còn 1 lớp `Surface`/`Box` nào đó (có thể từ phần
+  `windowInsetsPadding(WindowInsets.navigationBars...)` ở D-1084) vẫn giữ màu nền riêng bao quanh
+  pill, không phải do `Scaffold.containerColor`. Cần rà lại **toàn bộ cây view** từ `Scaffold` xuống
+  tới `PillBottomNavigation` (không chỉ sửa đúng 1 chỗ đã nghi ngờ trước đó), đảm bảo **không còn bất
+  kỳ lớp nào có màu nền đặc** ngoài chính hình pill — kiểm tra bằng Layout Inspector/đọc code kỹ từng
+  modifier `background`/`Surface` trên đường đi, không đoán.
