@@ -10,13 +10,18 @@ Protocol gaps per brand: `docs/protocols/<BRAND>_IMPLEMENTATION_BRIEF.md` (items
   - Capture `adb logcat` during pair + sync; on failure collect `adb bugreport` (contains the HCI log).
   - Record the watch model: newer models use Multi-Link, which so far is covered by unit tests only (the simulator uses the dedicated GFDI service).
 - [ ] Same run for a real **Zepp/Amazfit** watch (needs the user's auth key, or a fresh local bind).
+- [ ] Garmin app-level auth (XXTEA 5101→5111) is implemented; verify on an unbonded watch that the
+  soft-bond fallback lets the watch drive Garmin Auth, and confirm the 5111 frame-encryption switch.
 
 ## Needs a real watch or an HCI snoop log
 
 - [ ] **Garmin:** whether pairing completes without the Garmin Connect cloud `registerDevice` step; whether firmware ever requires the service-4 registration path; 5023 battery layout; the four FIT checks in `FitHealthMapper` (resting HR 273, HRV 389, sampling scheme, per-activity counters); meaning of capability bit 29.
 - [ ] **Zepp:** resting HR type 58 layout (inferred), sleep-stage enum, PAI/sport-summary/GPS layouts, `allowLocalBinding` on current firmware.
-- [ ] **Huawei:** service-7 response layouts (steps, HR, sleep, SpO2, stress); 0x0103 response and 0x0132 TLV 0x01 layouts. Direct pairing needs Huawei's own keys, which we don't extract, so real Huawei data has to come through Health Connect.
-- [ ] **COROS:** everything past recognition/bonding — command IDs (`BleCmdDefPb$CMD_E`), frame/ACK/CRC layout, which UUID family carries traffic, daily and workout (FIT) sync. The app is shell-protected; only a capture from a real watch can unblock this.
+- [ ] **Huawei:** direct BLE now works only for watches that report `authenticVersion == 0`; all other
+  watches fail fast with a clear message (no CAK/HiChain extraction). Still open: service-7 response
+  layouts, 0x0132 zone/IANA real-watch echo, 0x0103 support-vector edge cases, live-HR nesting/periodic
+  re-open. Modern Huawei data has to come through Health Connect (import still TODO).
+- [ ] **COROS:** connection state machine + capture diagnostics are in place; command IDs (`BleCmdDefPb$CMD_E`), frame/ACK/CRC layout, UUID roles and bond order still need one real-watch HCI snoop log.
 - [ ] **Standard SIG:** a brand watch recognised only by name may fall back to the SIG driver when it also exposes Heart Rate (D-602, provisional).
 
 ## App

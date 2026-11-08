@@ -378,6 +378,39 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   Battery trả giá trị khác (`gatt-fallback-*`, pin 50) nên khi E2E thấy pin 64 % và firmware
   `17.0.7-uhsim` là bằng chứng driver đang dùng parser 0x0107 chứ không phải GATT.
 
+- **D-319** · 2026-11-08 · 0x0107 đính chính — **Chốt** (thay D-314)
+  Type 12 = **deviceName**, type 22 = **deviceBtMode**; 0x0107 **không** chứa pin và **không** có
+  capability bitmap. Bỏ suy luận pin từ 0x0107; pin lấy từ service 1 cmd 8 (hai format response) hoặc
+  GATT 0x180F. Nguồn: `docs/analysis/HUAWEI_CONNECTION_ANALYSIS.md`, `ckq.java:139-298` [V].
+- **D-320** · 2026-11-08 · 0x0132 đính chính — **Chốt** (thay D-315)
+  `01 32` là header service/command, không phải TLV; payload thật là TLV1 epoch + TLV2 zone + TLV3 IANA.
+  App kiểm tra thời gian echo và gửi lại đúng một lần nếu lệch (`ckw.java`, `cku.java`). Nguồn:
+  `docs/analysis/HUAWEI_CONNECTION_ANALYSIS.md` [V].
+- **D-321** · 2026-11-08 · 0x0103 response + thứ tự bắt tay BLE — **Chốt**
+  Response 0x0103: TLV con 2 = serviceId, TLV 4 = ASCII hex support vector (0/1 từng command) → nạp
+  `DeviceCapability`. Thứ tự BLE: `0107→0105→0102→0103→0137→013C→0132→0112`; 0x0116 chỉ dùng cho BR.
+  Nguồn: `docs/analysis/HUAWEI_CONNECTION_ANALYSIS.md`, `cki.java:165-249` [V].
+- **D-322** · 2026-11-08 · Auth Huawei: chỉ diagnostic + nhánh no-auth; không extract CAK — **Chốt**
+  0x0101 TLV5 = `authenticVersion u16 + RandA[16]`, TLV17 = `authType`. `authenticVersion == 0` → watch
+  không cần app auth, đi thẳng 0x0107. Các nhánh còn lại (HiChain/HiChainLite/HiChain3/legacy HMAC) đều
+  cần CAK từ white-box native hoặc `libhichain_sdk_jni.so`; **không extract, không nhúng, không bypass**.
+  Watch cần auth sẽ nhận lỗi capability rõ ràng; dữ liệu lịch sử đi Health Connect. Nguồn:
+  `docs/analysis/HUAWEI_AUTH_CRYPTO_ANALYSIS.md` §1.1/§6 [V].
+
+- **D-323** · 2026-11-08 · Huawei direct BLE cho watch `authVersion == 0` — **Chốt**
+  Sau 0x0101, nếu `authenticVersion == 0` thì bỏ qua auth và chạy `0107→0105→0102→0103→0137→013C→
+  0132→0112` ở dạng rõ. Mọi auth version khác fail nhanh bằng `UnsupportedDeviceException` với thông
+  điệp chỉ rõ "direct BLE requires Huawei app-level authentication" — không CAK/HiChain. D-301 vẫn
+  đúng cho watch cần auth. Nguồn: `docs/analysis/HUAWEI_AUTH_CRYPTO_ANALYSIS.md` §1.1.
+- **D-324** · 2026-11-08 · Live HR Huawei + capability — **Chốt** (thay D-302)
+  Live HR = service 23 command 18 (open/close) + notify command 3; TLV 3 là HR, TLV 4 là epoch time
+  (bản phân tích trước ghi nhầm TLV 4; `HwHeartRateManager.java:1063-1108,1255`). Chỉ khai
+  `LIVE_HEART_RATE` khi 0x0103 báo hỗ trợ cặp 23/18. GATT 0x180D vẫn không được giả định.
+- **D-325** · 2026-11-08 · Giả lập Huawei theo nhánh mới — **Chốt** (thay D-304)
+  Bỏ `HuaweiSimulatorAuthenticator` debug: giả lập có hai watch — một `authVersion=0` chạy đầy đủ
+  connect/handshake/battery/device info/live-HR, một `authVersion=3/authType=2` để test lỗi rõ ràng.
+  Không còn đường bypass auth trong bất kỳ build nào.
+
 ## Garmin driver (D-4xx)
 
 - **D-401** · 2026-11-06 · Resting HR và HRV trong lịch sử — **Tạm**
@@ -471,6 +504,28 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   mới dùng giá trị 5023 hợp lệ gần nhất; capability `BATTERY_LEVEL` vẫn chỉ báo khi có SIG (không hứa
   dựa trên layout chưa kiểm). Lý do: yêu cầu vòng 2, an toàn khi layout sai (rơi về null/SIG).
 
+- **D-414** · 2026-11-08 · 5023 đính chính — **Chốt** (thay D-413)
+  Layout đã xác minh: `status = payload[0] & 0x70`, `percent = payload[2]`; vendor poll mỗi 10 phút.
+  SIG 0x180F vẫn là nguồn chính; 5023 là fallback khi không có SIG. Nguồn:
+  `docs/analysis/GARMIN_CONNECTION_ANALYSIS.md`, `ha2/a.java:161-215` [V].
+- **D-415** · 2026-11-08 · Time sync chủ động + service 4 mọi lần + MTU budget — **Chốt** (thay D-412)
+  Driver gửi 5030 TIME_UPDATED và chờ 5052 tối đa 5 s; khi capability bit 71 clear thì gửi 5026 TLV.
+  Service 4 info-page được hỏi **đầu mỗi lần kết nối** (6 trang, 1 s ×5, tổng 20 s), không chỉ sau
+  REGISTER(1) REJECTED. `maxPacketSize` là link budget: trừ COBS `ceil(n/254)` + 8/18 byte và align
+  payload mã hoá. Nguồn: `docs/analysis/GARMIN_CONNECTION_ANALYSIS.md` [V].
+
+- **D-416** · 2026-11-08 · Garmin Auth tầng app đã triển khai — **Chốt**
+  `auth/` gồm XXTEA (đối chiếu vector từ `ss2/n.java`), confirm/STK/session key, state machine
+  5101→5103→5104/5105→5106→5107→5108→5109→5111, lưu `ltk/ediv/rand` vào credential store. Passkey
+  visible dùng `PairingCodeRequester` sẵn có; just-works dùng passkey 0. Sau 5111, `GfdiDispatcher`
+  XXTEA-wrap toàn bộ frame; ACK 5111 gửi plain đúng `ct2/f.java:84`. Không dùng/nhúng secret của Garmin:
+  mọi giá trị đến từ watch và người dùng. Fast path 5104 với LTK đã lưu **chưa** làm (chưa xác minh đủ
+  chuỗi follow-up). Nguồn: `docs/analysis/GARMIN_AUTH_CRYPTO_ANALYSIS.md`.
+- **D-417** · 2026-11-08 · Bond mềm cho Garmin — **Chốt**
+  `LinkRequirements.bondOptional`: nếu OS bond thất bại, link tiếp tục unbonded để watch khởi động
+  Garmin Auth (5101) thay vì đóng kết nối. Các brand khác giữ mặc định `false`. Đây là điều kiện để
+  fallback auth thực sự chạy trên đồng hồ; vẫn cần kiểm trên watch thật.
+
 ## Zepp driver (D-5xx)
 
 - **D-501** · 2026-11-06 · Zepp giao thức — **Chốt**
@@ -498,6 +553,24 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
 - **D-508** · 2026-11-06 · Zepp simulator / E2E — **Chốt**
   `ZeppVirtualWatch` lưu key đã bind ở cấp đồng hồ (`ZeppVirtualWatchStorage`, dùng chung mọi link), không theo từng `GattClient`: đồng hồ thật giữ key tới khi reset/unbind (§5.5, §7), nên lần kết nối lại sau local bind phải auth được bằng key đó. Lỗi cũ "Watch rejected the auth key (status 4)" là do simulator sai, driver giữ nguyên; regression: `core/demo` `ZeppVirtualWatchDriverTest` (ZeppDriver thật + simulator, bind → reconnect ×3).
   Kèm theo: "Show all data" của Steps cộng bước theo phút cho ngày không có tổng ngày từ thiết bị (như thẻ Summary), vì GDSP của Zepp chỉ trả bước theo phút (`MetricSeriesBuilder.readings`).
+
+- **D-509** · 2026-11-08 · Module 0x80 local bind — **Chốt** (đính chính D-501)
+  `DeviceAuthorizationImpl1` (legacy 0x80) **cũng** gọi `startLocalBinding(apiLevel, key)` khi
+  `allowLocalBinding=1 && !SUPPORT_NEW_AUTH`; driver không được throw cho 0x80 nữa. Cloud bind vẫn
+  không làm (cần chữ ký Huami). Nguồn: `docs/analysis/ZEPP_AUTH_CRYPTO_ANALYSIS.md` §3.2,
+  `DeviceAuthorizationImpl1.java:210-213,162` [V].
+- **D-510** · 2026-11-08 · v1 module-list + time sync FEE0 + battery — **Chốt**
+  Module list/auth chỉ có ở channel v2; v1 luôn dùng 0x0009 và bỏ module query (tránh mất tới 5 s).
+  2A2B tìm dưới FEE0 trước, sau đó 0x1805; payload gửi ms/4 + DST reason. Battery: module 0x29
+  (version 0x01, query 0x03, notify 0x04) → FEE0 0x0006 bit-flagged → SIG 0x180F. Nguồn:
+  `docs/analysis/ZEPP_CONNECTION_ANALYSIS.md` [V].
+
+- **D-511** · 2026-11-08 · Zepp robustness + GATT options — **Chốt**
+  Watchdog toàn handshake 120 s; timeout GATT 45/30/30 s và refresh GATT cache trước discovery trên
+  API 28+ (opt-in qua `LinkRequirements`, mặc định cũ giữ nguyên cho brand khác); GDSP retry 3 lần từ
+  cursor cuối, không retry lỗi protocol; channel v2 ACK retry 3 lần (NEED_REPLY mỗi packet 16 và packet
+  cuối); battery notify module 0x29 (0x04) được cache và ưu tiên hơn query một lần. Nguồn:
+  `docs/analysis/ZEPP_CONNECTION_ANALYSIS.md` §4.
 
 ## Standard BLE driver (D-6xx)
 
