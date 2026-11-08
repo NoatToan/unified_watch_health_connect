@@ -2522,3 +2522,19 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   D-1150/1151) — sau nhiều lần thử không thành công trong thời gian hợp lý, xác nhận nhánh này bằng đọc
   kỹ code thay vì ảnh chụp: tái dùng y nguyên `RaceImageBackdrop` (component đã chạy đúng và được xác
   nhận trực quan ở `RaceCardWithPhoto`, D-1131/1136/1142) nên rủi ro thấp.
+
+- **D-1173** · 2026-11-09 · Races carousel ở Home: tự động next 2 item khi vào viewport rồi ngưng, kích thích user nhìn vào — **Chốt**
+  (Dispatch **sau khi** merge `feat/watch-model-images` → `main` + push origin hoàn tất — không gộp vào
+  batch agent hiện tại, làm riêng sau trên `main` hoặc nhánh mới tuỳ lúc đó.)
+  Carousel "Giải chạy sắp tới" ở Home (`RacesCarousel`, `HomeScreen.kt`, D-1123/1124 virtualization +
+  paged scroll) hiện hoàn toàn thụ động — user phải tự vuốt mới thấy có nhiều giải. Thêm: khi carousel
+  **xuất hiện trong viewport** (visible on screen, không phải lúc app mới mở nếu đang cuộn xuống dưới nó),
+  **chờ 3 giây** rồi **tự động next 1 item** (animate scroll sang item kế tiếp, dùng cơ chế pager hiện có
+  — `animateScrollToPage`/tương đương, không giật cục), rồi lặp lại 1 lần nữa để **next sang item thứ 2**,
+  sau đó **ngưng hẳn** — không tự động nữa, để user tự điều khiển từ đó. Mục đích: gợi ý "còn nhiều giải
+  khác, vuốt xem thêm" mà không làm phiền (chỉ 2 lần, không lặp vô hạn). Nếu user **tự vuốt tay** trong
+  lúc đang auto-advance, huỷ ngay chuỗi tự động (không tranh chấp với thao tác thật của user). Logic
+  "trong viewport" nên dùng cơ chế đã có sẵn cho carousel/scroll detection trong Home (không viết lại từ
+  đầu nếu có pattern tương tự — ví dụ dùng `LazyListState`/`onGloballyPositioned` đo vị trí item carousel
+  so với viewport). Nếu user rời Home rồi quay lại, coi như "vào viewport" lại từ đầu (reset đếm, không
+  cần nhớ đã từng auto-advance trước đó qua lần mở app khác).
