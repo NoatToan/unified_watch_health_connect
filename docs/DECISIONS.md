@@ -1337,3 +1337,26 @@ User thấy màn chi tiết workout hiện tại ("Workout detail" theo D-804) q
      cao thấp so với card bên cạnh trong cùng hàng.
   3. Ngày trong card Workouts ("Last running: Nov 8, 20...") cũng bị cắt xấu — rút ngắn format ngày
      (bỏ năm nếu là năm hiện tại, ví dụ chỉ "Nov 8") hoặc bỏ hẳn label "Last running:" chỉ còn ngày.
+
+## Thực thi D-1098/D-1099 (chip flip-in 3D, grid truncation fixes) — D-110x
+
+- **D-1100** · 2026-11-08 · Chip header dùng `WatchImage(interactive = true)` thay fade/scale — **Chốt**
+  `DeviceChip` (`HomeScreen.kt`, D-1083/1088) giờ gọi `WatchImage(..., interactive = true, revealKey =
+  isVisible)` thay vì chỉ có ảnh tĩnh — tái dùng đúng hiệu ứng flip rotationY-từ-(-90°) đã có sẵn ở
+  `WatchImage.tilt3d()` (D-803, dùng ở Devices). `isVisible = alphaFraction > 0f` làm `revealKey`: vì
+  `DeviceChip` `return` sớm khi `alphaFraction <= 0f` (ảnh/toàn bộ chip không được compose khi ẩn), mỗi
+  lần chip thật sự xuất hiện trở lại là một lần compose mới của `WatchImage`, nên chỉ cần key = true là
+  đủ kích hiệu ứng mỗi lần "xuất hiện" mà không chạy lại liên tục trong lúc chip đã hiện sẵn và người
+  dùng còn đang scroll (fraction đổi liên tục nhưng component không bị remount). Phần còn lại của
+  D-1083/1088 (thời điểm/tốc độ co lại, vị trí chip, label "Last synced") giữ nguyên không đổi — chỉ
+  thay hiệu ứng vào của riêng ảnh đồng hồ.
+- **D-1101** · 2026-11-08 · Mở rộng bảng viết tắt Grid mode đủ 12 metric, sửa "No data"/ngày Workouts — **Chốt**
+  Theo đúng D-1099: (1) `compactLabel()` giờ liệt kê tường minh cả 12 `HealthMetricType` (trước chỉ 4,
+  phần còn lại rơi về `label()` đầy đủ gây cắt chữ giữa từ) — SpO2/HRV/Dist theo đúng gợi ý của user,
+  riêng "Distance" (8 ký tự, dài bằng "Exercise" vừa bị lỗi) **không** dùng như gợi ý ban đầu mà đổi
+  thành "Dist" (4 ký tự) vì user tự nhắc "đừng chỉ đoán chuỗi ngắn hơn là vừa" — chọn theo độ dài tối đa
+  đã biết là vừa ("Stress"/"SpO2", 6 ký tự) thay vì đoán; "Exercise"→"Active" (6 ký tự, cũng theo cùng
+  giới hạn). (2) `EmptyMetricCard`: "No data yet" → "No data" + `maxLines = 1`/`Ellipsis` để không bao
+  giờ wrap 2 dòng làm lệch chiều cao hàng. (3) `WorkoutsFeedCard` compact: bỏ hẳn prefix "Last
+  <loại>: ", chỉ còn ngày — bỏ năm khi là năm hiện tại (`shortWorkoutDate`, ví dụ "Nov 8"), giữ năm khi
+  khác năm hiện tại.

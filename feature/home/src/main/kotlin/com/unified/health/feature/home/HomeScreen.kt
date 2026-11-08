@@ -521,14 +521,24 @@ private val DATE_LABEL: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(Fo
  */
 @Composable
 private fun DeviceChip(device: WearableDevice, alphaFraction: Float, modifier: Modifier = Modifier) {
-    if (alphaFraction <= 0f) return
+    val isVisible = alphaFraction > 0f
+    if (!isVisible) return
     Row(
         modifier = modifier
             .graphicsLayer { alpha = alphaFraction }
             .padding(end = Spacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        WatchImage(model = remember(device.vendor, device.name, device.model) { WatchModelMatcher.match(device) }, size = 28.dp)
+        WatchImage(
+            model = remember(device.vendor, device.name, device.model) { WatchModelMatcher.match(device) },
+            size = 28.dp,
+            interactive = true,
+            // D-1098: same flip-in-from -90° rotationY effect WatchImage already does on Devices
+            // (D-803), instead of the plain fade/scale this chip used before. Keyed on visibility
+            // (not e.g. collapseFraction) so it plays once per appearance, not on every scroll tick
+            // while the chip stays on screen.
+            revealKey = isVisible,
+        )
         Spacer(Modifier.width(Spacing.xs))
         Text(
             device.name,
@@ -587,10 +597,12 @@ private fun WorkoutsFeedCard(recent: List<Workout>, onClick: () -> Unit, compact
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 // Grid (D-1073): just name + value — the count of recent workouts, no per-workout rows.
+                // D-1099: dropped the "Last <type>: " prefix and the year (when it's this year) — with
+                // both, "Last running: Nov 8, 2026" was getting cut to "Last running: Nov 8, 20...".
                 compact -> {
                     Text("${recent.size}", style = MetricValueTextStyle)
                     Text(
-                        "Last ${recent.first().type.feedLabel().lowercase()}: ${WORKOUT_DATE.format(recent.first().start.atZone(ZoneId.systemDefault()))}",
+                        shortWorkoutDate(recent.first().start),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
@@ -629,6 +641,14 @@ private fun WorkoutRow(workout: Workout) {
 }
 
 private val WORKOUT_DATE: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+
+/** D-1099: "Nov 8" this year, "Nov 8, 2025" otherwise — short enough for the Grid card's Workouts tile. */
+private val WORKOUT_DATE_SHORT_THIS_YEAR: DateTimeFormatter = DateTimeFormatter.ofPattern("MMM d", java.util.Locale.getDefault())
+
+private fun shortWorkoutDate(start: Instant, zone: ZoneId = ZoneId.systemDefault()): String {
+    val date = start.atZone(zone)
+    return if (date.year == LocalDate.now(zone).year) WORKOUT_DATE_SHORT_THIS_YEAR.format(date) else WORKOUT_DATE.format(date)
+}
 
 @Composable
 private fun MetricFeedCard(
@@ -757,23 +777,38 @@ private fun EmptyMetricCard(metric: HealthMetricType, accent: Color, onClick: ()
             colors = ListItemDefaults.colors(containerColor = Color.Transparent),
             leadingContent = { Icon(metric.icon(), contentDescription = null, tint = accent) },
             headlineContent = { Text(if (compact) metric.compactLabel() else metric.label(), color = accent, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-            supportingContent = { Text("No data yet") },
+            // D-1099: maxLines/ellipsis so this never wraps to a 2nd line — was making Grid cards
+            // with no data taller than their row neighbours.
+            supportingContent = { Text("No data", maxLines = 1, overflow = TextOverflow.Ellipsis) },
             trailingContent = { Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
         )
     }
 }
 
 /**
- * D-1085: short form of a metric's name for the Grid card, chosen to stay legible at 2-column width
- * ("Heart rate" → "HR", "Active energy" → "Cal", ...). [label] already fits comfortably for the rest
- * (steps/sleep/SpO2/stress/distance/exercise/HRV/VO2max), so those pass through unchanged.
+ * D-1085/D-1099: short form of a metric's name for the Grid card, chosen to stay legible at
+ * 2-column width. D-1085 only covered 4 metrics on the assumption the rest ([label] output) already
+ * fit — real-device feedback (D-1099) showed several full labels ("Blood oxygen", "Heart rate
+ * variability", "Walking + running distance") were truncating mid-word, and even the "Exercise"
+ * abbreviation itself was still too long. Every metric that can appear in the feed now gets an
+ * explicit short form, each kept to at most "Stress"/"SpO2"-length (6 characters) — the longest
+ * strings D-1099's screenshot showed rendering fine — rather than guessing a shorter string will fit
+ * without a real device to check against; "Distance" (8 chars, the same length as the "Exercise" that
+ * just failed) was deliberately not used for [HealthMetricType.DISTANCE] for that reason.
  */
 private fun HealthMetricType.compactLabel(): String = when (this) {
+    HealthMetricType.STEPS -> "Steps"
     HealthMetricType.HEART_RATE -> "HR"
+    HealthMetricType.SLEEP -> "Sleep"
+    HealthMetricType.SPO2 -> "SpO2"
+    HealthMetricType.STRESS -> "Stress"
     HealthMetricType.CALORIES -> "Cal"
+    HealthMetricType.WEIGHT -> "Weight"
+    HealthMetricType.DISTANCE -> "Dist"
+    HealthMetricType.EXERCISE_MINUTES -> "Active"
     HealthMetricType.RESTING_HEART_RATE -> "RHR"
-    HealthMetricType.EXERCISE_MINUTES -> "Exercise"
-    else -> label()
+    HealthMetricType.HRV -> "HRV"
+    HealthMetricType.VO2_MAX -> "VO2max"
 }
 
 // ---------------------------------------------------------------- edit feed cards
