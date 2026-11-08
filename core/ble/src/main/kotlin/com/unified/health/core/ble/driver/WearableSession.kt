@@ -57,6 +57,13 @@ data class SyncRequest(
 }
 
 fun interface SyncProgress {
-    /** @param fraction 0..1 */
-    fun report(fraction: Float)
+    /**
+     * @param fraction 0..1
+     * @param stage short, human-readable description (Vietnamese) of what the sync is doing
+     *  right now, e.g. "Đang tải dữ liệu từ đồng hồ (3/12 file)...", or null when the driver has
+     *  nothing more specific to say than the fraction itself. No default value: Kotlin does not
+     *  allow a default on a `fun interface`'s single abstract method (FUN_INTERFACE_ABSTRACT_
+     *  METHOD_WITH_DEFAULT_VALUE), so every call site passes it explicitly (D-1122).
+     */
+    fun report(fraction: Float, stage: String?)
 }

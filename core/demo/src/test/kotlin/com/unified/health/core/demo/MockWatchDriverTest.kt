@@ -66,14 +66,14 @@ class MockWatchDriverTest {
         val session = driver.openSession(scriptedGatt(), context)
         val sink = RecordingSink()
         val progress = mutableListOf<Float>()
-        val count = session.sync(SyncRequest(since = null, now = now), sink) { progress += it }
+        val count = session.sync(SyncRequest(since = null, now = now), sink) { fraction, _ -> progress += fraction }
         assertEquals(sink.records.size, count)
         assertEquals(90, sink.ofType<HealthRecord.DailyActivity>().size)
         assertEquals(1f, progress.last())
         assertTrue(sink.records.none { it is HealthRecord.HeartRate && it.time.isAfter(now) })
 
         val incremental = RecordingSink()
-        session.sync(SyncRequest(since = now.minusSeconds(86_400), now = now), incremental) { }
+        session.sync(SyncRequest(since = now.minusSeconds(86_400), now = now), incremental) { _, _ -> }
         assertEquals(2, incremental.ofType<HealthRecord.DailyActivity>().size)
     }
 }

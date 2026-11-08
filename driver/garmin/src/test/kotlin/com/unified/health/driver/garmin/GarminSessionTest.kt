@@ -117,7 +117,7 @@ class GarminSessionTest {
 
         val sink = RecordingSink()
         val reported = mutableListOf<Float>()
-        val delivered = session.sync(SyncRequest(since = since, now = now), sink) { reported += it }
+        val delivered = session.sync(SyncRequest(since = since, now = now), sink) { fraction, _ -> reported += fraction }
 
         val raw = sink.ofType<HealthRecord.RawPayload>().single()
         assertEquals("fit_monitoring", raw.kind)
@@ -151,7 +151,7 @@ class GarminSessionTest {
 
         val session = GarminSession.open(watch.gatt, config())
         val sink = RecordingSink()
-        session.sync(SyncRequest(since = since, now = now), sink) {}
+        session.sync(SyncRequest(since = since, now = now), sink) { _, _ -> }
 
         assertEquals(listOf(0, 3), watch.sent(GfdiMessageId.DOWNLOAD_REQUEST).map { ByteReader(it.payload).u16le() })
         val workout = sink.ofType<HealthRecord.Workout>().single()
@@ -174,12 +174,12 @@ class GarminSessionTest {
         try {
             // First sync: nothing known yet, both activities are new. Sorted oldest-first, so the
             // 80-day-old file (4) is requested before the 40-day-old one (3).
-            session.sync(SyncRequest(since = now, now = now), sink) {}
+            session.sync(SyncRequest(since = now, now = now), sink) { _, _ -> }
             assertEquals(listOf(0, 4, 3), watch.sent(GfdiMessageId.DOWNLOAD_REQUEST).map { ByteReader(it.payload).u16le() })
             watch.received.clear()
 
             // Second sync: `:core:data` now reports both timestamps as already stored raw payloads.
-            session.sync(SyncRequest(since = now, now = now, knownRawPayloadTimestamps = setOf(t1, t2)), sink) {}
+            session.sync(SyncRequest(since = now, now = now, knownRawPayloadTimestamps = setOf(t1, t2)), sink) { _, _ -> }
             assertEquals(listOf(0), watch.sent(GfdiMessageId.DOWNLOAD_REQUEST).map { ByteReader(it.payload).u16le() })
         } finally {
             session.close()
@@ -198,7 +198,7 @@ class GarminSessionTest {
         val session = GarminSession.open(watch.gatt, config())
         val sink = RecordingSink()
         try {
-            session.sync(SyncRequest(since = now, now = now, knownRawPayloadTimestamps = setOf(known)), sink) {}
+            session.sync(SyncRequest(since = now, now = now, knownRawPayloadTimestamps = setOf(known)), sink) { _, _ -> }
 
             // Only the never-seen-before file (4) is downloaded; the already-known one (3) is skipped.
             assertEquals(listOf(0, 4), watch.sent(GfdiMessageId.DOWNLOAD_REQUEST).map { ByteReader(it.payload).u16le() })
@@ -222,7 +222,7 @@ class GarminSessionTest {
         val sink = RecordingSink()
         try {
             // First sync: 55 brand-new activities, capped at ACTIVITY_CATCH_UP_CAP (50); the 5 oldest are deferred.
-            session.sync(SyncRequest(since = now, now = now), sink) {}
+            session.sync(SyncRequest(since = now, now = now), sink) { _, _ -> }
             val firstSyncIndices = watch.sent(GfdiMessageId.DOWNLOAD_REQUEST).map { ByteReader(it.payload).u16le() }.filter { it != 0 }
             assertEquals(50, firstSyncIndices.size)
             // Newest-first: the 5 oldest entries (fileIndex 3..7) must be the ones left out.
@@ -231,7 +231,7 @@ class GarminSessionTest {
 
             // Second sync: the 50 just downloaded are now known; the remaining 5 oldest are fetched.
             val knownNow = firstSyncIndices.map { index -> entries.first { it.first == index }.third }.toSet()
-            session.sync(SyncRequest(since = now, now = now, knownRawPayloadTimestamps = knownNow), sink) {}
+            session.sync(SyncRequest(since = now, now = now, knownRawPayloadTimestamps = knownNow), sink) { _, _ -> }
             val secondSyncIndices = watch.sent(GfdiMessageId.DOWNLOAD_REQUEST).map { ByteReader(it.payload).u16le() }.filter { it != 0 }
             assertEquals((3..7).toList(), secondSyncIndices.sorted())
         } finally {

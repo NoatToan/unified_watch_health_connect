@@ -194,18 +194,28 @@ internal class ZeppSession(
     }
 
     override suspend fun sync(request: SyncRequest, sink: HealthRecordSink, progress: SyncProgress): Int {
+        progress.report(0f, "Đang mở kênh dữ liệu...")
         val gdsp = gdsp ?: throw UnsupportedDeviceException("Watch does not expose the GDSP history characteristics")
         gdsp.open()
         val since = request.effectiveSince()
         val now = request.now
         var delivered = 0
         SYNC_TYPES.forEachIndexed { typeIndex, type ->
+            val stage = "Đang tải ${stageLabel(type)} (${typeIndex + 1}/${SYNC_TYPES.size})..."
             delivered += syncType(gdsp, type, since, now, sink) { fraction ->
-                progress.report(((typeIndex + fraction) / SYNC_TYPES.size).coerceIn(0f, 1f))
+                progress.report(((typeIndex + fraction) / SYNC_TYPES.size).coerceIn(0f, 1f), stage)
             }
         }
-        progress.report(1f)
+        progress.report(1f, "Hoàn tất")
         return delivered
+    }
+
+    private fun stageLabel(type: GdspDataType): String = when (type) {
+        GdspDataType.ACTIVITY -> "dữ liệu vận động"
+        GdspDataType.SPO2_POINT -> "SpO2"
+        GdspDataType.STRESS_ALL_DAY -> "mức căng thẳng"
+        GdspDataType.STRESS_SINGLE -> "mức căng thẳng"
+        GdspDataType.RESTING_HEART_RATE -> "nhịp tim nghỉ"
     }
 
     /** Pulls [type] block by block from [since], looping on the header count (§6.1). */

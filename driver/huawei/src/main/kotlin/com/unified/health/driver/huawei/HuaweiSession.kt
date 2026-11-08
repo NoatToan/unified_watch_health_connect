@@ -138,7 +138,7 @@ internal class HuaweiSession private constructor(
         )
         probes.forEachIndexed { index, (kind, command) ->
             probe(kind, command, sink)
-            progress.report((index + 1f) / probes.size)
+            progress.report((index + 1f) / probes.size, "Đang truy vấn dữ liệu đồng hồ (${index + 1}/${probes.size})...")
         }
         // Watch-initiated messages received since the last sync (also undecoded, see the router).
         router.drain().takeIf { it.isNotEmpty() }?.let { sink.onRecords(it) }

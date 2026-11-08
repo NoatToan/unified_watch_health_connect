@@ -30,6 +30,11 @@ kotlinxSerialization = "1.12.0"
 javaxInject = "1"
 bouncycastle = "1.86"
 
+# Races feature (D-1105/D-1107): network fetch, image loading, in-app browser tab.
+okhttp = "4.12.0"
+coilCompose = "2.7.0"
+androidxBrowser = "1.8.0"
+
 # Testing
 junit4 = "4.13.2"
 androidxTest = "1.7.0"
@@ -76,6 +81,10 @@ kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 bouncycastle-prov = { group = "org.bouncycastle", name = "bcprov-jdk18on", version.ref = "bouncycastle" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
+androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidxBrowser" }
 
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTest" }

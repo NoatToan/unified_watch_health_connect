@@ -1430,3 +1430,1161 @@ User thấy màn chi tiết workout hiện tại ("Workout detail" theo D-804) q
   URL: `https://noattoan.github.io/unified_watch_health_connect/`. Lần build đầu tiên mất vài phút
   sau khi bật, chưa verify live ngay lúc bật (API trả 201 xác nhận config đã lưu, nhưng
   `curl` tới URL vẫn 404 ngay sau đó — bình thường, GitHub Pages build bất đồng bộ).
+
+## Màn "Giải chạy" — marketing-catchy, nguồn data từ unified_health_service (D-1105+)
+
+Dự án riêng `NoatToan/unified_health_service` (repo mới, local
+`/Users/Apple/Documents/Projects/noattoan/unified_health_service`) crawl giải chạy VN hằng ngày,
+publish `docs/races/latest.json` qua GitHub Pages tại
+`https://noattoan.github.io/unified_health_service/races/latest.json` (schema: xem
+`unified_health_service/docs_research/RACE_SOURCES_RESEARCH.md` §3). App này giờ cần hiển thị data
+đó, mục đích rõ ràng là **marketing cho giải chạy** (đẩy người dùng bấm đăng ký), không phải chỉ liệt
+kê thông tin.
+
+- **D-1105** · 2026-11-08 · Vị trí đặt trong app: card quảng bá trên Home + màn list riêng, KHÔNG thêm bottom-nav tab — **Chốt**
+  Không thêm tab thứ 5 vào `PillBottomNavigation` (đã đủ 4 tab Home/Activity/Devices/Profile, thêm
+  nữa chật). Thay vào đó: 1 card "Giải chạy sắp tới" dạng carousel ngang trên Home (ngay dưới
+  RingsCard, trước "All metrics" — vị trí nổi bật, đúng tinh thần marketing/discovery), bấm "Xem tất
+  cả" mở màn `RacesScreen` list đầy đủ (+ filter theo terrain/khoảng cách nếu có thời gian). Mỗi card
+  bấm vào mở `registrationUrl` qua Chrome Custom Tabs (không rời hẳn app, không cần WebView tự viết).
+- **D-1106** · 2026-11-08 · Thiết kế "catchy": fallback gradient theo terrain khi không có ảnh, đếm ngược ngày — **Chốt**
+  Hầu hết race hiện chưa có `imageUrl` (theo schema, phần lớn null) — không để trống xấu: mỗi card có
+  nền gradient riêng theo `terrain` (road/trail/ultra/triathlon/virtual — mỗi loại 1 cặp màu + icon
+  lớn mờ phía sau), tên giải to, ngày + "Còn N ngày" đếm ngược nổi bật, badge khoảng cách
+  (42km/21km/10km...), giá "Từ Xđ" nếu có, nút CTA rõ ràng "Đăng ký ngay". Nếu sau này có `imageUrl`
+  thật thì ảnh thay gradient, layout giữ nguyên.
+- **D-1107** · 2026-11-08 · Network + cache: fetch 1 lần/ngày, cache lại, không chặn UI nếu lỗi — **Chốt**
+  Thêm client HTTP nhẹ (OkHttp, hoặc Ktor nếu dự án đã có sẵn — agent tự kiểm tra
+  `gradle/libs.versions.toml` trước khi thêm dependency mới) gọi đúng URL JSON ở trên, parse bằng
+  kotlinx.serialization, cache raw JSON + thời điểm fetch vào DataStore (giống pattern
+  `UserPreferences` đã có) — chỉ fetch lại nếu cache quá 24h hoặc user pull-to-refresh. Nguồn data
+  (`unified_health_service`) đang được dựng song song, có thể chưa live/chưa có race nào — màn hình
+  phải xử lý đẹp cả 3 trạng thái: loading, có data, lỗi/rỗng (ẩn hẳn card quảng bá trên Home nếu rỗng,
+  không hiện khung trống xấu).
+
+## UI polish pass — dịch nguyên tắc từ skill "make-interfaces-feel-better" (D-1108+, hoãn tới sau Races)
+
+User thấy UI "trông basic quá", đưa link `motionsites.ai` — kiểm tra thì đây là nền tảng prompt cho
+web design (SaaS/portfolio/ecommerce), **không áp dụng được cho mobile/Compose** (không có UI
+kit/design system nào tải về được). Thay vào đó dùng skill nội bộ `make-interfaces-feel-better`
+(viết cho CSS/web) — dịch nguyên tắc sang Compose:
+
+- **D-1108** · 2026-11-08 · Phạm vi polish pass — **Chốt**
+  Áp cho `core/designsystem` (component dùng chung) trước, rồi lan ra các card/screen đang "basic":
+  (1) **Concentric radius** — bo góc card lồng trong card (vd pill indicator trong `PillBottomNavigation`,
+  mini card trong grid) phải = bo góc ngoài trừ padding, kiểm tra lại từng chỗ đang lệch. (2)
+  **Tabular numbers** — mọi số liệu động (bước chân, bpm, kcal, đếm ngược ngày giải chạy) dùng
+  `TextStyle(fontFeatureSettings = "tnum")` để không nhảy độ rộng khi số đổi. (3) **Motion có chủ
+  đích** — card/button bấm vào co nhẹ (`scale(0.96f)` qua `Modifier.scale` + theo dõi
+  `PressInteraction` qua `interactionSource`, không dùng ripple mặc định khi đã có press-scale, như
+  đã làm cho `PillBottomNavigation` ở D-1091); enter animation chậm/êm hơn exit (`AnimatedVisibility`
+  tách riêng `enter`/`exit`, exit ngắn ~150ms); đổi icon (vd nút Grid/List D-1073) dùng `Crossfade`
+  thay vì nhảy tức thì. (4) **Hit area** — icon button tối thiểu 48dp, audit lại các nút nhỏ hiện có.
+  (5) **Shadow/border có chủ đích** — card dùng `tonalElevation` HOẶC `BorderStroke`, không tuỳ tiện
+  cả hai không lý do; ảnh (card race có `imageUrl` thật, D-1106) nên có outline mờ 1dp viền trong để
+  không bị nhòe cạnh vào nền.
+  **Hoãn tới khi agent Races (D-1105/1106/1107) xong** — cả hai đều đụng `core/designsystem` và
+  `HomeScreen.kt`; làm polish pass song song dễ đụng diff. Thứ tự: Races xong trước (đang tạo card
+  mới, cần polish áp dụng luôn từ đầu lên card đó thay vì làm 2 lần), polish pass sau.
+
+## Thực thi D-1105/1106/1107 (màn "Giải chạy") — D-1109
+
+- **D-1109** · 2026-11-08 · Các điểm chưa chốt cụ thể khi implement — **Chốt**
+  D-1105/1106/1107 đã chốt phạm vi/vị trí/thiết kế/cache; các điểm implementation cụ thể dưới đây
+  agent tự quyết vì không có trong 3 quyết định gốc:
+  1. **Module mới `feature:races`** (không nhét vào `feature:activity`) — `feature:activity` hiện chỉ
+     xử lý workout cá nhân (dữ liệu sync từ đồng hồ), còn Races là nội dung marketing từ nguồn ngoài,
+     bản chất khác hẳn; tách module riêng đúng tinh thần "one module per feature" đã có, build.gradle.kts
+     copy y hệt feature khác (`unifiedhealth.android.feature` convention plugin).
+  2. **Dependency mới**: `OkHttp 4.12.0` (dự án chưa có client HTTP nào, kotlinx.serialization đã có
+     sẵn version 1.12.0 nhưng plugin `kotlin-serialization` + lib `kotlinx-serialization-json` chưa
+     được áp cho `core/data` — thêm cả hai), `Coil 2.7.0` (`coil-compose`, dự án chưa load ảnh remote
+     bao giờ — chọn Coil vì là chuẩn de-facto cho Compose, nhẹ hơn Glide), `androidx.browser 1.8.0`
+     (Custom Tabs, dự án chưa có). `RaceCard`/`launchInCustomTab` đặt ở `core/designsystem` (không
+     phải từng feature module) vì cả Home lẫn `feature:races` đều cần y hệt — `core/designsystem` đã
+     `api(projects.core.model)` sẵn nên không phát sinh dependency mới giữa 2 feature module.
+  3. **`RaceCountdown` đặt ở `core/model`, không phải `core/domain`** — dù về bản chất giống style
+     `HighlightCalculator`/usecase khác (phép tính thuần, không gọi repository), `core/designsystem`
+     chỉ `api(projects.core.model)` chứ không phụ thuộc `core/domain` (feature mới được phép, xem
+     `AndroidFeatureConventionPlugin`); đặt ở `core/model` để `RaceCard` (designsystem) gọi trực tiếp
+     mà không phá quy ước "designsystem không biết domain".
+  4. **Lọc bỏ giải đã qua ở tầng repository** (`endDate ?: startDate < today` → loại), áp dụng chung
+     cho cả carousel Home lẫn `RacesScreen` đầy đủ — mục đích feature là đẩy đăng ký giải sắp/đang
+     diễn ra, giải đã xong không còn actionable; D-1105 nói "list đầy đủ" nhưng không nói giữ cả giải
+     cũ, nên hiểu "đầy đủ" = đầy đủ trong số giải còn liên quan. Nhờ lọc chung 1 chỗ, `RacesState`
+     (`Loading`/`Success`/`Empty`/`Error`) dùng được y hệt cho cả 2 màn hình.
+  5. **`registrationStatus`/`terrain` lạ hoặc thiếu** → mặc định `UNKNOWN`/`ROAD` (loại phổ biến nhất
+     trong feed) thay vì crash/loại bỏ cả race; CTA khi `UNKNOWN` hiện "Xem chi tiết" (không phải
+     "Đăng ký ngay" vì không chắc còn mở, cũng không phải "Đã đóng" vì không có bằng chứng đã đóng) —
+     card vẫn bấm được (mở `registrationUrl`), chỉ nhãn khác.
+  6. **Home pull-to-refresh refetch luôn cả Races** (không chỉ sync đồng hồ) — D-1107 nói "user pull-
+     to-refresh" không chỉ rõ màn nào; Home có cử chỉ pull-to-refresh sẵn, hợp lý refetch luôn Races
+     hiển thị ngay trên Home. `RacesScreen` riêng cũng có pull-to-refresh/nút "Thử lại" của chính nó.
+  7. **Test `RemoteRacesRepositoryTest`**: constructor 4 tham số (`scope`/`ioDispatcher` tường minh,
+     giống `DefaultLiveHealthRepository`) để test truyền `backgroundScope`/`Dispatchers.Unconfined`
+     thay vì `Dispatchers.IO` thật — nếu không, `withContext(Dispatchers.IO)` bên trong sẽ "biến mất"
+     khỏi `TestCoroutineScheduler` của `runTest`, khiến `advanceUntilIdle()`/`first{}` không bao giờ
+     thấy state cập nhật (đã tự kiểm chứng bằng 1 test chẩn đoán độc lập trước khi sửa). Dùng
+     `runCurrent()` chứ không phải `advanceUntilIdle()` để pump scheduler — thực nghiệm thấy
+     `advanceUntilIdle()` không chạy coroutine `launch` từ `init{}` trên `backgroundScope` trong phiên
+     bản coroutines-test của dự án (1.11.0), còn `runCurrent()` thì có (khớp với cách
+     `DefaultLiveHealthRepositoryTest` đã làm sẵn trong repo, không phải suy đoán mới).
+  8. **Test data xác nhận nguồn sống thật đã có data** lúc viết: `curl` trực tiếp
+     `https://noattoan.github.io/unified_health_service/races/latest.json` lúc 2026-11-08 trả về 200,
+     50 races (49 còn hạn), `imageUrl` null 100% — đúng như brief mô tả "most races currently have
+     imageUrl: null" — xác nhận gradient-by-terrain thật sự là trường hợp phổ biến, không phải giả
+     định.
+
+- **D-1110** · 2026-11-08 · Dời "Giải chạy sắp tới" xuống cuối Home; đổi tên "Summary" → "Home" — **Chốt**
+  User phản hồi sau khi xem bản cài thật: (1) carousel giải chạy đang nằm ngay sau `RingsCard` (đầu
+  trang) — dời xuống **cuối** list Home (sau "All metrics"/feed, trước khoảng trống cuối trang), vì
+  đây là nội dung marketing/khám phá, không phải data sức khỏe chính — không nên chiếm vị trí đầu màn
+  hình. (2) Đổi nhãn **"Summary" → "Home"** ở mọi chỗ hiển thị cho user (tiêu đề màn, nhãn tab trong
+  `PillBottomNavigation`/`TopLevelDestination`) vì "Home" thân thiện hơn — chỉ đổi label/string hiển
+  thị, không đổi route/composable name nội bộ (`HomeScreen`, `HomeDestination`... giữ nguyên để không
+  phải sửa lan man) trừ khi cấn.
+
+- **D-1127** · 2026-11-08 · Thực thi D-1110 — **Chốt**
+  (Đánh số lại từ D-1111 ban đầu vì trùng với D-1111 "crawler ảnh/mô tả/raceStatus" do agent khác log
+  cùng lúc — nội dung không đổi, chỉ đổi số để hết trùng.)
+  (1) Dời block `RacesCarousel` trong `Summary()` (`HomeScreen.kt`) từ ngay sau `item { RingsCard(...) }`
+  xuống sau block `Highlights` (cuối `LazyColumn`, trước khi đóng) — logic hiển thị (chỉ render khi
+  `RacesState.Success` non-empty) giữ nguyên nguyên văn, chỉ đổi vị trí. (2) Đổi đúng 2 chỗ string hiển
+  thị: `TopLevelDestination.HOME` label `"Summary"` → `"Home"` (`app/.../navigation/TopLevelDestination.kt`,
+  dùng chung bởi `PillBottomNavigation`) và `TopAppBar`'s `title = { Text("Summary") }` → `Text("Home")`
+  trong `HomeScreen()`. Không đổi `app/src/androidTest/.../UserJourneyE2ETest.kt` (chuỗi `"summary"`/
+  `"Summary"` ở đó chỉ là label bước báo cáo E2E, không phải assertion trên text màn hình — ngoài phạm
+  vi android-coder theo quy ước CLAUDE.md, để `e2e-flows` xử lý nếu cần).
+
+## Races đợt 2: ảnh thật, mô tả chi tiết, filter, màn detail trong app (D-1111+)
+
+Mở rộng schema JSON của `unified_health_service` (repo riêng) — chốt ngay để 2 bên (crawler +
+app) làm song song không lệch nhau. Field mới thêm vào mỗi race trong `docs/races/latest.json`:
+```json
+{
+  "imageUrl": "https://.../banner.jpg",
+  "description": "Đoạn mô tả/giới thiệu giải, trích từ trang chi tiết qua regex, null nếu không trích được",
+  "raceStatus": "upcoming" | "past"
+}
+```
+`raceStatus` do crawler tự tính từ `startDate` so với ngày crawl — **khác** `registrationStatus`
+(open/closed/sold_out, nói về việc còn mua vé được không). Giữ **cả upcoming lẫn past** trong cùng
+`latest.json` (không tách file riêng) — dataset còn nhỏ (50 giải), đơn giản hơn 2 endpoint; app lọc
+phía client, mặc định chỉ hiện upcoming.
+
+- **D-1111** · 2026-11-08 · Crawler: thêm ảnh chính thức + mô tả giải qua regex, tính `raceStatus` — **Chốt** (giao `unified_health_service`)
+  Mỗi scraper cố lấy ảnh: ưu tiên ảnh thumbnail ngay trên trang listing nếu có, fallback sang
+  `<meta property="og:image">` của trang chi tiết race (hầu hết site đều có, không cần biết cấu trúc
+  riêng từng site) — cần 1 request thêm/race vào trang detail, vẫn tuân thủ rate-limit/robots.txt đã
+  có. Cùng lúc lấy ln đoạn mô tả giải (đoạn giới thiệu/nội dung chính) qua regex/parse text từ trang
+  detail đó luôn (đỡ phải crawl detail 2 lần). Field `raceStatus` tính tại bước merge/write, không
+  cần network thêm. Crawl càng nhiều ảnh thật càng tốt — đây là ưu tiên chính của đợt này (carousel
+  trong app dùng ảnh thật thay gradient).
+- **D-1112** · 2026-11-08 · App: title auto-size không truncate tên giải — **Chốt** (giao `unified_health_app`)
+  `RaceCard.kt` đổi tên giải sang auto-size text (API `BasicText`/`autoSize` nếu Compose BOM dự án đã
+  hỗ trợ — kiểm tra `gradle/libs.versions.toml`; nếu chưa có thì tự viết logic đo-và-giảm cỡ chữ tới
+  khi vừa khung, pattern phổ biến trước khi có API chính thức) — không bao giờ ellipsis/truncate tên
+  giải, co chữ lại thay vì cắt.
+- **D-1113** · 2026-11-08 · App: filter theo khu vực + tháng trên màn Races, filter thêm "đã diễn ra" — **Chốt** (giao `unified_health_app`)
+  `RacesScreen` thêm UI filter: chip/dropdown theo `province`, và theo tháng (`startDate`). Mặc định
+  chỉ hiện `raceStatus == "upcoming"`; thêm 1 toggle/filter riêng để user tự bật xem cả giải
+  `raceStatus == "past"` nếu muốn (không bắt buộc hiện mặc định).
+- **D-1114** · 2026-11-08 · App: màn Race Detail trong app trước khi mở webview đăng ký — **Chốt** (giao `unified_health_app`)
+  Bấm vào race card (Home carousel hoặc `RacesScreen`) giờ mở 1 màn **`RaceDetailScreen` trong app**
+  trước (ảnh lớn, tên, ngày, địa điểm, cự ly, giá, đoạn `description` crawl được) — **không** mở
+  thẳng webview như hiện tại nữa. Trong màn detail đó mới có nút CTA "Đăng ký ngay" mở
+  `registrationUrl` qua Chrome Custom Tabs (giữ đúng hành vi "đi vào detail hẳn mở webview" — chỉ là
+  giờ có 1 bước trung gian thân thiện hơn trước khi rời app). Nếu `description` null (crawler chưa
+  kịp lấy), vẫn hiện đủ thông tin cơ bản khác, không để trống xấu.
+
+- **D-1115** · 2026-11-08 · `DeviceBanner` trên Home dùng lại đúng style + animation của card thiết bị bên Devices — **Chốt**
+  User thấy `DeviceBanner` trên Home (box hiện thiết bị đang kết nối) khác với card thiết bị trong
+  "My devices" ở màn Devices (`feature/devices/DevicesScreen.kt`) — cả về style box (ảnh đồng hồ,
+  bo góc, elevation/border) lẫn hiệu ứng animation lúc xuất hiện (3D flip-in của `WatchImage`, đã
+  dùng cho header chip ở D-1098). Đồng bộ lại: `DeviceBanner` tái dùng đúng composable/animation đã
+  có ở Devices thay vì tự có style riêng — không viết lại từ đầu, chỉ gọi lại đúng component/style
+  function đã tồn tại.
+
+## Thực thi D-1112/1113/1114 (auto-size title, filter Races, Race Detail trong app) — D-1125
+
+(Đánh số lại 2 lần vì nhiều agent chạy song song cùng log vào `docs/DECISIONS.md`: D-1116 ban đầu →
+trùng với D-1116 "Crawler: phân loại marathon/trail..."; đổi sang D-1122 → lại trùng tiếp với D-1122
+"`Modifier.fillBleed()`..." do một agent khác log ngay sau đó. Nội dung không đổi qua các lần đổi số,
+chỉ đổi số để hết trùng — giống cách đã xử lý D-1080/D-1082/D-1097 trước đó. Số D-1125 chọn vì D-1124
+là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.)
+
+- **D-1125** · 2026-11-08 · Các điểm chưa chốt cụ thể khi implement D-1112/D-1113/D-1114 — **Chốt**
+  1. **Auto-size dùng `Text(..., autoSize = TextAutoSize.StepBased(...))` thẳng trên
+     `androidx.compose.material3.Text`** (không cần `BasicText` riêng hay tự viết logic đo-giảm cỡ
+     chữ) — kiểm tra qua Context7/doc chính thức xác nhận Compose BOM `2026.09.00` (đã có trong
+     `gradle/libs.versions.toml`) có overload `Text(text: String, color: Color, autoSize:
+     TextAutoSize?, ...)`, đúng API D-1112 đã dự đoán. `minFontSize = 13.sp`/`maxFontSize` =
+     đúng cỡ chữ gốc của style truyền vào (`titleLarge` 22.sp cho card, `headlineMedium` 28.sp cho
+     detail) để không bao giờ to hơn thiết kế cũ — chỉ co nhỏ khi tên quá dài, không bao giờ to lên.
+     Giữ `maxLines = 2` (card)/`3` (detail), bỏ hẳn `overflow = TextOverflow.Ellipsis` cũ (mục tiêu
+     D-1112 là "không bao giờ truncate/ellipsis" — co chữ tới `minFontSize` là nỗ lực cuối cùng, chấp
+     nhận rủi ro lý thuyết text bị tràn nhẹ nếu tên giải cực dài vượt quá khả năng co, nhưng tên giải
+     chạy thực tế trong feed luôn ngắn hơn nhiều so với giới hạn này).
+  2. **Tách logic dùng chung giữa `RaceCard` và `RaceDetailScreen` vào `core/designsystem`** (đúng yêu
+     cầu "reuse, don't duplicate" của D-1114): `RaceVisualBackground(race, modifier, terrainIconSize)`
+     (ảnh thật qua Coil + scrim, hoặc gradient-theo-terrain + icon mờ khi `imageUrl` null — y hệt logic
+     cũ của `RaceCard`), `RaceNameText(name, modifier, style, maxLines)` (auto-size dùng chung), và
+     `RaceRegistrationStatus.ctaLabel()` (hàm thuần trả về đúng 4 nhãn tiếng Việt cũ: "Đăng ký
+     ngay"/"Đã đóng đăng ký"/"Hết vé"/"Xem chi tiết") — tách **nhãn** ra hàm riêng thay vì tái dùng
+     nguyên `RaceCallToAction` (vốn có màu/pill style chỉ hợp nền tối/gradient) cho nút CTA to ở
+     detail, vì nút đó không nhất thiết nằm đè lên gradient; `RaceCard` giờ cũng gọi `ctaLabel()`
+     thay vì hard-code lại chuỗi.
+  3. **`RacesRepository`/`RemoteRacesRepository` bỏ hẳn filter ẩn giải đã qua theo ngày** (khác với
+     D-1109 điểm 4) — giờ giữ **toàn bộ** race hợp lệ (chỉ loại record thật sự malformed), sắp theo
+     `startDate` tăng dần như cũ, không lọc theo ngày nữa. Lý do: D-1113 cần cho user bật xem lại giải
+     đã diễn ra (`raceStatus == past`) ở `RacesScreen`, nên tầng data không còn được phép âm thầm vứt
+     bỏ giải quá khứ — việc lọc "mặc định chỉ hiện upcoming" chuyển xuống tầng UI (`RacesViewModel` cho
+     `RacesScreen`, `Summary()`/`RacesCarousel` cho Home carousel — carousel Home **vẫn luôn** chỉ lọc
+     `raceStatus == upcoming`, không có toggle, đúng tinh thần quảng bá giải sắp diễn ra của D-1105).
+     `RacesState` (interface ở `core/domain`) giữ nguyên không đổi (`Empty` vẫn nghĩa là "feed không có
+     race hợp lệ nào", không phải "không có race upcoming nào" — trường hợp feed chỉ toàn race quá khứ
+     hiển thị `Success(races)` rỗng-sau-lọc ở UI, `RacesScreen` tự hiển thị thông báo "không có giải
+     khớp bộ lọc" riêng, khác với `RacesState.Empty` gốc).
+  4. **`raceStatus` thiếu/không nhận diện được → mặc định `RaceStatus.UPCOMING` ngay tại DTO mapper**
+     (`RaceDto.toDomainOrNull()`), đúng yêu cầu brief — không tính lại từ `startDate` so với ngày hôm
+     nay (khác cách cũ `RaceCountdown`/filter D-1109 vốn tự tính bằng ngày) vì field này giờ do crawler
+     tính sẵn, tính lại ở app dễ lệch với ý "raceStatus do crawler tự tính từ ngày crawl" nêu trong
+     brief — app chỉ cần fallback an toàn khi thiếu, không tự suy luận lại.
+  5. **Filter state (`province`/`month`/`showPast`) sống trong `RacesViewModel`, không phải domain** —
+     `RaceFilters`/`RacesUiState` mới (sealed interface riêng, không phải `RacesState` domain) định
+     nghĩa ngay trong `feature/races`, danh sách `province`/`month` khả dụng tính từ chính danh sách
+     race đã tải (`distinct().sorted()`) mỗi khi state đổi — không cache riêng, đơn giản vì dataset nhỏ
+     (~50 race). UI filter dùng `FilterChip` (Material3, dự án chưa dùng chip này ở đâu khác) thành 1
+     hàng cuộn ngang cho tỉnh/thành, 1 hàng cuộn ngang cho tháng (`"Tất cả"` + mỗi tháng dạng
+     `"Th.11/2026"`), và 1 `FilterChip` riêng "Đã diễn ra" bật/tắt — không dùng dropdown (Compose
+     `ExposedDropdownMenu` cồng kềnh hơn cho ít lựa chọn, chip row nhất quán với phong cách
+     card/pill đã có ở `RaceCard`).
+  6. **`RaceDetailScreen` tra race theo `raceId` bằng cách lọc `RacesRepository.races` hiện có**
+     (giống hệt pattern `WorkoutDetailViewModel`/`MetricDetailViewModel` đã dùng cho `savedStateHandle
+     .toRoute<...>()` + tra cứu list đã tải) — không thêm API/field `getRaceById` mới vào
+     `RacesRepository` vì state đã luôn có đủ danh sách race trong bộ nhớ, tra bằng `firstOrNull { it.id
+     == raceId }` là đủ, không cần network call riêng. `RacesState.Loading`/`Error` (chưa có cache) +
+     race không tìm thấy trong `Success` đều gộp chung thành 1 trạng thái `RaceDetailUiState.NotFound`
+     hiển thị `ErrorState` + nút quay lại — ca lỗi mạng ở đúng lúc user bấm sâu vào 1 race cụ thể hiếm
+     và không đáng tách riêng thêm 1 trạng thái Error với message khác biệt.
+  7. **Điều hướng xuyên suốt app**: thêm `RaceDetailDestination(raceId: String)` +
+     `navigateToRaceDetail`/`raceDetailScreen` trong `feature/races` (cùng pattern
+     `WorkoutDetailDestination`). Bấm card ở Home carousel giờ gọi `onOpenRaceDetail(race.id)` xuyên
+     `HomeRoute → HomeTabContent → MainPagerDestination → UnifiedHealthNavHost` (y hệt cách
+     `onOpenWorkoutClick` đã xuyên qua `ActivityTabContent`); bấm card ở `RacesScreen` gọi thẳng
+     `onOpenRaceDetail` được truyền vào từ `racesScreen(...)` ở `UnifiedHealthNavHost`. `onOpenRaces`
+     (nút "Xem tất cả" mở `RacesScreen`) giữ nguyên không đổi — chỉ hành vi bấm **card** đổi từ mở
+     Custom Tabs trực tiếp sang mở `RaceDetailScreen`; CTA trong màn đó mới là nơi duy nhất còn gọi
+     `launchInCustomTab`.
+
+- **D-1116** · 2026-11-08 · Crawler: phân loại marathon/trail chắc chắn hơn + best-effort thứ hạng top runner cho giải đã diễn ra — **Tạm** (giao `unified_health_service`)
+  Bổ sung cho D-1111 (đang chạy, gửi thêm yêu cầu cho cùng agent): (1) kiểm tra lại logic suy ra
+  `terrain` (road/trail) từ tên/mô tả giải bằng keyword tiếng Việt, tránh mặc định hết về 1 loại. (2)
+  Với giải `raceStatus == "past"`, tìm cách crawl thứ hạng top runner (iRace hoặc nền tảng
+  timing/kết quả riêng nếu có) — **best-effort, không bắt buộc mọi giải có**. Schema thêm (nếu crawl
+  được): `results: [{ "distance": "42km", "topFinishers": [{ "rank": 1, "name": "...",
+  "timeSeconds": 9240 }] }]`, `null` nếu không có nguồn khả thi. Đánh dấu Tạm vì chưa biết nguồn kết
+  quả thật có tồn tại/crawl được hay không cho tới khi agent báo cáo lại.
+
+- **D-1117** · 2026-11-08 · Carousel "Giải chạy sắp tới" phải scroll edge-to-edge, không bị margin che — **Chốt**
+  User thấy carousel hiện bị `Modifier.padding` ngang đối xứng che mất phần card kế tiếp khi scroll
+  (padding áp lên cả `LazyRow`, giới hạn cả vùng scroll chứ không chỉ vị trí nghỉ). Sửa: dùng
+  `contentPadding = PaddingValues(start = <lề content mặc định của Home>, end = <cùng giá trị>)` trên
+  chính `LazyRow` đó thay vì bọc ngoài bằng `Modifier.padding` — card đầu tiên vẫn thẳng hàng với lề
+  nội dung khác của Home lúc đứng yên, nhưng khi scroll ngang thì card có thể trượt ra sát mép màn
+  hình (full width), không bị cắt bởi padding cố định.
+
+- **D-1118** · 2026-11-08 · Crawler: `priceFromVnd` phải luôn là giá rẻ nhất trong các gói cự ly — **Chốt**
+  `priceFromVnd` (hiện ở cả card Home lẫn `RacesScreen`/`RaceDetailScreen`) phải tính bằng
+  `min(distances[].priceVnd)` sau bước merge nhiều nguồn cho cùng 1 giải — không lấy thẳng giá quảng
+  cáo "Từ Xđ" của 1 nguồn đơn lẻ (có thể không phải gói rẻ nhất thật sự khi gộp thêm cự ly từ nguồn
+  khác). Tính lại ở bước merge (`pipeline/merge.py`), bỏ qua gói có `priceVnd` null/0 khi lấy min.
+
+- **D-1119** · 2026-11-08 · Home chỉ hiện metric có data; thêm màn "All metrics" riêng cho đủ cả empty — **Chốt**
+  Section "All metrics" trên Home đổi tên còn **"Metrics"**, và chỉ render card của chỉ số **đang có
+  data** (ẩn hẳn card "No data" khỏi Home — không phải mờ đi, bỏ hẳn khỏi danh sách) — Home gọn lại,
+  chỉ hiện cái người dùng thực sự có. Thêm 1 CTA (ví dụ "All metrics" hoặc icon mũi tên cạnh tiêu đề
+  "Metrics", theo đúng pattern "Show all data"/"Xem tất cả" đã dùng ở nơi khác) mở **màn riêng** liệt
+  kê **toàn bộ** chỉ số kể cả chưa có data — màn này tái dùng đúng danh sách card hiện có (component
+  card cũ), chỉ khác là không lọc theo có-data-hay-không.
+
+- **D-1120** · 2026-11-08 · Nền container của bottom bar phải trong suốt, chỉ còn pill nổi — **Chốt**
+  `PillBottomNavigation` (D-1051) đang nằm trong slot `bottomBar` của `Scaffold`, và container đó
+  đang có nền trắng/surface mặc định bao quanh pill thành 1 dải ngang đặc — không phải pill nổi thật
+  sự trên content. Sửa: container `bottomBar` (`Scaffold(bottomBar = {...})` ở
+  `app/.../ui/UnifiedHealthApp.kt` hoặc nơi đặt `Scaffold`) phải trong suốt hoàn toàn
+  (`containerColor = Color.Transparent` nếu dùng `Surface` bọc ngoài, hoặc bỏ hẳn `Surface`/background
+  thừa quanh `PillBottomNavigation`) — chỉ còn đúng hình pill nổi, content phía sau scroll tràn hết
+  xuống sát đáy màn hình (tối ưu diện tích hiển thị), không còn dải nền đặc phía sau pill.
+
+- **D-1121** · 2026-11-08 · Hiện label trạng thái bên dưới progress bar khi sync (Devices) — **Chốt** (giao agent riêng, không phải agent Home)
+  Kiểm tra: `SyncProgress` (`core/ble/.../WearableSession.kt`) hiện là `fun interface { fun
+  report(fraction: Float) }` — **thuần số, không có label trạng thái** — và `SyncState.InProgress`
+  (`core/model/Device.kt:136`) chỉ có `progress: Float`, không có field mô tả đang làm gì. Màn Devices
+  hiện chỉ hiện % mà không hiện "đang làm gì" — khả thi để thêm, cần sửa xuyên suốt:
+  1. `SyncProgress` thêm tham số `stage: String?` vào `report()` (vẫn giữ `fun interface`, SAM 1
+     phương thức, chỉ thêm tham số).
+  2. `SyncState.InProgress` thêm `val stage: String? = null`.
+  3. Mỗi driver (`garmin`, `huawei`, `zepp`, `coros`, `standard`) tự báo stage ở các mốc có ý nghĩa
+     trong `sync()` của mình — ví dụ Garmin: "Đang đọc danh sách file...", "Đang tải dữ liệu từ đồng
+     hồ (x/y file)...", "Đang xử lý..."; driver khác tự đặt stage phù hợp luồng sync riêng của nó
+     (không bắt buộc giống hệt nhau, miễn đúng thực tế đang làm gì ở bước đó). `core/demo/MockWatchDriver`
+     cũng cập nhật cho đồng bộ.
+  4. `DevicesViewModel`/`DevicesScreen.kt` hiện `stage` (nếu có) thành dòng text nhỏ ngay dưới progress
+     bar lúc đang sync — null thì ẩn dòng đó, không hiện trống.
+  Mục đích: user ngồi chờ sync biết app đang làm gì với đồng hồ, bớt cảm giác "treo máy".
+
+## Thực thi D-1117/1119/1120 (carousel edge-to-edge, Metrics declutter + màn riêng, pill nền trong suốt) — D-112x
+
+- **D-1122** · 2026-11-08 · `Modifier.fillBleed()` để carousel thoát `contentPadding` của `LazyColumn` cha — **Chốt**
+  `Modifier.padding()` của Compose từ chối giá trị âm (`require >= 0`), nên không thể "trừ ngược" lề
+  `Spacing.lg` của `LazyColumn` cha (`Summary`) bằng padding âm thông thường. Viết
+  `Modifier.layout { measurable, constraints -> ... }` riêng (`fillBleed(amount)`): đo con với
+  `maxWidth` rộng hơn `amount*2`, rồi `place()` lệch trái `amount` — đúng kỹ thuật "full-bleed row
+  trong list có padding" chuẩn của Compose (Compose không hard-clamp kích thước `layout()` trả về theo
+  constraint nhận vào, đây là pattern được dùng rộng rãi, không phải hack). `LazyRow` của
+  `RacesCarousel` dùng `contentPadding = PaddingValues(horizontal = Spacing.lg)` + `.fillBleed(Spacing.lg)`
+  đúng theo D-1117 — card đầu/cuối vẫn thẳng lề lúc đứng yên, nhưng scroll được tới sát mép màn hình
+  thật. Không đổi `horizontalArrangement`/spacing giữa card (giữ `Spacing.md` như cũ).
+- **D-1123** · 2026-11-08 · Tách `feedCardItems` dùng chung giữa Home và màn "All metrics" mới — **Chốt**
+  Theo D-1119: đổi tên section "All metrics" → "Metrics"; thêm `FeedCardData.hasData()` (Metric dùng
+  field `hasData` có sẵn, Workouts dùng `recent.isNotEmpty()`) lọc card trên Home — ẩn hẳn khỏi
+  `LazyColumn`, không phải mờ/disable. Logic List/Grid cũ (`items`/`chunked(2)` + Row 2 cột) tách thành
+  1 hàm `LazyListScope.feedCardItems(cards, viewMode, ...)` dùng chung bởi cả `Summary` (gọi với danh
+  sách đã lọc `hasData`) lẫn `AllMetricsScreen` mới (gọi với `state.feedCards` nguyên văn, không lọc) —
+  đúng yêu cầu "tái dùng đúng component/list cũ, chỉ bỏ filter". `AllMetricsScreen`/`AllMetricsRoute`
+  đặt chung file `HomeScreen.kt` (để dùng được các composable `private` như `FeedCard`/`ViewModeToggle`
+  mà không phải public hoá), route mới `AllMetricsDestination` đăng ký thêm trong
+  `HomeNavigation.kt`/`UnifiedHealthNavHost.kt`, push lên trên `MainPagerDestination` như mọi màn con
+  khác (MetricDetail, DeviceDetail...). CTA "Xem tất cả" cạnh header "Metrics" dùng đúng pattern
+  `TextButton` đã dùng cho Races (D-1105). Thông báo rỗng khi Home không còn card nào qua lọc đổi
+  thành "No metrics with data yet..." (trước chỉ nói về việc bị ẩn qua Edit, giờ cũng đúng cho trường
+  hợp chưa có data).
+- **D-1124** · 2026-11-08 · `Scaffold.containerColor = Color.Transparent` cho D-1120 — **Chốt**
+  Đúng theo gợi ý trong quyết định: thêm `containerColor = Color.Transparent` vào `Scaffold` bao ngoài
+  ở `UnifiedHealthApp.kt` (không có `Surface` bọc riêng quanh `PillBottomNavigation` để xoá — pill tự
+  nó đã chỉ vẽ đúng hình pill, phần nền đặc là do `Scaffold` mặc định `containerColor =
+  MaterialTheme.colorScheme.background`). Không đổi cấu trúc padding/content behind-the-bar (nội dung
+  vẫn dừng đúng mép trên của `bottomBar` như cũ qua `padding` Scaffold tính sẵn) — chỉ đổi đúng 1 màu
+  nền theo đúng phạm vi quyết định yêu cầu, tránh risk làm vỡ layout các màn khác nếu đổi luôn cơ chế
+  padding/overlay.
+
+- **D-1126** · 2026-11-08 · `SyncProgress.report(fraction, stage)` không có default value cho `stage` — **Chốt**
+  D-1121 đặc tả chữ ký mới là `fun report(fraction: Float, stage: String? = null)`, nhưng Kotlin
+  không cho phép default value trên abstract method của `fun interface` (lỗi compiler
+  `FUN_INTERFACE_ABSTRACT_METHOD_WITH_DEFAULT_VALUE`) — xác nhận bằng cách build thật
+  (`:core:ble:compileDebugKotlin` fail ngay). Sửa: bỏ `= null`, giữ `stage: String?` (vẫn nullable,
+  chỉ không có default) — mọi call site trong `sync()` của từng driver (`garmin`, `huawei`, `zepp`,
+  `coros`, `standard`), `core/demo/MockWatchDriver`, và `MultiVendorHealthDataSync` đều phải truyền
+  tường minh cả 2 tham số. Cập nhật kèm theo: mọi lambda `SyncProgress` trong test (`core/demo`,
+  `driver:*`) đổi từ 1 tham số/`{}` sang `{ fraction, stage -> ... }` hoặc `{ _, _ -> }` vì SAM lambda
+  phải khớp đúng số tham số của method trừu tượng (default value trên interface không miễn trừ số
+  tham số bắt buộc khi convert từ lambda).
+
+- **D-1137** · 2026-11-08 · Thực thi D-1115 — `DeviceBanner` đồng bộ style/animation với Devices — **Chốt**
+  Bỏ sót ở 2 commit trước (`fd11f99`/`609299c`) — làm lại ngay khi được nhắc. `DeviceBanner`
+  (`HomeScreen.kt`) đổi từ `Card` (nền `secondaryContainer` tự đặt riêng) sang `ElevatedCard` không
+  màu tuỳ chỉnh — đúng loại card + shape/elevation mặc định mà `PairedDeviceCard`
+  (`feature/devices/DevicesScreen.kt`) đang dùng. `WatchImage` gọi đúng pattern của
+  `PairedDeviceCard`: `interactive = connected`, `revealKey = connected` (bật hiệu ứng flip rotationY
+  từ -90°, D-803/D-1098) và cùng 2 mức size `88.dp`/`56.dp` theo trạng thái connected — thay vì 48dp cố
+  định, tĩnh, không animation như trước. Không tạo composable dùng chung mới giữa 2 màn (lý do: card ở
+  Devices còn có menu/credentials/nút sync/connect mà banner trên Home không cần — gộp chung sẽ phải
+  thêm nhiều tham số không dùng tới) — chỉ đồng bộ đúng phần `WatchImage`/kiểu `Card` theo đúng yêu cầu
+  "gọi lại đúng component/style đã có, không viết riêng" (ở mức giá trị tham số, không bắt buộc 1 hàm
+  Composable vật lý dùng chung).
+
+- **D-1128** · 2026-11-08 · D-1117 (carousel edge-to-edge) vẫn chưa đúng — lề đầu lệch + vẫn còn margin ở cuối — **Chốt**
+  User test bản cài thật: cách làm trước (`Modifier.fillBleed` tự viết + `contentPadding` trên
+  `LazyRow`) chưa đạt — (1) lề trái lúc đứng yên của card đầu tiên **không khớp** với lề nội dung
+  chuẩn của Home (các section khác như `RingsCard`/"Metrics" đang thẳng hàng với nhau, carousel giải
+  chạy bị lệch khỏi hàng đó). (2) Cuộn hết tới card cuối vẫn còn 1 khoảng margin thừa ở mép phải,
+  chưa thật sự "edge-to-edge". Yêu cầu agent: đo lại chính xác lề chuẩn Home đang dùng ở chỗ khác
+  (padding của `LazyColumn`/item khác, không đoán lại từ đầu), đảm bảo card đầu carousel thẳng hàng
+  pixel-perfect với mép trái của card "Metrics" ngay bên dưới nó lúc đứng yên, và card cuối cùng khi
+  cuộn hết phải chạm sát mép phải màn hình (trừ đúng phần `contentPadding` cuối cùng = lề chuẩn, không
+  thừa thêm margin nào khác chồng lên).
+
+- **D-1129** · 2026-11-08 · Ảnh nền race card: `ContentScale.Contain` + tăng scrim để chữ dễ đọc — **Chốt**
+  `RaceCard.kt` (`core/designsystem`) hiện vẽ `imageUrl` thật (khi có) kiểu fill/crop — đổi sang
+  `ContentScale.Contain` (ảnh giữ nguyên tỉ lệ, không crop mất phần quan trọng của ảnh quảng bá chính
+  thức) — gradient theo terrain vẫn làm nền phía sau để lấp khoảng trống khi ảnh không phủ hết card
+  (không để trống/đen xấu). Tăng độ đậm lớp scrim tối phủ lên ảnh (gradient đen từ dưới lên hoặc phủ
+  đều, agent tự chọn kiểu hợp với layout chữ hiện có) để tên giải/ngày/CTA luôn đọc được rõ trên nền
+  ảnh thật, không chỉ đẹp trên nền gradient như trước.
+
+- **D-1131** · 2026-11-08 · Sửa đúng D-1128 — bỏ `fillBleed` (hack constraint), chuyển inset ngang
+  sang từng item thay vì `LazyColumn` cha — **Chốt** (đánh số lại từ D-1130 ban đầu vì trùng với
+  D-1130 "ảnh đồng hồ to trên Devices" do agent/phiên khác log song song cùng lúc — nội dung không
+  đổi, chỉ đổi số để hết trùng.)
+  `fillBleed` (D-1122, `Modifier.layout{}` đo con rộng hơn rồi `place()` lệch âm) dựa vào việc Compose
+  "không hard-clamp" kích thước `layout()` trả về so với constraint đã nhận — đúng về mặt lý thuyết
+  compiler nhưng không đáng tin cậy trong thực tế trên máy thật (D-1128 xác nhận lại lệch cả 2 đầu).
+  Bỏ hẳn cách này. Sửa đúng gốc: `Summary`'s `LazyColumn` (và `AllMetricsScreen`'s) đổi
+  `contentPadding` chỉ còn `top`/`bottom` — bỏ `start`/`end` (`Spacing.lg`) từng áp chung cho mọi item.
+  Mỗi item tự thêm `Modifier.padding(horizontal = Spacing.lg)` ở đúng chỗ (`DeviceBanner`, `RingsCard`
+  — cả 2 giờ nhận `modifier` param mới —, header Row "Metrics"/"Highlights", `HighlightCard` — cũng
+  thêm `modifier` param —, và `feedCardItems` dùng chung giữa Home/AllMetricsScreen). `RacesCarousel`
+  là item DUY NHẤT không tự thêm padding ngang ở ngoài — nhờ vậy `LazyRow` của nó nhận được đúng
+  constraint rộng = full màn hình (không bị cha giới hạn trước), rồi tự dùng
+  `contentPadding = PaddingValues(horizontal = Spacing.lg)` của chính nó để card đầu/cuối thẳng hàng
+  với mọi item khác lúc đứng yên, còn viewport cuộn thì rộng hết cỡ màn hình thật (không còn bị cha
+  bóp hẹp trước khi tự nó có cơ hội thêm padding riêng). Cách này không cần bất kỳ `Modifier.layout`
+  tự chế nào — mọi kích thước đều đi qua đúng luồng constraint cha→con chuẩn của Compose, giống hệt
+  cách `DeviceBanner`/`RingsCard`/feed card đã luôn thẳng hàng đúng từ trước — nên tin cậy hơn hẳn.
+  Lưu ý: không có thiết bị/emulator thật trong môi trường này để tự chụp màn hình kiểm chứng trực
+  tiếp như yêu cầu — đã rà lại toán constraint/placement từng bước bằng tay (ghi trong code comment
+  tại `RacesCarousel`/`Summary`) thay vì chỉ tin code compile được; nhờ người dùng xác nhận lại trên
+  máy thật lần nữa.
+
+- **D-1130** · 2026-11-08 · Ảnh đồng hồ trên màn Devices (list) phải to như ở "About this device" — **Chốt**
+  Kiểm tra thật: `DeviceDetailScreen.kt:159` ("About this device") dùng `WatchImage(size = 180.dp)`
+  to, giữa card; còn `DevicesScreen.kt:328` (card trong "My devices", màn Devices chính) chỉ dùng
+  `size = if (connected) 88.dp else 56.dp` — nhỏ hơn nhiều. User chỉ ra: sau khi kết nối lần đầu,
+  user hiếm khi mở lại "About this device" — màn Devices chính mới là nơi họ thực sự nhìn thấy
+  thường xuyên, nên ảnh đồng hồ ở đó cần to, đập vào mắt, đúng như ở "About this device". Sửa: tăng
+  size ảnh ở `DevicesScreen.kt` card "My devices" lên tương đương 180.dp (hoặc gần đó, agent tự cân
+  đối lại layout Row/Column cho hợp — có thể cần đổi từ `Row` ngang ảnh+text sang `Column` ảnh lớn ở
+  trên, text bên dưới, giống bố cục "About this device") khi `connected = true`. Việc này liên quan
+  trực tiếp D-1115 (DeviceBanner Home copy style Devices) — làm xong cái này trước thì D-1115 copy
+  theo sẽ tự động to theo, không cần sửa 2 lần.
+
+- **D-1136** · 2026-11-08 · Bố cục lại race card: ảnh rõ nét ở trên, nền blur màu ảnh ở dưới thay vì overlay+scrim — **Chốt**
+  (Đánh số lại 2 lần: D-1131 ban đầu → trùng D-1131 "Sửa đúng D-1128 — bỏ `fillBleed`" → đổi sang
+  D-1132 → lại trùng tiếp D-1132 "Tắt scrub-theo-ngày trên mini chart ở Home" do một agent/phiên khác
+  log gần như cùng lúc. Nội dung không đổi qua các lần đổi số — giống cách D-1130→D-1131 và D-1116→
+  D-1122→D-1125 đã tự xử lý trước đó. D-1136 chọn vì D-1135 là số cao nhất thấy được tại thời điểm
+  phát hiện trùng lần 2.)
+  Sau khi thấy ảnh thật (D-1129) khá đẹp, user muốn đổi hướng bố cục thay vì ảnh làm nền full-bleed có
+  scrim tối phủ chữ lên: (1) **Ảnh thật hiển thị rõ, không bị scrim**, nằm ở phần **trên** của card
+  (dùng `ContentScale.Crop` cho gọn khung ảnh, không cần giữ nguyên tỉ lệ như D-1129 nữa vì giờ ảnh
+  không phải nền chữ đè lên). (2) **Phần dưới** (tên giải, ngày, cự ly, giá, CTA) có nền là bản
+  **blur** của chính ảnh đó (Compose `Modifier.blur(...)`, kèm 1 lớp scrim nhẹ nếu cần tương phản chữ
+  — giờ dễ đảm bảo tương phản hơn hẳn vì không phải scrim cả ảnh gốc) — tạo hiệu ứng "ambient
+  color/backdrop" lấy từ chính ảnh giải, đẹp và hiện đại hơn overlay cũ.
+  Lưu ý kỹ thuật: `Modifier.blur()` chỉ chạy blur thật từ Android 12 (API 31) trở lên — dưới đó
+  Compose tự fallback về không-blur (không crash), app minSdk 26 nên chấp nhận máy cũ không có hiệu
+  ứng blur, không cần tự viết fallback thủ công. Race **chưa có ảnh thật** (gradient theo terrain) thì
+  giữ nguyên cách hiển thị cũ (gradient làm cả nền, không áp dụng bố cục 2 phần này) — chỉ race có
+  `imageUrl` thật mới dùng layout mới.
+
+- **D-1132** · 2026-11-08 · Tắt scrub-theo-ngày trên mini chart ở Home, chỉ bật trong `MetricDetailScreen` — **Chốt**
+  Chart nhúng trong card "Metrics" trên Home (List mode, D-1073/1090) tái dùng
+  `HealthBarChart`/`HealthRangeChart` ở `core/designsystem/HealthCharts.kt` — cùng component đã có
+  drag-to-scrub xem giá trị từng điểm (D-1020). User không muốn scrub theo từng ngày hoạt động ngay
+  trên Home (chart quá nhỏ, dễ nhầm với thao tác bấm card để mở detail) — chỉ `MetricDetailScreen`
+  (sau khi bấm vào 1 chỉ số cụ thể) mới cho scrub xem chi tiết từng ngày. Thêm tham số bật/tắt scrub
+  (vd `scrubEnabled: Boolean = true`) vào `HealthBarChart`/`HealthRangeChart`, Home truyền `false`,
+  `MetricDetailScreen` giữ `true`. Cần tìm cách báo cho user biết "chart này không xem chi tiết từng
+  ngày được, bấm vào xem chi tiết đầy đủ" — agent tự chọn cách thể hiện hợp lý (có thể không cần thêm
+  gì ngoài việc tắt hẳn phản hồi scrub, miễn thao tác kéo trên Home không làm gì cả thay vì giả vờ
+  hoạt động rồi không hiện giá trị).
+
+- **D-1138** · 2026-11-08 · Thực thi D-1130 — ảnh đồng hồ to (180dp) khi connected trên Devices + Home — **Chốt**
+  (Số D-1130 "ảnh đồng hồ to" bị trùng với D-1131 bản gốc "sửa fillBleed" do 2 agent log song song —
+  D-1131 đã tự đổi số; entry D-1130 "ảnh to" giữ nguyên số, đây chỉ là entry log việc *thực thi* nó.)
+  `PairedDeviceCard` (`feature/devices/DevicesScreen.kt`): khi `connected`, đổi từ `Row` ngang (ảnh
+  nhỏ bên cạnh text) sang `Column` dọc — `WatchImage(size = 180.dp, interactive = true, revealKey =
+  connected)` to, canh giữa ở trên (đúng bố cục `DeviceDetailScreen.kt`'s "About this device"), tên +
+  vendor/mac canh giữa bên dưới, nút "more options" (menu 3 chấm) nổi góc phải trên bằng `Box` overlay
+  thay vì nằm trong `Row` cũ. Khi KHÔNG connected: giữ nguyên `Row` ngang + `size = 56.dp` như cũ
+  (không đổi). Phần khác của card (battery, firmware, last sync, sync stage, nút Connect/Disconnect/
+  Sync, menu Unpair/credentials) không đổi logic, chỉ tách `menuButton` thành 1 lambda cục bộ dùng lại
+  được ở cả 2 nhánh bố cục.
+  `DeviceBanner` (`feature/home/HomeScreen.kt`, D-1115 vừa làm trước đó với size cũ 88dp/56dp): cập
+  nhật theo đúng size mới — khi có device và đang connected, cũng chuyển sang `Column` dọc với
+  `WatchImage(size = 180.dp, ...)` + tên/subtitle/"Last synced"/`ConnectionStatusChip` canh giữa bên
+  dưới, y hệt tinh thần layout của `PairedDeviceCard`; khi chưa pair hoặc có device nhưng chưa
+  connected, giữ `Row` ngang nhỏ (56dp) như D-1115 đã làm. Làm theo đúng thứ tự user yêu cầu (D-1130
+  trước, D-1115 kế thừa theo) thay vì phải sửa `DeviceBanner` 2 lần.
+
+- **D-1139** · 2026-11-08 · Thực thi D-1132 — tắt scrub-theo-ngày trên mini chart ở Home — **Chốt**
+  Thêm tham số `scrubEnabled: Boolean = true` vào `HealthBarChart`/`HealthRangeChart`
+  (`core/designsystem/HealthCharts.kt`), truyền thẳng vào `chartScrubGestures(scrubEnabled &&
+  points.isNotEmpty())` — khi `false`, `chartScrubGestures` trả về `Modifier` gốc không gắn
+  `pointerInput` nào (đã có sẵn logic `if (!enabled) return this`), nên thao tác kéo trên Home không
+  bị "giả vờ phản hồi rồi không hiện gì" mà chỉ đơn giản KHÔNG được xử lý ở đây — gesture rơi xuống
+  đúng `ElevatedCard.onClick` của card để mở `MetricDetailScreen`, đúng tinh thần "bấm vào xem chi
+  tiết đầy đủ" mà quyết định yêu cầu, không cần thêm text/hint nào khác. `HomeScreen.kt`'s `MiniChart`
+  (dùng bởi card "Metrics" List mode, D-1073/1090) truyền `scrubEnabled = false` ở cả 2 nhánh
+  (`HealthRangeChart`/`HealthBarChart`); `MetricDetailScreen.kt` không đổi gì, giữ mặc định `true`.
+  Không đụng tới `ActivityScreen.kt`/`WorkoutDetailScreen.kt` (cũng gọi 2 chart này) — nằm ngoài phạm
+  vi quyết định này (chỉ nói "Home's Metrics cards"), không tự ý mở rộng.
+
+- **D-1133** · 2026-11-08 · Carousel giải chạy: snap paged scroll (1 item + 20% peek), cache ảnh, giới hạn compose ngoài khung nhìn — **Chốt**
+  User lường trước data giải chạy sẽ nhiều lên theo thời gian — tối ưu carousel `RacesCarousel` ngay:
+  1. **Kích thước item**: mỗi card rộng ~80% bề ngang khả dụng của `LazyRow`, sao cho lúc đứng yên
+     thấy đủ 1 card + ~20% card kế tiếp (peek) — đúng tỉ lệ user chỉ định.
+  2. **Snap/paged scroll**: dùng `rememberSnapFlingBehavior` (Compose Foundation, gắn vào
+     `LazyListState` của `RacesCarousel`) để vuốt xong luôn dừng đúng khung 1 card, không dừng lưng
+     chừng giữa 2 card.
+  3. **Ảnh dùng cache**: xác nhận lại Coil load ảnh race qua 1 `ImageLoader` dùng chung (singleton/Hilt-
+     provided, không tạo mới mỗi lần recompose) để tận dụng memory+disk cache mặc định của Coil, tránh
+     tải lại ảnh khi cuộn qua lại.
+  4. **Hạn chế compose ngoài khung nhìn**: `LazyRow` vốn đã lazy (chỉ compose item gần viewport) —
+     không cần tự viết windowing riêng, chỉ cần đảm bảo không có gì phá vỡ tính lazy đó (ví dụ không
+     dùng `Row` thường bọc ngoài danh sách dài). Không cần thêm thư viện/API phức tạp ngoài
+     `LazyRow` chuẩn.
+
+- **D-1134** · 2026-11-08 · `PillBottomNavigation`: fade ẩn/hiện theo scroll + style "liquid glass" — **Chốt**
+  Đã đọc skill `liquid-glass-design` (viết cho iOS SwiftUI/UIKit, không áp code trực tiếp được) — dịch
+  nguyên tắc sang Compose/Android:
+  1. **Fade theo scroll**: đang cuộn (bất kỳ top-level screen nào trong `MainPagerDestination`) → pill
+     fade out dần (animation có timing, không biến mất đột ngột) để tối đa khung nhìn content. Dừng
+     cuộn (settle, có thể chờ ~300-500ms sau khi hết scroll để tránh nhấp nháy khi cuộn ngắt quãng) →
+     fade in lại. Tham khảo cơ chế đọc trạng thái scroll đã có ở D-1083 (DeviceBanner collapse theo
+     scroll của Home) — dùng pattern tương tự (`LazyListState.isScrollInProgress` hoặc
+     `NestedScrollConnection` ở cấp `Scaffold`/`MainPagerDestination`) áp dụng chung cho mọi tab, không
+     chỉ riêng Home.
+  2. **"Liquid glass" style cho pill**: dịch từ nguyên tắc iOS (vật liệu trong suốt, blur nội dung phía
+     sau, phản chiếu ánh sáng nhẹ ở viền, hình capsule — pill hiện tại đã đúng hình capsule) sang
+     Android: nền pill đổi từ màu đặc `surfaceContainerHigh` sang **bán trong suốt** (alpha thấp) +
+     **blur nội dung phía sau** bằng `Modifier.graphicsLayer { renderEffect =
+     RenderEffect.createBlurEffect(...).asComposeRenderEffect() }` (chỉ chạy blur thật từ API 31 trở
+     lên, dưới đó Compose tự bỏ qua blur — chấp nhận máy cũ chỉ thấy bán trong suốt không blur, không
+     cần fallback thủ công, giống D-1131) + 1 viền sáng mờ (border 1dp alpha thấp) tạo cảm giác
+     "ánh sáng viền kính" nhẹ. Giữ nguyên animation pill-slide-theo-tab (D-1077) và không-ripple
+     (D-1091) đã có — chỉ đổi phần vật liệu/nền, không đổi hành vi chọn tab.
+
+- **D-1135** · 2026-11-08 · Thực thi D-1133 — snap paging 80% + xác nhận Coil cache/lazy composition
+  cho `RacesCarousel` — **Chốt**
+  (1) Mỗi `RaceCard` đổi từ `Modifier.width(300.dp)` cố định sang `Modifier.fillParentMaxWidth(0.8f)`
+  (API `LazyItemScope`, có sẵn trong lambda `items{}`, không cần import riêng) — card đứng yên chiếm
+  80% viewport, hé lộ ~20% card kế tiếp. (2) Thêm `rememberLazyListState()` riêng cho carousel +
+  `flingBehavior = rememberSnapFlingBehavior(listState)` trên `LazyRow` — fling giờ luôn dừng gọn ở
+  đúng 1 card, không bao giờ dừng nửa chừng. (3) Xác nhận Coil cache: `RaceCard.kt` dùng
+  `coil.compose.AsyncImage(model = imageUrl, ...)` — overload đơn giản này tự lấy
+  `Context.imageLoader` (Coil extension), vốn là **singleton tự quản bởi Coil** cho cả vòng đời
+  Application (trừ khi `Application` tự implement `ImageLoaderFactory` để tuỳ biến, mà app này không
+  làm) — nghĩa là cache memory+disk của Coil đã hoạt động đúng qua các lần scroll/recompose từ trước
+  đến giờ, không cần sửa gì (đã grep toàn repo, không có chỗ nào tự tạo `ImageLoader(...)` mới mỗi lần
+  compose). (4) Xác nhận lazy composition: `items(races, key = { it.id })` bên trong `LazyRow` —
+  không có `Row` thường nào bọc ngoài ép compose hết toàn bộ danh sách — đã đúng từ trước, không cần
+  đổi gì thêm.
+
+- **D-1140** · 2026-11-08 · Thực thi D-1134 (phần 1 fade-theo-scroll) — fade pill qua `NestedScrollConnection`
+  dùng chung cho mọi tab — **Chốt**
+  `UnifiedHealthApp.kt` tạo 1 `NestedScrollConnection` (chỉ override `onPreScroll`, luôn trả về
+  `Offset.Zero` — chỉ quan sát, không "ăn" scroll của ai), gắn vào `Modifier.nestedScroll(...)` trên
+  modifier của `UnifiedHealthNavHost` (bọc toàn bộ nội dung NavHost, không riêng 1 tab nào) — bất kỳ
+  `LazyColumn`/`LazyRow`/scrollable nào bên trong (Home, Activity, Devices, Profile, kể cả màn con)
+  dispatch scroll đều bật cờ `pillVisible = false` và restart đếm ngược 400ms qua coroutine; hết
+  400ms không có scroll mới nào thì `pillVisible = true` lại. Vì `onPreScroll` tự nhiên được gọi liên
+  tục trong lúc fling (không chỉ lúc kéo tay), timer tự restart suốt fling và chỉ thực sự đếm khi
+  scroll dừng hẳn — không cần xử lý `onPreFling`/`onPostFling` riêng. `PillBottomNavigation` nhận
+  tham số `visible: Boolean = true`, animate alpha bằng `animateFloatAsState` + `graphicsLayer { alpha
+  = ... }` trên chính `Surface` ngoài cùng (220ms tween, đủ mượt, không giật).
+
+- **D-1141** · 2026-11-08 · Thực thi D-1134 (phần 2 liquid-glass) — chỉ làm bán trong suốt + viền sáng,
+  **không** làm blur nền thật — **Tạm**
+  Đổi `color` của pill từ `surfaceContainerHigh` đặc sang `surfaceContainerHigh.copy(alpha = 0.62f)` +
+  đổi border từ `outlineVariant` sang `Color.White.copy(alpha = 0.28f)` (viền sáng gợi "ánh sáng viền
+  kính", không phụ thuộc theme sáng/tối). **Cờ cảnh báo theo đúng yêu cầu của quyết định**: KHÔNG áp
+  dụng `RenderEffect.createBlurEffect` thật như gợi ý, vì xét đúng cách pill đang được layer hiện tại
+  (`Scaffold`'s `bottomBar` slot — anh em cùng cấp, không nằm chồng lên `content` slot trong cùng 1
+  draw stack) thì blur này **không có tác dụng thị giác nào** (hoặc tệ hơn, gây hiểu lầm): `graphicsLayer{
+  renderEffect=...}` chỉ blur đúng nội dung tự vẽ của chính layer đó (nền pill + icon/text bên trong),
+  không "nhìn xuyên" blur được nội dung đang cuộn PHÍA SAU nó trong window — vì 2 bên không chung 1
+  layer để lấy mẫu. Blur 1 màu nền phẳng (không texture) thị giác giống hệt không-blur — lãng phí, có
+  thể trông như bug trên API 31+ khi so với API thấp hơn (trông y hệt). Để có "kính mờ" thật (blur nội
+  dung cuộn phía sau), cần: (1) dời pill ra khỏi `Scaffold.bottomBar`, đặt trong `Box` overlay chung
+  với `NavHost` (content phải thật sự cuộn RA SAU vùng pill, không dừng trước nó như hiện tại), (2)
+  dùng `GraphicsLayer` tường minh (`androidx.compose.ui.graphics.layer.GraphicsLayer`, API snapshot
+  của Compose UI mới) để pill blur-sample đúng phần nội dung bên dưới vị trí nó — đổi kiến trúc
+  layering/compositing, không còn là "chỉ đổi vật liệu/nền" như quyết định mô tả. Đánh dấu **Tạm** +
+  báo lại rõ ràng theo đúng lời mời của quyết định ("flag clearly if impractical") thay vì tự ý đoán
+  hoặc làm 1 bản blur vô nghĩa cho có. Bán trong suốt + viền sáng vẫn tạo được cảm giác "kính" ở mức
+  chấp nhận được mà không cần đổi kiến trúc.
+
+- **D-1142** · 2026-11-08 · Race card: ảnh thật quá nhiều tỉ lệ khác nhau — dời ảnh rõ nét vào góc trên-phải, giữ nguyên tỉ lệ gốc — **Chốt**
+  D-1131/1136 (ảnh rõ nét full-width ở trên + blur làm nền phần text) gặp vấn đề thật: ảnh race crawl
+  được (D-1111) có tỉ lệ khung hình rất khác nhau giữa các nguồn (poster dọc, banner ngang, ảnh vuông…)
+  — ép vào 1 band ngang cố định ở trên làm ảnh bị crop/méo không đẹp. Sửa: **ảnh nền blur (ambient
+  backdrop) phủ TOÀN BỘ card** (không chỉ phần dưới nữa) — xử lý tốt sẵn mọi tỉ lệ vì nó bị blur/phóng
+  to che hết. **Ảnh rõ nét** dời thành 1 khối nhỏ ở **góc trên-phải** của card, kích thước giữ **đúng
+  tỉ lệ gốc của ảnh** (`ContentScale.Fit`/`FillHeight` trong 1 khung bo góc giới hạn kích thước tối đa,
+  không ép vuông/ép ngang) — giống kiểu thumbnail/badge, không còn là hero band full-width. Tên giải/
+  ngày/cự ly/giá/CTA vẫn nằm trên nền blur, tránh đè lên góc có ảnh rõ nét. Race chưa có ảnh thật vẫn
+  giữ gradient-theo-terrain full card như cũ (D-1131 đã quyết, không đổi).
+
+- **D-1143** · 2026-11-08 · `DeviceBanner` to (180dp, D-1115/1137) chiếm quá nhiều chỗ trên Home — tự co lại sau khi vào màn — **Chốt**
+  Sau khi D-1115 làm `DeviceBanner` trên Home copy style to (180dp) của Devices/"About this device",
+  user thấy nó chiếm quá nhiều không gian dọc ngay khi mở Home — trước đây (trước D-1115) nó là banner
+  gọn nhỏ. Yêu cầu: **lúc mới vào Home thì hiện to** (giữ hiệu ứng "đập vào mắt" D-1130 muốn), nhưng
+  **tự động animate co lại về bố cục gọn (như trước D-1115)** sau một khoảng ngắn — không cần chờ user
+  tự scroll như cơ chế collapse-theo-scroll đã có (D-1083/1088) — content bên dưới animate dồn lên lấp
+  khoảng trống khi banner co lại. Có thể tái dùng chung animation/trigger với D-1083 (chỉ khác: tự
+  trigger sau delay thay vì chờ scroll), agent tự quyết thời gian delay hợp lý (gợi ý: 1.5-2.5s) và
+  cách phối hợp 2 cơ chế (tự co + co-theo-scroll) không xung đột nhau.
+
+- **D-1144** · 2026-11-08 · Bottom nav vẫn còn box/nền đặc phía sau pill dù đã sửa D-1120/D-1134 — **Chốt**
+  User xác nhận trên máy thật: vẫn thấy 1 khối nền màu riêng (dải màu khác content) ngay phía sau/
+  dưới pill, dù `Scaffold(containerColor = Color.Transparent)` (D-1120) và pill bán trong suốt
+  (D-1134/1141) đã làm. Nghi ngờ: còn 1 lớp `Surface`/`Box` nào đó (có thể từ phần
+  `windowInsetsPadding(WindowInsets.navigationBars...)` ở D-1084) vẫn giữ màu nền riêng bao quanh
+  pill, không phải do `Scaffold.containerColor`. Cần rà lại **toàn bộ cây view** từ `Scaffold` xuống
+  tới `PillBottomNavigation` (không chỉ sửa đúng 1 chỗ đã nghi ngờ trước đó), đảm bảo **không còn bất
+  kỳ lớp nào có màu nền đặc** ngoài chính hình pill — kiểm tra bằng Layout Inspector/đọc code kỹ từng
+  modifier `background`/`Surface` trên đường đi, không đoán.
+  **Nguyên nhân thật (tự điều tra code, xác nhận):** `UnifiedHealthApp.kt` dùng
+  `Scaffold(bottomBar = {...})` chuẩn — `NavHost` được truyền `Modifier.padding(padding)` theo đúng
+  `innerPadding` Scaffold cấp, nghĩa là **content dừng lại trước vùng pill, không hề vẽ xuống dưới
+  đó** — pill/Scaffold trong suốt chỉ lộ ra nền app trơn (`background` theme), không phải content thật
+  đang cuộn. Vì vậy "trong suốt" không tạo được cảm giác pill nổi trên content như mong muốn — đúng
+  pattern mà agent trước đã cảnh báo khi từ chối làm blur thật (D-1141). **Sửa tận gốc**: bỏ hẳn
+  `Scaffold(bottomBar=...)`, chuyển sang `Box` — `NavHost` vẽ full-screen (content thật sự cuộn ra
+  sau vùng pill), `PillBottomNavigation` đặt đè lên trên bằng `Modifier.align(Alignment.BottomCenter)`
+  trong cùng `Box`. Làm xong việc này thì D-1141 (blur thật) cũng khả thi luôn vì giờ pill mới thực sự
+  là overlay trên content.
+
+- **D-1145** · 2026-11-08 · Revert `DeviceBanner` trên Home về bản gọn cũ (trước D-1115) — **Chốt**
+  User đổi ý sau khi thấy bản to+auto-collapse (D-1115/1143) trên Home — không cần nữa, muốn Home
+  dùng lại đúng layout `DeviceBanner` gọn nhỏ như **trước khi có D-1115**. Giữ nguyên D-1130 (ảnh to
+  180dp) ở màn Devices ("My devices") và "About this device" — chỉ revert riêng phần Home. Vì không
+  còn banner to trên Home nữa, cơ chế auto-collapse D-1143 (`LaunchedEffect` scroll-by sau 2s) cũng
+  hết tác dụng — xoá luôn phần code đó cho sạch thay vì để lại chết.
+
+- **D-1146** · 2026-11-08 · Ảnh góc trong race card: dời xuống góc dưới-phải, to gấp đôi — **Chốt**
+  D-1142 đặt ảnh rõ nét nhỏ ở góc trên-phải — user thấy nhỏ quá. Sửa: dời xuống **góc dưới-phải**, kích
+  thước tăng **gấp đôi** so với hiện tại (`RaceThumbnailMaxSize` nhân đôi hoặc giá trị tương đương) —
+  vẫn giữ `ContentScale.Fit` theo đúng tỉ lệ gốc ảnh (D-1142 không đổi), chỉ đổi vị trí + kích thước.
+  Kiểm tra lại bố cục text (CTA/giá thường nằm dưới cùng) không bị đè bởi ảnh to hơn ở góc mới — nhường
+  chỗ hợp lý.
+
+- **D-1147** · 2026-11-08 · **Thay cho D-1145**: bỏ hẳn `DeviceBanner` khỏi Home, chỉ giữ chip ở header + dot trạng thái — **Chốt**
+  User đổi ý thêm lần nữa ngay sau D-1145 — không revert về bản gọn cũ nữa, mà **bỏ hẳn** `DeviceBanner`
+  khỏi nội dung chính của Home (không còn box thiết bị nào trong `LazyColumn` cả). Giữ nguyên chip nhỏ
+  tên+ảnh thiết bị đã có sẵn ở góc phải `TopAppBar`/header (từ D-1083/1098) — user xác nhận chip đó
+  "như hiện tại ổn rồi", không cần sửa style/animation của nó. Vì không còn banner trong body để
+  collapse-theo-scroll nữa, chip ở header nên **luôn hiện sẵn** (bỏ logic ẩn/hiện theo scroll gắn với
+  banner đã xoá — đơn giản hoá, không cần animation reveal phức tạp nữa, trừ khi muốn giữ fade-in nhẹ
+  lúc Home mới mở).
+  **Thêm dot trạng thái** lên chip đó: **xanh lá** khi thiết bị đang connected/đang sync (progress),
+  **xám** cho các trạng thái còn lại (disconnected/idle) — tái dùng đúng component `LiveDot`/pattern
+  dot đã có (D-1054), không tạo component dot mới.
+  D-1130 (ảnh to 180dp ở "My devices"/"About this device") và D-1115's style-sync cho Devices **không
+  đổi** — D-1147 chỉ ảnh hưởng Home. D-1143 (auto-collapse) giờ xoá hẳn vì không còn gì để collapse.
+
+- **D-1148** · 2026-11-08 · Devices: tap ảnh thiết bị → mở fullscreen kiểu Android, kèm animation mời tap — **Chốt**
+  User muốn ảnh thiết bị (180dp, D-1130) trên màn Devices/"About this device" tap được: tap vào thì mở
+  lên dạng fullscreen (pattern Android quen thuộc: ảnh phóng to che toàn màn hình, nền tối lại, tap lần
+  nữa/back để đóng — kiểu Material `Dialog`/overlay full-screen với ảnh zoom-able, không nhất thiết phải
+  pinch-zoom phức tạp nếu không cần thiết, nhưng transition mở/đóng phải mượt, catchy). Vì ảnh giờ tap
+  được nhưng không có gì gợi ý điều đó, **thêm 1 animation nhẹ, lặp lại (subtle pulse/breathing hoặc
+  tương tự)** trên ảnh để gợi ý user nên tap vào — không được gây rối mắt, giữ tinh tế (gợi ý: scale nhẹ
+  1.0↔1.03 hoặc elevation/shadow nhấp nháy nhẹ, chu kỳ vài giây, agent tự chọn kiểu phù hợp thẩm mỹ hiện
+  tại). Mở fullscreen nên có hiệu ứng transition (shared-element kiểu ảnh phóng to từ đúng vị trí ban đầu
+  nếu dễ làm với Compose hiện có, hoặc fade+scale đơn giản nếu shared-element phức tạp quá — ưu tiên làm
+  đúng, không ép buộc shared-element bằng mọi giá).
+
+- **D-1149** · 2026-11-08 · Bottom nav: không ẩn khi swipe đổi tab, chỉ ẩn khi scroll nội dung — **Chốt**
+  Hiện tại pill bottom nav đang ẩn đi (fade out) ngay cả khi user **swipe ngang để đổi tab** (pager
+  swipe) — không mong muốn. Chỉ nên ẩn/fade khi user **scroll dọc nội dung bên trong 1 tab** (để tối ưu
+  diện tích xem, đúng mục đích ban đầu D-1134/1141); khi đang swipe ngang đổi trang (pager gesture) thì
+  **giữ nguyên pill luôn hiện**, vì lúc đó user đang tương tác trực tiếp với điều hướng, ẩn đi là phản tác
+  dụng. Cần rà lại logic đang điều khiển biến `visible`/`pillVisible` trong `UnifiedHealthApp.kt` — tách
+  rõ 2 nguồn trigger (scroll nội dung vs. pager swipe) và chỉ cho nguồn đầu ảnh hưởng tới ẩn/hiện. Việc
+  này thuộc cùng khu vực file với D-1144 (`UnifiedHealthApp.kt`, `PillBottomNavigation.kt`) — gộp chung
+  vào agent đang xử lý D-1144/D-1147 thay vì agent riêng, tránh đụng file.
+
+- **D-1150** · 2026-11-08 · Ảnh cover màn Race Detail: đọc đúng ratio ảnh gốc, ảnh vuông thì mặc định 16:9 + blur nền — **Chốt**
+  `RaceDetailScreen` hiện đang hiển thị ảnh cover theo tỉ lệ cố định (không khớp ratio gốc ảnh crawl
+  được, vốn rất đa dạng — như đã gặp ở `RaceCard`/D-1131/1136/1142). Sửa: **đọc kích thước gốc của ảnh**
+  (qua Coil — ví dụ `AsyncImagePainter`/`SubcomposeAsyncImage` lấy `intrinsicSize`, hoặc decode bounds)
+  và set container theo đúng tỉ lệ đó (`Modifier.aspectRatio(w/h)`), ảnh hiển thị full, không crop méo.
+  **Trường hợp đặc biệt: ảnh vuông (ratio ~1:1)** — không hiển thị vuông thô, mà dùng khung mặc định
+  **16:9** cho container, ảnh gốc đặt giữa theo đúng tỉ lệ thật của nó (`ContentScale.Fit`, không
+  crop/méo), phần nền thừa trong khung 16:9 lấp bằng **backdrop blur** của chính ảnh đó (tái dùng pattern
+  blur nền đã có từ `RaceCard`/`RaceImageBackdrop`, D-1131/1136, không viết lại blur mới). Trong lúc
+  ảnh đang tải xong (chưa biết ratio), dùng placeholder 16:9 làm mặc định tạm — chuyển sang ratio thật
+  ngay khi ảnh load xong.
+
+- **D-1151** · 2026-11-08 · `RaceDetailScreen`: nội dung cuối bị che bởi system navigation bar — áp dụng chuẩn insets toàn app — **Chốt**
+  User xác nhận trên máy thật: phần cuối màn Race Detail (CTA đăng ký/nút cuối) bị thanh điều hướng hệ
+  thống (system navigation bar / gesture bar) của thiết bị che mất — màn hình thiếu
+  `WindowInsets.navigationBars` padding ở đáy nội dung cuộn. Cùng agent đang làm D-1150 trên file này
+  xử lý luôn (không tách agent riêng, tránh đụng file). **"tính toán để không gặp việc tương tự"** — agent
+  cần kiểm tra thêm các màn full-screen/scrollable khác trong app (đặc biệt các màn mới thêm gần đây:
+  Devices, Home, Races list) xem có thiếu padding đáy tương tự không, và áp dụng nhất quán — tham khảo
+  pattern insets đã đúng ở `PillBottomNavigation` (D-1084, `windowInsetsPadding(WindowInsets.navigationBars...)`)
+  làm chuẩn. Không cần sửa toàn bộ app trong 1 lần nếu phát hiện phạm vi quá rộng — ưu tiên `RaceDetailScreen`
+  trước, agent tự quyết định mở rộng thêm bao nhiêu mà vẫn giữ an toàn/đúng phạm vi.
+
+## Thực thi D-1144/D-1147 (Scaffold→Box cho pill nav, bỏ hẳn DeviceBanner khỏi Home) — D-115x
+
+- **D-1152** · 2026-11-08 · Thực thi D-1147 (bỏ hẳn `DeviceBanner` khỏi Home) — **Chốt** (đánh số lại
+  từ D-1148 ban đầu vì trùng với D-1148 "Devices: tap ảnh thiết bị → mở fullscreen" do một phiên khác
+  log song song cùng lúc — nội dung không đổi, chỉ đổi số để hết trùng, giống cách D-1130→D-1131 đã
+  tự xử lý trước đó.)
+  `HomeScreen.kt` (`feature/home`): xoá hẳn `item { DeviceBanner(...) }` khỏi `Summary`'s `LazyColumn`
+  (không còn box thiết bị nào trong body), xoá hẳn composable `DeviceBanner` (grep xác nhận không còn
+  caller nào khác trong repo — an toàn xoá hẳn, không chỉ để lại unused), và xoá theo 2 helper chỉ
+  phục vụ nó (`rememberRelativeSyncLabel`/`relativeTimeLabel`/`REFRESH_INTERVAL_MS`/`DATE_LABEL`, D-1075's
+  "Last synced" label — không còn chỗ nào hiển thị nó nữa vì chip header không yêu cầu label này).
+  Xoá hẳn luôn D-1083/1088's `deviceBannerCollapseFraction`/`deviceBannerHeightPx` (`derivedStateOf`
+  theo scroll offset của item 0) và D-1143's `LaunchedEffect` auto-collapse (`listState.animateScrollBy`
+  sau 2s) — đúng yêu cầu xoá hẳn thay vì để lại chết, vì không còn banner nào để co lại nữa.
+  `DeviceChip` (header, trong `TopAppBar`'s `actions`): đổi tham số từ `alphaFraction: Float` (trước
+  nhận trực tiếp `deviceBannerCollapseFraction`) sang `syncState: SyncState` — giờ **luôn hiện** (không
+  còn early-return theo `alphaFraction <= 0f`), chỉ giữ 1 fade-in nhẹ một lần lúc Home mới compose
+  (`remember { mutableStateOf(false) }` bật `true` trong `LaunchedEffect(Unit)`, animate qua
+  `animateFloatAsState` + `graphicsLayer { alpha = ... }`) — đúng tinh thần "không cần dựng lại
+  scroll-tracking phức tạp" của quyết định. `WatchImage`'s `revealKey` (hiệu ứng xoay-vào 3D, D-1098)
+  giờ key theo chính biến `revealed` một-lần-khi-compose đó thay vì theo fraction cũ.
+  **Dot trạng thái**: thêm `LiveDot(isLive = ...)` (tái dùng đúng component D-1054, không viết mới)
+  vào cuối `DeviceChip`'s `Row`, `isLive = connected && syncState is SyncState.InProgress` — xanh khi
+  vừa connected vừa đang sync, xám mọi trường hợp khác (disconnected/idle/done/failed), đúng yêu cầu.
+  `SyncState` chưa có sẵn trong `HomeUiState`/`HomeViewModel` trước đó — thêm field
+  `HomeUiState.Success.syncState: SyncState = SyncState.Idle` + combine thêm
+  `deviceRepository.syncState` (cùng nguồn `WearableDeviceRepository.syncState` mà `DevicesViewModel`
+  đã dùng — không có state per-device, dùng chung 1 global flow như Devices màn đang làm, không tự
+  chế thêm per-device tracking mới cho task này). `onOpenDevices` param trong `Summary` giờ không còn
+  nơi nào dùng nội bộ (trước chỉ dùng trong `DeviceBanner`) nhưng **giữ nguyên trong signature** thay
+  vì dọn luôn — xoá nó sẽ kéo theo sửa cả `HomeScreen`/`HomeRoute`/`HomeNavigation.kt` (đổi signature
+  công khai, rủi ro/phạm vi vượt quá yêu cầu D-1147 chỉ nói về `DeviceBanner`); Kotlin không coi tham
+  số không dùng là lỗi biên dịch, và repo không bật detekt/ktlint/`-Werror` nên không ảnh hưởng build.
+
+- **D-1153** · 2026-11-08 · Thực thi D-1144 (Scaffold→Box cho pill nav) — **Chốt** (đánh số lại từ
+  D-1149 ban đầu vì trùng với D-1149 "Bottom nav: không ẩn khi swipe đổi tab" do cùng phiên khác ở
+  trên log song song — nội dung không đổi, chỉ đổi số.)
+  `UnifiedHealthApp.kt` (`app`): thay `Scaffold(bottomBar = { PillBottomNavigation(...) }, containerColor
+  = Color.Transparent)` bằng `Box(Modifier.fillMaxSize())` chứa `UnifiedHealthNavHost` (`Modifier.fillMaxSize()`,
+  không còn `.padding(padding)` nào bóp hẹp nó nữa) và `PillBottomNavigation(modifier =
+  Modifier.align(Alignment.BottomCenter))` cùng cấp — đúng kiến trúc D-1144 đã xác định nguyên nhân
+  gốc (Scaffold's `innerPadding` khiến content dừng hẳn trước vùng pill, nên pill trong suốt chỉ lộ
+  nền app trơn chứ không phải content thật). `D-1140`'s `NestedScrollConnection` (fade pill theo
+  scroll) giữ nguyên, chỉ chuyển từ gắn trên `Modifier.padding(padding).consumeWindowInsets(padding)`
+  sang thẳng `Modifier.fillMaxSize()` của NavHost — không đổi hành vi.
+  **Bottom clearance cho nội dung 4 tab**: thêm `Spacing.bottomNavClearance = 96.dp` vào
+  `core/designsystem/.../Spacing.kt` (giá trị = `PillBottomNavigation`'s `NAV_HEIGHT` 72dp + 2×
+  `Spacing.md` 12dp lề trên/dưới — đúng "chiều cao + lề" quyết định gợi ý, không cộng thêm
+  system-nav-bar inset vì giá trị đó biến thiên theo máy và `feature/*` không thấy được hằng số riêng
+  của `app` để tính động — chấp nhận xấp xỉ cố định theo đúng cách quyết định cho phép "fixed bottom
+  padding matching pill's height + margin"). Áp dụng hằng số này cho **4 tab thật sự hiện pill**
+  (`onMainPager` ở `UnifiedHealthApp.kt`): `HomeScreen.kt`'s `Summary` (bottom `Spacing.xxl` →
+  `Spacing.bottomNavClearance`), `ActivityScreen.kt` (tương tự), `DevicesScreen.kt` (đổi literal `96.dp`
+  có sẵn sang hằng số dùng chung — cùng giá trị, chỉ hết trùng lặp), `ProfileScreen.kt` (thêm
+  `.padding(bottom = Spacing.bottomNavClearance)` *sau* `.verticalScroll(...)` trên `Column` — đặt sau
+  để padding mở rộng vùng nội dung cuộn được, không phải chỉ thu nhỏ viewport). **Không** đụng
+  `RacesScreen.kt`/`AllMetricsScreen` dù brief nêu ví dụ "Races list" — kiểm tra lại
+  `MainPagerDestination`/`TopLevelDestination` xác nhận Races/All metrics là màn con push lên trên
+  (không nằm trong `HorizontalPager` 4 tab), nên `onMainPager` = false ở đó và pill vốn đã ẩn hoàn
+  toàn — không có gì để chừa chỗ, thêm padding ở đó sẽ là thừa/sai so với lý do brief đưa ra.
+  **Blur thật bị hoãn lại tiếp** (không làm trong lượt này): kiến trúc overlay giờ đã đúng (tiền đề
+  D-1141 từng nói còn thiếu), nhưng blur-sample-nội-dung-thật cần `androidx.compose.ui.graphics.layer.GraphicsLayer`
+  tường minh (capture layer của content, blur rồi vẽ lại đúng vùng dưới pill, crop theo hình pill) —
+  vẫn là một khối việc/kiểm thử riêng, không có thiết bị thật trong môi trường này để xác nhận thị
+  giác. Theo đúng lời mời của D-1144 ("đừng chặn việc sửa 'box' lại vì muốn blur hoàn hảo"): chỉ xác
+  nhận bug "box" đã sửa xong (Box overlay + content cuộn thật sự ra sau pill), giữ nguyên vẻ ngoài
+  bán-trong-suốt từ D-1141, và ghi lại rõ trong doc comment `PillBottomNavigation.kt`/`GLASS_ALPHA` là
+  tiền đề đã đổi (không còn "sibling, not overlay" nữa) nhưng phần plumbing blur thật vẫn chưa làm.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug` —
+  cả hai chạy thật (test-result XML mới sinh ra ở `feature/home`/`core/designsystem`/`feature/profile`/
+  `feature/activity`/`feature/races`/`feature/devices`, không file nào `failures`/`errors` > 0;
+  `app-debug.apk` build lại thành công) — không chỉ tin Gradle UP-TO-DATE im lặng.
+
+- **D-1154** · 2026-11-08 · Bottom nav pill: giảm padding vertical để tối ưu không gian — **Chốt**
+  User muốn pill bottom nav chiếm ít chiều cao hơn. Giảm `vertical` trong
+  `Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)` ở `PillBottomNavigation.kt` (bọc
+  ngoài `Surface`) — agent tự chọn giá trị nhỏ hơn hợp lý (gợi ý: `Spacing.sm` hoặc `Spacing.xs`), miễn
+  đảm bảo pill vẫn đủ khoảng cách với mép màn hình/system nav bar (D-1084's `windowInsetsPadding` không
+  đổi) và các icon/label bên trong (`NAV_HEIGHT = 72.dp`, `PillNavItem`'s `padding(vertical = Spacing.sm)`)
+  không bị bóp méo/chật — có thể cần giảm cả `NAV_HEIGHT` một chút nếu giảm riêng outer padding chưa đủ
+  "gọn" theo cảm nhận, agent tự cân đối. Cùng file với D-1149 (agent đang xử lý) — gộp chung, không tách
+  agent riêng.
+
+- **D-1157** · 2026-11-09 · Home `RingsCard`: bỏ background, animate progress ring lần đầu hiển thị — **Chốt**
+  (đánh số lại từ D-1155 ban đầu vì trùng với D-1155 "Thực thi D-1149" do agent khác log song song —
+  nội dung không đổi, chỉ đổi số, theo đúng pattern renumber đã dùng nhiều lần trong file này.)
+  `RingsCard` (`HomeScreen.kt`) hiện bọc `ActivityRings` trong `Card(...)` mặc định (có nền
+  `surfaceContainer`-ish) — bỏ background này đi, để ring hiện trực tiếp trên nền Home (vẫn giữ
+  `onClick`/`testTag`, chỉ bỏ phần vẽ nền — dùng `Modifier` trơn hoặc `Surface(color = Color.Transparent)`
+  nếu cần giữ ripple/semantics của `onClick`, miễn không còn khối nền hình chữ nhật/bo góc nào hiện ra).
+  **Animate progress lần đầu hiển thị**: `ActivityRings` (`core/designsystem/.../ActivityRings.kt`) hiện
+  vẽ `sweepAngle` thẳng theo `ring.progress`, không animation — sửa để mỗi ring chạy animate từ 0 lên
+  đúng % thật khi composable này xuất hiện lần đầu (`Animatable`/`animateFloatAsState` + `LaunchedEffect`
+  theo từng ring, có thể stagger nhẹ giữa 3 ring cho đẹp mắt — agent tự quyết timing, gợi ý: 600-900ms
+  mỗi ring, `EaseOutCubic` hoặc tương tự). Chỉ animate **lần đầu** compose (giống tinh thần D-1098's
+  `revealKey` một-lần) — không animate lại mỗi khi progress đổi do data mới (tránh giật khi Home
+  refresh/polling); việc đó agent tự cân nhắc key animation theo đúng lifecycle hợp lý.
+
+- **D-1158** · 2026-11-09 · Bottom nav pill: bỏ shadow — đang gây drop FPS lúc fade ẩn/hiện — **Chốt**
+  (đánh số lại từ D-1156 ban đầu, trùng lý do như D-1157 ở trên.)
+  `PillBottomNavigation.kt`'s `Surface` đang có `shadowElevation = 6.dp` — user xác nhận trên máy thật
+  việc animate `alpha` (D-1134's `visible` fade) kèm shadow đang làm giật/drop FPS lúc pill ẩn/hiện.
+  Bỏ hẳn `shadowElevation` (set về `0.dp` hoặc bỏ tham số) — giữ nguyên `tonalElevation = 3.dp`,
+  `border` (viền sáng "glass"), và toàn bộ phần còn lại không đổi. Nếu mất shadow làm pill trông "phẳng"
+  hẳn so với trước, không cần bù lại bằng cách khác trừ khi rất đơn giản — ưu tiên hết giật FPS.
+
+- **D-1159** · 2026-11-09 · Bottom nav pill: bỏ background của sliding indicator ở tab active, thay bằng tô màu icon/text + bold — **Chốt**
+  Hiện tab đang chọn được đánh dấu bằng khối `Surface` nền `primaryContainer` trượt theo (sliding pill
+  indicator, D-1051/1077). User muốn bỏ hẳn khối nền này — thay vào đó thể hiện trạng thái active chỉ
+  bằng **màu icon/text** (đã có sẵn cơ chế `color = if (selected) onPrimaryContainer else
+  onSurfaceVariant` ở `PillNavItem` — đổi màu "selected" sang màu nhấn phù hợp không cần nền đi kèm, ví
+  dụ `MaterialTheme.colorScheme.primary`) và **in đậm chữ label khi active** (label hiện dùng
+  `typography.labelSmall` cho mọi trạng thái — đổi `fontWeight` thành `FontWeight.Bold` chỉ khi
+  `selected`, giữ `labelSmall` cho trạng thái thường). Xoá hẳn khối `Surface` nền trượt (`offset(x =
+  tabWidth * position)...color = primaryContainer`) cùng biến `rawPosition`/`position`/`selectedIndex`
+  nếu không còn chỗ nào dùng tới sau khi bỏ — kiểm tra kỹ trước khi xoá. Cùng file với D-1157/D-1158 —
+  gộp chung, không tách agent riêng.
+
+## Thực thi D-1149/D-1154 (pill nav: không ẩn theo pager swipe, giảm padding dọc) — D-115x
+
+- **D-1155** · 2026-11-09 · Thực thi D-1149 (bottom nav không ẩn khi swipe đổi tab) — **Chốt**
+  `UnifiedHealthApp.kt`'s `scrollFadeConnection` (D-1140, gắn `nestedScroll` trên `UnifiedHealthNavHost`
+  — tổ tiên chung của cả `HorizontalPager` (D-1052) lẫn từng tab's list/column riêng) trước đây phản
+  ứng với **mọi** delta `onPreScroll` nhận được, không phân biệt nguồn — nested scroll bubble lên bất kể
+  trục, nên pager swipe ngang (đổi tab) và list scroll dọc (đọc nội dung) đều trigger cùng 1 tín hiệu ẩn
+  pill, dù D-1134/1141 chỉ định nghĩa mục đích là tối ưu diện tích lúc *đọc*. Sửa: mọi scrollable trong
+  app này đều khoá trục (pager chỉ ngang, mọi list/column tab chỉ dọc), nên `available: Offset` mỗi lần
+  dispatch về cơ bản chỉ có 1 trục khác 0 — thêm 1 điều kiện đầu `onPreScroll`:
+  `if (abs(available.y) <= abs(available.x)) return Offset.Zero` (bỏ qua, không đụng `pillVisible` lẫn
+  timer fade-in) khi delta là ngang-trội (pager swipe, hoặc 1 carousel ngang trong tab như
+  `RacesCarousel` — cũng cố ý không trigger ẩn, vì "lướt carousel" không phải "đọc list" mà D-1134 nhắm
+  tới). Chỉ delta dọc-trội mới tiếp tục set `pillVisible = false` + reset timer 400ms như cũ. Cập nhật
+  doc comment tại chỗ giải thích rõ lý do/giả định (mọi scrollable khoá trục — không có trường hợp
+  scroll 2 chiều thật trong app để lo ngại nhầm lẫn).
+
+- **D-1156** · 2026-11-09 · Thực thi D-1154 (giảm padding dọc pill nav) — **Chốt**
+  `PillBottomNavigation.kt`: đổi `vertical` trong `Modifier.padding(horizontal = Spacing.lg, vertical =
+  Spacing.md)` (12dp) xuống `Spacing.xs` (4dp) — tiết kiệm 16dp chiều cao tổng (8dp mỗi bên). **Không**
+  đổi `NAV_HEIGHT` (giữ 72dp) dù quyết định cho phép — tính tay thấy dư địa bên trong đã khá sít:
+  `BoxWithConstraints`'s `padding(Spacing.xs = 4dp)` + `PillNavItem`'s `padding(vertical = Spacing.sm =
+  8dp)` đã chiếm 24dp trong 72dp, còn lại 48dp cho icon (24dp mặc định) + khoảng cách `Spacing.xxs`
+  (2dp) + label `labelSmall` (dòng chữ thường ~14-16dp tuỳ font metrics) ≈ 40-42dp — chỉ còn ~6-8dp dư,
+  giảm thêm `NAV_HEIGHT` sẽ có rủi ro cắt chữ/icon mà không có thiết bị thật trong môi trường này để
+  xác nhận bằng mắt. Chỉ giảm margin ngoài (không ảnh hưởng không gian nội dung bên trong pill) là lựa
+  chọn an toàn hơn, vẫn đáp ứng đúng yêu cầu "chiếm ít chiều cao hơn" (pill nổi gần mép màn hình hơn).
+  `D-1084`'s `windowInsetsPadding(WindowInsets.navigationBars...)` không đổi — pill vẫn né đúng system
+  nav bar như cũ, chỉ phần margin *sau* inset đó bị co lại.
+  **Verify (cả D-1155+D-1156)**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest
+  assembleDebug` — build thành công, `app-debug.apk` build lại (timestamp mới).
+
+- **D-1160** · 2026-11-09 · Bottom nav: ẩn khi scroll xuống, animate hiện lại khi scroll lên (như header) — **Chốt**
+  D-1149 vừa sửa để pill chỉ phản ứng với scroll dọc (không phải pager swipe) — nhưng hiện pill vẫn ẩn
+  bất kể **hướng** scroll dọc, rồi tự hiện lại sau khi dừng (theo `pillVisible`/timer hiện có). User muốn
+  đổi sang pattern "header ẩn/hiện theo hướng cuộn" quen thuộc: **cuộn xuống (nội dung đi lên) → ẩn
+  pill**, **cuộn lên (nội dung đi xuống) → hiện lại pill ngay**, không cần đợi dừng cuộn mới hiện. Đây là
+  thay đổi về *điều kiện* trigger ẩn/hiện (chuyển từ "đang cuộn hay không" sang "hướng cuộn gần nhất"),
+  không đổi lại phần vừa sửa ở D-1149 (vẫn chỉ phản ứng scroll dọc, không phản ứng pager swipe). Animation
+  hiện/ẩn (`tween`/`alpha`, D-1134) giữ nguyên, chỉ đổi điều kiện gọi `visible = true/false`.
+
+- **D-1161** · 2026-11-09 · Race item ở Home: ảnh đang chiếm content xấu, cần chụp màn hình thật + tự đề xuất re-layout — **Chốt**
+  User nhận xét `RaceCard`'s ảnh góc dưới-phải (D-1142/1146, vừa tăng gấp đôi size) đang che/chiếm nội
+  dung trông xấu trên máy thật — **không chỉ định hướng sửa cụ thể**, yêu cầu agent **tự dùng
+  `adb exec-out screencap`** chụp màn hình Home (carousel giải chạy thật) trên thiết bị/emulator đang kết
+  nối, nhìn trực tiếp ảnh chụp, rồi **tự đề xuất bố cục lại** `RaceCardWithPhoto` (`core/designsystem/
+  .../RaceCard.kt`) cho đẹp hơn — có thể là đổi lại vị trí/kích thước ảnh, cách scrim/overlay, bố cục
+  text, hoặc hướng tiếp cận khác hẳn D-1142/1146 nếu nhìn ảnh chụp thấy cần. **Giữ nguyên tỉ lệ nội dung
+  hiện tại** (kích thước chữ tên/ngày/khoảng cách/giá/CTA so với nhau) — user xác nhận phần đó đã ổn,
+  chỉ sửa cách ảnh được bố trí/hiển thị. Agent phải chụp ảnh thật để tự đánh giá, không đoán mò qua đọc
+  code — lặp lại chụp sau khi sửa để tự xác nhận kết quả đẹp hơn trước khi báo cáo xong.
+
+- **D-1162** · 2026-11-09 · `DevicesScreen`: bỏ text "My devices" thừa, re-layout status (connected/firmware/last sync), "Connected" nổi góc trái — **Chốt**
+  `DevicesScreen.kt` (`PairedDeviceCard`'s parent list, `SectionHeader("My devices")` dòng ~252): **bỏ
+  hẳn** section header này — thừa thãi (đã rõ ràng đây là danh sách thiết bị đã pair qua UI xung quanh,
+  không cần nhãn). Trong `PairedDeviceCard` (khi `connected`): hiện `ConnectionStatusChip` + battery +
+  "Firmware x" + "Last sync: ..." đang xếp rời rạc (1 `Row` rồi 2 dòng `Text` riêng bên dưới, dùng chung
+  `onSurfaceVariant`/`bodySmall`) — **re-layout cho đẹp hơn**, agent tự quyết bố cục cụ thể (gợi ý: gom
+  thành 1 khối thông tin thống nhất — có thể dùng icon đi kèm mỗi dòng (pin, chip firmware, đồng hồ sync)
+  cho dễ quét mắt, căn chỉnh/spacing nhất quán, có thể dùng `FlowRow` hoặc layout dạng chip/row gọn hơn
+  thay vì 3 dòng đứng rời). **Riêng `ConnectionStatusChip`**: đưa ra khỏi khối thông tin đó, đặt **nổi
+  (floating) ở góc trái-trên** của khu vực ảnh thiết bị — đối xứng với nút menu (`menuButton`) đang nổi
+  góc phải-trên (`Box(Modifier.align(Alignment.TopEnd))` dòng ~362) — dùng `Box(Modifier.align(
+  Alignment.TopStart))` tương ứng bên trong cùng `Box(Modifier.fillMaxWidth())` bọc ảnh. Cùng file với
+  D-1148 (agent đang xử lý `TappableWatchImage`) — gộp chung, không tách agent riêng. Trạng thái
+  `connectionState == false` (chưa connected, nhánh `else` dòng ~372) không bắt buộc đổi theo (không có
+  ảnh lớn để đặt chip nổi lên trên) — agent tự quyết có áp dụng tương tự hay giữ nguyên Row cũ cho nhánh
+  đó, miễn nhất quán/hợp lý.
+
+## Thực thi D-1157/D-1158/D-1159/D-1160 (RingsCard bỏ nền + animate, pill bỏ shadow + sliding indicator, hiện/ẩn theo hướng cuộn) — D-116x
+
+- **D-1163** · 2026-11-09 · Thực thi D-1157 (RingsCard bỏ nền + animate ring lần đầu) — **Chốt**
+  `RingsCard` (`HomeScreen.kt`): đổi `Card(onClick = onClick, ...)` sang
+  `Surface(onClick = onClick, color = Color.Transparent, tonalElevation = 0.dp, shadowElevation = 0.dp,
+  ...)` — giữ nguyên `onClick`/ripple/semantics (Material3 `Surface` có đúng overload nhận `onClick`),
+  không còn khối nền hình chữ nhật/bo góc nào vẽ ra (tonalElevation/shadowElevation set về 0 để chắc
+  chắn không có tint/bóng nào lộ ra dù `color` đã transparent). Import `Card` (hết dùng trong file) đổi
+  thành `Surface`.
+  `ActivityRings` (`core/designsystem/.../ActivityRings.kt`): thêm `Animatable(0f)` cho mỗi ring (giữ
+  qua `remember`, không reset khi `rings` đổi do data mới), `LaunchedEffect(Unit)` (chạy đúng 1 lần theo
+  vòng đời composable, không re-key theo `rings`) animate từng ring từ 0 lên đúng % thật, stagger 120ms
+  giữa các ring, mỗi ring 800ms `EaseOutCubic`. Cờ `introDone` (mặc định `false`) chỉ bật `true` sau khi
+  `joinAll()` mọi animation con xong — Canvas vẽ `animatedProgress[index].value` khi `!introDone`, vẽ
+  thẳng `ring.progress` (không animation) khi `introDone == true`, để tránh 2 lỗi có thể xảy ra nếu làm
+  ẩu: (1) animate lại mỗi lần data mới (đã tránh nhờ `LaunchedEffect(Unit)` không re-key), (2) *đứng
+  hình* ở giá trị animate-vào ban đầu mãi mãi khi data thật đổi sau đó (nếu chỉ dùng `Animatable` mà
+  không có `introDone` để chuyển sang đọc `ring.progress` sống) — lỗi (2) dễ bị bỏ sót nếu chỉ đọc yêu
+  cầu "animate 1 lần" theo nghĩa đen mà không nghĩ tiếp chuyện gì xảy ra SAU lần animate đó.
+
+- **D-1164** · 2026-11-09 · Thực thi D-1158 (bỏ shadow pill nav) — **Chốt**
+  `PillBottomNavigation.kt`: `shadowElevation` đổi từ `6.dp` xuống `0.dp` (giữ tham số thay vì xoá hẳn,
+  để rõ ràng là cố ý = 0 chứ không phải quên set). `tonalElevation = 3.dp` và `border` giữ nguyên không
+  đổi, đúng yêu cầu.
+
+- **D-1165** · 2026-11-09 · Thực thi D-1159 (bỏ sliding indicator, chọn tab = màu + bold) — **Chốt**
+  `PillBottomNavigation.kt`: xoá hẳn khối `Surface` nền trượt (`offset(x = tabWidth * position)`,
+  `color = primaryContainer`) cùng biến `tabWidth` (chỉ dùng cho khối đó, hết tác dụng sau khi xoá) và
+  đổi `BoxWithConstraints` (chỉ cần để đo `maxWidth` cho `tabWidth`) thành `Box` thường (không còn gì
+  cần đo). Giữ nguyên `rawPosition`/`position`/`selectedIndex` — vẫn cần để xác định `PillNavItem` nào
+  đang `selected`, đúng như quyết định lường trước. `PillNavItem`: màu "selected" đổi từ
+  `onPrimaryContainer` sang `MaterialTheme.colorScheme.primary` (không còn container để tương phản,
+  cần màu tự thân nổi bật hơn), label nhận thêm `fontWeight = if (selected) FontWeight.Bold else null`
+  (`null` = giữ nguyên weight mặc định của `labelSmall`, không phải "non-bold" cứng — để đúng tinh thần
+  "label bình thường khi không chọn", không override không cần thiết).
+  **Lưu ý ngoài phạm vi chính**: `core:designsystem:compileDebugKotlin` fail lúc build thử vì
+  `RaceCard.kt` (file của phiên khác đang làm D-1161, dùng `Modifier.border(...)` nhưng thiếu import
+  `androidx.compose.foundation.border`) — thêm đúng 1 dòng import còn thiếu đó để gỡ chặn build chung
+  (không sửa gì khác trong file, không thuộc phạm vi D-1157/1158/1159/1160), **không add vào commit của
+  lượt này** — để nguyên uncommitted cho phiên đang làm D-1161 tự commit cùng phần việc của họ.
+
+- **D-1166** · 2026-11-09 · Thực thi D-1160 (pill hiện/ẩn theo hướng cuộn thay vì theo trạng thái
+  đang-cuộn-hay-không) — **Chốt**
+  `UnifiedHealthApp.kt`'s `scrollFadeConnection`: bỏ hẳn cơ chế debounce-timer cũ (`fadeScope`,
+  `pillFadeInJob`, `delay(400)` trước khi set lại `pillVisible = true`) — thay bằng đọc dấu của
+  `available.y` ngay trong cùng `onPreScroll` đã lọc trục từ D-1149: `available.y < 0f` (nội dung cuộn
+  lên, tức user đang cuộn xuống đọc tiếp) → `pillVisible = false`; `available.y > 0f` (nội dung cuộn
+  xuống, user cuộn lên lại) → `pillVisible = true` ngay lập tức, không cần đợi dừng cuộn. Quy ước dấu
+  tham khảo đúng theo `TopAppBarDefaults.enterAlwaysScrollBehavior()` đã dùng sẵn ở `HomeScreen.kt`
+  (cùng ý nghĩa "cuộn xuống ẩn header, cuộn lên hiện header ngay"). Phần lọc trục D-1149
+  (`abs(available.y) <= abs(available.x)` → bỏ qua, không đụng `pillVisible`) giữ nguyên không đổi —
+  pager swipe vẫn không ảnh hưởng gì tới pill. Animation fade alpha/tween 220ms ở `PillBottomNavigation.kt`
+  (D-1134) không đổi gì — chỉ đổi điều kiện gọi `visible = true/false` đúng theo yêu cầu.
+  **Verify (D-1163→1166)**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest
+  assembleDebug` — build + mọi test pass (test-result XML mới sinh ra ở `feature/home`,
+  `core/designsystem` (gồm cả `RaceCardTest` của phiên khác — vẫn xanh sau khi thêm import thiếu),
+  `feature/activity`, `feature/profile`, `feature/races`, `feature/devices`), `app-debug.apk` build lại
+  thành công.
+
+- **D-1167** · 2026-11-09 · Fullscreen ảnh thiết bị: mở lên nhỏ, nhấn-giữ để phóng to dần theo thời gian (timing kiểu gamified), giữ đủ lâu → full + hiệu ứng pháo hoa → tự đóng — **Chốt**
+  Bổ sung cho fullscreen viewer của D-1148 (đang implement): thay vì mở lên hiện ảnh full ngay, **mở lên
+  với ảnh kích thước nhỏ** trước — kèm 1 animation/gợi ý nhẹ cho user biết cần **nhấn giữ (long-press)**
+  để phóng to. Trong lúc giữ: ảnh **to dần theo thời gian** giữ (progressive scale theo duration của
+  gesture, không phải tap 1 lần là xong). **"Chọn thời gian dạng Premack tí, kích thích người dùng"** —
+  user muốn timing/curve phóng to không tuyến tính nhàm chán, mà theo kiểu gamification gây hứng thú
+  (built-up tension/anticipation) — agent tự thiết kế cụ thể, gợi ý: easing không đều (chậm → nhanh dần,
+  hoặc có khoảng "rung lắc"/pulse nhẹ báo hiệu gần đạt ngưỡng), không cần implement đúng nghĩa đen lý
+  thuyết Premack, chỉ cần truyền tải cảm giác "càng giữ càng hồi hộp/phấn khích". **Giữ đủ lâu** (agent
+  tự chọn ngưỡng hợp lý, gợi ý 1.5-3s) → ảnh đạt full size → trigger **hiệu ứng kiểu pháo hoa** (particle
+  burst/confetti/sparkle, màu sắc rực rỡ, ngắn gọn ấn tượng) → **sau đó tự động đóng modal fullscreen**
+  (không cần user tap để đóng nữa trong trường hợp này). Nếu user **thả tay giữ sớm** (chưa đạt ngưỡng):
+  ảnh thu nhỏ lại về trạng thái ban đầu (không giữ nguyên size đang dở, không đóng modal) — user có thể
+  thử giữ lại. Cùng khu vực file với D-1148/D-1162 (agent đang xử lý Devices fullscreen viewer) — gộp
+  chung, không tách agent riêng.
+
+- **D-1168** · 2026-11-09 · Thực thi D-1161: `RaceCardWithPhoto` - ảnh góc dưới-phải (128dp, D-1146) đổi
+  thành chip nhỏ ở hàng trên, cạnh `TerrainBadge` — **Chốt**
+  Chụp màn hình Home thật (`adb exec-out screencap`) trên `emulator-5554` theo đúng yêu cầu D-1161, nhìn
+  trực tiếp: ảnh góc dưới-phải 128dp (D-1146) tạo thành 1 khối chữ nhật lớn chiếm gần nửa chiều rộng và
+  khoảng 1/3 chiều cao card, nằm sát ngay cạnh pill CTA ("Đã đóng đăng ký"/"Xem chi tiết") làm hàng dưới
+  cùng bị chật; bản thân ảnh poster còn có chữ/logo riêng (vd "Together we run further") cạnh tranh thị
+  giác với chữ của card — đúng như user mô tả "chiếm content xấu". **Sửa**: bỏ hẳn vị trí góc dưới-phải
+  + kích thước 128dp (sizeIn vuông duy nhất) của D-1146. Ảnh rõ nét giờ là 1 **chip nhỏ nằm cùng hàng với
+  `TerrainBadge`** ở trên cùng card (`Row` `SpaceBetween`: terrain bên trái, ảnh bên phải), kích thước cap
+  **độc lập theo cả 2 chiều** (`RaceThumbnailMaxWidth=72dp`/`RaceThumbnailMaxHeight=56dp`, không còn 1 cap
+  vuông duy nhất) để dù ảnh nguồn ngang/dọc/vuông thế nào cũng không bao giờ phình to thành khối lớn —
+  vẫn `ContentScale.Fit` giữ tỉ lệ gốc (D-1142 không đổi). Thêm viền trắng mờ + nền trắng mờ nhẹ quanh chip
+  (giống ngôn ngữ hình ảnh của `TerrainBadge`/`DistancePills`) để nó đọc như 1 badge có chủ đích, không
+  phải 1 miếng ảnh cắt thô dán lên card. Vì ảnh giờ chỉ nằm ở hàng trên cùng (không còn trải dọc hết chiều
+  cao card như D-1146), **bỏ hẳn phần dành chỗ `padding(end = ...)`** ở cả khối tên/ngày lẫn
+  `RaceCardBottomInfo` — khối giá/CTA ở dưới cùng lấy lại **toàn bộ chiều rộng card**, đây mới là điểm
+  sửa chính giải quyết đúng cảm giác "chiếm/chật" user thấy, không chỉ đơn thuần giảm số dp. Tỉ lệ nội
+  dung (cỡ chữ tên/ngày/khoảng cách/giá/CTA so với nhau) giữ nguyên 100% theo đúng ràng buộc D-1161 — chỉ
+  đổi cách bố trí/hiển thị ảnh. Đã tự chụp lại sau khi sửa (Home carousel + `RacesScreen` full-width list,
+  cả ảnh ngang/dọc/gần-vuông khác nhau) và xác nhận bằng mắt: card gọn hơn hẳn, chip ảnh đọc như 1 logo/
+  poster-accent nhỏ, không còn tranh chỗ với CTA/giá, tên giải giờ wrap đủ 2 dòng thoải mái không cần né.
+  Phạm vi chỉ sửa `core/designsystem/.../RaceCard.kt` theo đúng brief D-1161 — không đụng `HomeScreen.kt`,
+  `UnifiedHealthApp.kt`, `PillBottomNavigation.kt`, `feature/devices`, `RaceDetailScreen.kt` (các agent
+  khác đang làm song song trong các file đó; hai file `ActivityRings.kt`/`UnifiedHealthApp.kt` đang dở dang
+  thiếu import của phiên khác được `git stash` tạm để build qua, rồi `stash pop` lại nguyên trạng sau khi
+  xong — không commit kèm).
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest` (rerun đầy đủ, 438 task
+  thực thi lại, `RaceCardTest` 4/4 pass) và `./gradlew assembleDebug` — cả hai xanh; cài `app-debug.apk`
+  lên `emulator-5554` và chụp màn hình thật trước/sau để tự xác nhận bằng mắt theo đúng yêu cầu D-1161.
+
+- **D-1169** · 2026-11-09 · `ConnectionStatusChip` ("Connected" box) ở màn Devices: bỏ border — **Chốt**
+  `ConnectionStatusChip` (`core/designsystem/.../ConnectionStatusChip.kt`) dùng `AssistChip` mặc định —
+  M3 `AssistChip` tự có viền (`AssistChipDefaults.assistChipBorder()`) khi không truyền `border` tường
+  minh. Bỏ viền này đi — truyền `border = null` vào `AssistChip(...)`. Component này hiện chỉ được dùng
+  trong `feature/devices` (`DevicesScreen.kt`, `DeviceDetailScreen.kt`) nên sửa thẳng trong file dùng
+  chung là đủ, không cần tham số hoá riêng cho từng màn. Cùng khu vực file với D-1148/D-1162/D-1167
+  (agent đang xử lý Devices) — gộp chung, không tách agent riêng.
+
+- **D-1170** · 2026-11-09 · `RaceCardBottomInfo`: CTA nhiều trạng thái bị mất chữ — bố cục lại CTA góc phải-dưới, giá/thông tin giải góc trái-dưới — **Chốt**
+  User xác nhận trên máy thật: CTA (`RaceCallToAction` — 4 trạng thái khác nhau qua `ctaLabel()`: "Đăng
+  ký ngay", **"Đã đóng đăng ký"** (dài nhất), "Hết vé", "Xem chi tiết") đang bị **cắt/mất chữ** ở một số
+  trạng thái. Nghi ngờ nguyên nhân: `Row` chứa giá hiện đang để `Modifier.weight(1f)` một mình (không có
+  sibling khác cùng hàng — có vẻ là tàn dư từ lần sửa trước khi CTA từng nằm chung hàng rồi bị tách ra),
+  khiến bố cục hiện tại ngẫu nhiên đúng nhưng dễ vỡ nếu CTA/giá đổi cách ghép hàng. **Yêu cầu bố cục rõ
+  ràng**: 1 hàng dưới cùng của card — **góc trái**: giá (`priceFromVnd`) + có thể cả thông tin giải khác
+  (`DistancePills` nếu hợp lý gộp vào đây, hoặc giữ pills ở trên như hiện tại, agent tự quyết) chiếm phần
+  còn lại, cho phép truncate/ellipsis hoặc xuống dòng nếu dài — **góc phải**: CTA pill, **ưu tiên tuyệt
+  đối không bao giờ bị cắt chữ** (dùng `Modifier.wrapContentWidth()`/không gán `weight` cho CTA, để nó
+  luôn đủ chỗ hiện hết "Đã đóng đăng ký" — label dài nhất — trên 1 dòng; bên trái nhường chỗ bằng
+  `weight(1f, fill = false)` hoặc tương tự nếu cần). Kiểm tra lại cả 4 trạng thái CTA bằng cách tự tạo
+  dữ liệu test hoặc preview, không chỉ thấy 1 trạng thái "Đăng ký ngay" rồi coi là xong.
+
+- **D-1172** · 2026-11-09 · Thực thi D-1148 + D-1162 + D-1167 + D-1169 (Devices: ảnh tappable →
+  fullscreen, nhấn-giữ phóng to + pháo hoa, re-layout status info) — **Chốt** (đánh số lại từ D-1171 ban
+  đầu — trùng với entry "Thực thi D-1150 + D-1151" của agent khác log gần như cùng lúc; nội dung không
+  đổi, chỉ đổi số)
+  File mới `feature/devices/src/main/kotlin/com/unified/health/feature/devices/DeviceImageViewer.kt`:
+  `TappableWatchImage` (wrap quanh `WatchImage` có sẵn, không sửa `WatchImage.kt`/`core/designsystem`
+  để tránh đụng code đang dùng chung với Home) — pulse nhẹ (`rememberInfiniteTransition`, scale
+  1.0↔1.03, chu kỳ 2.6s) gợi ý tap được, tap mở `FullscreenWatchImageViewer`. Dùng `androidx.compose.
+  ui.window.Dialog(usePlatformDefaultWidth = false)` theo đúng gợi ý D-1148 thay vì `SharedTransitionLayout`
+  — `Dialog` tạo Android Window riêng nên khớp toạ độ chuẩn với vị trí ảnh gốc (shared-element thật) rủi
+  ro cao hơn giá trị nó mang lại ở đây; bù lại bằng scrim fade + ảnh pop lên bằng `spring(DampingRatio
+  MediumBouncy, StiffnessLow)` — cùng "tính cách" animation với flip-in của `WatchImage.tilt3d` khi
+  connect, để không bị lạc tông. Sau phản hồi "fade in phải ấn tượng hơn, không được như tắt/bật ngay"
+  (giữa chừng task): tách `scrimAlpha`/`heroAlpha` (tween 280ms) khỏi `heroScale` (spring, có overshoot)
+  để animation mở đọng lại rõ ràng thay vì một tween ngắn ăn hết mọi thứ trong ~260ms. Bug tự phát hiện
+  trên máy thật: scrim 0.92 alpha để lọt ~8% độ sáng ảnh nhỏ bên dưới qua, trông như lỗi render (ảnh đôi
+  mờ) — tăng lên 0.97 (`SCRIM_MAX_ALPHA`), hết hẳn.
+  **D-1167** (bổ sung nhận giữa chừng task, cùng file): viewer giờ mở lên với ảnh **nhỏ**
+  (`SMALL_REST_SCALE = 0.42` nhân thêm vào `heroScale`), kèm text gợi ý "Press & hold to view full
+  size" (canh `BottomCenter`, fade dần theo `(1 - growProgress)`). `Modifier.pointerInput` +
+  `detectTapGestures(onPress = …)`: khi nhấn, `scope.launch` chạy `growProgress.animateTo(1f,
+  keyframes { … })` (easing chậm→nhanh dần, ngưỡng `HOLD_THRESHOLD_MS = 1800`) chạy song song với
+  `tryAwaitRelease()` trong cùng `onPress` — nếu nhả tay trước khi job xong thì `job.cancel()` rồi
+  animate `growProgress` về 0 (ảnh thu nhỏ lại, không đóng modal); nếu job tự hoàn tất (giữ đủ lâu,
+  *không* bị cancel) thì chính job đó set `celebrating = true` — không cần so sánh `released`/thời gian
+  thủ công, tận dụng việc `Animatable.animateTo` ném `CancellationException` khi coroutine chứa nó bị
+  cancel. 30% cuối của hold có thêm jitter nhẹ (`rememberInfiniteTransition` chu kỳ 90ms, biên độ tăng
+  dần tới `JITTER_MAX_AMPLITUDE = 0.035`) báo hiệu "sắp tới". Đạt ngưỡng → `ConfettiBurst` (riêng,
+  `Canvas` vẽ 28 chấm tròn màu sắc bay ra từ tâm theo góc/tốc độ ngẫu nhiên, fade alpha theo
+  `progress`, 700ms) → `onFinished = onDismissed` (đóng thẳng, không qua animation đóng thường —
+  `dismiss()` tự chặn bằng `if (!celebrating)` để không đụng độ 2 luồng đóng). Ngưỡng 1.8s nằm trong
+  khoảng 1.5–3s user gợi ý; không cố làm đúng lý thuyết Premack theo nghĩa đen như user tự nói là
+  không cần.
+  **D-1162**: bỏ hẳn `SectionHeader("My devices")` (`DevicesScreen.kt` LazyColumn). `PairedDeviceCard`
+  nhánh `connected`: `ConnectionStatusChip` dời ra khỏi khối info, nổi `Box(Modifier.align(Alignment.
+  TopStart))` đối xứng với `menuButton` ở `TopEnd` — cả hai cùng nằm trong `Box(Modifier.fillMaxWidth())`
+  bọc ảnh. Battery/firmware/last-sync gom thành 1 `Column` dùng chung `StatusInfoRow` (icon
+  `BatteryStd`/`Memory`/`History` + nội dung) — **giữ nguyên y hệt** text/testTag từng dòng (vd
+  `Text("$it%")`, `Text("Firmware $it")`, `Modifier.testTag("last_sync_$mac")` + text "Last sync: …")
+  vì e2e (`GarminWatchE2ETest`, `StandardWatchE2ETest`, `HuaweiWatchE2ETest`, `ZeppWatchE2ETest`) assert
+  đúng các chuỗi/tag này — chỉ đổi bố cục/style, không đổi nội dung. Nhánh `else` (chưa connected) giữ
+  nguyên `Row` chip+battery+2 `Text` cũ, không bắt buộc đổi theo (đúng như D-1162 cho phép).
+  **D-1169**: `ConnectionStatusChip.kt` (`core/designsystem`) — thêm `border = null` vào `AssistChip`.
+  Xác nhận trước khi sửa: `grep` cho thấy component này hiện chỉ được `feature/devices` dùng (Home đã
+  bỏ hẳn `DeviceBanner` ở D-1147/D-1152) nên sửa thẳng không ảnh hưởng màn khác.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug` — pass
+  toàn bộ (`feature/devices`: `DevicesViewModelTest` 15/15, `DeviceDetailViewModelTest` 8/8;
+  `core/designsystem` test khác không đổi), `app-debug.apk` build lại thành công nhiều lần qua các vòng
+  sửa. **Xác nhận trên máy thật** (Pixel 4 đã pair sẵn 1 Garmin Forerunner 165 connected — dùng được
+  luôn, không cần seed data): tap ảnh → mở fullscreen đúng, ảnh mở **nhỏ** kèm text gợi ý, scrim tối đều
+  (không còn lọt sáng), nút Close + back đều đóng được; D-1162 (chip nổi góc trái, info block có icon,
+  bỏ "My devices") + D-1169 (chip hết viền) lên đúng như mô tả. **Không xác nhận trực tiếp được** nhánh
+  nhấn-giữ-đủ-lâu→pháo hoa→tự đóng và nhánh nhả-sớm→thu nhỏ: máy thật *và* emulator trong phiên này đều
+  bị thiết bị/scratchpad dùng chung với (ít nhất) 1 agent khác chạy song song (app bị cài đè, màn hình/
+  dữ liệu đổi giữa 2 lần chụp liên tiếp không do thao tác của mình, phát hiện cả file lạ xuất hiện trong
+  thư mục scratchpad tưởng là riêng) — không có cách nào giữ 1 cử chỉ nhấn-giữ 1.8–2.2s sạch để chụp lại
+  kết quả. Đã rà kỹ logic qua code thay vì đoán: race `growJob`/`tryAwaitRelease()` dùng đúng tính chất
+  cancel-ném-exception của `animateTo`, không có đường nào khiến `celebrating` set sai hoặc modal treo.
+
+- **D-1171** · 2026-11-09 · Thực thi D-1150 (ảnh cover Race Detail theo tỉ lệ gốc) + D-1151 (nav bar che CTA) — **Chốt**
+  **D-1150**: thêm `RaceCoverImage` mới trong `core/designsystem/.../component/RaceCoverImage.kt` (file
+  riêng, không sửa `RaceCard.kt` — đúng ràng buộc phạm vi vì agent khác đang làm trong file đó) —
+  `feature/races` không tự gọi Coil trực tiếp được (D-1109: chỉ `core/designsystem` phụ thuộc Coil), nên
+  logic đọc `intrinsicSize` phải nằm ở `core/designsystem`, không thể viết thẳng trong
+  `RaceDetailScreen.kt`. Cơ chế: `AsyncImage` với `onSuccess` đọc `painter.intrinsicSize`, lưu
+  `width/height` vào state; container `Modifier.aspectRatio(...)` animate (`animateFloatAsState`) từ
+  16:9 mặc định (lúc ảnh chưa tải xong) sang tỉ lệ thật khi có. Ảnh gần vuông (tỉ lệ trong khoảng
+  **0.85–1.15**, hằng số `SquareishAspectRatioRange`, chọn rộng hơn 1:1 đúng 1 chút để ảnh crop lệch nhẹ
+  kiểu 4:5/5:4 vẫn được xử lý như "gần vuông" thay vì hiện khung méo khó coi) giữ khung 16:9 cố định,
+  `ContentScale.Fit` ảnh căn giữa, phần nền thừa lấp bằng `RaceImageBackdrop` (tái dùng nguyên, không
+  viết lại blur, đúng yêu cầu D-1150). `RaceDetailScreen.kt` đổi `RaceHeroImage(..., height(HeaderHeight))`
+  cũ sang `RaceCoverImage(imageUrl, Modifier.fillMaxWidth())`; `HeaderHeight` 280dp vẫn giữ nguyên chỉ
+  cho nhánh gradient-fallback (race chưa có ảnh thật — không có intrinsic ratio để đọc).
+  **D-1151** (phát hiện thêm giữa chừng, user xác nhận trên máy thật, gộp luôn vì cùng file): CTA cuối
+  `RaceDetailContent` bị che bởi system nav bar — nguyên nhân do dòng gọi `RaceDetailContent` chỉ lấy
+  `padding.calculateTopPadding()` từ `Scaffold`, bỏ hẳn phần bottom mà `Scaffold` đã tự tính (so sánh với
+  `HomeScreen`/`DevicesScreen`/`AllMetricsScreen`/`DeviceDetailScreen` — tất cả đều dùng trọn
+  `Modifier.padding(padding)`, chỉ riêng `RaceDetailScreen` cherry-pick thiếu bottom). Sửa: thêm
+  `bottom = padding.calculateBottomPadding()` vào cùng modifier đó — vẫn **không** thêm `start`/`end` (để
+  ảnh cover ở trên giữ edge-to-edge, đúng tinh thần cũ của màn này). Đã rà các màn full-screen khác theo
+  yêu cầu "tính toán để không gặp việc tương tự": `RacesScreen` (list) đã dùng
+  `Modifier.fillMaxSize().padding(padding)` trọn vẹn — không có lỗi tương tự; `HomeScreen`/
+  `DevicesScreen`/`AllMetricsScreen`/`DeviceDetailScreen` (đọc qua, không sửa — thuộc file của agent
+  khác) cũng đều dùng `padding` trọn vẹn — `RaceDetailScreen` là trường hợp duy nhất thiếu.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest` và `./gradlew
+  assembleDebug` — cả hai xanh (test XML có sinh ra, không phải chạy im lặng giả). Cài lên máy thật
+  (Pixel 4, `99251FFAZ003T3`, nav bar 3 nút) qua `adb install -r`: xác nhận bằng mắt ảnh cover tỉ lệ
+  ngang thật (Lâm Đông Trail, Sơn Trà City Trail — ảnh rõ, không crop/méo, không còn band 280dp cố định
+  cũ) và CTA giờ có khoảng trống rõ phía trên nav bar 3 nút (trước đó bị che sát). **Nhánh ảnh gần-vuông
+  không tự chụp được trực tiếp**: xác nhận qua data crawl thật (`races/latest.json`) rằng nhiều ảnh race
+  thật đúng là 1:1 vuông (vd `Trang An Marathon`, `Prenn Trail Summit`, `Ultra Trail Cao Bang` — tải và đo
+  bằng PIL, kích thước 283×283/284×284/288×288px), nên nhánh này chắc chắn được dùng trong thực tế; việc
+  điều hướng thủ công qua `adb input swipe/tap` tới đúng màn chi tiết của 1 trong các giải này bị gián
+  đoạn liên tục bởi hành vi điều hướng không mong muốn trên máy thật trong phiên làm việc (tab/scroll tự
+  đổi không khớp input gửi đi — nghi do tương tác giữa pager/nested-scroll của app, không phải do code
+  D-1150/1151) — sau nhiều lần thử không thành công trong thời gian hợp lý, xác nhận nhánh này bằng đọc
+  kỹ code thay vì ảnh chụp: tái dùng y nguyên `RaceImageBackdrop` (component đã chạy đúng và được xác
+  nhận trực quan ở `RaceCardWithPhoto`, D-1131/1136/1142) nên rủi ro thấp.
+
+- **D-1173** · 2026-11-09 · Races carousel ở Home: tự động next 2 item khi vào viewport rồi ngưng, kích thích user nhìn vào — **Chốt**
+  (Dispatch **sau khi** merge `feat/watch-model-images` → `main` + push origin hoàn tất — không gộp vào
+  batch agent hiện tại, làm riêng sau trên `main` hoặc nhánh mới tuỳ lúc đó.)
+  Carousel "Giải chạy sắp tới" ở Home (`RacesCarousel`, `HomeScreen.kt`, D-1123/1124 virtualization +
+  paged scroll) hiện hoàn toàn thụ động — user phải tự vuốt mới thấy có nhiều giải. Thêm: khi carousel
+  **xuất hiện trong viewport** (visible on screen, không phải lúc app mới mở nếu đang cuộn xuống dưới nó),
+  **chờ 3 giây** rồi **tự động next 1 item** (animate scroll sang item kế tiếp, dùng cơ chế pager hiện có
+  — `animateScrollToPage`/tương đương, không giật cục), rồi lặp lại 1 lần nữa để **next sang item thứ 2**,
+  sau đó **ngưng hẳn** — không tự động nữa, để user tự điều khiển từ đó. Mục đích: gợi ý "còn nhiều giải
+  khác, vuốt xem thêm" mà không làm phiền (chỉ 2 lần, không lặp vô hạn). Nếu user **tự vuốt tay** trong
+  lúc đang auto-advance, huỷ ngay chuỗi tự động (không tranh chấp với thao tác thật của user). Logic
+  "trong viewport" nên dùng cơ chế đã có sẵn cho carousel/scroll detection trong Home (không viết lại từ
+  đầu nếu có pattern tương tự — ví dụ dùng `LazyListState`/`onGloballyPositioned` đo vị trí item carousel
+  so với viewport). Nếu user rời Home rồi quay lại, coi như "vào viewport" lại từ đầu (reset đếm, không
+  cần nhớ đã từng auto-advance trước đó qua lần mở app khác).
+
+- **D-1174** · 2026-11-09 · Thực thi D-1170: `RaceCardBottomInfo` - gộp giá + CTA vào 1 hàng (giá trái,
+  CTA phải, CTA không bao giờ co) — **Chốt**
+  Chụp màn hình thật trên `99251FFAZ003T3` (Pixel 4, không phải emulator) để tìm đúng nguyên nhân thay
+  vì đoán theo D-1170. Phát hiện: lỗi **không phải** co chữ theo chiều ngang trong chính hàng CTA — ảnh
+  chụp "Đã đóng đăng ký" (label dài nhất) hiển thị đủ, không vỡ chữ, khi card có đủ chỗ dọc. Nguyên nhân
+  thật: **tràn chiều dọc**. `RaceCardBottomInfo` trước đó là 2 hàng xếp chồng (giá trên 1 hàng riêng với
+  `Modifier.weight(1f)` không tác dụng vì không có sibling - đúng như nghi ngờ của D-1170 - rồi
+  `RaceCallToAction` ở hàng riêng bên dưới); với 1 race tên dài phải xuống 2 dòng + có đủ `DistancePills`
+  + giá, tổng chiều cao khối dưới vượt quá phần còn lại của `RaceCardHeight` cố định (220dp), đẩy
+  `RaceCallToAction` (phần tử cuối) bị `Card` cắt mất ở viền dưới - xác nhận trực quan với race
+  "Nghệ An Legacy Marathon" (tên 2 dòng, 4 pills, có giá, CTA "Đăng ký ngay") trên carousel Home: pill CTA
+  gần như biến mất, chỉ còn 1 mép trên cùng lộ ra trước khi bị cắt.
+  **Sửa**: gộp giá + CTA vào **1 hàng duy nhất** (`Arrangement.SpaceBetween`) - giảm đúng 1 hàng chiều
+  cao, đây là phần sửa thật sự giải quyết tràn dọc, không chỉ là sở thích bố cục. `RaceCallToAction`
+  **không gán `weight`** (đo kích thước theo nội dung của chính nó, do `RaceCallToAction`/`ClosedBadge`
+  vốn không `fillMaxWidth`) nên không bao giờ bị ép co dù label dài nhất. Giá dùng
+  `Modifier.weight(1f, fill = false)` + `maxLines = 1` + `TextOverflow.Ellipsis` để **nhường chỗ trước**
+  nếu hàng quá hẹp cho cả hai - `SpaceBetween` + CTA không-weight (đo trước) đảm bảo CTA luôn ở sát mép
+  phải, đủ 100% chiều rộng tự nhiên, bất kể giá ngắn/dài/ellipsis. `DistancePills` giữ nguyên vị trí phía
+  trên (không gộp xuống hàng này) - đủ để hết tràn dọc mà không cần đụng thêm.
+  **Xác nhận lại bằng ảnh chụp thật (không đoán)**: cài lại APK lên `99251FFAZ003T3`, lướt đúng race
+  "Nghệ An Legacy Marathon" trên carousel Home (vị trí/ảnh/dữ liệu giống hệt lần chụp lỗi trước) - CTA
+  "Đăng ký ngay" + giá "Từ 450.000đ" giờ hiện đủ, không còn bị cắt. Cũng xác nhận thêm nhiều race khác
+  có tên 2 dòng + đủ pills + giá trên cả carousel Home và `RacesScreen` list full-width (Cà Mau Marathon,
+  Vnexpress Marathon Hanoi Midnight, Giải Chạy Quốc Tế Vì Đà Lạt Xanh...) - không còn card nào bị cắt chữ
+  CTA. Đã xem trực tiếp 3/4 trạng thái `RaceRegistrationStatus` qua dữ liệu thật (OPEN "Đăng ký ngay" -
+  trường hợp dài nhất đã test kỹ; CLOSED "Đã đóng đăng ký"; UNKNOWN "Xem chi tiết"); không tìm thấy race
+  nào đang ở trạng thái SOLD_OUT trong dữ liệu crawl hiện tại để chụp trực tiếp, nhưng `RaceCallToAction`
+  dùng chung đúng 1 nhánh code (`ClosedBadge`) cho cả CLOSED/SOLD_OUT/UNKNOWN - chỉ khác chuỗi hiển thị -
+  và "Hết vé" ngắn hơn cả 2 chuỗi đã xác nhận không cắt ở cùng vị trí, nên an toàn theo cấu trúc code,
+  không phải đoán mò.
+  Phạm vi chỉ sửa `RaceCardBottomInfo` trong `RaceCard.kt` (thêm import `TextOverflow`), không đụng file
+  nào khác.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest` (rerun đầy đủ 438 task,
+  `RaceCardTest` xanh) và `./gradlew assembleDebug` - cả hai pass; cài lại `app-debug.apk` lên
+  `99251FFAZ003T3` và chụp ảnh thật trước/sau để xác nhận bằng mắt theo đúng yêu cầu D-1170.
+
+- **D-1175** · 2026-11-09 · Sắp xếp giải chạy: ưu tiên "đăng ký được ngay" lên trước, rồi theo ngày — áp dụng mặc định cho cả carousel Home lẫn màn "Tất cả giải" — **Chốt**
+  (Dispatch **sau khi** merge `feat/watch-model-images` → `main` + push origin hoàn tất — cùng đợt với
+  D-1173, không gộp vào batch agent hiện tại.)
+  Hiện danh sách giải (carousel Home lẫn `RacesScreen` "Tất cả giải") sort theo thứ tự gì đó mặc định
+  (chưa rõ — agent cần đọc `RacesViewModel`/nguồn data hiện tại để biết đang sort theo gì trước khi sửa).
+  Đổi sang: **sort mặc định** theo 2 cấp — (1) **ưu tiên giải có thể đăng ký ngay** lên đầu (status
+  `OPEN` — tái dùng đúng `RaceRegistrationStatus` đã có, D-1106, không tạo field/enum mới), các trạng
+  thái khác (`CLOSED`/`SOLD_OUT`/`UNKNOWN`) xuống sau; (2) trong cùng nhóm, sort theo **thời gian** (ngày
+  diễn ra, gần nhất trước — theo đúng field ngày hiện có, `race.date`/tương đương). Áp dụng **đồng nhất**
+  cho cả carousel ở Home và màn "Tất cả giải" (`RacesScreen`) — 1 nguồn sort logic dùng chung (ví dụ
+  trong `RacesViewModel`/repository/use-case, không viết riêng 2 chỗ) để tránh lệch thứ tự giữa 2 nơi
+  hiển thị cùng dữ liệu.

@@ -118,13 +118,13 @@ internal class MockWatchSession(
             ?: today.minusDays(MockWatchDriver.FIRST_SYNC_DAYS - 1L)
         val days = (Duration.between(firstDay.atStartOfDay(zone).toInstant(), end).toDays() + 1).toInt().coerceAtLeast(1)
         var delivered = 0
-        progress.report(0f)
+        progress.report(0f, "Đang chuẩn bị đồng bộ...")
         for (i in 0 until days) {
             val date = firstDay.plusDays(i.toLong())
             val records = generator.day(date, until = if (date == today) end else null)
             sink.onRecords(records)
             delivered += records.count { it !is HealthRecord.RawPayload }
-            progress.report((i + 1f) / days)
+            progress.report((i + 1f) / days, "Đang tải dữ liệu mô phỏng (${i + 1}/$days ngày)...")
             if (syncDelayPerDayMs > 0) delay(syncDelayPerDayMs)
         }
         return delivered

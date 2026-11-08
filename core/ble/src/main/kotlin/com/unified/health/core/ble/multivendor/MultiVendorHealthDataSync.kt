@@ -37,8 +37,8 @@ class MultiVendorHealthDataSync @Inject internal constructor(
         _state.value = SyncState.InProgress(0f)
         runCatchingNonCancellation {
             val count = connection.withHighThroughput(macAddress) {
-                session.sync(SyncRequest(since, knownRawPayloadTimestamps = knownRawPayloadTimestamps), sink) { fraction ->
-                    _state.value = SyncState.InProgress(fraction.coerceIn(0f, 1f))
+                session.sync(SyncRequest(since, knownRawPayloadTimestamps = knownRawPayloadTimestamps), sink) { fraction, stage ->
+                    _state.value = SyncState.InProgress(fraction.coerceIn(0f, 1f), stage)
                 }
             }
             SyncResult(syncedAt = Instant.now(), recordsImported = count)

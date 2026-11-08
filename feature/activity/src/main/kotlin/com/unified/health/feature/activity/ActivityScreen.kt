@@ -79,9 +79,11 @@ internal fun ActivityScreen(state: ActivityUiState, onWorkoutClick: (String) -> 
                 icon = Icons.Outlined.SportsScore,
                 modifier = Modifier.padding(padding).testTag("workouts_empty"),
             )
+            // D-1144: bottom clearance is Spacing.bottomNavClearance (was Spacing.xxl) — the pill nav
+            // now floats as a Box overlay over this tab's content instead of reserving Scaffold space.
             is ActivityUiState.Success -> LazyColumn(
                 modifier = Modifier.fillMaxSize().padding(padding).testTag("activity_list"),
-                contentPadding = PaddingValues(start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.xxl),
+                contentPadding = PaddingValues(start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.bottomNavClearance),
                 verticalArrangement = Arrangement.spacedBy(Spacing.sm),
             ) {
                 item(key = "load") { ActivityLoadCard(state.load) }

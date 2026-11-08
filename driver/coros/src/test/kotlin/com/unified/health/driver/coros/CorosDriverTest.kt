@@ -59,7 +59,7 @@ class CorosDriverTest {
         val session = CorosDriver().openSession(gatt, noCredentials)
 
         assertEquals(setOf(DeviceCapability.BATTERY_LEVEL), session.capabilities)
-        assertEquals(0, session.sync(SyncRequest(since = null), RecordingSink()) {})
+        assertEquals(0, session.sync(SyncRequest(since = null), RecordingSink()) { _, _ -> })
         session.close()
     }
 
@@ -75,7 +75,7 @@ class CorosDriverTest {
         testScheduler.advanceUntilIdle()
 
         val sink = RecordingSink()
-        val count = session.sync(SyncRequest(since = null), sink) {}
+        val count = session.sync(SyncRequest(since = null), sink) { _, _ -> }
         assertEquals(1, count)
         assertEquals(listOf(64), sink.ofType<HealthRecord.HeartRate>().map { it.bpm })
         session.close()

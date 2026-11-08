@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.LiveHealthRepository
+import com.unified.health.core.domain.repository.RacesRepository
+import com.unified.health.core.domain.repository.RacesState
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.domain.usecase.Highlight
@@ -18,6 +20,7 @@ import com.unified.health.core.model.FeedCardId
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.LiveHeartRate
+import com.unified.health.core.model.SyncState
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.WearableDevice
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,6 +55,9 @@ sealed interface HomeUiState {
         val hiddenFeedCards: Set<String> = emptySet(),
         /** D-1073/1074: List vs Grid layout for the "All metrics" section. */
         val metricsViewMode: HomeMetricsViewMode = HomeMetricsViewMode.GRID,
+        /** D-1147: drives the header device chip's status dot (green = connected + actively syncing
+         *  right now, gray otherwise) — same [WearableDeviceRepository.syncState] source Devices uses. */
+        val syncState: SyncState = SyncState.Idle,
     ) : HomeUiState
     data class Error(val message: String) : HomeUiState
 }
@@ -71,11 +77,16 @@ class HomeViewModel @Inject constructor(
     private val deviceRepository: WearableDeviceRepository,
     private val healthData: HealthDataRepository,
     private val preferences: UserPreferencesRepository,
+    private val racesRepository: RacesRepository,
     liveHealth: LiveHealthRepository,
 ) : ViewModel() {
 
     /** Collected only while Home is visible, which is what turns the watch sensor on. */
     val liveHeartRate: StateFlow<LiveHeartRate?> = liveHealth.heartRate
+
+    /** D-1105: drives the "Giải chạy sắp tới" carousel — hidden entirely unless this is [RacesState.Success]. */
+    val racesState: StateFlow<RacesState> =
+        racesRepository.races.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), RacesState.Loading)
 
     /** D-1054: metrics actively streaming right now, for the green/gray dot on their cards. */
     val liveMetrics: StateFlow<Set<HealthMetricType>> = liveHealth.liveMetrics
@@ -107,8 +118,9 @@ class HomeViewModel @Inject constructor(
         observePrimaryDevice(),
         deviceRepository.pairedDevices.map { it.size },
         observeHighlights(),
-    ) { summary, device, count, highlights ->
-        HomeUiState.Success(summary, device, highlights, count)
+        deviceRepository.syncState,
+    ) { summary, device, count, highlights, syncState ->
+        HomeUiState.Success(summary, device, highlights, count, syncState = syncState)
     }
 
     private val metricsViewMode: Flow<HomeMetricsViewMode> =
@@ -153,8 +165,9 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch { preferences.setHomeMetricsViewMode(mode) }
     }
 
-    /** Pull-to-refresh: syncs every connected device. */
+    /** Pull-to-refresh: syncs every connected device and re-fetches the races feed (D-1107). */
     fun refresh() {
+        viewModelScope.launch { racesRepository.refresh() }
         viewModelScope.launch {
             _isRefreshing.value = true
             val connected = deviceRepository.pairedDevices.first().filter { it.connectionState == ConnectionState.Connected }

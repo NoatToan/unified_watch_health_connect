@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import com.unified.health.core.model.PairingCodeRequest
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -25,7 +26,9 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BatteryStd
 import androidx.compose.material.icons.automirrored.outlined.BluetoothSearching
+import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Keyboard
+import androidx.compose.material.icons.outlined.Memory
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.Stop
@@ -63,9 +66,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -238,13 +243,15 @@ internal fun DevicesScreen(
         }
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(padding),
-            contentPadding = PaddingValues(start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = 96.dp),
+            // D-1144: Spacing.bottomNavClearance (was a literal 96.dp — same value, now the shared
+            // constant) — the pill nav floats as a Box overlay over this tab's content instead of
+            // reserving Scaffold space, so without this the last card would sit behind it permanently.
+            contentPadding = PaddingValues(start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.bottomNavClearance),
             verticalArrangement = Arrangement.spacedBy(Spacing.md),
         ) {
             if (permissionDenied) {
                 item { PermissionCard(onOpenSettings = { context.openAppSettings() }) }
             }
-            item { SectionHeader("My devices") }
             if (state.pairedDevices.isEmpty()) {
                 item { NoPairedDeviceCard(onScan = requestScan, onScanQrCode = { showScanner = true }) }
             } else {
@@ -324,60 +331,109 @@ private fun PairedDeviceCard(
 
     ElevatedCard(Modifier.fillMaxWidth().testTag("paired_${device.macAddress}")) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                WatchImage(
-                    model = watchModel,
-                    size = if (connected) 88.dp else 56.dp,
-                    interactive = connected,
-                    revealKey = connected,
-                )
-                Spacer(Modifier.width(Spacing.md))
-                Column(Modifier.weight(1f)) {
-                    Text(device.name, style = MaterialTheme.typography.titleMedium)
-                    Text(
-                        listOfNotNull(watchModel?.takeUnless { it.isGeneric }?.displayName, device.vendor.displayName, device.macAddress)
-                            .joinToString(" · "),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+            val menuButton: @Composable () -> Unit = {
+                IconButton(onClick = { menuOpen = true }, modifier = Modifier.testTag("more_${device.macAddress}")) {
+                    Icon(Icons.Outlined.MoreVert, contentDescription = "More options for ${device.name}")
+                }
+                DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
+                    DropdownMenuItem(
+                        text = { Text("Device settings") },
+                        onClick = { menuOpen = false; onOpenSettings() },
+                        modifier = Modifier.testTag("device_settings_menu_item"),
                     )
-                }
-                Column {
-                    IconButton(onClick = { menuOpen = true }, modifier = Modifier.testTag("more_${device.macAddress}")) {
-                        Icon(Icons.Outlined.MoreVert, contentDescription = "More options for ${device.name}")
+                    device.credentialRequirements.forEach { requirement ->
+                        DropdownMenuItem(text = { Text("Change ${requirement.label}") }, onClick = { menuOpen = false; editing = requirement })
                     }
-                    DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
-                        DropdownMenuItem(
-                            text = { Text("Device settings") },
-                            onClick = { menuOpen = false; onOpenSettings() },
-                            modifier = Modifier.testTag("device_settings_menu_item"),
-                        )
-                        device.credentialRequirements.forEach { requirement ->
-                            DropdownMenuItem(text = { Text("Change ${requirement.label}") }, onClick = { menuOpen = false; editing = requirement })
+                    DropdownMenuItem(text = { Text("Unpair") }, onClick = { menuOpen = false; confirmUnpair = true }, modifier = Modifier.testTag("unpair_menu_item"))
+                }
+            }
+            val subtitle = listOfNotNull(watchModel?.takeUnless { it.isGeneric }?.displayName, device.vendor.displayName, device.macAddress)
+                .joinToString(" · ")
+            if (connected) {
+                // D-1130: once paired, this is the screen users actually look at regularly — not
+                // "About this device" — so it gets the same big, centered watch image treatment
+                // (WatchImage(size = 180.dp), DeviceDetailScreen.kt) instead of a small inline one.
+                Box(Modifier.fillMaxWidth()) {
+                    // D-1148: tappable -> fullscreen viewer, with a subtle pulse hinting it's tappable.
+                    TappableWatchImage(
+                        model = watchModel,
+                        size = 180.dp,
+                        revealKey = connected,
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                    // D-1162: floats symmetrically with menuButton below, instead of sitting in the
+                    // status-info block — the big image area reads as the card's "header", so both its
+                    // corner badges belong to it.
+                    Box(Modifier.align(Alignment.TopStart)) { ConnectionStatusChip(device.connectionState) }
+                    Box(Modifier.align(Alignment.TopEnd)) { menuButton() }
+                }
+                Text(device.name, style = MaterialTheme.typography.titleLarge, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+                Text(
+                    subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                )
+                // D-1162: one cohesive icon+text block instead of a chip row plus two stray Text
+                // lines — text content/testTag per line kept exactly as before (e2e asserts on them).
+                Column(Modifier.padding(top = Spacing.xs), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                    device.batteryPercent?.let {
+                        StatusInfoRow(Icons.Outlined.BatteryStd) { Text("$it%", style = MaterialTheme.typography.bodyMedium) }
+                    }
+                    device.firmwareVersion?.let {
+                        StatusInfoRow(Icons.Outlined.Memory) {
+                            Text("Firmware $it", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
-                        DropdownMenuItem(text = { Text("Unpair") }, onClick = { menuOpen = false; confirmUnpair = true }, modifier = Modifier.testTag("unpair_menu_item"))
+                    }
+                    StatusInfoRow(Icons.Outlined.History) {
+                        Text(
+                            modifier = Modifier.testTag("last_sync_${device.macAddress}"),
+                            text = "Last sync: " + (device.lastSyncedAt?.let { LAST_SYNC_FORMAT.format(it.atZone(ZoneId.systemDefault())) } ?: "never"),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
                     }
                 }
-            }
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
-                ConnectionStatusChip(device.connectionState)
-                device.batteryPercent?.let {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Outlined.BatteryStd, contentDescription = null, modifier = Modifier.size(18.dp))
-                        Text("$it%", style = MaterialTheme.typography.bodyMedium)
+            } else {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    WatchImage(model = watchModel, size = 56.dp, interactive = false, revealKey = connected)
+                    Spacer(Modifier.width(Spacing.md))
+                    Column(Modifier.weight(1f)) {
+                        Text(device.name, style = MaterialTheme.typography.titleMedium)
+                        Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                    Column { menuButton() }
+                }
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                    ConnectionStatusChip(device.connectionState)
+                    device.batteryPercent?.let {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Outlined.BatteryStd, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Text("$it%", style = MaterialTheme.typography.bodyMedium)
+                        }
                     }
                 }
+                device.firmwareVersion?.let {
+                    Text("Firmware $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                Text(
+                    modifier = Modifier.testTag("last_sync_${device.macAddress}"),
+                    text = "Last sync: " + (device.lastSyncedAt?.let { LAST_SYNC_FORMAT.format(it.atZone(ZoneId.systemDefault())) } ?: "never"),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
-            device.firmwareVersion?.let {
-                Text("Firmware $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            Text(
-                modifier = Modifier.testTag("last_sync_${device.macAddress}"),
-                text = "Last sync: " + (device.lastSyncedAt?.let { LAST_SYNC_FORMAT.format(it.atZone(ZoneId.systemDefault())) } ?: "never"),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
             if (connected && syncState is SyncState.InProgress) {
                 LinearProgressIndicator(progress = { syncState.progress }, modifier = Modifier.fillMaxWidth())
+                syncState.stage?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.testTag("sync_stage_${device.macAddress}"),
+                    )
+                }
             }
             (device.connectionState as? ConnectionState.Error)?.let {
                 Text(it.reason, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
@@ -417,6 +473,16 @@ private fun PairedDeviceCard(
             confirmButton = { TextButton(onClick = { confirmUnpair = false; onUnpair() }, modifier = Modifier.testTag("confirm_unpair")) { Text("Unpair") } },
             dismissButton = { TextButton(onClick = { confirmUnpair = false }) { Text("Cancel") } },
         )
+    }
+}
+
+/** One line of the connected [PairedDeviceCard]'s status block (D-1162): a leading icon for quick
+ * scanning, then whatever text the caller needs verbatim (e2e tests assert on exact text/testTags). */
+@Composable
+private fun StatusInfoRow(icon: ImageVector, content: @Composable () -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(18.dp))
+        content()
     }
 }
 

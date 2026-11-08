@@ -15,6 +15,7 @@ import com.unified.health.core.data.healthconnect.HealthConnectManager
 import com.unified.health.core.data.link.DefaultDeviceLinkKeeper
 import com.unified.health.core.data.live.DefaultLiveHealthRepository
 import com.unified.health.core.data.pairing.DefaultPairingCodeBroker
+import com.unified.health.core.data.races.RemoteRacesRepository
 import com.unified.health.core.domain.repository.DeviceLinkKeeper
 import com.unified.health.core.domain.repository.LiveHealthRepository
 import com.unified.health.core.data.repository.DefaultWearableDeviceRepository
@@ -26,6 +27,7 @@ import com.unified.health.core.data.sync.RawPayloadStore
 import com.unified.health.core.domain.repository.HealthConnectRepository
 import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.NotificationPreferencesRepository
+import com.unified.health.core.domain.repository.RacesRepository
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.domain.repository.DemoDataController
@@ -37,6 +39,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -79,6 +83,11 @@ internal abstract class DataBindingsModule {
     @Binds
     abstract fun bindRawPayloadSaver(impl: RawPayloadStore): RawPayloadSaver
 
+    /** D-1105/D-1107: marketing races carousel + full list, not personal health data. */
+    @Binds
+    @Singleton
+    abstract fun bindRacesRepository(impl: RemoteRacesRepository): RacesRepository
+
     /** Bound only in debug builds (`:core:demo`); release injects `Optional.empty()`. */
     @BindsOptionalOf
     abstract fun optionalDemoDataController(): DemoDataController
@@ -107,4 +116,12 @@ internal object DataProvidersModule {
     @Singleton
     fun providePreferencesDataStore(@ApplicationContext context: Context): DataStore<Preferences> =
         PreferenceDataStoreFactory.create { context.preferencesDataStoreFile("user_preferences") }
+
+    /** Short timeouts (D-1107: a slow/unreachable races feed must never hang the app). */
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(10, TimeUnit.SECONDS)
+        .build()
 }

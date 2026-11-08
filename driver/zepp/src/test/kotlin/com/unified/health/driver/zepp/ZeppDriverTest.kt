@@ -177,7 +177,7 @@ class ZeppDriverTest {
         val sink = RecordingSink()
         val progress = mutableListOf<Float>()
         val since = Instant.parse("2026-10-30T00:00:00Z")
-        val count = session.sync(SyncRequest(since = since, now = Instant.parse("2026-10-31T00:00:00Z")), sink) { progress += it }
+        val count = session.sync(SyncRequest(since = since, now = Instant.parse("2026-10-31T00:00:00Z")), sink) { fraction, _ -> progress += fraction }
 
         val t0 = start.toInstant(ZoneOffset.UTC)
         assertEquals(
@@ -365,7 +365,7 @@ class ZeppDriverTest {
         watch.transientGdspFailures = 2
         val session = driver().openSession(watch.gatt, withKey)
         val sink = RecordingSink()
-        val count = session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), sink) {}
+        val count = session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), sink) { _, _ -> }
 
         assertEquals(2, count) // one Steps and one HeartRate record
         assertEquals(listOf(10), sink.ofType<HealthRecord.Steps>().map { it.count })
@@ -383,7 +383,7 @@ class ZeppDriverTest {
         watch.transientGdspFailures = 10
         val session = driver().openSession(watch.gatt, withKey)
         try {
-            session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), RecordingSink()) {}
+            session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), RecordingSink()) { _, _ -> }
             fail("expected WearableProtocolException")
         } catch (e: WearableProtocolException) {
             assertTrue(e.message!!.contains("code 4"))
@@ -401,7 +401,7 @@ class ZeppDriverTest {
         )
         watch.corruptNextCrc = true
         val session = driver().openSession(watch.gatt, withKey)
-        val count = session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), RecordingSink()) {}
+        val count = session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), RecordingSink()) { _, _ -> }
 
         assertEquals(2, count) // one Steps and one HeartRate record
         assertEquals(listOf<Int?>(null, 1, 1, 1, 1, 1), watch.stopCodes)
@@ -417,7 +417,7 @@ class ZeppDriverTest {
         watch.corruptCrcAlways = true
         val session = driver().openSession(watch.gatt, withKey)
         try {
-            session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), RecordingSink()) {}
+            session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), RecordingSink()) { _, _ -> }
             fail("expected WearableProtocolException")
         } catch (e: WearableProtocolException) {
             assertTrue(e.message!!.contains("CRC"))
@@ -436,7 +436,7 @@ class ZeppDriverTest {
         watch.malformedGdspHeader = true
         val session = driver().openSession(watch.gatt, withKey)
         try {
-            session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), RecordingSink()) {}
+            session.sync(SyncRequest(since = Instant.parse("2026-10-30T00:00:00Z")), RecordingSink()) { _, _ -> }
             fail("expected WearableProtocolException")
         } catch (e: WearableProtocolException) {
             assertTrue(e.message!!.contains("Malformed GDSP header"))

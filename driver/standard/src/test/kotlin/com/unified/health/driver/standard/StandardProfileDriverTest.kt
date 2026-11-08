@@ -141,7 +141,7 @@ class StandardProfileDriverTest {
 
         val sink = RecordingSink()
         val progress = mutableListOf<Float>()
-        val count = session.sync(SyncRequest(since = null, now = clock.now), sink) { progress += it }
+        val count = session.sync(SyncRequest(since = null, now = clock.now), sink) { fraction, _ -> progress += fraction }
 
         assertEquals(70, sink.ofType<HealthRecord.HeartRate>().size)
         assertTrue(sink.ofType<HealthRecord.HeartRate>().all { it.bpm == 72 })
@@ -160,7 +160,7 @@ class StandardProfileDriverTest {
 
         // Everything was handed over; a second sync only re-reads the (idempotent) stored record.
         val again = RecordingSink()
-        session.sync(SyncRequest(since = clock.now), again) {}
+        session.sync(SyncRequest(since = clock.now), again) { _, _ -> }
         assertEquals(1, again.ofType<HealthRecord.SpO2>().size)
         assertTrue(again.ofType<HealthRecord.HeartRate>().isEmpty())
         session.close()
@@ -189,7 +189,7 @@ class StandardProfileDriverTest {
         second.scriptRacp(emptyList(), response = 0x06)
         val resumed = driver.openSession(second, context)
         val sink = RecordingSink()
-        resumed.sync(SyncRequest(since = null), sink) {}
+        resumed.sync(SyncRequest(since = null), sink) { _, _ -> }
         assertEquals(listOf(80), sink.ofType<HealthRecord.HeartRate>().map { it.bpm })
         resumed.close()
     }
@@ -200,10 +200,10 @@ class StandardProfileDriverTest {
         val session = driver().openSession(gatt, context)
         gatt.notify(hr, bytesOf(0x00, 90))
         val failing = HealthRecordSink { throw IllegalStateException("disk full") }
-        runCatching { session.sync(SyncRequest(since = null), failing) {} }.onSuccess { fail("sink error must propagate") }
+        runCatching { session.sync(SyncRequest(since = null), failing) { _, _ -> } }.onSuccess { fail("sink error must propagate") }
 
         val sink = RecordingSink()
-        assertEquals(1, session.sync(SyncRequest(since = null), sink) {})
+        assertEquals(1, session.sync(SyncRequest(since = null), sink) { _, _ -> })
         assertEquals(90, sink.ofType<HealthRecord.HeartRate>().single().bpm)
         session.close()
     }
@@ -215,7 +215,7 @@ class StandardProfileDriverTest {
         val session = driver().openSession(gatt, context)
         gatt.notify(hr, bytesOf(0x00, 70))
         val sink = RecordingSink()
-        val error = runCatching { session.sync(SyncRequest(since = null), sink) {} }.exceptionOrNull()
+        val error = runCatching { session.sync(SyncRequest(since = null), sink) { _, _ -> } }.exceptionOrNull()
         assertTrue(error is WearableProtocolException)
         assertTrue(error!!.message!!.contains("operator not supported"))
         assertEquals(1, sink.ofType<HealthRecord.HeartRate>().size)
@@ -226,7 +226,7 @@ class StandardProfileDriverTest {
     fun `a silent oximeter times out the stored-record transfer and is aborted`() = runTest {
         val gatt = fullDevice() // no RACP script: the device never answers
         val session = driver().openSession(gatt, context)
-        val error = runCatching { session.sync(SyncRequest(since = null), RecordingSink()) {} }.exceptionOrNull()
+        val error = runCatching { session.sync(SyncRequest(since = null), RecordingSink()) { _, _ -> } }.exceptionOrNull()
         assertTrue(error is WearableProtocolException)
         assertArrayEquals(bytesOf(0x03, 0x00), gatt.writes.last { it.characteristic == racp }.value)
         session.close()
@@ -248,7 +248,7 @@ class StandardProfileDriverTest {
         notifyAt(12, bytesOf(0x00, 0x60, 0x00, 0x46, 0x00))
 
         val sink = RecordingSink()
-        session.sync(SyncRequest(since = null), sink) {}
+        session.sync(SyncRequest(since = null), sink) { _, _ -> }
         assertEquals(listOf(98, 96), sink.ofType<HealthRecord.SpO2>().map { it.percent })
         assertEquals(listOf(72, 70), sink.ofType<HealthRecord.HeartRate>().map { it.bpm })
         session.close()

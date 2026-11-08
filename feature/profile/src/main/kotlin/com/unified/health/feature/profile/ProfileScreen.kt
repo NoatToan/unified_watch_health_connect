@@ -205,7 +205,17 @@ internal fun ProfileRoute(onOpenNotifications: () -> Unit, viewModel: ProfileVie
     val dialog by viewModel.dialog.collectAsStateWithLifecycle()
     var editingGoal by rememberSaveable { mutableStateOf<GoalField?>(null) }
     Scaffold(topBar = { TopAppBar(title = { Text("Profile") }) }) { padding ->
-        Column(Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState())) {
+        // D-1144: trailing Spacing.bottomNavClearance (applied *after* verticalScroll, so it extends
+        // the scrollable content itself rather than just shrinking the viewport) — the pill nav now
+        // floats as a Box overlay over this tab's content instead of reserving Scaffold space, so
+        // without this the last row would sit permanently behind it.
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = Spacing.bottomNavClearance),
+        ) {
             SettingRow(Icons.Outlined.Person, "Personal info", "Height, weight, birthday (coming soon)")
             SettingRow(
                 Icons.Outlined.Flag,

@@ -230,13 +230,15 @@ internal class CorosSession(
      * of silently returning zero records. See the class doc.
      */
     override suspend fun sync(request: SyncRequest, sink: HealthRecordSink, progress: SyncProgress): Int {
+        progress.report(0f, "Đang kiểm tra giao thức đồng hồ...")
         val diagnostics = captureDiagnostics()
         if (diagnostics.vendorProtocolPresent) {
             throw CorosCaptureNeededException(diagnostics, "history sync")
         }
+        progress.report(0.5f, "Đang lấy dữ liệu nhịp tim đã ghi...")
         val batch = bufferLock.withLock { buffer.toList().also { buffer.clear() } }
         if (batch.isNotEmpty()) sink.onRecords(batch)
-        progress.report(1f)
+        progress.report(1f, "Hoàn tất")
         return batch.size
     }
 

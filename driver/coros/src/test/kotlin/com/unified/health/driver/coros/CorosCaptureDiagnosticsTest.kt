@@ -115,7 +115,7 @@ class CorosCaptureDiagnosticsTest {
         assertTrue((session as CorosSession).connectionState.value is CorosConnectionState.Ready)
 
         val failure = runCatching {
-            session.sync(SyncRequest(since = null), RecordingSink()) {}
+            session.sync(SyncRequest(since = null), RecordingSink()) { _, _ -> }
         }.exceptionOrNull()
 
         assertTrue("expected CorosCaptureNeededException, was $failure", failure is CorosCaptureNeededException)
