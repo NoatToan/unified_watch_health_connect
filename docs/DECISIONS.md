@@ -1961,3 +1961,37 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   compose). (4) Xác nhận lazy composition: `items(races, key = { it.id })` bên trong `LazyRow` —
   không có `Row` thường nào bọc ngoài ép compose hết toàn bộ danh sách — đã đúng từ trước, không cần
   đổi gì thêm.
+
+- **D-1140** · 2026-11-08 · Thực thi D-1134 (phần 1 fade-theo-scroll) — fade pill qua `NestedScrollConnection`
+  dùng chung cho mọi tab — **Chốt**
+  `UnifiedHealthApp.kt` tạo 1 `NestedScrollConnection` (chỉ override `onPreScroll`, luôn trả về
+  `Offset.Zero` — chỉ quan sát, không "ăn" scroll của ai), gắn vào `Modifier.nestedScroll(...)` trên
+  modifier của `UnifiedHealthNavHost` (bọc toàn bộ nội dung NavHost, không riêng 1 tab nào) — bất kỳ
+  `LazyColumn`/`LazyRow`/scrollable nào bên trong (Home, Activity, Devices, Profile, kể cả màn con)
+  dispatch scroll đều bật cờ `pillVisible = false` và restart đếm ngược 400ms qua coroutine; hết
+  400ms không có scroll mới nào thì `pillVisible = true` lại. Vì `onPreScroll` tự nhiên được gọi liên
+  tục trong lúc fling (không chỉ lúc kéo tay), timer tự restart suốt fling và chỉ thực sự đếm khi
+  scroll dừng hẳn — không cần xử lý `onPreFling`/`onPostFling` riêng. `PillBottomNavigation` nhận
+  tham số `visible: Boolean = true`, animate alpha bằng `animateFloatAsState` + `graphicsLayer { alpha
+  = ... }` trên chính `Surface` ngoài cùng (220ms tween, đủ mượt, không giật).
+
+- **D-1141** · 2026-11-08 · Thực thi D-1134 (phần 2 liquid-glass) — chỉ làm bán trong suốt + viền sáng,
+  **không** làm blur nền thật — **Tạm**
+  Đổi `color` của pill từ `surfaceContainerHigh` đặc sang `surfaceContainerHigh.copy(alpha = 0.62f)` +
+  đổi border từ `outlineVariant` sang `Color.White.copy(alpha = 0.28f)` (viền sáng gợi "ánh sáng viền
+  kính", không phụ thuộc theme sáng/tối). **Cờ cảnh báo theo đúng yêu cầu của quyết định**: KHÔNG áp
+  dụng `RenderEffect.createBlurEffect` thật như gợi ý, vì xét đúng cách pill đang được layer hiện tại
+  (`Scaffold`'s `bottomBar` slot — anh em cùng cấp, không nằm chồng lên `content` slot trong cùng 1
+  draw stack) thì blur này **không có tác dụng thị giác nào** (hoặc tệ hơn, gây hiểu lầm): `graphicsLayer{
+  renderEffect=...}` chỉ blur đúng nội dung tự vẽ của chính layer đó (nền pill + icon/text bên trong),
+  không "nhìn xuyên" blur được nội dung đang cuộn PHÍA SAU nó trong window — vì 2 bên không chung 1
+  layer để lấy mẫu. Blur 1 màu nền phẳng (không texture) thị giác giống hệt không-blur — lãng phí, có
+  thể trông như bug trên API 31+ khi so với API thấp hơn (trông y hệt). Để có "kính mờ" thật (blur nội
+  dung cuộn phía sau), cần: (1) dời pill ra khỏi `Scaffold.bottomBar`, đặt trong `Box` overlay chung
+  với `NavHost` (content phải thật sự cuộn RA SAU vùng pill, không dừng trước nó như hiện tại), (2)
+  dùng `GraphicsLayer` tường minh (`androidx.compose.ui.graphics.layer.GraphicsLayer`, API snapshot
+  của Compose UI mới) để pill blur-sample đúng phần nội dung bên dưới vị trí nó — đổi kiến trúc
+  layering/compositing, không còn là "chỉ đổi vật liệu/nền" như quyết định mô tả. Đánh dấu **Tạm** +
+  báo lại rõ ràng theo đúng lời mời của quyết định ("flag clearly if impractical") thay vì tự ý đoán
+  hoặc làm 1 bản blur vô nghĩa cho có. Bán trong suốt + viền sáng vẫn tạo được cảm giác "kính" ở mức
+  chấp nhận được mà không cần đổi kiến trúc.
