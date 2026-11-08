@@ -94,9 +94,9 @@ fun RaceCard(race: Race, onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 /**
- * Shared full-bleed visual for a [Race] (D-1106/D-1125): a real [Race.imageUrl] via Coil with a
- * bottom scrim so overlaid white text stays legible, or — since most races in the feed have no
- * image — a gradient keyed by [RaceTerrain] with a large faint terrain icon. Reused as-is by
+ * Shared full-bleed visual for a [Race] (D-1106/D-1125/D-1129): a real [Race.imageUrl] via Coil with
+ * a strengthened scrim so overlaid white text stays legible, or — since most races in the feed have
+ * no image — a gradient keyed by [RaceTerrain] with a large faint terrain icon. Reused as-is by
  * [RaceCard] and `RaceDetailScreen` (D-1114) so both render the exact same fallback, not two
  * hand-maintained copies of this rule. Fills whatever [modifier] gives it (typically `fillMaxSize()`
  * inside a `Box` of the caller's chosen height).
@@ -105,15 +105,31 @@ fun RaceCard(race: Race, onClick: () -> Unit, modifier: Modifier = Modifier) {
 fun RaceVisualBackground(race: Race, modifier: Modifier = Modifier, terrainIconSize: Dp = 140.dp) {
     Box(modifier) {
         if (race.imageUrl != null) {
+            // D-1129: the terrain gradient is still the base layer here, not skipped — real
+            // promotional images are no longer cropped (ContentScale.Contain, below), so an image
+            // whose aspect ratio doesn't match the card leaves letterboxed space; this gradient is
+            // what shows through there instead of a blank/black gap.
+            Box(Modifier.fillMaxSize().background(race.terrain.gradient()))
             AsyncImage(
                 model = race.imageUrl,
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop,
+                // D-1129: Crop → Fit (Compose's ContentScale for CSS-style "contain" scaling) —
+                // official race images often carry logos/text at fixed positions that cropping could
+                // cut off; the whole image is always shown now, letterboxed instead of cropped.
+                contentScale = ContentScale.Fit,
             )
+            // D-1129: strengthened vs. the original 0f→0.72f (tuned for the flat gradient fallback,
+            // not a busy real photo) — darker throughout (not just near-transparent at the top) since
+            // the race name/terrain badge sit near the top of the card, not only the CTA at the
+            // bottom; still bottom-heaviest to match the gradient-only fallback's look.
             Box(
                 Modifier.fillMaxSize().background(
-                    Brush.verticalGradient(listOf(Color.Transparent, Color.Black.copy(alpha = 0.72f))),
+                    Brush.verticalGradient(
+                        0f to Color.Black.copy(alpha = 0.45f),
+                        0.5f to Color.Black.copy(alpha = 0.55f),
+                        1f to Color.Black.copy(alpha = 0.88f),
+                    ),
                 ),
             )
         } else {
