@@ -2193,7 +2193,9 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   "gọn" theo cảm nhận, agent tự cân đối. Cùng file với D-1149 (agent đang xử lý) — gộp chung, không tách
   agent riêng.
 
-- **D-1155** · 2026-11-09 · Home `RingsCard`: bỏ background, animate progress ring lần đầu hiển thị — **Chốt**
+- **D-1157** · 2026-11-09 · Home `RingsCard`: bỏ background, animate progress ring lần đầu hiển thị — **Chốt**
+  (đánh số lại từ D-1155 ban đầu vì trùng với D-1155 "Thực thi D-1149" do agent khác log song song —
+  nội dung không đổi, chỉ đổi số, theo đúng pattern renumber đã dùng nhiều lần trong file này.)
   `RingsCard` (`HomeScreen.kt`) hiện bọc `ActivityRings` trong `Card(...)` mặc định (có nền
   `surfaceContainer`-ish) — bỏ background này đi, để ring hiện trực tiếp trên nền Home (vẫn giữ
   `onClick`/`testTag`, chỉ bỏ phần vẽ nền — dùng `Modifier` trơn hoặc `Surface(color = Color.Transparent)`
@@ -2206,13 +2208,25 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   `revealKey` một-lần) — không animate lại mỗi khi progress đổi do data mới (tránh giật khi Home
   refresh/polling); việc đó agent tự cân nhắc key animation theo đúng lifecycle hợp lý.
 
-- **D-1156** · 2026-11-09 · Bottom nav pill: bỏ shadow — đang gây drop FPS lúc fade ẩn/hiện — **Chốt**
+- **D-1158** · 2026-11-09 · Bottom nav pill: bỏ shadow — đang gây drop FPS lúc fade ẩn/hiện — **Chốt**
+  (đánh số lại từ D-1156 ban đầu, trùng lý do như D-1157 ở trên.)
   `PillBottomNavigation.kt`'s `Surface` đang có `shadowElevation = 6.dp` — user xác nhận trên máy thật
   việc animate `alpha` (D-1134's `visible` fade) kèm shadow đang làm giật/drop FPS lúc pill ẩn/hiện.
   Bỏ hẳn `shadowElevation` (set về `0.dp` hoặc bỏ tham số) — giữ nguyên `tonalElevation = 3.dp`,
   `border` (viền sáng "glass"), và toàn bộ phần còn lại không đổi. Nếu mất shadow làm pill trông "phẳng"
-  hẳn so với trước, không cần bù lại bằng cách khác trừ khi rất đơn giản — ưu tiên hết giật FPS. Cùng
-  file với D-1149/D-1154 (agent đang xử lý) — gộp chung.
+  hẳn so với trước, không cần bù lại bằng cách khác trừ khi rất đơn giản — ưu tiên hết giật FPS.
+
+- **D-1159** · 2026-11-09 · Bottom nav pill: bỏ background của sliding indicator ở tab active, thay bằng tô màu icon/text + bold — **Chốt**
+  Hiện tab đang chọn được đánh dấu bằng khối `Surface` nền `primaryContainer` trượt theo (sliding pill
+  indicator, D-1051/1077). User muốn bỏ hẳn khối nền này — thay vào đó thể hiện trạng thái active chỉ
+  bằng **màu icon/text** (đã có sẵn cơ chế `color = if (selected) onPrimaryContainer else
+  onSurfaceVariant` ở `PillNavItem` — đổi màu "selected" sang màu nhấn phù hợp không cần nền đi kèm, ví
+  dụ `MaterialTheme.colorScheme.primary`) và **in đậm chữ label khi active** (label hiện dùng
+  `typography.labelSmall` cho mọi trạng thái — đổi `fontWeight` thành `FontWeight.Bold` chỉ khi
+  `selected`, giữ `labelSmall` cho trạng thái thường). Xoá hẳn khối `Surface` nền trượt (`offset(x =
+  tabWidth * position)...color = primaryContainer`) cùng biến `rawPosition`/`position`/`selectedIndex`
+  nếu không còn chỗ nào dùng tới sau khi bỏ — kiểm tra kỹ trước khi xoá. Cùng file với D-1157/D-1158 —
+  gộp chung, không tách agent riêng.
 
 ## Thực thi D-1149/D-1154 (pill nav: không ẩn theo pager swipe, giảm padding dọc) — D-115x
 
