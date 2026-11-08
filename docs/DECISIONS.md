@@ -2575,3 +2575,16 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest` (rerun đầy đủ 438 task,
   `RaceCardTest` xanh) và `./gradlew assembleDebug` - cả hai pass; cài lại `app-debug.apk` lên
   `99251FFAZ003T3` và chụp ảnh thật trước/sau để xác nhận bằng mắt theo đúng yêu cầu D-1170.
+
+- **D-1175** · 2026-11-09 · Sắp xếp giải chạy: ưu tiên "đăng ký được ngay" lên trước, rồi theo ngày — áp dụng mặc định cho cả carousel Home lẫn màn "Tất cả giải" — **Chốt**
+  (Dispatch **sau khi** merge `feat/watch-model-images` → `main` + push origin hoàn tất — cùng đợt với
+  D-1173, không gộp vào batch agent hiện tại.)
+  Hiện danh sách giải (carousel Home lẫn `RacesScreen` "Tất cả giải") sort theo thứ tự gì đó mặc định
+  (chưa rõ — agent cần đọc `RacesViewModel`/nguồn data hiện tại để biết đang sort theo gì trước khi sửa).
+  Đổi sang: **sort mặc định** theo 2 cấp — (1) **ưu tiên giải có thể đăng ký ngay** lên đầu (status
+  `OPEN` — tái dùng đúng `RaceRegistrationStatus` đã có, D-1106, không tạo field/enum mới), các trạng
+  thái khác (`CLOSED`/`SOLD_OUT`/`UNKNOWN`) xuống sau; (2) trong cùng nhóm, sort theo **thời gian** (ngày
+  diễn ra, gần nhất trước — theo đúng field ngày hiện có, `race.date`/tương đương). Áp dụng **đồng nhất**
+  cho cả carousel ở Home và màn "Tất cả giải" (`RacesScreen`) — 1 nguồn sort logic dùng chung (ví dụ
+  trong `RacesViewModel`/repository/use-case, không viết riêng 2 chỗ) để tránh lệch thứ tự giữa 2 nơi
+  hiển thị cùng dữ liệu.
