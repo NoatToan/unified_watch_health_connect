@@ -1544,7 +1544,9 @@ kit/design system nào tải về được). Thay vào đó dùng skill nội b�
   thị, không đổi route/composable name nội bộ (`HomeScreen`, `HomeDestination`... giữ nguyên để không
   phải sửa lan man) trừ khi cấn.
 
-- **D-1111** · 2026-11-08 · Thực thi D-1110 — **Chốt**
+- **D-1127** · 2026-11-08 · Thực thi D-1110 — **Chốt**
+  (Đánh số lại từ D-1111 ban đầu vì trùng với D-1111 "crawler ảnh/mô tả/raceStatus" do agent khác log
+  cùng lúc — nội dung không đổi, chỉ đổi số để hết trùng.)
   (1) Dời block `RacesCarousel` trong `Summary()` (`HomeScreen.kt`) từ ngay sau `item { RingsCard(...) }`
   xuống sau block `Highlights` (cuối `LazyColumn`, trước khi đóng) — logic hiển thị (chỉ render khi
   `RacesState.Success` non-empty) giữ nguyên nguyên văn, chỉ đổi vị trí. (2) Đổi đúng 2 chỗ string hiển
