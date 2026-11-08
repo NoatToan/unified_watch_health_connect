@@ -82,7 +82,9 @@ internal object FitHealthMapper {
     /** Plausible human VO2max range (post-scale) used to reject garbage/sentinel values. */
     private val VO2_MAX_RANGE = 10..95
 
-    // session (18) fields [Ext].
+    // session (18) fields. [V] against the FIT profile bundled in Garmin Connect Mobile
+    // (docs/re-evidence/garmin/jadx-base/sources/bs2/fs.java) — all 7 fields and scales below
+    // match exactly, no fix needed (D-1086).
     private const val SESSION_START_TIME = 2
     private const val SESSION_SPORT = 5
     private const val SESSION_TOTAL_ELAPSED_TIME = 7 // uint32, scale 1000 → s

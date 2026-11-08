@@ -1162,3 +1162,15 @@ tránh 2 agent sửa song song cùng file.
   (viết tắt gọn, ví dụ "Heart rate" → "HR", "Active calories" → "Cal", "Resting HR" → "RHR" — agent
   tự chọn viết tắt hợp lý, dễ nhận ra) + giá trị lớn, layout 2 cột đơn giản dễ nhìn. List mode (D-1073)
   giữ nguyên full chart + chi tiết như đã làm, không đổi.
+
+- **D-1086** · 2026-11-08 · Kiểm lại `session`(18) cho activities/workout qua re-evidence — đúng, không cần sửa — **Chốt**
+  User hỏi lại "activities thì sao, check lại re-evidence" sau khi D-1082 tìm ra 2/3 field number sai
+  cho resting HR/HRV/VO2max — kiểm tra luôn `session` message (activities/workout, D-1086 mới) theo
+  đúng quy trình mới (CLAUDE.md, không đoán). Đọc `docs/re-evidence/garmin/jadx-base/sources/bs2/fs.java`
+  qua `claude-personal`: `session` = **18** (đúng), và cả 7 field ta đang dùng đều khớp 100% bằng chứng
+  thật — `start_time`=2, `sport`=5, `total_elapsed_time`=7 (scale 1000), `total_distance`=9 (scale 100),
+  `total_calories`=11 (không scale), `avg_heart_rate`=16, `max_heart_rate`=17. **Không có bug** ở phần
+  field number cho activities — khác với resting HR/HRV/VO2max. Đổi comment trong `FitHealthMapper.kt`
+  từ `[Ext]` sang `[V]` cho khối field này. Phần activities trước đó "chưa sync về" (báo cáo ban đầu
+  của user) là do bug sync-window/dedup đã fix ở `a29ea95`/`22e81d2` (trước phiên này), không phải do
+  field number sai.
