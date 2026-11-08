@@ -1685,3 +1685,17 @@ phía client, mặc định chỉ hiện upcoming.
   chính `LazyRow` đó thay vì bọc ngoài bằng `Modifier.padding` — card đầu tiên vẫn thẳng hàng với lề
   nội dung khác của Home lúc đứng yên, nhưng khi scroll ngang thì card có thể trượt ra sát mép màn
   hình (full width), không bị cắt bởi padding cố định.
+
+- **D-1118** · 2026-11-08 · Crawler: `priceFromVnd` phải luôn là giá rẻ nhất trong các gói cự ly — **Chốt**
+  `priceFromVnd` (hiện ở cả card Home lẫn `RacesScreen`/`RaceDetailScreen`) phải tính bằng
+  `min(distances[].priceVnd)` sau bước merge nhiều nguồn cho cùng 1 giải — không lấy thẳng giá quảng
+  cáo "Từ Xđ" của 1 nguồn đơn lẻ (có thể không phải gói rẻ nhất thật sự khi gộp thêm cự ly từ nguồn
+  khác). Tính lại ở bước merge (`pipeline/merge.py`), bỏ qua gói có `priceVnd` null/0 khi lấy min.
+
+- **D-1119** · 2026-11-08 · Home chỉ hiện metric có data; thêm màn "All metrics" riêng cho đủ cả empty — **Chốt**
+  Section "All metrics" trên Home đổi tên còn **"Metrics"**, và chỉ render card của chỉ số **đang có
+  data** (ẩn hẳn card "No data" khỏi Home — không phải mờ đi, bỏ hẳn khỏi danh sách) — Home gọn lại,
+  chỉ hiện cái người dùng thực sự có. Thêm 1 CTA (ví dụ "All metrics" hoặc icon mũi tên cạnh tiêu đề
+  "Metrics", theo đúng pattern "Show all data"/"Xem tất cả" đã dùng ở nơi khác) mở **màn riêng** liệt
+  kê **toàn bộ** chỉ số kể cả chưa có data — màn này tái dùng đúng danh sách card hiện có (component
+  card cũ), chỉ khác là không lọc theo có-data-hay-không.
