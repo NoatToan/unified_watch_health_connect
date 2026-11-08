@@ -1895,3 +1895,18 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   dưới, y hệt tinh thần layout của `PairedDeviceCard`; khi chưa pair hoặc có device nhưng chưa
   connected, giữ `Row` ngang nhỏ (56dp) như D-1115 đã làm. Làm theo đúng thứ tự user yêu cầu (D-1130
   trước, D-1115 kế thừa theo) thay vì phải sửa `DeviceBanner` 2 lần.
+
+- **D-1133** · 2026-11-08 · Carousel giải chạy: snap paged scroll (1 item + 20% peek), cache ảnh, giới hạn compose ngoài khung nhìn — **Chốt**
+  User lường trước data giải chạy sẽ nhiều lên theo thời gian — tối ưu carousel `RacesCarousel` ngay:
+  1. **Kích thước item**: mỗi card rộng ~80% bề ngang khả dụng của `LazyRow`, sao cho lúc đứng yên
+     thấy đủ 1 card + ~20% card kế tiếp (peek) — đúng tỉ lệ user chỉ định.
+  2. **Snap/paged scroll**: dùng `rememberSnapFlingBehavior` (Compose Foundation, gắn vào
+     `LazyListState` của `RacesCarousel`) để vuốt xong luôn dừng đúng khung 1 card, không dừng lưng
+     chừng giữa 2 card.
+  3. **Ảnh dùng cache**: xác nhận lại Coil load ảnh race qua 1 `ImageLoader` dùng chung (singleton/Hilt-
+     provided, không tạo mới mỗi lần recompose) để tận dụng memory+disk cache mặc định của Coil, tránh
+     tải lại ảnh khi cuộn qua lại.
+  4. **Hạn chế compose ngoài khung nhìn**: `LazyRow` vốn đã lazy (chỉ compose item gần viewport) —
+     không cần tự viết windowing riêng, chỉ cần đảm bảo không có gì phá vỡ tính lazy đó (ví dụ không
+     dùng `Row` thường bọc ngoài danh sách dài). Không cần thêm thư viện/API phức tạp ngoài
+     `LazyRow` chuẩn.
