@@ -1430,3 +1430,34 @@ User thấy màn chi tiết workout hiện tại ("Workout detail" theo D-804) q
   URL: `https://noattoan.github.io/unified_watch_health_connect/`. Lần build đầu tiên mất vài phút
   sau khi bật, chưa verify live ngay lúc bật (API trả 201 xác nhận config đã lưu, nhưng
   `curl` tới URL vẫn 404 ngay sau đó — bình thường, GitHub Pages build bất đồng bộ).
+
+## Màn "Giải chạy" — marketing-catchy, nguồn data từ unified_health_service (D-1105+)
+
+Dự án riêng `NoatToan/unified_health_service` (repo mới, local
+`/Users/Apple/Documents/Projects/noattoan/unified_health_service`) crawl giải chạy VN hằng ngày,
+publish `docs/races/latest.json` qua GitHub Pages tại
+`https://noattoan.github.io/unified_health_service/races/latest.json` (schema: xem
+`unified_health_service/docs_research/RACE_SOURCES_RESEARCH.md` §3). App này giờ cần hiển thị data
+đó, mục đích rõ ràng là **marketing cho giải chạy** (đẩy người dùng bấm đăng ký), không phải chỉ liệt
+kê thông tin.
+
+- **D-1105** · 2026-11-08 · Vị trí đặt trong app: card quảng bá trên Home + màn list riêng, KHÔNG thêm bottom-nav tab — **Chốt**
+  Không thêm tab thứ 5 vào `PillBottomNavigation` (đã đủ 4 tab Home/Activity/Devices/Profile, thêm
+  nữa chật). Thay vào đó: 1 card "Giải chạy sắp tới" dạng carousel ngang trên Home (ngay dưới
+  RingsCard, trước "All metrics" — vị trí nổi bật, đúng tinh thần marketing/discovery), bấm "Xem tất
+  cả" mở màn `RacesScreen` list đầy đủ (+ filter theo terrain/khoảng cách nếu có thời gian). Mỗi card
+  bấm vào mở `registrationUrl` qua Chrome Custom Tabs (không rời hẳn app, không cần WebView tự viết).
+- **D-1106** · 2026-11-08 · Thiết kế "catchy": fallback gradient theo terrain khi không có ảnh, đếm ngược ngày — **Chốt**
+  Hầu hết race hiện chưa có `imageUrl` (theo schema, phần lớn null) — không để trống xấu: mỗi card có
+  nền gradient riêng theo `terrain` (road/trail/ultra/triathlon/virtual — mỗi loại 1 cặp màu + icon
+  lớn mờ phía sau), tên giải to, ngày + "Còn N ngày" đếm ngược nổi bật, badge khoảng cách
+  (42km/21km/10km...), giá "Từ Xđ" nếu có, nút CTA rõ ràng "Đăng ký ngay". Nếu sau này có `imageUrl`
+  thật thì ảnh thay gradient, layout giữ nguyên.
+- **D-1107** · 2026-11-08 · Network + cache: fetch 1 lần/ngày, cache lại, không chặn UI nếu lỗi — **Chốt**
+  Thêm client HTTP nhẹ (OkHttp, hoặc Ktor nếu dự án đã có sẵn — agent tự kiểm tra
+  `gradle/libs.versions.toml` trước khi thêm dependency mới) gọi đúng URL JSON ở trên, parse bằng
+  kotlinx.serialization, cache raw JSON + thời điểm fetch vào DataStore (giống pattern
+  `UserPreferences` đã có) — chỉ fetch lại nếu cache quá 24h hoặc user pull-to-refresh. Nguồn data
+  (`unified_health_service`) đang được dựng song song, có thể chưa live/chưa có race nào — màn hình
+  phải xử lý đẹp cả 3 trạng thái: loading, có data, lỗi/rỗng (ẩn hẳn card quảng bá trên Home nếu rỗng,
+  không hiện khung trống xấu).
