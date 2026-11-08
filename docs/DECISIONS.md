@@ -1812,3 +1812,25 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   (không để trống/đen xấu). Tăng độ đậm lớp scrim tối phủ lên ảnh (gradient đen từ dưới lên hoặc phủ
   đều, agent tự chọn kiểu hợp với layout chữ hiện có) để tên giải/ngày/CTA luôn đọc được rõ trên nền
   ảnh thật, không chỉ đẹp trên nền gradient như trước.
+
+- **D-1130** · 2026-11-08 · Sửa đúng D-1128 — bỏ `fillBleed` (hack constraint), chuyển inset ngang
+  sang từng item thay vì `LazyColumn` cha — **Chốt**
+  `fillBleed` (D-1122, `Modifier.layout{}` đo con rộng hơn rồi `place()` lệch âm) dựa vào việc Compose
+  "không hard-clamp" kích thước `layout()` trả về so với constraint đã nhận — đúng về mặt lý thuyết
+  compiler nhưng không đáng tin cậy trong thực tế trên máy thật (D-1128 xác nhận lại lệch cả 2 đầu).
+  Bỏ hẳn cách này. Sửa đúng gốc: `Summary`'s `LazyColumn` (và `AllMetricsScreen`'s) đổi
+  `contentPadding` chỉ còn `top`/`bottom` — bỏ `start`/`end` (`Spacing.lg`) từng áp chung cho mọi item.
+  Mỗi item tự thêm `Modifier.padding(horizontal = Spacing.lg)` ở đúng chỗ (`DeviceBanner`, `RingsCard`
+  — cả 2 giờ nhận `modifier` param mới —, header Row "Metrics"/"Highlights", `HighlightCard` — cũng
+  thêm `modifier` param —, và `feedCardItems` dùng chung giữa Home/AllMetricsScreen). `RacesCarousel`
+  là item DUY NHẤT không tự thêm padding ngang ở ngoài — nhờ vậy `LazyRow` của nó nhận được đúng
+  constraint rộng = full màn hình (không bị cha giới hạn trước), rồi tự dùng
+  `contentPadding = PaddingValues(horizontal = Spacing.lg)` của chính nó để card đầu/cuối thẳng hàng
+  với mọi item khác lúc đứng yên, còn viewport cuộn thì rộng hết cỡ màn hình thật (không còn bị cha
+  bóp hẹp trước khi tự nó có cơ hội thêm padding riêng). Cách này không cần bất kỳ `Modifier.layout`
+  tự chế nào — mọi kích thước đều đi qua đúng luồng constraint cha→con chuẩn của Compose, giống hệt
+  cách `DeviceBanner`/`RingsCard`/feed card đã luôn thẳng hàng đúng từ trước — nên tin cậy hơn hẳn.
+  Lưu ý: không có thiết bị/emulator thật trong môi trường này để tự chụp màn hình kiểm chứng trực
+  tiếp như yêu cầu — đã rà lại toán constraint/placement từng bước bằng tay (ghi trong code comment
+  tại `RacesCarousel`/`Summary`) thay vì chỉ tin code compile được; nhờ người dùng xác nhận lại trên
+  máy thật lần nữa.

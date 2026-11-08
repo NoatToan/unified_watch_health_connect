@@ -69,14 +69,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -317,9 +315,11 @@ internal fun AllMetricsScreen(
             is HomeUiState.Error -> ErrorState(state.message, Modifier.padding(padding))
             is HomeUiState.Success -> {
                 val liveBpm = freshBpm(liveHeartRate)
+                // D-1128: horizontal inset now lives inside feedCardItems itself (shared with Home's
+                // Summary), not duplicated here — vertical-only contentPadding, same as Summary's.
                 LazyColumn(
                     modifier = Modifier.fillMaxSize().padding(padding).testTag("all_metrics_list"),
-                    contentPadding = PaddingValues(horizontal = Spacing.lg, vertical = Spacing.sm),
+                    contentPadding = PaddingValues(vertical = Spacing.sm),
                     verticalArrangement = Arrangement.spacedBy(Spacing.md),
                 ) {
                     feedCardItems(state.feedCards, state.metricsViewMode, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm)
@@ -355,7 +355,12 @@ private fun Summary(
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxSize().testTag("summary_list"),
-        contentPadding = PaddingValues(start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.xxl),
+        // D-1117/D-1128: vertical only here — horizontal insets move onto each item individually
+        // (below) instead, specifically so the Races carousel can skip it and get the LazyColumn's
+        // *true* full width to scroll within. A shared contentPadding here previously left every
+        // item, including the carousel, permanently constrained to (screen width - 2*lg): no
+        // Modifier trick on a child can claw back space a LazyColumn already decided not to give it.
+        contentPadding = PaddingValues(top = Spacing.sm, bottom = Spacing.xxl),
         verticalArrangement = Arrangement.spacedBy(Spacing.md),
     ) {
         item {
@@ -367,7 +372,10 @@ private fun Summary(
                 // step with deviceBannerCollapseFraction (0 = full size, 1 = scrolled fully away).
                 // A visual-only transform (not a layout resize) avoids the item's measured height
                 // ever depending on the scroll position it also helps compute — no feedback loop.
+                // The horizontal inset is applied first (outermost), so it reduces the available
+                // width the same way the old shared contentPadding did, before any of that scaling.
                 modifier = Modifier
+                    .padding(horizontal = Spacing.lg)
                     .onSizeChanged { onDeviceBannerSizeChanged(it.height) }
                     .graphicsLayer {
                         val scale = 1f - 0.5f * deviceBannerCollapseFraction
@@ -378,9 +386,9 @@ private fun Summary(
                     },
             )
         }
-        item { RingsCard(state.summary, onClick = { onMetricClick(HealthMetricType.CALORIES) }) }
+        item { RingsCard(state.summary, onClick = { onMetricClick(HealthMetricType.CALORIES) }, modifier = Modifier.padding(horizontal = Spacing.lg)) }
         item {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(modifier = Modifier.padding(horizontal = Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
                 SectionHeader("Metrics", Modifier.weight(1f))
                 ViewModeToggle(
                     mode = state.metricsViewMode,
@@ -403,15 +411,15 @@ private fun Summary(
                 Text(
                     "No metrics with data yet. Sync your watch, or tap Edit if one you expect is hidden.",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.testTag("feed_empty"),
+                    modifier = Modifier.padding(horizontal = Spacing.lg).testTag("feed_empty"),
                 )
             }
         }
         feedCardItems(cardsWithData, state.metricsViewMode, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm)
         if (state.highlights.isNotEmpty()) {
-            item { SectionHeader("Highlights") }
+            item { SectionHeader("Highlights", Modifier.padding(horizontal = Spacing.lg)) }
             items(state.highlights, key = { "highlight_${it.metric.name}" }) { highlight ->
-                HighlightCard(highlight, onClick = { onMetricClick(highlight.metric) })
+                HighlightCard(highlight, onClick = { onMetricClick(highlight.metric) }, modifier = Modifier.padding(horizontal = Spacing.lg))
             }
         }
         // D-1110: moved to the end of the content (was right after RingsCard, D-1105) — marketing/
@@ -491,15 +499,18 @@ private fun LazyListScope.feedCardItems(
     liveMetrics: Set<HealthMetricType>,
     liveBpm: Int?,
 ) {
+    // D-1128: this horizontal inset lives here (not in either caller's LazyColumn contentPadding)
+    // so Home (Summary) and AllMetricsScreen render pixel-identical card insets without duplicating
+    // the constant in two places.
     when (viewMode) {
         HomeMetricsViewMode.LIST -> items(cards, key = { "feed_${it.id}" }) { card ->
-            FeedCard(card, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = false, modifier = Modifier.testTag("card_${card.id}"))
+            FeedCard(card, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = false, modifier = Modifier.padding(horizontal = Spacing.lg).testTag("card_${card.id}"))
         }
         // D-1050/1073: 2-column grid — a plain Row per pair (not a nested LazyVerticalGrid, which
         // cannot be sized inside this LazyColumn) keeps the existing per-card composables and
         // "Edit cards" ordering untouched; cards render in their compact (no/tiny chart) form.
         HomeMetricsViewMode.GRID -> items(cards.chunked(2), key = { pair -> pair.joinToString("_") { it.id } }) { pair ->
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+            Row(Modifier.fillMaxWidth().padding(horizontal = Spacing.lg), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
                 pair.forEach { card ->
                     Box(Modifier.weight(1f)) {
                         FeedCard(card, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = true, modifier = Modifier.testTag("card_${card.id}"))
@@ -512,7 +523,7 @@ private fun LazyListScope.feedCardItems(
 }
 
 @Composable
-private fun HighlightCard(highlight: Highlight, onClick: () -> Unit) {
+private fun HighlightCard(highlight: Highlight, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val metric = highlight.metric
     val accent = UnifiedHealthTheme.metricColors.forMetric(metric)
     val recent = metric.formatValue(highlight.recentAverage)
@@ -524,7 +535,7 @@ private fun HighlightCard(highlight: Highlight, onClick: () -> Unit) {
         Trend.STEADY -> "about the same as"
     }
     val perDay = if (metric.aggregation == MetricAggregation.CUMULATIVE) " a day" else ""
-    ElevatedCard(onClick = onClick, modifier = Modifier.fillMaxWidth().testTag("highlight_${metric.name}")) {
+    ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().testTag("highlight_${metric.name}")) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
@@ -713,7 +724,7 @@ private fun DeviceChip(device: WearableDevice, alphaFraction: Float, modifier: M
 }
 
 @Composable
-private fun RingsCard(summary: DailyHealthSummary, onClick: () -> Unit) {
+private fun RingsCard(summary: DailyHealthSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val colors = UnifiedHealthTheme.metricColors
     val exerciseProgress = (summary.activeMinutes.toFloat() / summary.activeMinutesGoal).coerceIn(0f, 1f)
     val rings = listOf(
@@ -721,7 +732,7 @@ private fun RingsCard(summary: DailyHealthSummary, onClick: () -> Unit) {
         RingSpec("Exercise", exerciseProgress, colors.exercise),
         RingSpec("Steps", summary.steps.progress, colors.steps),
     )
-    Card(onClick = onClick, modifier = Modifier.fillMaxWidth().testTag("activity_rings")) {
+    Card(onClick = onClick, modifier = modifier.fillMaxWidth().testTag("activity_rings")) {
         Row(modifier = Modifier.padding(Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
             ActivityRings(rings = rings, size = 120.dp, strokeWidth = 12.dp)
             Spacer(Modifier.width(Spacing.xl))
@@ -742,23 +753,23 @@ private fun RingsCard(summary: DailyHealthSummary, onClick: () -> Unit) {
  */
 @Composable
 private fun RacesCarousel(races: List<Race>, onOpenRaces: () -> Unit, onOpenRaceDetail: (String) -> Unit) {
+    // D-1117/D-1128: Summary's own LazyColumn no longer applies a shared horizontal contentPadding
+    // (see Summary) — every *other* item insets itself instead, specifically so this carousel can be
+    // the one exception that gets the LazyColumn's true, unconstrained full width. A Modifier trick
+    // on the LazyRow itself (tried first, D-1117) could not claw back width an ancestor had already
+    // excluded from this item's constraints; this way there is no ancestor constraint to fight.
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier.padding(horizontal = Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
             SectionHeader("Giải chạy sắp tới", Modifier.weight(1f))
             TextButton(onClick = onOpenRaces, modifier = Modifier.testTag("races_see_all")) { Text("Xem tất cả") }
         }
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(Spacing.md),
-            // D-1117: Home's LazyColumn insets every item by Spacing.lg via its own contentPadding
-            // (see Summary's LazyColumn), so this row previously only ever had (screen width - 2*lg)
-            // to scroll within — both ends stuck at that already-inset edge, never the real screen
-            // margin. Move the inset onto this LazyRow's own contentPadding instead (same value, so
-            // the first/last card still lines up with the rest of Home's content at rest) and widen
-            // the row itself by that same amount on each side so it can actually scroll edge-to-edge.
+            // Same Spacing.lg as every other item's own inset (above, and in feedCardItems/DeviceBanner/
+            // RingsCard/etc.) — the first/last card lines up with them at rest, while the row itself
+            // spans the full screen width so scrolling reaches the true edge on either side.
             contentPadding = PaddingValues(horizontal = Spacing.lg),
-            modifier = Modifier
-                .fillBleed(Spacing.lg)
-                .testTag("races_carousel"),
+            modifier = Modifier.fillMaxWidth().testTag("races_carousel"),
         ) {
             items(races, key = { it.id }) { race ->
                 RaceCard(
@@ -768,21 +779,6 @@ private fun RacesCarousel(races: List<Race>, onOpenRaces: () -> Unit, onOpenRace
                 )
             }
         }
-    }
-}
-
-/**
- * D-1117: widens this element by [amount] on each side beyond whatever width its parent gave it,
- * and shifts it left by [amount] so it stays centered on the same axis — the standard Compose trick
- * for a full-bleed row nested inside an ancestor that insets everything via a shared horizontal
- * padding/contentPadding (here, Home's own `LazyColumn`), without re-plumbing that ancestor's inset
- * onto every other item individually (`Modifier.padding` itself rejects negative values).
- */
-private fun Modifier.fillBleed(amount: Dp): Modifier = layout { measurable, constraints ->
-    val extraPx = (amount * 2).roundToPx()
-    val placeable = measurable.measure(constraints.copy(maxWidth = constraints.maxWidth + extraPx))
-    layout(placeable.width, placeable.height) {
-        placeable.place(-amount.roundToPx(), 0)
     }
 }
 
