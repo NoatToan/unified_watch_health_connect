@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -789,7 +790,13 @@ private fun RacesCarousel(races: List<Race>, onOpenRaces: () -> Unit, onOpenRace
             SectionHeader("Giải chạy sắp tới", Modifier.weight(1f))
             TextButton(onClick = onOpenRaces, modifier = Modifier.testTag("races_see_all")) { Text("Xem tất cả") }
         }
+        // D-1133: snap-to-card paging, so a fling always settles on one card (never halfway between
+        // two) — pairs naturally with each card being ~80% of the viewport width below, which leaves
+        // a ~20% peek of the next card as a scroll affordance.
+        val listState = rememberLazyListState()
         LazyRow(
+            state = listState,
+            flingBehavior = rememberSnapFlingBehavior(listState),
             horizontalArrangement = Arrangement.spacedBy(Spacing.md),
             // Same Spacing.lg as every other item's own inset (above, and in feedCardItems/DeviceBanner/
             // RingsCard/etc.) — the first/last card lines up with them at rest, while the row itself
@@ -797,11 +804,15 @@ private fun RacesCarousel(races: List<Race>, onOpenRaces: () -> Unit, onOpenRace
             contentPadding = PaddingValues(horizontal = Spacing.lg),
             modifier = Modifier.fillMaxWidth().testTag("races_carousel"),
         ) {
+            // D-1133: items(...) keeps this genuinely lazy — only cards near the viewport compose at
+            // all — which matters once the race list is much larger than what's on screen at once.
             items(races, key = { it.id }) { race ->
                 RaceCard(
                     race = race,
                     onClick = { onOpenRaceDetail(race.id) },
-                    modifier = Modifier.width(300.dp).testTag("race_card_${race.id}"),
+                    // D-1133: ~80% of the row's own width (not a fixed dp), so one card shows fully
+                    // plus a ~20% peek of the next at rest.
+                    modifier = Modifier.fillParentMaxWidth(0.8f).testTag("race_card_${race.id}"),
                 )
             }
         }

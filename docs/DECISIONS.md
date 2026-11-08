@@ -1943,3 +1943,19 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
      cần fallback thủ công, giống D-1131) + 1 viền sáng mờ (border 1dp alpha thấp) tạo cảm giác
      "ánh sáng viền kính" nhẹ. Giữ nguyên animation pill-slide-theo-tab (D-1077) và không-ripple
      (D-1091) đã có — chỉ đổi phần vật liệu/nền, không đổi hành vi chọn tab.
+
+- **D-1135** · 2026-11-08 · Thực thi D-1133 — snap paging 80% + xác nhận Coil cache/lazy composition
+  cho `RacesCarousel` — **Chốt**
+  (1) Mỗi `RaceCard` đổi từ `Modifier.width(300.dp)` cố định sang `Modifier.fillParentMaxWidth(0.8f)`
+  (API `LazyItemScope`, có sẵn trong lambda `items{}`, không cần import riêng) — card đứng yên chiếm
+  80% viewport, hé lộ ~20% card kế tiếp. (2) Thêm `rememberLazyListState()` riêng cho carousel +
+  `flingBehavior = rememberSnapFlingBehavior(listState)` trên `LazyRow` — fling giờ luôn dừng gọn ở
+  đúng 1 card, không bao giờ dừng nửa chừng. (3) Xác nhận Coil cache: `RaceCard.kt` dùng
+  `coil.compose.AsyncImage(model = imageUrl, ...)` — overload đơn giản này tự lấy
+  `Context.imageLoader` (Coil extension), vốn là **singleton tự quản bởi Coil** cho cả vòng đời
+  Application (trừ khi `Application` tự implement `ImageLoaderFactory` để tuỳ biến, mà app này không
+  làm) — nghĩa là cache memory+disk của Coil đã hoạt động đúng qua các lần scroll/recompose từ trước
+  đến giờ, không cần sửa gì (đã grep toàn repo, không có chỗ nào tự tạo `ImageLoader(...)` mới mỗi lần
+  compose). (4) Xác nhận lazy composition: `items(races, key = { it.id })` bên trong `LazyRow` —
+  không có `Row` thường nào bọc ngoài ép compose hết toàn bộ danh sách — đã đúng từ trước, không cần
+  đổi gì thêm.
