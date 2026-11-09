@@ -29,10 +29,16 @@ are in Vietnamese; code, comments and commit messages are in English.
 ```
 export JAVA_HOME=/opt/homebrew/opt/openjdk@21   # JDK 27 is not supported by AGP; the system x86 JDK cannot run here
 ./gradlew testDebugUnitTest          # all unit tests (JVM modules: :core:model:test, :core:domain:test)
-./gradlew assembleDebug
+./gradlew :app:compileDebugKotlin   # compile check for the whole app graph
+./gradlew assembleDebug              # ONLY when the user explicitly asks for an APK
 scripts/e2e.sh                       # E2E flows + build/e2e-report/index.html (needs emulator/device)
 ```
 Check the result: a quiet Gradle run that produced no test-result XML did not run.
+
+**Do not build an APK (`assembleDebug`/`assembleRelease`/`bundle*`, or `scripts/e2e.sh`, which
+builds one) unless the user explicitly asks for it in the current request.** A full APK build is slow
+and blocks other work. To verify a change, run the unit tests of the touched modules plus
+`:app:compileDebugKotlin`; say in the report that no APK was built.
 
 ## Layout
 - `core/model` (pure JVM types) · `core/domain` (repositories, use cases) · `core/data` (Room,

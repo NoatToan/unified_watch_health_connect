@@ -10,5 +10,5 @@ Rules:
 - Put all rea output / jadx dumps OUTSIDE the repo (e.g. ../rea-output/<vendor>/), only distilled evidence goes in docs/re-evidence/<vendor>/.
 - Write the protocol spec to docs/protocols/<VENDOR>_DEVICE_PROTOCOL.md, mirroring the existing GARMIN/HUAWEI/ZEPP docs: GATT services/characteristics UUIDs, scan/advertising filter, pairing/bonding, handshake/auth, framing (headers, length, CRC, fragmentation), command IDs, sync flow for steps/HR/sleep/SpO2/workouts, with class/method citations as evidence. Mark anything inferred vs confirmed.
 - Then implement driver/<vendor> following ALL rules in .claude/agents/wearable-driver-engineer.md (core/ble driver contract, layering, confidence tags [V]/[I]/[Ext], tests with FakeGattClient). Additionally you may register the module in settings.gradle.kts and app dependencies.
-- Verify with `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :driver:<vendor>:testDebugUnitTest :driver:<vendor>:lintDebug assembleDebug`.
+- Verify with `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :driver:<vendor>:testDebugUnitTest :driver:<vendor>:lintDebug :app:compileDebugKotlin` (no `assembleDebug` unless the user asks for an APK, CLAUDE.md).
 - Only for the user's own devices. No GPL code (Gadgetbridge), no extracted vendor secrets/keys; never commit decompiled sources.

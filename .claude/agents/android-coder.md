@@ -34,7 +34,7 @@ implement exactly that, verify it, and report back.
 ```
 export JAVA_HOME=/opt/homebrew/opt/openjdk@21
 ./gradlew :<module>:testDebugUnitTest   # or :core:model:test for JVM modules
-./gradlew assembleDebug
+./gradlew :app:compileDebugKotlin     # NOT assembleDebug — no APK unless the user asks (CLAUDE.md)
 ```
 A silent or filtered Gradle run is not a pass: confirm the test-result XML or `BUILD SUCCESSFUL`.
 If Gradle reports a lock timeout (another agent is building), wait and retry.
