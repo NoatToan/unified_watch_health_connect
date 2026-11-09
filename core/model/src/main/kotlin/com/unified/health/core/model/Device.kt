@@ -116,7 +116,25 @@ object VendorIdentifierKeys {
      * advertisement did not carry Garmin manufacturer data, or on a bonded-but-not-heard device.
      */
     const val GARMIN_PRODUCT_NUMBER = "garmin.productNumber"
+
+    /**
+     * Lowercase hex string of the raw Garmin manufacturer-specific-data payload (BLE company id
+     * `0x0087`, or the byte-swapped `0x8700` some firmwares use), company id bytes **not**
+     * included. The exact byte layout past the company id is unverified (`docs/DECISIONS.md`
+     * D-903), so QR-pairing match (`GarminQrMatcher`) searches this payload for the QR's `unitId`
+     * rather than assuming a fixed field offset. Absent when the advertisement did not carry
+     * Garmin manufacturer data.
+     */
+    const val GARMIN_MANUFACTURER_DATA = "garmin.manufacturerData"
 }
+
+/**
+ * Thrown by [com.unified.health.core.domain.repository.WearableDeviceRepository.scan] when
+ * Bluetooth is off, missing, or a runtime permission was revoked. Mirrors (and is mapped from)
+ * `core.ble.gatt.BluetoothUnavailableException` so feature modules can show a clear message
+ * without depending on `:core:ble` (D-1182).
+ */
+class BluetoothUnavailableException(message: String, cause: Throwable? = null) : Exception(message, cause)
 
 /** Static information read from a connected device. */
 data class DeviceInfo(

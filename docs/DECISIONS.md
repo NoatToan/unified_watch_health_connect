@@ -815,6 +815,41 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   thật. Khi nhánh đó merge, nối `WatchModelMatcher` vào `DevicesViewModel.labelFor()`/`QrFindSheet`
   (map `productNumber`→model cho Garmin, `pnpNumber/pnpVersion`→model cho Zepp) là việc còn lại,
   không cần đổi kiến trúc đã làm ở đây.
+- **D-1183** · 2026-11-09 · Cải thiện "Pair with QR code" — camera decode & Garmin match theo unitId — **Tạm**
+  User report: quét QR của Garmin watch không ăn trong khi Garmin Connect tìm thấy máy rất nhanh.
+  Hai nguyên nhân khả nghi, sửa độc lập:
+  1. **Camera/ZXing decode** (`QrCodeAnalyzer.kt`, `QrScannerScreen.kt`): thêm hint `TRY_HARDER` +
+     `ALSO_INVERTED`, nhưng `MultiFormatReader.decodeWithState()` (API ta đang dùng để tái dùng một
+     `MultiFormatReader` giữa các frame, D-900) **không** chạy logic invert-rồi-thử-lại mà
+     `ALSO_INVERTED` chỉ có khi gọi `decode(image, hints)` — nên mỗi frame giờ thử thêm lần 2 với
+     `source.invert()` tường minh (màn hình watch nhiều khả năng render QR light-on-dark). Cũng
+     luân phiên `HybridBinarizer`/`GlobalHistogramBinarizer` giữa các frame (rẻ, đôi khi cứu được
+     frame lóa/tương phản thấp mà Hybrid bỏ lỡ) và bắt thêm `ChecksumException`/`FormatException`
+     (gộp qua lớp cha `ReaderException`) thay vì chỉ `NotFoundException`, cộng một catch-all
+     `Exception` để không bao giờ crash màn hình quét. `ImageAnalysis` chuyển từ mặc định 640x480
+     sang `ResolutionSelector` nhắm 1280x720 (fallback về kích thước gần nhất máy hỗ trợ) — QR nhỏ
+     và dày trên mặt đồng hồ cần độ phân giải cao hơn để ZXing nhận ra các module. Thêm một lần
+     `FocusMeteringAction` (AF+AE, `disableAutoCancel()`) lấy nét vào giữa khung hình ngay sau khi
+     bind camera.
+  2. **Garmin match theo `unitId`** (D-903 nói byte layout của manufacturer-specific-data Garmin
+     sau company id chưa xác nhận được, ta mới chỉ đọc 2 byte đầu làm "product number" đoán mò):
+     thêm `VendorIdentifierKeys.GARMIN_MANUFACTURER_DATA` (hex của toàn bộ payload) cạnh
+     `GARMIN_PRODUCT_NUMBER` trong `GarminDriver.identifiers()`, và `core/model/GarminQrMatcher`
+     (JVM thuần, như `QrPairingParser`) chọn candidate theo đúng thứ tự filter `k90.b` của Garmin
+     Connect: (1) candidate có `unitId` của QR xuất hiện dạng u32 LE **hoặc** BE ở bất kỳ offset
+     byte-aligned nào trong payload → khớp chắc chắn (ưu tiên RSSI cao nhất nếu trùng nhiều, cực
+     hiếm); (2) nếu không, đúng 1 candidate khớp `productNumber` (qua identifier có sẵn, hoặc
+     `productNumber` dạng u16 LE/BE ở offset 0..1 của payload); (3) nếu không, đúng 1 candidate
+     Garmin duy nhất đang thấy; còn lại → `null`, giữ nguyên chính sách "không đoán mò" của D-903.
+     Tìm theo `unitId` không giả định offset cố định — tránh lặp lại sai lầm đoán field number mà
+     không có evidence (lưu ý đầu `CLAUDE.md`). `DevicesViewModel.selectMatch` sẽ gọi
+     `GarminQrMatcher.select(candidates: List<DiscoveredDevice>, hint: QrPairingHint.Garmin):
+     DiscoveredDevice?` (agent khác wire, không đụng `DevicesViewModel.kt` ở đây để tránh conflict
+     với agent đang sửa `startScan`/`startFind` song song).
+  Cả hai phần đều **cần xác nhận trên watch thật** trước khi chốt: (a) QR Garmin ngoài đời có thật
+  sự invert/độ phân giải thấp là nguyên nhân chính không; (b) `unitId` có thực sự nằm trong payload
+  dạng u32 LE/BE như giả định GFDI 5024 hay không — nếu vẫn không tìm thấy trên máy thật, bước tiếp
+  theo là bắt một payload quảng cáo Garmin thật (`nRF Connect`/log) để so khớp byte-for-byte.
 
 ## Garmin sync gaps, Summary/Health UI, ngưỡng chỉ số, tiếng Việt (D-10xx)
 
@@ -2738,3 +2773,39 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   pill nav hiện lại bình thường — xác nhận detail screen không bị đổi hành vi.
   (Thử trên máy thật `99251FFAZ003T3` trước nhưng có hoạt động vật lý không kiểm soát được trên máy
   (task number đổi giữa 2 lần kiểm tra) làm nhiễu kết quả, nên dùng emulator để có môi trường xác định.)
+
+## Fix crash khi tắt Bluetooth lúc đang quét thiết bị (D-1182)
+
+- **D-1182** · 2026-11-09 · Fix crash khi tắt Bluetooth trong lúc scan/tìm QR — **Chốt**
+  Root cause: `AndroidBleScanner.advertisements()` (`core/ble/.../scan/BleScanner.kt`) ném
+  `BluetoothUnavailableException` (`core/ble/.../gatt/GattClient.kt`) khi adapter tắt, thiếu quyền,
+  hoặc `onScanFailed`. `DefaultWearableDeviceRepository.scan()` trả thẳng `scanner.scan()` không bắt
+  lỗi, và `DevicesViewModel.startScan()`/`startFind()` collect flow đó trong
+  `viewModelScope.launch { withTimeoutOrNull { ... } }` không có try/catch → exception không ai bắt,
+  kill hẳn app. Audit các đường BLE khác (`HomeViewModel`, `DeviceDetailViewModel`,
+  `DeviceSyncService`, `HealthAlertsMonitor`, `DefaultDeviceLinkKeeper`,
+  `MultiVendorDeviceConnection.connect()`, `MultiVendorHealthDataSync.sync()`,
+  `AndroidGattConnector`) đều đã bọc exception bằng `Result`/`runCatching` hoặc try/catch có từ trước
+  — chỉ hai hàm trên của `DevicesViewModel` là lỗ hổng duy nhất, vì `scan()` là `Flow` thay vì
+  `suspend fun … Result<T>` như các hàm khác.
+  Fix tại 2 lớp: (1) `core/model` thêm `BluetoothUnavailableException` (JVM thuần, không phụ thuộc
+  Android) vì `feature/devices` chỉ được phép phụ thuộc `core:domain`/`core:designsystem`/`core:model`,
+  không thấy được kiểu cùng tên bên `core:ble`; (2) `DefaultWearableDeviceRepository.scan()` giờ
+  `.catch` lỗi từ `scanner.scan()`, map `core.ble.gatt.BluetoothUnavailableException` sang kiểu
+  `core.model` tương ứng (giữ nguyên message) rồi rethrow, lỗi khác đi qua nguyên vẹn. `DevicesViewModel`
+  thêm `.catch` trên flow collect ở `startScan()`/`startFind()`: khi lỗi là `BluetoothUnavailableException`
+  hiện thông báo cố định "Bluetooth is off — turn it on to find your watch", lỗi khác hiện
+  `e.message`; `startScan()` vẫn tắt `isScanning` như luồng bình thường, `startFind()` coi lỗi scan
+  giống hệt timeout (chuyển sheet sang `TIMED_OUT`, các nút "Try again"/"Choose from list" có sẵn vẫn
+  dùng được) — không cần state mới. Xác nhận bằng cách đọc bytecode `kotlinx.coroutines.flow.catch`
+  (`catchImpl`, hàm `isCancellationCause`) rằng operator này trong suốt với `CancellationException` của
+  chính coroutine đang bị huỷ (rethrow chứ không gọi lambda `catch`), nên không cần tự kiểm tra
+  `CancellationException` thủ công. Không đụng `selectMatch()`/`onQrCodeScanned()` (agent khác đang sửa
+  song song trong cùng file).
+  Hạng mục 3 (nút bật Bluetooth hệ thống qua `ACTION_REQUEST_ENABLE`) bỏ qua: cần thêm
+  `ActivityResultLauncher` + permission check API 31+ trong `DevicesScreen.kt`, không nhỏ gọn đủ để làm
+  kèm trong fix crash này — để lại cho một task riêng nếu cần.
+  **Verify**: thêm 3 test mới trong `DevicesViewModelTest.kt` (scan lỗi Bluetooth-off → message cố định
+  + `isScanning=false`; scan lỗi khác → message = exception message; QR find lỗi Bluetooth-off → sheet
+  `TIMED_OUT` + message, không pair nhầm thiết bị nào) cạnh các test `selectMatch` có sẵn.
+  `:feature:devices:testDebugUnitTest` (JVM/Robolectric fake repository, không cần thiết bị thật).

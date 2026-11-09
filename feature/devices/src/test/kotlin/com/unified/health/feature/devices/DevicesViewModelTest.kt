@@ -2,6 +2,7 @@ package com.unified.health.feature.devices
 
 import com.unified.health.core.domain.repository.PairingCodeBroker
 import com.unified.health.core.domain.repository.WearableDeviceRepository
+import com.unified.health.core.model.BluetoothUnavailableException
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.DiscoveredDevice
 import com.unified.health.core.model.PairingCodeRequest
@@ -14,6 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
@@ -33,11 +35,15 @@ class DevicesViewModelTest {
 
     private class FakeRepository : WearableDeviceRepository {
         val scanFlow = MutableStateFlow<List<DiscoveredDevice>>(emptyList())
+
+        /** Set to make [scan] fail instead of emitting, e.g. [BluetoothUnavailableException]. */
+        var scanError: Throwable? = null
         val paired = mutableListOf<DiscoveredDevice>()
         override val pairedDevices: Flow<List<WearableDevice>> = MutableStateFlow(emptyList())
         override val connectionState: Flow<ConnectionState> = MutableStateFlow(ConnectionState.Disconnected)
         override val syncState: Flow<SyncState> = MutableStateFlow(SyncState.Idle)
-        override fun scan(): Flow<List<DiscoveredDevice>> = scanFlow
+        override fun scan(): Flow<List<DiscoveredDevice>> =
+            scanError?.let { error -> flow<List<DiscoveredDevice>> { throw error } } ?: scanFlow
         override suspend fun pair(device: DiscoveredDevice): Result<WearableDevice> {
             paired += device
             return Result.success(WearableDevice(device.macAddress, device.name, device.macAddress, device.vendor))
@@ -270,5 +276,42 @@ class DevicesViewModelTest {
         vm.findByMacAddress("aa:bb:cc:dd:ee:ff")
 
         assertEquals(listOf("AA:BB:CC:DD:EE:FF"), repository.paired.map { it.macAddress })
+    }
+
+    @Test
+    fun `startScan surfaces a clear message and stops scanning when Bluetooth is off, instead of crashing`() = runTest(dispatcher) {
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+        repository.scanError = BluetoothUnavailableException("Bluetooth is turned off")
+
+        vm.startScan()
+
+        assertEquals("Bluetooth is off — turn it on to find your watch", vm.uiState.value.userMessage)
+        assertEquals(false, vm.uiState.value.isScanning)
+    }
+
+    @Test
+    fun `startScan surfaces the exception message for a non-Bluetooth scan failure`() = runTest(dispatcher) {
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+        repository.scanError = IllegalStateException("BLE scan failed (error 2)")
+
+        vm.startScan()
+
+        assertEquals("BLE scan failed (error 2)", vm.uiState.value.userMessage)
+        assertEquals(false, vm.uiState.value.isScanning)
+    }
+
+    @Test
+    fun `QR find sheet times out with a clear message when Bluetooth is off, instead of crashing`() = runTest(dispatcher) {
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+        repository.scanError = BluetoothUnavailableException("Bluetooth is turned off")
+
+        vm.onQrCodeScanned("macAddress=AABBCCDDEEFF&pnpNumber=1&pnpVersion=2")
+
+        assertEquals(QrFindStatus.TIMED_OUT, vm.uiState.value.qrFind?.status)
+        assertEquals("Bluetooth is off — turn it on to find your watch", vm.uiState.value.userMessage)
+        assertTrue(repository.paired.isEmpty())
     }
 }

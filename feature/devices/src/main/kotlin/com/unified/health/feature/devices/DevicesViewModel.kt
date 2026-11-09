@@ -4,13 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.unified.health.core.domain.repository.PairingCodeBroker
 import com.unified.health.core.domain.repository.WearableDeviceRepository
+import com.unified.health.core.model.BluetoothUnavailableException
 import com.unified.health.core.model.DiscoveredDevice
 import com.unified.health.core.model.MacAddressFormat
 import com.unified.health.core.model.PairingCodeRequest
+import com.unified.health.core.model.GarminQrMatcher
 import com.unified.health.core.model.QrPairingHint
 import com.unified.health.core.model.QrPairingParser
 import com.unified.health.core.model.SyncState
-import com.unified.health.core.model.VendorIdentifierKeys
 import com.unified.health.core.model.WearableDevice
 import com.unified.health.core.model.WearableVendor
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapNotNull
@@ -103,7 +105,9 @@ class DevicesViewModel @Inject constructor(
         scanJob = viewModelScope.launch {
             scan.update { it.copy(isScanning = true, discovered = emptyList()) }
             withTimeoutOrNull(SCAN_TIMEOUT_MS) {
-                repository.scan().collect { found -> scan.update { it.copy(discovered = found) } }
+                repository.scan()
+                    .catch { e -> scan.update { it.copy(message = scanErrorMessage(e)) } }
+                    .collect { found -> scan.update { it.copy(discovered = found) } }
             }
             scan.update { it.copy(isScanning = false) }
         }
@@ -178,15 +182,28 @@ class DevicesViewModel @Inject constructor(
         scan.update { it.copy(qrFind = QrFindUiState(label, QrFindStatus.SCANNING, huaweiPin, vendor, hintName)) }
         qrFindJob = viewModelScope.launch {
             val match = withTimeoutOrNull(QR_FIND_TIMEOUT_MS) {
-                repository.scan().mapNotNull(select).firstOrNull()
+                repository.scan()
+                    .catch { e -> scan.update { it.copy(message = scanErrorMessage(e)) } }
+                    .mapNotNull(select)
+                    .firstOrNull()
             }
             if (match != null) {
                 scan.update { it.copy(qrFind = it.qrFind?.copy(status = QrFindStatus.FOUND, matchedDevice = match)) }
                 pair(match)
             } else {
+                // Also reached when the scan itself failed (Bluetooth off/unavailable): the sheet's
+                // "Try again" / "Choose from list" actions are the right recovery either way, and
+                // the message set in `catch` above already told the user why.
                 scan.update { it.copy(qrFind = it.qrFind?.copy(status = QrFindStatus.TIMED_OUT)) }
             }
         }
+    }
+
+    /** Readable message for a failed [WearableDeviceRepository.scan]; never swallows cancellation (caller's `.catch` already is transparent to it). */
+    private fun scanErrorMessage(e: Throwable): String = if (e is BluetoothUnavailableException) {
+        "Bluetooth is off — turn it on to find your watch"
+    } else {
+        e.message ?: "Scan failed"
     }
 
     /** Maps a QR hint to the vendor it was parsed for (same list [selectMatch] switches on). */
@@ -197,21 +214,15 @@ class DevicesViewModel @Inject constructor(
     }
 
     /** Per-vendor match rule (`QR_PAIRING_ANALYSIS.md` §6.2): Zepp by exact MAC, Huawei by advertised
-     *  name, Garmin by vendor + product number when it could be read from the advertisement, else
-     *  (uncertain decode) by "exactly one nearby Garmin candidate" — ambiguous cases wait for the
-     *  timeout and fall back to the device list rather than guessing. */
+     *  name, Garmin via [GarminQrMatcher] (unitId in the advertisement, then product number, then
+     *  "exactly one advertising Garmin", D-1183) — ambiguous cases wait for the timeout and fall
+     *  back to the device list rather than guessing. */
     private fun selectMatch(discovered: List<DiscoveredDevice>, hint: QrPairingHint): DiscoveredDevice? = when (hint) {
         is QrPairingHint.Zepp -> discovered.firstOrNull { it.macAddress.equals(hint.mac, ignoreCase = true) }
         is QrPairingHint.Huawei -> discovered.firstOrNull {
             it.name.equals(hint.btName, ignoreCase = true) || it.name.startsWith(hint.btName, ignoreCase = true)
         }
-        is QrPairingHint.Garmin -> {
-            val candidates = discovered.filter { it.vendor == WearableVendor.GARMIN }
-            val byProductNumber = hint.productNumber?.let { productNumber ->
-                candidates.firstOrNull { it.vendorIdentifiers[VendorIdentifierKeys.GARMIN_PRODUCT_NUMBER] == productNumber }
-            }
-            byProductNumber ?: candidates.singleOrNull()
-        }
+        is QrPairingHint.Garmin -> GarminQrMatcher.select(discovered, hint)
     }
 
     private fun labelFor(hint: QrPairingHint): String = when (hint) {

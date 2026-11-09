@@ -5,6 +5,7 @@ import com.unified.health.core.ble.DeviceScanner
 import com.unified.health.core.ble.HealthDataSync
 import com.unified.health.core.ble.credentials.DeviceCredentialStore
 import com.unified.health.core.ble.driver.DriverRegistry
+import com.unified.health.core.ble.gatt.BluetoothUnavailableException as BleBluetoothUnavailableException
 import com.unified.health.core.ble.protocol.hexToBytes
 import com.unified.health.core.data.database.PairedDeviceDao
 import com.unified.health.core.data.database.PairedDeviceEntity
@@ -14,6 +15,7 @@ import com.unified.health.core.data.sync.RawPayloadStore
 import com.unified.health.core.data.sync.WorkoutDetailBackfillFilter
 import com.unified.health.core.data.sync.WorkoutDetailBackfillState
 import com.unified.health.core.domain.repository.WearableDeviceRepository
+import com.unified.health.core.model.BluetoothUnavailableException
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.CredentialFormat
 import com.unified.health.core.model.CredentialRequirement
@@ -27,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.security.SecureRandom
@@ -85,7 +88,12 @@ class DefaultWearableDeviceRepository @Inject constructor(
 
     override val syncState: Flow<SyncState> = healthDataSync.state
 
-    override fun scan(): Flow<List<DiscoveredDevice>> = scanner.scan()
+    // Maps the `:core:ble` failure to a `:core:model` type so `feature/devices` (domain-only
+    // dependency) can tell "Bluetooth is off/unavailable" apart from any other scan failure
+    // without depending on `:core:ble` (D-1182).
+    override fun scan(): Flow<List<DiscoveredDevice>> = scanner.scan().catch { e ->
+        throw if (e is BleBluetoothUnavailableException) BluetoothUnavailableException(e.message ?: "Bluetooth is unavailable", e) else e
+    }
 
     override suspend fun pair(device: DiscoveredDevice): Result<WearableDevice> {
         val entity = PairedDeviceEntity(
