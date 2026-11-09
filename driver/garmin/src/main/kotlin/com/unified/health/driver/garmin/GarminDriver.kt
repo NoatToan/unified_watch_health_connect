@@ -8,6 +8,7 @@ import com.unified.health.core.ble.driver.WearableDriver
 import com.unified.health.core.ble.driver.WearableSession
 import com.unified.health.core.ble.gatt.GattClient
 import com.unified.health.core.ble.pairing.PairingCodeRequester
+import com.unified.health.core.ble.protocol.toHex
 import com.unified.health.core.ble.scan.Advertisement
 import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.VendorIdentifierKeys
@@ -41,12 +42,20 @@ class GarminDriver @Inject constructor(
     }
 
     /**
-     * Product number for QR-code pairing (`DevicesViewModel`'s Garmin match), best-effort decoded
-     * from manufacturer data. See [GarminUuids.productNumberFrom] for the confidence caveat.
+     * Identifiers for QR-code pairing (`GarminQrMatcher`'s Garmin match, D-1183): the best-effort
+     * decoded product number (see [GarminUuids.productNumberFrom] for the confidence caveat), plus
+     * the raw manufacturer-data payload as hex so the matcher can search it for the QR's `unitId`
+     * offset-agnostically instead of trusting a guessed byte layout (D-903).
      */
     override fun identifiers(advertisement: Advertisement): Map<String, String> {
-        val productNumber = GarminUuids.productNumberFrom(advertisement.manufacturerData) ?: return emptyMap()
-        return mapOf(VendorIdentifierKeys.GARMIN_PRODUCT_NUMBER to productNumber)
+        val data = advertisement.manufacturerData[GarminUuids.GARMIN_COMPANY_ID]
+            ?: advertisement.manufacturerData[GarminUuids.GARMIN_COMPANY_ID_SWAPPED]
+            ?: return emptyMap()
+        val identifiers = mutableMapOf(VendorIdentifierKeys.GARMIN_MANUFACTURER_DATA to data.toHex())
+        GarminUuids.productNumberFrom(advertisement.manufacturerData)?.let {
+            identifiers[VendorIdentifierKeys.GARMIN_PRODUCT_NUMBER] = it
+        }
+        return identifiers
     }
 
     private fun hasGarminService(advertisement: Advertisement): Boolean =

@@ -4,12 +4,16 @@ import android.Manifest
 import android.app.Activity
 import android.os.Handler
 import android.os.Looper
+import android.util.Size as AndroidSize
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraControl
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
+import androidx.camera.core.resolutionselector.ResolutionSelector
+import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Canvas
@@ -115,8 +119,17 @@ private fun QrCameraPreview(onResult: (String) -> Unit, onCancel: () -> Unit) {
             {
                 val provider = providerFuture.get()
                 val preview = Preview.Builder().build().also { it.surfaceProvider = previewView.surfaceProvider }
+                // Default ImageAnalysis resolution (640x480) is too low to resolve a small, dense
+                // QR shown on a watch screen; target ~720p, falling back to the closest size the
+                // device actually supports (D-1183).
+                val resolutionSelector = ResolutionSelector.Builder()
+                    .setResolutionStrategy(
+                        ResolutionStrategy(AndroidSize(1280, 720), ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER),
+                    )
+                    .build()
                 val analysis = ImageAnalysis.Builder()
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                    .setResolutionSelector(resolutionSelector)
                     .build()
                     .also { useCase ->
                         useCase.setAnalyzer(analysisExecutor, QrCodeAnalyzer { raw -> mainHandler.post { onResult(raw) } })
@@ -126,6 +139,16 @@ private fun QrCameraPreview(onResult: (String) -> Unit, onCancel: () -> Unit) {
                     val camera = provider.bindToLifecycle(lifecycleOwner, CameraSelector.DEFAULT_BACK_CAMERA, preview, analysis)
                     cameraControl = camera.cameraControl
                     hasTorch = camera.cameraInfo.hasFlashUnit()
+                    // Nudge continuous AF/AE toward the frame center once bound: a small QR held
+                    // close to the lens can sit outside some devices' default metering region
+                    // (D-1183). `disableAutoCancel()` keeps it continuous instead of the default
+                    // one-shot-then-revert behaviour.
+                    val centerPoint = previewView.meteringPointFactory.createPoint(0.5f, 0.5f)
+                    camera.cameraControl.startFocusAndMetering(
+                        FocusMeteringAction.Builder(centerPoint, FocusMeteringAction.FLAG_AF or FocusMeteringAction.FLAG_AE)
+                            .disableAutoCancel()
+                            .build(),
+                    )
                 }
             },
             ContextCompat.getMainExecutor(context),

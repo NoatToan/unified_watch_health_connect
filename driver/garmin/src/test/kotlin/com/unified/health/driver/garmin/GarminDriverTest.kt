@@ -72,21 +72,40 @@ class GarminDriverTest {
     }
 
     @Test
-    fun `identifiers reads the product number from manufacturer data`() {
+    fun `identifiers reads the product number and raw hex payload from manufacturer data`() {
         val identifiers = driver.identifiers(ad(manufacturer = mapOf(0x0087 to byteArrayOf(0x0F, 0x96.toByte()))))
-        assertEquals(mapOf(com.unified.health.core.model.VendorIdentifierKeys.GARMIN_PRODUCT_NUMBER to "3990"), identifiers)
+        assertEquals(
+            mapOf(
+                com.unified.health.core.model.VendorIdentifierKeys.GARMIN_PRODUCT_NUMBER to "3990",
+                com.unified.health.core.model.VendorIdentifierKeys.GARMIN_MANUFACTURER_DATA to "0f96",
+            ),
+            identifiers,
+        )
     }
 
     @Test
     fun `identifiers also reads the byte-swapped company id`() {
         val identifiers = driver.identifiers(ad(manufacturer = mapOf(0x8700 to byteArrayOf(0x00, 0x01))))
-        assertEquals(mapOf(com.unified.health.core.model.VendorIdentifierKeys.GARMIN_PRODUCT_NUMBER to "1"), identifiers)
+        assertEquals(
+            mapOf(
+                com.unified.health.core.model.VendorIdentifierKeys.GARMIN_PRODUCT_NUMBER to "1",
+                com.unified.health.core.model.VendorIdentifierKeys.GARMIN_MANUFACTURER_DATA to "0001",
+            ),
+            identifiers,
+        )
     }
 
     @Test
-    fun `identifiers is empty without Garmin manufacturer data`() {
+    fun `identifiers keeps the raw hex payload even when the product number guess fails`() {
+        // Too short for productNumberFrom (needs 2+ bytes), but still useful for GarminQrMatcher's
+        // offset-agnostic unitId search.
+        val identifiers = driver.identifiers(ad(manufacturer = mapOf(0x0087 to byteArrayOf(0x01))))
+        assertEquals(mapOf(com.unified.health.core.model.VendorIdentifierKeys.GARMIN_MANUFACTURER_DATA to "01"), identifiers)
+    }
+
+    @Test
+    fun `identifiers is empty without any Garmin manufacturer data`() {
         assertTrue(driver.identifiers(ad(name = "Forerunner 265")).isEmpty())
-        assertTrue(driver.identifiers(ad(manufacturer = mapOf(0x0087 to byteArrayOf(0x01)))).isEmpty())
     }
 
     @Test
