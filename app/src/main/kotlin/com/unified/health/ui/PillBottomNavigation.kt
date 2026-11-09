@@ -76,6 +76,11 @@ fun PillBottomNavigation(
 ) {
     val destinations = TopLevelDestination.entries
     val alpha by animateFloatAsState(if (visible) 1f else 0f, animationSpec = tween(220), label = "pillVisibility")
+    // D-1185: fading alpha to 0 alone left the (invisible) Surface and its tabs in the tree, so a tap
+    // on the empty area where the pill used to be still switched tabs. Once fully faded out, drop the
+    // pill from composition so touches reach the content underneath; during the fade-out the tabs
+    // are already disabled (PillNavItem's `enabled = visible` below).
+    if (!visible && alpha == 0f) return
     Surface(
         // A fixed height (rather than wrap-content) is required: the nav item Row below uses
         // fillMaxHeight(), which needs a bounded constraint to resolve against.
@@ -122,6 +127,7 @@ fun PillBottomNavigation(
                     PillNavItem(
                         destination = destination,
                         selected = index == selectedIndex,
+                        enabled = visible,
                         onClick = { onSelect(destination) },
                         modifier = Modifier.weight(1f).testTag("nav_${destination.name}"),
                     )
@@ -135,6 +141,7 @@ fun PillBottomNavigation(
 private fun PillNavItem(
     destination: TopLevelDestination,
     selected: Boolean,
+    enabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -148,6 +155,7 @@ private fun PillNavItem(
                 selected = selected,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null, // D-1091: no ripple on the pill tabs — the color/weight change is the feedback
+                enabled = enabled,
                 onClick = onClick,
                 role = Role.Tab,
             )

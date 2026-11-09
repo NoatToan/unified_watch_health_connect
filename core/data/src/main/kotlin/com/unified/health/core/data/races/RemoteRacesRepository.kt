@@ -1,5 +1,7 @@
 package com.unified.health.core.data.races
 
+import android.net.ConnectivityManager
+import android.net.Network
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -49,6 +51,13 @@ private object RacesCacheKeys {
  * on order (D-1125 — superseding the D-1109 date-based drop, now that D-1113 lets `RacesScreen` show
  * past races on request); the "upcoming by default" filter still lives in the UI layer, on
  * [Race.raceStatus].
+ *
+ * D-1184: a fresh install has no DataStore cache yet, and a first launch with no network would
+ * otherwise leave the user on [RacesState.Loading]/[RacesState.Error] with nothing to look at even
+ * though the feed "always has data". [bundledRacesSource] supplies a snapshot of the feed bundled
+ * inside the APK as a stand-in until the first network fetch succeeds; [connectivityManager], when
+ * supplied, also retries that fetch the moment connectivity comes back instead of waiting for the
+ * user to pull-to-refresh.
  */
 @Singleton
 class RemoteRacesRepository(
@@ -56,6 +65,8 @@ class RemoteRacesRepository(
     private val httpClient: OkHttpClient,
     private val scope: CoroutineScope,
     private val ioDispatcher: CoroutineDispatcher,
+    private val bundledRacesSource: BundledRacesSource = BundledRacesSource { null },
+    private val connectivityManager: ConnectivityManager? = null,
 ) : RacesRepository {
 
     /**
@@ -67,14 +78,26 @@ class RemoteRacesRepository(
      * view and races its own virtual clock.
      */
     @Inject
-    constructor(dataStore: DataStore<Preferences>, httpClient: OkHttpClient) :
-        this(dataStore, httpClient, CoroutineScope(SupervisorJob() + Dispatchers.IO), Dispatchers.IO)
+    constructor(
+        dataStore: DataStore<Preferences>,
+        httpClient: OkHttpClient,
+        bundledRacesSource: BundledRacesSource,
+        connectivityManager: ConnectivityManager,
+    ) : this(
+        dataStore,
+        httpClient,
+        CoroutineScope(SupervisorJob() + Dispatchers.IO),
+        Dispatchers.IO,
+        bundledRacesSource,
+        connectivityManager,
+    )
 
     private val _state = MutableStateFlow<RacesState>(RacesState.Loading)
     override val races: Flow<RacesState> = _state.asStateFlow()
 
     init {
         scope.launch { loadFromCacheThenMaybeRefresh() }
+        connectivityManager?.let(::registerNetworkRetry)
     }
 
     override suspend fun refresh() = fetchAndStore()
@@ -84,11 +107,39 @@ class RemoteRacesRepository(
         val cachedJson = prefs[RacesCacheKeys.cachedJson]
         val cachedAt = prefs[RacesCacheKeys.cachedAtEpochMs]?.let(Instant::ofEpochMilli)
         val cachedRaces = cachedJson?.let(::parseOrNull)
-        if (cachedRaces != null) _state.value = toState(cachedRaces)
+        if (cachedRaces != null) {
+            _state.value = toState(cachedRaces)
+        } else {
+            // No usable cache (fresh install, or a corrupted entry) — show the bundled snapshot
+            // immediately rather than leave the carousel empty while the fetch below is in flight.
+            bundledRacesSource.read()?.let(::parseOrNull)?.let { _state.value = toState(it) }
+        }
 
-        // A corrupted/unparsable cache forces an immediate refetch regardless of age.
+        // A corrupted/unparsable cache (or no cache at all) forces an immediate refetch regardless
+        // of age — the bundled snapshot above is only ever a stand-in, never written back to it.
         val isStale = cachedAt == null || cachedRaces == null || Duration.between(cachedAt, Instant.now()) > CACHE_TTL
         if (isStale) fetchAndStore()
+    }
+
+    /**
+     * Connectivity came back after an earlier fetch failure (or none has ever succeeded) — retry
+     * right away instead of waiting for the next app start or a manual pull-to-refresh. Mirrors the
+     * same cache-staleness check [loadFromCacheThenMaybeRefresh] uses, so this never re-fetches a
+     * cache that is still within the 24h TTL just because Wi-Fi flapped.
+     */
+    private fun registerNetworkRetry(connectivityManager: ConnectivityManager) {
+        connectivityManager.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                scope.launch { if (isCacheStale()) fetchAndStore() }
+            }
+        })
+    }
+
+    private suspend fun isCacheStale(): Boolean {
+        val prefs = dataStore.data.first()
+        val cachedAt = prefs[RacesCacheKeys.cachedAtEpochMs]?.let(Instant::ofEpochMilli)
+        val cachedRaces = prefs[RacesCacheKeys.cachedJson]?.let(::parseOrNull)
+        return cachedAt == null || cachedRaces == null || Duration.between(cachedAt, Instant.now()) > CACHE_TTL
     }
 
     private suspend fun fetchAndStore() {

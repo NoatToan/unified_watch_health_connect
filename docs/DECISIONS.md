@@ -2738,3 +2738,37 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   pill nav hiện lại bình thường — xác nhận detail screen không bị đổi hành vi.
   (Thử trên máy thật `99251FFAZ003T3` trước nhưng có hoạt động vật lý không kiểm soát được trên máy
   (task number đổi giữa 2 lần kiểm tra) làm nhiễu kết quả, nên dùng emulator để có môi trường xác định.)
+
+- **D-1184** · 2026-11-09 · Home luôn hiện được giải chạy kể cả offline/mới cài (bundled seed +
+  auto-retry khi có mạng lại) — **Chốt**
+  Root cause: `RemoteRacesRepository` chỉ có data sau khi fetch mạng thành công ít nhất 1 lần (cache
+  DataStore) hoặc đang fetch dở; máy mới cài chưa có cache, nếu lần fetch đầu fail (offline lúc mở
+  app) thì rơi vào `RacesState.Error` và không tự retry — chỉ pull-to-refresh thủ công mới gọi lại.
+  `HomeScreen` ẩn hẳn carousel trừ khi là `RacesState.Success` không rỗng → user thấy "mất" giải chạy dù
+  giải chạy "luôn luôn có data". Đã xác nhận `HomeUiState`/`HomeViewModel.uiState` không phụ thuộc
+  thiết bị paired (combine riêng `racesState` từ `racesRepository.races`, độc lập `header`/`deviceRepository`)
+  nên không có nhánh nào khác bị chặn bởi "chưa connect watch" — chỉ 1 root cause duy nhất ở trên.
+  Fix (`core/data/.../races/`):
+  - Tải sẵn 1 bản snapshot feed (~80KB, `curl` ngày 2026-11-09) vào `assets/races/latest.json`, đọc
+    qua `BundledRacesSource` (interface functional mới) — impl thật `AssetBundledRacesSource` đọc
+    `Context.assets`, bind bằng Hilt (`DataModule`). `RemoteRacesRepository` nhận thêm tham số
+    `bundledRacesSource` (default `{ null }`) ở cuối constructor chính nên constructor 4-tham số cũ
+    trong test không đổi. `loadFromCacheThenMaybeRefresh()`: không có cache parse được → show seed
+    ngay (Success), rồi vẫn coi là stale nên fetch mạng chạy luôn — seed không bao giờ được ghi lại
+    vào cache, fetch thành công luôn ghi đè seed; cache thật trong DataStore luôn thắng seed. Tận
+    dụng đúng rule D-1107 có sẵn (`onFetchFailed` không ghi đè `Success`) nên fetch fail sau khi đã
+    có seed vẫn giữ seed trên màn hình, không rơi về Error.
+  - Thêm retry khi có mạng lại: tham số `connectivityManager: ConnectivityManager?` (default null,
+    Hilt cung cấp instance thật) — `registerDefaultNetworkCallback`, `onAvailable` kiểm tra cache còn
+    stale hay không (tái dùng đúng điều kiện TTL 24h) rồi mới fetch lại, tránh fetch dư thừa khi
+    mạng chập chờn lúc cache vẫn còn mới.
+  - Không đụng `RacesScreen`/pull-to-refresh — `refresh()` vẫn gọi thẳng `fetchAndStore()` như cũ.
+  Test mới trong `RemoteRacesRepositoryTest`: không cache + fetch fail → Success từ seed; có cache →
+  cache thắng seed; fetch thành công sau đó thay thế seed. **Verify**:
+  `:core:data:testDebugUnitTest` 12/12 xanh (9 cũ + 3 mới), `:feature:home:testDebugUnitTest` 7/7
+  xanh (không đổi file), `:app:compileDebugKotlin` BUILD SUCCESSFUL.
+- **D-1185** · 2026-11-09 · Pill bottom nav ẩn thì không còn nhận chạm — **Chốt**
+  D-1134 chỉ fade `alpha` của `PillBottomNavigation` về 0 khi nội dung cuộn, nên `Surface` và các
+  tab vô hình vẫn nằm trong cây UI: chạm vào vùng trống chỗ pill cũ vẫn chuyển tab. Giờ tab bị
+  `enabled = visible` ngay khi bắt đầu ẩn, và khi alpha về hẳn 0 thì pill bị bỏ khỏi composition để
+  chạm đi xuống nội dung bên dưới. Hiện lại (cuộn ngược lên) vẫn fade-in như cũ.

@@ -1,6 +1,7 @@
 package com.unified.health.core.data.di
 
 import android.content.Context
+import android.net.ConnectivityManager
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
@@ -15,6 +16,8 @@ import com.unified.health.core.data.healthconnect.HealthConnectManager
 import com.unified.health.core.data.link.DefaultDeviceLinkKeeper
 import com.unified.health.core.data.live.DefaultLiveHealthRepository
 import com.unified.health.core.data.pairing.DefaultPairingCodeBroker
+import com.unified.health.core.data.races.AssetBundledRacesSource
+import com.unified.health.core.data.races.BundledRacesSource
 import com.unified.health.core.data.races.RemoteRacesRepository
 import com.unified.health.core.domain.repository.DeviceLinkKeeper
 import com.unified.health.core.domain.repository.LiveHealthRepository
@@ -100,6 +103,11 @@ internal abstract class DataBindingsModule {
     @Singleton
     abstract fun bindRacesRepository(impl: RemoteRacesRepository): RacesRepository
 
+    /** D-1184: bundled `assets/races/latest.json` snapshot, shown while the first network fetch
+     *  (or a fetch on a fresh install with no cache yet) is still in flight or has failed. */
+    @Binds
+    abstract fun bindBundledRacesSource(impl: AssetBundledRacesSource): BundledRacesSource
+
     /** Bound only in debug builds (`:core:demo`); release injects `Optional.empty()`. */
     @BindsOptionalOf
     abstract fun optionalDemoDataController(): DemoDataController
@@ -136,4 +144,11 @@ internal object DataProvidersModule {
         .connectTimeout(10, TimeUnit.SECONDS)
         .readTimeout(10, TimeUnit.SECONDS)
         .build()
+
+    /** D-1184: lets [RemoteRacesRepository] retry a failed races fetch the moment connectivity
+     *  comes back, instead of only on the next app start or a manual pull-to-refresh. */
+    @Provides
+    @Singleton
+    fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
+        context.getSystemService(ConnectivityManager::class.java)
 }

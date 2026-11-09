@@ -4,6 +4,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.unified.health.core.data.races.BundledRacesSource
 import com.unified.health.core.data.races.RemoteRacesRepository
 import com.unified.health.core.domain.repository.RacesState
 import com.unified.health.core.model.RaceStatus
@@ -60,6 +61,12 @@ class RemoteRacesRepositoryTest {
 
     private fun TestScope.repository(store: androidx.datastore.core.DataStore<androidx.datastore.preferences.core.Preferences>, httpClient: OkHttpClient) =
         RemoteRacesRepository(store, httpClient, backgroundScope, Dispatchers.Unconfined)
+
+    private fun TestScope.repository(
+        store: androidx.datastore.core.DataStore<androidx.datastore.preferences.core.Preferences>,
+        httpClient: OkHttpClient,
+        bundledRacesSource: BundledRacesSource,
+    ) = RemoteRacesRepository(store, httpClient, backgroundScope, Dispatchers.Unconfined, bundledRacesSource)
 
     @Test
     fun `fresh fetch keeps every valid race sorted by startDate within a registration tier, dropping malformed entries`() = runTest {
@@ -226,5 +233,56 @@ class RemoteRacesRepositoryTest {
         val state = repository.races.first()
         assertTrue(state is RacesState.Success)
         assertEquals("good", (state as RacesState.Success).races.single().id)
+    }
+
+    @Test
+    fun `D-1184 no cache and a failed fetch still shows the bundled seed, not Loading or Error`() = runTest {
+        val store = newStore("prefs10.preferences_pb")
+        val seedJson = """{"races": [{"id": "seed", "name": "Seed race", "startDate": "2026-12-01", "registrationUrl": "https://example.com/seed"}]}"""
+        val repository = repository(
+            store,
+            client { request -> throw IOException("offline") },
+            BundledRacesSource { seedJson },
+        )
+
+        runCurrent()
+        val state = repository.races.first() as RacesState.Success
+        assertEquals("seed", state.races.single().id)
+    }
+
+    @Test
+    fun `D-1184 an existing cache wins over the bundled seed`() = runTest {
+        val store = newStore("prefs11.preferences_pb")
+        store.edit {
+            it[stringPreferencesKey("races_cache_json")] =
+                """{"races": [{"id": "cached", "name": "Cached race", "startDate": "2026-12-01", "registrationUrl": "https://example.com/cached"}]}"""
+            it[longPreferencesKey("races_cache_fetched_at_epoch_ms")] = Instant.now().toEpochMilli()
+        }
+        val seedJson = """{"races": [{"id": "seed", "name": "Seed race", "startDate": "2026-12-01", "registrationUrl": "https://example.com/seed"}]}"""
+        val repository = repository(
+            store,
+            client { request -> jsonResponse(request, """{"races": []}""") },
+            BundledRacesSource { seedJson },
+        )
+
+        runCurrent()
+        val state = repository.races.first() as RacesState.Success
+        assertEquals("cached", state.races.single().id)
+    }
+
+    @Test
+    fun `D-1184 a later fetch success replaces the bundled seed`() = runTest {
+        val store = newStore("prefs12.preferences_pb")
+        val seedJson = """{"races": [{"id": "seed", "name": "Seed race", "startDate": "2026-12-01", "registrationUrl": "https://example.com/seed"}]}"""
+        val freshJson = """{"races": [{"id": "fresh", "name": "Fresh race", "startDate": "2026-12-01", "registrationUrl": "https://example.com/fresh"}]}"""
+        val repository = repository(
+            store,
+            client { request -> jsonResponse(request, freshJson) },
+            BundledRacesSource { seedJson },
+        )
+
+        runCurrent()
+        val state = repository.races.first() as RacesState.Success
+        assertEquals("fresh", state.races.single().id)
     }
 }
