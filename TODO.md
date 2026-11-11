@@ -1,14 +1,17 @@
 # TODO
 
-Open work as of 2026-11-06. Decisions behind each item: [docs/DECISIONS.md](docs/DECISIONS.md).
+Open work as of 2026-11-11. Decisions behind each item: [docs/DECISIONS.md](docs/DECISIONS.md).
 Protocol gaps per brand: `docs/protocols/<BRAND>_IMPLEMENTATION_BRIEF.md` (items marked NEEDS-REAL-WATCH).
 
 ## Next: first real-device run
 
-- [ ] Install the debug build on a physical phone and pair a real **Garmin** watch (the brand most likely to work as-is: once the phone is OS-bonded, GFDI has no app-layer crypto).
-  - Before pairing: Developer options → *Enable Bluetooth HCI snoop log*, toggle Bluetooth once; force-stop Garmin Connect so it doesn't take the GFDI link.
-  - Capture `adb logcat` during pair + sync; on failure collect `adb bugreport` (contains the HCI log).
-  - Record the watch model: newer models use Multi-Link, which so far is covered by unit tests only (the simulator uses the dedicated GFDI service).
+- [x] Install the debug build on a physical phone and pair a real **Garmin** watch — done 2026-11-11 by
+  the user: pair + sync worked (GFDI had no app-layer crypto issue as expected). Found missing
+  pre-processed workout data (lap/sample) on synced workouts; already fixed by the backfill mechanism
+  from raw stored FIT payloads (D-1176/D-1179, commit `9399e4f`). User is continuing to check real-device
+  behavior and will report more findings. No HCI snoop log / bugreport saved to the repo yet (will be
+  added later to `docs/re-evidence/garmin/` or `docs/real-device-demo/` when available) — log here once
+  it lands, with watch model and whether it uses Multi-Link (unit-tested only so far).
 - [ ] Same run for a real **Zepp/Amazfit** watch (needs the user's auth key, or a fresh local bind).
 - [ ] Garmin app-level auth (XXTEA 5101→5111) is implemented; verify on an unbonded watch that the
   soft-bond fallback lets the watch drive Garmin Auth, and confirm the 5111 frame-encryption switch.
@@ -32,14 +35,24 @@ Protocol gaps per brand: `docs/protocols/<BRAND>_IMPLEMENTATION_BRIEF.md` (items
 - [ ] Charts: swipe to previous periods, tap a bar to inspect, a data-source priority screen.
 - [ ] Device-native hourly distance/energy/exercise for the Day view (currently split by step share, D-207).
 - [ ] Record types for blood pressure, temperature, weight and body composition (stored as raw payloads today).
-- [ ] Imperial units; weight data source.
-- [ ] Localization: move hard-coded UI strings to `strings.xml`, add `values-vi`.
+- [ ] Imperial units; weight data source. Partial: `UnitSystem.METRIC/IMPERIAL` enum + toggle exist in
+  Profile (`UserPreferences.kt`), but nothing reads it yet — distance/weight display is still
+  hardcoded km/kg everywhere (`MetricFormat.kt`, `MetricIcons.kt`, `WorkoutUi.kt`, `ActivityScreen.kt`,
+  `WorkoutDetailScreen.kt`). Needs wiring, not just the data model.
+- [ ] Localization: move hard-coded UI strings to `strings.xml`, add `values-vi`. D-1040 already decided
+  the structure (shared strings in `core/designsystem`, per-screen in each `feature/*`, EN baseline +
+  VI toggle via `AppCompatDelegate.setApplicationLocales`) and the module order (devices → home →
+  profile → app/notifications → activity → onboarding), but it's not implemented: 0 `stringResource(`
+  calls in the codebase, no `values-vi/` folder yet.
 
 ## Release
 
 - [ ] Release signing config, R8/ProGuard rules verified on a release build run on a device.
 - [ ] Published privacy policy (required for Health Connect on Google Play) and the Play Data safety form.
-- [ ] CI: `assembleDebug lint testDebugUnitTest` on every push; E2E on an emulator runner.
+- [x] CI: `testDebugUnitTest`, `lintDebug`, `assembleDebug`, `assembleRelease` on every push/PR
+  (`.github/workflows/ci.yml`), uploading the test/lint reports + both APKs as artifacts. Release APK is
+  **unsigned** (no signing config yet — see the item above).
+- [ ] CI: E2E on an emulator runner (`scripts/e2e.sh`) — not wired in yet, needs an Android emulator step.
 - [ ] Remove the debug-only *Developer* entries from screenshots used on the Play listing.
 
 ## Repo housekeeping

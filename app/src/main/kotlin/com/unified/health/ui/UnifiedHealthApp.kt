@@ -1,7 +1,7 @@
 package com.unified.health.ui
 
-import android.app.Activity
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.rememberPagerState
@@ -67,7 +67,7 @@ fun UnifiedHealthApp(
     // detail screens pushed on top (MetricDetailScreen, DeviceDetailScreen, ...) have onMainPager ==
     // false here, so this handler is disabled there and back falls through to NavHost's own pop, same
     // as before this change.
-    val activity = LocalContext.current as? Activity
+    val activity = LocalActivity.current
     BackHandler(enabled = onMainPager) {
         activity?.moveTaskToBack(true)
     }

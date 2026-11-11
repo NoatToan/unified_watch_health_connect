@@ -1,0 +1,116 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    name: Test, lint, build APKs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      # compileSdk/build-tools versions in gradle/libs.versions.toml are ahead of what the
+      # ubuntu-latest image ships; this installs cmdline-tools and accepts licenses so AGP's
+      # own auto-download (gradle.properties doesn't disable it) can fetch whatever is missing.
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # --continue: run every module's tests even if one module fails, so the report below is
+      # complete instead of stopping at the first red module. Outcome is checked at the end.
+      - name: Unit tests (testDebugUnitTest)
+        id: unit_tests
+        run: ./gradlew testDebugUnitTest --continue
+        continue-on-error: true
+
+      - name: Lint (lintDebug)
+        id: lint
+        run: ./gradlew lintDebug
+        continue-on-error: true
+
+      - name: Build debug APK
+        id: assemble_debug
+        run: ./gradlew assembleDebug
+        continue-on-error: true
+
+      # No release signingConfig exists yet (see TODO.md "Release signing config"), so this is
+      # the unsigned APK — good enough to inspect in CI, not to install/distribute as-is.
+      - name: Build release APK (unsigned)
+        id: assemble_release
+        run: ./gradlew assembleRelease
+        continue-on-error: true
+
+      - name: Upload unit test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-report
+          path: |
+            **/build/test-results/testDebugUnitTest/**
+            **/build/reports/tests/testDebugUnitTest/**
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload lint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: |
+            app/build/reports/lint-results-debug.html
+            app/build/reports/lint-results-debug.sarif
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload debug APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload release APK (unsigned)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk-unsigned
+          path: app/build/outputs/apk/release/*.apk
+          if-no-files-found: warn
+          retention-days: 14
+
+      # Artifacts above are uploaded regardless of outcome; this is what actually turns the job
+      # red when something failed, since every build/test step used continue-on-error above.
+      - name: Fail the job if any step above failed
+        if: |
+          steps.unit_tests.outcome == 'failure' ||
+          steps.lint.outcome == 'failure' ||
+          steps.assemble_debug.outcome == 'failure' ||
+          steps.assemble_release.outcome == 'failure'
+        run: |
+          echo "unit tests:      ${{ steps.unit_tests.outcome }}"
+          echo "lint:            ${{ steps.lint.outcome }}"
+          echo "assemble debug:  ${{ steps.assemble_debug.outcome }}"
+          echo "assemble release: ${{ steps.assemble_release.outcome }}"
+          exit 1

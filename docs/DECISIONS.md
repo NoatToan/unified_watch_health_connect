@@ -2738,3 +2738,34 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   pill nav hiện lại bình thường — xác nhận detail screen không bị đổi hành vi.
   (Thử trên máy thật `99251FFAZ003T3` trước nhưng có hoạt động vật lý không kiểm soát được trên máy
   (task number đổi giữa 2 lần kiểm tra) làm nhiễu kết quả, nên dùng emulator để có môi trường xác định.)
+
+## CI/CD: GitHub Actions build + test + APK pipeline (D-1182)
+
+- **D-1182** · 2026-11-11 · Thêm `.github/workflows/ci.yml`: test + lint + build debug/release APK trên mỗi push/PR — **Chốt**
+  Chạy đúng 4 lệnh CLAUDE.md đã liệt (`testDebugUnitTest`, thêm `lintDebug`, `assembleDebug`,
+  `assembleRelease`), mỗi lệnh 1 step riêng với `continue-on-error: true`, rồi 1 step cuối fail cả job
+  nếu bất kỳ step nào fail — mục đích: APK + test/lint report luôn được build & upload làm artifact dù
+  có fail ở đâu đi nữa (đúng yêu cầu "output là test report + apks release, apks debug"), job vẫn báo
+  đỏ đúng lúc có lỗi thay vì xanh giả. Dùng `android-actions/setup-android@v3` + `gradle/actions/setup-
+  gradle@v4` (cache + wrapper validation có sẵn) thay vì tự cấu hình `actions/cache` tay — vì repo đang
+  ở AGP 9.5.0/compileSdk 37, các version này mới hơn SDK có sẵn trên ubuntu-latest nên cần bước cài/accept
+  license rõ ràng, không dựa vào SDK image có sẵn của runner.
+  **Release APK: unsigned** — repo chưa có `signingConfigs` (mục riêng "Release signing config" trong
+  TODO.md vẫn mở), nên `assembleRelease` ra `app-release-unsigned.apk`, không cài được lên máy — artifact
+  này dùng để soát (R8/shrink có chạy đúng không, kích thước, v.v.), chưa phải bản phát hành thật. Khi
+  nào có keystore + GitHub secrets thật thì nối `signingConfigs.release` đọc từ env var, đây là việc
+  riêng, chưa làm trong lần này.
+  **Lỗi lint có sẵn phải sửa trước khi bật `lintDebug` làm gate**: `UnifiedHealthApp.kt` dùng
+  `LocalContext.current as? Activity` (từ D-1180) — lint Jetpack Activity Compose báo
+  `ContextCastToActivity`, lỗi thật (không phải false-positive), chặn hẳn `lintDebug`. Đổi sang
+  `LocalActivity.current` (`androidx.activity.compose.LocalActivity`, API chính thức thay cho pattern
+  cast), xoá import `android.app.Activity`/`LocalContext` không còn dùng — không đổi hành vi
+  (`BackHandler`/`moveTaskToBack` giữ nguyên).
+  **Verify (local, không chạy được GitHub Actions thật từ máy này)**: mô phỏng đúng 4 bước trong workflow
+  bằng tay, `JAVA_HOME=/opt/homebrew/opt/openjdk@21` — `./gradlew testDebugUnitTest --continue` (BUILD
+  SUCCESSFUL), `./gradlew :app:lintDebug` (fail trước khi sửa `UnifiedHealthApp.kt`, pass sau khi sửa,
+  0 error/14 warning còn lại không chặn), `./gradlew assembleDebug assembleRelease` (BUILD SUCCESSFUL
+  sau 4m43s, ra `app-debug.apk` 33.97 MB + `app-release-unsigned.apk` 6.05 MB — R8/shrink resource có
+  chạy, thấy rõ qua chênh lệch size). Không xác nhận được hành vi thật trên GitHub-hosted runner (Android
+  SDK/network cho compileSdk 37 có khác máy local hay không) — cần push lên GitHub rồi xem tab Actions
+  chạy thật lần đầu, có thể cần chỉnh thêm nếu runner thiếu package SDK cụ thể.
