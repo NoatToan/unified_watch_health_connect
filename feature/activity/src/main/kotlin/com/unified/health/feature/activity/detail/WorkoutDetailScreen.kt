@@ -53,8 +53,10 @@ import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
 import com.unified.health.core.domain.usecase.HeartRateZoneShare
 import com.unified.health.core.model.ChartPoint
+import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.WorkoutLap
 import com.unified.health.core.model.WorkoutType
+import com.unified.health.core.model.distanceUnitLabel
 import com.unified.health.feature.activity.icon
 import com.unified.health.feature.activity.kilometers
 import com.unified.health.feature.activity.label
@@ -123,10 +125,10 @@ private fun WorkoutDetailContent(state: WorkoutDetailUiState.Success, modifier: 
             }
         }
 
-        val pace = workout.paceOrSpeed()
+        val pace = workout.paceOrSpeed(unitSystem = state.unitSystem)
         val tiles = listOf(
             Triple("Workout time", workout.duration.stopwatch(), ""),
-            Triple("Distance", workout.distanceMeters?.takeIf { it > 0 }?.let { kilometers(it) }, "km"),
+            Triple("Distance", workout.distanceMeters?.takeIf { it > 0 }?.let { kilometers(it, unitSystem = state.unitSystem) }, state.unitSystem.distanceUnitLabel()),
             Triple("Active energy", workout.activeKcal?.toString(), "kcal"),
             Triple(pace?.label ?: "Avg. pace", pace?.value, pace?.unit ?: ""),
             Triple("Avg. heart rate", state.avgHeartRate?.toString(), "bpm"),
@@ -186,7 +188,7 @@ private fun WorkoutDetailContent(state: WorkoutDetailUiState.Success, modifier: 
         }
 
         if (state.hasSplits) {
-            SplitsCard(state.laps, workout.type, accent)
+            SplitsCard(state.laps, workout.type, accent, state.unitSystem)
         }
 
         if (state.hasHrZones) {
@@ -247,7 +249,7 @@ private fun paceLabel(secondsPerKm: Float): String {
 
 /** One row per lap (D-1093): duration, distance, pace/speed, avg HR/cadence, elevation gain/loss. */
 @Composable
-private fun SplitsCard(laps: List<WorkoutLap>, type: WorkoutType, accent: Color) {
+private fun SplitsCard(laps: List<WorkoutLap>, type: WorkoutType, accent: Color, unitSystem: UnitSystem) {
     Card(Modifier.fillMaxWidth().testTag("workout_splits")) {
         Column(Modifier.padding(vertical = Spacing.sm)) {
             Text(
@@ -261,17 +263,17 @@ private fun SplitsCard(laps: List<WorkoutLap>, type: WorkoutType, accent: Color)
                     modifier = Modifier.testTag("workout_lap_${lap.index}"),
                     colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                     headlineContent = { Text("Lap ${lap.index + 1} · ${lap.duration.stopwatch()}") },
-                    supportingContent = { Text(lapSummary(lap, type), maxLines = 2, overflow = TextOverflow.Ellipsis) },
+                    supportingContent = { Text(lapSummary(lap, type, unitSystem), maxLines = 2, overflow = TextOverflow.Ellipsis) },
                 )
             }
         }
     }
 }
 
-private fun lapSummary(lap: WorkoutLap, type: WorkoutType): String {
+private fun lapSummary(lap: WorkoutLap, type: WorkoutType, unitSystem: UnitSystem): String {
     val parts = mutableListOf<String>()
-    lap.distanceMeters?.takeIf { it > 0 }?.let { parts += "${kilometers(it)} km" }
-    lap.paceOrSpeedLabel(type)?.let { parts += it }
+    lap.distanceMeters?.takeIf { it > 0 }?.let { parts += "${kilometers(it, unitSystem = unitSystem)} ${unitSystem.distanceUnitLabel()}" }
+    lap.paceOrSpeedLabel(type, unitSystem = unitSystem)?.let { parts += it }
     lap.avgHeartRate?.let { parts += "$it bpm" }
     lap.avgCadence?.let { parts += "$it spm" }
     if (lap.ascentMeters != null || lap.descentMeters != null) {

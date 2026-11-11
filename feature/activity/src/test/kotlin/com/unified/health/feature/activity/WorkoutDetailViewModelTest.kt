@@ -2,6 +2,7 @@ package com.unified.health.feature.activity
 
 import androidx.lifecycle.SavedStateHandle
 import com.unified.health.core.model.HeartRateSample
+import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.WearableDevice
 import com.unified.health.core.model.WearableVendor
 import com.unified.health.core.model.Workout
@@ -41,6 +42,7 @@ class WorkoutDetailViewModelTest {
     )
     private val health = FakeHealthDataRepository()
     private val devices = FakeWearableDeviceRepository()
+    private val preferences = FakeUserPreferencesRepository()
 
     /** Shared with runTest so the ViewModel's Main work and the test run on one scheduler. */
     private val dispatcher = UnconfinedTestDispatcher()
@@ -52,7 +54,7 @@ class WorkoutDetailViewModelTest {
     fun tearDown() = Dispatchers.resetMain()
 
     private fun viewModel(id: String = workout.id) =
-        WorkoutDetailViewModel(SavedStateHandle(mapOf("workoutId" to id)), health, devices)
+        WorkoutDetailViewModel(SavedStateHandle(mapOf("workoutId" to id)), health, devices, preferences)
 
     @Test
     fun `unknown workout is not found`() = runTest(dispatcher) {
@@ -128,5 +130,15 @@ class WorkoutDetailViewModelTest {
         assertEquals(88, state.maxCadence)
         assertTrue(state.hasSampleTrend)
         assertTrue(state.hasHrZones)
+    }
+
+    @Test
+    fun `unit system follows the preferences repository`() = runTest(dispatcher) {
+        health.workouts.value = listOf(workout)
+        preferences.setUnitSystem(UnitSystem.IMPERIAL)
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+        val state = vm.uiState.value as WorkoutDetailUiState.Success
+        assertEquals(UnitSystem.IMPERIAL, state.unitSystem)
     }
 }

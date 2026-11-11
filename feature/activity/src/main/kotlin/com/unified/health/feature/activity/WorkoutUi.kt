@@ -9,9 +9,13 @@ import androidx.compose.material.icons.outlined.Pool
 import androidx.compose.material.icons.outlined.SelfImprovement
 import androidx.compose.material.icons.outlined.SportsScore
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.Workout
 import com.unified.health.core.model.WorkoutLap
 import com.unified.health.core.model.WorkoutType
+import com.unified.health.core.model.distanceUnitLabel
+import com.unified.health.core.model.metersPerDistanceUnit
+import com.unified.health.core.model.metersToDisplayDistance
 import java.time.Duration
 import java.util.Locale
 
@@ -44,22 +48,29 @@ internal fun Duration.stopwatch(): String {
     return if (h > 0) "%d:%02d:%02d".format(Locale.ROOT, h, m, sec) else "%d:%02d".format(Locale.ROOT, m, sec)
 }
 
-internal fun kilometers(meters: Double, locale: Locale = Locale.getDefault()): String = String.format(locale, "%.2f", meters / 1000.0)
+/** Distance to 2 decimals, in km (Metric) or mi (Imperial per D-1183/docs/DECISIONS.md); storage stays meters. */
+internal fun kilometers(meters: Double, locale: Locale = Locale.getDefault(), unitSystem: UnitSystem = UnitSystem.METRIC): String =
+    String.format(locale, "%.2f", meters.metersToDisplayDistance(unitSystem))
 
 /**
- * Pace for on-foot workouts ("5'42\"" per km), speed for cycling ("24.3" km/h); null without a
- * distance or for workouts where neither is meaningful.
+ * Pace for on-foot workouts ("5'42\"" per km/mi), speed for cycling ("24.3" km/h / mph); null
+ * without a distance or for workouts where neither is meaningful. Swimming's pool length ("/100 m")
+ * is unaffected by [unitSystem] — pools are measured in meters worldwide, not miles.
  */
 internal data class PaceOrSpeed(val label: String, val value: String, val unit: String)
 
-internal fun Workout.paceOrSpeed(locale: Locale = Locale.getDefault()): PaceOrSpeed? {
+internal fun Workout.paceOrSpeed(locale: Locale = Locale.getDefault(), unitSystem: UnitSystem = UnitSystem.METRIC): PaceOrSpeed? {
     val meters = distanceMeters?.takeIf { it > 0 } ?: return null
     val seconds = duration.seconds.takeIf { it > 0 } ?: return null
     return when (type) {
-        WorkoutType.CYCLING -> PaceOrSpeed("Avg. speed", String.format(locale, "%.1f", meters / 1000.0 / (seconds / 3600.0)), "km/h")
+        WorkoutType.CYCLING -> {
+            val speedUnit = if (unitSystem == UnitSystem.IMPERIAL) "mph" else "km/h"
+            val speed = (meters * 3600.0 / seconds).metersToDisplayDistance(unitSystem)
+            PaceOrSpeed("Avg. speed", String.format(locale, "%.1f", speed), speedUnit)
+        }
         WorkoutType.RUNNING, WorkoutType.WALKING -> {
-            val secPerKm = (seconds / (meters / 1000.0)).toLong()
-            PaceOrSpeed("Avg. pace", "%d'%02d\"".format(Locale.ROOT, secPerKm / 60, secPerKm % 60), "/km")
+            val secPerUnit = (seconds / meters.metersToDisplayDistance(unitSystem)).toLong()
+            PaceOrSpeed("Avg. pace", "%d'%02d\"".format(Locale.ROOT, secPerUnit / 60, secPerUnit % 60), "/${unitSystem.distanceUnitLabel()}")
         }
         WorkoutType.SWIMMING -> {
             val secPer100 = (seconds / (meters / 100.0)).toLong()
@@ -70,13 +81,16 @@ internal fun Workout.paceOrSpeed(locale: Locale = Locale.getDefault()): PaceOrSp
 }
 
 /** Same idea as [Workout.paceOrSpeed] but for a split's own average speed (D-1093), with the unit baked in. */
-internal fun WorkoutLap.paceOrSpeedLabel(type: WorkoutType, locale: Locale = Locale.getDefault()): String? {
+internal fun WorkoutLap.paceOrSpeedLabel(type: WorkoutType, locale: Locale = Locale.getDefault(), unitSystem: UnitSystem = UnitSystem.METRIC): String? {
     val speed = avgSpeedMps?.takeIf { it > 0 } ?: return null
     return when (type) {
-        WorkoutType.CYCLING -> String.format(locale, "%.1f km/h", speed * 3.6)
+        WorkoutType.CYCLING -> {
+            val speedUnit = if (unitSystem == UnitSystem.IMPERIAL) "mph" else "km/h"
+            String.format(locale, "%.1f $speedUnit", (speed * 3_600.0).metersToDisplayDistance(unitSystem))
+        }
         WorkoutType.RUNNING, WorkoutType.WALKING -> {
-            val secPerKm = (1000.0 / speed).toLong()
-            "%d'%02d\"/km".format(Locale.ROOT, secPerKm / 60, secPerKm % 60)
+            val secPerUnit = (unitSystem.metersPerDistanceUnit() / speed).toLong()
+            "%d'%02d\"/${unitSystem.distanceUnitLabel()}".format(Locale.ROOT, secPerUnit / 60, secPerUnit % 60)
         }
         WorkoutType.SWIMMING -> {
             val secPer100 = (100.0 / speed).toLong()

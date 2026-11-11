@@ -2769,3 +2769,39 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   chạy, thấy rõ qua chênh lệch size). Không xác nhận được hành vi thật trên GitHub-hosted runner (Android
   SDK/network cho compileSdk 37 có khác máy local hay không) — cần push lên GitHub rồi xem tab Actions
   chạy thật lần đầu, có thể cần chỉnh thêm nếu runner thiếu package SDK cụ thể.
+
+## Imperial/Metric display wiring (D-1183)
+
+- **D-1183** · 2026-11-11 · `UserPreferences.unitSystem` nay đổi hiển thị distance/weight sang mi/lb — **Chốt**
+  `unitSystem` (toggle đã có sẵn ở Profile) trước đây không được đọc ở đâu cả — distance/weight luôn
+  hiện km/kg. Giờ mọi nơi hiển thị đọc nó, nhưng **storage không đổi**: Room/Health Connect/domain vẫn
+  luôn lưu mét/kg (khớp đơn vị canonical của Health Connect) — chỉ convert ngay trước khi render text.
+  Hằng số convert (theo brief): `1 mi = 1609.344 m` (chia mét cho 1609.344 ra mi), `1 kg × 2.20462 = lb`.
+  Thêm `core/model/.../UnitConversion.kt`: `Double.metersToDisplayDistance(UnitSystem)`,
+  `Double.kgToDisplayWeight(UnitSystem)`, `UnitSystem.distanceUnitLabel()`/`.weightUnitLabel()`,
+  `UnitSystem.metersPerDistanceUnit()` — đặt ở `core:model` (pure Kotlin) vì cả `core:designsystem`
+  (`MetricFormat.formatValue`/`MetricIcons.unit`) và `feature:activity` (`WorkoutUi.kilometers`/
+  `paceOrSpeed`/`paceOrSpeedLabel`, đổi cả pace "/km"→"/mi" và speed "km/h"→"mph" cho nhất quán — swim
+  pace "/100 m" giữ nguyên, hồ bơi đo bằng mét ở khắp thế giới, không phải yard) đều cần dùng chung hằng
+  số, tránh lặp `1609.344`/`2.20462` ở nhiều module.
+  `formatValue`/`unit()` nhận thêm param `unitSystem: UnitSystem = UnitSystem.METRIC` (default Metric
+  để caller chưa sửa vẫn compile) — đã sửa hết các caller thật: `HomeViewModel`/`HomeScreen`/
+  `MetricInsightText` (Home feed cards, highlights, insight line), `MetricDetailViewModel`/
+  `MetricDetailScreen`, `MetricDataViewModel`/`MetricDataScreen`, `ActivityViewModel`/`ActivityScreen`
+  (Activity load's Distance tile, workout list rows), `WorkoutDetailViewModel`/`WorkoutDetailScreen`
+  (Distance tile, Avg. pace/speed, splits). Mỗi ViewModel inject thêm `UserPreferencesRepository`
+  (theo đúng pattern `HomeViewModel` đã có) và expose `unitSystem` qua `combine(...)` vào UI state —
+  `ActivityViewModel`/`WorkoutDetailViewModel` trước đó chưa có dependency này nên thêm constructor
+  param mới (test cũ update theo, thêm `FakeUserPreferencesRepository` vào `feature/activity`'s
+  `Fakes.kt`).
+  **Không đụng**: race's advertised distance (`RaceCard`/`RaceDetailScreen` — "5K"/"Marathon" là nhãn
+  loại giải, không phải health metric tính từ mét lưu trong storage) và pace-trend chart's sec/km nội
+  bộ (`WorkoutSampleSeries.paceSecondsPerKm`, domain layer) — cả hai ngoài phạm vi brief.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug` →
+  BUILD SUCCESSFUL. Test mới: `core/model/UnitConversionTest` (3), `core/designsystem/
+  MetricFormatTest` (5), cập nhật `feature/home/insight/MetricInsightTextTest` (+1 Imperial),
+  `feature/activity/WorkoutUiTest` (+2 Imperial), `ActivityViewModelTest`/`WorkoutDetailViewModelTest`
+  (+1 mỗi file, "unit system follows the preferences repository") — toàn bộ suite xanh, không file nào
+  bị xoá assertion cũ. Chưa test trên máy thật/emulator (không có thiết bị khả dụng lúc này) — đã trace
+  code path Profile toggle → mỗi ViewModel's `combine(..., preferences.userPreferences)` → UI state →
+  composable bằng tay để xác nhận.

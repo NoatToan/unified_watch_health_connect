@@ -1,5 +1,6 @@
 package com.unified.health.feature.activity
 
+import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.Workout
 import com.unified.health.core.model.WorkoutLap
 import com.unified.health.core.model.WorkoutType
@@ -37,5 +38,23 @@ class WorkoutUiTest {
         assertEquals("24.0 km/h", lap(24_000.0 / 3600).paceOrSpeedLabel(WorkoutType.CYCLING, Locale.US))
         assertNull(lap(3.0).paceOrSpeedLabel(WorkoutType.STRENGTH, Locale.US))
         assertNull(lap(null).paceOrSpeedLabel(WorkoutType.RUNNING, Locale.US))
+    }
+
+    @Test
+    fun `D-1183 Imperial switches distance, pace and speed to mi and mph`() {
+        assertEquals("3.11", kilometers(5_000.0, Locale.US, UnitSystem.IMPERIAL))
+        val runPace = workout(WorkoutType.RUNNING, 25, 5_000.0).paceOrSpeed(Locale.US, UnitSystem.IMPERIAL)!!
+        assertEquals("8'02\"", runPace.value)
+        assertEquals("/mi", runPace.unit)
+        val cyclingSpeed = workout(WorkoutType.CYCLING, 60, 24_000.0).paceOrSpeed(Locale.US, UnitSystem.IMPERIAL)!!
+        assertEquals("14.9", cyclingSpeed.value)
+        assertEquals("mph", cyclingSpeed.unit)
+    }
+
+    @Test
+    fun `D-1183 Imperial lap labels switch to mi and mph too`() {
+        fun lap(avgSpeedMps: Double?) = WorkoutLap(index = 0, start = start, end = start.plusSeconds(60), avgSpeedMps = avgSpeedMps)
+        assertEquals("8'02\"/mi", lap(1000.0 / 300).paceOrSpeedLabel(WorkoutType.RUNNING, Locale.US, UnitSystem.IMPERIAL))
+        assertEquals("14.9 mph", lap(24_000.0 / 3600).paceOrSpeedLabel(WorkoutType.CYCLING, Locale.US, UnitSystem.IMPERIAL))
     }
 }

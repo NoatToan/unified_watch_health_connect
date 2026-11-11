@@ -3,6 +3,9 @@ package com.unified.health.core.designsystem.component
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.MetricAggregation
 import com.unified.health.core.model.MetricReading
+import com.unified.health.core.model.UnitSystem
+import com.unified.health.core.model.kgToDisplayWeight
+import com.unified.health.core.model.metersToDisplayDistance
 import java.text.NumberFormat
 import java.time.LocalDate
 import java.time.ZoneId
@@ -12,13 +15,18 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 /**
- * Formats a stored value for display: distance is stored in meters and shown in km, sleep is stored
- * in minutes and shown as "7 hr 12 min", counts are grouped ("8,412").
+ * Formats a stored value for display: distance is stored in meters and shown in km/mi, weight is
+ * stored in kg and shown in kg/lb (D-1183: [unitSystem] picks Metric vs Imperial; storage itself
+ * never changes), sleep is stored in minutes and shown as "7 hr 12 min", counts are grouped ("8,412").
  */
-fun HealthMetricType.formatValue(value: Double, locale: Locale = Locale.getDefault()): String = when (this) {
-    HealthMetricType.DISTANCE -> String.format(locale, "%.1f", value / 1000.0)
+fun HealthMetricType.formatValue(
+    value: Double,
+    locale: Locale = Locale.getDefault(),
+    unitSystem: UnitSystem = UnitSystem.METRIC,
+): String = when (this) {
+    HealthMetricType.DISTANCE -> String.format(locale, "%.1f", value.metersToDisplayDistance(unitSystem))
     HealthMetricType.SLEEP -> formatMinutes(value.roundToInt())
-    HealthMetricType.WEIGHT -> String.format(locale, "%.1f", value)
+    HealthMetricType.WEIGHT -> String.format(locale, "%.1f", value.kgToDisplayWeight(unitSystem))
     else -> NumberFormat.getIntegerInstance(locale).format(value.roundToInt())
 }
 

@@ -117,10 +117,13 @@ import com.unified.health.core.model.RaceStatus
 import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.StepsSummary
 import com.unified.health.core.model.SyncState
+import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.WatchModelMatcher
 import com.unified.health.core.model.WearableDevice
 import com.unified.health.core.model.WearableVendor
 import com.unified.health.core.model.Workout
+import com.unified.health.core.model.distanceUnitLabel
+import com.unified.health.core.model.metersToDisplayDistance
 import com.unified.health.feature.home.insight.metricInsightLine
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -314,7 +317,7 @@ internal fun AllMetricsScreen(
                     contentPadding = PaddingValues(vertical = Spacing.sm),
                     verticalArrangement = Arrangement.spacedBy(Spacing.md),
                 ) {
-                    feedCardItems(state.feedCards, state.metricsViewMode, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm)
+                    feedCardItems(state.feedCards, state.metricsViewMode, state.unitSystem, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm)
                 }
             }
         }
@@ -387,11 +390,11 @@ private fun Summary(
                 )
             }
         }
-        feedCardItems(cardsWithData, state.metricsViewMode, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm)
+        feedCardItems(cardsWithData, state.metricsViewMode, state.unitSystem, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm)
         if (state.highlights.isNotEmpty()) {
             item { SectionHeader("Highlights", Modifier.padding(horizontal = Spacing.lg)) }
             items(state.highlights, key = { "highlight_${it.metric.name}" }) { highlight ->
-                HighlightCard(highlight, onClick = { onMetricClick(highlight.metric) }, modifier = Modifier.padding(horizontal = Spacing.lg))
+                HighlightCard(highlight, state.unitSystem, onClick = { onMetricClick(highlight.metric) }, modifier = Modifier.padding(horizontal = Spacing.lg))
             }
         }
         // D-1110: moved to the end of the content (was right after RingsCard, D-1105) — marketing/
@@ -442,6 +445,7 @@ private fun ViewModeToggle(mode: HomeMetricsViewMode, onChange: (HomeMetricsView
 @Composable
 private fun FeedCard(
     card: FeedCardData,
+    unitSystem: UnitSystem,
     onMetricClick: (HealthMetricType) -> Unit,
     onOpenWorkouts: () -> Unit,
     liveMetrics: Set<HealthMetricType>,
@@ -450,9 +454,10 @@ private fun FeedCard(
     modifier: Modifier = Modifier,
 ) {
     when (card) {
-        is FeedCardData.Workouts -> WorkoutsFeedCard(recent = card.recent, onClick = onOpenWorkouts, compact = compact, modifier = modifier)
+        is FeedCardData.Workouts -> WorkoutsFeedCard(recent = card.recent, unitSystem = unitSystem, onClick = onOpenWorkouts, compact = compact, modifier = modifier)
         is FeedCardData.Metric -> MetricFeedCard(
             card = card,
+            unitSystem = unitSystem,
             onClick = { onMetricClick(card.metric) },
             modifier = modifier,
             isLive = card.metric.liveDotOrNull(liveMetrics),
@@ -476,6 +481,7 @@ private fun FeedCardData.hasData(): Boolean = when (this) {
 private fun LazyListScope.feedCardItems(
     cards: List<FeedCardData>,
     viewMode: HomeMetricsViewMode,
+    unitSystem: UnitSystem,
     onMetricClick: (HealthMetricType) -> Unit,
     onOpenWorkouts: () -> Unit,
     liveMetrics: Set<HealthMetricType>,
@@ -486,7 +492,7 @@ private fun LazyListScope.feedCardItems(
     // the constant in two places.
     when (viewMode) {
         HomeMetricsViewMode.LIST -> items(cards, key = { "feed_${it.id}" }) { card ->
-            FeedCard(card, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = false, modifier = Modifier.padding(horizontal = Spacing.lg).testTag("card_${card.id}"))
+            FeedCard(card, unitSystem, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = false, modifier = Modifier.padding(horizontal = Spacing.lg).testTag("card_${card.id}"))
         }
         // D-1050/1073: 2-column grid — a plain Row per pair (not a nested LazyVerticalGrid, which
         // cannot be sized inside this LazyColumn) keeps the existing per-card composables and
@@ -495,7 +501,7 @@ private fun LazyListScope.feedCardItems(
             Row(Modifier.fillMaxWidth().padding(horizontal = Spacing.lg), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
                 pair.forEach { card ->
                     Box(Modifier.weight(1f)) {
-                        FeedCard(card, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = true, modifier = Modifier.testTag("card_${card.id}"))
+                        FeedCard(card, unitSystem, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = true, modifier = Modifier.testTag("card_${card.id}"))
                     }
                 }
                 if (pair.size == 1) Spacer(Modifier.weight(1f))
@@ -505,11 +511,11 @@ private fun LazyListScope.feedCardItems(
 }
 
 @Composable
-private fun HighlightCard(highlight: Highlight, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun HighlightCard(highlight: Highlight, unitSystem: UnitSystem, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val metric = highlight.metric
     val accent = UnifiedHealthTheme.metricColors.forMetric(metric)
-    val recent = metric.formatValue(highlight.recentAverage)
-    val unit = metric.unit().let { if (it.isEmpty()) "" else " $it" }
+    val recent = metric.formatValue(highlight.recentAverage, unitSystem = unitSystem)
+    val unit = metric.unit(unitSystem).let { if (it.isEmpty()) "" else " $it" }
     val verb = if (metric.aggregation == MetricAggregation.SLEEP) "slept" else "averaged"
     val change = when (highlight.trend) {
         Trend.UP -> "${highlight.changePercent}% more than"
@@ -537,16 +543,16 @@ private fun HighlightCard(highlight: Highlight, onClick: () -> Unit, modifier: M
                 "Over the last 7 days, you $verb $recent$unit$perDay. That's $change the 7 days before.",
                 style = MaterialTheme.typography.bodyMedium,
             )
-            ComparisonBar("Last 7 days", highlight.recentAverage, maxOf(highlight.recentAverage, highlight.previousAverage), metric, accent)
-            ComparisonBar("Previous 7 days", highlight.previousAverage, maxOf(highlight.recentAverage, highlight.previousAverage), metric, MaterialTheme.colorScheme.outline)
+            ComparisonBar("Last 7 days", highlight.recentAverage, maxOf(highlight.recentAverage, highlight.previousAverage), metric, unitSystem, accent)
+            ComparisonBar("Previous 7 days", highlight.previousAverage, maxOf(highlight.recentAverage, highlight.previousAverage), metric, unitSystem, MaterialTheme.colorScheme.outline)
         }
     }
 }
 
 @Composable
-private fun ComparisonBar(label: String, value: Double, max: Double, metric: HealthMetricType, color: Color) {
+private fun ComparisonBar(label: String, value: Double, max: Double, metric: HealthMetricType, unitSystem: UnitSystem, color: Color) {
     Column {
-        Text("$label · ${metric.formatValue(value)} ${metric.unit()}".trim(), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text("$label · ${metric.formatValue(value, unitSystem = unitSystem)} ${metric.unit(unitSystem)}".trim(), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(2.dp))
         Box(
             Modifier
@@ -766,7 +772,7 @@ private fun RingLegend(label: String, value: String, color: Color) {
 // ---------------------------------------------------------------- full metric feed (merged from the old Health tab, D-1010)
 
 @Composable
-private fun WorkoutsFeedCard(recent: List<Workout>, onClick: () -> Unit, compact: Boolean = false, modifier: Modifier = Modifier) {
+private fun WorkoutsFeedCard(recent: List<Workout>, unitSystem: UnitSystem, onClick: () -> Unit, compact: Boolean = false, modifier: Modifier = Modifier) {
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -792,19 +798,21 @@ private fun WorkoutsFeedCard(recent: List<Workout>, onClick: () -> Unit, compact
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
-                else -> recent.forEach { workout -> WorkoutRow(workout) }
+                else -> recent.forEach { workout -> WorkoutRow(workout, unitSystem) }
             }
         }
     }
 }
 
 @Composable
-private fun WorkoutRow(workout: Workout) {
+private fun WorkoutRow(workout: Workout, unitSystem: UnitSystem) {
     val accent = UnifiedHealthTheme.metricColors.exercise
     val zone = ZoneId.systemDefault()
     val details = listOfNotNull(
         formatMinutes(workout.duration.toMinutes().toInt()),
-        workout.distanceMeters?.takeIf { it > 0 }?.let { String.format(java.util.Locale.getDefault(), "%.2f km", it / 1000.0) },
+        workout.distanceMeters?.takeIf { it > 0 }?.let {
+            String.format(java.util.Locale.getDefault(), "%.2f %s", it.metersToDisplayDistance(unitSystem), unitSystem.distanceUnitLabel())
+        },
         workout.activeKcal?.let { "$it kcal" },
     ).joinToString(" · ")
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -836,6 +844,7 @@ private fun shortWorkoutDate(start: Instant, zone: ZoneId = ZoneId.systemDefault
 @Composable
 private fun MetricFeedCard(
     card: FeedCardData.Metric,
+    unitSystem: UnitSystem,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isLive: Boolean? = null,
@@ -853,19 +862,19 @@ private fun MetricFeedCard(
         EmptyMetricCard(metric, accent, onClick, modifier, compact = compact)
         return
     }
-    val insight = metricInsightLine(metric, card.highlight, card.weekStats)
+    val insight = metricInsightLine(metric, card.highlight, card.weekStats, unitSystem)
     val sleepSession = card.sleepSession
-    val value = if (liveBpm != null) liveBpm.toString() else card.reading?.let { metric.formatValue(it.value) }
+    val value = if (liveBpm != null) liveBpm.toString() else card.reading?.let { metric.formatValue(it.value, unitSystem = unitSystem) }
     val cardTimeLabel = if (liveBpm != null) "Live" else card.reading?.let { timeLabel(metric, it) }
     val description = buildString {
         append(metric.label()).append(", ")
-        append(value?.let { "$it ${metric.unit()}".trim() } ?: "no reading today")
+        append(value?.let { "$it ${metric.unit(unitSystem)}".trim() } ?: "no reading today")
         if (!compact) insight?.let { append(", ").append(it) }
         if (isLive != null) append(if (isLive) ", live" else ", not live")
     }
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().semantics(mergeDescendants = true) { contentDescription = description }) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-            FeedCardHeader(metric, accent, value, metric.unit(), cardTimeLabel, isLive, compact = compact)
+            FeedCardHeader(metric, accent, value, metric.unit(unitSystem), cardTimeLabel, isLive, compact = compact)
             if (!compact) {
                 card.restingBpm?.let {
                     Text("Resting $it bpm", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -873,7 +882,7 @@ private fun MetricFeedCard(
                 sleepSession?.score?.let {
                     Text("Sleep score $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                MiniChart(metric, card.weekPoints, sleepSession, accent)
+                MiniChart(metric, card.weekPoints, sleepSession, unitSystem, accent)
                 if (metric.aggregation == MetricAggregation.SLEEP && sleepSession != null) {
                     SleepStageLegend(sleepSession, Modifier.testTag("feed_sleep_legend"))
                 }
@@ -935,10 +944,11 @@ private fun MiniChart(
     metric: HealthMetricType,
     weekPoints: List<ChartPoint>,
     sleepSession: SleepSession?,
+    unitSystem: UnitSystem,
     accent: Color,
 ) {
     val axis: (Float) -> String = when (metric) {
-        HealthMetricType.DISTANCE -> { v -> compactNumber(v / 1000f) }
+        HealthMetricType.DISTANCE -> { v -> compactNumber(v.toDouble().metersToDisplayDistance(unitSystem).toFloat()) }
         else -> ::compactNumber
     }
     // D-1132: drag-to-scrub (D-1020) is off here — this chart is too small for it, and a drag would

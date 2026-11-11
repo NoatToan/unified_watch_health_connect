@@ -35,10 +35,9 @@ Protocol gaps per brand: `docs/protocols/<BRAND>_IMPLEMENTATION_BRIEF.md` (items
 - [ ] Charts: swipe to previous periods, tap a bar to inspect, a data-source priority screen.
 - [ ] Device-native hourly distance/energy/exercise for the Day view (currently split by step share, D-207).
 - [ ] Record types for blood pressure, temperature, weight and body composition (stored as raw payloads today).
-- [ ] Imperial units; weight data source. Partial: `UnitSystem.METRIC/IMPERIAL` enum + toggle exist in
-  Profile (`UserPreferences.kt`), but nothing reads it yet — distance/weight display is still
-  hardcoded km/kg everywhere (`MetricFormat.kt`, `MetricIcons.kt`, `WorkoutUi.kt`, `ActivityScreen.kt`,
-  `WorkoutDetailScreen.kt`). Needs wiring, not just the data model.
+- [ ] Weight data source (manual entry as its own record type; D-1183 wired Imperial/Metric *display*
+  for distance/weight across Home + Activity — this item is now just about where weight values
+  themselves come from, not units).
 - [ ] Localization: move hard-coded UI strings to `strings.xml`, add `values-vi`. D-1040 already decided
   the structure (shared strings in `core/designsystem`, per-screen in each `feature/*`, EN baseline +
   VI toggle via `AppCompatDelegate.setApplicationLocales`) and the module order (devices → home →

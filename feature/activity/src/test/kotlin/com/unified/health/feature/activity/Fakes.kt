@@ -1,6 +1,7 @@
 package com.unified.health.feature.activity
 
 import com.unified.health.core.domain.repository.HealthDataRepository
+import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.model.ChartPoint
 import com.unified.health.core.model.ConnectionState
@@ -8,10 +9,14 @@ import com.unified.health.core.model.DailyHealthSummary
 import com.unified.health.core.model.DiscoveredDevice
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.HeartRateSample
+import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.MetricReading
 import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.SyncState
+import com.unified.health.core.model.ThemeMode
 import com.unified.health.core.model.TimeRange
+import com.unified.health.core.model.UnitSystem
+import com.unified.health.core.model.UserPreferences
 import com.unified.health.core.model.WearableDevice
 import com.unified.health.core.model.Workout
 import com.unified.health.core.model.WorkoutLap
@@ -20,6 +25,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import java.time.Instant
 import java.time.LocalDate
 
@@ -59,4 +65,21 @@ class FakeWearableDeviceRepository : WearableDeviceRepository {
     override suspend fun reprocessRawPayloads(deviceId: String): Result<Int> = Result.success(0)
     override suspend fun setCredential(deviceId: String, key: String, value: String): Result<Unit> = Result.success(Unit)
     override suspend fun generateCredential(deviceId: String, key: String): Result<String> = Result.success("")
+}
+
+/** D-1183: only [UserPreferences.unitSystem] matters to Activity/WorkoutDetail; every other setter is a no-op. */
+class FakeUserPreferencesRepository : UserPreferencesRepository {
+    override val userPreferences = MutableStateFlow(UserPreferences())
+    override suspend fun setOnboardingCompleted(completed: Boolean) = Unit
+    override suspend fun setUnitSystem(unitSystem: UnitSystem) {
+        userPreferences.update { it.copy(unitSystem = unitSystem) }
+    }
+    override suspend fun setThemeMode(themeMode: ThemeMode) = Unit
+    override suspend fun setUseDynamicColor(enabled: Boolean) = Unit
+    override suspend fun setDailyStepGoal(steps: Int) = Unit
+    override suspend fun setActiveCalorieGoalOverride(kcal: Int?) = Unit
+    override suspend fun setSleepGoalHoursOverride(hours: Int?) = Unit
+    override suspend fun setPinnedMetrics(metrics: List<HealthMetricType>) = Unit
+    override suspend fun setFeedCards(order: List<String>, hidden: Set<String>) = Unit
+    override suspend fun setHomeMetricsViewMode(mode: HomeMetricsViewMode) = Unit
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.unified.health.core.domain.model.DefaultMetricThresholds
 import com.unified.health.core.domain.repository.HealthDataRepository
+import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.domain.usecase.HeartRateStats
 import com.unified.health.core.domain.usecase.HeartRateZoneBreakdown
@@ -12,6 +13,7 @@ import com.unified.health.core.domain.usecase.HeartRateZoneShare
 import com.unified.health.core.domain.usecase.WorkoutHeartRateSeries
 import com.unified.health.core.domain.usecase.WorkoutSampleSeries
 import com.unified.health.core.model.ChartPoint
+import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.Workout
 import com.unified.health.core.model.WorkoutLap
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,6 +52,8 @@ sealed interface WorkoutDetailUiState {
         /** Summed across laps; null when no lap carried this field. */
         val totalAscentMeters: Double? = null,
         val totalDescentMeters: Double? = null,
+        /** D-1183: Metric (km/kg) vs Imperial (mi/lb) distance display, from Profile's toggle. */
+        val unitSystem: UnitSystem = UnitSystem.METRIC,
     ) : WorkoutDetailUiState {
         /** The watch's own summary wins; the samples fill in when the watch did not report one. */
         val avgHeartRate: Int? get() = workout.avgHeartRate ?: sampleStats?.average
@@ -67,6 +71,7 @@ class WorkoutDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     healthData: HealthDataRepository,
     devices: WearableDeviceRepository,
+    preferences: UserPreferencesRepository,
 ) : ViewModel() {
 
     /** Argument of [com.unified.health.feature.activity.WorkoutDetailDestination], stored under its property name. */
@@ -82,7 +87,8 @@ class WorkoutDetailViewModel @Inject constructor(
                     devices.pairedDevices,
                     healthData.observeWorkoutLaps(workout.id),
                     healthData.observeWorkoutSamples(workout.id),
-                ) { samples, paired, laps, workoutSamples ->
+                    preferences.userPreferences,
+                ) { samples, paired, laps, workoutSamples, prefs ->
                     val device = paired.firstOrNull { it.id == workout.sourceDeviceId }
                     val maxHeartRateBpm = DefaultMetricThresholds.VALUES.estimatedMaxHeartRateBpm()
                     val cadenceSamples = workoutSamples.mapNotNull { it.cadence }.filter { it > 0 }
@@ -105,6 +111,7 @@ class WorkoutDetailViewModel @Inject constructor(
                         maxCadence = cadenceSamples.maxOrNull() ?: lapMaxCadence.maxOrNull(),
                         totalAscentMeters = lapAscent.takeIf { it.isNotEmpty() }?.sum(),
                         totalDescentMeters = lapDescent.takeIf { it.isNotEmpty() }?.sum(),
+                        unitSystem = prefs.unitSystem,
                     )
                 }
             }

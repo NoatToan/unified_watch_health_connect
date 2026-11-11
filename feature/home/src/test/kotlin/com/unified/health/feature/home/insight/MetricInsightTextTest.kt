@@ -4,6 +4,7 @@ import com.unified.health.core.domain.usecase.Highlight
 import com.unified.health.core.domain.usecase.MetricStats
 import com.unified.health.core.domain.usecase.StatKind
 import com.unified.health.core.model.HealthMetricType
+import com.unified.health.core.model.UnitSystem
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -72,5 +73,12 @@ class MetricInsightTextTest {
     @Test
     fun `nothing to say returns null`() {
         assertNull(metricInsightLine(HealthMetricType.WEIGHT, highlight = null, weekStats = null))
+    }
+
+    @Test
+    fun `D-1183 Imperial switches a distance highlight's unit to mi`() {
+        val highlight = Highlight(HealthMetricType.DISTANCE, recentAverage = 5_000.0, previousAverage = 4_500.0)
+        val line = metricInsightLine(HealthMetricType.DISTANCE, highlight, weekStats = null, unitSystem = UnitSystem.IMPERIAL)
+        assertEquals("Averaged 3.1 mi/day this week, +11% vs last week.", line)
     }
 }

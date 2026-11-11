@@ -16,6 +16,9 @@ import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.unified.health.core.model.HealthMetricType
+import com.unified.health.core.model.UnitSystem
+import com.unified.health.core.model.distanceUnitLabel
+import com.unified.health.core.model.weightUnitLabel
 
 fun HealthMetricType.icon(): ImageVector = when (this) {
     HealthMetricType.STEPS -> Icons.AutoMirrored.Outlined.DirectionsWalk
@@ -48,16 +51,19 @@ fun HealthMetricType.label(): String = when (this) {
     HealthMetricType.VO2_MAX -> "VO2max"
 }
 
-/** Unit shown next to a formatted value (see [formatValue]). */
-fun HealthMetricType.unit(): String = when (this) {
+/**
+ * Unit shown next to a formatted value (see [formatValue]). [unitSystem] (D-1183) only changes
+ * WEIGHT ("kg"/"lb") and DISTANCE ("km"/"mi") — every other metric's unit is system-independent.
+ */
+fun HealthMetricType.unit(unitSystem: UnitSystem = UnitSystem.METRIC): String = when (this) {
     HealthMetricType.STEPS -> "steps"
     HealthMetricType.HEART_RATE, HealthMetricType.RESTING_HEART_RATE -> "bpm"
     HealthMetricType.SLEEP -> ""
     HealthMetricType.SPO2 -> "%"
     HealthMetricType.STRESS -> ""
     HealthMetricType.CALORIES -> "kcal"
-    HealthMetricType.WEIGHT -> "kg"
-    HealthMetricType.DISTANCE -> "km"
+    HealthMetricType.WEIGHT -> unitSystem.weightUnitLabel()
+    HealthMetricType.DISTANCE -> unitSystem.distanceUnitLabel()
     HealthMetricType.EXERCISE_MINUTES -> "min"
     HealthMetricType.HRV -> "ms"
     HealthMetricType.VO2_MAX -> "mL/kg/min"

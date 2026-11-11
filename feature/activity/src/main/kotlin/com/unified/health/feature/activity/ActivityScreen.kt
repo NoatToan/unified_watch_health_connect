@@ -53,7 +53,9 @@ import com.unified.health.core.domain.usecase.ActivityLoadCalculator
 import com.unified.health.core.domain.usecase.ActivityLoadSummary
 import com.unified.health.core.domain.usecase.LoadTrend
 import com.unified.health.core.model.ChartPoint
+import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.Workout
+import com.unified.health.core.model.distanceUnitLabel
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -86,7 +88,7 @@ internal fun ActivityScreen(state: ActivityUiState, onWorkoutClick: (String) -> 
                 contentPadding = PaddingValues(start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.bottomNavClearance),
                 verticalArrangement = Arrangement.spacedBy(Spacing.sm),
             ) {
-                item(key = "load") { ActivityLoadCard(state.load) }
+                item(key = "load") { ActivityLoadCard(state.load, state.unitSystem) }
                 // Stable, list-wide positions for test tags (newest workout = 0).
                 val positions = state.months.flatMap { it.workouts }.withIndex().associate { it.value.id to it.index }
                 state.months.forEach { month ->
@@ -94,7 +96,7 @@ internal fun ActivityScreen(state: ActivityUiState, onWorkoutClick: (String) -> 
                         SectionHeader(MONTH.format(month.month), Modifier.padding(top = Spacing.md, bottom = Spacing.xs))
                     }
                     items(month.workouts, key = { it.id }) { workout ->
-                        WorkoutItem(workout, onClick = { onWorkoutClick(workout.id) }, modifier = Modifier.testTag("workout_item_${positions[workout.id]}"))
+                        WorkoutItem(workout, state.unitSystem, onClick = { onWorkoutClick(workout.id) }, modifier = Modifier.testTag("workout_item_${positions[workout.id]}"))
                     }
                 }
             }
@@ -103,7 +105,7 @@ internal fun ActivityScreen(state: ActivityUiState, onWorkoutClick: (String) -> 
 }
 
 @Composable
-private fun ActivityLoadCard(load: ActivityLoadSummary) {
+private fun ActivityLoadCard(load: ActivityLoadSummary, unitSystem: UnitSystem) {
     val accent = UnifiedHealthTheme.metricColors.exercise
     val current = load.current
     val headline = "${current.load.roundToInt()}"
@@ -136,9 +138,9 @@ private fun ActivityLoadCard(load: ActivityLoadSummary) {
                 StatTile("Time", current.duration.compact(), Modifier.weight(1f))
                 StatTile(
                     "Distance",
-                    current.distanceMeters.takeIf { it > 0 }?.let { kilometers(it) },
+                    current.distanceMeters.takeIf { it > 0 }?.let { kilometers(it, unitSystem = unitSystem) },
                     Modifier.weight(1f),
-                    unit = "km",
+                    unit = unitSystem.distanceUnitLabel(),
                 )
             }
             Text(
@@ -158,12 +160,12 @@ private fun trendCopy(load: ActivityLoadSummary) = when (load.trend) {
 }
 
 @Composable
-private fun WorkoutItem(workout: Workout, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun WorkoutItem(workout: Workout, unitSystem: UnitSystem, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val zone = ZoneId.systemDefault()
     val accent = UnifiedHealthTheme.metricColors.exercise
     val details = listOfNotNull(
         formatMinutes(workout.duration.toMinutes().toInt()),
-        workout.distanceMeters?.takeIf { it > 0 }?.let { "${kilometers(it)} km" },
+        workout.distanceMeters?.takeIf { it > 0 }?.let { "${kilometers(it, unitSystem = unitSystem)} ${unitSystem.distanceUnitLabel()}" },
         workout.activeKcal?.let { "$it kcal" },
     ).joinToString(" · ")
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {

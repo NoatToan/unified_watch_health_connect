@@ -22,6 +22,7 @@ import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.LiveHeartRate
 import com.unified.health.core.model.SyncState
 import com.unified.health.core.model.TimeRange
+import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.WearableDevice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -58,6 +59,8 @@ sealed interface HomeUiState {
         /** D-1147: drives the header device chip's status dot (green = connected + actively syncing
          *  right now, gray otherwise) — same [WearableDeviceRepository.syncState] source Devices uses. */
         val syncState: SyncState = SyncState.Idle,
+        /** D-1183: Metric (km/kg) vs Imperial (mi/lb) distance/weight display, from Profile's toggle. */
+        val unitSystem: UnitSystem = UnitSystem.METRIC,
     ) : HomeUiState
     data class Error(val message: String) : HomeUiState
 }
@@ -126,8 +129,12 @@ class HomeViewModel @Inject constructor(
     private val metricsViewMode: Flow<HomeMetricsViewMode> =
         preferences.userPreferences.map { it.homeMetricsViewMode }.distinctUntilChanged()
 
+    /** D-1183: km/kg vs mi/lb, from Profile's toggle. */
+    private val unitSystem: Flow<UnitSystem> =
+        preferences.userPreferences.map { it.unitSystem }.distinctUntilChanged()
+
     val uiState: StateFlow<HomeUiState> =
-        combine(header, feedBundle, metricsViewMode) { state, feed, viewMode ->
+        combine(header, feedBundle, metricsViewMode, unitSystem) { state, feed, viewMode, units ->
             val enriched = feed.cards.map { card ->
                 when {
                     card !is FeedCardData.Metric -> card
@@ -136,7 +143,13 @@ class HomeViewModel @Inject constructor(
                     else -> card
                 }
             }
-            state.copy(feedCards = enriched, feedOrder = feed.order, hiddenFeedCards = feed.hidden, metricsViewMode = viewMode) as HomeUiState
+            state.copy(
+                feedCards = enriched,
+                feedOrder = feed.order,
+                hiddenFeedCards = feed.hidden,
+                metricsViewMode = viewMode,
+                unitSystem = units,
+            ) as HomeUiState
         }
             .catch { emit(HomeUiState.Error(it.message ?: "Unable to load data")) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeUiState.Loading)

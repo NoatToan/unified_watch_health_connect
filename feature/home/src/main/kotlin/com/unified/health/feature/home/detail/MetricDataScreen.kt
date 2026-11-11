@@ -33,10 +33,12 @@ import com.unified.health.core.designsystem.component.label
 import com.unified.health.core.designsystem.component.unit
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.domain.repository.HealthDataRepository
+import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.MetricAggregation
 import com.unified.health.core.model.MetricReading
+import com.unified.health.core.model.UnitSystem
 import com.unified.health.feature.home.navigation.MetricDataDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -51,20 +53,26 @@ import javax.inject.Inject
 /** One row of "Show All Data", with the source device resolved to a name (multi-brand attribution). */
 data class ReadingRow(val reading: MetricReading, val source: String?)
 
-data class MetricDataUiState(val metric: HealthMetricType, val rows: List<ReadingRow>? = null)
+data class MetricDataUiState(
+    val metric: HealthMetricType,
+    val rows: List<ReadingRow>? = null,
+    /** D-1183: Metric (km/kg) vs Imperial (mi/lb) distance/weight display, from Profile's toggle. */
+    val unitSystem: UnitSystem = UnitSystem.METRIC,
+)
 
 @HiltViewModel
 class MetricDataViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     healthData: HealthDataRepository,
     devices: WearableDeviceRepository,
+    preferences: UserPreferencesRepository,
 ) : ViewModel() {
     private val metric = savedStateHandle.toRoute<MetricDataDestination>().metric
 
     val uiState: StateFlow<MetricDataUiState> =
-        combine(healthData.observeMetricReadings(metric), devices.pairedDevices) { readings, paired ->
+        combine(healthData.observeMetricReadings(metric), devices.pairedDevices, preferences.userPreferences) { readings, paired, prefs ->
             val names = paired.associate { it.id to "${it.name} · ${it.vendor.displayName}" }
-            MetricDataUiState(metric, readings.map { ReadingRow(it, it.sourceId?.let { id -> names[id] ?: id }) })
+            MetricDataUiState(metric, readings.map { ReadingRow(it, it.sourceId?.let { id -> names[id] ?: id }) }, prefs.unitSystem)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), MetricDataUiState(metric))
 }
 
@@ -103,7 +111,7 @@ internal fun MetricDataScreen(state: MetricDataUiState, onBack: () -> Unit) {
                 itemsIndexed(rows) { index, row ->
                     val metric = state.metric
                     ListItem(
-                        headlineContent = { Text("${metric.formatValue(row.reading.value)} ${metric.unit()}".trim()) },
+                        headlineContent = { Text("${metric.formatValue(row.reading.value, unitSystem = state.unitSystem)} ${metric.unit(state.unitSystem)}".trim()) },
                         supportingContent = row.source?.let { { Text(it) } },
                         trailingContent = { Text(whenLabel(metric, row.reading), style = MaterialTheme.typography.bodySmall) },
                         modifier = Modifier.testTag("data_row_$index"),

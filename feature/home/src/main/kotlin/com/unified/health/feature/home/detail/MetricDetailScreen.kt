@@ -60,6 +60,7 @@ import com.unified.health.core.domain.usecase.StatKind
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.MetricAggregation
 import com.unified.health.core.model.TimeRange
+import com.unified.health.core.model.metersToDisplayDistance
 
 @Composable
 internal fun MetricDetailRoute(
@@ -123,9 +124,9 @@ internal fun MetricDetailScreen(
             // Hourly totals have no meaningful average/min/max; a single night neither.
             state.stats?.takeIf { state.range != TimeRange.DAY || metric.aggregation == MetricAggregation.DISCRETE }?.let { stats ->
                 Row(horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
-                    StatCard("Average", metric.formatValue(stats.value), Modifier.weight(1f))
-                    StatCard("Min", stats.min?.let(metric::formatValue) ?: "--", Modifier.weight(1f))
-                    StatCard("Max", stats.max?.let(metric::formatValue) ?: "--", Modifier.weight(1f))
+                    StatCard("Average", metric.formatValue(stats.value, unitSystem = state.unitSystem), Modifier.weight(1f))
+                    StatCard("Min", stats.min?.let { metric.formatValue(it, unitSystem = state.unitSystem) } ?: "--", Modifier.weight(1f))
+                    StatCard("Max", stats.max?.let { metric.formatValue(it, unitSystem = state.unitSystem) } ?: "--", Modifier.weight(1f))
                 }
             }
             state.insight?.let { InsightCard(it, accent) }
@@ -158,18 +159,19 @@ private fun Header(state: MetricDetailUiState) {
         stats.kind == StatKind.AVERAGE -> if (metric.aggregation == MetricAggregation.CUMULATIVE) "DAILY AVERAGE" else "AVERAGE"
         else -> "RANGE"
     }
+    val unitSystem = state.unitSystem
     val value = when {
         stats == null -> "--"
-        stats.kind == StatKind.RANGE -> "${metric.formatValue(stats.min ?: stats.value)}–${metric.formatValue(stats.max ?: stats.value)}"
-        else -> metric.formatValue(stats.value)
+        stats.kind == StatKind.RANGE -> "${metric.formatValue(stats.min ?: stats.value, unitSystem = unitSystem)}–${metric.formatValue(stats.max ?: stats.value, unitSystem = unitSystem)}"
+        else -> metric.formatValue(stats.value, unitSystem = unitSystem)
     }
-    Column(Modifier.testTag("metric_header").semantics(mergeDescendants = true) { contentDescription = "$kind $value ${metric.unit()} ${state.periodLabel}" }) {
+    Column(Modifier.testTag("metric_header").semantics(mergeDescendants = true) { contentDescription = "$kind $value ${metric.unit(unitSystem)} ${state.periodLabel}" }) {
         Text(kind, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Row(verticalAlignment = Alignment.Bottom) {
             Text(value, style = MetricValueTextStyle)
-            if (stats != null && metric.unit().isNotEmpty()) {
+            if (stats != null && metric.unit(unitSystem).isNotEmpty()) {
                 Spacer(Modifier.width(Spacing.xs))
-                Text(metric.unit(), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 4.dp))
+                Text(metric.unit(unitSystem), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 4.dp))
             }
         }
         Text(state.periodLabel, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -180,7 +182,7 @@ private fun Header(state: MetricDetailUiState) {
 private fun Chart(state: MetricDetailUiState, accent: Color) {
     val metric = state.metric
     val axis: (Float) -> String = when (metric) {
-        HealthMetricType.DISTANCE -> { v -> compactNumber(v / 1000f) }
+        HealthMetricType.DISTANCE -> { v -> compactNumber(v.toDouble().metersToDisplayDistance(state.unitSystem).toFloat()) }
         HealthMetricType.SLEEP -> { v -> "${(v / 60).toInt()}h" }
         else -> ::compactNumber
     }
