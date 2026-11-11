@@ -7,9 +7,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.unified.health.core.designsystem.R
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
 
 /**
@@ -21,7 +23,7 @@ import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
 @Composable
 fun LiveDot(isLive: Boolean, modifier: Modifier = Modifier) {
     val color = if (isLive) UnifiedHealthTheme.metricColors.steps else MaterialTheme.colorScheme.outlineVariant
-    val description = if (isLive) "Live" else "Not live, showing last synced value"
+    val description = if (isLive) stringResource(R.string.live_dot_live) else stringResource(R.string.live_dot_not_live)
     Box(
         modifier
             .size(8.dp)

@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -28,7 +29,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.LoadingState
-import com.unified.health.core.designsystem.component.formatValue
+import com.unified.health.core.designsystem.component.formatValueLocalized
 import com.unified.health.core.designsystem.component.label
 import com.unified.health.core.designsystem.component.unit
 import com.unified.health.core.designsystem.theme.Spacing
@@ -39,7 +40,9 @@ import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.MetricAggregation
 import com.unified.health.core.model.MetricReading
 import com.unified.health.core.model.UnitSystem
+import com.unified.health.feature.home.R
 import com.unified.health.feature.home.navigation.MetricDataDestination
+import com.unified.health.core.designsystem.R as DesignSystemR
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -88,15 +91,15 @@ internal fun MetricDataScreen(state: MetricDataUiState, onBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("All recorded data") },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } },
+                title = { Text(stringResource(R.string.all_recorded_data_title)) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back)) } },
             )
         },
     ) { padding ->
         val rows = state.rows
         when {
             rows == null -> LoadingState(Modifier.padding(padding))
-            rows.isEmpty() -> EmptyState("No data", "Nothing recorded for ${state.metric.label()} yet.", Modifier.padding(padding))
+            rows.isEmpty() -> EmptyState(stringResource(R.string.no_data), stringResource(R.string.no_data_for_metric, state.metric.label()), Modifier.padding(padding))
             else -> LazyColumn(
                 modifier = Modifier.fillMaxSize().padding(padding).testTag("all_data_list"),
                 contentPadding = PaddingValues(bottom = Spacing.xxl),
@@ -111,7 +114,7 @@ internal fun MetricDataScreen(state: MetricDataUiState, onBack: () -> Unit) {
                 itemsIndexed(rows) { index, row ->
                     val metric = state.metric
                     ListItem(
-                        headlineContent = { Text("${metric.formatValue(row.reading.value, unitSystem = state.unitSystem)} ${metric.unit(state.unitSystem)}".trim()) },
+                        headlineContent = { Text("${metric.formatValueLocalized(row.reading.value, unitSystem = state.unitSystem)} ${metric.unit(state.unitSystem)}".trim()) },
                         supportingContent = row.source?.let { { Text(it) } },
                         trailingContent = { Text(whenLabel(metric, row.reading), style = MaterialTheme.typography.bodySmall) },
                         modifier = Modifier.testTag("data_row_$index"),

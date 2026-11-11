@@ -69,6 +69,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -94,6 +95,7 @@ import com.unified.health.feature.devices.qr.QrScannerScreen
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import com.unified.health.core.designsystem.R as DesignSystemR
 
 @Composable
 internal fun DevicesRoute(onOpenDevice: (String) -> Unit, viewModel: DevicesViewModel = hiltViewModel()) {
@@ -166,17 +168,17 @@ internal fun DevicesScreen(
     state.generatedKey?.let { generated ->
         AlertDialog(
             onDismissRequest = onGeneratedKeyShown,
-            title = { Text("Back up ${generated.label}") },
+            title = { Text(stringResource(R.string.backup_key_title, generated.label)) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                     Text(
-                        "This key was written to ${generated.deviceName}. Without it the watch must be reset to pair again.",
+                        stringResource(R.string.backup_key_message, generated.deviceName),
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     SelectionContainer { Text(generated.hex, style = MaterialTheme.typography.bodyLarge) }
                 }
             },
-            confirmButton = { TextButton(onClick = onGeneratedKeyShown) { Text("Done") } },
+            confirmButton = { TextButton(onClick = onGeneratedKeyShown) { Text(stringResource(DesignSystemR.string.action_done)) } },
         )
     }
 
@@ -217,7 +219,7 @@ internal fun DevicesScreen(
     }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Devices") }) },
+        topBar = { TopAppBar(title = { Text(stringResource(R.string.devices_title)) }) },
         snackbarHost = { SnackbarHost(snackbar) },
         floatingActionButton = {
             if (state.isScanning) {
@@ -225,14 +227,14 @@ internal fun DevicesScreen(
                     modifier = Modifier.testTag("stop_scan_fab"),
                     onClick = onStopScan,
                     icon = { Icon(Icons.Outlined.Stop, contentDescription = null) },
-                    text = { Text("Stop") },
+                    text = { Text(stringResource(R.string.scan_stop)) },
                 )
             } else {
                 ExtendedFloatingActionButton(
                     modifier = Modifier.testTag("scan_fab"),
                     onClick = requestScan,
                     icon = { Icon(Icons.AutoMirrored.Outlined.BluetoothSearching, contentDescription = null) },
-                    text = { Text("Scan") },
+                    text = { Text(stringResource(R.string.scan_start)) },
                 )
             }
         },
@@ -271,8 +273,8 @@ internal fun DevicesScreen(
             }
             item {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    SectionHeader("Nearby devices", Modifier.weight(1f))
-                    if (state.isScanning) Text("Scanning…", style = MaterialTheme.typography.labelMedium)
+                    SectionHeader(stringResource(R.string.scan_section_nearby), Modifier.weight(1f))
+                    if (state.isScanning) Text(stringResource(R.string.scan_scanning), style = MaterialTheme.typography.labelMedium)
                 }
                 if (state.isScanning) {
                     LinearProgressIndicator(Modifier.fillMaxWidth().padding(top = Spacing.sm))
@@ -284,19 +286,19 @@ internal fun DevicesScreen(
                     OutlinedButton(onClick = { showScanner = true }, modifier = Modifier.testTag("qr_scan_button")) {
                         Icon(Icons.Outlined.QrCodeScanner, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(Spacing.xs))
-                        Text("Scan QR code")
+                        Text(stringResource(R.string.scan_qr_code))
                     }
                     OutlinedButton(onClick = { showManualMacDialog = true }, modifier = Modifier.testTag("manual_mac_button")) {
                         Icon(Icons.Outlined.Keyboard, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(Spacing.xs))
-                        Text("Enter MAC address")
+                        Text(stringResource(R.string.scan_enter_mac_address))
                     }
                 }
             }
             if (state.discovered.isEmpty()) {
                 item {
                     Text(
-                        if (state.isScanning) "Looking for wearables nearby…" else "Tap Scan to look for your watch or band. Keep it close to the phone.",
+                        if (state.isScanning) stringResource(R.string.scan_empty_scanning) else stringResource(R.string.scan_empty_idle),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -333,18 +335,25 @@ private fun PairedDeviceCard(
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             val menuButton: @Composable () -> Unit = {
                 IconButton(onClick = { menuOpen = true }, modifier = Modifier.testTag("more_${device.macAddress}")) {
-                    Icon(Icons.Outlined.MoreVert, contentDescription = "More options for ${device.name}")
+                    Icon(Icons.Outlined.MoreVert, contentDescription = stringResource(R.string.device_more_options, device.name))
                 }
                 DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
                     DropdownMenuItem(
-                        text = { Text("Device settings") },
+                        text = { Text(stringResource(R.string.device_settings_menu_item)) },
                         onClick = { menuOpen = false; onOpenSettings() },
                         modifier = Modifier.testTag("device_settings_menu_item"),
                     )
                     device.credentialRequirements.forEach { requirement ->
-                        DropdownMenuItem(text = { Text("Change ${requirement.label}") }, onClick = { menuOpen = false; editing = requirement })
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.change_credential_menu_item, requirement.label)) },
+                            onClick = { menuOpen = false; editing = requirement },
+                        )
                     }
-                    DropdownMenuItem(text = { Text("Unpair") }, onClick = { menuOpen = false; confirmUnpair = true }, modifier = Modifier.testTag("unpair_menu_item"))
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.unpair_menu_item)) },
+                        onClick = { menuOpen = false; confirmUnpair = true },
+                        modifier = Modifier.testTag("unpair_menu_item"),
+                    )
                 }
             }
             val subtitle = listOfNotNull(watchModel?.takeUnless { it.isGeneric }?.displayName, device.vendor.displayName, device.macAddress)
@@ -383,13 +392,16 @@ private fun PairedDeviceCard(
                     }
                     device.firmwareVersion?.let {
                         StatusInfoRow(Icons.Outlined.Memory) {
-                            Text("Firmware $it", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(stringResource(R.string.firmware_version, it), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                     StatusInfoRow(Icons.Outlined.History) {
                         Text(
                             modifier = Modifier.testTag("last_sync_${device.macAddress}"),
-                            text = "Last sync: " + (device.lastSyncedAt?.let { LAST_SYNC_FORMAT.format(it.atZone(ZoneId.systemDefault())) } ?: "never"),
+                            text = stringResource(
+                                R.string.last_sync,
+                                device.lastSyncedAt?.let { LAST_SYNC_FORMAT.format(it.atZone(ZoneId.systemDefault())) } ?: stringResource(R.string.last_sync_never),
+                            ),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -415,11 +427,14 @@ private fun PairedDeviceCard(
                     }
                 }
                 device.firmwareVersion?.let {
-                    Text("Firmware $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.firmware_version, it), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Text(
                     modifier = Modifier.testTag("last_sync_${device.macAddress}"),
-                    text = "Last sync: " + (device.lastSyncedAt?.let { LAST_SYNC_FORMAT.format(it.atZone(ZoneId.systemDefault())) } ?: "never"),
+                    text = stringResource(
+                        R.string.last_sync,
+                        device.lastSyncedAt?.let { LAST_SYNC_FORMAT.format(it.atZone(ZoneId.systemDefault())) } ?: stringResource(R.string.last_sync_never),
+                    ),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -443,14 +458,16 @@ private fun PairedDeviceCard(
                     Button(onClick = onSync, enabled = syncState !is SyncState.InProgress, modifier = Modifier.testTag("sync_${device.macAddress}")) {
                         Icon(Icons.Outlined.Sync, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(Spacing.xs))
-                        Text("Sync now")
+                        Text(stringResource(R.string.sync_now))
                     }
-                    OutlinedButton(onClick = onDisconnect) { Text("Disconnect") }
+                    OutlinedButton(onClick = onDisconnect) { Text(stringResource(DesignSystemR.string.action_disconnect)) }
                 } else if (device.missingCredentials.isNotEmpty()) {
                     val requirement = device.missingCredentials.first()
-                    Button(onClick = { editing = requirement }) { Text("Enter ${requirement.label}") }
+                    Button(onClick = { editing = requirement }) { Text(stringResource(R.string.enter_credential_button, requirement.label)) }
                 } else {
-                    Button(onClick = onConnect, enabled = !busy, modifier = Modifier.testTag("connect_${device.macAddress}")) { Text(if (busy) "Connecting…" else "Connect") }
+                    Button(onClick = onConnect, enabled = !busy, modifier = Modifier.testTag("connect_${device.macAddress}")) {
+                        Text(if (busy) stringResource(R.string.connect_button_busy) else stringResource(DesignSystemR.string.action_connect))
+                    }
                 }
             }
         }
@@ -468,10 +485,10 @@ private fun PairedDeviceCard(
     if (confirmUnpair) {
         AlertDialog(
             onDismissRequest = { confirmUnpair = false },
-            title = { Text("Unpair ${device.name}?") },
-            text = { Text("The device will be removed from this app. Data already synced is kept.") },
-            confirmButton = { TextButton(onClick = { confirmUnpair = false; onUnpair() }, modifier = Modifier.testTag("confirm_unpair")) { Text("Unpair") } },
-            dismissButton = { TextButton(onClick = { confirmUnpair = false }) { Text("Cancel") } },
+            title = { Text(stringResource(R.string.unpair_dialog_title, device.name)) },
+            text = { Text(stringResource(R.string.unpair_dialog_message)) },
+            confirmButton = { TextButton(onClick = { confirmUnpair = false; onUnpair() }, modifier = Modifier.testTag("confirm_unpair")) { Text(stringResource(R.string.unpair_confirm)) } },
+            dismissButton = { TextButton(onClick = { confirmUnpair = false }) { Text(stringResource(DesignSystemR.string.action_cancel)) } },
         )
     }
 }
@@ -498,12 +515,12 @@ private fun DiscoveredDeviceItem(device: DiscoveredDevice, onPair: () -> Unit) {
             supportingContent = {
                 val rssi = device.rssi
                 val detail = when {
-                    rssi != null -> "${device.macAddress} · ${signalLabel(rssi)} ($rssi dBm)"
-                    else -> "${device.macAddress} · Paired in system"
+                    rssi != null -> stringResource(R.string.discovered_device_detail, device.macAddress, signalLabel(rssi), rssi)
+                    else -> stringResource(R.string.discovered_device_detail_paired_in_system, device.macAddress)
                 }
                 Text("${device.vendor.displayName} · $detail")
             },
-            trailingContent = { FilledTonalButton(onClick = onPair, modifier = Modifier.testTag("pair_${device.macAddress}")) { Text("Pair") } },
+            trailingContent = { FilledTonalButton(onClick = onPair, modifier = Modifier.testTag("pair_${device.macAddress}")) { Text(stringResource(R.string.pair_button)) } },
         )
     }
 }
@@ -526,16 +543,16 @@ private fun CredentialDialog(
                     value = value,
                     onValueChange = { value = it },
                     singleLine = true,
-                    label = { Text(if (requirement.format == CredentialFormat.HEX_16_BYTES) "32 hex digits" else requirement.label) },
+                    label = { Text(if (requirement.format == CredentialFormat.HEX_16_BYTES) stringResource(R.string.credential_hex_label) else requirement.label) },
                     visualTransformation = PasswordVisualTransformation(),
                 )
                 if (requirement.generatable) {
-                    TextButton(onClick = onGenerate) { Text("Create a new key and bind this watch") }
+                    TextButton(onClick = onGenerate) { Text(stringResource(R.string.credential_generate)) }
                 }
             }
         },
-        confirmButton = { TextButton(onClick = { onSave(value) }, enabled = value.isNotBlank()) { Text("Save") } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        confirmButton = { TextButton(onClick = { onSave(value) }, enabled = value.isNotBlank()) { Text(stringResource(DesignSystemR.string.action_save)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(DesignSystemR.string.action_cancel)) } },
     )
 }
 
@@ -544,24 +561,24 @@ private fun PairingCodeDialog(request: PairingCodeRequest, onSubmit: (String) ->
     var code by rememberSaveable(request) { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onCancel,
-        title = { Text("Pairing code") },
+        title = { Text(stringResource(R.string.pairing_code_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 Text(
-                    "Enter the ${request.maxLength}-digit code shown on ${request.deviceName}.",
+                    stringResource(R.string.pairing_code_message, request.maxLength, request.deviceName),
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 OutlinedTextField(
                     value = code,
                     onValueChange = { input -> code = input.filter(Char::isDigit).take(request.maxLength) },
                     singleLine = true,
-                    label = { Text("Code") },
+                    label = { Text(stringResource(R.string.pairing_code_label)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                 )
             }
         },
-        confirmButton = { TextButton(onClick = { onSubmit(code) }, enabled = code.length == request.maxLength) { Text("Pair") } },
-        dismissButton = { TextButton(onClick = onCancel) { Text("Cancel") } },
+        confirmButton = { TextButton(onClick = { onSubmit(code) }, enabled = code.length == request.maxLength) { Text(stringResource(R.string.pairing_code_confirm)) } },
+        dismissButton = { TextButton(onClick = onCancel) { Text(stringResource(DesignSystemR.string.action_cancel)) } },
     )
 }
 
@@ -569,9 +586,9 @@ private fun PairingCodeDialog(request: PairingCodeRequest, onSubmit: (String) ->
 private fun NoPairedDeviceCard(onScan: () -> Unit, onScanQrCode: () -> Unit) {
     OutlinedCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-            Text("No device paired yet", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.no_paired_device_title), style = MaterialTheme.typography.titleMedium)
             Text(
-                "Pair your watch or band to sync steps, heart rate, sleep and more.",
+                stringResource(R.string.no_paired_device_message),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -579,9 +596,9 @@ private fun NoPairedDeviceCard(onScan: () -> Unit, onScanQrCode: () -> Unit) {
                 FilledTonalButton(onClick = onScanQrCode, modifier = Modifier.testTag("qr_scan_button_empty")) {
                     Icon(Icons.Outlined.QrCodeScanner, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(Spacing.xs))
-                    Text("Scan QR code")
+                    Text(stringResource(R.string.scan_qr_code))
                 }
-                OutlinedButton(onClick = onScan) { Text("Scan for devices") }
+                OutlinedButton(onClick = onScan) { Text(stringResource(R.string.scan_for_devices)) }
             }
         }
     }
@@ -593,11 +610,11 @@ private fun ManualMacDialog(onDismiss: () -> Unit, onSubmit: (String) -> Unit) {
     val normalized = MacAddressFormat.normalizeOrNull(value)
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Enter MAC address") },
+        title = { Text(stringResource(R.string.manual_mac_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 Text(
-                    "Find your watch directly by its Bluetooth address, e.g. from the box or the vendor app.",
+                    stringResource(R.string.manual_mac_message),
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 OutlinedTextField(
@@ -605,17 +622,17 @@ private fun ManualMacDialog(onDismiss: () -> Unit, onSubmit: (String) -> Unit) {
                     onValueChange = { value = it },
                     singleLine = true,
                     isError = value.isNotBlank() && normalized == null,
-                    label = { Text("AA:BB:CC:DD:EE:FF") },
+                    label = { Text(stringResource(R.string.manual_mac_hint)) },
                     modifier = Modifier.testTag("manual_mac_input"),
                 )
             }
         },
         confirmButton = {
             TextButton(onClick = { onSubmit(value) }, enabled = normalized != null, modifier = Modifier.testTag("manual_mac_confirm")) {
-                Text("Find")
+                Text(stringResource(R.string.manual_mac_find))
             }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(DesignSystemR.string.action_cancel)) } },
     )
 }
 
@@ -635,7 +652,7 @@ private fun QrFindSheet(state: QrFindUiState, onCancel: () -> Unit, onRetry: () 
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
                 WatchImage(model = watchModel, size = 64.dp, interactive = true, revealKey = matchedDevice != null)
                 Text(
-                    watchModel?.takeUnless { it.isGeneric }?.displayName ?: "Looking for ${state.label}",
+                    watchModel?.takeUnless { it.isGeneric }?.displayName ?: stringResource(R.string.qr_find_looking_for, state.label),
                     style = MaterialTheme.typography.titleMedium,
                 )
             }
@@ -643,31 +660,30 @@ private fun QrFindSheet(state: QrFindUiState, onCancel: () -> Unit, onRetry: () 
                 QrFindStatus.SCANNING -> {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                         CircularProgressIndicator(modifier = Modifier.size(20.dp))
-                        Text("Keep the watch close to your phone…", style = MaterialTheme.typography.bodyMedium)
+                        Text(stringResource(R.string.qr_find_scanning), style = MaterialTheme.typography.bodyMedium)
                     }
                     state.huaweiPin?.let {
-                        Text("Code on the watch: $it", style = MaterialTheme.typography.bodyMedium)
+                        Text(stringResource(R.string.qr_find_huawei_pin, it), style = MaterialTheme.typography.bodyMedium)
                     }
-                    TextButton(onClick = onCancel, modifier = Modifier.testTag("qr_find_cancel")) { Text("Cancel") }
+                    TextButton(onClick = onCancel, modifier = Modifier.testTag("qr_find_cancel")) { Text(stringResource(DesignSystemR.string.action_cancel)) }
                 }
                 QrFindStatus.FOUND -> {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                         CircularProgressIndicator(modifier = Modifier.size(20.dp))
-                        Text("Found it — pairing…", style = MaterialTheme.typography.bodyMedium)
+                        Text(stringResource(R.string.qr_find_found), style = MaterialTheme.typography.bodyMedium)
                     }
                 }
                 QrFindStatus.TIMED_OUT -> {
                     Text(
-                        "Couldn't find it. Make sure the watch is powered on, close to your phone and not " +
-                            "already connected to another app.",
+                        stringResource(R.string.qr_find_timed_out),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                         OutlinedButton(onClick = onChooseFromList, modifier = Modifier.testTag("qr_find_choose_from_list")) {
-                            Text("Choose from list")
+                            Text(stringResource(R.string.qr_find_choose_from_list))
                         }
-                        Button(onClick = onRetry, modifier = Modifier.testTag("qr_find_retry")) { Text("Try again") }
+                        Button(onClick = onRetry, modifier = Modifier.testTag("qr_find_retry")) { Text(stringResource(DesignSystemR.string.action_try_again)) }
                     }
                 }
             }
@@ -679,20 +695,21 @@ private fun QrFindSheet(state: QrFindUiState, onCancel: () -> Unit, onRetry: () 
 private fun PermissionCard(onOpenSettings: () -> Unit) {
     ElevatedCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-            Text("Nearby devices permission needed", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.permission_needed_title), style = MaterialTheme.typography.titleMedium)
             Text(
-                "Bluetooth permission is required to find and connect to your wearable.",
+                stringResource(R.string.permission_needed_message),
                 style = MaterialTheme.typography.bodyMedium,
             )
-            TextButton(onClick = onOpenSettings) { Text("Open settings") }
+            TextButton(onClick = onOpenSettings) { Text(stringResource(R.string.open_settings)) }
         }
     }
 }
 
+@Composable
 private fun signalLabel(rssi: Int): String = when {
-    rssi >= -60 -> "Strong"
-    rssi >= -75 -> "Good"
-    else -> "Weak"
+    rssi >= -60 -> stringResource(R.string.signal_strong)
+    rssi >= -75 -> stringResource(R.string.signal_good)
+    else -> stringResource(R.string.signal_weak)
 }
 
 private val LAST_SYNC_FORMAT: DateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)

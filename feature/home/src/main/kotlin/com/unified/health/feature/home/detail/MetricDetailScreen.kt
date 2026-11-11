@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -50,7 +51,7 @@ import com.unified.health.core.designsystem.component.SleepStageChart
 import com.unified.health.core.designsystem.component.SleepStageLegend
 import com.unified.health.core.designsystem.component.about
 import com.unified.health.core.designsystem.component.compactNumber
-import com.unified.health.core.designsystem.component.formatValue
+import com.unified.health.core.designsystem.component.formatValueLocalized
 import com.unified.health.core.designsystem.component.label
 import com.unified.health.core.designsystem.component.unit
 import com.unified.health.core.designsystem.theme.MetricValueTextStyle
@@ -61,6 +62,10 @@ import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.MetricAggregation
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.metersToDisplayDistance
+import com.unified.health.feature.home.R
+import com.unified.health.feature.home.insight.localizedInsightStrings
+import com.unified.health.feature.home.insight.metricInsightLine
+import com.unified.health.core.designsystem.R as DesignSystemR
 
 @Composable
 internal fun MetricDetailRoute(
@@ -89,7 +94,7 @@ internal fun MetricDetailScreen(
                 title = { Text(metric.label()) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back))
                     }
                 },
             )
@@ -124,23 +129,25 @@ internal fun MetricDetailScreen(
             // Hourly totals have no meaningful average/min/max; a single night neither.
             state.stats?.takeIf { state.range != TimeRange.DAY || metric.aggregation == MetricAggregation.DISCRETE }?.let { stats ->
                 Row(horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
-                    StatCard("Average", metric.formatValue(stats.value, unitSystem = state.unitSystem), Modifier.weight(1f))
-                    StatCard("Min", stats.min?.let { metric.formatValue(it, unitSystem = state.unitSystem) } ?: "--", Modifier.weight(1f))
-                    StatCard("Max", stats.max?.let { metric.formatValue(it, unitSystem = state.unitSystem) } ?: "--", Modifier.weight(1f))
+                    StatCard(stringResource(R.string.metric_stat_average), metric.formatValueLocalized(stats.value, unitSystem = state.unitSystem), Modifier.weight(1f))
+                    StatCard(stringResource(R.string.metric_stat_min), stats.min?.let { metric.formatValueLocalized(it, unitSystem = state.unitSystem) } ?: "--", Modifier.weight(1f))
+                    StatCard(stringResource(R.string.metric_stat_max), stats.max?.let { metric.formatValueLocalized(it, unitSystem = state.unitSystem) } ?: "--", Modifier.weight(1f))
                 }
             }
-            state.insight?.let { InsightCard(it, accent) }
+            // D-1040: composed here, not in the ViewModel, since localizing it needs stringResource.
+            val insight = metricInsightLine(metric, state.insightHighlight, state.insightWeekStats, state.unitSystem, localizedInsightStrings())
+            insight?.let { InsightCard(it, accent) }
             ElevatedCard(Modifier.fillMaxWidth()) {
                 ListItem(
                     modifier = Modifier.clickable(onClick = onShowAllData).testTag("show_all_data"),
                     colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                     leadingContent = { Icon(Icons.AutoMirrored.Outlined.List, contentDescription = null) },
-                    headlineContent = { Text("Show all data") },
+                    headlineContent = { Text(stringResource(R.string.show_all_data)) },
                     trailingContent = { Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null) },
                 )
             }
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                Text("About ${metric.label()}", style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(R.string.about_metric, metric.label()), style = MaterialTheme.typography.titleMedium)
                 Text(metric.about(), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Spacer(Modifier.height(Spacing.xl))
@@ -153,17 +160,19 @@ private fun Header(state: MetricDetailUiState) {
     val metric = state.metric
     val stats = state.stats
     val kind = when {
-        stats == null -> "NO DATA"
-        metric.aggregation == MetricAggregation.SLEEP -> if (stats.kind == StatKind.TOTAL) "TIME ASLEEP" else "AVG. TIME ASLEEP"
-        stats.kind == StatKind.TOTAL -> "TOTAL"
-        stats.kind == StatKind.AVERAGE -> if (metric.aggregation == MetricAggregation.CUMULATIVE) "DAILY AVERAGE" else "AVERAGE"
-        else -> "RANGE"
+        stats == null -> stringResource(R.string.metric_kind_no_data)
+        metric.aggregation == MetricAggregation.SLEEP ->
+            if (stats.kind == StatKind.TOTAL) stringResource(R.string.metric_kind_time_asleep) else stringResource(R.string.metric_kind_avg_time_asleep)
+        stats.kind == StatKind.TOTAL -> stringResource(R.string.metric_kind_total)
+        stats.kind == StatKind.AVERAGE ->
+            if (metric.aggregation == MetricAggregation.CUMULATIVE) stringResource(R.string.metric_kind_daily_average) else stringResource(R.string.metric_kind_average)
+        else -> stringResource(R.string.metric_kind_range)
     }
     val unitSystem = state.unitSystem
     val value = when {
         stats == null -> "--"
-        stats.kind == StatKind.RANGE -> "${metric.formatValue(stats.min ?: stats.value, unitSystem = unitSystem)}–${metric.formatValue(stats.max ?: stats.value, unitSystem = unitSystem)}"
-        else -> metric.formatValue(stats.value, unitSystem = unitSystem)
+        stats.kind == StatKind.RANGE -> "${metric.formatValueLocalized(stats.min ?: stats.value, unitSystem = unitSystem)}–${metric.formatValueLocalized(stats.max ?: stats.value, unitSystem = unitSystem)}"
+        else -> metric.formatValueLocalized(stats.value, unitSystem = unitSystem)
     }
     Column(Modifier.testTag("metric_header").semantics(mergeDescendants = true) { contentDescription = "$kind $value ${metric.unit(unitSystem)} ${state.periodLabel}" }) {
         Text(kind, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -190,7 +199,7 @@ private fun Chart(state: MetricDetailUiState, accent: Color) {
         metric.aggregation == MetricAggregation.SLEEP && state.range == TimeRange.DAY -> {
             val session = state.sleepSession
             if (session == null) {
-                Text("No sleep recorded last night.", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("sleep_empty"))
+                Text(stringResource(R.string.sleep_empty), color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("sleep_empty"))
             } else {
                 SleepStageChart(session, Modifier.testTag("sleep_stage_chart"))
                 Spacer(Modifier.height(Spacing.md))

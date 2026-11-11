@@ -14,7 +14,10 @@ import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Speed
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import com.unified.health.core.designsystem.R
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.distanceUnitLabel
@@ -36,19 +39,20 @@ fun HealthMetricType.icon(): ImageVector = when (this) {
 }
 
 /** Display name, following Apple Health's wording. */
+@Composable
 fun HealthMetricType.label(): String = when (this) {
-    HealthMetricType.STEPS -> "Steps"
-    HealthMetricType.HEART_RATE -> "Heart rate"
-    HealthMetricType.SLEEP -> "Sleep"
-    HealthMetricType.SPO2 -> "Blood oxygen"
-    HealthMetricType.STRESS -> "Stress"
-    HealthMetricType.CALORIES -> "Active energy"
-    HealthMetricType.WEIGHT -> "Weight"
-    HealthMetricType.DISTANCE -> "Walking + running distance"
-    HealthMetricType.EXERCISE_MINUTES -> "Exercise minutes"
-    HealthMetricType.RESTING_HEART_RATE -> "Resting heart rate"
-    HealthMetricType.HRV -> "Heart rate variability"
-    HealthMetricType.VO2_MAX -> "VO2max"
+    HealthMetricType.STEPS -> stringResource(R.string.metric_label_steps)
+    HealthMetricType.HEART_RATE -> stringResource(R.string.metric_label_heart_rate)
+    HealthMetricType.SLEEP -> stringResource(R.string.metric_label_sleep)
+    HealthMetricType.SPO2 -> stringResource(R.string.metric_label_spo2)
+    HealthMetricType.STRESS -> stringResource(R.string.metric_label_stress)
+    HealthMetricType.CALORIES -> stringResource(R.string.metric_label_calories)
+    HealthMetricType.WEIGHT -> stringResource(R.string.metric_label_weight)
+    HealthMetricType.DISTANCE -> stringResource(R.string.metric_label_distance)
+    HealthMetricType.EXERCISE_MINUTES -> stringResource(R.string.metric_label_exercise_minutes)
+    HealthMetricType.RESTING_HEART_RATE -> stringResource(R.string.metric_label_resting_heart_rate)
+    HealthMetricType.HRV -> stringResource(R.string.metric_label_hrv)
+    HealthMetricType.VO2_MAX -> stringResource(R.string.metric_label_vo2_max)
 }
 
 /**
@@ -70,17 +74,18 @@ fun HealthMetricType.unit(unitSystem: UnitSystem = UnitSystem.METRIC): String = 
 }
 
 /** Short explanation shown under a metric's chart. */
+@Composable
 fun HealthMetricType.about(): String = when (this) {
-    HealthMetricType.STEPS -> "Step count is the number of steps you take throughout the day, counted by your watch."
-    HealthMetricType.HEART_RATE -> "Heart rate is the number of times your heart beats per minute. The bars show the lowest and highest reading in each period."
-    HealthMetricType.SLEEP -> "Time asleep excludes time awake in bed. Stages are estimated by your watch from movement and heart rate."
-    HealthMetricType.SPO2 -> "Blood oxygen is the percentage of oxygen your red blood cells carry, mostly measured while you sleep."
-    HealthMetricType.STRESS -> "Stress is a 0–100 score derived from heart rate variability. Lower is more relaxed."
-    HealthMetricType.CALORIES -> "Active energy is the energy you burn by moving, on top of your resting energy."
-    HealthMetricType.WEIGHT -> "Weight comes from Health Connect or manual entries."
-    HealthMetricType.DISTANCE -> "Distance you walked or ran, estimated from your steps and workouts."
-    HealthMetricType.EXERCISE_MINUTES -> "Every full minute of movement at the intensity of a brisk walk or more counts towards Exercise."
-    HealthMetricType.RESTING_HEART_RATE -> "Resting heart rate is your average heart rate while at rest, estimated once a day."
-    HealthMetricType.HRV -> "Heart rate variability is the variation in time between heartbeats, measured overnight."
-    HealthMetricType.VO2_MAX -> "VO2max estimates the maximum oxygen your body can use during exercise, a common marker of cardio fitness."
+    HealthMetricType.STEPS -> stringResource(R.string.metric_about_steps)
+    HealthMetricType.HEART_RATE -> stringResource(R.string.metric_about_heart_rate)
+    HealthMetricType.SLEEP -> stringResource(R.string.metric_about_sleep)
+    HealthMetricType.SPO2 -> stringResource(R.string.metric_about_spo2)
+    HealthMetricType.STRESS -> stringResource(R.string.metric_about_stress)
+    HealthMetricType.CALORIES -> stringResource(R.string.metric_about_calories)
+    HealthMetricType.WEIGHT -> stringResource(R.string.metric_about_weight)
+    HealthMetricType.DISTANCE -> stringResource(R.string.metric_about_distance)
+    HealthMetricType.EXERCISE_MINUTES -> stringResource(R.string.metric_about_exercise_minutes)
+    HealthMetricType.RESTING_HEART_RATE -> stringResource(R.string.metric_about_resting_heart_rate)
+    HealthMetricType.HRV -> stringResource(R.string.metric_about_hrv)
+    HealthMetricType.VO2_MAX -> stringResource(R.string.metric_about_vo2_max)
 }

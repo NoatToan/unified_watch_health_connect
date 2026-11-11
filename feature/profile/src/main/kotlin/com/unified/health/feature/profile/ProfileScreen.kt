@@ -18,6 +18,7 @@ import androidx.compose.material.icons.outlined.Science
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material.icons.outlined.HealthAndSafety
+import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LocalFireDepartment
 import androidx.compose.material.icons.outlined.MonitorHeart
 import androidx.compose.material.icons.outlined.Notifications
@@ -42,6 +43,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -49,6 +51,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -244,6 +248,26 @@ internal fun ProfileRoute(onOpenNotifications: () -> Unit, viewModel: ProfileVie
                 "Units",
                 if (prefs.unitSystem == UnitSystem.METRIC) "Metric (km, kg)" else "Imperial (mi, lb)",
                 onClick = { viewModel.toggleUnits() },
+            )
+            // D-1040: EN/VI toggle for the whole app's UI language — independent of the phone's own
+            // system locale (Vietnamese users often leave the phone itself in English). Not tied to
+            // `UserPreferences`: `AppCompatDelegate.setApplicationLocales` already persists the choice
+            // across restarts via its own per-app locale storage (no AppCompatActivity required since
+            // appcompat 1.6+), so reading `getApplicationLocales()` back here is enough — a second
+            // copy in `UserPreferences` would just be a redundant source of truth to keep in sync.
+            // This row's own copy stays in plain English/Vietnamese literals like the rest of this
+            // screen (D-1040 scoped Profile's *content* localization to a follow-up task; only the
+            // toggle itself — the thing that makes everything else testable — is in scope here).
+            var isVietnamese by remember { mutableStateOf(AppCompatDelegate.getApplicationLocales().toLanguageTags().startsWith("vi")) }
+            SettingRow(
+                Icons.Outlined.Language,
+                "Language",
+                if (isVietnamese) "Tiếng Việt" else "English",
+                onClick = {
+                    isVietnamese = !isVietnamese
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(if (isVietnamese) "vi" else "en"))
+                },
+                modifier = Modifier.testTag("language_row"),
             )
             ListItem(
                 leadingContent = { Icon(Icons.Outlined.Palette, contentDescription = null) },

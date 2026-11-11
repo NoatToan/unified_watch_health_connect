@@ -18,8 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.unified.health.core.designsystem.R
 import com.unified.health.core.designsystem.theme.Spacing
 
 @Composable
@@ -45,7 +47,7 @@ fun EmptyState(
 fun ErrorState(
     message: String,
     modifier: Modifier = Modifier,
-    title: String = "Something went wrong",
+    title: String = stringResource(R.string.state_error_title),
     onRetry: (() -> Unit)? = null,
 ) {
     MessageState(
@@ -53,7 +55,7 @@ fun ErrorState(
         title = title,
         message = message,
         modifier = modifier,
-        actionLabel = if (onRetry != null) "Retry" else null,
+        actionLabel = if (onRetry != null) stringResource(R.string.action_retry) else null,
         onAction = onRetry ?: {},
         iconTint = MaterialTheme.colorScheme.error,
     )

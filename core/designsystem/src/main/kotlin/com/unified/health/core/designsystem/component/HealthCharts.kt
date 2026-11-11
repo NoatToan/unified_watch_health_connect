@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextMeasurer
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.unified.health.core.designsystem.R
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
 import com.unified.health.core.model.ChartPoint
@@ -189,9 +191,16 @@ fun SleepStageChart(
     val labelStyle = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
     val grid = MaterialTheme.colorScheme.outlineVariant
     val lanes = listOf(SleepStage.AWAKE, SleepStage.REM, SleepStage.LIGHT, SleepStage.DEEP)
+    // Resolved once here (Composable scope) rather than inside the Canvas draw lambda below, which
+    // is plain DrawScope — not Composable, so it cannot call stringResource() itself.
+    val laneLabels = sleepStageLabels()
     val total = Duration.between(session.start, session.end).toMillis().coerceAtLeast(1)
     val time = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
-    val description = "Sleep stages from ${time.format(session.start.atZone(zone))} to ${time.format(session.end.atZone(zone))}"
+    val description = stringResource(
+        R.string.chart_sleep_stages_description,
+        time.format(session.start.atZone(zone)),
+        time.format(session.end.atZone(zone)),
+    )
     Canvas(modifier.fillMaxWidth().height(height).semantics { contentDescription = description }) {
         val gutter = 44.dp.toPx()
         val bottomGutter = 18.dp.toPx()
@@ -199,7 +208,7 @@ fun SleepStageChart(
         lanes.forEachIndexed { i, stage ->
             val y = i * laneHeight
             drawLine(grid, Offset(gutter, y + laneHeight), Offset(size.width, y + laneHeight), 1f)
-            val text = measurer.measure(stage.displayName(), labelStyle)
+            val text = measurer.measure(laneLabels[stage].orEmpty(), labelStyle)
             drawText(text, topLeft = Offset(0f, y + (laneHeight - text.size.height) / 2))
         }
         val width = size.width - gutter
@@ -225,24 +234,34 @@ fun SleepStageChart(
 @Composable
 fun SleepStageLegend(session: SleepSession, modifier: Modifier = Modifier) {
     val colors = UnifiedHealthTheme.metricColors
+    val labels = sleepStageLabels()
+    val hourUnit = stringResource(R.string.duration_hour_unit)
+    val minuteUnit = stringResource(R.string.duration_minute_unit)
     Column(modifier, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
         listOf(SleepStage.AWAKE, SleepStage.REM, SleepStage.LIGHT, SleepStage.DEEP).forEach { stage ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(10.dp).background(colors.sleepStage(stage), RoundedCornerShape(2.dp)))
                 Spacer(Modifier.width(Spacing.sm))
-                Text(stage.displayName(), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
-                Text(formatMinutes(session.durationOf(stage).toMinutes().toInt()), style = MaterialTheme.typography.bodyMedium)
+                Text(labels[stage].orEmpty(), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                Text(
+                    formatMinutes(session.durationOf(stage).toMinutes().toInt(), hourUnit, minuteUnit),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
         }
     }
 }
 
-fun SleepStage.displayName(): String = when (this) {
-    SleepStage.AWAKE -> "Awake"
-    SleepStage.REM -> "REM"
-    SleepStage.LIGHT -> "Core"
-    SleepStage.DEEP -> "Deep"
-}
+/** [SleepStage] lane/legend names, resolved once per composition so non-Composable draw scopes
+ *  (e.g. [SleepStageChart]'s `Canvas` lambda) can look them up by key instead of calling
+ *  `stringResource` themselves. */
+@Composable
+private fun sleepStageLabels(): Map<SleepStage, String> = mapOf(
+    SleepStage.AWAKE to stringResource(R.string.sleep_stage_awake),
+    SleepStage.REM to stringResource(R.string.sleep_stage_rem),
+    SleepStage.LIGHT to stringResource(R.string.sleep_stage_light),
+    SleepStage.DEEP to stringResource(R.string.sleep_stage_deep),
+)
 
 // ---------------------------------------------------------------- shared frame
 

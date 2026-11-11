@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_title">Trang chủ</string>
+    <string name="all_metrics_title">Tất cả chỉ số</string>
+
+    <string name="metrics_section_title">Chỉ số</string>
+    <string name="see_all">Xem tất cả</string>
+    <string name="edit_cards">Chỉnh sửa</string>
+    <string name="no_metrics_with_data">Chưa có chỉ số nào có dữ liệu. Đồng bộ đồng hồ của bạn, hoặc nhấn Chỉnh sửa nếu có chỉ số bạn đang mong đợi bị ẩn.</string>
+    <string name="highlights_section_title">Điểm nổi bật</string>
+
+    <string name="switch_to_grid_view">Chuyển sang dạng lưới</string>
+    <string name="switch_to_list_view">Chuyển sang dạng danh sách</string>
+
+    <string name="ring_move">Di chuyển</string>
+    <string name="ring_exercise">Vận động</string>
+    <string name="ring_steps">Số bước</string>
+    <string name="ring_calories_progress">%1$d / %2$d kcal</string>
+    <string name="ring_minutes_progress">%1$d / %2$d phút</string>
+    <string name="ring_count_progress">%1$d / %2$d</string>
+
+    <string name="races_carousel_title">Giải chạy sắp tới</string>
+
+    <string name="workouts_card_title">Buổi tập</string>
+    <string name="workouts_card_empty">Chưa có buổi tập nào. Mục này sẽ hiện sau khi đồng hồ của bạn đồng bộ.</string>
+
+    <string name="workout_type_walking">Đi bộ</string>
+    <string name="workout_type_running">Chạy bộ</string>
+    <string name="workout_type_cycling">Đạp xe</string>
+    <string name="workout_type_swimming">Bơi</string>
+    <string name="workout_type_strength">Tập sức mạnh</string>
+    <string name="workout_type_yoga">Yoga</string>
+    <string name="workout_type_other">Buổi tập</string>
+
+    <string name="highlight_verb_slept">đã ngủ</string>
+    <string name="highlight_verb_averaged">trung bình đạt</string>
+    <string name="highlight_per_day_suffix"> mỗi ngày</string>
+    <string name="highlight_change_more">tăng %1$d%%</string>
+    <string name="highlight_change_less">giảm %1$d%%</string>
+    <string name="highlight_change_steady">tương đương</string>
+    <string name="highlight_body">Trong 7 ngày qua, bạn %1$s %2$s%3$s%4$s. Mức này %5$s so với 7 ngày trước đó.</string>
+    <string name="comparison_last_7_days">7 ngày gần nhất</string>
+    <string name="comparison_previous_7_days">7 ngày trước đó</string>
+
+    <string name="no_data">Không có dữ liệu</string>
+    <string name="no_data_for_metric">Chưa có dữ liệu cho %1$s.</string>
+    <string name="all_recorded_data_title">Toàn bộ dữ liệu đã ghi</string>
+
+    <string name="feed_card_no_reading_today">chưa có số liệu hôm nay</string>
+    <string name="feed_card_live_suffix">, trực tiếp</string>
+    <string name="feed_card_not_live_suffix">, không trực tiếp</string>
+    <string name="feed_resting_heart_rate">Nhịp tim nghỉ %1$d bpm</string>
+    <string name="feed_sleep_score">Điểm giấc ngủ %1$d</string>
+
+    <string name="edit_cards_title">Chỉnh sửa thẻ</string>
+    <string name="move_up">Di chuyển lên</string>
+    <string name="move_down">Di chuyển xuống</string>
+
+    <string name="feed_card_title_workouts">Buổi tập</string>
+
+    <string name="metric_kind_no_data">KHÔNG CÓ DỮ LIỆU</string>
+    <string name="metric_kind_time_asleep">THỜI GIAN NGỦ</string>
+    <string name="metric_kind_avg_time_asleep">TB THỜI GIAN NGỦ</string>
+    <string name="metric_kind_total">TỔNG</string>
+    <string name="metric_kind_daily_average">TRUNG BÌNH NGÀY</string>
+    <string name="metric_kind_average">TRUNG BÌNH</string>
+    <string name="metric_kind_range">KHOẢNG</string>
+
+    <string name="metric_stat_average">Trung bình</string>
+    <string name="metric_stat_min">Thấp nhất</string>
+    <string name="metric_stat_max">Cao nhất</string>
+    <string name="show_all_data">Xem toàn bộ dữ liệu</string>
+    <string name="about_metric">Về %1$s</string>
+    <string name="sleep_empty">Chưa ghi nhận giấc ngủ đêm qua.</string>
+
+    <string name="insight_verb_averaged">Trung bình</string>
+    <string name="insight_verb_slept">Đã ngủ</string>
+    <string name="insight_per_day_suffix">/ngày</string>
+    <string name="insight_sentence">%1$s tuần này, %2$s.</string>
+    <string name="insight_change_up">tăng %1$d%% so với tuần trước</string>
+    <string name="insight_change_down">giảm %1$d%% so với tuần trước</string>
+    <string name="insight_change_steady">tương đương tuần trước</string>
+    <string name="insight_week_range">Tuần này %1$s–%2$s%3$s.</string>
+    <string name="insight_week_average">Trung bình tuần này %1$s%2$s.</string>
+</resources>

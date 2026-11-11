@@ -48,13 +48,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.unified.health.core.designsystem.permission.RuntimePermissions
 import com.unified.health.core.designsystem.theme.Spacing
+import com.unified.health.feature.devices.R
 import com.unified.health.feature.devices.openAppSettings
 import java.util.concurrent.Executors
+import com.unified.health.core.designsystem.R as DesignSystemR
 
 /**
  * "Pair with QR code" camera screen: CameraX preview + [ImageAnalysis] decoded with ZXing core
@@ -142,7 +145,7 @@ private fun QrCameraPreview(onResult: (String) -> Unit, onCancel: () -> Unit) {
         Column(Modifier.fillMaxSize().statusBarsPadding().padding(Spacing.md)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 IconButton(onClick = onCancel, modifier = Modifier.testTag("qr_scanner_cancel")) {
-                    Icon(Icons.Outlined.Close, contentDescription = "Cancel", tint = Color.White)
+                    Icon(Icons.Outlined.Close, contentDescription = stringResource(DesignSystemR.string.action_cancel), tint = Color.White)
                 }
                 if (hasTorch) {
                     IconButton(
@@ -154,14 +157,14 @@ private fun QrCameraPreview(onResult: (String) -> Unit, onCancel: () -> Unit) {
                     ) {
                         Icon(
                             if (torchOn) Icons.Outlined.FlashOff else Icons.Outlined.FlashOn,
-                            contentDescription = if (torchOn) "Turn off torch" else "Turn on torch",
+                            contentDescription = if (torchOn) stringResource(R.string.qr_scanner_torch_off) else stringResource(R.string.qr_scanner_torch_on),
                             tint = Color.White,
                         )
                     }
                 }
             }
             Text(
-                "Point the camera at the QR code shown on your watch",
+                stringResource(R.string.qr_scanner_instructions),
                 color = Color.White,
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = Spacing.xl),
@@ -202,18 +205,17 @@ private fun QrPermissionRationale(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text("Camera permission needed", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.camera_permission_title), style = MaterialTheme.typography.titleMedium)
         Text(
-            "Unified Health uses the camera only to scan the QR code shown on your watch, to " +
-                "find and pair it faster.",
+            stringResource(R.string.camera_permission_message),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(top = Spacing.sm, bottom = Spacing.lg),
         )
         if (permanentlyDenied) {
-            ElevatedButton(onClick = onOpenSettings) { Text("Open settings") }
+            ElevatedButton(onClick = onOpenSettings) { Text(stringResource(R.string.open_settings)) }
         } else {
-            ElevatedButton(onClick = onRequest) { Text("Grant camera permission") }
+            ElevatedButton(onClick = onRequest) { Text(stringResource(R.string.camera_permission_grant)) }
         }
-        ElevatedButton(onClick = onCancel, modifier = Modifier.padding(top = Spacing.sm)) { Text("Cancel") }
+        ElevatedButton(onClick = onCancel, modifier = Modifier.padding(top = Spacing.sm)) { Text(stringResource(DesignSystemR.string.action_cancel)) }
     }
 }

@@ -1,5 +1,7 @@
 package com.unified.health.feature.home
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import com.unified.health.core.designsystem.component.label
 import com.unified.health.core.domain.usecase.Highlight
 import com.unified.health.core.domain.usecase.MetricStats
@@ -49,7 +51,8 @@ sealed interface FeedCardData {
 }
 
 /** Display title for a non-metric card; metric cards use [com.unified.health.core.designsystem.component.label]. */
+@Composable
 fun feedCardTitle(id: String): String = when (id) {
-    FeedCardId.WORKOUTS -> "Workouts"
+    FeedCardId.WORKOUTS -> stringResource(R.string.feed_card_title_workouts)
     else -> HealthMetricType.entries.firstOrNull { it.name == id }?.label() ?: id
 }

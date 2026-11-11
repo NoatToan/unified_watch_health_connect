@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -90,6 +91,7 @@ internal fun TappableWatchImage(
     modifier: Modifier = Modifier,
 ) {
     var viewerOpen by remember { mutableStateOf(false) }
+    val viewFullScreenLabel = stringResource(R.string.watch_image_view_full_screen)
     val pulse = rememberInfiniteTransition(label = "watch_image_pulse")
     val pulseScale by pulse.animateFloat(
         initialValue = 1f,
@@ -111,7 +113,7 @@ internal fun TappableWatchImage(
                 scaleX = pulseScale
                 scaleY = pulseScale
             }
-            .clickable(onClickLabel = "View full screen", role = Role.Button) { viewerOpen = true }
+            .clickable(onClickLabel = viewFullScreenLabel, role = Role.Button) { viewerOpen = true }
             .testTag("watch_image_fullscreen_trigger"),
     )
 
@@ -140,6 +142,9 @@ internal fun TappableWatchImage(
 private fun FullscreenWatchImageViewer(model: WatchModel?, onDismissed: () -> Unit) {
     var closing by remember { mutableStateOf(false) }
     var celebrating by remember { mutableStateOf(false) }
+    val closeFullScreenLabel = stringResource(R.string.watch_image_close_full_screen)
+    val closeLabel = stringResource(R.string.watch_image_close)
+    val holdToGrowLabel = stringResource(R.string.watch_image_hold_to_grow)
     val scrimAlpha = remember { Animatable(0f) }
     val heroScale = remember { Animatable(HERO_ENTER_SCALE_FROM) }
     val heroAlpha = remember { Animatable(0f) }
@@ -169,7 +174,7 @@ private fun FullscreenWatchImageViewer(model: WatchModel?, onDismissed: () -> Un
                 .fillMaxSize()
                 .testTag("watch_image_fullscreen_viewer")
                 .background(Color.Black.copy(alpha = SCRIM_MAX_ALPHA * scrimAlpha.value))
-                .clickable(onClickLabel = "Close full screen image", role = Role.Button, onClick = dismiss),
+                .clickable(onClickLabel = closeFullScreenLabel, role = Role.Button, onClick = dismiss),
             contentAlignment = Alignment.Center,
         ) {
             val heroSize = (minOf(maxWidth, maxHeight) - HERO_MARGIN).coerceAtMost(HERO_MAX_SIZE)
@@ -235,7 +240,7 @@ private fun FullscreenWatchImageViewer(model: WatchModel?, onDismissed: () -> Un
             // D-1167: fades out as soon as the user starts holding (and for good once they succeed),
             // so it never competes with the growth/celebration itself.
             Text(
-                "Press & hold to view full size",
+                holdToGrowLabel,
                 color = Color.White.copy(alpha = 0.75f * (1f - growProgress.value) * heroAlpha.value),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = Spacing.xxl),
@@ -253,7 +258,7 @@ private fun FullscreenWatchImageViewer(model: WatchModel?, onDismissed: () -> Un
                     .padding(Spacing.md)
                     .testTag("watch_image_fullscreen_close"),
             ) {
-                Icon(Icons.Outlined.Close, contentDescription = "Close", tint = Color.White)
+                Icon(Icons.Outlined.Close, contentDescription = closeLabel, tint = Color.White)
             }
         }
     }

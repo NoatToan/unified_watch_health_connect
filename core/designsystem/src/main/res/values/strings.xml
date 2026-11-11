@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shared across >= 2 feature screens (D-1040): generic action words, connection-state labels, and
+  metric name/unit/description text for the HealthMetricType-labelling helpers in MetricIcons.kt /
+  MetricFormat.kt. Every feature module already depends on :core:designsystem (see CLAUDE.md), so
+  this is where cross-screen vocabulary lives; screen-specific copy stays in each feature's own
+  res/values. values-vi/strings.xml is the Vietnamese translation, added alongside this (never
+  replacing it) per D-1040.
+-->
+<resources>
+    <!-- Generic action words reused by multiple dialogs/screens across devices and home. -->
+    <string name="nav_back">Back</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_save">Save</string>
+    <string name="action_done">Done</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_try_again">Try again</string>
+    <string name="action_connect">Connect</string>
+    <string name="action_disconnect">Disconnect</string>
+
+    <!-- StateViews.kt: ErrorState's default title/action. -->
+    <string name="state_error_title">Something went wrong</string>
+
+    <!-- ConnectionStatusChip.kt: ConnectionState.label(). -->
+    <string name="connection_state_connected">Connected</string>
+    <string name="connection_state_connecting">Connecting…</string>
+    <string name="connection_state_authenticating">Authenticating…</string>
+    <string name="connection_state_disconnected">Disconnected</string>
+    <string name="connection_state_error">Connection error</string>
+
+    <!-- LiveDot.kt: accessibility description of the live/not-live status dot. -->
+    <string name="live_dot_live">Live</string>
+    <string name="live_dot_not_live">Not live, showing last synced value</string>
+
+    <!-- MetricIcons.kt: HealthMetricType.label(), Apple Health-style display names. -->
+    <string name="metric_label_steps">Steps</string>
+    <string name="metric_label_heart_rate">Heart rate</string>
+    <string name="metric_label_sleep">Sleep</string>
+    <string name="metric_label_spo2">Blood oxygen</string>
+    <string name="metric_label_stress">Stress</string>
+    <string name="metric_label_calories">Active energy</string>
+    <string name="metric_label_weight">Weight</string>
+    <string name="metric_label_distance">Walking + running distance</string>
+    <string name="metric_label_exercise_minutes">Exercise minutes</string>
+    <string name="metric_label_resting_heart_rate">Resting heart rate</string>
+    <string name="metric_label_hrv">Heart rate variability</string>
+    <string name="metric_label_vo2_max">VO2max</string>
+
+    <!-- MetricIcons.kt: HealthMetricType.about(), the short explanation under a metric's chart. -->
+    <string name="metric_about_steps">Step count is the number of steps you take throughout the day, counted by your watch.</string>
+    <string name="metric_about_heart_rate">Heart rate is the number of times your heart beats per minute. The bars show the lowest and highest reading in each period.</string>
+    <string name="metric_about_sleep">Time asleep excludes time awake in bed. Stages are estimated by your watch from movement and heart rate.</string>
+    <string name="metric_about_spo2">Blood oxygen is the percentage of oxygen your red blood cells carry, mostly measured while you sleep.</string>
+    <string name="metric_about_stress">Stress is a 0–100 score derived from heart rate variability. Lower is more relaxed.</string>
+    <string name="metric_about_calories">Active energy is the energy you burn by moving, on top of your resting energy.</string>
+    <string name="metric_about_weight">Weight comes from Health Connect or manual entries.</string>
+    <string name="metric_about_distance">Distance you walked or ran, estimated from your steps and workouts.</string>
+    <string name="metric_about_exercise_minutes">Every full minute of movement at the intensity of a brisk walk or more counts towards Exercise.</string>
+    <string name="metric_about_resting_heart_rate">Resting heart rate is your average heart rate while at rest, estimated once a day.</string>
+    <string name="metric_about_hrv">Heart rate variability is the variation in time between heartbeats, measured overnight.</string>
+    <string name="metric_about_vo2_max">VO2max estimates the maximum oxygen your body can use during exercise, a common marker of cardio fitness.</string>
+
+    <!-- MetricFormat.kt: timeLabel()'s short "when" caption. -->
+    <string name="time_label_today">Today</string>
+    <string name="time_label_yesterday">Yesterday</string>
+    <string name="time_label_last_night">Last night</string>
+
+    <!-- MetricFormat.kt: formatMinutes()'s unit words ("7 hr 12 min"). -->
+    <string name="duration_hour_unit">hr</string>
+    <string name="duration_minute_unit">min</string>
+
+    <!-- HealthCharts.kt: SleepStageChart/SleepStageLegend lane names. -->
+    <string name="sleep_stage_awake">Awake</string>
+    <string name="sleep_stage_rem">REM</string>
+    <string name="sleep_stage_light">Core</string>
+    <string name="sleep_stage_deep">Deep</string>
+
+    <!-- HealthCharts.kt: SleepStageChart's accessibility description. -->
+    <string name="chart_sleep_stages_description">Sleep stages from %1$s to %2$s</string>
+</resources>

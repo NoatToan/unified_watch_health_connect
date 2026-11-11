@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.UserPreferencesRepository
+import com.unified.health.core.domain.usecase.Highlight
 import com.unified.health.core.domain.usecase.HighlightCalculator
 import com.unified.health.core.domain.usecase.MetricStats
 import com.unified.health.core.domain.usecase.MetricStatsCalculator
@@ -15,7 +16,6 @@ import com.unified.health.core.model.MetricAggregation
 import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.UnitSystem
-import com.unified.health.feature.home.insight.metricInsightLine
 import com.unified.health.feature.home.navigation.MetricDetailDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,8 +41,14 @@ data class MetricDetailUiState(
     /** The night shown by the stage chart (sleep, D only). */
     val sleepSession: SleepSession? = null,
     val periodLabel: String = "",
-    /** One-line analysis, Huawei Health style: week-over-week when there's enough history, else this week's own average/range. */
-    val insight: String? = null,
+    /**
+     * Week-over-week highlight / this week's own stats, for the one-line analysis under the chart
+     * (Huawei Health style). Kept as raw domain values here, not a pre-formatted String — composing
+     * the final sentence needs `stringResource` to localize it (D-1040), which only the Composable
+     * screen (not this ViewModel) can call; see `MetricDetailScreen`'s `InsightCard` call site.
+     */
+    val insightHighlight: Highlight? = null,
+    val insightWeekStats: MetricStats? = null,
     val isLoading: Boolean = true,
     /** D-1183: Metric (km/kg) vs Imperial (mi/lb) distance/weight display, from Profile's toggle. */
     val unitSystem: UnitSystem = UnitSystem.METRIC,
@@ -80,12 +86,8 @@ class MetricDetailViewModel @Inject constructor(
                     stats = MetricStatsCalculator.of(metric, r, points),
                     sleepSession = session,
                     periodLabel = periodLabel(r, today),
-                    insight = metricInsightLine(
-                        metric,
-                        HighlightCalculator.compute(metric, monthPoints),
-                        MetricStatsCalculator.of(metric, TimeRange.WEEK, weekPoints),
-                        prefs.unitSystem,
-                    ),
+                    insightHighlight = HighlightCalculator.compute(metric, monthPoints),
+                    insightWeekStats = MetricStatsCalculator.of(metric, TimeRange.WEEK, weekPoints),
                     isLoading = false,
                     unitSystem = prefs.unitSystem,
                 )

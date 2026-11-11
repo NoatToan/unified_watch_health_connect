@@ -70,6 +70,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
@@ -92,7 +93,7 @@ import com.unified.health.core.designsystem.component.SummaryMetricCard
 import com.unified.health.core.designsystem.component.WatchImage
 import com.unified.health.core.designsystem.component.compactNumber
 import com.unified.health.core.designsystem.component.formatMinutes
-import com.unified.health.core.designsystem.component.formatValue
+import com.unified.health.core.designsystem.component.formatValueLocalized
 import com.unified.health.core.designsystem.component.icon
 import com.unified.health.core.designsystem.component.label
 import com.unified.health.core.designsystem.component.timeLabel
@@ -124,16 +125,19 @@ import com.unified.health.core.model.WearableVendor
 import com.unified.health.core.model.Workout
 import com.unified.health.core.model.distanceUnitLabel
 import com.unified.health.core.model.metersToDisplayDistance
+import com.unified.health.feature.home.insight.localizedInsightStrings
 import com.unified.health.feature.home.insight.metricInsightLine
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
+import kotlin.math.abs
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import com.unified.health.core.designsystem.R as DesignSystemR
 
 @Composable
 internal fun HomeRoute(
@@ -205,7 +209,7 @@ internal fun HomeScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
-                title = { Text("Home") },
+                title = { Text(stringResource(R.string.home_title)) },
                 actions = {
                     // D-1147: the only device affordance left on Home — always visible now (no banner
                     // left in the body for it to reveal alongside), with a status dot (D-1054's LiveDot)
@@ -287,10 +291,10 @@ internal fun AllMetricsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("All metrics") },
+                title = { Text(stringResource(R.string.all_metrics_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back))
                     }
                 },
                 actions = {
@@ -364,27 +368,27 @@ private fun Summary(
         item { RingsCard(state.summary, onClick = { onMetricClick(HealthMetricType.CALORIES) }, modifier = Modifier.padding(horizontal = Spacing.lg)) }
         item {
             Row(modifier = Modifier.padding(horizontal = Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
-                SectionHeader("Metrics", Modifier.weight(1f))
+                SectionHeader(stringResource(R.string.metrics_section_title), Modifier.weight(1f))
                 ViewModeToggle(
                     mode = state.metricsViewMode,
                     onChange = onMetricsViewModeChange,
                     modifier = Modifier.testTag("metrics_view_mode_toggle"),
                 )
                 // D-1119: escape hatch to the full list (incl. no-data cards, filtered out of Home
-                // below) — same "Xem tất cả" pattern as the Races carousel (D-1105).
-                TextButton(onClick = onOpenAllMetrics, modifier = Modifier.testTag("see_all_metrics")) { Text("Xem tất cả") }
-                TextButton(onClick = { editingFeed = true }, modifier = Modifier.testTag("edit_feed_cards")) { Text("Edit") }
+                // below) — same "See all" pattern as the Races carousel (D-1105).
+                TextButton(onClick = onOpenAllMetrics, modifier = Modifier.testTag("see_all_metrics")) { Text(stringResource(R.string.see_all)) }
+                TextButton(onClick = { editingFeed = true }, modifier = Modifier.testTag("edit_feed_cards")) { Text(stringResource(R.string.edit_cards)) }
             }
         }
         // D-1119: Home only ever shows metrics that actually have data — decluttered, not just
         // dimmed/grayed. Hidden-via-"Edit cards" filtering already happened in the ViewModel; this is
         // an *additional* filter on top of it, specific to Home's own display (AllMetricsScreen,
-        // reached via "Xem tất cả" above, renders state.feedCards unfiltered by data).
+        // reached via "See all" above, renders state.feedCards unfiltered by data).
         val cardsWithData = state.feedCards.filter { it.hasData() }
         if (cardsWithData.isEmpty()) {
             item {
                 Text(
-                    "No metrics with data yet. Sync your watch, or tap Edit if one you expect is hidden.",
+                    stringResource(R.string.no_metrics_with_data),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = Spacing.lg).testTag("feed_empty"),
                 )
@@ -392,7 +396,7 @@ private fun Summary(
         }
         feedCardItems(cardsWithData, state.metricsViewMode, state.unitSystem, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm)
         if (state.highlights.isNotEmpty()) {
-            item { SectionHeader("Highlights", Modifier.padding(horizontal = Spacing.lg)) }
+            item { SectionHeader(stringResource(R.string.highlights_section_title), Modifier.padding(horizontal = Spacing.lg)) }
             items(state.highlights, key = { "highlight_${it.metric.name}" }) { highlight ->
                 HighlightCard(highlight, state.unitSystem, onClick = { onMetricClick(highlight.metric) }, modifier = Modifier.padding(horizontal = Spacing.lg))
             }
@@ -436,7 +440,7 @@ private fun ViewModeToggle(mode: HomeMetricsViewMode, onChange: (HomeMetricsView
     IconButton(onClick = { onChange(target) }, modifier = modifier) {
         Icon(
             if (mode == HomeMetricsViewMode.GRID) Icons.AutoMirrored.Outlined.ViewList else Icons.Outlined.GridView,
-            contentDescription = if (target == HomeMetricsViewMode.GRID) "Switch to grid view" else "Switch to list view",
+            contentDescription = if (target == HomeMetricsViewMode.GRID) stringResource(R.string.switch_to_grid_view) else stringResource(R.string.switch_to_list_view),
         )
     }
 }
@@ -514,15 +518,15 @@ private fun LazyListScope.feedCardItems(
 private fun HighlightCard(highlight: Highlight, unitSystem: UnitSystem, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val metric = highlight.metric
     val accent = UnifiedHealthTheme.metricColors.forMetric(metric)
-    val recent = metric.formatValue(highlight.recentAverage, unitSystem = unitSystem)
+    val recent = metric.formatValueLocalized(highlight.recentAverage, unitSystem = unitSystem)
     val unit = metric.unit(unitSystem).let { if (it.isEmpty()) "" else " $it" }
-    val verb = if (metric.aggregation == MetricAggregation.SLEEP) "slept" else "averaged"
+    val verb = if (metric.aggregation == MetricAggregation.SLEEP) stringResource(R.string.highlight_verb_slept) else stringResource(R.string.highlight_verb_averaged)
     val change = when (highlight.trend) {
-        Trend.UP -> "${highlight.changePercent}% more than"
-        Trend.DOWN -> "${-highlight.changePercent}% less than"
-        Trend.STEADY -> "about the same as"
+        Trend.UP -> stringResource(R.string.highlight_change_more, abs(highlight.changePercent))
+        Trend.DOWN -> stringResource(R.string.highlight_change_less, abs(highlight.changePercent))
+        Trend.STEADY -> stringResource(R.string.highlight_change_steady)
     }
-    val perDay = if (metric.aggregation == MetricAggregation.CUMULATIVE) " a day" else ""
+    val perDay = if (metric.aggregation == MetricAggregation.CUMULATIVE) stringResource(R.string.highlight_per_day_suffix) else ""
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().testTag("highlight_${metric.name}")) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -540,11 +544,11 @@ private fun HighlightCard(highlight: Highlight, unitSystem: UnitSystem, onClick:
                 Text(metric.label(), style = MaterialTheme.typography.titleSmall, color = accent)
             }
             Text(
-                "Over the last 7 days, you $verb $recent$unit$perDay. That's $change the 7 days before.",
+                stringResource(R.string.highlight_body, verb, recent, unit, perDay, change),
                 style = MaterialTheme.typography.bodyMedium,
             )
-            ComparisonBar("Last 7 days", highlight.recentAverage, maxOf(highlight.recentAverage, highlight.previousAverage), metric, unitSystem, accent)
-            ComparisonBar("Previous 7 days", highlight.previousAverage, maxOf(highlight.recentAverage, highlight.previousAverage), metric, unitSystem, MaterialTheme.colorScheme.outline)
+            ComparisonBar(stringResource(R.string.comparison_last_7_days), highlight.recentAverage, maxOf(highlight.recentAverage, highlight.previousAverage), metric, unitSystem, accent)
+            ComparisonBar(stringResource(R.string.comparison_previous_7_days), highlight.previousAverage, maxOf(highlight.recentAverage, highlight.previousAverage), metric, unitSystem, MaterialTheme.colorScheme.outline)
         }
     }
 }
@@ -552,7 +556,7 @@ private fun HighlightCard(highlight: Highlight, unitSystem: UnitSystem, onClick:
 @Composable
 private fun ComparisonBar(label: String, value: Double, max: Double, metric: HealthMetricType, unitSystem: UnitSystem, color: Color) {
     Column {
-        Text("$label · ${metric.formatValue(value, unitSystem = unitSystem)} ${metric.unit(unitSystem)}".trim(), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text("$label · ${metric.formatValueLocalized(value, unitSystem = unitSystem)} ${metric.unit(unitSystem)}".trim(), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(2.dp))
         Box(
             Modifier
@@ -632,11 +636,14 @@ private fun DeviceChip(device: WearableDevice, syncState: SyncState, modifier: M
 @Composable
 private fun RingsCard(summary: DailyHealthSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val colors = UnifiedHealthTheme.metricColors
+    val moveLabel = stringResource(R.string.ring_move)
+    val exerciseLabel = stringResource(R.string.ring_exercise)
+    val stepsLabel = stringResource(R.string.ring_steps)
     val exerciseProgress = (summary.activeMinutes.toFloat() / summary.activeMinutesGoal).coerceIn(0f, 1f)
     val rings = listOf(
-        RingSpec("Move", summary.calories.progress, colors.calories),
-        RingSpec("Exercise", exerciseProgress, colors.exercise),
-        RingSpec("Steps", summary.steps.progress, colors.steps),
+        RingSpec(moveLabel, summary.calories.progress, colors.calories),
+        RingSpec(exerciseLabel, exerciseProgress, colors.exercise),
+        RingSpec(stepsLabel, summary.steps.progress, colors.steps),
     )
     // D-1157: no background box behind the rings on Home — they sit directly on Home's own
     // background. Surface(color = Color.Transparent) instead of a plain Modifier.clickable so onClick
@@ -653,9 +660,9 @@ private fun RingsCard(summary: DailyHealthSummary, onClick: () -> Unit, modifier
             ActivityRings(rings = rings, size = 120.dp, strokeWidth = 12.dp)
             Spacer(Modifier.width(Spacing.xl))
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-                RingLegend("Move", "${summary.calories.activeKcal} / ${summary.calories.goalKcal} kcal", colors.calories)
-                RingLegend("Exercise", "${summary.activeMinutes} / ${summary.activeMinutesGoal} min", colors.exercise)
-                RingLegend("Steps", "${summary.steps.count} / ${summary.steps.goal}", colors.steps)
+                RingLegend(moveLabel, stringResource(R.string.ring_calories_progress, summary.calories.activeKcal, summary.calories.goalKcal), colors.calories)
+                RingLegend(exerciseLabel, stringResource(R.string.ring_minutes_progress, summary.activeMinutes, summary.activeMinutesGoal), colors.exercise)
+                RingLegend(stepsLabel, stringResource(R.string.ring_count_progress, summary.steps.count, summary.steps.goal), colors.steps)
             }
         }
     }
@@ -697,8 +704,8 @@ private fun RacesCarousel(
     // excluded from this item's constraints; this way there is no ancestor constraint to fight.
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
         Row(modifier = Modifier.padding(horizontal = Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
-            SectionHeader("Giải chạy sắp tới", Modifier.weight(1f))
-            TextButton(onClick = onOpenRaces, modifier = Modifier.testTag("races_see_all")) { Text("Xem tất cả") }
+            SectionHeader(stringResource(R.string.races_carousel_title), Modifier.weight(1f))
+            TextButton(onClick = onOpenRaces, modifier = Modifier.testTag("races_see_all")) { Text(stringResource(R.string.see_all)) }
         }
         // D-1133: snap-to-card paging, so a fling always settles on one card (never halfway between
         // two) — pairs naturally with each card being ~80% of the viewport width below, which leaves
@@ -776,12 +783,12 @@ private fun WorkoutsFeedCard(recent: List<Workout>, unitSystem: UnitSystem, onCl
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Workouts", style = MaterialTheme.typography.titleSmall, color = UnifiedHealthTheme.metricColors.exercise, modifier = Modifier.weight(1f))
+                Text(stringResource(R.string.workouts_card_title), style = MaterialTheme.typography.titleSmall, color = UnifiedHealthTheme.metricColors.exercise, modifier = Modifier.weight(1f))
                 Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             when {
                 recent.isEmpty() -> Text(
-                    "No workouts yet. They appear here after your watch syncs one.",
+                    stringResource(R.string.workouts_card_empty),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -809,7 +816,7 @@ private fun WorkoutRow(workout: Workout, unitSystem: UnitSystem) {
     val accent = UnifiedHealthTheme.metricColors.exercise
     val zone = ZoneId.systemDefault()
     val details = listOfNotNull(
-        formatMinutes(workout.duration.toMinutes().toInt()),
+        formatMinutes(workout.duration.toMinutes().toInt(), stringResource(DesignSystemR.string.duration_hour_unit), stringResource(DesignSystemR.string.duration_minute_unit)),
         workout.distanceMeters?.takeIf { it > 0 }?.let {
             String.format(java.util.Locale.getDefault(), "%.2f %s", it.metersToDisplayDistance(unitSystem), unitSystem.distanceUnitLabel())
         },
@@ -862,25 +869,29 @@ private fun MetricFeedCard(
         EmptyMetricCard(metric, accent, onClick, modifier, compact = compact)
         return
     }
-    val insight = metricInsightLine(metric, card.highlight, card.weekStats, unitSystem)
+    val insight = metricInsightLine(metric, card.highlight, card.weekStats, unitSystem, localizedInsightStrings())
     val sleepSession = card.sleepSession
-    val value = if (liveBpm != null) liveBpm.toString() else card.reading?.let { metric.formatValue(it.value, unitSystem = unitSystem) }
-    val cardTimeLabel = if (liveBpm != null) "Live" else card.reading?.let { timeLabel(metric, it) }
+    val value = if (liveBpm != null) liveBpm.toString() else card.reading?.let { metric.formatValueLocalized(it.value, unitSystem = unitSystem) }
+    val liveNowLabel = stringResource(DesignSystemR.string.live_dot_live)
+    val cardTimeLabel = if (liveBpm != null) liveNowLabel else card.reading?.let { timeLabel(metric, it) }
+    val noReadingToday = stringResource(R.string.feed_card_no_reading_today)
+    val liveSuffix = stringResource(R.string.feed_card_live_suffix)
+    val notLiveSuffix = stringResource(R.string.feed_card_not_live_suffix)
     val description = buildString {
         append(metric.label()).append(", ")
-        append(value?.let { "$it ${metric.unit(unitSystem)}".trim() } ?: "no reading today")
+        append(value?.let { "$it ${metric.unit(unitSystem)}".trim() } ?: noReadingToday)
         if (!compact) insight?.let { append(", ").append(it) }
-        if (isLive != null) append(if (isLive) ", live" else ", not live")
+        if (isLive != null) append(if (isLive) liveSuffix else notLiveSuffix)
     }
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().semantics(mergeDescendants = true) { contentDescription = description }) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             FeedCardHeader(metric, accent, value, metric.unit(unitSystem), cardTimeLabel, isLive, compact = compact)
             if (!compact) {
                 card.restingBpm?.let {
-                    Text("Resting $it bpm", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.feed_resting_heart_rate, it), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 sleepSession?.score?.let {
-                    Text("Sleep score $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.feed_sleep_score, it), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 MiniChart(metric, card.weekPoints, sleepSession, unitSystem, accent)
                 if (metric.aggregation == MetricAggregation.SLEEP && sleepSession != null) {
@@ -974,7 +985,7 @@ private fun EmptyMetricCard(metric: HealthMetricType, accent: Color, onClick: ()
             headlineContent = { Text(if (compact) metric.compactLabel() else metric.label(), color = accent, maxLines = 1, overflow = TextOverflow.Ellipsis) },
             // D-1099: maxLines/ellipsis so this never wraps to a 2nd line — was making Grid cards
             // with no data taller than their row neighbours.
-            supportingContent = { Text("No data", maxLines = 1, overflow = TextOverflow.Ellipsis) },
+            supportingContent = { Text(stringResource(R.string.no_data), maxLines = 1, overflow = TextOverflow.Ellipsis) },
             trailingContent = { Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
         )
     }
@@ -1014,7 +1025,7 @@ private fun EditFeedCardsDialog(order: List<String>, hidden: Set<String>, onDone
     val hiddenIds = remember { mutableStateListOf<String>().apply { addAll(hidden) } }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Edit cards") },
+        title = { Text(stringResource(R.string.edit_cards_title)) },
         text = {
             Column(Modifier.verticalScroll(rememberScrollState())) {
                 items.forEachIndexed { index, id ->
@@ -1035,12 +1046,12 @@ private fun EditFeedCardsDialog(order: List<String>, hidden: Set<String>, onDone
                                     onClick = { items.swap(index, index - 1) },
                                     enabled = index > 0,
                                     modifier = Modifier.testTag("move_up_$id"),
-                                ) { Icon(Icons.Outlined.KeyboardArrowUp, contentDescription = "Move up") }
+                                ) { Icon(Icons.Outlined.KeyboardArrowUp, contentDescription = stringResource(R.string.move_up)) }
                                 IconButton(
                                     onClick = { items.swap(index, index + 1) },
                                     enabled = index < items.lastIndex,
                                     modifier = Modifier.testTag("move_down_$id"),
-                                ) { Icon(Icons.Outlined.KeyboardArrowDown, contentDescription = "Move down") }
+                                ) { Icon(Icons.Outlined.KeyboardArrowDown, contentDescription = stringResource(R.string.move_down)) }
                             }
                         },
                     )
@@ -1048,9 +1059,9 @@ private fun EditFeedCardsDialog(order: List<String>, hidden: Set<String>, onDone
             }
         },
         confirmButton = {
-            TextButton(onClick = { onDone(items.toList(), hiddenIds.toSet()) }, modifier = Modifier.testTag("edit_cards_done")) { Text("Done") }
+            TextButton(onClick = { onDone(items.toList(), hiddenIds.toSet()) }, modifier = Modifier.testTag("edit_cards_done")) { Text(stringResource(DesignSystemR.string.action_done)) }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(DesignSystemR.string.action_cancel)) } },
     )
 }
 

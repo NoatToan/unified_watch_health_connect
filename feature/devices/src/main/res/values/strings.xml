@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature/devices screen copy (D-1040). Shared cross-feature words (Cancel/Save/Connect/
+     Disconnect/Retry…) live in :core:designsystem instead — see its res/values/strings.xml. -->
+<resources>
+    <string name="devices_title">Devices</string>
+
+    <string name="scan_stop">Stop</string>
+    <string name="scan_start">Scan</string>
+    <string name="scan_scanning">Scanning…</string>
+    <string name="scan_section_nearby">Nearby devices</string>
+    <string name="scan_qr_code">Scan QR code</string>
+    <string name="scan_enter_mac_address">Enter MAC address</string>
+    <string name="scan_empty_scanning">Looking for wearables nearby…</string>
+    <string name="scan_empty_idle">Tap Scan to look for your watch or band. Keep it close to the phone.</string>
+
+    <!-- Back up a just-created pairing key. -->
+    <string name="backup_key_title">Back up %1$s</string>
+    <string name="backup_key_message">This key was written to %1$s. Without it the watch must be reset to pair again.</string>
+
+    <string name="device_more_options">More options for %1$s</string>
+    <string name="device_settings_menu_item">Device settings</string>
+    <string name="change_credential_menu_item">Change %1$s</string>
+    <string name="unpair_menu_item">Unpair</string>
+
+    <string name="firmware_version">Firmware %1$s</string>
+    <string name="last_sync">Last sync: %1$s</string>
+    <string name="last_sync_never">never</string>
+
+    <string name="no_paired_device_title">No device paired yet</string>
+    <string name="no_paired_device_message">Pair your watch or band to sync steps, heart rate, sleep and more.</string>
+    <string name="scan_for_devices">Scan for devices</string>
+
+    <string name="unpair_dialog_title">Unpair %1$s?</string>
+    <string name="unpair_dialog_message">The device will be removed from this app. Data already synced is kept.</string>
+    <string name="unpair_confirm">Unpair</string>
+
+    <string name="pairing_code_title">Pairing code</string>
+    <string name="pairing_code_message">Enter the %1$d-digit code shown on %2$s.</string>
+    <string name="pairing_code_label">Code</string>
+    <string name="pairing_code_confirm">Pair</string>
+
+    <string name="credential_hex_label">32 hex digits</string>
+    <string name="credential_generate">Create a new key and bind this watch</string>
+
+    <string name="permission_needed_title">Nearby devices permission needed</string>
+    <string name="permission_needed_message">Bluetooth permission is required to find and connect to your wearable.</string>
+    <string name="open_settings">Open settings</string>
+
+    <string name="signal_strong">Strong</string>
+    <string name="signal_good">Good</string>
+    <string name="signal_weak">Weak</string>
+    <string name="discovered_device_detail">%1$s · %2$s (%3$d dBm)</string>
+    <string name="discovered_device_detail_paired_in_system">%1$s · Paired in system</string>
+    <string name="pair_button">Pair</string>
+
+    <string name="manual_mac_title">Enter MAC address</string>
+    <string name="manual_mac_message">Find your watch directly by its Bluetooth address, e.g. from the box or the vendor app.</string>
+    <string name="manual_mac_hint">AA:BB:CC:DD:EE:FF</string>
+    <string name="manual_mac_find">Find</string>
+
+    <string name="qr_find_huawei_pin">Code on the watch: %1$s</string>
+    <string name="qr_find_scanning">Keep the watch close to your phone…</string>
+    <string name="qr_find_found">Found it — pairing…</string>
+    <string name="qr_find_timed_out">Couldn\'t find it. Make sure the watch is powered on, close to your phone and not already connected to another app.</string>
+    <string name="qr_find_choose_from_list">Choose from list</string>
+    <string name="qr_find_looking_for">Looking for %1$s</string>
+
+    <string name="connect_button_busy">Connecting…</string>
+    <string name="sync_now">Sync now</string>
+    <string name="enter_credential_button">Enter %1$s</string>
+    <string name="enter_credential_before_connecting">Enter %1$s from the Devices list before connecting.</string>
+
+    <string name="about_this_device">About this device</string>
+    <string name="about_name">Name</string>
+    <string name="about_brand">Brand</string>
+    <string name="about_model">Model</string>
+    <string name="about_firmware">Firmware version</string>
+    <string name="about_battery">Battery</string>
+    <string name="about_address">Bluetooth address</string>
+    <string name="about_paired">Paired</string>
+    <string name="about_last_sync">Last sync</string>
+    <string name="about_unknown">Unknown</string>
+
+    <string name="capabilities_title">Capabilities</string>
+    <string name="capabilities_unknown">Connect the device to see what it supports.</string>
+    <string name="capability_history_sync">History sync</string>
+    <string name="capability_live_heart_rate">Live heart rate</string>
+    <string name="capability_battery_level">Battery level</string>
+    <string name="capability_supported">Supported</string>
+    <string name="capability_not_supported">Not supported</string>
+
+    <string name="security_title">Security</string>
+    <string name="security_stored_on_phone">Stored on this phone</string>
+    <string name="security_missing">Missing</string>
+
+    <string name="data_recovery_title">Data recovery</string>
+    <string name="data_recovery_message">Re-checks activity files already downloaded from this watch and recovers any workout a previous app version could not decode. Works without connecting.</string>
+    <string name="data_recovery_action">Reprocess downloaded files</string>
+
+    <string name="unpair_this_device">Unpair this device</string>
+    <string name="unpair_this_device_note">Unpairing removes the device and its stored keys from this app. Health data it already synced is kept.</string>
+
+    <string name="device_not_paired_title">Device not paired</string>
+    <string name="device_not_paired_message">This device is no longer paired with the app. Data it synced is kept.</string>
+    <string name="device_fallback_title">Device</string>
+
+    <!-- DeviceImageViewer.kt: product-image fullscreen viewer. -->
+    <string name="watch_image_view_full_screen">View full screen</string>
+    <string name="watch_image_close_full_screen">Close full screen image</string>
+    <string name="watch_image_hold_to_grow">Press &amp; hold to view full size</string>
+    <string name="watch_image_close">Close</string>
+
+    <!-- QrScannerScreen.kt -->
+    <string name="qr_scanner_torch_on">Turn on torch</string>
+    <string name="qr_scanner_torch_off">Turn off torch</string>
+    <string name="qr_scanner_instructions">Point the camera at the QR code shown on your watch</string>
+    <string name="camera_permission_title">Camera permission needed</string>
+    <string name="camera_permission_message">Unified Health uses the camera only to scan the QR code shown on your watch, to find and pair it faster.</string>
+    <string name="camera_permission_grant">Grant camera permission</string>
+</resources>

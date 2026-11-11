@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_back">Quay lại</string>
+    <string name="action_cancel">Hủy</string>
+    <string name="action_save">Lưu</string>
+    <string name="action_done">Xong</string>
+    <string name="action_retry">Thử lại</string>
+    <string name="action_try_again">Thử lại</string>
+    <string name="action_connect">Kết nối</string>
+    <string name="action_disconnect">Ngắt kết nối</string>
+
+    <string name="state_error_title">Đã có lỗi xảy ra</string>
+
+    <string name="connection_state_connected">Đã kết nối</string>
+    <string name="connection_state_connecting">Đang kết nối…</string>
+    <string name="connection_state_authenticating">Đang xác thực…</string>
+    <string name="connection_state_disconnected">Chưa kết nối</string>
+    <string name="connection_state_error">Lỗi kết nối</string>
+
+    <string name="live_dot_live">Trực tiếp</string>
+    <string name="live_dot_not_live">Không trực tiếp, đang hiện dữ liệu đồng bộ gần nhất</string>
+
+    <string name="metric_label_steps">Số bước</string>
+    <string name="metric_label_heart_rate">Nhịp tim</string>
+    <string name="metric_label_sleep">Giấc ngủ</string>
+    <string name="metric_label_spo2">Oxy trong máu</string>
+    <string name="metric_label_stress">Căng thẳng</string>
+    <string name="metric_label_calories">Năng lượng hoạt động</string>
+    <string name="metric_label_weight">Cân nặng</string>
+    <string name="metric_label_distance">Quãng đường đi bộ + chạy</string>
+    <string name="metric_label_exercise_minutes">Phút vận động</string>
+    <string name="metric_label_resting_heart_rate">Nhịp tim khi nghỉ</string>
+    <string name="metric_label_hrv">Biến thiên nhịp tim</string>
+    <string name="metric_label_vo2_max">VO2max</string>
+
+    <string name="metric_about_steps">Số bước là số lần bạn bước đi trong ngày, được đồng hồ đếm tự động.</string>
+    <string name="metric_about_heart_rate">Nhịp tim là số lần tim bạn đập mỗi phút. Các cột thể hiện nhịp thấp nhất và cao nhất trong từng khoảng thời gian.</string>
+    <string name="metric_about_sleep">Thời gian ngủ không tính thời gian bạn tỉnh trong lúc nằm trên giường. Các giai đoạn ngủ được đồng hồ ước tính dựa trên cử động và nhịp tim.</string>
+    <string name="metric_about_spo2">Oxy trong máu (SpO2) là tỷ lệ oxy mà hồng cầu mang theo, thường được đo trong lúc bạn ngủ.</string>
+    <string name="metric_about_stress">Mức độ căng thẳng là điểm số từ 0–100, tính từ biến thiên nhịp tim. Điểm càng thấp càng thư giãn.</string>
+    <string name="metric_about_calories">Năng lượng hoạt động là lượng calo bạn tiêu hao khi di chuyển, cộng thêm vào năng lượng tiêu hao khi nghỉ ngơi.</string>
+    <string name="metric_about_weight">Cân nặng được lấy từ Health Connect hoặc do bạn nhập tay.</string>
+    <string name="metric_about_distance">Quãng đường bạn đã đi bộ hoặc chạy, được ước tính từ số bước và các buổi tập.</string>
+    <string name="metric_about_exercise_minutes">Mỗi phút vận động với cường độ từ đi bộ nhanh trở lên đều được tính vào chỉ số Vận động.</string>
+    <string name="metric_about_resting_heart_rate">Nhịp tim khi nghỉ là nhịp tim trung bình lúc bạn nghỉ ngơi, được ước tính mỗi ngày một lần.</string>
+    <string name="metric_about_hrv">Biến thiên nhịp tim là sự thay đổi thời gian giữa các lần tim đập, được đo vào ban đêm.</string>
+    <string name="metric_about_vo2_max">VO2max ước tính lượng oxy tối đa cơ thể bạn có thể sử dụng khi vận động — một chỉ số phổ biến cho thể lực tim mạch.</string>
+
+    <string name="time_label_today">Hôm nay</string>
+    <string name="time_label_yesterday">Hôm qua</string>
+    <string name="time_label_last_night">Đêm qua</string>
+
+    <string name="duration_hour_unit">giờ</string>
+    <string name="duration_minute_unit">phút</string>
+
+    <string name="sleep_stage_awake">Thức</string>
+    <string name="sleep_stage_rem">REM</string>
+    <string name="sleep_stage_light">Ngủ nông</string>
+    <string name="sleep_stage_deep">Ngủ sâu</string>
+
+    <string name="chart_sleep_stages_description">Các giai đoạn ngủ từ %1$s đến %2$s</string>
+</resources>

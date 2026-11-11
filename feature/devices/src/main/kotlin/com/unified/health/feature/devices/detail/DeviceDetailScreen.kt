@@ -52,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -60,6 +61,7 @@ import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.theme.Spacing
+import com.unified.health.feature.devices.R
 import com.unified.health.feature.devices.TappableWatchImage
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.DeviceCapability
@@ -70,6 +72,7 @@ import com.unified.health.core.model.WearableVendor
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import com.unified.health.core.designsystem.R as DesignSystemR
 
 @Composable
 internal fun DeviceDetailRoute(onBack: () -> Unit, viewModel: DeviceDetailViewModel = hiltViewModel()) {
@@ -113,8 +116,12 @@ internal fun DeviceDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text((state as? DeviceDetailUiState.Success)?.device?.name ?: "Device") },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } },
+                title = { Text((state as? DeviceDetailUiState.Success)?.device?.name ?: stringResource(R.string.device_fallback_title)) },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back))
+                    }
+                },
             )
         },
         snackbarHost = { SnackbarHost(snackbar) },
@@ -122,8 +129,8 @@ internal fun DeviceDetailScreen(
         when (state) {
             DeviceDetailUiState.Loading -> LoadingState(Modifier.padding(padding))
             is DeviceDetailUiState.Gone -> EmptyState(
-                title = "Device not paired",
-                message = "This device is no longer paired with the app. Data it synced is kept.",
+                title = stringResource(R.string.device_not_paired_title),
+                message = stringResource(R.string.device_not_paired_message),
                 icon = Icons.Outlined.LinkOff,
                 modifier = Modifier.padding(padding).testTag("device_gone"),
             )
@@ -202,20 +209,20 @@ private fun DeviceDetailContent(
                         Button(onClick = onSync, enabled = !syncing && !state.busy, modifier = Modifier.testTag("detail_sync")) {
                             Icon(Icons.Outlined.Sync, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(Spacing.xs))
-                            Text("Sync now")
+                            Text(stringResource(R.string.sync_now))
                         }
-                        OutlinedButton(onClick = onDisconnect, enabled = !state.busy) { Text("Disconnect") }
+                        OutlinedButton(onClick = onDisconnect, enabled = !state.busy) { Text(stringResource(DesignSystemR.string.action_disconnect)) }
                     } else {
                         Button(
                             onClick = onConnect,
                             enabled = !connecting && !state.busy && device.missingCredentials.isEmpty(),
                             modifier = Modifier.testTag("detail_connect"),
-                        ) { Text(if (connecting) "Connecting…" else "Connect") }
+                        ) { Text(if (connecting) stringResource(R.string.connect_button_busy) else stringResource(DesignSystemR.string.action_connect)) }
                     }
                 }
                 if (!connected && device.missingCredentials.isNotEmpty()) {
                     Text(
-                        "Enter ${device.missingCredentials.first().label} from the Devices list before connecting.",
+                        stringResource(R.string.enter_credential_before_connecting, device.missingCredentials.first().label),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -223,30 +230,35 @@ private fun DeviceDetailContent(
             }
         }
 
-        SectionHeader("About this device")
+        SectionHeader(stringResource(R.string.about_this_device))
         ElevatedCard(Modifier.fillMaxWidth()) {
             val zone = ZoneId.systemDefault()
             val rows = listOf(
-                Triple("about_name", "Name", device.name),
-                Triple("about_brand", "Brand", device.vendor.displayName),
-                Triple("about_model", "Model", device.model),
-                Triple("about_firmware", "Firmware version", device.firmwareVersion),
-                Triple("about_battery", "Battery", device.batteryPercent?.let { "$it%" }),
-                Triple("about_address", "Bluetooth address", device.macAddress),
-                Triple("about_paired", "Paired", device.pairedAt?.let { DATE_TIME.format(it.atZone(zone)) }),
-                Triple("about_last_sync", "Last sync", device.lastSyncedAt?.let { DATE_TIME.format(it.atZone(zone)) } ?: "Never"),
+                Triple("about_name", stringResource(R.string.about_name), device.name),
+                Triple("about_brand", stringResource(R.string.about_brand), device.vendor.displayName),
+                Triple("about_model", stringResource(R.string.about_model), device.model),
+                Triple("about_firmware", stringResource(R.string.about_firmware), device.firmwareVersion),
+                Triple("about_battery", stringResource(R.string.about_battery), device.batteryPercent?.let { "$it%" }),
+                Triple("about_address", stringResource(R.string.about_address), device.macAddress),
+                Triple("about_paired", stringResource(R.string.about_paired), device.pairedAt?.let { DATE_TIME.format(it.atZone(zone)) }),
+                Triple(
+                    "about_last_sync",
+                    stringResource(R.string.about_last_sync),
+                    device.lastSyncedAt?.let { DATE_TIME.format(it.atZone(zone)) } ?: stringResource(R.string.last_sync_never),
+                ),
             )
+            val unknown = stringResource(R.string.about_unknown)
             rows.forEachIndexed { index, (tag, label, value) ->
-                InfoRow(label, value ?: "Unknown", Modifier.testTag(tag))
+                InfoRow(label, value ?: unknown, Modifier.testTag(tag))
                 if (index < rows.lastIndex) HorizontalDivider(Modifier.padding(horizontal = Spacing.lg))
             }
         }
 
-        SectionHeader("Capabilities")
+        SectionHeader(stringResource(R.string.capabilities_title))
         ElevatedCard(Modifier.fillMaxWidth().testTag("capabilities")) {
             if (!connected) {
                 Text(
-                    "Connect the device to see what it supports.",
+                    stringResource(R.string.capabilities_unknown),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(Spacing.lg).testTag("capabilities_unknown"),
@@ -261,9 +273,9 @@ private fun DeviceDetailContent(
                         headlineContent = { Text(capability.label()) },
                         trailingContent = {
                             if (supported) {
-                                Icon(Icons.Outlined.CheckCircle, contentDescription = "Supported", tint = MaterialTheme.colorScheme.primary)
+                                Icon(Icons.Outlined.CheckCircle, contentDescription = stringResource(R.string.capability_supported), tint = MaterialTheme.colorScheme.primary)
                             } else {
-                                Text("Not supported", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(stringResource(R.string.capability_not_supported), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         },
                     )
@@ -272,26 +284,29 @@ private fun DeviceDetailContent(
         }
 
         if (device.credentialRequirements.isNotEmpty()) {
-            SectionHeader("Security")
+            SectionHeader(stringResource(R.string.security_title))
             ElevatedCard(Modifier.fillMaxWidth()) {
                 device.credentialRequirements.forEach { requirement ->
                     ListItem(
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                         leadingContent = { Icon(Icons.Outlined.Key, contentDescription = null) },
                         headlineContent = { Text(requirement.label) },
-                        supportingContent = { Text(if (requirement.key in device.storedCredentialKeys) "Stored on this phone" else "Missing") },
+                        supportingContent = {
+                            Text(
+                                if (requirement.key in device.storedCredentialKeys) stringResource(R.string.security_stored_on_phone) else stringResource(R.string.security_missing),
+                            )
+                        },
                     )
                 }
             }
         }
 
         if (device.vendor == WearableVendor.GARMIN) {
-            SectionHeader("Data recovery")
+            SectionHeader(stringResource(R.string.data_recovery_title))
             ElevatedCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                     Text(
-                        "Re-checks activity files already downloaded from this watch and recovers any " +
-                            "workout a previous app version could not decode. Works without connecting.",
+                        stringResource(R.string.data_recovery_message),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -299,7 +314,7 @@ private fun DeviceDetailContent(
                         onClick = onReprocess,
                         enabled = !state.busy,
                         modifier = Modifier.testTag("detail_reprocess"),
-                    ) { Text("Reprocess downloaded files") }
+                    ) { Text(stringResource(R.string.data_recovery_action)) }
                 }
             }
         }
@@ -309,9 +324,9 @@ private fun DeviceDetailContent(
             enabled = !state.busy,
             colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
             modifier = Modifier.fillMaxWidth().testTag("detail_unpair"),
-        ) { Text("Unpair this device") }
+        ) { Text(stringResource(R.string.unpair_this_device)) }
         Text(
-            "Unpairing removes the device and its stored keys from this app. Health data it already synced is kept.",
+            stringResource(R.string.unpair_this_device_note),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.testTag("detail_unpair_note"),
@@ -322,12 +337,12 @@ private fun DeviceDetailContent(
     if (confirmUnpair) {
         AlertDialog(
             onDismissRequest = { confirmUnpair = false },
-            title = { Text("Unpair ${device.name}?") },
-            text = { Text("The device will be removed from this app. Data already synced is kept.") },
+            title = { Text(stringResource(R.string.unpair_dialog_title, device.name)) },
+            text = { Text(stringResource(R.string.unpair_dialog_message)) },
             confirmButton = {
-                TextButton(onClick = { confirmUnpair = false; onUnpair() }, modifier = Modifier.testTag("detail_confirm_unpair")) { Text("Unpair") }
+                TextButton(onClick = { confirmUnpair = false; onUnpair() }, modifier = Modifier.testTag("detail_confirm_unpair")) { Text(stringResource(R.string.unpair_confirm)) }
             },
-            dismissButton = { TextButton(onClick = { confirmUnpair = false }) { Text("Cancel") } },
+            dismissButton = { TextButton(onClick = { confirmUnpair = false }) { Text(stringResource(DesignSystemR.string.action_cancel)) } },
         )
     }
 }
@@ -342,10 +357,11 @@ private fun InfoRow(label: String, value: String, modifier: Modifier = Modifier)
     )
 }
 
+@Composable
 private fun DeviceCapability.label(): String = when (this) {
-    DeviceCapability.HISTORY_SYNC -> "History sync"
-    DeviceCapability.LIVE_HEART_RATE -> "Live heart rate"
-    DeviceCapability.BATTERY_LEVEL -> "Battery level"
+    DeviceCapability.HISTORY_SYNC -> stringResource(R.string.capability_history_sync)
+    DeviceCapability.LIVE_HEART_RATE -> stringResource(R.string.capability_live_heart_rate)
+    DeviceCapability.BATTERY_LEVEL -> stringResource(R.string.capability_battery_level)
 }
 
 private fun DeviceCapability.icon(): ImageVector = when (this) {

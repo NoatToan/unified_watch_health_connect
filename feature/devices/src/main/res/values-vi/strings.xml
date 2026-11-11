@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_title">Thiết bị</string>
+
+    <string name="scan_stop">Dừng</string>
+    <string name="scan_start">Quét</string>
+    <string name="scan_scanning">Đang quét…</string>
+    <string name="scan_section_nearby">Thiết bị gần đây</string>
+    <string name="scan_qr_code">Quét mã QR</string>
+    <string name="scan_enter_mac_address">Nhập địa chỉ MAC</string>
+    <string name="scan_empty_scanning">Đang tìm thiết bị đeo gần đây…</string>
+    <string name="scan_empty_idle">Nhấn Quét để tìm đồng hồ hoặc vòng tay của bạn. Giữ thiết bị gần điện thoại.</string>
+
+    <string name="backup_key_title">Sao lưu khóa của %1$s</string>
+    <string name="backup_key_message">Khóa này đã được ghi vào %1$s. Nếu không có khóa, bạn phải đặt lại đồng hồ để ghép nối lại.</string>
+
+    <string name="device_more_options">Tùy chọn khác cho %1$s</string>
+    <string name="device_settings_menu_item">Cài đặt thiết bị</string>
+    <string name="change_credential_menu_item">Đổi %1$s</string>
+    <string name="unpair_menu_item">Hủy ghép nối</string>
+
+    <string name="firmware_version">Firmware %1$s</string>
+    <string name="last_sync">Đồng bộ lần cuối: %1$s</string>
+    <string name="last_sync_never">chưa từng</string>
+
+    <string name="no_paired_device_title">Chưa ghép nối thiết bị nào</string>
+    <string name="no_paired_device_message">Ghép nối đồng hồ hoặc vòng tay để đồng bộ số bước, nhịp tim, giấc ngủ và nhiều hơn nữa.</string>
+    <string name="scan_for_devices">Quét tìm thiết bị</string>
+
+    <string name="unpair_dialog_title">Hủy ghép nối %1$s?</string>
+    <string name="unpair_dialog_message">Thiết bị sẽ bị xóa khỏi ứng dụng. Dữ liệu đã đồng bộ vẫn được giữ lại.</string>
+    <string name="unpair_confirm">Hủy ghép nối</string>
+
+    <string name="pairing_code_title">Mã ghép nối</string>
+    <string name="pairing_code_message">Nhập mã %1$d chữ số hiện trên %2$s.</string>
+    <string name="pairing_code_label">Mã</string>
+    <string name="pairing_code_confirm">Ghép nối</string>
+
+    <string name="credential_hex_label">32 ký tự hex</string>
+    <string name="credential_generate">Tạo khóa mới và gán cho đồng hồ này</string>
+
+    <string name="permission_needed_title">Cần quyền truy cập thiết bị gần đó</string>
+    <string name="permission_needed_message">Cần quyền Bluetooth để tìm và kết nối với thiết bị đeo của bạn.</string>
+    <string name="open_settings">Mở cài đặt</string>
+
+    <string name="signal_strong">Mạnh</string>
+    <string name="signal_good">Tốt</string>
+    <string name="signal_weak">Yếu</string>
+    <string name="discovered_device_detail">%1$s · %2$s (%3$d dBm)</string>
+    <string name="discovered_device_detail_paired_in_system">%1$s · Đã ghép nối trong hệ thống</string>
+    <string name="pair_button">Ghép nối</string>
+
+    <string name="manual_mac_title">Nhập địa chỉ MAC</string>
+    <string name="manual_mac_message">Tìm đồng hồ trực tiếp bằng địa chỉ Bluetooth, ví dụ in trên hộp hoặc trong app của hãng.</string>
+    <string name="manual_mac_hint">AA:BB:CC:DD:EE:FF</string>
+    <string name="manual_mac_find">Tìm</string>
+
+    <string name="qr_find_huawei_pin">Mã trên đồng hồ: %1$s</string>
+    <string name="qr_find_scanning">Giữ đồng hồ gần điện thoại của bạn…</string>
+    <string name="qr_find_found">Đã tìm thấy — đang ghép nối…</string>
+    <string name="qr_find_timed_out">Không tìm thấy. Hãy chắc chắn đồng hồ đang mở, để gần điện thoại và chưa kết nối với app khác.</string>
+    <string name="qr_find_choose_from_list">Chọn từ danh sách</string>
+    <string name="qr_find_looking_for">Đang tìm %1$s</string>
+
+    <string name="connect_button_busy">Đang kết nối…</string>
+    <string name="sync_now">Đồng bộ ngay</string>
+    <string name="enter_credential_button">Nhập %1$s</string>
+    <string name="enter_credential_before_connecting">Nhập %1$s từ danh sách Thiết bị trước khi kết nối.</string>
+
+    <string name="about_this_device">Về thiết bị này</string>
+    <string name="about_name">Tên</string>
+    <string name="about_brand">Hãng</string>
+    <string name="about_model">Mẫu</string>
+    <string name="about_firmware">Phiên bản firmware</string>
+    <string name="about_battery">Pin</string>
+    <string name="about_address">Địa chỉ Bluetooth</string>
+    <string name="about_paired">Đã ghép nối</string>
+    <string name="about_last_sync">Đồng bộ lần cuối</string>
+    <string name="about_unknown">Không rõ</string>
+
+    <string name="capabilities_title">Tính năng hỗ trợ</string>
+    <string name="capabilities_unknown">Kết nối thiết bị để xem các tính năng được hỗ trợ.</string>
+    <string name="capability_history_sync">Đồng bộ lịch sử</string>
+    <string name="capability_live_heart_rate">Nhịp tim trực tiếp</string>
+    <string name="capability_battery_level">Mức pin</string>
+    <string name="capability_supported">Được hỗ trợ</string>
+    <string name="capability_not_supported">Không hỗ trợ</string>
+
+    <string name="security_title">Bảo mật</string>
+    <string name="security_stored_on_phone">Đã lưu trên điện thoại này</string>
+    <string name="security_missing">Chưa có</string>
+
+    <string name="data_recovery_title">Khôi phục dữ liệu</string>
+    <string name="data_recovery_message">Kiểm tra lại các file hoạt động đã tải từ đồng hồ này và khôi phục những buổi tập mà phiên bản app trước chưa giải mã được. Không cần kết nối lại.</string>
+    <string name="data_recovery_action">Xử lý lại file đã tải</string>
+
+    <string name="unpair_this_device">Hủy ghép nối thiết bị này</string>
+    <string name="unpair_this_device_note">Hủy ghép nối sẽ xóa thiết bị và khóa đã lưu khỏi app. Dữ liệu sức khỏe đã đồng bộ vẫn được giữ lại.</string>
+
+    <string name="device_not_paired_title">Thiết bị chưa ghép nối</string>
+    <string name="device_not_paired_message">Thiết bị này không còn ghép nối với app. Dữ liệu đã đồng bộ vẫn được giữ lại.</string>
+    <string name="device_fallback_title">Thiết bị</string>
+
+    <string name="watch_image_view_full_screen">Xem toàn màn hình</string>
+    <string name="watch_image_close_full_screen">Đóng ảnh toàn màn hình</string>
+    <string name="watch_image_hold_to_grow">Nhấn &amp; giữ để xem cỡ lớn</string>
+    <string name="watch_image_close">Đóng</string>
+
+    <string name="qr_scanner_torch_on">Bật đèn pin</string>
+    <string name="qr_scanner_torch_off">Tắt đèn pin</string>
+    <string name="qr_scanner_instructions">Hướng camera vào mã QR hiện trên đồng hồ của bạn</string>
+    <string name="camera_permission_title">Cần quyền camera</string>
+    <string name="camera_permission_message">Unified Health chỉ dùng camera để quét mã QR hiện trên đồng hồ của bạn, giúp tìm và ghép nối nhanh hơn.</string>
+    <string name="camera_permission_grant">Cấp quyền camera</string>
+</resources>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature/home screen copy (D-1040). Shared cross-feature words (Cancel/Save/Retry…) live in
+     :core:designsystem instead — see its res/values/strings.xml. -->
+<resources>
+    <string name="home_title">Home</string>
+    <string name="all_metrics_title">All metrics</string>
+
+    <string name="metrics_section_title">Metrics</string>
+    <string name="see_all">See all</string>
+    <string name="edit_cards">Edit</string>
+    <string name="no_metrics_with_data">No metrics with data yet. Sync your watch, or tap Edit if one you expect is hidden.</string>
+    <string name="highlights_section_title">Highlights</string>
+
+    <string name="switch_to_grid_view">Switch to grid view</string>
+    <string name="switch_to_list_view">Switch to list view</string>
+
+    <!-- RingsCard legend. -->
+    <string name="ring_move">Move</string>
+    <string name="ring_exercise">Exercise</string>
+    <string name="ring_steps">Steps</string>
+    <string name="ring_calories_progress">%1$d / %2$d kcal</string>
+    <string name="ring_minutes_progress">%1$d / %2$d min</string>
+    <string name="ring_count_progress">%1$d / %2$d</string>
+
+    <string name="races_carousel_title">Upcoming races</string>
+
+    <string name="workouts_card_title">Workouts</string>
+    <string name="workouts_card_empty">No workouts yet. They appear here after your watch syncs one.</string>
+
+    <!-- WorkoutFeedUi.kt: WorkoutType.feedLabel() (Home's own copy of feature/activity's, D-1040 scope is devices+home only). -->
+    <string name="workout_type_walking">Walking</string>
+    <string name="workout_type_running">Running</string>
+    <string name="workout_type_cycling">Cycling</string>
+    <string name="workout_type_swimming">Swimming</string>
+    <string name="workout_type_strength">Strength training</string>
+    <string name="workout_type_yoga">Yoga</string>
+    <string name="workout_type_other">Workout</string>
+
+    <!-- HighlightCard: "Over the last 7 days, you averaged 7,840 steps a day. That's 12% more than the 7 days before." -->
+    <string name="highlight_verb_slept">slept</string>
+    <string name="highlight_verb_averaged">averaged</string>
+    <string name="highlight_per_day_suffix"> a day</string>
+    <string name="highlight_change_more">%1$d%% more than</string>
+    <string name="highlight_change_less">%1$d%% less than</string>
+    <string name="highlight_change_steady">about the same as</string>
+    <string name="highlight_body">Over the last 7 days, you %1$s %2$s%3$s%4$s. That\'s %5$s the 7 days before.</string>
+    <string name="comparison_last_7_days">Last 7 days</string>
+    <string name="comparison_previous_7_days">Previous 7 days</string>
+
+    <string name="no_data">No data</string>
+    <string name="no_data_for_metric">Nothing recorded for %1$s yet.</string>
+    <string name="all_recorded_data_title">All recorded data</string>
+
+    <!-- MetricFeedCard's accessibility description + resting HR / sleep score sub-lines. -->
+    <string name="feed_card_no_reading_today">no reading today</string>
+    <string name="feed_card_live_suffix">, live</string>
+    <string name="feed_card_not_live_suffix">, not live</string>
+    <string name="feed_resting_heart_rate">Resting %1$d bpm</string>
+    <string name="feed_sleep_score">Sleep score %1$d</string>
+
+    <string name="edit_cards_title">Edit cards</string>
+    <string name="move_up">Move up</string>
+    <string name="move_down">Move down</string>
+
+    <!-- FeedModels.kt: feedCardTitle() fallback for the non-metric Workouts card. -->
+    <string name="feed_card_title_workouts">Workouts</string>
+
+    <!-- MetricDetailScreen.kt's Header "kind" label. -->
+    <string name="metric_kind_no_data">NO DATA</string>
+    <string name="metric_kind_time_asleep">TIME ASLEEP</string>
+    <string name="metric_kind_avg_time_asleep">AVG. TIME ASLEEP</string>
+    <string name="metric_kind_total">TOTAL</string>
+    <string name="metric_kind_daily_average">DAILY AVERAGE</string>
+    <string name="metric_kind_average">AVERAGE</string>
+    <string name="metric_kind_range">RANGE</string>
+
+    <string name="metric_stat_average">Average</string>
+    <string name="metric_stat_min">Min</string>
+    <string name="metric_stat_max">Max</string>
+    <string name="show_all_data">Show all data</string>
+    <string name="about_metric">About %1$s</string>
+    <string name="sleep_empty">No sleep recorded last night.</string>
+
+    <!-- MetricInsightText.kt: week-over-week / fallback analysis line (pure, JVM-tested — see
+         InsightStrings.ENGLISH default in that file; these resources back a localized override
+         supplied by composable call sites only). -->
+    <string name="insight_verb_averaged">Averaged</string>
+    <string name="insight_verb_slept">Slept</string>
+    <string name="insight_per_day_suffix">/day</string>
+    <string name="insight_sentence">%1$s this week, %2$s.</string>
+    <string name="insight_change_up">+%1$d%% vs last week</string>
+    <string name="insight_change_down">-%1$d%% vs last week</string>
+    <string name="insight_change_steady">about the same as last week</string>
+    <string name="insight_week_range">This week %1$s–%2$s%3$s.</string>
+    <string name="insight_week_average">This week\'s average %1$s%2$s.</string>
+</resources>

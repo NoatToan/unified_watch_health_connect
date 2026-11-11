@@ -11,14 +11,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import com.unified.health.core.designsystem.R
 import com.unified.health.core.model.ConnectionState
 
+@Composable
 fun ConnectionState.label(): String = when (this) {
-    ConnectionState.Connected -> "Connected"
-    ConnectionState.Connecting -> "Connecting…"
-    ConnectionState.Authenticating -> "Authenticating…"
-    ConnectionState.Disconnected -> "Disconnected"
-    is ConnectionState.Error -> "Connection error"
+    ConnectionState.Connected -> stringResource(R.string.connection_state_connected)
+    ConnectionState.Connecting -> stringResource(R.string.connection_state_connecting)
+    ConnectionState.Authenticating -> stringResource(R.string.connection_state_authenticating)
+    ConnectionState.Disconnected -> stringResource(R.string.connection_state_disconnected)
+    is ConnectionState.Error -> stringResource(R.string.connection_state_error)
 }
 
 /** Status is conveyed by text + color dot (never color alone) for accessibility. */
