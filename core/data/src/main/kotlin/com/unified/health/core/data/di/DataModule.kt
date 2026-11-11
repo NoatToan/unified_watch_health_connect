@@ -15,6 +15,7 @@ import com.unified.health.core.data.healthconnect.HealthConnectManager
 import com.unified.health.core.data.link.DefaultDeviceLinkKeeper
 import com.unified.health.core.data.live.DefaultLiveHealthRepository
 import com.unified.health.core.data.pairing.DefaultPairingCodeBroker
+import com.unified.health.core.data.gear.RemoteGearRepository
 import com.unified.health.core.data.races.RemoteRacesRepository
 import com.unified.health.core.domain.repository.DeviceLinkKeeper
 import com.unified.health.core.domain.repository.LiveHealthRepository
@@ -35,6 +36,7 @@ import com.unified.health.core.domain.repository.RacesRepository
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.domain.repository.DemoDataController
+import com.unified.health.core.domain.repository.GearRepository
 import com.unified.health.core.domain.repository.DemoModeController
 import dagger.Binds
 import dagger.BindsOptionalOf
@@ -99,6 +101,12 @@ internal abstract class DataBindingsModule {
     @Binds
     @Singleton
     abstract fun bindRacesRepository(impl: RemoteRacesRepository): RacesRepository
+
+    /** Reference gear catalog (shoes/apparel/accessories) — read-only browsing, not personal health
+     *  data, same rationale/shape as [bindRacesRepository]. */
+    @Binds
+    @Singleton
+    abstract fun bindGearRepository(impl: RemoteGearRepository): GearRepository
 
     /** Bound only in debug builds (`:core:demo`); release injects `Optional.empty()`. */
     @BindsOptionalOf

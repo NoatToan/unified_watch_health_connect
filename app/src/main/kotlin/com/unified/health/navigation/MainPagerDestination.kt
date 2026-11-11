@@ -34,6 +34,7 @@ fun NavGraphBuilder.mainPagerScreen(
     onOpenRaceDetail: (String) -> Unit,
     onOpenAllMetrics: () -> Unit,
     onOpenTraining: () -> Unit,
+    onOpenGear: () -> Unit,
     onSwitchTab: (TopLevelDestination) -> Unit,
 ) {
     composable<MainPagerDestination> {
@@ -50,7 +51,7 @@ fun NavGraphBuilder.mainPagerScreen(
                 )
                 TopLevelDestination.ACTIVITY -> ActivityTabContent(onWorkoutClick = onOpenWorkoutClick)
                 TopLevelDestination.DEVICES -> DevicesTabContent(onOpenDevice = onOpenDeviceClick)
-                TopLevelDestination.PROFILE -> ProfileTabContent(onOpenNotifications = onOpenNotifications)
+                TopLevelDestination.PROFILE -> ProfileTabContent(onOpenNotifications = onOpenNotifications, onOpenGear = onOpenGear)
             }
         }
     }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Bedtime
+import androidx.compose.material.icons.outlined.Checkroom
 import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.material.icons.outlined.Science
@@ -93,8 +94,8 @@ fun NavController.navigateToNotificationSettings() = navigate(NotificationSettin
  * exists (`ProfileRoute` itself stays internal).
  */
 @Composable
-fun ProfileTabContent(onOpenNotifications: () -> Unit) {
-    ProfileRoute(onOpenNotifications = onOpenNotifications)
+fun ProfileTabContent(onOpenNotifications: () -> Unit, onOpenGear: () -> Unit) {
+    ProfileRoute(onOpenNotifications = onOpenNotifications, onOpenGear = onOpenGear)
 }
 
 fun NavGraphBuilder.notificationSettingsScreen(onBack: () -> Unit) {
@@ -202,7 +203,7 @@ sealed interface DeveloperDialog {
 /** Placeholder settings list; most rows are not wired yet (see FEATURES.md §Profile & settings). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ProfileRoute(onOpenNotifications: () -> Unit, viewModel: ProfileViewModel = hiltViewModel()) {
+internal fun ProfileRoute(onOpenNotifications: () -> Unit, onOpenGear: () -> Unit, viewModel: ProfileViewModel = hiltViewModel()) {
     val prefs by viewModel.prefs.collectAsStateWithLifecycle()
     val developer by viewModel.developerStatus.collectAsStateWithLifecycle()
     val demoModeEnabled by viewModel.demoModeEnabled.collectAsStateWithLifecycle()
@@ -274,6 +275,17 @@ internal fun ProfileRoute(onOpenNotifications: () -> Unit, viewModel: ProfileVie
                 headlineContent = { Text("Dynamic color") },
                 supportingContent = { Text("Use wallpaper colors (Android 12+)") },
                 trailingContent = { Switch(checked = prefs.useDynamicColor, onCheckedChange = { viewModel.setDynamicColor(it) }) },
+            )
+            // Reference/discovery content (D-1184/D-1185's closing note), kept here rather than on
+            // Home like the Training guide — the user asked for it as a Profile row, not a daily-use
+            // metric. This row's own label/subtitle stay in plain Vietnamese like the Races/Training
+            // entry points (not routed through the EN-baseline strings.xml localization system).
+            SettingRow(
+                Icons.Outlined.Checkroom,
+                "Trang bị tham khảo",
+                "Giày, quần áo, phụ kiện chạy bộ từ các hãng — xem và mua tại trang hãng",
+                onClick = onOpenGear,
+                modifier = Modifier.testTag("gear_row"),
             )
             HorizontalDivider(Modifier.padding(vertical = Spacing.sm))
             SettingRow(

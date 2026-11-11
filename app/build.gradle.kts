@@ -64,6 +64,7 @@ dependencies {
     implementation(projects.feature.profile)
     implementation(projects.feature.races)
     implementation(projects.feature.training)
+    implementation(projects.feature.gear)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

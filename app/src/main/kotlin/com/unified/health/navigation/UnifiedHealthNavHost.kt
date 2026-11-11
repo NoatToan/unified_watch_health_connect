@@ -9,6 +9,10 @@ import com.unified.health.feature.activity.navigateToWorkoutDetail
 import com.unified.health.feature.activity.workoutDetailScreen
 import com.unified.health.feature.devices.navigation.deviceDetailScreen
 import com.unified.health.feature.devices.navigation.navigateToDeviceDetail
+import com.unified.health.feature.gear.gearDetailScreen
+import com.unified.health.feature.gear.gearScreen
+import com.unified.health.feature.gear.navigateToGear
+import com.unified.health.feature.gear.navigateToGearDetail
 import com.unified.health.feature.home.navigation.allMetricsScreen
 import com.unified.health.feature.home.navigation.metricDataScreen
 import com.unified.health.feature.home.navigation.metricDetailScreen
@@ -62,6 +66,7 @@ fun UnifiedHealthNavHost(
             onOpenRaceDetail = navController::navigateToRaceDetail,
             onOpenAllMetrics = navController::navigateToAllMetrics,
             onOpenTraining = navController::navigateToTraining,
+            onOpenGear = navController::navigateToGear,
             onSwitchTab = onSwitchTab,
         )
         metricDetailScreen(onBack = navController::popBackStack, onShowAllData = navController::navigateToMetricData)
@@ -80,5 +85,7 @@ fun UnifiedHealthNavHost(
         racesScreen(onBack = navController::popBackStack, onOpenRaceDetail = navController::navigateToRaceDetail)
         raceDetailScreen(onBack = navController::popBackStack)
         trainingScreen(onBack = navController::popBackStack)
+        gearScreen(onBack = navController::popBackStack, onOpenGearDetail = navController::navigateToGearDetail)
+        gearDetailScreen(onBack = navController::popBackStack)
     }
 }
