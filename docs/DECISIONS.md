@@ -2805,3 +2805,71 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
   bị xoá assertion cũ. Chưa test trên máy thật/emulator (không có thiết bị khả dụng lúc này) — đã trace
   code path Profile toggle → mỗi ViewModel's `combine(..., preferences.userPreferences)` → UI state →
   composable bằng tay để xác nhận.
+
+## Localization EN/VI: hạ tầng chung + devices + home (D-1184)
+
+- **D-1184** · 2026-11-11 · `values/` (EN) + `values-vi/` cho `core:designsystem`/`feature:devices`/`feature:home`, toggle locale ở Profile — **Chốt**
+  Thực thi D-1040, phần 1/2 (devices + home — 2 module nhiều chữ nhất): 0 → hàng trăm
+  `stringResource(...)` thật. Cơ chế chuyển locale: **chỉ** `AppCompatDelegate.setApplicationLocales`
+  (AppCompat 1.6+ tự persist, không cần field riêng trong `UserPreferences` — tránh 2 nguồn sự thật dễ
+  lệch nhau). Toggle "Language" ở Profile (`ProfileScreen.kt`). String chung (OK/Cancel/Retry/Connect/
+  Disconnect/connection-state/metric label+about/time label "Today"-"Yesterday"-"Last night"/sleep-stage
+  label/duration "hr"-"min"...) đặt ở `core/designsystem/src/main/res/values(-vi)/strings.xml` — mọi
+  feature module đã phụ thuộc sẵn. String riêng từng màn ở `res/` của `feature/devices`,
+  `feature/home`. Nhiều hàm trong `MetricFormat.kt`/`MetricIcons.kt`/`HealthCharts.kt`/
+  `ConnectionStatusChip.kt`/`LiveDot.kt`/`StateViews.kt` đổi thành `@Composable` để đọc
+  `stringResource` — hàm pure cũ (không Composable, dùng trong `MetricInsightTextTest` JVM test) giữ
+  lại song song với default tiếng Anh, thêm wrapper Composable riêng (`formatValueLocalized`,
+  `localizedInsightStrings()`) cho call site Compose.
+  **Known gaps, cố ý để lại** (follow-up riêng, không phải thiếu sót bị bỏ quên): (1) message do
+  ViewModel tự build (snackbar/toast "Added X"/"Sync complete"/...) vẫn tiếng Anh — cần
+  `@ApplicationContext Context` inject vào ViewModel, đụng tới test assert literal string, chưa làm;
+  (2) `HealthMetricType.unit()` (bpm/kcal/kg/km...) giữ nguyên không dịch — coi như đơn vị quốc tế; (3)
+  `compactLabel()` 6 ký tự (HR/RHR/SpO2...) chưa dịch — sợ vỡ layout đã ràng buộc (D-1085/D-1099) mà
+  không có máy thật để verify; (4) a11y description trong `Canvas` `DrawScope` của chart (scrub/axis)
+  chưa dịch — Canvas lambda không phải `@Composable`, ưu tiên thấp (a11y-only).
+  **Merge tay với D-1183 (Imperial units)**: agent làm việc này branch từ trước khi D-1183 merge, nên
+  rebase lên `main` đụng conflict thật (không phải chỉ docs) ở 6 file dùng chung
+  (`MetricFormat.kt`/`MetricInsightText.kt`/`MetricDetailViewModel.kt`/`MetricDetailScreen.kt`/
+  `MetricDataScreen.kt`/`HomeScreen.kt`) — cả 2 việc đều sửa chữ ký `formatValue`/`.unit()`/
+  `metricInsightLine` (1 bên thêm param `unitSystem`, bên này đổi non-Composable → Composable +
+  `InsightStrings`/`stringResource`). Giải quyết tay bằng cách gộp cả 2: giữ `unitSystem` param **và**
+  bản Composable/localized, vd `formatValueLocalized(value, locale, unitSystem, hourUnit, minuteUnit)`.
+  Phát hiện thêm vài call site **không** bị git đánh dấu conflict (context không đổi ở 1 bên) nhưng vẫn
+  sai sau merge vì tham số thứ 4 đổi nghĩa (`metricInsightLine(..., localizedInsightStrings())` từng
+  đúng khi tham số 4 là `strings`, sau merge tham số 4 là `unitSystem` → kiểu sai) — soát tay từng call
+  site của `metricInsightLine`/`formatValue(`/`.unit(` toàn bộ `HomeScreen.kt`/`MetricDetailScreen.kt`
+  để bắt hết, không chỉ sửa đúng vùng `<<<<<<<`.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug` sau
+  rebase → BUILD SUCCESSFUL; soát trực tiếp 70 file `TEST-*.xml` sinh mới, toàn bộ `failures="0"
+  errors="0"`. Chưa xác nhận trực quan EN↔VI trên máy/emulator thật (không có thiết bị khả dụng lúc
+  agent chạy) — xác nhận qua đọc code + build/test xanh.
+
+## Training mode: guide tĩnh luyện tập 5K/10K/21K/42K (D-1185)
+
+- **D-1185** · 2026-11-11 · `feature/training` — guide luyện tập tĩnh, entry point ở cuối Home — **Chốt**
+  Module mới `feature/training` (mirror đúng `feature/races`: `build.gradle.kts` riêng, nav-graph
+  extension `navigateToTraining`/`trainingScreen`), **không** `@HiltViewModel`, không phụ thuộc
+  `core:data`/domain — nội dung tĩnh, tiếng Việt viết trực tiếp trong code (cùng precedent
+  `feature/races`, không qua `values/strings.xml` của D-1040/D-1184 vì đây là nội dung marketing/
+  editorial, không phải app chrome). **Chưa đính gì vào dữ liệu activities/tracking thật của user** —
+  đúng yêu cầu, đây là bước đọc tham khảo trước, cá nhân hoá/liên kết dữ liệu thật là việc sau.
+  Nội dung lấy từ research thật (không bịa số): nguyên lý chung (easy/long run/tempo/interval,
+  run-walk-run/Galloway, taper) + mỗi mốc 5K (Couch to 5K, Galloway, Hal Higdon Novice)/10K (Higdon
+  Novice/Intermediate, Jack Daniels VDOT)/Half 21km (Higdon Novice 1/2, Daniels)/Marathon 42km (Higdon
+  Novice 1/2, Daniels 2Q, Hanson's Marathon Method, Pfitzinger Advanced Marathoning) — nguồn: trang
+  chính thức Hal Higdon, so sánh Hanson's/Pfitzinger, Couch to 5K/Galloway (xem Sources ở response lúc
+  research).
+  Entry point: 1 `ElevatedCard` cuối list `Summary` của Home ("Chế độ luyện tập" + mô tả ngắn), cùng vị
+  trí/lý do với Races carousel (D-1110: nội dung marketing/khám phá đặt sau dữ liệu thật của user, không
+  đặt trước). `HomeScreen.kt` chỉ thêm param xuyên suốt + 1 `item{}` + 1 composable mới ở cuối file —
+  cố ý tối thiểu diff để tránh đụng việc Localization (D-1184) chạy song song cùng sửa file này.
+  **Rebase sau D-1184**: 0 conflict (nhờ diff tối thiểu nói trên).
+  **Verify**: `./gradlew testDebugUnitTest assembleDebug` BUILD SUCCESSFUL; `feature:training`'s
+  `testDebugUnitTest` là NO-SOURCE (đúng — không có logic thuần nào để unit test, chỉ content tĩnh +
+  state expand/collapse cục bộ). Chưa xác nhận trực quan trên máy/emulator thật (không có thiết bị khả
+  dụng lúc agent chạy).
+
+**Việc tương lai đã nêu nhưng chưa làm (ghi để không quên)**: sau "Trang Bị tham khảo" (gear catalog,
+D tiếp theo khi crawler xong) sẽ có "tủ đồ" — user add sản phẩm đã sở hữu (kèm chọn màu/variant), có
+yếu tố gamification nhẹ; xa hơn là community khoe trang bị. Cần Room entity mới (OwnedGear) khi tới lúc.

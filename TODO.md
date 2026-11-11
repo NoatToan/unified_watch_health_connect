@@ -35,14 +35,22 @@ Protocol gaps per brand: `docs/protocols/<BRAND>_IMPLEMENTATION_BRIEF.md` (items
 - [ ] Charts: swipe to previous periods, tap a bar to inspect, a data-source priority screen.
 - [ ] Device-native hourly distance/energy/exercise for the Day view (currently split by step share, D-207).
 - [ ] Record types for blood pressure, temperature, weight and body composition (stored as raw payloads today).
+- [ ] Training mode (D-1185 shipped the static 5K/10K/21K/42K guide, `feature/training`, entry on Home) —
+  not personalized at all yet: no link to the user's own workout history, no "pick a plan and track
+  progress against it". That's the natural next step whenever it's wanted.
 - [ ] Weight data source (manual entry as its own record type; D-1183 wired Imperial/Metric *display*
   for distance/weight across Home + Activity — this item is now just about where weight values
   themselves come from, not units).
-- [ ] Localization: move hard-coded UI strings to `strings.xml`, add `values-vi`. D-1040 already decided
-  the structure (shared strings in `core/designsystem`, per-screen in each `feature/*`, EN baseline +
-  VI toggle via `AppCompatDelegate.setApplicationLocales`) and the module order (devices → home →
-  profile → app/notifications → activity → onboarding), but it's not implemented: 0 `stringResource(`
-  calls in the codebase, no `values-vi/` folder yet.
+- [ ] Localization (D-1184 did `core/designsystem` + `feature/devices` + `feature/home` + the Profile
+  EN/VI toggle — still open: `feature/profile`'s own content, `feature/activity`, `feature/onboarding`,
+  `feature/races`, `app/.../notifications/`'s 1 string, and the known gaps D-1184 left on purpose
+  (ViewModel-built snackbar/toast text, `compactLabel()`, chart a11y descriptions in `HealthCharts.kt`).
+- [ ] "Trang Bị tham khảo" (gear reference) screen in the app — the crawler side (shoes/apparel/
+  accessories from running brands, with color variants) is in progress in `unified_health_service`;
+  this Android screen consumes it once that schema is final. Follow-up after that: a personal "tủ đồ"
+  (wardrobe) — user adds a product + picks which color variant they own, light gamification to
+  encourage engagement (new Room entity, e.g. `OwnedGear`); further out, a community feature to show
+  off owned gear. None of this is built yet — gear catalog screen is next, wardrobe/community after.
 
 ## Release
 
