@@ -23,6 +23,8 @@ import com.unified.health.feature.races.navigateToRaceDetail
 import com.unified.health.feature.races.navigateToRaces
 import com.unified.health.feature.races.raceDetailScreen
 import com.unified.health.feature.races.racesScreen
+import com.unified.health.feature.training.navigateToTraining
+import com.unified.health.feature.training.trainingScreen
 
 /**
  * One flat back stack for the whole app: onboarding, [MainPagerDestination] (the 4 swipeable
@@ -59,6 +61,7 @@ fun UnifiedHealthNavHost(
             onOpenRaces = navController::navigateToRaces,
             onOpenRaceDetail = navController::navigateToRaceDetail,
             onOpenAllMetrics = navController::navigateToAllMetrics,
+            onOpenTraining = navController::navigateToTraining,
             onSwitchTab = onSwitchTab,
         )
         metricDetailScreen(onBack = navController::popBackStack, onShowAllData = navController::navigateToMetricData)
@@ -76,5 +79,6 @@ fun UnifiedHealthNavHost(
         notificationSettingsScreen(onBack = navController::popBackStack)
         racesScreen(onBack = navController::popBackStack, onOpenRaceDetail = navController::navigateToRaceDetail)
         raceDetailScreen(onBack = navController::popBackStack)
+        trainingScreen(onBack = navController::popBackStack)
     }
 }

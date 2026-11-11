@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.DirectionsRun
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.outlined.TrendingDown
 import androidx.compose.material.icons.automirrored.outlined.TrendingFlat
@@ -147,6 +148,7 @@ internal fun HomeRoute(
     onOpenRaces: () -> Unit,
     onOpenRaceDetail: (String) -> Unit,
     onOpenAllMetrics: () -> Unit,
+    onOpenTraining: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -167,6 +169,7 @@ internal fun HomeRoute(
         onOpenRaces = onOpenRaces,
         onOpenRaceDetail = onOpenRaceDetail,
         onOpenAllMetrics = onOpenAllMetrics,
+        onOpenTraining = onOpenTraining,
         onFeedCardsChanged = viewModel::setFeedCards,
         onMetricsViewModeChange = viewModel::setMetricsViewMode,
     )
@@ -194,6 +197,7 @@ internal fun HomeScreen(
     onOpenRaces: () -> Unit = {},
     onOpenRaceDetail: (String) -> Unit = {},
     onOpenAllMetrics: () -> Unit = {},
+    onOpenTraining: () -> Unit = {},
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit = { _, _ -> },
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit = {},
 ) {
@@ -241,6 +245,7 @@ internal fun HomeScreen(
                     onOpenRaces = onOpenRaces,
                     onOpenRaceDetail = onOpenRaceDetail,
                     onOpenAllMetrics = onOpenAllMetrics,
+                    onOpenTraining = onOpenTraining,
                     onFeedCardsChanged = onFeedCardsChanged,
                     onMetricsViewModeChange = onMetricsViewModeChange,
                     listState = listState,
@@ -340,6 +345,7 @@ private fun Summary(
     onOpenRaces: () -> Unit,
     onOpenRaceDetail: (String) -> Unit,
     onOpenAllMetrics: () -> Unit,
+    onOpenTraining: () -> Unit,
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit,
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit,
     listState: LazyListState,
@@ -421,6 +427,12 @@ private fun Summary(
                     homeListState = listState,
                 )
             }
+        }
+        // Same "marketing/discovery content goes last, not above the user's own data" placement as
+        // the Races carousel above (D-1110) — this is Home's entry point into the read-only
+        // feature/training reference guide, not a tie-in to the user's own activity/workout data.
+        item {
+            TrainingEntryCard(onClick = onOpenTraining, modifier = Modifier.padding(horizontal = Spacing.lg))
         }
     }
     if (editingFeed) {
@@ -764,6 +776,38 @@ private fun RacesCarousel(
                 if (nextIndex > races.lastIndex) return@LaunchedEffect
                 listState.animateScrollToItem(nextIndex)
             }
+        }
+    }
+}
+
+/**
+ * Home's entry point into `feature/training`'s static "Chế độ luyện tập" reference guide — a plain
+ * row card (icon, title, one-line teaser, chevron), the same shape as [WorkoutsFeedCard] but without
+ * any live data of its own since the destination is purely static reference content, not tied to the
+ * user's own activity/workout data.
+ */
+@Composable
+private fun TrainingEntryCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().testTag("training_entry_card")) {
+        Row(Modifier.padding(Spacing.lg).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                Icons.AutoMirrored.Outlined.DirectionsRun,
+                contentDescription = null,
+                tint = UnifiedHealthTheme.metricColors.exercise,
+                modifier = Modifier.size(28.dp),
+            )
+            Spacer(Modifier.width(Spacing.md))
+            Column(Modifier.weight(1f)) {
+                Text("Chế độ luyện tập", style = MaterialTheme.typography.titleSmall)
+                Text(
+                    "Lộ trình tập chạy cho 5K, 10K, Half và Full marathon",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
