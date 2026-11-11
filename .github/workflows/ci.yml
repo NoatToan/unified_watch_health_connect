@@ -27,11 +27,17 @@ jobs:
           distribution: temurin
           java-version: "21"
 
-      # compileSdk/build-tools versions in gradle/libs.versions.toml are ahead of what the
-      # ubuntu-latest image ships; this installs cmdline-tools and accepts licenses so AGP's
-      # own auto-download (gradle.properties doesn't disable it) can fetch whatever is missing.
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      # ubuntu-latest already ships a recent Android SDK (ANDROID_HOME/cmdline-tools) with licenses
+      # pre-accepted for common components. We only need to accept licenses for anything newer
+      # (compileSdk/build-tools in gradle/libs.versions.toml can be ahead of the image) so AGP's own
+      # auto-download (gradle.properties doesn't disable it) can fetch whatever is missing.
+      #
+      # D-1187: android-actions/setup-android@v3 was tried first and failed every run — it calls
+      # `sdkmanager "tools"`, a package Google removed from the SDK repository years ago, and throws
+      # instead of ignoring the one missing legacy package. Using the runner's own sdkmanager avoids
+      # that unmaintained action entirely.
+      - name: Accept Android SDK licenses
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4

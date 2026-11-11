@@ -2901,3 +2901,18 @@ yếu tố gamification nhẹ; xa hơn là community khoe trang bị. Cần Room
   `variants: []` và Puma's variants có data) thay cho test trên device.
   `GearDetailViewModel` không có unit test riêng — giống đúng precedent `RaceDetailViewModel` (cả 2
   dùng `SavedStateHandle.toRoute<>()`, cần `Bundle` Android thật, JVM unit test thuần không chạy được).
+
+## Fix D-1182's CI: android-actions/setup-android@v3 crashes on every run (D-1187)
+
+- **D-1187** · 2026-11-11 · Bỏ `android-actions/setup-android@v3`, dùng `sdkmanager` có sẵn trên runner — **Chốt**
+  Push đầu tiên của D-1182's `ci.yml` lên GitHub chạy thật, fail 100% ở bước "Set up Android SDK" —
+  không phải vì compileSdk 37 quá mới như lo trước (D-1182's ghi chú), mà vì action
+  `android-actions/setup-android@v3` tự gọi `sdkmanager "tools"` — package `tools` đã bị Google xoá
+  khỏi SDK repository từ nhiều năm trước, action throw lỗi cứng thay vì bỏ qua 1 package legacy không
+  tồn tại (`Error: The process '.../sdkmanager' failed with exit code 1`, run
+  `42960221272`/job `130324716472`). Sửa: bỏ hẳn action này, dùng trực tiếp `sdkmanager` đã có sẵn
+  trong SDK cài kèm image `ubuntu-latest` (`$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager
+  --licenses`) — license phổ biến đã accept sẵn trên image, bước này chỉ cần accept thêm license cho
+  version SDK mới hơn image nếu AGP cần auto-download.
+  **Chưa verify được chạy thật lại trên GitHub** (fix này đang nằm trên worktree branch, chưa push) —
+  push xong cần xem tab Actions 1 lần nữa để xác nhận.
