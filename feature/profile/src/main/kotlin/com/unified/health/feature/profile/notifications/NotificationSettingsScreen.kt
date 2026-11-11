@@ -56,6 +56,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.permission.RuntimePermissions
+import com.unified.health.core.designsystem.theme.ChromeRipple
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.domain.model.DefaultMetricThresholds
 import java.text.NumberFormat
@@ -102,7 +103,8 @@ internal fun NotificationSettingsScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Notifications") },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } },
+                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
+                navigationIcon = { ChromeRipple { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } } },
             )
         },
     ) { padding ->

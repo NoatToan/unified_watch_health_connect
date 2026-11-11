@@ -32,7 +32,6 @@ fun NavGraphBuilder.mainPagerScreen(
     onOpenNotifications: () -> Unit,
     onOpenRaces: () -> Unit,
     onOpenRaceDetail: (String) -> Unit,
-    onOpenAllMetrics: () -> Unit,
     onOpenTraining: () -> Unit,
     onOpenGear: () -> Unit,
     onSwitchTab: (TopLevelDestination) -> Unit,
@@ -46,7 +45,6 @@ fun NavGraphBuilder.mainPagerScreen(
                     onOpenWorkouts = { onSwitchTab(TopLevelDestination.ACTIVITY) },
                     onOpenRaces = onOpenRaces,
                     onOpenRaceDetail = onOpenRaceDetail,
-                    onOpenAllMetrics = onOpenAllMetrics,
                     onOpenTraining = onOpenTraining,
                 )
                 TopLevelDestination.ACTIVITY -> ActivityTabContent(onWorkoutClick = onOpenWorkoutClick)

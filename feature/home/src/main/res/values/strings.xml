@@ -3,7 +3,6 @@
      :core:designsystem instead — see its res/values/strings.xml. -->
 <resources>
     <string name="home_title">Home</string>
-    <string name="all_metrics_title">All metrics</string>
 
     <string name="metrics_section_title">Metrics</string>
     <string name="see_all">See all</string>

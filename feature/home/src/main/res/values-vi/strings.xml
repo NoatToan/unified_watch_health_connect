@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="home_title">Trang chủ</string>
-    <string name="all_metrics_title">Tất cả chỉ số</string>
 
     <string name="metrics_section_title">Chỉ số</string>
     <string name="see_all">Xem tất cả</string>

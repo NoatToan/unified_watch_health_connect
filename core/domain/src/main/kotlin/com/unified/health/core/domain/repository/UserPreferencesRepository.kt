@@ -27,4 +27,7 @@ interface UserPreferencesRepository {
 
     /** D-1074: persists the List/Grid toggle (D-1073) on Home's "All metrics" section. */
     suspend fun setHomeMetricsViewMode(mode: HomeMetricsViewMode)
+
+    /** Debug-only Developer section toggle (D-1188): show every Home metric card, including no-data ones. */
+    suspend fun setShowEmptyMetricCards(enabled: Boolean)
 }

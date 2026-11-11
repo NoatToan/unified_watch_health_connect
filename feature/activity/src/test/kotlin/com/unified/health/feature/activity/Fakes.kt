@@ -82,4 +82,5 @@ class FakeUserPreferencesRepository : UserPreferencesRepository {
     override suspend fun setPinnedMetrics(metrics: List<HealthMetricType>) = Unit
     override suspend fun setFeedCards(order: List<String>, hidden: Set<String>) = Unit
     override suspend fun setHomeMetricsViewMode(mode: HomeMetricsViewMode) = Unit
+    override suspend fun setShowEmptyMetricCards(enabled: Boolean) = Unit
 }

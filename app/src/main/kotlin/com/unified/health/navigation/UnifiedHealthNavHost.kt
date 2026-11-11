@@ -13,10 +13,8 @@ import com.unified.health.feature.gear.gearDetailScreen
 import com.unified.health.feature.gear.gearScreen
 import com.unified.health.feature.gear.navigateToGear
 import com.unified.health.feature.gear.navigateToGearDetail
-import com.unified.health.feature.home.navigation.allMetricsScreen
 import com.unified.health.feature.home.navigation.metricDataScreen
 import com.unified.health.feature.home.navigation.metricDetailScreen
-import com.unified.health.feature.home.navigation.navigateToAllMetrics
 import com.unified.health.feature.home.navigation.navigateToMetricData
 import com.unified.health.feature.home.navigation.navigateToMetricDetail
 import com.unified.health.feature.onboarding.navigation.OnboardingDestination
@@ -64,21 +62,12 @@ fun UnifiedHealthNavHost(
             onOpenNotifications = navController::navigateToNotificationSettings,
             onOpenRaces = navController::navigateToRaces,
             onOpenRaceDetail = navController::navigateToRaceDetail,
-            onOpenAllMetrics = navController::navigateToAllMetrics,
             onOpenTraining = navController::navigateToTraining,
             onOpenGear = navController::navigateToGear,
             onSwitchTab = onSwitchTab,
         )
         metricDetailScreen(onBack = navController::popBackStack, onShowAllData = navController::navigateToMetricData)
         metricDataScreen(onBack = navController::popBackStack)
-        allMetricsScreen(
-            onBack = navController::popBackStack,
-            onMetricClick = navController::navigateToMetricDetail,
-            // Same "tap Workouts -> go to the Activity tab" behavior as Home's own card (onOpenWorkouts
-            // there just switches the pager's tab); from this pushed screen that means popping back to
-            // reveal MainPagerDestination underneath, then switching it to Activity.
-            onOpenWorkouts = { navController.popBackStack(); onSwitchTab(TopLevelDestination.ACTIVITY) },
-        )
         workoutDetailScreen(onBack = navController::popBackStack)
         deviceDetailScreen(onBack = navController::popBackStack)
         notificationSettingsScreen(onBack = navController::popBackStack)

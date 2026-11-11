@@ -5,7 +5,11 @@ import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,14 +19,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.geometry.Offset
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.unified.health.core.designsystem.theme.NoRippleConfiguration
 import com.unified.health.navigation.MainPagerDestination
 import com.unified.health.navigation.TopLevelDestination
 import com.unified.health.navigation.UnifiedHealthNavHost
@@ -102,6 +110,29 @@ fun UnifiedHealthApp(
     // RacesCarousel — also left alone here, since it isn't "reading a list" either); only the former
     // is allowed to touch pillVisible at all.
     var pillVisible by remember { mutableStateOf(true) }
+
+    // D-1190: `pillVisible` already defaults to true, but it must also come back to true every time
+    // the main pager is (re)reached, not just on the very first composition — e.g. right after
+    // onboarding finishes (NavHost's transition can carry over a stray scroll-driven hide from the
+    // screen that just left composition), or returning from a detail screen pushed on top (Metric
+    // detail, Device detail, ...), which may have left `pillVisible` false if the user had scrolled
+    // down on the main pager before navigating away from it.
+    LaunchedEffect(onMainPager) {
+        if (onMainPager) pillVisible = true
+    }
+
+    // D-1190: also reset to visible when the app returns to the foreground (Home/recents, then back)
+    // — otherwise a pill hidden by scrolling down before backgrounding would stay hidden on resume,
+    // with no scroll-up gesture having happened for `scrollFadeConnection` below to react to.
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) pillVisible = true
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+
     val scrollFadeConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -119,13 +150,22 @@ fun UnifiedHealthApp(
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        UnifiedHealthNavHost(
-            navController = navController,
-            startWithOnboarding = startWithOnboarding,
-            pagerState = pagerState,
-            onSwitchTab = switchTab,
-            modifier = Modifier.fillMaxSize().nestedScroll(scrollFadeConnection),
-        )
+        // D-1189: no ripple by default for a screen's own content (cards, list rows, buttons) —
+        // `PillBottomNavigation` below sits outside this provider entirely and keeps normal ripple
+        // (it already overrides `indication = null` on its own tabs regardless, D-1091, so this
+        // provider would have been a no-op there either way). See `ChromeRipple` (core:designsystem)
+        // for restoring it around a `TopAppBar`'s own navigationIcon/actions, since each screen's
+        // TopAppBar is defined inside that screen's own composable (there is no separate shared
+        // chrome layer to exempt it at this boundary).
+        CompositionLocalProvider(LocalRippleConfiguration provides NoRippleConfiguration) {
+            UnifiedHealthNavHost(
+                navController = navController,
+                startWithOnboarding = startWithOnboarding,
+                pagerState = pagerState,
+                onSwitchTab = switchTab,
+                modifier = Modifier.fillMaxSize().nestedScroll(scrollFadeConnection),
+            )
+        }
         if (onMainPager) {
             PillBottomNavigation(
                 pagerState = pagerState,

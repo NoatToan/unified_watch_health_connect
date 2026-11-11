@@ -52,6 +52,9 @@ class ProfileViewModelTest {
         override suspend fun setPinnedMetrics(metrics: List<HealthMetricType>) = Unit
         override suspend fun setFeedCards(order: List<String>, hidden: Set<String>) = Unit
         override suspend fun setHomeMetricsViewMode(mode: HomeMetricsViewMode) = Unit
+        override suspend fun setShowEmptyMetricCards(enabled: Boolean) {
+            userPreferences.update { it.copy(showEmptyMetricCards = enabled) }
+        }
     }
 
     private class FakeDemoDataController : DemoDataController {
@@ -203,6 +206,20 @@ class ProfileViewModelTest {
 
         viewModel.setCalorieGoalOverride(null)
         assertNull("clearing an override falls back to the default", viewModel.prefs.value.activeCalorieGoalOverride)
+    }
+
+    @Test
+    fun `show empty metric cards toggle is persisted directly, defaults off`() = runTest(dispatcher) {
+        val prefs = FakeUserPreferences()
+        val viewModel = ProfileViewModel(prefs, Optional.empty(), Optional.empty())
+        backgroundScope.launch { viewModel.prefs.collect {} }
+        assertFalse("off by default", viewModel.prefs.value.showEmptyMetricCards)
+
+        viewModel.setShowEmptyMetricCards(true)
+        assertTrue(viewModel.prefs.value.showEmptyMetricCards)
+
+        viewModel.setShowEmptyMetricCards(false)
+        assertFalse(viewModel.prefs.value.showEmptyMetricCards)
     }
 
     @Test

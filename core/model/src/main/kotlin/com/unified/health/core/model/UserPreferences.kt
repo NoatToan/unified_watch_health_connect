@@ -31,6 +31,12 @@ data class UserPreferences(
     val hiddenFeedCards: Set<String> = emptySet(),
     /** D-1074: persists the List/Grid toggle (D-1073) on Home's "All metrics" section. */
     val homeMetricsViewMode: HomeMetricsViewMode = HomeMetricsViewMode.GRID,
+    /** Debug-only (Profile's Developer section, D-1188): when true, Home's Metrics section skips
+     *  its own "hide cards with no data" filter and shows every card, including empty ones. The
+     *  toggle that flips this is only ever rendered in debug/androidTest builds (same
+     *  `:core:demo`-presence gate as the rest of the Developer section), so this stays false for
+     *  every real user. */
+    val showEmptyMetricCards: Boolean = false,
 ) {
     companion object {
         val DEFAULT_PINNED_METRICS: List<HealthMetricType> = listOf(

@@ -61,6 +61,9 @@ sealed interface HomeUiState {
         val syncState: SyncState = SyncState.Idle,
         /** D-1183: Metric (km/kg) vs Imperial (mi/lb) distance/weight display, from Profile's toggle. */
         val unitSystem: UnitSystem = UnitSystem.METRIC,
+        /** D-1188: Profile's debug-only Developer section toggle — when true, skips the "hide cards
+         *  with no data" filter below so every metric card renders, empty ones included. */
+        val showEmptyMetricCards: Boolean = false,
     ) : HomeUiState
     data class Error(val message: String) : HomeUiState
 }
@@ -133,8 +136,12 @@ class HomeViewModel @Inject constructor(
     private val unitSystem: Flow<UnitSystem> =
         preferences.userPreferences.map { it.unitSystem }.distinctUntilChanged()
 
+    /** D-1188: Profile's debug-only Developer section toggle. */
+    private val showEmptyMetricCards: Flow<Boolean> =
+        preferences.userPreferences.map { it.showEmptyMetricCards }.distinctUntilChanged()
+
     val uiState: StateFlow<HomeUiState> =
-        combine(header, feedBundle, metricsViewMode, unitSystem) { state, feed, viewMode, units ->
+        combine(header, feedBundle, metricsViewMode, unitSystem, showEmptyMetricCards) { state, feed, viewMode, units, showEmpty ->
             val enriched = feed.cards.map { card ->
                 when {
                     card !is FeedCardData.Metric -> card
@@ -149,6 +156,7 @@ class HomeViewModel @Inject constructor(
                 hiddenFeedCards = feed.hidden,
                 metricsViewMode = viewMode,
                 unitSystem = units,
+                showEmptyMetricCards = showEmpty,
             ) as HomeUiState
         }
             .catch { emit(HomeUiState.Error(it.message ?: "Unable to load data")) }

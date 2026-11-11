@@ -32,6 +32,7 @@ import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.formatValueLocalized
 import com.unified.health.core.designsystem.component.label
 import com.unified.health.core.designsystem.component.unit
+import com.unified.health.core.designsystem.theme.ChromeRipple
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.UserPreferencesRepository
@@ -92,7 +93,8 @@ internal fun MetricDataScreen(state: MetricDataUiState, onBack: () -> Unit) {
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.all_recorded_data_title)) },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back)) } },
+                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
+                navigationIcon = { ChromeRipple { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back)) } } },
             )
         },
     ) { padding ->

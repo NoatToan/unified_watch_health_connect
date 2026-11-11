@@ -54,6 +54,7 @@ import com.unified.health.core.designsystem.component.compactNumber
 import com.unified.health.core.designsystem.component.formatValueLocalized
 import com.unified.health.core.designsystem.component.label
 import com.unified.health.core.designsystem.component.unit
+import com.unified.health.core.designsystem.theme.ChromeRipple
 import com.unified.health.core.designsystem.theme.MetricValueTextStyle
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
@@ -93,8 +94,12 @@ internal fun MetricDetailScreen(
             TopAppBar(
                 title = { Text(metric.label()) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back))
+                    // D-1189: this TopAppBar's own icon is app chrome, not this screen's content —
+                    // restores the normal ripple `UnifiedHealthApp` otherwise zeroes out by default.
+                    ChromeRipple {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back))
+                        }
                     }
                 },
             )

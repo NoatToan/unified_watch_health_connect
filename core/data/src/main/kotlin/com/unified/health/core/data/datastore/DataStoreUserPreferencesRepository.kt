@@ -41,6 +41,9 @@ class DataStoreUserPreferencesRepository @Inject constructor(
 
         /** D-1074: [HomeMetricsViewMode] name. */
         val homeMetricsViewMode = stringPreferencesKey("home_metrics_view_mode")
+
+        /** D-1188: Profile's debug-only Developer section toggle. */
+        val showEmptyMetricCards = booleanPreferencesKey("show_empty_metric_cards")
     }
 
     override val userPreferences: Flow<UserPreferences> = dataStore.data.map { p ->
@@ -58,6 +61,7 @@ class DataStoreUserPreferencesRepository @Inject constructor(
             hiddenFeedCards = p[Keys.hiddenFeedCards]?.let(::parseFeedCardIds)?.toSet() ?: defaults.hiddenFeedCards,
             homeMetricsViewMode = p[Keys.homeMetricsViewMode]?.let { runCatching { HomeMetricsViewMode.valueOf(it) }.getOrNull() }
                 ?: defaults.homeMetricsViewMode,
+            showEmptyMetricCards = p[Keys.showEmptyMetricCards] ?: defaults.showEmptyMetricCards,
         )
     }
 
@@ -105,6 +109,10 @@ class DataStoreUserPreferencesRepository @Inject constructor(
 
     override suspend fun setHomeMetricsViewMode(mode: HomeMetricsViewMode) {
         dataStore.edit { it[Keys.homeMetricsViewMode] = mode.name }
+    }
+
+    override suspend fun setShowEmptyMetricCards(enabled: Boolean) {
+        dataStore.edit { it[Keys.showEmptyMetricCards] = enabled }
     }
 
     /** Unknown names (a metric removed in a later version) are skipped. */

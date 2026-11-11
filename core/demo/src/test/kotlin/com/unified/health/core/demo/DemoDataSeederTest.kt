@@ -44,6 +44,7 @@ class DemoDataSeederTest {
         override suspend fun setPinnedMetrics(metrics: List<HealthMetricType>) = Unit
         override suspend fun setFeedCards(order: List<String>, hidden: Set<String>) = Unit
         override suspend fun setHomeMetricsViewMode(mode: HomeMetricsViewMode) = Unit
+        override suspend fun setShowEmptyMetricCards(enabled: Boolean) = Unit
     }
     private val repository = LocalHealthDataRepository(dao, prefs)
     private val charted = HealthMetricType.entries - HealthMetricType.WEIGHT

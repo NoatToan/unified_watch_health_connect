@@ -18,6 +18,7 @@ import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.material.icons.outlined.Science
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.Flag
+import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.HealthAndSafety
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LocalFireDepartment
@@ -186,6 +187,9 @@ class ProfileViewModel @Inject constructor(
 
     /** Null resets to [MetricThresholds.sleepDurationHours]'s default. */
     fun setSleepGoalOverride(hours: Int?) = viewModelScope.launch { preferences.setSleepGoalHoursOverride(hours) }
+
+    /** D-1188: Developer-only — Home's Metrics section shows every card, including no-data ones, while on. */
+    fun setShowEmptyMetricCards(enabled: Boolean) = viewModelScope.launch { preferences.setShowEmptyMetricCards(enabled) }
 }
 
 sealed interface DeveloperStatus {
@@ -306,6 +310,8 @@ internal fun ProfileRoute(onOpenNotifications: () -> Unit, onOpenGear: () -> Uni
                     onToggleDemoMode = viewModel::onDemoModeSwitch,
                     onFill = viewModel::fillDemoData,
                     onRequestClear = viewModel::requestClearDemoData,
+                    showEmptyMetricCards = prefs.showEmptyMetricCards,
+                    onToggleShowEmptyMetricCards = viewModel::setShowEmptyMetricCards,
                 )
             }
         }
@@ -470,6 +476,8 @@ private fun DeveloperSection(
     onToggleDemoMode: (Boolean) -> Unit,
     onFill: () -> Unit,
     onRequestClear: () -> Unit,
+    showEmptyMetricCards: Boolean,
+    onToggleShowEmptyMetricCards: (Boolean) -> Unit,
 ) {
     HorizontalDivider(Modifier.padding(vertical = Spacing.sm))
     Text(
@@ -506,6 +514,24 @@ private fun DeveloperSection(
             supportingContent = { Text("Delete only demo-seeded data; real watch data is kept") },
         )
     }
+    // D-1188: Home's "Xem tất cả" escape hatch (D-1119) was removed for normal use — Home now always
+    // filters its Metrics section to cards that have data. This toggle moves that debugging
+    // capability here instead: while on, Home shows every metric card, empty ones included, right
+    // there on Home itself (no separate screen). Independent of "Demo mode" above — useful with or
+    // without virtual watches filling data.
+    ListItem(
+        modifier = Modifier.testTag("show_empty_metric_cards_row"),
+        leadingContent = { Icon(Icons.Outlined.GridView, contentDescription = null) },
+        headlineContent = { Text("Show empty metric cards") },
+        supportingContent = { Text("Home's Metrics section shows every card, including ones with no data") },
+        trailingContent = {
+            Switch(
+                checked = showEmptyMetricCards,
+                onCheckedChange = onToggleShowEmptyMetricCards,
+                modifier = Modifier.testTag("show_empty_metric_cards_switch"),
+            )
+        },
+    )
     when (status) {
         DeveloperStatus.Idle -> Unit
         is DeveloperStatus.Working -> LinearProgressIndicator(Modifier.fillMaxWidth().padding(horizontal = Spacing.lg))
