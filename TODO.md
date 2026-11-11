@@ -45,12 +45,11 @@ Protocol gaps per brand: `docs/protocols/<BRAND>_IMPLEMENTATION_BRIEF.md` (items
   EN/VI toggle — still open: `feature/profile`'s own content, `feature/activity`, `feature/onboarding`,
   `feature/races`, `app/.../notifications/`'s 1 string, and the known gaps D-1184 left on purpose
   (ViewModel-built snackbar/toast text, `compactLabel()`, chart a11y descriptions in `HealthCharts.kt`).
-- [ ] "Trang Bị tham khảo" (gear reference) screen in the app — the crawler side (shoes/apparel/
-  accessories from running brands, with color variants) is in progress in `unified_health_service`;
-  this Android screen consumes it once that schema is final. Follow-up after that: a personal "tủ đồ"
-  (wardrobe) — user adds a product + picks which color variant they own, light gamification to
-  encourage engagement (new Room entity, e.g. `OwnedGear`); further out, a community feature to show
-  off owned gear. None of this is built yet — gear catalog screen is next, wardrobe/community after.
+- [ ] "Tủ đồ" (wardrobe) follow-up to D-1186's gear catalog (`feature/gear`, Profile entry, read-only
+  browse + color picker, live): let the user add a product + the color variant they own, light
+  gamification to encourage engagement (needs a new Room entity, e.g. `OwnedGear`, referencing the
+  catalog item id + chosen color). Further out: a community feature to show off owned gear. Neither is
+  built yet.
 
 ## Release
 

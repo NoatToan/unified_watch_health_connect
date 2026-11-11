@@ -2873,3 +2873,31 @@ là số cao nhất đã dùng tại thời điểm phát hiện trùng lần 2.
 **Việc tương lai đã nêu nhưng chưa làm (ghi để không quên)**: sau "Trang Bị tham khảo" (gear catalog,
 D tiếp theo khi crawler xong) sẽ có "tủ đồ" — user add sản phẩm đã sở hữu (kèm chọn màu/variant), có
 yếu tố gamification nhẹ; xa hơn là community khoe trang bị. Cần Room entity mới (OwnedGear) khi tới lúc.
+
+## Trang Bị tham khảo: catalog gear đọc-chỉ, chưa tủ đồ (D-1186)
+
+- **D-1186** · 2026-11-11 · `feature/gear` — browse giày/quần áo/phụ kiện từ PUMA VN + Salomon VN, chọn màu, link-out mua — **Chốt**
+  Mirror đúng pipeline Races: `core/model` (`GearItem`/`GearVariant`/`GearCategory`), `core/domain`
+  (`GearRepository`/`GearState`), `core/data` (`GearFeedDto`/`RemoteGearRepository` — fetch + cache
+  DataStore 24h + last-known-good khi refresh fail, giống hệt `RemoteRacesRepository`), Hilt binding
+  trong `DataModule.kt`. Nguồn data: `https://noattoan.github.io/unified_health_service/gear/latest.json`
+  (crawler riêng, xem phần "Gear crawler" research research trước đó cùng ngày — 137 sản phẩm, PUMA +
+  Salomon VN, variants màu thật khi nguồn có, rỗng khi không).
+  **Entry point: Profile, không phải Home** (đúng yêu cầu user, khác Training mode D-1185 vốn ở Home) —
+  1 row "Trang bị tham khảo" thêm sau Dynamic Color, trước divider Notifications.
+  Màn chi tiết có color-swatch picker (chọn màu → đổi ảnh hiển thị + đổi `productUrl` link-out tương
+  ứng) — cố ý xây interaction "chọn 1 màu cụ thể" ngay từ v1 làm nền cho việc sau: **tủ đồ** (user add
+  sản phẩm + màu đã sở hữu, gamification nhẹ) và xa hơn là **community khoe trang bị** (đã nêu trong
+  D-1184/D-1185's closing note) — **chưa làm** trong D-1186 này, chỉ mới browse đọc-chỉ, không Room
+  entity `OwnedGear`, không tracking gì cả.
+  Link-out dùng `Intent.ACTION_VIEW` thẳng ra browser (không qua Chrome Custom Tabs như Races dùng cho
+  đăng ký giải) — 1 click mua ở storefront vendor không cần giữ "ở lại app" như luồng đăng ký race.
+  VND format: tái dùng `formatVnd` đã có sẵn ở `RaceCard.kt`, không viết formatter mới.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug` BUILD
+  SUCCESSFUL; `RemoteGearRepositoryTest` (8 test, mirror `RemoteRacesRepositoryTest`) +
+  `GearViewModelTest` (5 test) — soát trực tiếp XML, `failures="0" errors="0"` cả 2. `app-debug.apk`
+  sinh thật (không UP-TO-DATE giả). Chưa xác nhận trực quan trên máy/emulator thật (không có thiết bị
+  khả dụng) — đã verify shape/edge case của feed thật qua `curl` trực tiếp (bao gồm Salomon's
+  `variants: []` và Puma's variants có data) thay cho test trên device.
+  `GearDetailViewModel` không có unit test riêng — giống đúng precedent `RaceDetailViewModel` (cả 2
+  dùng `SavedStateHandle.toRoute<>()`, cần `Bundle` Android thật, JVM unit test thuần không chạy được).
