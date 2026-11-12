@@ -1,0 +1,30 @@
+package com.chipsea.health;
+
+/* JADX INFO: loaded from: classes4.dex */
+public class CSAlgorithmUtils {
+    public native float getBFR(float f, byte b2, float f2, int i, int i2, int i3);
+
+    public native float getBMR(float f, byte b2, float f2, int i, int i2, int i3);
+
+    public native int getBodyAge(float f, byte b2, float f2, int i, int i2, int i3);
+
+    public native float getMSW(float f, byte b2, float f2, int i, int i2, int i3);
+
+    public native float getPM(float f, byte b2, float f2, int i, int i2, int i3);
+
+    public native int getResistance(float f, byte b2, float f2, int i, float f3);
+
+    public native float getSLM(float f, byte b2, float f2, int i, int i2, int i3);
+
+    public native float getSMM(float f, byte b2, float f2, int i, int i2, int i3);
+
+    public native int getScore(float f, byte b2, float f2, int i, int i2, int i3);
+
+    public native float getTFR(float f, byte b2, float f2, int i, int i2, int i3);
+
+    public native float getVFR(float f, byte b2, float f2, int i, int i2, int i3);
+
+    static {
+        System.loadLibrary("csalgorithm");
+    }
+}

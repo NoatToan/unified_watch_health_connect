@@ -1,0 +1,71 @@
+package com.huawei.hms.maps;
+
+import android.content.Context;
+import android.os.RemoteException;
+import android.util.AttributeSet;
+import android.view.ViewGroup;
+import com.huawei.hms.feature.dynamic.ObjectWrapper;
+import com.huawei.hms.feature.dynamic.OnDelegateCreatedListener;
+import com.huawei.hms.maps.auth.AuthClient;
+import com.huawei.hms.maps.internal.ICreator;
+import com.huawei.hms.maps.internal.IMapViewDelegate;
+import com.huawei.hms.maps.model.RuntimeRemoteException;
+import com.huawei.hms.maps.provider.inhuawei.MapViewDelegate;
+import com.huawei.hms.maps.utils.LogM;
+import com.huawei.hms.maps.utils.MapsAdvUtil;
+
+/* JADX INFO: loaded from: classes10.dex */
+public class TextureMapView extends MapView {
+    public TextureMapView(Context context) {
+        this(context, null, 0);
+    }
+
+    public TextureMapView(Context context, AttributeSet attributeSet) {
+        this(context, attributeSet, 0);
+    }
+
+    public TextureMapView(Context context, AttributeSet attributeSet, int i) {
+        super(context, attributeSet, i, true);
+        b(context, attributeSet != null ? HuaweiMapOptions.createFromAttributes(context, attributeSet) : null);
+    }
+
+    public TextureMapView(Context context, HuaweiMapOptions huaweiMapOptions) {
+        super(context, huaweiMapOptions, true);
+        b(context, huaweiMapOptions);
+    }
+
+    public static class maa extends MapView.maa {
+        @Override // com.huawei.hms.maps.MapView.maa, com.huawei.hms.feature.dynamic.DeferredLifecycleHelper
+        public /* bridge */ /* synthetic */ void createDelegate(OnDelegateCreatedListener onDelegateCreatedListener) {
+            super.createDelegate(onDelegateCreatedListener);
+        }
+
+        @Override // com.huawei.hms.maps.MapView.maa
+        protected IMapViewDelegate a(ICreator iCreator, Context context, HuaweiMapOptions huaweiMapOptions) {
+            try {
+                LogM.i("TextureMapView", "createTextureMapViewDelegateRemote: ");
+                return iCreator.newTextureMapViewDelegate(ObjectWrapper.wrap(context), huaweiMapOptions);
+            } catch (RemoteException e) {
+                throw new RuntimeRemoteException(e);
+            }
+        }
+
+        maa(ViewGroup viewGroup, Context context, HuaweiMapOptions huaweiMapOptions) {
+            super(viewGroup, context, huaweiMapOptions);
+        }
+    }
+
+    private void b(Context context, HuaweiMapOptions huaweiMapOptions) {
+        if (!MapsInitializer.a()) {
+            LogM.e("TextureMapView", "MapsInitializer is not initialized.");
+        } else {
+            if (!MapsAdvUtil.containsMapsBasic()) {
+                this.f14136a = new maa(this, context, huaweiMapOptions);
+                return;
+            }
+            mac.a(context);
+            AuthClient.getInstance().startAuth(context);
+            this.f14136a = new MapView.mab(this, context, new MapViewDelegate(context, huaweiMapOptions, true));
+        }
+    }
+}

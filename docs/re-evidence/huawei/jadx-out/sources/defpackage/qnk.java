@@ -1,0 +1,148 @@
+package defpackage;
+
+import com.huawei.hwlogsmodel.LogUtil;
+import com.huawei.ui.commonui.linechart.common.DataInfos;
+import java.util.Calendar;
+
+/* JADX INFO: loaded from: classes16.dex */
+public class qnk {
+    public static int d(int i, DataInfos dataInfos) {
+        if (dataInfos == null) {
+            LogUtil.j("DataSetUtils", "acquireValuePresentRangeMin dataInfos = null");
+            return 0;
+        }
+        if (dataInfos.isDayData()) {
+            return e(i);
+        }
+        if (dataInfos.isWeekData()) {
+            return i(i);
+        }
+        if (dataInfos.isMonthData()) {
+            return i(i);
+        }
+        if (dataInfos.isYearData()) {
+            return f(i);
+        }
+        if (!dataInfos.isAllData()) {
+            LogUtil.j("DataSetUtils", "mDataInfos is no match for min !");
+            return 0;
+        }
+        return g(i);
+    }
+
+    public static int b(int i, DataInfos dataInfos) {
+        if (dataInfos == null) {
+            LogUtil.j("DataSetUtils", "acquireValuePresentRangeMax dataInfos = null");
+            return 0;
+        }
+        if (dataInfos.isDayData()) {
+            return a(i);
+        }
+        if (dataInfos.isWeekData()) {
+            return b(i);
+        }
+        if (dataInfos.isMonthData()) {
+            return b(i);
+        }
+        if (dataInfos.isYearData()) {
+            return d(i);
+        }
+        if (!dataInfos.isAllData()) {
+            LogUtil.j("DataSetUtils", "mDataInfos is no match for max !");
+            return 0;
+        }
+        return c(i);
+    }
+
+    private static int e(int i) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(((long) i) * 60000);
+        if (calendar.get(12) < 30) {
+            calendar.set(12, 0);
+        } else {
+            calendar.set(12, 29);
+        }
+        return (int) (calendar.getTimeInMillis() / 60000);
+    }
+
+    private static int a(int i) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(((long) i) * 60000);
+        if (calendar.get(12) < 30) {
+            calendar.set(12, 30);
+        } else {
+            calendar.set(12, 59);
+        }
+        return (int) (calendar.getTimeInMillis() / 60000);
+    }
+
+    private static int i(int i) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(((long) i) * 60000);
+        calendar.set(11, 0);
+        calendar.set(12, 0);
+        calendar.set(13, 0);
+        calendar.set(14, 0);
+        return (int) (calendar.getTimeInMillis() / 60000);
+    }
+
+    private static int b(int i) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(((long) i) * 60000);
+        calendar.set(11, 23);
+        calendar.set(12, 59);
+        calendar.set(13, 59);
+        calendar.set(14, 999);
+        return (int) (calendar.getTimeInMillis() / 60000);
+    }
+
+    private static int f(int i) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(((long) i) * 60000);
+        calendar.set(5, 1);
+        calendar.set(11, 0);
+        calendar.set(12, 0);
+        calendar.set(13, 0);
+        calendar.set(14, 0);
+        return (int) (calendar.getTimeInMillis() / 60000);
+    }
+
+    private static int d(int i) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(((long) i) * 60000);
+        calendar.set(5, 1);
+        calendar.set(11, 0);
+        calendar.set(12, 0);
+        calendar.set(13, 0);
+        calendar.set(14, 0);
+        calendar.add(2, 1);
+        calendar.add(14, -1);
+        return (int) (calendar.getTimeInMillis() / 60000);
+    }
+
+    private static int g(int i) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(((long) i) * 60000);
+        calendar.set(2, 0);
+        calendar.set(5, 1);
+        calendar.set(11, 0);
+        calendar.set(12, 0);
+        calendar.set(13, 0);
+        calendar.set(14, 0);
+        return (int) (calendar.getTimeInMillis() / 60000);
+    }
+
+    private static int c(int i) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(((long) i) * 60000);
+        calendar.set(2, 0);
+        calendar.set(5, 1);
+        calendar.set(11, 0);
+        calendar.set(12, 0);
+        calendar.set(13, 0);
+        calendar.set(14, 0);
+        calendar.add(1, 1);
+        calendar.add(14, -1);
+        return (int) (calendar.getTimeInMillis() / 60000);
+    }
+}

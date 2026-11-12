@@ -1,0 +1,26 @@
+package com.google.android.gms.wearable;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Result;
+import java.util.List;
+
+/* JADX INFO: loaded from: classes4.dex */
+@Deprecated
+public interface NodeApi {
+
+    @Deprecated
+    public interface GetConnectedNodesResult extends Result {
+        List<Node> getNodes();
+    }
+
+    /* JADX INFO: loaded from: classes21.dex */
+    @Deprecated
+    public interface GetLocalNodeResult extends Result {
+        Node getNode();
+    }
+
+    PendingResult<GetConnectedNodesResult> getConnectedNodes(GoogleApiClient googleApiClient);
+
+    PendingResult<GetLocalNodeResult> getLocalNode(GoogleApiClient googleApiClient);
+}

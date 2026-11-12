@@ -1,0 +1,101 @@
+package ohos.ace.plugin.clipboard;
+
+/* JADX INFO: loaded from: classes46.dex */
+public class PasteboardConstants {
+    public static final int DIST_DATA_MGR_SYS_ID = 13;
+    public static final int E_OK_BASE_VALUE = 27787264;
+    public static final int PASTEBOARD_ID = 8;
+
+    public enum PasteboardError {
+        E_OK(PasteboardConstants.E_OK_BASE_VALUE),
+        INVALID_RETURN_VALUE_ERROR(27787265),
+        INVALID_PARAM_ERROR(27787266),
+        SERIALIZATION_ERROR(27787267),
+        DESERIALIZATION_ERROR(27787268),
+        OBTAIN_SERVER_SA_ERROR(27787269),
+        OTHER_ERROR(27787270),
+        CROSS_BORDER_ERROR(27787271),
+        PERMISSION_VERIFICATION_ERROR(27787272),
+        PARAM_ERROR(27787273),
+        TIMEOUT_ERROR(27787274),
+        CANCELED(27787275),
+        EXCEEDING_LIMIT_EXCEPTION(27787276),
+        TASK_PROCESSING(27787277),
+        PROHIBIT_COPY(27787278),
+        UNKNOWN_ERROR(27787279),
+        BACKUP_EXCEPTION(27787280),
+        REMOTE_EXCEPTION(27787281),
+        INVALID_DATA_ERROR(27787282),
+        NO_DATA_ERROR(27787283),
+        INVALID_USERID_ERROR(27787284),
+        REMOTE_TASK_ERROR(27787285),
+        INVALID_EVENT_ERROR(27787286),
+        GET_REMOTE_DATA_ERROR(27787287),
+        SEND_BROADCAST_ERROR(27787288),
+        SYNC_DATA_ERROR(27787289),
+        URI_GRANT_ERROR(27787290),
+        DP_LOAD_SERVICE_ERROR(27787291),
+        INVALID_OPTION_ERROR(27787292),
+        INVALID_OPERATION_ERROR(27787293),
+        BUTT_ERROR(27787294),
+        NO_TRUST_DEVICE_ERROR(27787295),
+        NO_USER_DATA_ERROR(27787296),
+        DATA_EXPIRED_ERROR(27787297),
+        CREATE_DATASHARE_SERVICE_ERROR(27787298),
+        QUERY_SETTING_NO_DATA_ERROR(27787299),
+        GET_LOCAL_DEVICE_ID_ERROR(27787300),
+        LOCAL_SWITCH_NOT_TURNED_ON(27787301),
+        DATA_ENCODE_ERROR(27787302),
+        NO_DELAY_GETTER(27787303),
+        PLUGIN_IS_NULL(27787304),
+        PLUGIN_EVENT_EMPTY(27787305),
+        GET_LOCAL_DATA(27787306),
+        INVALID_EVENT_ACCOUNT(27787307),
+        INVALID_EVENT_STATUS(27787308),
+        PROGRESS_PASTE_TIME_OUT(27787309),
+        PROGRESS_CANCEL_PASTE(27787310),
+        COPY_FILE_ERROR(27787311),
+        PROGRESS_START_ERROR(27787312),
+        PROGRESS_ABNORMAL(27787313),
+        PRPGRESS_CANCEL_SUCCESS(27787314),
+        GET_ENTRY_VALUE_FAILED(27787315),
+        REBUILD_HTML_FAILED(27787316),
+        INVALID_DATA_ID(27787317),
+        INVALID_RECORD_ID(27787318),
+        INVALID_MIMETYPE(27787319),
+        MALLOC_FAILED(27787320),
+        GET_SAMGR_FAILED(27787321),
+        RESOURCE_APPLY_TIMEOUT(27787322),
+        RESOURCE_APPLYING(27787323),
+        RESOURCE_APPLY_NOT_FIND(27787324),
+        CHECK_DESCRIPTOR_ERROR(27787325),
+        GET_SAME_REMOTE_DATA(27787326),
+        DLOPEN_FAILED(27787327),
+        GET_BUNDLE_MGR_FAILED(27787328),
+        GET_BOOTTIME_FAILED(27787329),
+        NOT_SUPPORT(27787330),
+        ADD_OBSERVER_FAILED(27787331),
+        INVALID_DATA_SIZE(27787332),
+        INVALID_TOKEN_ID(27787333),
+        INVALID_URI_ERROR(27787334);
+
+        private final int value;
+
+        PasteboardError(int i) {
+            this.value = i;
+        }
+
+        public int getValue() {
+            return this.value;
+        }
+
+        public static PasteboardError fromValue(int i) {
+            for (PasteboardError pasteboardError : values()) {
+                if (pasteboardError.value == i) {
+                    return pasteboardError;
+                }
+            }
+            return null;
+        }
+    }
+}

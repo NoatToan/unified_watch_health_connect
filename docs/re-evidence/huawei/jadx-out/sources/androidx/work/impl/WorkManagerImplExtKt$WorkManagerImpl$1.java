@@ -1,0 +1,32 @@
+package androidx.work.impl;
+
+import android.content.Context;
+import androidx.work.Configuration;
+import androidx.work.impl.constraints.trackers.Trackers;
+import androidx.work.impl.utils.taskexecutor.TaskExecutor;
+import defpackage.zcn;
+import defpackage.zcp;
+import java.util.List;
+import kotlin.Metadata;
+import kotlin.jvm.functions.Function6;
+
+/* JADX INFO: loaded from: classes4.dex */
+@Metadata(k = 3, mv = {1, 8, 0}, xi = 48)
+final /* synthetic */ class WorkManagerImplExtKt$WorkManagerImpl$1 extends zcn implements Function6<Context, Configuration, TaskExecutor, WorkDatabase, Trackers, Processor, List<? extends Scheduler>> {
+    public static final WorkManagerImplExtKt$WorkManagerImpl$1 INSTANCE = new WorkManagerImplExtKt$WorkManagerImpl$1();
+
+    @Override // kotlin.jvm.functions.Function6
+    public final List<Scheduler> invoke(Context context, Configuration configuration, TaskExecutor taskExecutor, WorkDatabase workDatabase, Trackers trackers, Processor processor) {
+        zcp.c(context, "");
+        zcp.c(configuration, "");
+        zcp.c(taskExecutor, "");
+        zcp.c(workDatabase, "");
+        zcp.c(trackers, "");
+        zcp.c(processor, "");
+        return WorkManagerImplExtKt.createSchedulers(context, configuration, taskExecutor, workDatabase, trackers, processor);
+    }
+
+    WorkManagerImplExtKt$WorkManagerImpl$1() {
+        super(6, WorkManagerImplExtKt.class, "createSchedulers", "createSchedulers(Landroid/content/Context;Landroidx/work/Configuration;Landroidx/work/impl/utils/taskexecutor/TaskExecutor;Landroidx/work/impl/WorkDatabase;Landroidx/work/impl/constraints/trackers/Trackers;Landroidx/work/impl/Processor;)Ljava/util/List;", 1);
+    }
+}

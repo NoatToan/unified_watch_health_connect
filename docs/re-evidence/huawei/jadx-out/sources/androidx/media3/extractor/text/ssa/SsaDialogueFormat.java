@@ -1,0 +1,66 @@
+package androidx.media3.extractor.text.ssa;
+
+import android.text.TextUtils;
+import androidx.media3.common.util.Assertions;
+import com.google.common.base.Ascii;
+
+/* JADX INFO: loaded from: classes4.dex */
+final class SsaDialogueFormat {
+    public final int endTimeIndex;
+    public final int length;
+    public final int startTimeIndex;
+    public final int styleIndex;
+    public final int textIndex;
+
+    private SsaDialogueFormat(int i, int i2, int i3, int i4, int i5) {
+        this.startTimeIndex = i;
+        this.endTimeIndex = i2;
+        this.styleIndex = i3;
+        this.textIndex = i4;
+        this.length = i5;
+    }
+
+    public static SsaDialogueFormat fromFormatLine(String str) {
+        byte b2;
+        Assertions.checkArgument(str.startsWith("Format:"));
+        String[] strArrSplit = TextUtils.split(str.substring(7), ",");
+        int i = -1;
+        int i2 = -1;
+        int i3 = -1;
+        int i4 = -1;
+        for (int i5 = 0; i5 < strArrSplit.length; i5++) {
+            String lowerCase = Ascii.toLowerCase(strArrSplit[i5].trim());
+            lowerCase.hashCode();
+            switch (lowerCase) {
+                case "end":
+                    b2 = 0;
+                    break;
+                case "text":
+                    b2 = 1;
+                    break;
+                case "start":
+                    b2 = 2;
+                    break;
+                case "style":
+                    b2 = 3;
+                    break;
+                default:
+                    b2 = -1;
+                    break;
+            }
+            if (b2 == 0) {
+                i2 = i5;
+            } else if (b2 == 1) {
+                i4 = i5;
+            } else if (b2 == 2) {
+                i = i5;
+            } else if (b2 == 3) {
+                i3 = i5;
+            }
+        }
+        if (i == -1 || i2 == -1 || i4 == -1) {
+            return null;
+        }
+        return new SsaDialogueFormat(i, i2, i3, i4, strArrSplit.length);
+    }
+}

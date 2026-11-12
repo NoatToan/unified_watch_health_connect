@@ -1,0 +1,19 @@
+package com.huawei.hihealth;
+
+import com.huawei.hihealthkit.data.store.HiRealTimeCallback;
+
+/* JADX INFO: loaded from: classes2.dex */
+public final /* synthetic */ class HealthKitCommonApi$$ExternalSyntheticLambda13 implements Runnable {
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final /* synthetic */ HiRealTimeCallback f11760b;
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    public final /* synthetic */ DataReportModel f11761c;
+    public final /* synthetic */ HealthKitCommonApi e;
+
+    @Override // java.lang.Runnable
+    public final void run() {
+        this.e.e(this.f11760b, this.f11761c);
+    }
+}

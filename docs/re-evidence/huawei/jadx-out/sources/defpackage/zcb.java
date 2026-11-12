@@ -1,0 +1,8 @@
+package defpackage;
+
+import kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes46.dex */
+@Metadata(d1 = {"kotlin/io/path/PathsKt__PathReadWriteKt", "kotlin/io/path/PathsKt__PathRecursiveFunctionsKt", "kotlin/io/path/PathsKt__PathUtilsKt"}, k = 4, mv = {2, 2, 0}, xi = 49)
+public final class zcb extends name {
+}

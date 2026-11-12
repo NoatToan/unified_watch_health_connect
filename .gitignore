@@ -30,14 +30,10 @@ output-metadata.json
 Thumbs.db
 *.log
 
-# Vendor apps and raw analysis output are never committed (copyrighted; docs/DECISIONS.md D-010, D-016, D-017)
+# Vendor APKs and scratch analysis are never committed (docs/DECISIONS.md D-010, D-016, D-017).
+# docs/re-evidence/ raw dumps ARE tracked by owner request (2026-11-12) for multi-machine work.
 docs/apks/
 docs/re-analysis/
-docs/re-evidence/*/jadx-*/
-docs/re-evidence/*/*.json
-docs/re-evidence/*/*.txt
-docs/re-evidence/*/AndroidManifest.xml
-docs/re-evidence/mi/proto/
 
 # Claude Code session state and local settings
 .claude/state/

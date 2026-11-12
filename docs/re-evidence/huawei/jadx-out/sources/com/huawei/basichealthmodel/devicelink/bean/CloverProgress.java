@@ -1,0 +1,45 @@
+package com.huawei.basichealthmodel.devicelink.bean;
+
+/* JADX INFO: loaded from: classes23.dex */
+public class CloverProgress {
+    private float mBottom;
+    private float mLeft;
+    private float mRight;
+    private float mTop;
+
+    public float getTop() {
+        return this.mTop;
+    }
+
+    public void setTop(float f) {
+        this.mTop = f;
+    }
+
+    public float getBottom() {
+        return this.mBottom;
+    }
+
+    public void setBottom(float f) {
+        this.mBottom = f;
+    }
+
+    public float getLeft() {
+        return this.mLeft;
+    }
+
+    public void setLeft(float f) {
+        this.mLeft = f;
+    }
+
+    public float getRight() {
+        return this.mRight;
+    }
+
+    public void setRight(float f) {
+        this.mRight = f;
+    }
+
+    public String toString() {
+        return "CloverProgress{mTop=" + this.mTop + ", mLeft=" + this.mLeft + ", mRight=" + this.mRight + ", mBottom=" + this.mBottom + '}';
+    }
+}

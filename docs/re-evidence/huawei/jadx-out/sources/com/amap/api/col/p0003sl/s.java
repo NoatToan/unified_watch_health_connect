@@ -1,0 +1,269 @@
+package com.amap.api.col.p0003sl;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.RemoteException;
+import android.text.TextUtils;
+import com.autonavi.base.amap.api.mapcore.IAMapDelegate;
+import com.huawei.operation.utils.CloudParamKeys;
+import com.huawei.pluginachievement.manager.model.MedalConstants;
+import java.lang.ref.WeakReference;
+import java.util.Hashtable;
+import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+/* JADX INFO: loaded from: classes4.dex */
+public final class s {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    private Context f3269a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    private WeakReference<IAMapDelegate> f3270b;
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    private Handler f3271c;
+    private a d;
+    private int e = 0;
+    private final Runnable f = new Runnable() { // from class: com.amap.api.col.3sl.s.1
+        @Override // java.lang.Runnable
+        public final void run() {
+            if (s.this.d == null) {
+                s sVar = s.this;
+                sVar.d = new a(sVar.f3269a, s.this);
+            }
+            dz.a().a(s.this.d);
+        }
+    };
+    private final Runnable g = new Runnable() { // from class: com.amap.api.col.3sl.s.2
+        @Override // java.lang.Runnable
+        public final void run() {
+            IAMapDelegate iAMapDelegate = (IAMapDelegate) s.this.f3270b.get();
+            if (iAMapDelegate != null) {
+                iAMapDelegate.setOverseaAuth(true);
+            }
+        }
+    };
+    private final Runnable h = new Runnable() { // from class: com.amap.api.col.3sl.s.3
+        @Override // java.lang.Runnable
+        public final void run() {
+            IAMapDelegate iAMapDelegate = (IAMapDelegate) s.this.f3270b.get();
+            if (iAMapDelegate != null) {
+                try {
+                    iAMapDelegate.removecache();
+                    iAMapDelegate.setOverseaAuth(false);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            dh.a(s.this.f3269a, "国际图鉴权失败，当前key没有国际图的使用权限，国际图，将不会呈现！");
+        }
+    };
+
+    static /* synthetic */ int d(s sVar) {
+        sVar.e = 2;
+        return 2;
+    }
+
+    public s(Context context, IAMapDelegate iAMapDelegate) {
+        this.f3269a = context.getApplicationContext();
+        this.f3270b = new WeakReference<>(iAMapDelegate);
+        c();
+    }
+
+    private void c() {
+        if (this.f3271c == null) {
+            this.f3271c = new Handler(Looper.getMainLooper());
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void d() {
+        Handler handler = this.f3271c;
+        if (handler != null) {
+            handler.post(this.g);
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void e() {
+        Handler handler = this.f3271c;
+        if (handler != null) {
+            handler.post(this.h);
+        }
+    }
+
+    public final void a(long j) {
+        Handler handler = this.f3271c;
+        if (handler != null) {
+            this.e = 1;
+            handler.postDelayed(this.f, j);
+        }
+    }
+
+    public final int a() {
+        return this.e;
+    }
+
+    public final void b() {
+        Handler handler = this.f3271c;
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+            this.f3271c = null;
+        }
+    }
+
+    static final class a extends mb {
+
+        /* JADX INFO: renamed from: a, reason: collision with root package name */
+        private Context f3275a;
+
+        /* JADX INFO: renamed from: b, reason: collision with root package name */
+        private s f3276b;
+
+        /* JADX INFO: renamed from: c, reason: collision with root package name */
+        private b f3277c;
+
+        public a(Context context, s sVar) {
+            this.f3275a = context;
+            this.f3276b = sVar;
+            this.f3277c = new b(context, "");
+        }
+
+        @Override // com.amap.api.col.p0003sl.mb
+        public final void runTask() {
+            try {
+                c cVarD = this.f3277c.d();
+                if (cVarD == null) {
+                    this.f3276b.a(30000L);
+                    return;
+                }
+                s.d(this.f3276b);
+                if (!cVarD.d) {
+                    this.f3276b.e();
+                } else {
+                    this.f3276b.d();
+                }
+            } catch (ic e) {
+                e.printStackTrace();
+                this.f3276b.a(30000L);
+            }
+        }
+    }
+
+    static final class c {
+
+        /* JADX INFO: renamed from: a, reason: collision with root package name */
+        public String f3278a;
+
+        /* JADX INFO: renamed from: b, reason: collision with root package name */
+        public String f3279b;
+
+        /* JADX INFO: renamed from: c, reason: collision with root package name */
+        public String f3280c;
+        public boolean d;
+
+        private c() {
+            this.d = false;
+        }
+
+        /* synthetic */ c(byte b2) {
+            this();
+        }
+    }
+
+    static final class b extends id<String, c> {
+        private boolean j;
+
+        @Override // com.amap.api.col.p0003sl.id
+        protected final String c() {
+            return null;
+        }
+
+        @Override // com.amap.api.col.p0003sl.la
+        public final boolean isSupportIPV6() {
+            return true;
+        }
+
+        @Override // com.amap.api.col.p0003sl.id
+        protected final /* synthetic */ c a(String str) throws ic {
+            return b(str);
+        }
+
+        @Override // com.amap.api.col.p0003sl.id
+        protected final /* synthetic */ c a(byte[] bArr) throws ic {
+            return b(bArr);
+        }
+
+        public b(Context context, String str) {
+            super(context, str);
+            this.j = true;
+            this.h = "/rest/feedback/3dmap-abroad";
+            this.isPostFlag = false;
+            this.j = true;
+        }
+
+        private static c b(byte[] bArr) throws ic {
+            String str;
+            try {
+                str = new String(bArr, "utf-8");
+            } catch (Exception e) {
+                e.printStackTrace();
+                str = null;
+            }
+            if (str == null || "".equals(str)) {
+                return null;
+            }
+            return b(str);
+        }
+
+        private static c b(String str) throws ic {
+            try {
+                JSONObject jSONObject = new JSONObject(str);
+                String strOptString = jSONObject.optString(CloudParamKeys.INFO);
+                String strOptString2 = jSONObject.optString("infocode");
+                String strOptString3 = jSONObject.optString("status");
+                boolean z = false;
+                z = false;
+                c cVar = new c(z ? (byte) 1 : (byte) 0);
+                cVar.f3278a = strOptString;
+                cVar.f3279b = strOptString2;
+                cVar.f3280c = strOptString3;
+                if (!TextUtils.isEmpty(strOptString2) && TextUtils.equals(strOptString2, "10000")) {
+                    z = true;
+                }
+                cVar.d = z;
+                return cVar;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override // com.amap.api.col.p0003sl.df, com.amap.api.col.p0003sl.la
+        public final Map<String, String> getParams() {
+            Hashtable hashtable = new Hashtable(16);
+            hashtable.put(MedalConstants.EVENT_KEY, il.f(this.g));
+            if (this.j) {
+                hashtable.put("pname", "3dmap");
+            }
+            String strA = io.a();
+            String strA2 = io.a(this.g, strA, iy.b(hashtable));
+            hashtable.put("ts", strA);
+            hashtable.put("scode", strA2);
+            return hashtable;
+        }
+
+        @Override // com.amap.api.col.p0003sl.la
+        public final String getURL() {
+            return "http://restsdk.amap.com" + this.h;
+        }
+
+        @Override // com.amap.api.col.p0003sl.la
+        public final String getIPV6URL() {
+            return eb.a(getURL());
+        }
+    }
+}

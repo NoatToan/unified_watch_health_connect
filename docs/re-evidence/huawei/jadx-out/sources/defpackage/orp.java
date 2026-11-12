@@ -1,0 +1,67 @@
+package defpackage;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.RunnableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+/* JADX INFO: loaded from: classes13.dex */
+public class orp extends ThreadPoolExecutor {
+    public orp(int i, int i2, long j, TimeUnit timeUnit) {
+        super(i, i2, j, timeUnit, a());
+    }
+
+    protected static PriorityBlockingQueue<Runnable> a() {
+        return new PriorityBlockingQueue<>();
+    }
+
+    @Override // java.util.concurrent.AbstractExecutorService
+    protected <T> RunnableFuture<T> newTaskFor(Runnable runnable, T t) {
+        return new orn(runnable, t);
+    }
+
+    @Override // java.util.concurrent.AbstractExecutorService
+    protected <T> RunnableFuture<T> newTaskFor(Callable<T> callable) {
+        return new orn(callable);
+    }
+
+    @Override // java.util.concurrent.ThreadPoolExecutor, java.util.concurrent.Executor
+    public void execute(Runnable runnable) {
+        c(0, runnable);
+    }
+
+    public void c(int i, Runnable runnable) {
+        if (runnable instanceof orn) {
+            super.execute(runnable);
+        } else {
+            super.execute(a(i, runnable));
+        }
+    }
+
+    @Override // java.util.concurrent.AbstractExecutorService, java.util.concurrent.ExecutorService
+    public Future<?> submit(Runnable runnable) {
+        return d(0, runnable);
+    }
+
+    public Future<?> d(int i, Runnable runnable) {
+        return super.submit(a(i, runnable));
+    }
+
+    @Override // java.util.concurrent.AbstractExecutorService, java.util.concurrent.ExecutorService
+    public <T> Future<T> submit(Runnable runnable, T t) {
+        return c(0, runnable, t);
+    }
+
+    public <T> Future<T> c(int i, Runnable runnable, T t) {
+        return super.submit(a(i, runnable), t);
+    }
+
+    private orr a(int i, Runnable runnable) {
+        if (runnable instanceof orr) {
+            return (orr) runnable;
+        }
+        return new orr(runnable, i);
+    }
+}

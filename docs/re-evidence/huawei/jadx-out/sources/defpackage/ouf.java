@@ -1,0 +1,110 @@
+package defpackage;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import com.huawei.health.h5pro.utils.GeneralUtil;
+import com.huawei.hwlogsmodel.LogUtil;
+import health.compact.a.CommonUtil;
+import java.io.File;
+import java.io.IOException;
+
+/* JADX INFO: loaded from: classes13.dex */
+public class ouf {
+    public static Bitmap c(Context context, String str) {
+        String strC;
+        if (context == null || !GeneralUtil.isSafePath(str) || (strC = CommonUtil.c(str)) == null || !new File(strC).exists()) {
+            return null;
+        }
+        Bitmap bitmapD = d(strC);
+        return bitmapD != null ? c(bitmapD) : bitmapD;
+    }
+
+    private static Bitmap d(String str) {
+        File file = new File(str);
+        Bitmap bitmap = null;
+        if (file.exists()) {
+            try {
+                String canonicalPath = file.getCanonicalPath();
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                Bitmap bitmapDecodeFile = BitmapFactory.decodeFile(canonicalPath, options);
+                options.inJustDecodeBounds = false;
+                if (options.outWidth >= 200 || options.outHeight >= 200) {
+                    options.inSampleSize = 2;
+                } else {
+                    options.inSampleSize = 1;
+                }
+                if (bitmapDecodeFile == null || bitmapDecodeFile.isRecycled()) {
+                    bitmap = bitmapDecodeFile;
+                } else {
+                    bitmapDecodeFile.recycle();
+                }
+                try {
+                    return BitmapFactory.decodeFile(canonicalPath, options);
+                } catch (OutOfMemoryError e) {
+                    LogUtil.e("AchieveImageLoader", "getThumbnailImage OutOfMemoryError = ", e.getMessage());
+                    return bitmap;
+                }
+            } catch (IOException e2) {
+                LogUtil.e("file error", e2.getMessage());
+            }
+        }
+        return null;
+    }
+
+    public static Bitmap c(Bitmap bitmap) {
+        float f;
+        float f2;
+        float f3;
+        float f4;
+        if (bitmap == null) {
+            LogUtil.a("AchieveImageLoader", "bitmap is null");
+            return bitmap;
+        }
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        if (width <= height) {
+            f4 = width;
+            f = f4;
+            f2 = f4 / 2.0f;
+            f3 = 0.0f;
+        } else {
+            f = height;
+            f2 = f / 2.0f;
+            f3 = (width - height) / 2.0f;
+            f4 = width - f3;
+        }
+        int i = (int) 0.0f;
+        int i2 = (int) f;
+        Rect rect = new Rect((int) f3, i, (int) f4, i2);
+        Rect rect2 = new Rect(i, i, i2, i2);
+        return b(bitmap, new RectF(rect2), f2, rect, rect2);
+    }
+
+    private static Bitmap b(Bitmap bitmap, RectF rectF, float f, Rect rect, Rect rect2) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        if (width > height) {
+            width = height;
+        }
+        Paint paint = new Paint();
+        Bitmap bitmapCreateBitmap = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmapCreateBitmap);
+        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, 3));
+        paint.setAntiAlias(true);
+        paint.setColor(-12434878);
+        canvas.drawARGB(0, 0, 0, 0);
+        canvas.drawRoundRect(rectF, f, f, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect2, paint);
+        return bitmapCreateBitmap;
+    }
+}

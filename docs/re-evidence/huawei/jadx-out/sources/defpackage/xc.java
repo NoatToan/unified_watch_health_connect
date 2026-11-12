@@ -1,0 +1,409 @@
+package defpackage;
+
+import com.huawei.operation.OpAnalyticsConstants;
+
+/* JADX INFO: loaded from: classes21.dex */
+public final class xc {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    private static long f52690a = 2147483647L;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    private static long f52691b = 1000000000;
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    private static int f52692c = 1000000000;
+    private static final String[] f;
+    private static final String[] g;
+    private static int i = 1000000;
+    private static long j = -2147483648L;
+    static final String e = String.valueOf(Integer.MIN_VALUE);
+    static final String d = String.valueOf(Long.MIN_VALUE);
+    private static final int[] h = new int[1000];
+
+    static {
+        int i2 = 0;
+        for (int i3 = 0; i3 < 10; i3++) {
+            for (int i4 = 0; i4 < 10; i4++) {
+                int i5 = 0;
+                while (i5 < 10) {
+                    h[i2] = ((i3 + 48) << 16) | ((i4 + 48) << 8) | (i5 + 48);
+                    i5++;
+                    i2++;
+                }
+            }
+        }
+        g = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+        f = new String[]{"-1", "-2", OpAnalyticsConstants.WATCH_FAIL_CODE, OpAnalyticsConstants.SSL_FAIL_CODE, "-5", "-6", "-7", "-8", "-9", "-10"};
+    }
+
+    public static int c(int i2, char[] cArr, int i3) {
+        int i4;
+        if (i2 < 0) {
+            if (i2 == Integer.MIN_VALUE) {
+                return d(cArr, i3);
+            }
+            cArr[i3] = '-';
+            i2 = -i2;
+            i3++;
+        }
+        if (i2 < i) {
+            if (i2 >= 1000) {
+                int i5 = i2 / 1000;
+                return a(i2 - (i5 * 1000), cArr, d(i5, cArr, i3));
+            }
+            if (i2 < 10) {
+                cArr[i3] = (char) (i2 + 48);
+                return i3 + 1;
+            }
+            return d(i2, cArr, i3);
+        }
+        int i6 = f52692c;
+        if (i2 >= i6) {
+            int i7 = i2 - i6;
+            if (i7 >= i6) {
+                i7 -= i6;
+                i4 = i3 + 1;
+                cArr[i3] = '2';
+            } else {
+                i4 = i3 + 1;
+                cArr[i3] = '1';
+            }
+            return e(i7, cArr, i4);
+        }
+        int i8 = i2 / 1000;
+        int i9 = i8 / 1000;
+        return a(i2 - (i8 * 1000), cArr, a(i8 - (i9 * 1000), cArr, d(i9, cArr, i3)));
+    }
+
+    public static int d(int i2, byte[] bArr, int i3) {
+        int i4;
+        if (i2 < 0) {
+            if (i2 == Integer.MIN_VALUE) {
+                return a(bArr, i3);
+            }
+            bArr[i3] = 45;
+            i2 = -i2;
+            i3++;
+        }
+        if (i2 < i) {
+            if (i2 >= 1000) {
+                int i5 = i2 / 1000;
+                return a(i2 - (i5 * 1000), bArr, c(i5, bArr, i3));
+            }
+            if (i2 < 10) {
+                bArr[i3] = (byte) (i2 + 48);
+                return i3 + 1;
+            }
+            return c(i2, bArr, i3);
+        }
+        int i6 = f52692c;
+        if (i2 >= i6) {
+            int i7 = i2 - i6;
+            if (i7 >= i6) {
+                i7 -= i6;
+                i4 = i3 + 1;
+                bArr[i3] = 50;
+            } else {
+                i4 = i3 + 1;
+                bArr[i3] = 49;
+            }
+            return e(i7, bArr, i4);
+        }
+        int i8 = i2 / 1000;
+        int i9 = i8 / 1000;
+        return a(i2 - (i8 * 1000), bArr, a(i8 - (i9 * 1000), bArr, c(i9, bArr, i3)));
+    }
+
+    public static int a(long j2, char[] cArr, int i2) {
+        int iE;
+        if (j2 < 0) {
+            if (j2 > j) {
+                return c((int) j2, cArr, i2);
+            }
+            if (j2 == Long.MIN_VALUE) {
+                return e(cArr, i2);
+            }
+            cArr[i2] = '-';
+            j2 = -j2;
+            i2++;
+        } else if (j2 <= f52690a) {
+            return c((int) j2, cArr, i2);
+        }
+        long j3 = f52691b;
+        long j4 = j2 / j3;
+        if (j4 < j3) {
+            iE = b((int) j4, cArr, i2);
+        } else {
+            long j5 = j4 / j3;
+            iE = e((int) (j4 - (j5 * j3)), cArr, d((int) j5, cArr, i2));
+        }
+        return e((int) (j2 - (j4 * j3)), cArr, iE);
+    }
+
+    public static int b(long j2, byte[] bArr, int i2) {
+        int iE;
+        if (j2 < 0) {
+            if (j2 > j) {
+                return d((int) j2, bArr, i2);
+            }
+            if (j2 == Long.MIN_VALUE) {
+                return d(bArr, i2);
+            }
+            bArr[i2] = 45;
+            j2 = -j2;
+            i2++;
+        } else if (j2 <= f52690a) {
+            return d((int) j2, bArr, i2);
+        }
+        long j3 = f52691b;
+        long j4 = j2 / j3;
+        if (j4 < j3) {
+            iE = b((int) j4, bArr, i2);
+        } else {
+            long j5 = j4 / j3;
+            iE = e((int) (j4 - (j5 * j3)), bArr, c((int) j5, bArr, i2));
+        }
+        return e((int) (j2 - (j4 * j3)), bArr, iE);
+    }
+
+    public static String a(int i2) {
+        String[] strArr = g;
+        if (i2 < strArr.length) {
+            if (i2 >= 0) {
+                return strArr[i2];
+            }
+            int i3 = (-i2) - 1;
+            String[] strArr2 = f;
+            if (i3 < strArr2.length) {
+                return strArr2[i3];
+            }
+        }
+        return Integer.toString(i2);
+    }
+
+    public static String c(long j2) {
+        if (j2 <= 2147483647L && j2 >= -2147483648L) {
+            return a((int) j2);
+        }
+        return Long.toString(j2);
+    }
+
+    public static String a(double d2) {
+        return Double.toString(d2);
+    }
+
+    public static String d(float f2) {
+        return Float.toString(f2);
+    }
+
+    public static boolean b(double d2) {
+        return Double.isNaN(d2) || Double.isInfinite(d2);
+    }
+
+    public static boolean b(float f2) {
+        return Float.isNaN(f2) || Float.isInfinite(f2);
+    }
+
+    private static int b(int i2, char[] cArr, int i3) {
+        if (i2 < i) {
+            if (i2 < 1000) {
+                return d(i2, cArr, i3);
+            }
+            int i4 = i2 / 1000;
+            return a(cArr, i3, i4, i2 - (i4 * 1000));
+        }
+        int i5 = i2 / 1000;
+        int i6 = i5 / 1000;
+        int iD = d(i6, cArr, i3);
+        int[] iArr = h;
+        int i7 = iArr[i5 - (i6 * 1000)];
+        cArr[iD] = (char) (i7 >> 16);
+        cArr[iD + 1] = (char) ((i7 >> 8) & 127);
+        cArr[iD + 2] = (char) (i7 & 127);
+        int i8 = iArr[i2 - (i5 * 1000)];
+        cArr[iD + 3] = (char) (i8 >> 16);
+        cArr[iD + 4] = (char) ((i8 >> 8) & 127);
+        cArr[iD + 5] = (char) (i8 & 127);
+        return iD + 6;
+    }
+
+    private static int e(int i2, char[] cArr, int i3) {
+        int i4 = i2 / 1000;
+        int i5 = i4 / 1000;
+        int[] iArr = h;
+        int i6 = iArr[i5];
+        cArr[i3] = (char) (i6 >> 16);
+        cArr[i3 + 1] = (char) ((i6 >> 8) & 127);
+        cArr[i3 + 2] = (char) (i6 & 127);
+        int i7 = iArr[i4 - (i5 * 1000)];
+        cArr[i3 + 3] = (char) (i7 >> 16);
+        cArr[i3 + 4] = (char) ((i7 >> 8) & 127);
+        cArr[i3 + 5] = (char) (i7 & 127);
+        int i8 = iArr[i2 - (i4 * 1000)];
+        cArr[i3 + 6] = (char) (i8 >> 16);
+        cArr[i3 + 7] = (char) ((i8 >> 8) & 127);
+        cArr[i3 + 8] = (char) (i8 & 127);
+        return i3 + 9;
+    }
+
+    private static int b(int i2, byte[] bArr, int i3) {
+        if (i2 < i) {
+            if (i2 < 1000) {
+                return c(i2, bArr, i3);
+            }
+            int i4 = i2 / 1000;
+            return b(bArr, i3, i4, i2 - (i4 * 1000));
+        }
+        int i5 = i2 / 1000;
+        int i6 = i5 / 1000;
+        int iC = c(i6, bArr, i3);
+        int[] iArr = h;
+        int i7 = iArr[i5 - (i6 * 1000)];
+        bArr[iC] = (byte) (i7 >> 16);
+        bArr[iC + 1] = (byte) (i7 >> 8);
+        bArr[iC + 2] = (byte) i7;
+        int i8 = iArr[i2 - (i5 * 1000)];
+        bArr[iC + 3] = (byte) (i8 >> 16);
+        bArr[iC + 4] = (byte) (i8 >> 8);
+        bArr[iC + 5] = (byte) i8;
+        return iC + 6;
+    }
+
+    private static int e(int i2, byte[] bArr, int i3) {
+        int i4 = i2 / 1000;
+        int i5 = i4 / 1000;
+        int[] iArr = h;
+        int i6 = iArr[i5];
+        bArr[i3] = (byte) (i6 >> 16);
+        bArr[i3 + 1] = (byte) (i6 >> 8);
+        bArr[i3 + 2] = (byte) i6;
+        int i7 = iArr[i4 - (i5 * 1000)];
+        bArr[i3 + 3] = (byte) (i7 >> 16);
+        bArr[i3 + 4] = (byte) (i7 >> 8);
+        bArr[i3 + 5] = (byte) i7;
+        int i8 = iArr[i2 - (i4 * 1000)];
+        bArr[i3 + 6] = (byte) (i8 >> 16);
+        bArr[i3 + 7] = (byte) (i8 >> 8);
+        bArr[i3 + 8] = (byte) i8;
+        return i3 + 9;
+    }
+
+    private static int a(char[] cArr, int i2, int i3, int i4) {
+        int[] iArr = h;
+        int i5 = iArr[i3];
+        if (i3 > 9) {
+            if (i3 > 99) {
+                cArr[i2] = (char) (i5 >> 16);
+                i2++;
+            }
+            cArr[i2] = (char) ((i5 >> 8) & 127);
+            i2++;
+        }
+        cArr[i2] = (char) (i5 & 127);
+        int i6 = iArr[i4];
+        cArr[i2 + 1] = (char) (i6 >> 16);
+        cArr[i2 + 2] = (char) ((i6 >> 8) & 127);
+        cArr[i2 + 3] = (char) (i6 & 127);
+        return i2 + 4;
+    }
+
+    private static int b(byte[] bArr, int i2, int i3, int i4) {
+        int[] iArr = h;
+        int i5 = iArr[i3];
+        if (i3 > 9) {
+            if (i3 > 99) {
+                bArr[i2] = (byte) (i5 >> 16);
+                i2++;
+            }
+            bArr[i2] = (byte) (i5 >> 8);
+            i2++;
+        }
+        bArr[i2] = (byte) i5;
+        int i6 = iArr[i4];
+        bArr[i2 + 1] = (byte) (i6 >> 16);
+        bArr[i2 + 2] = (byte) (i6 >> 8);
+        bArr[i2 + 3] = (byte) i6;
+        return i2 + 4;
+    }
+
+    private static int d(int i2, char[] cArr, int i3) {
+        int i4 = h[i2];
+        if (i2 > 9) {
+            if (i2 > 99) {
+                cArr[i3] = (char) (i4 >> 16);
+                i3++;
+            }
+            cArr[i3] = (char) ((i4 >> 8) & 127);
+            i3++;
+        }
+        cArr[i3] = (char) (i4 & 127);
+        return i3 + 1;
+    }
+
+    private static int c(int i2, byte[] bArr, int i3) {
+        int i4 = h[i2];
+        if (i2 > 9) {
+            if (i2 > 99) {
+                bArr[i3] = (byte) (i4 >> 16);
+                i3++;
+            }
+            bArr[i3] = (byte) (i4 >> 8);
+            i3++;
+        }
+        bArr[i3] = (byte) i4;
+        return i3 + 1;
+    }
+
+    private static int a(int i2, char[] cArr, int i3) {
+        int i4 = h[i2];
+        cArr[i3] = (char) (i4 >> 16);
+        cArr[i3 + 1] = (char) ((i4 >> 8) & 127);
+        cArr[i3 + 2] = (char) (i4 & 127);
+        return i3 + 3;
+    }
+
+    private static int a(int i2, byte[] bArr, int i3) {
+        int i4 = h[i2];
+        bArr[i3] = (byte) (i4 >> 16);
+        bArr[i3 + 1] = (byte) (i4 >> 8);
+        bArr[i3 + 2] = (byte) i4;
+        return i3 + 3;
+    }
+
+    private static int e(char[] cArr, int i2) {
+        String str = d;
+        int length = str.length();
+        str.getChars(0, length, cArr, i2);
+        return i2 + length;
+    }
+
+    private static int d(byte[] bArr, int i2) {
+        int length = d.length();
+        int i3 = 0;
+        while (i3 < length) {
+            bArr[i2] = (byte) d.charAt(i3);
+            i3++;
+            i2++;
+        }
+        return i2;
+    }
+
+    private static int d(char[] cArr, int i2) {
+        String str = e;
+        int length = str.length();
+        str.getChars(0, length, cArr, i2);
+        return i2 + length;
+    }
+
+    private static int a(byte[] bArr, int i2) {
+        int length = e.length();
+        int i3 = 0;
+        while (i3 < length) {
+            bArr[i2] = (byte) e.charAt(i3);
+            i3++;
+            i2++;
+        }
+        return i2;
+    }
+}
