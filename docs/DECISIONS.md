@@ -20,6 +20,7 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
   Dùng `rea` đã cài sẵn (`~/.volta/bin/rea`), không clone repo. Mọi việc liên quan rea chạy trong sub-agent (lỗi không ảnh hưởng session chính).
   Output thô (APK ghép lại, dump decompile) để ngoài git ở `../rea-output/<brand>/`; chỉ bằng chứng đã chắt lọc vào `docs/re-evidence/<brand>/`.
   **Cập nhật 2026-11-08:** việc đọc output thô của rea/jadx (`../rea-output/<brand>/`, `docs/re-evidence/<brand>/`) để chắt lọc bằng chứng không giao cho agent Sonnet đọc trực tiếp — chạy `claude-personal -p "<prompt>"` (model DeepSeek) để đọc/tóm tắt dump trước, agent Sonnet chỉ nhận lại phần đã chắt lọc. Lý do: dump rea/jadx rất lớn, dùng model rẻ hơn (DeepSeek) để nhai thô, giữ ngữ cảnh/chi phí của Sonnet cho việc viết code và ra quyết định.
+  **Cập nhật 2026-11-12:** DeepSeek chạy qua lệnh riêng `claude-deepseek -p "<prompt>"` (script `~/bin/claude-deepseek`, config tách riêng `~/.claude-deepseek/settings.json`, model `deepseek-flash[1m]`), không còn dùng `claude-personal` cho DeepSeek. Mọi chỗ ghi "`claude-personal -p` (DeepSeek)" trong log cũ hiểu là `claude-deepseek -p`. `claude-personal` chỉ còn là gói Claude (Sonnet) cho coding. Lý do: tách hẳn endpoint/key DeepSeek khỏi login Claude subscription, gọi được cả từ shell non-interactive (không phụ thuộc alias zsh).
 - **D-004** · 2026-11-06 · Pháp lý — **Chốt**
   Không copy code GPL (Gadgetbridge…), không trích xuất/nhúng key bí mật của vendor; credential chỉ đến từ người dùng (`SessionContext.credentials`).
   Chỉ phục vụ kết nối đồng hồ của chính người dùng.
@@ -3062,3 +3063,87 @@ yếu tố gamification nhẹ; xa hơn là community khoe trang bị. Cần Room
   SUCCESSFUL. Chưa có thiết bị/emulator khả dụng lúc agent chạy — chưa xác nhận trực quan đổi ngôn ngữ
   hệ thống → app tự theo, hay override giữ nguyên qua restart; cần test trên máy thật trước khi coi
   D-1184's follow-up này đã đóng hẳn.
+
+## Xiaomi MiWear RE: protocol scope, bind paths, cloud blocker (D-1193)
+
+- **D-1193** · 2026-11-12 · Xiaomi MiWear (Mi Fitness 3.46.1) — phân tích xong, chốt scope driver — **Chốt** (phần cloud là **Tạm**)
+  **Bối cảnh**: user yêu cầu RE APK `com.mi.health` 3.46.1 để app tự kết nối Mi Watch/Band,
+  kể cả tự bind qua Xiaomi cloud; TODO trước đó ghi Xiaomi Smart Band 10 đã thử và fail với
+  `:driver:zepp` (D-804/D-1188).
+  **Kết quả RE**: bóc được toàn bộ stack MiWear — GATT `FE95` (`0x50` version, `0x5E` notify,
+  `0x5F` write), L1 frame magic `0xA5A5` + CRC-16/ARC + seq/ACK/window, L2 channel/opCode +
+  AES-CTR key=IV, session auth `t7r` 26/27 (HKDF-SHA256 `miwear-auth`, HMAC, AES-CCM tag 4),
+  local bind ECDH P-256 (HKDF `miwear-bind`, token 16 byte), PSK/cloud bind, V1 OS-bond +
+  `CMD_SEND_USERID`, device commands (`s7r` type 2: time/battery/info; type 8 fitness IDs),
+  file channel 5 (total/seq u16 + 7-byte `FitnessDataId`), fitness parser bit-packed
+  (`DailyRecordParser` v1/v2/v3), và cloud bind API (`hlth.io.mi.com/healthapp/*`).
+  **Chốt scope**: V2 là đường chính; V1 best-effort sau V2; **Wear OS (Mi Watch 2019/Watch 2)
+  nằm ngoài driver** vì module `wearos` trong APK là stub rỗng
+  (`WearOSUtilImpl`, `isWearosRequirementNotPass()==true`) — cần Wear OS SDK/Health Connect riêng.
+  **Chốt bind path**: ưu tiên **local bind** khi watch trả `verifyMode == 2` trong `getBindInfo`
+  (không cần tài khoản/cloud); nếu `verifyMode == 1` thì dùng **token import** 16 byte từ log
+  Mi Fitness (`Transfer.device.log`, không cần root — đường Gadgetbridge đang dùng cho Band 10).
+  **Cloud self-bind = blocker**: API bind dùng Xiaomi Passport service token cho SID `miothealth`
+  + `security` + chữ ký/RC4 (`CloudInterceptor`/`x24`). Token này gắn với authenticator/package/
+  chữ ký của Mi Fitness; app thứ ba không xin được nếu không có Xiaomi authorization hoặc khóa ký
+  của Mi Fitness (không có trong APK). Không ship code scrape credential; cloud để sau feature flag
+  `XIAOMI_CLOUD_BIND`, mặc định tắt, kèm feasibility check.
+  **Gate 0 (bắt buộc trên máy thật)**: connect Band 10, đọc `0x50`, gửi `s7r e=1 f=17`, log đủ
+  `ha0` (verifyMode/oobMode/model/MAC/SN/DID) — quyết định local bind hay token import.
+  **Evidence**: `docs/protocols/XIAOMI_MIWEAR_DEVICE_PROTOCOL.md`,
+  `docs/protocols/XIAOMI_IMPLEMENTATION_BRIEF.md`, `docs/protocols/XIAOMI_TEST_VECTORS.json`,
+  `docs/re-evidence/mi/` (jadx tree local-only, gitignored).
+  **Verify**: static RE + tự sinh test vector (CRC16/ARC, protobuf, HKDF/HMAC, AES-CCM/CTR,
+  cloud RC4/signature) — chưa có capture HCI/thiết bị thật, nên các mục [Gate] trong protocol doc
+  vẫn mở.
+
+## Edge-to-edge + `AppScreen` dùng chung cho mọi màn hình (D-1194)
+
+- **D-1194** · 2026-11-12 · Mọi `Scaffold(topBar = { TopAppBar(...) })` hand-roll trong `feature/*`
+  gộp về một `AppScreen` dùng chung (`core/designsystem`), fix bug "dải nền trống phía dưới" — **Chốt**
+  **Số thật trong brief là D-1193**, nhưng số đó đã bị một agent khác (RE Xiaomi MiWear) chiếm ngay
+  phía trên trong lúc 2 agent chạy song song — không sửa lại entry đó, ghi số thật ở đây (D-1194) để
+  người đọc sau không nhầm, giống cách D-1189/D-1190 từng xử lý một va chạm số tương tự.
+  **Bug user báo trên emulator**: ở "Chế độ luyện tập" (`feature/training/TrainingScreen.kt`), ảnh/
+  list content dừng lại phía TRÊN thanh gesture, để lộ một dải nền trơn ở dưới cùng — không phải
+  "thiếu padding cuối list", mà là viewport cuộn bị cắt sai kích thước. Nguyên nhân thật: mọi màn hình
+  đều làm `Scaffold(topBar = {...}) { padding -> LazyColumn(Modifier.padding(padding)) }` —
+  `Scaffold` không có `bottomBar` nên `contentWindowInsets` mặc định gộp luôn inset thanh điều hướng
+  vào `padding`, và `Modifier.padding(padding)` áp lên *ngoài* container cuộn cắt luôn viewport ngắn
+  hơn màn hình thật — phần bị cắt đó không bao giờ cuộn tới được, chỉ thấy nền `containerColor` của
+  `Scaffold` đứng yên tại chỗ bất kể cuộn thế nào.
+  **Sửa**: `AppScreen` (`core/designsystem/.../component/AppScreen.kt`) — `Scaffold` dùng chung với
+  `title`, `onBack` (nút back `ArrowBack` bọc `ChromeRipple`, đúng rule D-1189/D-1190), `actions`,
+  `floatingActionButton`, `snackbarHost`, `topBarScrollBehavior`, `bottomClearance: Dp = 0.dp`, và
+  `topBar` override cho màn cần top bar khác chuẩn (ví dụ `RaceDetailScreen`'s transparent bar nổi
+  trên ảnh hero). Thay vì tự đem một phần `padding` ra làm `Modifier.padding` ngoài, `AppScreen` gộp
+  `padding` gốc (top-bar height + safe-drawing insets + nav-bar inset) với `bottomClearance` thành
+  một `contentPadding` duy nhất, đưa thẳng cho `content: @Composable (PaddingValues) -> Unit` — hợp
+  đồng bắt buộc: `LazyColumn(contentPadding = ...)`/`LazyVerticalGrid(contentPadding = ...)`, hoặc với
+  `Column` + `Modifier.verticalScroll` thì nối `.padding(contentPadding)` NGAY SAU `.verticalScroll(...)`
+  (không bao giờ đặt trước nó) — chỉ màn không cuộn mới được áp thẳng `Modifier.padding(contentPadding)`.
+  **Migrate 16 màn/Activity**: `feature/devices` (`DevicesScreen`, `detail/DeviceDetailScreen`),
+  `feature/gear` (`GearScreen`, `detail/GearDetailScreen`), `feature/activity` (`ActivityScreen`,
+  `detail/WorkoutDetailScreen`), `feature/home` (`HomeScreen`, `detail/MetricDetailScreen`,
+  `detail/MetricDataScreen`), `feature/races` (`RacesScreen`, `detail/RaceDetailScreen`),
+  `feature/profile` (`ProfileScreen`, `notifications/NotificationSettingsScreen`), `feature/training`
+  (`TrainingScreen`, `RunningFormScreen`, `TrainingCalendarScreen`), và
+  `app/.../privacy/PermissionsRationaleActivity`. 4 tab chính (Home/Activity/Devices/Profile) truyền
+  `bottomClearance = Spacing.bottomNavClearance` và bỏ hẳn spacer/padding thủ công cũ (D-1144) — không
+  còn cộng dồn 2 lần; các màn pushed khác để mặc định `0.dp`. `RaceDetailScreen` (transparent top bar
+  nổi trên ảnh hero, D-1114/D-1136/D-1151) giữ nguyên hành vi top/bottom cũ nhưng chuyển
+  `RaceDetailContent` sang nhận thẳng `contentPadding` và nối sau `verticalScroll` — vừa đúng hợp đồng
+  mới, vừa khớp đúng ý đồ "back button nổi trên ảnh" ghi trong comment cũ (ảnh giờ cuộn được lên phía
+  sau app bar trong suốt). `TrainingCalendarScreen` trước đó back button KHÔNG bọc `ChromeRipple` (sót
+  so với D-1189/D-1190) — migrate qua `AppScreen` tiện thể sửa luôn, không phải cố ý đổi hành vi riêng.
+  Giữ nguyên mọi testTag, FAB (`DevicesScreen`'s scan FAB — vị trí FAB không phụ thuộc `contentPadding`,
+  Scaffold tự định vị độc lập), `navigationBarsPadding` của `QrFindSheet`'s `ModalBottomSheet` (dòng
+  ~649 cũ, không đụng tới — đây là dialog riêng, không nằm trong `AppScreen`'s content). Không đụng
+  onboarding/QR scanner/DeviceImageViewer (đã full-bleed từ trước).
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug` BUILD
+  SUCCESSFUL — 76 file `TEST-*.xml`, không file nào thiếu `failures="0" errors="0"`; KSP sinh đủ
+  `*ViewModel_HiltModules_BindsModule.java` cho mọi `feature/*` (không gặp flake KSP/Hilt). Cài APK lên
+  emulator thật, chụp màn hình Home cuộn xuống đáy và "Chế độ luyện tập" cuộn tới ảnh hero + cuộn hết
+  danh sách Marathon (42km) ở cuối — nội dung/nền cuộn liền mạch ra sau thanh gesture, không còn dải
+  nền trống đứng yên; tiện thể xác nhận luôn `RaceDetailScreen`/`MetricDetailScreen`/`DevicesScreen`
+  (chạm nhầm lúc test thủ công) không bị vỡ layout.

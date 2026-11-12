@@ -1,0 +1,74 @@
+{
+  "getBindInfo": {
+    "userId": "1234567890",
+    "md5_hex": "e807f1fcf82d132f9bb018ca6738a19f",
+    "s7r_hex": "080110111a165a1408001210e807f1fcf82d132f9bb018ca6738a19f",
+    "l2_hex": "0101080110111a165a1408001210e807f1fcf82d132f9bb018ca6738a19f",
+    "l1_frame_hex": "a5a503001e005ef50101080110111a165a1408001210e807f1fcf82d132f9bb018ca6738a19f",
+    "l1_crc16": 62814,
+    "note": "First DATA frame after L1 START; L0 splits at ATT_MTU-3."
+  },
+  "timeSync": {
+    "s7r_hex": "080210032230222e0a0708ea0f100b180c12090813101e180020fa011a16083810001a10417369612f486f5f4368695f4d696e682001",
+    "txo_hex": "222e0a0708ea0f100b180c12090813101e180020fa011a16083810001a10417369612f486f5f4368695f4d696e682001",
+    "wxo_hex": "0a0708ea0f100b180c12090813101e180020fa011a16083810001a10417369612f486f5f4368695f4d696e682001"
+  },
+  "batteryRequest": {
+    "s7r_hex": "08021001"
+  },
+  "fitnessTodayIds": {
+    "s7r_hex": "0808100152042a020800"
+  },
+  "fitnessRequestOne": {
+    "dataId_hex": "707b14691c0203",
+    "s7r_hex": "0808100452091a07707b14691c0203"
+  },
+  "fitnessConfirm": {
+    "s7r_hex": "0808100552091a07707b14691c0203"
+  },
+  "authCrypto": {
+    "token_hex": "000102030405060708090a0b0c0d0e0f",
+    "appRandom_hex": "a0a1a2a3a4a5a6a7a8a9aaabacadaeaf",
+    "deviceRandom_hex": "b0b1b2b3b4b5b6b7b8b9babbbcbdbebf",
+    "okm64_hex": "e056f56a92e2e5310b681165b043a8b896d98ddbd7e59381ccf81334d7fe62155cf69b67831425513eaa4017c360e676ba96ded7c4194fcc6309e3e57e815de0",
+    "deviceKey_hex": "e056f56a92e2e5310b681165b043a8b8",
+    "appKey_hex": "96d98ddbd7e59381ccf81334d7fe6215",
+    "deviceIV_hex": "5cf69b67",
+    "appIV_hex": "83142551",
+    "deviceSign_hex": "901134d0b9b5890d02e0f92db264e8bb956de03ca9a7f5343e992e9e84a2fe5c",
+    "appSign_hex": "3137d4f6a3e822a9f9381973f20a38734b3457e0aae03b40dc3e4e4d294baf32"
+  },
+  "authCcm": {
+    "dc0_hex": "08001500000c421a07506978656c20392a02564e",
+    "nonce_hex": "831425510000000000000000",
+    "key_hex": "96d98ddbd7e59381ccf81334d7fe6215",
+    "ciphertext_hex": "4d6daa007f881ae828d8107de55e8e8f93ac79d4",
+    "tag4_hex": "2c3afed1",
+    "ciphertext_plus_tag_hex": "4d6daa007f881ae828d8107de55e8e8f93ac79d42c3afed1",
+    "note": "Java iql.d returns CCM ciphertext||4-byte tag; t90 field2 carries this."
+  },
+  "l2Ctr": {
+    "plaintext_s7r_hex": "080210032230222e0a0708ea0f100b180c12090813101e180020fa011a16083810001a10417369612f486f5f4368695f4d696e682001",
+    "key_and_iv_hex": "96d98ddbd7e59381ccf81334d7fe6215",
+    "ciphertext_hex": "0a5df840493f4b7804eef1b2927e0a52e74e220f1095ac05434128ec5efd5224c1e52279ee819a9b20f466add348adf585b48e636e38"
+  },
+  "cloudPost": {
+    "security_b64": "ERERERERERERERERERERERERERERERERERERERERERE=",
+    "nonce_b64": "IiIiIiIiIiLgPMgB",
+    "key_b64": "pyhqmhPxqPsdJjWFzTckacRjeGREXDrdnoW3ytc/ntw=",
+    "data_json": "{\"mode\":2,\"model\":\"M2457B1\",\"mac\":\"AA:BB:CC:DD:EE:FF\",\"phone_id\":\"phone\",\"node_id\":\"node\",\"sn\":\"SN123\",\"did\":\"DID123\",\"random_d\":\"MzMzMzMzMzMzMzMzMzMzMw==\"}",
+    "rc4_hash_raw_b64": "sujFec0GIqaY+rBmu0Oy3dAL6ns=",
+    "data_rc4_b64": "hyCfNjkyGmUf6plJ1Xlg7di7CSfMVH30Hq7737cnYFO8y3AnL4DnnY8HYdhZ0gKk2yF12B4ZA++/K5k5sQ5HGezZBEdU+4EAbfgy5QMvZcXpoFGFeeIQtPlEh3Pyn8Gbu4mfmZTLheztm7xT0CZIxpOmTNVVq7omJy6EDfGrCeoocYXqOQJOHl66De0Al6Hv2rBKEG3lBDTeXYpy",
+    "rc4_hash_encrypted_b64": "IeuxcEQ3nrj27flOXg/rg5VQ9tLDZh3VKt1hiQ==",
+    "signature_b64": "OAZnIPim3dTFgXpQj2KHIe18yaU=",
+    "note": "Stateful RC4 (fresh key state, 1024-byte skip) encrypts values in sorted-key order: data then rc4_hash__. Form body uses encrypted values; signature canonical string uses them too. Response = base64(RC4(JSON)) with a fresh RC4 state (1024-byte skip)."
+  },
+  "cloudGet": {
+    "security_b64": "ERERERERERERERERERERERERERERERERERERERERERE=",
+    "nonce_b64": "IiIiIiIiIiLgPMgB",
+    "key_b64": "pyhqmhPxqPsdJjWFzTckacRjeGREXDrdnoW3ytc/ntw=",
+    "canonical_string": "GET&pyhqmhPxqPsdJjWFzTckacRjeGREXDrdnoW3ytc/ntw=&IiIiIiIiIiLgPMgB&data=",
+    "signature_b64": "bFQ5fshNbiAGm5J/ZvZKJf3O3eJcE/qhEhCmqypdq1s=",
+    "note": "getBindKey has no params: query is ?signature=<sig>&_nonce=<nonce>; empty param map canonicalizes to data=. Response = base64(RC4(JSON))."
+  }
+}
