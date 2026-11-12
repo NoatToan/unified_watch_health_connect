@@ -1,0 +1,117 @@
+package android.support.v4.os;
+
+import android.os.Binder;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.IInterface;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.RemoteException;
+import androidx.annotation.RestrictTo;
+import kotlin.text.Typography;
+
+/* JADX INFO: loaded from: classes.dex */
+@RestrictTo({RestrictTo.Scope.LIBRARY})
+public interface IResultReceiver extends IInterface {
+    public static final String DESCRIPTOR = "android$support$v4$os$IResultReceiver".replace(Typography.dollar, '.');
+
+    public static class Default implements IResultReceiver {
+        @Override // android.os.IInterface
+        public IBinder asBinder() {
+            return null;
+        }
+
+        @Override // android.support.v4.os.IResultReceiver
+        public void send(int i, Bundle bundle) throws RemoteException {
+        }
+    }
+
+    public static abstract class Stub extends Binder implements IResultReceiver {
+
+        public static class Proxy implements IResultReceiver {
+
+            /* JADX INFO: renamed from: a, reason: collision with root package name */
+            public IBinder f1354a;
+
+            public Proxy(IBinder iBinder) {
+                this.f1354a = iBinder;
+            }
+
+            @Override // android.os.IInterface
+            public IBinder asBinder() {
+                return this.f1354a;
+            }
+
+            public String getInterfaceDescriptor() {
+                return IResultReceiver.DESCRIPTOR;
+            }
+
+            @Override // android.support.v4.os.IResultReceiver
+            public void send(int i, Bundle bundle) throws RemoteException {
+                Parcel parcelObtain = Parcel.obtain();
+                try {
+                    parcelObtain.writeInterfaceToken(IResultReceiver.DESCRIPTOR);
+                    parcelObtain.writeInt(i);
+                    _Parcel.d(parcelObtain, bundle, 0);
+                    this.f1354a.transact(1, parcelObtain, null, 1);
+                } finally {
+                    parcelObtain.recycle();
+                }
+            }
+        }
+
+        public Stub() {
+            attachInterface(this, IResultReceiver.DESCRIPTOR);
+        }
+
+        public static IResultReceiver asInterface(IBinder iBinder) {
+            if (iBinder == null) {
+                return null;
+            }
+            IInterface iInterfaceQueryLocalInterface = iBinder.queryLocalInterface(IResultReceiver.DESCRIPTOR);
+            return (iInterfaceQueryLocalInterface == null || !(iInterfaceQueryLocalInterface instanceof IResultReceiver)) ? new Proxy(iBinder) : (IResultReceiver) iInterfaceQueryLocalInterface;
+        }
+
+        @Override // android.os.IInterface
+        public IBinder asBinder() {
+            return this;
+        }
+
+        @Override // android.os.Binder
+        public boolean onTransact(int i, Parcel parcel, Parcel parcel2, int i2) throws RemoteException {
+            String str = IResultReceiver.DESCRIPTOR;
+            if (i >= 1 && i <= 16777215) {
+                parcel.enforceInterface(str);
+            }
+            if (i == 1598968902) {
+                parcel2.writeString(str);
+                return true;
+            }
+            if (i != 1) {
+                return super.onTransact(i, parcel, parcel2, i2);
+            }
+            send(parcel.readInt(), (Bundle) _Parcel.c(parcel, Bundle.CREATOR));
+            return true;
+        }
+    }
+
+    public static class _Parcel {
+        public static <T> T c(Parcel parcel, Parcelable.Creator<T> creator) {
+            if (parcel.readInt() != 0) {
+                return creator.createFromParcel(parcel);
+            }
+            return null;
+        }
+
+        public static <T extends Parcelable> void d(Parcel parcel, T t, int i) {
+            if (t == null) {
+                parcel.writeInt(0);
+            } else {
+                parcel.writeInt(1);
+                t.writeToParcel(parcel, i);
+            }
+        }
+    }
+
+    void send(int i, Bundle bundle) throws RemoteException;
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tag="layout/pk_layout_load_more_item_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/dimen_margin_12dp"
+    android:paddingVertical="@dimen/dimen_margin_20dp">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:background="@drawable/ic_pk_list_load_more_down_arrow"
+        android:layout_width="8.67dp"
+        android:layout_height="5.33dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/dimen_margin_12dp"
+        android:layout_toStartOf="@+id/tv_load_more_item"/>
+    <TextView
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/text_color"
+        android:id="@+id/tv_load_more_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pk_load_more"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

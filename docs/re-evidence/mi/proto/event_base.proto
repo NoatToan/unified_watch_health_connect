@@ -1,0 +1,295 @@
+syntax = "proto2";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message LcdEventMessage {
+    //屏幕点亮次数
+    required uint32 lcdOnBecauseOfPress 	= 1; //按键点亮屏幕次数
+    required uint32 lcdOnBecauseOfEvent 	= 2; //抬腕点亮屏幕次数
+    required uint32 lcdOnBecauseOfNotify 	= 3; //通知提醒等点亮屏幕次数
+}
+
+
+message MenuEventMessage {
+    //菜单页面 统计
+    required uint32 statusPage 				= 1; //菜单-状态点击次数
+    required uint32 heartPage 				= 2; //菜单-心率点击次数
+    required uint32 paiPage					= 3; //菜单-PAI点击次数
+    required uint32 notifyPage				= 4; //菜单-通知点击次数
+    required uint32 pressurePage			= 5; //菜单-压力点击次数
+    required uint32 breathePage				= 6; //菜单-呼吸点击次数
+    required uint32 womenHealthPage			= 7; //菜单-女性健康点击次数
+    required uint32 eventRemindPage			= 8; //菜单-事件提醒点击次数
+    required uint32 weatherPage				= 9; //菜单-天气点击次数
+    required uint32 sportPage				= 10;//菜单-运动点击次数
+    required uint32 nfcPage					= 11;//菜单-卡包点击次数
+    required uint32 morePage				= 12;//菜单-更多点击次数
+    required uint32 silencePage				= 13;//菜单-勿扰点击次数
+	required uint32 alarmPage				= 14;//菜单-闹钟点击次数
+	required uint32 cameraPage				= 15;//菜单-拍照点击次数
+	required uint32 musicPageCount			= 16;//菜单-音乐点击次数
+	required uint32 countdownPage			= 17;//菜单-倒计时点击次数
+	required uint32 findphonePage			= 18;//菜单-找手机点击次数
+	required uint32 phonemutePage			= 19;//菜单-手机静音点击次数
+	required uint32 alipayPage				= 20;//菜单-支付宝点击次数
+	required uint32 worldTimePage			= 21;//菜单-世界时钟点击次数
+	required uint32 calenderPage			= 22;//菜单-日历点击次数
+	required uint32 dialPage				= 23;//菜单-表盘点击次数
+	required uint32 settingPage				= 24;//菜单-设置点击次数
+	required uint32 spo2Page				= 25;//菜单-血氧饱和度点击次数
+	required uint32 weichatpayPage			= 26;//菜单-微信支付页面点击次数
+	required uint32 flashlightPage			= 27;//菜单-手电筒页面点击次数
+	required uint32 promodoroPage			= 28;//菜单-番茄钟页面点击次数
+	required uint32 sleepPage				= 29;//菜单-睡眠页面点击次数
+	required uint32 sportrecodePage			= 30;//菜单-运动记录页面点击次数
+};
+
+
+message XiaoaiEventMessage {
+    //小爱同学
+    required uint32 xiaoaiPage 				= 1; //进入小爱同学页面次数
+	required uint32 linkFail				= 2; //小爱同学连接失败次数
+	required uint32 identifySuccPage		= 3; //小爱同学识别成功次数
+	required uint32 unauthorized			= 4; //小爱同学显示未授权次数
+	required uint32 identifyFailPage		= 5; //小爱同学识别失败次数
+	required uint32 guidancePage			= 6; //小爱同学显示引导语次数
+}
+
+
+message MoreEventMessage {
+    //更多
+    required uint32 alarmOpenPage 			= 1; //闹钟开启次数
+	required uint32 alarmCreateByXiaoaiPage	= 2; //通过小爱同学 创建闹钟次数
+	required uint32 alarmCreateByAppPage	= 3; //通过小米运动app 创建闹钟次数
+	required uint32 alarmClosePage			= 4; //闹钟关闭次数
+	required uint32 eventCreateByXiaoaiPage	= 5; //通过小爱同学 创建事件提醒次数
+	required uint32 eventCreateByAppPage	= 6; //通过小米运动app 创建事件提醒次数
+	required uint32 takePhotosPage			= 7; //使用拍照次数
+	required uint32 musicControlVolumePage1	= 8; //通过小爱同学调节音量次数
+	required uint32 musicControlPreNextPage1= 9; //通过小爱控制上一首下一首次数
+	required uint32 musicControlPausePage1	= 10;//通过小爱暂停/播放音乐次数
+	required uint32 musicControlVolumePage2	= 11;//进入音乐页面调节音量次数
+	required uint32 musicControlPreNextPage2= 12;//进入音乐页面控制上一首下一首次数
+	required uint32 musicControlPausePage2	= 13;//进入音乐页面点击暂停/播放音乐次数
+	required uint32 muteOpenPage			= 14;//点击开启铃声次数
+	required uint32 muteClosePage			= 15;//点击关闭铃声次数
+	required uint32 alipayBindPage			= 16;//绑定支付宝次数
+	required uint32 lookScreenOpenPage		= 17;//锁屏开启次数
+	required uint32 lookScreenCloasePage	= 18;//锁屏关闭次数
+	required uint32 brightPage				= 19;//亮度点击次数
+	required uint32 autoCloseLcdPage		= 20;//自动息屏设置次数
+	required uint32 shortcutPage			= 21;//进入快捷入口展示次数
+	required uint32 weichatpayBindPage		= 22;//绑定微信支付次数
+	required uint32 alarmCreateByAleaxPage	= 23; //通过Aleax 创建闹钟次数
+	required uint32 eventCreateByAleaxPage	= 24; //通过Aleax 创建事件提醒次数
+    required uint32 musicControlVolumePage3	= 25; //通过Aleax调节音量次数
+	required uint32 musicControlPreNextPage3= 26; //通过Aleax控制上一首下一首次数
+	required uint32 musicControlPausePage3	= 27;//通过Aleax暂停/播放音乐次数
+}
+
+
+message SportEventMessage {
+    //运动
+    required uint32 beforeSportSkipGpsLoc			= 1; //运动前GPS定位中跳过次数
+	required uint32 beforeSportSuccGpsLoc			= 2; //运动前等待GPS定位成功次数
+	required uint32 sportingSuccGpsLocTimeLess1S	= 3; //运动GPS定位成功时长 0到1秒 次数
+	required uint32 sportingSuccGpsLocTimeLess3S	= 4; //运动GPS定位成功时长 1到3秒 次数
+	required uint32 sportingSuccGpsLocTimeLess5S	= 5; //运动GPS定位成功时长 3到5秒 次数
+	required uint32 sportingSuccGpsLocTimeLess10S	= 6; //运动GPS定位成功时长 5到10秒 次数
+	required uint32 sportingSuccGpsLocTimeLessOther	= 7; //运动GPS定位成功时长 >10秒 次数
+	required uint32 sportingSuccGpsLocPage			= 8; //运动中GPS定位成功次数
+	required uint32 sportingDisconPage				= 9; //运动中手机断连次数
+	required uint32 sportingReconnectPage			= 10; //运动中手机恢复连接次数
+	required uint32 autoDetectTriger        		= 11; //自动检测触发次数
+	required uint32 autoDetectWalk	        		= 12; //识别到健走
+	required uint32 autoDetectRun	        		= 13; //识别跑步后记录户外跑
+	required uint32 autoDetectOther	        		= 14; //识别跑步后记录为非户外跑的运动类型
+	required uint32 autoDetectRecode        		= 15; //自动检测识别后记录的运动
+	required uint32 manualStartRecode	    		= 16; //运动列表中手动发起的运动
+}
+
+
+message NotifyEventMessage {
+    //通知提醒
+    required uint32 notifyDisplayPage		= 1; //通知列表展示次数
+	required uint32 appNotifyDispalyPage	= 2; //APP通知提醒展示次数
+	required uint32 callingPage				= 3; //来电提醒次数
+	required uint32 longSitePage			= 4; //久坐提醒次数
+	required uint32 linkDisconpage			= 5; //连接断开展示次数
+	required uint32 eventRemindPage			= 6; //事件提醒展示次数
+	required uint32 alarmOnLaterOnPage		= 7; //闹钟提醒-稍后提醒次数
+	required uint32 alarmOnClosePage		= 8; //闹钟提醒-关闭次数
+	required uint32 remindCycleStartPage	= 9;//月经期提醒-已将开始
+	required uint32 remindCycleIgnorePage	= 10;//月经提醒-忽略
+	required uint32 remindOvulationOpenCycle= 11;//排卵日提醒-打开女性健康
+	required uint32 remindOvulationIgnore   = 12;//排卵日提醒-忽略
+}
+
+
+message EditDialEventMessage {
+    //可编辑表盘控件使用情况	
+	required uint32 stepIdPage				= 1; //状态 快捷入口使用次数
+	required uint32 hrPage					= 2; //心率 快捷入口使用次数
+	required uint32 calPage					= 3; //消耗 
+	required uint32 paiPage					= 4; //PAI点击次数
+	required uint32 batteryPage				= 5; //电池
+	required uint32 dayPaiPage				= 6; //近7天PAI
+	required uint32 hourStepPage			= 7; //每小时步数
+	required uint32 allDayHr				= 8;//全天心率曲线
+	required uint32 weatherPage				= 9;//天气
+	required uint32 sunrisePage				= 10;//日出日落
+	required uint32 otherWeatehrPage		= 11;//其他天气
+	required uint32 airQualityPage			= 12;//空气质量
+	required uint32 EventRemindPage			= 13;//事件提醒
+	required uint32 alarmPage				= 14;//闹钟
+	required uint32 calendarPage			= 15;//日历
+	required uint32 sportPage				= 16;//运动
+}
+
+
+message fitDataMeasureEventMessage {
+    //血氧饱和度 心率 压力
+	required uint32 meaSucByShortCut        = 1; //血氧测量成功页面 -快捷入口测量成功
+	required uint32 meaSucByAppDetail		= 2; //血氧测量成功页面 -详情页测量成功
+	required uint32 meaFailByBadSignal		= 3; //血氧测量失败页面 -信号不好
+	required uint32 meaFailByOffWrist		= 4; //血氧测量失败页面 -离腕未佩戴
+	required uint32 startMeaByShortCut		= 5; //点击测量血氧次数 -快捷入口点击测量
+	required uint32 startMeaByAppDetail		= 6; //点击测量血氧次数 -详情页点击测量
+	required uint32 meaSucTimeLevelOne		= 7; //血氧第一次出值的时长统计时间水平一
+	required uint32 meaSucTimeLevelTwo		= 8; //血氧第一次出值的时长统计时间水平二
+	required uint32 meaSucTimeLevelTree		= 9; //血氧第一次出值的时长统计时间水平三
+	required uint32 meaSucTimeLevelFour		= 10;//血氧第一次出值的时长统计时间水平四
+}
+
+message breathEventMessage {
+    //呼吸训练
+    required uint32 breathHrLower       	= 1; //心率降低
+	required uint32	breathHrHigher			= 2; //心率升高
+	required uint32	breathHrNoChange		= 3; //心率无变化
+	required uint32	breathHrOnlyOne			= 4; //只有一个心率
+	required uint32	breathHrNoWear			= 5; //未佩戴
+    required uint32 breathOneMinute			= 6; //1分钟
+	required uint32	breathTwoMinute			= 7; //2分钟
+	required uint32	breathThreeMinute		= 8; //3分钟
+	required uint32	breathFourMinute		= 9; //4分钟
+	required uint32	breathFiveMinute		= 10;//5分钟
+}
+
+message cycleEventMessage {
+    //女性健康
+	required uint32 cycleRecByShortcut 		= 1; //记录经期次数-快捷入口记录
+	required uint32 cycleRecByAppDetail		= 2; //记录经期次数-详情页记录
+	required uint32 cycleRecByRemind		= 3; //记录经期次数-月经提醒弹窗记录
+	required uint32 overCycleRecByShortcut	= 4; //结束经期次数-快捷入口记录
+	required uint32 overCycleRecByAppDetail	= 5; //结束经期次数-详情页记录
+}
+
+message DialEventMessage {
+    //表盘
+    required uint32 dialListDisplayPage		= 1; //表盘列表展示次数
+	required uint32 dialEditpage			= 2; //可编辑表盘自定义次数
+	required EditDialEventMessage EditDial1	= 3;//可编辑表盘1的使用情况
+	required EditDialEventMessage EditDial2	= 4;//可编辑表盘2的使用情况
+	required EditDialEventMessage EditDial3	= 5;//可编辑表盘3的使用情况
+}
+
+
+message ShortcutEventMessage {
+    //快捷入口
+    required uint32 notifyDisplayPage		= 1; //快捷入口-通知展示 次数
+	required uint32 xiaoaiDisplayPage		= 2; //快捷入口-小爱展示 次数
+	required uint32 weatehrDisplayPage		= 3; //快捷入口-天气展示 次数
+	required uint32 musicDisplayPage		= 4; //快捷入口-音乐展示 次数
+	required uint32 statusDisplayPage		= 5; //快捷入口-状态展示 次数
+	required uint32 paiDisplayPage			= 6; //快捷入口-PAI展示 次数
+	required uint32 heartDisplayPage		= 7; //快捷入口-心率展示 次数
+	required uint32 pressureDisplayPage		= 8; //快捷入口-压力展示 次数
+	required uint32 breatheDisplayPage		= 9; //快捷入口-呼吸展示 次数
+	required uint32 womenHealthDisplayPage	= 10;//快捷入口-女性健康展示 次数
+	required uint32 eventRemindDisplayPage	= 11;//快捷入口-事件提醒展示 次数
+	required uint32 sportDisplayPage		= 12;//快捷入口-运动展示 次数
+	required uint32 nfcDisplayPage			= 13;//快捷入口-卡包展示 次数
+	required uint32 silenceDisplayPage		= 14;//快捷入口-勿扰展示 次数
+	required uint32 alarmDisplayPage		= 15;//快捷入口-闹钟展示 次数
+	required uint32 cameraDisplayPage		= 16;//快捷入口-拍照展示 次数
+	required uint32 stopWatchDisplayPage	= 17;//快捷入口-秒表展示 次数
+	required uint32 countDownDisplayPage	= 18;//快捷入口-倒计时展示 次数
+	required uint32 findPhoneDisplayPage	= 19;//快捷入口-找手机展示 次数
+	required uint32 phoneMuteDisplayPage	= 20;//快捷入口-手机静音展示 次数
+	required uint32 alipayBrDisplayPage		= 21;//快捷入口-支付宝条形码页面展示 次数
+	required uint32 alipayQrDisplayPage		= 22;//快捷入口-支付宝二维码页面展示 次数
+	required uint32 worldTimeDisplayPage	= 23;//快捷入口-世界时钟页面展示 次数
+	required uint32 calendarDisplayPage		= 24;//快捷入口-日历页面展示 次数
+	required uint32 weichatpayBrDisplayPage	= 25;//快捷入口-微信支付条形码页面进入次
+    required uint32 weichatpayQrDisplayPage	= 26;//快捷入口-微信支付二维码页面进入次 	
+	required uint32 flashlightDisplayPage	= 27;//快捷入口-手电筒页面进入次数
+	required uint32 promodoroDisplayPage	= 28;//快捷入口-番茄钟页面进入次数
+	required uint32 sleepDisplayPage	    = 29;//快捷入口-睡眠页面进入次数 
+}
+
+message AbnormalRebootCountMessage {
+    //异常重启原因计数
+    required uint32 rebootHardfaultCount = 1; // 重启hardfault计数
+    required uint32 rebootWdgCount = 2; // 重启wdg计数
+    required uint32 rebootIicCount = 3; // 重启I2C错误计数
+    required uint32 rebootEsdCount = 4; //	重启ESD计数
+    required uint32 rebootNfcTimeoutCount = 5;	// 重启nfc超时计数
+    required uint32 rebootNfcInitFailCount = 6; // 重启nfc初始化失败计数
+    required uint32 rebootNfcEseCount = 7; // 重启nfc选择SE失败计数
+    required uint32 rebootDfuFailCount = 8; // 重启固件升级失败计数
+    required uint32 rebootMallocFailCount = 9; // 重启mallocFail计数
+	required uint32 rebootStackOverflowCount = 10; // 重启stack overflow计数
+    required uint32 rebootOtherSysErrorCount = 11; // 重启除WDG、hardfault、mallocFail stack overflow外的其它问题计数
+}
+
+message nfcEventMessage {
+    //NFC 刷卡统计
+    required uint32 cardTypeBus        		 = 1;//刷卡次数统计-默认卡=公交卡
+    required uint32 cardTypeAccess        	 = 2;//刷卡次数统计-默认卡=门禁卡
+    required uint32 cardTypeUnionPay    	 = 3;//刷卡次数统计-默认卡=银联卡
+    required uint32 cardTypeMasterCard    	 = 4;//万事达付款次数统计
+}
+
+message AlipayEventMessage {
+    required uint32 alipayBrDisplayMore        = 1;//更多菜单进入支付宝条形码展示次数
+    required uint32 alipayQrDisplayMore        = 2;//更多菜单进入支付宝二维码展示次数
+    required uint32 alipayBrDisplayWidget    = 3;//快捷入口进入支付宝条形码展示次数
+    required uint32 alipayQrDisplayWidget    = 4;//快捷入口进入支付宝二维码展示次数
+	required uint32 alipayQrTimeLevelOne     = 5;//二维码停留时长水平一
+	required uint32 alipayQrTimeLevelTwo     = 6;//二维码停留时长水平二
+	required uint32 alipayQrTimeLevelThree   = 7;//二维码停留时长水平三
+	required uint32 alipayQrTimeLevelFour    = 8;//二维码停留时长水平四
+	required uint32 alipayQrTimeLevelFive    = 9;//二维码停留时长水平五
+	required uint32 alipayBrTimeLevelOne     = 10;//条形码停留时长水平一
+	required uint32 alipayBrTimeLevelTwo     = 11;//条形码停留时长水平二
+	required uint32 alipayBrTimeLevelThree   = 12;//条形码停留时长水平三
+	required uint32 alipayBrTimeLevelFour    = 13;//条形码停留时长水平四
+	required uint32 alipayBrTimeLevelFive    = 14;//条形码停留时长水平五
+}
+
+message UpgrateEventMessage {
+    //固件升级统计
+	required uint32 fontUpgrateSucess = 1;     //字库升级成功次数
+	required uint32 fontUpgrateFailed = 2;     //字库升级失败次数
+	required uint32 resourceUpgrateSucess = 3; //资源升级成功次数
+	required uint32 resourceUpgrateFailed = 4; //资源升级失败次数
+	required uint32 firmwareUpgrateSucess = 5;  //固件升级成功次数
+	required uint32 firmwareUpgrateFailed = 6;  //固件升级失败次数
+}
+
+message AlexaEventMessage {
+    //Alexa
+    required uint32 AlexaPage 				= 1;  //进入Alexa同学页面次数
+	required uint32 requestSuccess			= 2;  //Alexa请求结果成功请求
+	required uint32 reqretUnknowError		= 3;  //Alexa请求结果未知错误
+	required uint32 retNetError			    = 4;  //Alexa请求结果网络错误0x03
+	required uint32 retNetErrorTimeout		= 5;  //Alexa请求结果网络超时0x04
+	required uint32 retErrorNoAuthorize	    = 6;  //Alexa请求结果未授权0x07
+	required uint32 ttsTimeout			    = 7;  //Alexa请求结果TTS_TIME_OUT_0x09
+	required uint32 statusNotConnect		= 8;  //Alexa请求结果未连接手机，无法使用alexa
+	required uint32 dataUploading			= 9;  //Alexa请求结果手环正在上传数据，alexa暂时无法使用
+	required uint32 retAangR			    = 10; //Alexa命中领域Alarms and Timers=1
+	required uint32 retNamedAandR			= 11; //Alexa命中领域Named Alarms and Reminders=2
+	required uint32 retList			        = 12; //Alexa命中领域Lists=3
+	required uint32 retWeather		        = 13; //Alexa命中领域Weather=4
+}

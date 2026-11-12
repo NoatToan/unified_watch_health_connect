@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
+    android:tag="layout/fragment_sport_detail_permission_0"
+    android:paddingBottom="@dimen/dimen_margin_16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.widget.view.DataTitleSimpleView
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textColor="@color/text_color_60"
+        android:id="@+id/permission_des"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/page_extra_padding_horizontal_large"
+        android:layout_marginEnd="@dimen/page_extra_padding_horizontal_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_view"/>
+    <Button
+        android:textSize="@dimen/dimen_16sp"
+        android:textColor="@color/text_color"
+        android:gravity="center"
+        android:id="@+id/open_btn"
+        android:background="@drawable/selector_bottom_btn_native_bg"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/common_btn_height"
+        android:layout_marginTop="@dimen/dimen_margin_16dp"
+        android:text="@string/trail_sports_report_to_open_permission"
+        android:layout_marginStart="@dimen/page_extra_padding_horizontal_large"
+        android:layout_marginEnd="@dimen/page_extra_padding_horizontal_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/permission_des"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

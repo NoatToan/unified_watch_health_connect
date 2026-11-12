@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/iv_expired_face"
+    android:tag="layout/membership_expired_face_item_0"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="35dp"
+    android:src="@drawable/member_vip_expired_more"
+    android:scaleType="centerInside"
+    android:layout_marginHorizontal="@dimen/dimen_margin_8dp"/>

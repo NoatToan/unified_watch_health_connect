@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textColor="@color/white"
+    android:gravity="center"
+    android:id="@+id/label"
+    android:background="@drawable/share_card_item_bg_dis_pressed"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="70dp"
+    android:layout_marginEnd="@dimen/dimen_margin_12dp"
+    android:paddingHorizontal="@dimen/dimen_margin_12dp"
+    android:paddingVertical="8dp"
+    style="@style/FontMedium.12sp"/>

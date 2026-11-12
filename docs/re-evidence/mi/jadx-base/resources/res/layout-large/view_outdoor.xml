@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/outdoor_root_view"
+    android:tag="layout-large/view_outdoor_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.mi.health.sport.AmapRealTimePathView
+        android:id="@+id/map"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="2.41:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <View
+        android:id="@+id/viewStub"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="2.41:0.9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/include"
+        android:tag="binding_1"
+        android:background="@drawable/shape_sporting_bg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dimen_margin_24dp"
+        android:paddingEnd="@dimen/dimen_margin_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewStub">
+        <include
+            android:id="@+id/outdoor_title"
+            layout="@layout/view_outdoor_title"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="12.6dp"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

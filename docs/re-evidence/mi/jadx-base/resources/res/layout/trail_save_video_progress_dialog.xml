@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:tag="layout/trail_save_video_progress_dialog_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/dimen_margin_20dp">
+    <FrameLayout
+        android:id="@+id/circular_progress_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ProgressBar
+            android:id="@+id/xq_progress_dialog_indeterminate"
+            style="@style/ProgressDialogIndeterminateProgressbar"/>
+    </FrameLayout>
+    <TextView
+        android:textSize="@dimen/dimen_16sp"
+        android:textColor="@color/dialog_text_color"
+        android:gravity="start"
+        android:id="@+id/xq_progress_dialog_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/trail_saving_video_please_do_not_leave"
+        android:layout_marginStart="6.3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/circular_progress_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/circular_progress_icon"
+        app:layout_constraintTop_toTopOf="@+id/circular_progress_icon"
+        style="@style/FontNormal.16sp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

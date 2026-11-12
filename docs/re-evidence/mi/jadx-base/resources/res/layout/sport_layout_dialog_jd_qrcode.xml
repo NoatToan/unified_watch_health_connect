@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/sport_layout_dialog_jd_qrcode_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="@dimen/dimen_18sp"
+        android:textColor="@color/sport_jd_common_text_color"
+        android:gravity="center_horizontal"
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_40dp"
+        android:text="@string/sport_jd_control_qr_code_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+        android:id="@+id/qr_code"
+        android:layout_width="176dp"
+        android:layout_height="176dp"
+        android:layout_marginTop="@dimen/dimen_margin_30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"/>
+    <TextView
+        android:textSize="20sp"
+        android:textColor="@color/sport_jd_common_text_color"
+        android:id="@+id/confirm"
+        android:background="@drawable/shape_sport_jd_start_game_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_30dp"
+        android:layout_marginBottom="@dimen/dimen_margin_28dp"
+        android:text="@string/confirm"
+        android:paddingHorizontal="68dp"
+        android:paddingVertical="@dimen/dimen_margin_16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qr_code"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

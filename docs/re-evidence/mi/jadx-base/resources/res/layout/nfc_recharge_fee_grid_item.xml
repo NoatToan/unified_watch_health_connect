@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/containnerView"
+    android:background="@drawable/nfc_coupon_list_item_bg"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="18dp">
+    <TextView
+        android:textSize="29sp"
+        android:textColor="@color/text_color"
+        android:id="@+id/amountView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="10sp"
+        android:textColor="@color/text_color_40"
+        android:id="@+id/feeDescView"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/amountView"
+        app:layout_constraintTop_toBottomOf="@+id/amountView"/>
+    <TextView
+        android:textSize="8sp"
+        android:textStyle="bold"
+        android:textColor="#ff612e"
+        android:gravity="center"
+        android:id="@+id/markView"
+        android:background="@drawable/nfc_recharge_amount_mask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="推荐"
+        android:layout_marginStart="2dp"
+        android:paddingHorizontal="3dp"
+        android:paddingVertical="1dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/amountView"
+        app:layout_constraintStart_toEndOf="@+id/amountView"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

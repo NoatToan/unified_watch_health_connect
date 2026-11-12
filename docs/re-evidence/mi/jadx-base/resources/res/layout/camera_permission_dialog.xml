@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textColor="@color/privacy_sensitive_black"
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/permission_camera_des"
+        android:layout_marginStart="@dimen/dimen_margin_26dp"
+        android:layout_marginEnd="@dimen/dimen_margin_26dp"
+        style="@style/FontMedium.16sp"/>
+    <TextView
+        android:textColor="@color/privacy_sensitive_black_des"
+        android:id="@+id/select_app_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_20dp"
+        android:text="@string/permission_not_agree_tips"
+        android:layout_marginStart="@dimen/dimen_margin_26dp"
+        android:layout_marginEnd="@dimen/dimen_margin_26dp"
+        style="@style/FontNormal.16sp"/>
+</LinearLayout>

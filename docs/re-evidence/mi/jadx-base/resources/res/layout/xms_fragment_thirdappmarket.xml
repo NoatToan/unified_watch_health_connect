@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:tag="layout/xms_fragment_thirdappmarket_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RadioGroup
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:id="@+id/radioGroup"
+        android:background="@drawable/xms_face_bg_tab"
+        android:padding="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="13dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp">
+        <RadioButton
+            android:id="@+id/local_third_app"
+            android:checked="true"
+            android:text="@string/xms_third_app_local"
+            style="@style/xms_FaceTab"/>
+        <RadioButton
+            android:id="@+id/online_third_app"
+            android:text="@string/xms_third_app_market"
+            style="@style/xms_FaceTab"/>
+    </RadioGroup>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

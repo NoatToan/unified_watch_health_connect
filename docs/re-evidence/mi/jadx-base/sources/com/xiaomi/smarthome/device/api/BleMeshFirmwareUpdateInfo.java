@@ -1,0 +1,56 @@
+package com.xiaomi.smarthome.device.api;
+
+import java.io.Serializable;
+import kotlinx.serialization.json.internal.AbstractJsonLexerKt;
+
+/* JADX INFO: loaded from: classes10.dex */
+public class BleMeshFirmwareUpdateInfo implements Serializable {
+    public String changeLog;
+    public McuUpdateInfo mcuUpdateInfo;
+    public String md5;
+    public String safeUrl;
+    public int timeout;
+    public String url;
+    public String version;
+
+    public String getCurrentVersion(String str) {
+        if (this.mcuUpdateInfo == null) {
+            return str;
+        }
+        return str + "." + this.mcuUpdateInfo.currentMcuVersion;
+    }
+
+    public String getLatestVersion() {
+        if (this.mcuUpdateInfo == null) {
+            return this.version;
+        }
+        return this.version + "." + this.mcuUpdateInfo.version;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("BtFirmwareUpdateInfo{version='");
+        sb.append(this.version);
+        sb.append('\'');
+        sb.append(", safeUrl='");
+        sb.append(this.safeUrl);
+        sb.append('\'');
+        sb.append(", url='");
+        sb.append(this.url);
+        sb.append('\'');
+        sb.append(", changeLog='");
+        sb.append(this.changeLog);
+        sb.append('\'');
+        sb.append(", md5='");
+        sb.append(this.md5);
+        sb.append('\'');
+        sb.append(", timeout=");
+        sb.append(this.timeout);
+        sb.append('\'');
+        sb.append(",mcuUpdateInfo=");
+        McuUpdateInfo mcuUpdateInfo = this.mcuUpdateInfo;
+        sb.append(mcuUpdateInfo != null ? mcuUpdateInfo.toString() : "Null");
+        sb.append(AbstractJsonLexerKt.END_OBJ);
+        return sb.toString();
+    }
+}

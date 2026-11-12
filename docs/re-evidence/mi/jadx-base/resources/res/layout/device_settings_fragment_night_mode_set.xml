@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<miuix.springback.view.SpringBackLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/device_settings_fragment_night_mode_set_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:scrollableView="@+id/scrollview">
+    <miuix.core.widget.NestedScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingTop="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+            android:layout_marginEnd="@dimen/page_content_padding_horizontal_large">
+            <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+                android:id="@+id/layout_night_model"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:subtitle="@string/device_settings_night_model_notice"
+                app:title="@string/device_settings_night_model"/>
+            <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+                android:id="@+id/layout_start_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/device_settings_night_start_time"/>
+            <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+                android:id="@+id/layout_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/device_settings_night_end_time"/>
+        </LinearLayout>
+    </miuix.core.widget.NestedScrollView>
+</miuix.springback.view.SpringBackLayout>

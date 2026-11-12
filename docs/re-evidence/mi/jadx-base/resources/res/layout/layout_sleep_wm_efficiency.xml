@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/layout_sleep_wm_efficiency_0"
+    android:background="@drawable/shape_data_item_bg"
+    android:visibility="visible"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <include
+        android:id="@+id/layout_common_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_20dp"
+        layout="@layout/layout_common_icon_title"/>
+    <TextView
+        android:textSize="13.3sp"
+        android:textColor="@color/text_color"
+        android:id="@+id/avg_sleep_efficiency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_10dp"
+        android:layout_marginHorizontal="@dimen/dimen_margin_18dp"
+        style="@style/FontMedium"/>
+    <com.xiaomi.fitness.chart.view.LineChartRecyclerView
+        android:id="@+id/recycler"
+        android:layout_marginTop="-50dp"
+        android:paddingStart="@dimen/dimen_margin_18dp"
+        app:barChartMaxWidth="@dimen/size_3"
+        app:barChartRoundRectRadiusRatio="0.5"
+        app:barChartSegment="1"
+        app:dynamicAdjustItemFillWidth="true"
+        app:enableEndDayXAxis="true"
+        app:enableEndYAxisLabel="true"
+        app:enableStartYAxisLabel="false"
+        app:lineColor="@color/sleep_duration_target"
+        app:lineHighLightType="4"
+        app:linePointRadius="@dimen/size_2"
+        app:linePointSelectCircleStroke="true"
+        app:linePointSelectRadius="@dimen/size_2"
+        app:linePointSelectStrokeWidth="@dimen/size_2"
+        app:lineSelectCircles="1"
+        app:lineShaderBeginColor="@color/transparent"
+        app:lineShaderEndColor="@color/transparent"
+        app:lineStrokeWidth="6"
+        style="@style/ChartBaseStyle"/>
+</LinearLayout>

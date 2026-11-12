@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_cta_select_app_list_dialog_0"
+    android:layout_width="match_parent"
+    android:layout_height="400dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/select_all_btn"
+            android:background="@drawable/selector_common_circle_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/page_extra_padding_horizontal_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+            android:gravity="center"
+            android:id="@+id/select_all_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/device_settings_music_select_all"
+            android:layout_marginStart="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/select_all_btn"
+            app:layout_constraintStart_toEndOf="@+id/select_all_btn"
+            app:layout_constraintTop_toTopOf="@+id/select_all_btn"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dialog_cta_select_app_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/select_all_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

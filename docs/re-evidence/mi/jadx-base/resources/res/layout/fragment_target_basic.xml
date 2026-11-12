@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.view.CustomCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_target_basic_0"
+    android:background="@color/common_page_bg_color"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+        <com.xiaomi.fitness.view.TitleBarAlphaView
+            android:id="@+id/titleAlpha"
+            android:background="@color/hrm_title_txt_color"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"/>
+    </com.google.android.material.appbar.AppBarLayout>
+    <FrameLayout
+        android:id="@+id/fl_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+</com.xiaomi.fitness.view.CustomCoordinatorLayout>

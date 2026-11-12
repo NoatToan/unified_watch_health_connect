@@ -1,0 +1,13 @@
+package com.xiaomi.accountsdk.diagnosis.e;
+
+import android.text.TextUtils;
+import java.util.Locale;
+
+/* JADX INFO: loaded from: classes6.dex */
+public class e {
+    public static String a(Locale locale) {
+        String language = locale.getLanguage();
+        String country = locale.getCountry();
+        return TextUtils.isEmpty(country) ? language : String.format("%s_%s", language, country);
+    }
+}

@@ -1,0 +1,8 @@
+package defpackage;
+
+import com.autonavi.base.amap.mapcore.jbinding.JBindingInclude;
+
+/* JADX INFO: loaded from: classes4.dex */
+@JBindingInclude
+public class tps {
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatImageView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/iv_status"
+    android:tag="layout/health_sleep_animal_collect_item_0"
+    android:layout_width="31.6dp"
+    android:layout_height="49.3dp"
+    android:src="@drawable/health_sleep_animal_collect_finish"/>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/health_detail_page_common_margin_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/health_detail_page_common_margin_horizontal">
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_stress_detail"
+        android:background="@drawable/shape_data_item_bg"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/health_detail_page_common_margin_vertical"
+        android:overScrollMode="never"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_stress_distribute"
+        android:background="@drawable/shape_data_item_bg"
+        android:paddingBottom="@dimen/size_25"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/health_detail_page_common_margin_vertical"
+        android:overScrollMode="never"/>
+    <com.xiaomi.fitness.common.devicelist.SportsDeviceListView
+        android:id="@+id/deviceListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.xiaomi.fitness.view.CardUnderstandView
+        android:id="@+id/understandCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/health_detail_page_common_margin_vertical"
+        app:txtUnderstand="@string/health_stress_understand"/>
+</LinearLayout>

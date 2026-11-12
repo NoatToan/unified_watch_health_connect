@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/training_plan_layout_report_basic_info_list_item_0"
+    android:paddingBottom="@dimen/dimen_margin_15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textColor="@color/text_color"
+        android:id="@+id/train_condition_basic_item_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FontDemiBold.24sp"/>
+    <TextView
+        android:textColor="@color/text_color"
+        android:id="@+id/train_condition_basic_item_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginStart="@dimen/dimen_margin_3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/train_condition_basic_item_value"
+        app:layout_constraintStart_toEndOf="@+id/train_condition_basic_item_value"
+        style="@style/FontMedium.14sp"/>
+    <TextView
+        android:textColor="@color/text_color_40"
+        android:id="@+id/train_condition_basic_item_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/train_condition_basic_item_value"
+        style="@style/FontNormal.14sp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

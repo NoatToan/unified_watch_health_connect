@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/device_settings_fragment_widget_group_manager_0"
+    android:background="@color/device_settings_widget_manager_page_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/fl_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:textColor="@color/text_color_60"
+            android:id="@+id/tv_title_hint"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:text="@string/device_settings_widget_manage_desc_full"
+            android:layout_marginStart="@dimen/size_30"
+            style="@style/FontRegular.12sp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_widget"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tv_title_hint"
+            android:paddingHorizontal="@dimen/page_padding_horizontal_large"/>
+        <TextView
+            android:textColor="@color/text_color_40"
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:text="@string/common_data_empty"
+            android:drawablePadding="@dimen/size_10"
+            android:layout_centerHorizontal="true"
+            app:drawableTopCompat="@drawable/icon_common_empty"
+            style="@style/FontRegular.14sp"/>
+    </RelativeLayout>
+    <FrameLayout
+        android:layout_gravity="bottom"
+        android:id="@+id/bottom_container"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="@dimen/dimen_14sp"
+    android:textColor="@color/text_color_60"
+    android:layout_gravity="center"
+    android:id="@+id/tab_item_name"
+    android:tag="layout/sport_layout_tab_item_0"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:drawablePadding="4.67dp"
+    android:paddingStart="42dp"/>

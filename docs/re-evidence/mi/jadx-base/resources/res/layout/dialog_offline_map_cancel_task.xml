@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="@dimen/dimen_18sp"
+        android:textColor="@color/text_color"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/cancel_task_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:textSize="@dimen/dimen_18sp"
+        android:textColor="@color/text_color"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/cancel_task_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_16dp"
+        android:text="取消下载"
+        android:fontFamily="@font/misanslatin_bold"
+        android:paddingHorizontal="@dimen/dimen_margin_28dp"
+        android:paddingVertical="@dimen/dimen_margin_16dp"/>
+    <TextView
+        android:textSize="@dimen/dimen_18sp"
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_16dp"
+        android:text="@string/cancel"
+        android:layout_marginHorizontal="@dimen/dimen_margin_28dp"
+        android:paddingVertical="@dimen/dimen_margin_13dp"
+        style="@style/CommonBtn.Normal"/>
+</LinearLayout>

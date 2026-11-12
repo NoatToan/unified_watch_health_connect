@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
+    android:height="80dp"
+    android:width="260dp"
+    android:autoMirrored="true"
+    android:viewportWidth="260"
+    android:viewportHeight="80">
+    <group>
+        <clip-path android:pathData="M0,0h260v80h-260z"/>
+        <group>
+            <clip-path android:pathData="M0,0h260v80h-260z"/>
+            <path
+                android:fillColor="@drawable/_sport_shape_serial_course_card_bg__0_res_0x7f08009b"
+                android:pathData="M0,0h260v80h-260z"/>
+        </group>
+    </group>
+</vector>

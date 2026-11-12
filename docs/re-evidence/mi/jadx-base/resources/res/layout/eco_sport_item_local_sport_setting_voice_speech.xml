@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/eco_sport_item_local_sport_setting_voice_speech_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+        android:id="@+id/voice_speech_View"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+        android:id="@+id/distance_voice_speech_View"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/pace_remind_View"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/hr_voice_speech_View"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

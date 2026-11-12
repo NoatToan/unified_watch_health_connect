@@ -1,0 +1,90 @@
+package defpackage;
+
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.ViewDataBinding;
+import com.airbnb.lottie.LottieAnimationView;
+import com.xiaomi.fitness.sport_eco.ftp.FtpChartView;
+
+/* JADX INFO: loaded from: classes10.dex */
+public abstract class ll0 extends ViewDataBinding {
+    public final ImageView A;
+    public final ImageView B;
+    public final ImageView C;
+    public final TextView D;
+    public final TextView E;
+    public final LinearLayout F;
+    public final TextView G;
+    public final TextView H;
+    public final LottieAnimationView I;
+    public final ImageView J;
+    public final ConstraintLayout K;
+    public final TextView L;
+    public final TextView M;
+    public final TextView N;
+    public final TextView O;
+    public final TextView P;
+    public final TextView Q;
+    public final TextView R;
+    public final TextView S;
+    public final TextView T;
+    public final View U;
+    public final View V;
+    public final View W;
+    public final View X;
+    public final View Y;
+    public final ImageView Z;
+    public final TextView a0;
+    public final TextView b0;
+    public final FtpChartView c0;
+    public final ConstraintLayout d0;
+    public final TextView e0;
+    public final ConstraintLayout f0;
+    public final TextView g0;
+    public final TextView h0;
+    public final TextView i0;
+    public final TextView j0;
+
+    public ll0(Object obj, View view, int i, ImageView imageView, ImageView imageView2, ImageView imageView3, TextView textView, TextView textView2, LinearLayout linearLayout, TextView textView3, TextView textView4, LottieAnimationView lottieAnimationView, ImageView imageView4, ConstraintLayout constraintLayout, TextView textView5, TextView textView6, TextView textView7, TextView textView8, TextView textView9, TextView textView10, TextView textView11, TextView textView12, TextView textView13, View view2, View view3, View view4, View view5, View view6, ImageView imageView5, TextView textView14, TextView textView15, FtpChartView ftpChartView, ConstraintLayout constraintLayout2, TextView textView16, ConstraintLayout constraintLayout3, TextView textView17, TextView textView18, TextView textView19, TextView textView20) {
+        super(obj, view, i);
+        this.A = imageView;
+        this.B = imageView2;
+        this.C = imageView3;
+        this.D = textView;
+        this.E = textView2;
+        this.F = linearLayout;
+        this.G = textView3;
+        this.H = textView4;
+        this.I = lottieAnimationView;
+        this.J = imageView4;
+        this.K = constraintLayout;
+        this.L = textView5;
+        this.M = textView6;
+        this.N = textView7;
+        this.O = textView8;
+        this.P = textView9;
+        this.Q = textView10;
+        this.R = textView11;
+        this.S = textView12;
+        this.T = textView13;
+        this.U = view2;
+        this.V = view3;
+        this.W = view4;
+        this.X = view5;
+        this.Y = view6;
+        this.Z = imageView5;
+        this.a0 = textView14;
+        this.b0 = textView15;
+        this.c0 = ftpChartView;
+        this.d0 = constraintLayout2;
+        this.e0 = textView16;
+        this.f0 = constraintLayout3;
+        this.g0 = textView17;
+        this.h0 = textView18;
+        this.i0 = textView19;
+        this.j0 = textView20;
+    }
+}

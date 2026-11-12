@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
+    android:height="1163px"
+    android:width="1080px"
+    android:viewportWidth="1080"
+    android:viewportHeight="1163">
+    <path
+        android:fillColor="@drawable/_health_sleep_animal_report_top_bg__0_res_0x7f080010"
+        android:pathData="M0,0H1080V1163H0V0Z"
+        android:fillType="evenOdd"/>
+</vector>

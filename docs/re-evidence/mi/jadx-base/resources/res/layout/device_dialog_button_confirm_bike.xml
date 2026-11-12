@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textColor="@color/eco_device_text_color_black"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/confirm_button_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/eco_device_confirm_button_connect"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        style="@style/FontRegular.16sp"/>
+    <ImageView
+        android:id="@+id/button_confirm_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_23dp"
+        android:layout_marginBottom="@dimen/dimen_margin_23dp"
+        android:src="@drawable/suomi_bike_dialog_button_confirm"
+        android:scaleType="fitXY"/>
+    <View
+        android:layout_gravity="center_horizontal"
+        android:background="@color/black"
+        android:layout_width="100dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="1dp"/>
+</LinearLayout>

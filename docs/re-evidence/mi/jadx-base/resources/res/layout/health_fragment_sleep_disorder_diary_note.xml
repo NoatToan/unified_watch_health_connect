@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<miuix.springback.view.SpringBackLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/health_fragment_sleep_disorder_diary_note_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:scrollableView="@+id/scrollview">
+    <miuix.core.widget.NestedScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"/>
+    </miuix.core.widget.NestedScrollView>
+</miuix.springback.view.SpringBackLayout>

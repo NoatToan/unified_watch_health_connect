@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/log_container"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </ScrollView>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/start"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="开始"
+        android:layout_alignParentBottom="true"
+        style="@style/CommonBtn.Normal"/>
+</LinearLayout>

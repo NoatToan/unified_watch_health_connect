@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <files-path
+        name="files_audio"
+        path="SnailCollector/Audio"/>
+    <external-path
+        name="aid_files"
+        path="Pictures/FirstAid"/>
+    <external-files-path
+        name="aid_files2"
+        path="FirstAidImage/"/>
+    <files-path
+        name="images"
+        path="images/"/>
+    <external-files-path
+        name="Download"
+        path="Download/"/>
+    <external-files-path
+        name="ecg_pdf"
+        path="EcgPdf/"/>
+    <external-files-path
+        name="download_webview"
+        path="DownloadWebView/"/>
+    <external-files-path
+        name="today_health"
+        path="TodayHealth/"/>
+    <external-files-path
+        name="sleep_advice"
+        path="SleepAdvice/"/>
+    <external-files-path
+        name="yrn_crop_pictures"
+        path="Pictures/YRNImageCrop/"/>
+</paths>

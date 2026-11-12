@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/device_rv_add_device_list"
+    android:tag="layout/device_activity_add_device_0"
+    android:background="@color/page_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dimen_margin_6dp"
+    android:paddingStart="@dimen/device_add_device_margin_start"
+    android:paddingEnd="@dimen/device_add_device_margin_end"
+    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+    app:reverseLayout="false"/>

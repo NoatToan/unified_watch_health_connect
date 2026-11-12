@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/activity_sleep_animal_detecting_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_animation_view"
+        android:background="@color/common_transparent"
+        android:layout_width="match_parent"
+        android:layout_height="153dp"
+        android:layout_marginTop="130dp"
+        android:importantForAccessibility="no"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_fallbackRes="@drawable/health_sleep_animal_sheep"
+        app:srcCompat="@drawable/health_sleep_animal_sheep"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/ll_tv_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lottie_animation_view">
+        <miuix.androidbasewidget.widget.ProgressBar
+            android:layout_gravity="center_vertical"
+            android:id="@+id/progressBar"
+            style="@style/ProgressDialogIndeterminateProgressbar"/>
+        <TextView
+            android:textColor="@color/text_color"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/tv_checking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/health_sleep_data_checking"
+            android:layout_marginStart="7dp"
+            style="@style/FontMedium.16sp"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

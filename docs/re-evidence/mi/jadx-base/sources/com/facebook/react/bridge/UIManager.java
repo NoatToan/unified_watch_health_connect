@@ -1,0 +1,16 @@
+package com.facebook.react.bridge;
+
+import android.view.View;
+
+/* JADX INFO: loaded from: classes4.dex */
+public interface UIManager extends JSIModule, PerformanceCounter {
+    <T extends View> int addRootView(T t, WritableMap writableMap, String str);
+
+    void dispatchCommand(int i, int i2, ReadableArray readableArray);
+
+    void dispatchCommand(int i, String str, ReadableArray readableArray);
+
+    void synchronouslyUpdateViewOnUIThread(int i, ReadableMap readableMap);
+
+    void updateRootLayoutSpecs(int i, int i2, int i3);
+}

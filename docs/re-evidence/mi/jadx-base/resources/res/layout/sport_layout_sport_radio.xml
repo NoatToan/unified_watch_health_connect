@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tag="layout/sport_layout_sport_radio_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="15.33sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_color"
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        style="@style/FontMedium"/>
+    <TextView
+        android:textSize="12.67sp"
+        android:textColor="@color/text_color_50"
+        android:gravity="start"
+        android:id="@+id/tv_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginStart="23dp"
+        style="@style/FontRegular"/>
+    <CheckedTextView
+        android:id="@+id/radio"
+        android:layout_width="@dimen/lib_radio"
+        android:layout_height="@dimen/lib_radio"
+        android:drawableEnd="@drawable/sport_shape_select_radio"
+        android:layout_marginEnd="23dp"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>

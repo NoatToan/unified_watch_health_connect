@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="12sp"
+    android:textColor="@color/selector_common_btn_normal_text_color"
+    android:gravity="center"
+    android:id="@+id/txt_btn"
+    android:background="@drawable/selector_bottom_btn"
+    android:layout_width="match_parent"
+    android:layout_height="42dp"
+    android:text="@string/trail_sport_segment_btn_txt"
+    android:layout_marginStart="14dp"
+    android:layout_marginEnd="14dp"/>

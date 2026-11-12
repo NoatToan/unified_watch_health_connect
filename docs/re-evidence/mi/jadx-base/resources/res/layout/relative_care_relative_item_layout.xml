@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/relative_care_relative_item_layout_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.widget.view.RoundImageView
+        android:id="@+id/avatar_image"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/relative_care_ic_avatar_default"/>
+    <TextView
+        android:textSize="@dimen/font_11"
+        android:textColor="@color/text_color_60"
+        android:gravity="center_horizontal"
+        android:id="@+id/tv_nickname"
+        android:layout_width="44dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avatar_image"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

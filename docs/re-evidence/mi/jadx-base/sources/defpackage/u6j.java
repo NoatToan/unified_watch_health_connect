@@ -1,0 +1,263 @@
+package defpackage;
+
+import com.miui.tsmclient.entity.CardInfo;
+import com.smarthome.core.modelconfig.PluginDeviceInfo;
+import com.xiaomi.onetrack.b.e;
+import com.xiaomi.smarthome.device.utils.DeviceTagInterface;
+import java.util.Hashtable;
+
+/* JADX INFO: loaded from: classes3.dex */
+public class u6j extends a20 {
+    public static final ee A;
+    public static final ee B;
+    public static final ee C;
+    public static final ee D;
+    public static final ee E;
+    public static final ee F;
+    public static final ee G;
+    public static final ee H;
+    public static final ee I;
+    public static final ee J;
+    public static final ee K;
+    public static final ee L;
+    public static final ee M;
+    public static final ee N;
+    public static final ee O;
+    public static final ee P;
+    public static final ee Q;
+    public static final ee R;
+    public static final ee S;
+    public static final Hashtable T;
+    public static final Hashtable U;
+    public static final opr V;
+    public static final ee c;
+    public static final ee d;
+    public static final ee e;
+    public static final ee f;
+    public static final ee g;
+    public static final ee h;
+    public static final ee i;
+    public static final ee j;
+
+    /* JADX INFO: renamed from: k, reason: collision with root package name */
+    public static final ee f35468k;
+    public static final ee l;
+    public static final ee m;
+    public static final ee n;
+    public static final ee o;
+    public static final ee p;
+    public static final ee q;
+
+    /* JADX INFO: renamed from: r, reason: collision with root package name */
+    public static final ee f35469r;
+    public static final ee s;
+    public static final ee t;
+    public static final ee u;
+    public static final ee v;
+    public static final ee w;
+    public static final ee x;
+    public static final ee y;
+    public static final ee z;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final Hashtable f35471b = a20.e(T);
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public final Hashtable f35470a = a20.e(U);
+
+    static {
+        ee eeVarX = new ee("2.5.4.15").x();
+        c = eeVarX;
+        ee eeVarX2 = new ee("2.5.4.6").x();
+        d = eeVarX2;
+        ee eeVarX3 = new ee("2.5.4.3").x();
+        e = eeVarX3;
+        ee eeVarX4 = new ee("0.9.2342.19200300.100.1.25").x();
+        f = eeVarX4;
+        ee eeVarX5 = new ee("2.5.4.13").x();
+        g = eeVarX5;
+        ee eeVarX6 = new ee("2.5.4.27").x();
+        h = eeVarX6;
+        ee eeVarX7 = new ee("2.5.4.49").x();
+        i = eeVarX7;
+        ee eeVarX8 = new ee("2.5.4.46").x();
+        j = eeVarX8;
+        ee eeVarX9 = new ee("2.5.4.47").x();
+        f35468k = eeVarX9;
+        ee eeVarX10 = new ee("2.5.4.23").x();
+        l = eeVarX10;
+        ee eeVarX11 = new ee("2.5.4.44").x();
+        m = eeVarX11;
+        ee eeVarX12 = new ee("2.5.4.42").x();
+        n = eeVarX12;
+        ee eeVarX13 = new ee("2.5.4.51").x();
+        o = eeVarX13;
+        ee eeVarX14 = new ee("2.5.4.43").x();
+        p = eeVarX14;
+        ee eeVarX15 = new ee("2.5.4.25").x();
+        q = eeVarX15;
+        ee eeVarX16 = new ee("2.5.4.7").x();
+        f35469r = eeVarX16;
+        ee eeVarX17 = new ee("2.5.4.31").x();
+        s = eeVarX17;
+        ee eeVarX18 = new ee("2.5.4.41").x();
+        t = eeVarX18;
+        ee eeVarX19 = new ee("2.5.4.10").x();
+        u = eeVarX19;
+        ee eeVarX20 = new ee("2.5.4.11").x();
+        v = eeVarX20;
+        ee eeVarX21 = new ee("2.5.4.32").x();
+        w = eeVarX21;
+        ee eeVarX22 = new ee("2.5.4.19").x();
+        x = eeVarX22;
+        ee eeVarX23 = new ee("2.5.4.16").x();
+        y = eeVarX23;
+        ee eeVarX24 = new ee("2.5.4.17").x();
+        z = eeVarX24;
+        ee eeVarX25 = new ee("2.5.4.18").x();
+        A = eeVarX25;
+        ee eeVarX26 = new ee("2.5.4.28").x();
+        B = eeVarX26;
+        ee eeVarX27 = new ee("2.5.4.26").x();
+        C = eeVarX27;
+        ee eeVarX28 = new ee("2.5.4.33").x();
+        D = eeVarX28;
+        ee eeVarX29 = new ee("2.5.4.14").x();
+        E = eeVarX29;
+        ee eeVarX30 = new ee("2.5.4.34").x();
+        F = eeVarX30;
+        ee eeVarX31 = new ee("2.5.4.5").x();
+        G = eeVarX31;
+        ee eeVarX32 = new ee("2.5.4.4").x();
+        H = eeVarX32;
+        ee eeVarX33 = new ee("2.5.4.8").x();
+        I = eeVarX33;
+        ee eeVarX34 = new ee("2.5.4.9").x();
+        J = eeVarX34;
+        ee eeVarX35 = new ee("2.5.4.20").x();
+        K = eeVarX35;
+        ee eeVarX36 = new ee("2.5.4.22").x();
+        L = eeVarX36;
+        ee eeVarX37 = new ee("2.5.4.21").x();
+        M = eeVarX37;
+        ee eeVarX38 = new ee("2.5.4.12").x();
+        N = eeVarX38;
+        ee eeVarX39 = new ee("0.9.2342.19200300.100.1.1").x();
+        O = eeVarX39;
+        ee eeVarX40 = new ee("2.5.4.50").x();
+        P = eeVarX40;
+        ee eeVarX41 = new ee("2.5.4.35").x();
+        Q = eeVarX41;
+        ee eeVarX42 = new ee("2.5.4.24").x();
+        R = eeVarX42;
+        ee eeVarX43 = new ee("2.5.4.45").x();
+        S = eeVarX43;
+        Hashtable hashtable = new Hashtable();
+        T = hashtable;
+        Hashtable hashtable2 = new Hashtable();
+        U = hashtable2;
+        hashtable.put(eeVarX, "businessCategory");
+        hashtable.put(eeVarX2, PluginDeviceInfo.FICONON);
+        hashtable.put(eeVarX3, "cn");
+        hashtable.put(eeVarX4, "dc");
+        hashtable.put(eeVarX5, "description");
+        hashtable.put(eeVarX6, "destinationIndicator");
+        hashtable.put(eeVarX7, "distinguishedName");
+        hashtable.put(eeVarX8, "dnQualifier");
+        hashtable.put(eeVarX9, "enhancedSearchGuide");
+        hashtable.put(eeVarX10, "facsimileTelephoneNumber");
+        hashtable.put(eeVarX11, "generationQualifier");
+        hashtable.put(eeVarX12, "givenName");
+        hashtable.put(eeVarX13, "houseIdentifier");
+        hashtable.put(eeVarX14, "initials");
+        hashtable.put(eeVarX15, "internationalISDNNumber");
+        hashtable.put(eeVarX16, e.f13808a);
+        hashtable.put(eeVarX17, "member");
+        hashtable.put(eeVarX18, "name");
+        hashtable.put(eeVarX19, DeviceTagInterface.CUSTOM_TAG_DEVICE_TAG_ORDER);
+        hashtable.put(eeVarX20, "ou");
+        hashtable.put(eeVarX21, CardInfo.KEY_OWNER);
+        hashtable.put(eeVarX22, "physicalDeliveryOfficeName");
+        hashtable.put(eeVarX23, "postalAddress");
+        hashtable.put(eeVarX24, "postalCode");
+        hashtable.put(eeVarX25, "postOfficeBox");
+        hashtable.put(eeVarX26, "preferredDeliveryMethod");
+        hashtable.put(eeVarX27, "registeredAddress");
+        hashtable.put(eeVarX28, "roleOccupant");
+        hashtable.put(eeVarX29, "searchGuide");
+        hashtable.put(eeVarX30, "seeAlso");
+        hashtable.put(eeVarX31, "serialNumber");
+        hashtable.put(eeVarX32, "sn");
+        hashtable.put(eeVarX33, "st");
+        hashtable.put(eeVarX34, "street");
+        hashtable.put(eeVarX35, "telephoneNumber");
+        hashtable.put(eeVarX36, "teletexTerminalIdentifier");
+        hashtable.put(eeVarX37, "telexNumber");
+        hashtable.put(eeVarX38, "title");
+        hashtable.put(eeVarX39, "uid");
+        hashtable.put(eeVarX40, "uniqueMember");
+        hashtable.put(eeVarX41, "userPassword");
+        hashtable.put(eeVarX42, "x121Address");
+        hashtable.put(eeVarX43, "x500UniqueIdentifier");
+        hashtable2.put("businesscategory", eeVarX);
+        hashtable2.put(PluginDeviceInfo.FICONON, eeVarX2);
+        hashtable2.put("cn", eeVarX3);
+        hashtable2.put("dc", eeVarX4);
+        hashtable2.put("description", eeVarX5);
+        hashtable2.put("destinationindicator", eeVarX6);
+        hashtable2.put("distinguishedname", eeVarX7);
+        hashtable2.put("dnqualifier", eeVarX8);
+        hashtable2.put("enhancedsearchguide", eeVarX9);
+        hashtable2.put("facsimiletelephonenumber", eeVarX10);
+        hashtable2.put("generationqualifier", eeVarX11);
+        hashtable2.put("givenname", eeVarX12);
+        hashtable2.put("houseidentifier", eeVarX13);
+        hashtable2.put("initials", eeVarX14);
+        hashtable2.put("internationalisdnnumber", eeVarX15);
+        hashtable2.put(e.f13808a, eeVarX16);
+        hashtable2.put("member", eeVarX17);
+        hashtable2.put("name", eeVarX18);
+        hashtable2.put(DeviceTagInterface.CUSTOM_TAG_DEVICE_TAG_ORDER, eeVarX19);
+        hashtable2.put("ou", eeVarX20);
+        hashtable2.put(CardInfo.KEY_OWNER, eeVarX21);
+        hashtable2.put("physicaldeliveryofficename", eeVarX22);
+        hashtable2.put("postaladdress", eeVarX23);
+        hashtable2.put("postalcode", eeVarX24);
+        hashtable2.put("postofficebox", eeVarX25);
+        hashtable2.put("preferreddeliverymethod", eeVarX26);
+        hashtable2.put("registeredaddress", eeVarX27);
+        hashtable2.put("roleoccupant", eeVarX28);
+        hashtable2.put("searchguide", eeVarX29);
+        hashtable2.put("seealso", eeVarX30);
+        hashtable2.put("serialnumber", eeVarX31);
+        hashtable2.put("sn", eeVarX32);
+        hashtable2.put("st", eeVarX33);
+        hashtable2.put("street", eeVarX34);
+        hashtable2.put("telephonenumber", eeVarX35);
+        hashtable2.put("teletexterminalidentifier", eeVarX36);
+        hashtable2.put("telexnumber", eeVarX37);
+        hashtable2.put("title", eeVarX38);
+        hashtable2.put("uid", eeVarX39);
+        hashtable2.put("uniquemember", eeVarX40);
+        hashtable2.put("userpassword", eeVarX41);
+        hashtable2.put("x121address", eeVarX42);
+        hashtable2.put("x500uniqueidentifier", eeVarX43);
+        V = new u6j();
+    }
+
+    @Override // defpackage.opr
+    public String b(mpr mprVar) {
+        StringBuffer stringBuffer = new StringBuffer();
+        s6j[] s6jVarArrJ = mprVar.j();
+        boolean z2 = true;
+        for (int length = s6jVarArrJ.length - 1; length >= 0; length--) {
+            if (z2) {
+                z2 = false;
+            } else {
+                stringBuffer.append(',');
+            }
+            vrc.a(stringBuffer, s6jVarArrJ[length], this.f35471b);
+        }
+        return stringBuffer.toString();
+    }
+}

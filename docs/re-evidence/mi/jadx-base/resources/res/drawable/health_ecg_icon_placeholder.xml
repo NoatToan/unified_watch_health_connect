@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners android:radius="23.7dp"/>
+    <stroke
+        android:width="0.3dp"
+        android:color="@color/black_6"/>
+    <solid android:color="@color/health_ecg_icon_placeholder_bg_color"/>
+</shape>

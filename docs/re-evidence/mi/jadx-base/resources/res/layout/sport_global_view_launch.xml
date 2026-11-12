@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sport_card_bg"
+    android:tag="layout/sport_global_view_launch_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="1dp">
+    <ImageView
+        android:id="@+id/sport_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:translationY="-100dp"
+        android:layout_marginHorizontal="@dimen/page_padding_horizontal_large"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <include
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_20dp"
+        android:layout_marginHorizontal="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        layout="@layout/sport_layout_right_arrow_entrance"/>
+    <include
+        android:id="@+id/include_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="@dimen/page_padding_horizontal_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        layout="@layout/sport_global_view_launch_stub"/>
+    <com.xiaomi.fitness.sport.view.widget.GpsSignalView
+        android:id="@+id/gpsSignalView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="@dimen/page_padding_horizontal_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,53 @@
+syntax = "proto2";
+
+import "silence_mode.proto";
+import "statis_base.proto";
+import "nfc.proto";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message BeatsEventMessage {
+    //首页流出统计
+    required uint32 dial2DND = 1; //表盘进入勿扰次数
+    required uint32 dial2Notify = 2; //表盘进入通知页面次数
+    required uint32 dial2MainItem1 = 3; //表盘进入主菜单第一项次数
+
+    //各页面展示次数
+    required uint32 statusPage1 = 4; //状态第一页
+    required uint32 statusPage2 = 5; //状态第二页
+    required uint32 notifyPage = 6; //运动页面
+    required uint32 weatherPage = 7; //天气页面
+    required uint32 alarmPage = 8; //闹钟页面
+    required uint32 timerPage = 9; //计时器页面
+    required uint32 timerStopwatchPage = 10; //秒表页面
+    required uint32 timerCountdownPage = 11; //倒计时页面
+    required uint32 settingPage = 12; //设置页面
+    required uint32 settingWatchfacePage = 13; //设置表盘页面
+    required uint32 settingScreenLockPage = 14; //设置锁屏页面
+    required uint32 settingBacklightPage = 15; //设置背光亮度页面
+
+    //功能使用统计
+    required uint32 stopwatchNum = 16; //使用秒表次数
+    required uint32 countdownNum = 17; //使用倒计时次数
+
+    //运动副屏使用统计
+    required uint32 mirrorScreenMainPage = 18; //黑屏到运动副屏界面
+    required uint32 mirrorScreenHeartratePage = 19; //运动副屏心率界面
+    required uint32 mirrorScreenTimePage = 20; //运动副屏暂停界面
+
+    optional uint32 alipayQRCodeNum = 21 [default = 0]; //支付宝二维码使用次数
+    optional uint32 alipayCode128Num = 22 [default = 0]; //支付宝条形码使用次数
+
+    optional uint32 dialId = 23 [default = 0]; //表盘ID
+};
+
+message BeatsStatisticsMessage {
+    required StatisBaseMessage base = 1; //通用信息
+    required SilenceMode silenceMode = 2; //勿扰模式
+    required uint32 backlightLevel = 3; //背光亮度
+    required bool screenLock = 4; //是否开启锁屏
+
+    optional BeatsEventMessage event = 5; //打点事件
+    optional NfcMessage nfc = 6;
+};
+

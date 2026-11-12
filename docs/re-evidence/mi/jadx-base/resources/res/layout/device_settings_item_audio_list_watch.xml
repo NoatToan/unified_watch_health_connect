@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/device_settings_item_audio_list_watch_0"
+    android:background="@drawable/selector_card_bg"
+    android:padding="@dimen/dimen_margin_15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/nameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FontDemiBold.16sp"/>
+    <TextView
+        android:textColor="@color/text_color_40"
+        android:id="@+id/durationView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_6dp"
+        app:layout_constraintStart_toStartOf="@+id/nameView"
+        app:layout_constraintTop_toBottomOf="@+id/nameView"
+        style="@style/FontRegular.12sp"/>
+    <View
+        android:id="@+id/splitView"
+        android:background="@color/text_color_10"
+        android:layout_width="1dp"
+        android:layout_height="10dp"
+        android:layout_marginStart="@dimen/dimen_margin_8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/durationView"
+        app:layout_constraintStart_toEndOf="@+id/durationView"
+        app:layout_constraintTop_toTopOf="@+id/durationView"/>
+    <TextView
+        android:textColor="@color/text_color_40"
+        android:id="@+id/timeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_margin_8dp"
+        app:layout_constraintStart_toEndOf="@+id/splitView"
+        app:layout_constraintTop_toTopOf="@+id/durationView"
+        style="@style/FontRegular.12sp"/> app:layout_constraintStart_toStartOf=&quot;@id/nameView&quot;\10            app:layout_constraintTop_toBottomOf=&quot;@id/nameView&quot; /&gt;
+    <ImageView
+        android:id="@+id/selectStatusView"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/device_setting_ic_audio_unselect"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

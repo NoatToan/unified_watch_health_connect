@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/root"
+    android:tag="layout/electronic_scale_view_analysis_data_0"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="8sp"
+            android:textColor="@color/text_color"
+            android:id="@+id/tv_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:textSize="4.5sp"
+            android:textColor="@color/text_color"
+            android:id="@+id/tv_data_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0.5dp"
+            android:layout_marginBottom="1dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_data"
+            app:layout_constraintStart_toEndOf="@+id/tv_data"/>
+    </LinearLayout>
+    <TextView
+        android:textSize="4.5sp"
+        android:textColor="@color/text_color_60"
+        android:id="@+id/tv_data_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/tv_data"
+        app:layout_constraintTop_toBottomOf="@+id/tv_data"/>
+</LinearLayout>

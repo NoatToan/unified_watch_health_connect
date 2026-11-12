@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tag="layout/xms_fragment_thirdapplist_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ViewStub
+        android:id="@+id/error_stub"
+        android:layout="@layout/xms_layout_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <miuix.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>

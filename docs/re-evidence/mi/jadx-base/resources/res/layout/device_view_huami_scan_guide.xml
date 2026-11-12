@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:id="@+id/device_cl_huami_guide_view_root"
+    android:tag="layout/device_view_huami_scan_guide_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.widget.SquareImageView
+        android:id="@+id/device_siv_huami_guide"
+        android:layout_width="@dimen/device_huami_guide_img_size"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="73dp"
+        android:src="@drawable/device_scan_huami_guid"
+        android:scaleType="fitXY"/>
+    <TextView
+        android:textStyle="bold"
+        android:textColor="@color/device_text_color_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="87dp"
+        android:text="@string/device_huami_guide_tip"
+        android:layout_marginStart="@dimen/dimen_margin_12dp"
+        android:layout_marginEnd="@dimen/dimen_margin_12dp"
+        style="@style/FontRegular.14sp"/>
+</LinearLayout>

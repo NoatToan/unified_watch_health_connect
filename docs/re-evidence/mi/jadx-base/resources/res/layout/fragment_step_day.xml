@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_step_day_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.chart.view.BarChartRecyclerView
+        android:id="@+id/recycler"
+        android:paddingEnd="@dimen/chart_more_number_padding_end"
+        app:barChartRoundRectRadiusRatio="0.5"
+        app:chartColor="@color/health_step_chart_color"
+        app:displayNumbers="48"
+        app:enableStartYAxisLabel="false"
+        style="@style/ChartBaseStyle"/>
+    <com.xiaomi.fitness.view.DataTitleView
+        android:id="@+id/dataTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

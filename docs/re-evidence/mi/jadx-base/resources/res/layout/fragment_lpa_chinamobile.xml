@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_lpa_chinamobile_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/double_terminal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_set_margin_start"
+        android:layout_marginEnd="@dimen/common_set_margin_start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:subtitle="@string/lpa_management_double_terminal_des"
+        app:title="@string/lpa_management_double_terminal"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/individual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_set_margin_start"
+        android:layout_marginEnd="@dimen/common_set_margin_start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/double_terminal"
+        app:subtitle="@string/lpa_management_individual_des"
+        app:title="@string/lpa_management_individual"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

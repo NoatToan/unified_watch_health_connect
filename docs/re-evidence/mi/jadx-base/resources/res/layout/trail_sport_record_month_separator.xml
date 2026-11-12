@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/trail_sport_record_month_separator_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/page_extra_padding_horizontal_large">
+    <TextView
+        android:textSize="@dimen/dimen_12sp"
+        android:textColor="@color/text_color_40"
+        android:id="@+id/month_separator_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/dimen_margin_10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FontLatinRegular"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

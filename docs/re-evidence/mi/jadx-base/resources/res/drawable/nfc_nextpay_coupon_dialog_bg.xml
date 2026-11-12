@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners
+        android:topLeftRadius="@dimen/nfc_nextpay_coupon_dialog_bg_corner_radius_top_left"
+        android:topRightRadius="@dimen/nfc_nextpay_coupon_dialog_bg_corner_radius_top_right"
+        android:bottomLeftRadius="@dimen/nfc_nextpay_coupon_dialog_bg_corner_radius_bottom_left"
+        android:bottomRightRadius="@dimen/nfc_nextpay_coupon_dialog_bg_corner_radius_bottom_right"/>
+    <solid android:color="@color/white"/>
+</shape>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lyt_content"
+    android:tag="layout/fragment_expandable_record_detail_0"
+    android:background="@color/page_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textColor="@color/text_color_40"
+        android:gravity="center"
+        android:id="@+id/tv_no_data"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_data"
+        android:drawableTop="@drawable/ic_no_data"
+        android:layout_centerInParent="true"
+        style="@style/FontRegular.14sp"/>
+    <miuix.springback.view.SpringBackLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/size_12"
+        app:scrollOrientation="vertical"
+        app:scrollableView="@+id/recycler">
+        <com.xiaomi.fitness.baseui.recyclerview.MoreRecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    </miuix.springback.view.SpringBackLayout>
+</RelativeLayout>

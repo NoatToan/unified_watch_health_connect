@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/nfc_selector_item_click"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/nfc_size_53_3">
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@color/text_color"
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nfc_retrun_card_reason_title"
+        android:layout_centerVertical="true"/>
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:textColor="@color/text_color"
+        android:id="@+id/ckb_selected"
+        android:clickable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/selector_common_circle_check"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>

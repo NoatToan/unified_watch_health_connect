@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/item_list_device_dual_authorization_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dimen_margin_16dp"
+    android:layout_marginBottom="@dimen/dimen_margin_16dp">
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:tag="binding_1"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="@dimen/dimen_16sp"
+        android:textColor="@color/text_color"
+        android:id="@+id/tv_name"
+        android:tag="binding_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/misanslatin_bold"
+        android:layout_marginStart="@dimen/dimen_margin_12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_icon"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

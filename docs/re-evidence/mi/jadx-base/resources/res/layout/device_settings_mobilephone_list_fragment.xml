@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/device_settings_mobilephone_list_fragment_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/download_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/dimen_margin_12dp"
+        android:paddingEnd="@dimen/dimen_margin_12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_27dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <ProgressBar
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/loading_progress"
+            style="@style/ProgressPhonePageLoadingProgressbar"/>
+        <TextView
+            android:textSize="@dimen/font_12_7"
+            android:textColor="@color/device_settings_mobile_page_loading_color"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_margin_7dp"
+            android:text="@string/dialog_loanding"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

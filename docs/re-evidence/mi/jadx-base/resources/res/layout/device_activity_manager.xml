@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/device_rv_device_manager"
+    android:tag="layout/device_activity_manager_0"
+    android:background="@color/page_bg"
+    android:paddingTop="@dimen/dimen_margin_10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/page_padding_horizontal_large"
+    android:paddingEnd="@dimen/page_padding_horizontal_large"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>

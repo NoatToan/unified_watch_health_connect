@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/layout_data_item_linechart_v2_0"
+    android:background="@drawable/selector_round"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.v2.view.HomeCardCommonTitleView
+        android:id="@+id/cardTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_14"
+        android:layout_marginHorizontal="@dimen/size_14"/>
+    <View
+        android:id="@+id/emptySpace"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"/>
+    <androidx.appcompat.widget.LinearLayoutCompat style="@style/healthHomeBottomLayoutV2">
+        <com.xiaomi.fitness.chart.mpchart.linechart.DataCubicLineChart
+            android:id="@+id/lineChart"
+            app:lineStrokeWidth="4"
+            style="@style/healthHomeChartV2"/>
+        <com.xiaomi.fitness.homepage.viewholder.XAxisView
+            android:id="@+id/xAxisView"
+            style="@style/healthHomeXAxisViewV2"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

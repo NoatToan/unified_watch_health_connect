@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tag="layout/layout_data_title_view_two_columns_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/detail_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:layout_marginHorizontal="@dimen/health_detail_page_common_margin_horizontal"/>
+    <TextView
+        android:textSize="@dimen/font_30"
+        android:layout_gravity="start|center_vertical"
+        android:id="@+id/tv_empty"
+        android:paddingTop="@dimen/size_5"
+        android:paddingBottom="@dimen/size_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:layout_marginStart="@dimen/chart_common_padding_start"
+        android:layout_marginEnd="@dimen/size_30"
+        android:autoSizeTextType="uniform"
+        style="@style/FontMedium"/>
+</FrameLayout>

@@ -1,0 +1,30 @@
+syntax = "proto2";
+import "use_time_slot.proto";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message MozartEventMessage {
+    required uint32 upTime = 1; //系统启动时间，单位秒
+    required uint32 ppgTime = 2; //PPG打开时间，单位毫秒
+    required uint32 BLEconnTime = 3; //BLE连接时间，单位毫秒
+    required uint32 SPPconnTime = 4; //SPP连接时间，单位毫秒
+    required uint32 A2DPconnTime = 5; //A2DP连接时间，单位毫秒
+    required uint32 runTime = 6; //MCU运行时间，单位毫秒
+    required uint32 algTime = 7; //算法运行时间，单位毫秒
+    required uint32 nomalBootCount = 8; //正常启动次数
+    required uint32 exceptionCount = 9; //异常重启次数
+    required uint32 BLEdisconnectCount = 10; //BLE断开次数
+    required uint32 BTdisconnectCount = 11; //蓝牙断开次数
+    required uint32 sigleTapCount = 12; //单击次数
+    required uint32 doubleTapCount = 13; //双击次数
+    required uint32 callTime = 14; //电话时间，单位为毫米
+    required uint32 wearTime = 15; //佩戴时间，单位为毫米
+    required uint32 useTimeSlot = 16;
+    optional UseTimeSlotMessage slot = 17;
+};
+
+message MozartStatisticsMessage {
+    required uint32 version = 1;
+    optional MozartEventMessage left = 2;
+    optional MozartEventMessage right = 3;
+};

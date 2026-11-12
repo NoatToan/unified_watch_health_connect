@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tag="layout/xms_view_third_app_bottom_view_0"
+    android:background="@color/text_revert_color"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/btn_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatButton
+            android:textSize="16sp"
+            android:gravity="center"
+            android:id="@+id/negative_btn"
+            android:layout_width="0dp"
+            android:layout_height="47dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            style="@style/CommonBtn.Normal"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:textSize="16sp"
+            android:gravity="center"
+            android:id="@+id/active_btn"
+            android:layout_width="0dp"
+            android:layout_height="47dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            style="@style/CommonBtn.Primary"/>
+    </LinearLayout>
+    <ViewStub
+        android:id="@+id/progress_stub"
+        android:layout="@layout/xms_view_download_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

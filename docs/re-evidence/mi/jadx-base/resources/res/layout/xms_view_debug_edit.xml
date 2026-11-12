@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/pkgNameView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:hint="请输入正确包名"
+    android:singleLine="true"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"/>

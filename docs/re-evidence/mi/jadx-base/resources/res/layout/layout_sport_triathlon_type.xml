@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/img_triathlon_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/selector_data_miwatch"
+        android:scaleType="center"
+        android:layout_centerInParent="true"/>
+    <TextView
+        android:textColor="@color/common_black"
+        android:gravity="start|center_vertical"
+        android:layout_gravity="center"
+        android:id="@+id/txt_triathlon_name"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        style="@style/DataItemTxt11sp"/>
+</RelativeLayout>

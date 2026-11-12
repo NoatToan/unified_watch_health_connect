@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <miuix.androidbasewidget.widget.EditText
+        android:textColor="@color/text_color"
+        android:id="@+id/input_et"
+        android:background="@drawable/electronic_scale_bg_et_focused"
+        android:saveEnabled="false"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:textCursorDrawable="@drawable/shape_et_cursor"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        android:paddingHorizontal="10dp"/>
+</RelativeLayout>

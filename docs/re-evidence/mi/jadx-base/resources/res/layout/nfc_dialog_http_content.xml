@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="16sp"
+    android:textColor="@color/text_color"
+    android:autoLink="all"
+    android:paddingLeft="@dimen/common_title_left_margin"
+    android:paddingRight="@dimen/common_title_left_margin"
+    android:clickable="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/nfc_door_card_battery_sync_error"/>

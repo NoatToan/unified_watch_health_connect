@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/rn_share_fragment_accept_list_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/page_padding_horizontal_large"
+    android:paddingEnd="@dimen/page_padding_horizontal_large">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listView"
+        android:background="@drawable/rn_share_list_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"/>
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:id="@+id/emptyView"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/imgEmptryView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/icon_common_empty"
+            android:scaleType="center"/>
+        <TextView
+            android:textSize="13sp"
+            android:textColor="@color/text_color_40"
+            android:gravity="center_horizontal"
+            android:id="@+id/txtEmptryView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/common_data_empty"/>
+    </LinearLayout>
+</RelativeLayout>

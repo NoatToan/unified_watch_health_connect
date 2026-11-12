@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.baseui.widget.SportDetailItemView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/detailItemView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:itemGravity="0"
+    app:itemHeight="100dp"
+    app:txtNameColor="@color/black_60_transparent"
+    app:txtValueColor="@color/common_black"/>

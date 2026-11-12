@@ -1,0 +1,51 @@
+package com.xiaomi.smarthome.library.bluetooth;
+
+/* JADX INFO: loaded from: classes2.dex */
+public interface OTAErrorCode {
+    public static final int ACTIVATE_MCU_TIMEOUT = -602;
+    public static final int ANOTHER_OTA_ONGOING = -103;
+    public static final int BLE_DISCONNECTED_STATUS = -105;
+    public static final int CONNECT_DEVICE_FAIL = -100;
+    public static final int DEVICE_LOW_BATTERY = -508;
+    public static final int DFU_READ_FRAGMENT_SIZE_FAIL = -403;
+    public static final int DFU_READ_LAST_INDEX_FAIL = -402;
+    public static final int DFU_READ_PROTOCOL_VERSION_FAIL = -401;
+    public static final int DOWNLOAD_FAIL = -301;
+    public static final int DOWNLOAD_FILE_NOT_EXIST = -104;
+    public static final int DOWNLOAD_MCU_FIRMWARE_FAIL = -606;
+    public static final int DOWNLOAD_MD5_NOT_EQUAL = -302;
+    public static final int DOWNLOAD_URL_IS_EMPTY = -303;
+    public static final int ERROR_MAC_IS_EMPTY = -102;
+    public static final int IS_LATEST_VERSION = 1;
+    public static final int LOCAL_MCU_FILE_NOT_EXIST = -608;
+    public static final int MCU_CHECK_MD5_NOT_EQUAL = -607;
+    public static final int OPEN_CONTROL_POINT_NOTIFY_FAIL = -107;
+    public static final int OPEN_DATA_FRAGMENT_NOTIFY_FAIL = -108;
+    public static final int OPEN_MCU_NOTIFY_FAIL = -613;
+    public static final int OTA_ONGOING_BLE_DISCONNECTED = -101;
+    public static final int OTA_SUCCESS = 0;
+    public static final int PACKET_RESPONE_TIMEOUT = -412;
+    public static final int PACKET_RESPONSE_BUSY = -413;
+    public static final int PACKET_UNKNOWN_ERROR = -499;
+    public static final int PROTOCOL_VERSION_IS_LOW = 3;
+    public static final int READ_FRIMWARE_VERSION_FAIL = -200;
+    public static final int READ_MCU_LAST_FRAGMENT_INDEX_FAIL = -601;
+    public static final int READ_MCU_SUPPORT_OPCODE_LIST_FAIL = -609;
+    public static final int READ_MCU_VERSION_FAIL = -604;
+    public static final int READ_MCU_VERSION_FROM_SERVER_FAIL = -605;
+    public static final int READ_REMOTE_VERSION_INFO_FAIL = -201;
+    public static final int RECEIVE_FIRMWARE_FRAGMENT_FAIL = -507;
+    public static final int RECEIVE_MCU_OPCODE_ERROR = -611;
+    public static final int START_SWITCH_MCU_FIRMWARE = 4;
+    public static final int SWITCH_FIRMWARE_AUTH_FAIL = -502;
+    public static final int SWITCH_FIRMWARE_COMMAND_WRONG = -501;
+    public static final int SWITCH_FIRMWARE_DEVICE_BUSY = -505;
+    public static final int SWITCH_FIRMWARE_ILLGAL_PARAMS = -503;
+    public static final int SWITCH_FIRMWARE_MEMORY_IS_FULL = -504;
+    public static final int SWITCH_FIRMWARE_SIGN_FAIL = -506;
+    public static final int SWITCH_FIRMWARE_UNKNOWN_ERROR = -599;
+    public static final int USER_CANCEL = 2;
+    public static final int WAITING_MCU_OPCODE_VALUE_TIMEOUT = -612;
+    public static final int WAIT_ACTIVATE_MCU_BUT_NO_MCU_HANDLER = -603;
+    public static final int WRITE_MCU_VERSION_FAIL = -610;
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="45dp">
+    <TextView
+        android:textColor="@color/text_color"
+        android:gravity="center"
+        android:id="@+id/txt_header_title1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/trail_sport_triathlon_title1"
+        android:layout_weight="1"
+        style="@style/FontMedium.14sp"/>
+    <TextView
+        android:textColor="@color/text_color"
+        android:gravity="center"
+        android:id="@+id/txt_header_title2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/trail_sport_triathlon_title2"
+        android:layout_weight="1"
+        style="@style/FontMedium.14sp"/>
+    <TextView
+        android:textColor="@color/text_color"
+        android:gravity="center"
+        android:id="@+id/txt_header_title4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/trail_sport_triathlon_title3"
+        android:layout_weight="1"
+        style="@style/FontMedium.14sp"/>
+</LinearLayout>

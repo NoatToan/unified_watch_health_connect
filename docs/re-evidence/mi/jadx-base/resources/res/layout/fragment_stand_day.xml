@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_stand_day_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.chart.view.BarChartRecyclerView
+        android:id="@+id/recycler"
+        app:barChartRoundRectRadiusRatio="0.5"
+        app:barSpace="0.64"
+        app:chartColor="@color/health_stand_chart"
+        app:displayNumbers="24"
+        app:enableEndYAxisLabel="false"
+        app:enableStartYAxisLabel="false"
+        app:invalidChartColor="@color/health_stand_invalid_chart"
+        style="@style/ChartBaseStyle"/>
+    <com.xiaomi.fitness.view.DataTitleView
+        android:id="@+id/dataTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

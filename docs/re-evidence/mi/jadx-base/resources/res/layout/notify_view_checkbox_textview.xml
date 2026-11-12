@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_53_3">
+    <TextView
+        android:textColor="@color/selector_feature_item_title_text_color"
+        android:id="@+id/titleView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:layout_weight="1"
+        style="@style/FontMedium.16sp"/>
+    <CheckBox
+        android:gravity="center_vertical"
+        android:id="@+id/checkView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:button="@drawable/selector_check"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

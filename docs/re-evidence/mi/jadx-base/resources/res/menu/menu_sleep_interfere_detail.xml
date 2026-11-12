@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/plan_adjust"
+        android:title="@string/health_sleep_interfere_adjust_sleep_time"/>
+    <item
+        android:id="@+id/plan_stop"
+        android:title="@string/health_sleep_interfere_stop"/>
+    <item
+        android:id="@+id/plan_history"
+        android:title="@string/health_sleep_interfere_history_data"/>
+</menu>

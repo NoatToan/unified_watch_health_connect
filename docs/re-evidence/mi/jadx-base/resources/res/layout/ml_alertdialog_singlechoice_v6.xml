@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="@dimen/font_16_7"
+    android:textColor="@color/ml_alertdialog_single_color"
+    android:ellipsize="marquee"
+    android:gravity="center_vertical"
+    android:id="@+id/ml_alertdialog_text1"
+    android:background="@drawable/ml_alertdialog_item_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="53.33dp"
+    android:drawablePadding="@dimen/dimen_margin_10dp"
+    android:drawableEnd="@drawable/ml_alertdialog_checkbox_radio"
+    android:paddingStart="@dimen/size_26_67"
+    android:paddingEnd="@dimen/size_26_67"/>

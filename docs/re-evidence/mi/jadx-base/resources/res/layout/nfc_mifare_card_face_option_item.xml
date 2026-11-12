@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/nfc_nextpay_door_card_art_list_item_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_columnWeight="1">
+    <ImageView
+        android:id="@+id/face_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nfc_nextpay_mifare_card_face_option_item_image_height"
+        android:scaleType="fitXY"/>
+    <ImageView
+        android:layout_gravity="end|top"
+        android:id="@+id/face_selected"
+        android:visibility="gone"
+        android:layout_width="@dimen/nfc_nextpay_mifare_card_face_option_selected_flag_width"
+        android:layout_height="@dimen/nfc_nextpay_mifare_card_face_option_selected_flag_height"
+        android:layout_marginTop="@dimen/nfc_nextpay_mifare_card_face_option_selected_flag_margin_top"
+        android:src="@drawable/nfc_nextpay_face_logo"
+        android:layout_marginEnd="@dimen/nfc_nextpay_mifare_card_face_option_selected_flag_margin_right"/>
+</FrameLayout>

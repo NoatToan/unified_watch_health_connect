@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:tag="layout/trail_indicator_item_0"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingStart="11dp"
+    android:paddingEnd="11dp">
+    <TextView
+        android:textSize="12sp"
+        android:textColor="#ff000000"
+        android:id="@+id/yearView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/FontMedium"/>
+    <TextView
+        android:textSize="12sp"
+        android:textColor="#ff000000"
+        android:gravity="center"
+        android:id="@+id/valueView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/FontMedium"/>
+</LinearLayout>

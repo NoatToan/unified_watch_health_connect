@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View
+        android:id="@+id/line_top"
+        android:background="@color/dialog_month_line_color"
+        android:layout_width="match_parent"
+        android:layout_height="0.33dp"
+        android:layout_marginStart="@dimen/dimen_margin_23dp"
+        android:layout_marginEnd="@dimen/dimen_margin_23dp"/>
+    <TextView
+        android:textSize="@dimen/font_12"
+        android:textColor="@color/dialog_month_number_color"
+        android:id="@+id/tv_month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_8dp"
+        android:fontFamily="miui-bold"
+        android:paddingStart="@dimen/dimen_margin_23dp"
+        android:paddingEnd="@dimen/dimen_margin_23dp"/>
+    <com.xiaomi.fitness.trail.widget.MonthPanelView
+        android:id="@+id/month_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_margin_17dp"/>
+</LinearLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp">
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp">
+        <TextView
+            android:textSize="12sp"
+            android:textColor="@color/text_color_70"
+            android:id="@+id/week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="周二"/>
+        <TextView
+            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:id="@+id/day_of_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="22"
+            android:fontFamily="@font/misanslatin_regular"/>
+    </LinearLayout>
+    <include layout="@layout/item_train_detail"/>
+</LinearLayout>

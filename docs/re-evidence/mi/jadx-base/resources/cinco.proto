@@ -1,0 +1,134 @@
+syntax = "proto2";
+
+import "silence_mode.proto";
+import "statis_base.proto";
+import "nfc.proto";
+import "alipay_event.proto";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message CincoEventMessage {
+    //屏幕点亮次数
+    required uint32 lcdOnBecauseOfPress = 1; //按键点亮屏幕次数
+    required uint32 lcdOnBecauseOfEvent = 2; //抬腕点亮屏幕次数
+    required uint32 lcdOnBecauseOfNotify = 3; //通知提醒等点亮屏幕次数
+
+    //首页流出统计
+    required uint32 dial2Xiaoai = 4; //表盘进入小爱页面次数
+
+    //各页面展示次数
+    required uint32 statusDetails = 5; //状态详情页
+    required uint32 sedentaryExplainPage = 6; //久坐说明页
+    required uint32 heartrateDetails = 7; //心率详情页
+    required uint32 heartrateFailPage = 8; //心率测量失败页
+
+
+    required uint32 outsideRunningCount = 9; //户外跑次数
+    required uint32 indoorRunningCount = 10; //室内跑次数
+    required uint32 cyclingCount = 11; //骑行次数
+    required uint32 walkingCount = 12; //健走次数
+    required uint32 exerciseCount = 13; //锻炼次数
+    required uint32 swimmingCount = 14; //游泳次数
+    required uint32 sportDisconnectCount = 15; //运动中断链次数
+    required uint32 sportScreenCount = 16; //运动副屏开启次数
+    required uint32 sportScreenDisconnectCount = 17; //运动副屏断链次数
+
+    required uint32 weatherDetails = 18; //天气详情页
+    required uint32 notifyDetails = 19; //通知详情页
+    required uint32 moreListPage = 20; //更多列表进入次数
+
+    //勿扰统计
+    required uint32 silencePageCount = 21; //勿扰页面进入次数
+    required uint32 silenceSmartModeCount = 22; //智能勿扰选择次数
+    required uint32 silenceNormalModeCount = 23; //立即开启勿扰次数
+    required uint32 silenceOffModeCount = 24; //关闭勿扰次数
+
+    //闹钟统计
+    required uint32 alarmListCount = 25; //闹钟列表页进入次数
+    required uint32 alarmPageLazyCount = 26; //闹钟点击贪睡次数
+    required uint32 alarmPageOffCount = 27; //闹钟点击关闭次数
+    required uint32 alarmPageBackCount = 28; //闹钟页面按键次数
+
+    //音乐统计
+    required uint32 musicPageCount = 29; //音乐页面进入次数
+    required uint32 musicVolumeCount = 30; //音乐操作音量次数
+    required uint32 musicNextCount = 31; //音乐上下音乐次数
+
+    //秒表统计
+    required uint32 stopwatchCount = 32; //秒表页面进入次数
+    required uint32 countdownCount = 33; //倒计时页面进入次数
+    required uint32 stopwatchMarkCount = 34; //秒表计次次数
+    required uint32 stopwatchMarkDisCount = 35; //秒表计次列表进入次数
+
+    required uint32 findPhoneCount = 36; //查找手机页面进入次数
+    required uint32 phoneSilenceCount = 37; //手机静音进入次数
+
+    //卡包统计
+    required uint32 cardPageCount = 38; //卡包进入次数
+    required uint32 activeCardSuccessCount = 39; //激活卡片成功次数
+    required uint32 activeCardFailCount = 40; //激活卡片失败次数
+
+    //支付宝统计
+    required uint32 alipayPageCount = 41; //支付宝进入次数
+    required uint32 alipayQRCodeCount = 42; //支付宝二维码显示次数
+    required uint32 alipayCode128Count = 43; //支付宝条形码显示次数
+
+    required uint32 factoryPageCount = 44; //恢复出厂页面进入次数
+    required uint32 passwordFactoryCount = 45; //密码页进入恢复出厂次数
+
+    required uint32 passwordPageCount = 46; //离腕次数统计
+
+    //小爱
+    required uint32 remindFromXiaoai = 47; //小爱创建事件提醒次数
+    required uint32 alarmFromXiaoai = 48; //小爱创建闹钟次数
+    required uint32 weatherFromXiaoai = 49; //小爱进入天气页面次数
+    required uint32 countdownFromXiaoai = 50; //小爱创建倒计时次数
+    required uint32 customOfXiaoai = 51; //小爱自定义技能使用次数
+
+    // 运动操作
+    required uint32 clickTouchInSportCount = 52; //运动中点击屏幕次数
+    required uint32 clickKeyInSportCount = 53; //运动中点击按键次数
+    required uint32 rightSlidingInSportCount = 54; //运动中右滑次数
+    required uint32 longpressTouchInSportCount = 55; //运动中长按屏幕次数
+    required uint32 longpressKeyInSportCount = 56; //运动中长按按键次数
+    required uint32 waitGpsLocationCount = 57; //等待gps定位次数
+    required uint32 skipGpsLocationCount = 58; //跳过gps定位次数
+
+    required uint32 phoneSilenceMuteCount = 59; //手机静音静音次数
+    required uint32 phoneSilenceBell = 60; //手机静音响铃次数
+    required uint32 callIgnoreCount = 61; //来电忽略次数
+    required uint32 callHangCount = 62; //来电挂断次数
+    required uint32 openLcdAfterNotif = 63; //新消息5秒内再次亮屏次数
+
+    //提醒统计
+    required uint32 alarmPageCount = 64; //闹钟提醒次数
+    //required uint32 callPageCount = 65; //来电提醒次数
+    //required uint32 appNotifyCount = 66; //app通知提醒次数
+    required uint32 missCallCount = 67; //未接来电次数
+    required uint32 MSMNotifyCount = 68; //短息提醒次数
+    required uint32 EMAILNotifyCount = 69; //邮件提醒次数
+    required uint32 weatherNotifyCount = 70; //天气预警提醒次数
+    required uint32 remindNotifyCount = 71; //事件提醒次数
+    //required uint32 sedentaryNotifyCount = 72; //久坐提醒次数
+    required uint32 careNotifyCount = 73; //关爱提醒次数
+    required uint32 reachNotifyCount = 74; //达成目标提醒次数
+    required uint32 redBagNotifyCount = 75; //红包提醒次数
+    required uint32 phoneAlarmNotifyCount = 76; //手机闹钟提醒次数
+    required uint32 highHeartrateNotifyCount = 77; //心率预警提醒次数
+    //required uint32 disconnectNotifyCount = 78; //断链提醒次数
+
+    required uint32 dialId = 79; //表盘ID
+    optional uint32 paiEntrance = 80;//PAI入口页进入统计次数
+    optional uint32 paiDetails = 81;//PAI详情页进入统计次数
+    optional uint32 paiInfo = 82;//PAI帮助页进入统计次数
+};
+
+message CincoStatisticsMessage {
+    required StatisBaseMessage base = 1; //通用统计信息
+    required SilenceMode silenceMode = 2; //勿扰模式
+    required uint32 backlightLevel = 3; //背光亮度
+    required bool alipaybind = 4; // 支付宝绑定状态
+    optional CincoEventMessage event = 5; //打点事件
+    optional NfcMessage nfc = 6;
+    optional CincoAlipayEventMessage alipay_event = 7; //支付宝打点事件
+};

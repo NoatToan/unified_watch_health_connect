@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/sport_status_type5_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/dimen_margin_14dp">
+    <include
+        android:id="@+id/time_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_10dp"
+        android:layout_marginBottom="@dimen/dimen_margin_18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        layout="@layout/layout_time_info"/>
+    <include
+        android:id="@+id/calorie_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_margin_4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        layout="@layout/layout_info"/>
+    <com.xiaomi.fitness.sport_capture.widgets.hr.HeartRateView
+        android:id="@+id/hr"
+        android:layout_width="98dp"
+        android:layout_height="98dp"
+        android:layout_marginBottom="@dimen/dimen_margin_6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <include
+        android:id="@+id/device_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_margin_18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        layout="@layout/layout_device_info"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

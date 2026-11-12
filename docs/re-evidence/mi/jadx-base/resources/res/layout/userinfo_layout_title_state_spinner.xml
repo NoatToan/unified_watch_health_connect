@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:id="@+id/spinner_container"
+    android:background="@color/userinfo_windowBackground_light"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="3"
+    android:paddingVertical="@dimen/dimen_margin_5dp">
+    <TextView
+        android:textSize="@dimen/dimen_16sp"
+        android:textColor="@color/text_color"
+        android:gravity="start|center_vertical"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/tv_title"
+        android:focusable="false"
+        android:clickable="false"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:importantForAccessibility="no"
+        android:layout_toStartOf="@+id/spinner"
+        style="@style/FontMedium"/>
+    <miuix.appcompat.widget.Spinner
+        android:layout_gravity="center_vertical"
+        android:id="@+id/spinner"
+        android:focusable="false"
+        android:clickable="false"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:importantForAccessibility="no"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

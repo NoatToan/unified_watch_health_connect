@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/contentLayout"
+    android:tag="layout/fragment_sport_basic_0"
+    android:background="@color/page_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.view.TitleBarAlphaView
+        android:id="@+id/titleAlpha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <miuix.miuixbasewidget.widget.FilterSortView
+        android:theme="@style/FilterSortViewStyle"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/filter_sort_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginBottom="@dimen/size_10"
+        android:layoutDirection="ltr"
+        android:layout_marginStart="@dimen/common_set_margin_start"
+        android:layout_marginEnd="@dimen/common_set_margin_start"/>
+    <com.google.android.material.tabs.TabLayout
+        android:textSize="@dimen/text_size_14"
+        android:id="@+id/tab_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabBackground="@color/page_bg"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="scrollable"
+        app:tabPaddingEnd="0dp"
+        app:tabPaddingStart="26dp"
+        app:tabRippleColor="@color/page_bg"
+        app:tabSelectedTextColor="@color/text_color"
+        app:tabTextColor="@color/text_color_40"/>
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

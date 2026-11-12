@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_temperature_setting_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/page_content_padding_horizontal_large">
+    <com.xiaomi.fitness.widget.SwitchButtonSingleLineTextView
+        android:id="@+id/temperature_all_day_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/health_temperature_setting_all_day_switch"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/temperature_notice_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:remindText="@string/health_temperature_setting_notice_none"
+        app:showRemind="true"
+        app:subtitle="@string/health_temperature_setting_notice_desc"
+        app:title="@string/health_temperature_setting_notice_title"/>
+</LinearLayout>

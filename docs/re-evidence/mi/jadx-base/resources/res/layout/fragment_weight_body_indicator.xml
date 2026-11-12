@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_weight_body_indicator_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.google.android.material.tabs.TabLayout
+        android:layout_gravity="start"
+        android:id="@+id/tabLayout"
+        android:background="@color/card_bg_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_11_3"
+        app:tabGravity="fill"
+        app:tabIndicatorHeight="0dp"
+        app:tabMaxWidth="@dimen/size_440"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/weight_index_page_selected_tab_text_color"
+        app:tabTextAppearance="@style/WeightIndexToolBarTabTextAppearance"
+        app:tabTextColor="@color/weight_index_page_unselected_tab_text_color"/>
+    <miuix.springback.view.SpringBackLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:scrollOrientation="angle|horizontal"
+        app:scrollableView="@+id/view_pager">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </miuix.springback.view.SpringBackLayout>
+</LinearLayout>

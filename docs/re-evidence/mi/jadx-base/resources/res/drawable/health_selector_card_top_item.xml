@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/health_page_background"/>
+                </shape>
+            </item>
+            <item>
+                <shape
+                    android:layout_width="wrap_content"
+                    android:shape="rectangle">
+                    <solid android:color="@color/shape_item_bg"/>
+                    <corners
+                        android:topLeftRadius="@dimen/common_card_item_radius"
+                        android:topRightRadius="@dimen/common_card_item_radius"/>
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/pressed_common_item_bg_color"/>
+                    <corners
+                        android:topLeftRadius="@dimen/common_card_item_radius"
+                        android:topRightRadius="@dimen/common_card_item_radius"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <item>
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/health_page_background"/>
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/shape_item_bg"/>
+                    <corners
+                        android:topLeftRadius="@dimen/common_card_item_radius"
+                        android:topRightRadius="@dimen/common_card_item_radius"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>

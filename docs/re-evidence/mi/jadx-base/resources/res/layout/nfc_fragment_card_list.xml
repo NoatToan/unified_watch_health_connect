@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_list_layout"
+    android:tag="layout/nfc_fragment_card_list_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.nfc.widget.MarqueeTextView
+        android:id="@+id/tipsView"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/nfc_TextAppearance.nfc_BulletinTextView"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listView"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:groupIndicator="@null"
+        android:childDivider="@null"
+        android:divider="@null"
+        android:layout_below="@+id/tipsView"/>
+</RelativeLayout>

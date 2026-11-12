@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.widget.RightArrowBindingTwoLineTextView
+        android:id="@+id/agreement_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/page_content_padding_horizontal_large"
+        app:card_rightValue="update"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showMore="true"
+        app:title="@string/rn_settings_agreement_text"/>
+    <com.xiaomi.fitness.widget.RightArrowBindingTwoLineTextView
+        android:id="@+id/privacy_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/page_content_padding_horizontal_large"
+        app:card_rightValue="update"
+        app:layout_constraintTop_toBottomOf="@+id/agreement_view"
+        app:showMore="true"
+        app:title="@string/rn_settings_privacy_text"/>
+    <Button
+        android:textSize="@dimen/dimen_16sp"
+        android:textColor="@color/red"
+        android:id="@+id/btn_revoke_privacy"
+        android:layout_marginBottom="@dimen/size_26_67"
+        android:text="@string/rn_settings_revoke_privacy"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/CommonBtn.Gray"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp">
+    <TextView
+        android:textSize="@dimen/dimen_14sp"
+        android:textColor="@color/text_color_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/device_bind_pair_code"/>
+    <TextView
+        android:textSize="@dimen/dimen_29sp"
+        android:textColor="@color/device_text_color_black"
+        android:id="@+id/device_tv_oob_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        style="@style/FontDemiBold"/>
+</LinearLayout>

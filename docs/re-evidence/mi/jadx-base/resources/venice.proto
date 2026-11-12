@@ -1,0 +1,117 @@
+syntax = "proto2";
+
+import "silence_mode.proto";
+import "statis_base.proto";
+import "nfc.proto";
+import "standbydial.proto";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message VeniceEventMessage {
+
+    //系统
+    required uint32 lcdOnBecauseOfPress = 1;    //按键点亮屏幕次数
+    required uint32 lcdOnBecauseOfEvent = 2;    //抬腕或通知提醒等点亮屏幕次数
+    required uint32 WristFlipEvent = 3;	//转腕次数
+    required uint32 FactoryResetCount = 4;	//重置次数
+    required uint32 ChargingCount = 5; //充电次数
+    required uint32 PalmCoverCount = 6;//覆屏次数
+    //表盘
+    required uint32 settingWatchfacePage = 7;    //设置表盘页面
+    required uint32 CombinDialCount = 8;     //进入组合表盘次数
+    required uint32 ChangeDialCount = 9;     //更换表盘次数
+    optional uint32 dialId = 10 [default = 0]; //表盘ID
+    //基本应用
+    required uint32 DialApplistPageView= 11;    //进入app list次数
+    required uint32 timerCountdownPage = 12;    //倒计时页面
+    required uint32 countdownNum = 13;    //开始倒计时次数
+    required uint32 timerStopwatchPage = 14; //秒表页面
+    required uint32 stopwatchNum = 15; //使用秒表次数
+    required uint32 WeatherPage = 16;	//天气页面
+    required uint32 AlarmPage = 17;    //闹钟页面
+    required uint32 AlarmRemindCount = 18;    //闹钟提醒次数
+    required uint32 RemindPage = 19;	//日程页面
+    required uint32 EventRemindCount = 20;	//日程提醒次数
+    required uint32 MusicPage = 21;    //音乐控制页面
+    //控制中心
+    required uint32 DialControlPage = 22;	//控制中心页面
+    required uint32 FindPhoneCount = 23;	//查找手机次数
+    required uint32 FlashLightPage = 24;	//手电筒页面
+    required uint32 PowerSavingPage = 25;	//进入省电模式次数
+    required uint32 SnapCount = 26;	//小睡次数
+    required uint32 DndCount = 27;	//进入勿扰次数
+    //快捷页面相关
+    required uint32 QuickStartPage = 28;//进入快捷页面次数
+    required uint32 QuickStartSettingSave = 29;    //快捷页面设置保存次数
+    //通知
+    required uint32 ScreenNotificatiion = 30;    //进入通知页面
+    required uint32 NotifiDeleAllCount = 31;   //通知中点击清空按钮次数
+    required uint32 NotifiSlipDeleCount = 32;    //右滑清除通知次数
+    //支付宝
+    required uint32 AlipayPage = 33;    //支付宝页面
+    required uint32 AlipayBindSuccCount = 34;    //绑定支付宝成功次数
+    optional uint32 alipayQRCodeNum = 35 [default = 0]; //使用支付宝二维码次数
+    optional uint32 alipayCode128Num = 36 [default = 0]; //使用支付宝条形码次数
+    //设置
+    required uint32 settingPage = 37; //设置页面
+    required uint32 settingBacklightPage = 38;    //设置背光亮度页面
+    required uint32 AutoBrightOn = 39;    //自动亮度开关次数
+    required uint32 AutoExtinguishOn = 40;     //自动息屏开启次数
+    required uint32 ExtinguishTimeOn = 41;    //息屏时间开启次数
+    required uint32 MotionDetectionOn = 42;    //运动检测开启次数
+    required uint32 SmartDndCount = 43;     //智能勿扰开启次数
+    required uint32 DndCustomCount = 44;    //定时勿扰开启次数
+    required uint32 ScreenPwdOnCount = 45;    //密码开启次数
+    required uint32 VoiceRecogCount = 46;    //语音识别次数
+    required uint32 PinchOnCount = 47;    //双指捏合启动应用次数
+    //活动目标
+    required uint32 StatusPage = 48;    //活动目标页面
+    required uint32 TargetSettingCount = 49;    //活动目标设置次数
+    optional uint32 paiDetailPage = 50;   //pai详情展示次数
+    required uint32 StepGoalAchieve = 51;    //步数达标次数
+    required uint32 PAIGoalAchieve = 52;    //PAI达标次数
+    required uint32 CalorieGoalAchieve = 53;    //卡路里达标次数
+    required uint32 StandGoalAchieve = 54;    //站立达标次数
+    required uint32 AllGoalAchieve = 55;    //所有目标达标次数
+    //心率、血氧、压力
+    required uint32 AlldayHrPage = 56;    //心率页面
+    required uint32 ManualMeasurHR = 57;    //点击测量心率
+    required uint32 HRExplain = 58;	//静息心率解释页面
+    required uint32 BloodoxygenPage = 59;    //血氧页面
+    required uint32 ManualMeasurBloodoxygen = 60;    //点击测量血氧
+    required uint32 BloodoxygenExplain = 61;	//血氧说明
+    required uint32 StressDetectionPage = 62;    //压力监测页面
+    required uint32 ManualMeasurStress = 63;    //点击测试压力
+    required uint32 StressSuspendCount = 64;    //暂停使用压力监测次数
+    //运动
+    required uint32 SportListPage = 65;    //运动list页面
+    required uint32 IndoorRunCount = 66;    //跑步机次数
+    required uint32 TrainCount = 67;    //室内健身次数
+    required uint32 OutdoorRunCount = 68;    //户外跑次数
+    required uint32 WalkCount = 69;    //健走次数
+    required uint32 IndoorRiddingCount = 70;    //室内骑行次数
+    required uint32 EllipticalCount = 71;    //椭圆机次数
+    required uint32 OutdoorRiddingCount = 72;    //户外骑行次数
+    required uint32 IndoorSwimCount = 73;    //泳池游泳次数
+    required uint32 SwimCount = 74;    //公开水域游泳次数
+    required uint32 SportHistoryPage = 75;    //运动历史页面
+    required uint32 SportSettingPage = 76;    //运动设置页面
+    required uint32 SportGpsfound = 77;	//等待gps定位成功次数
+    required uint32 SportGpsSkip = 78;    //跳过gps定位次数
+    required uint32 SportGpsFail = 79;    //gps定位失败次数
+    required uint32 SportDetectionCount = 80;    //运动识别次数
+    required uint32 SportRealtimeSwitchCount = 81;    //切换运动次数
+};
+
+message VeniceStatisticsMessage {
+    required StatisBaseMessage base = 1; //通用统计信息
+    required SilenceMode silenceMode = 2; //勿扰模式
+    required uint32 backlightLevel = 3; //背光亮度
+
+    optional VeniceEventMessage event = 4; //打点事件
+    optional NfcMessage nfc = 5;
+	
+    optional StandbydialMode standbydialMode = 6; //常亮屏开关模式
+    optional StandbydialPattern standbydialPattern = 7; //常亮屏表盘样式
+};
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:background="@drawable/shape_card_bg_normal"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:layout_marginHorizontal="@dimen/page_padding_horizontal_large">
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <com.rd.PageIndicatorView2
+        android:id="@+id/pageIndicatorView"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:piv_animationType="scale"
+        app:piv_dynamicCount="true"
+        app:piv_interactiveAnimation="true"
+        app:piv_selectedColor="@color/black"
+        app:piv_unselectedColor="@color/black_10_transparent"
+        app:piv_viewPager="@+id/viewPager2"/>
+    <com.xiaomi.fitness.baseui.widget.CircularCoverView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        app:cover_color="@color/card_bg_normal"
+        app:left_bottom_radius="@dimen/size_16"
+        app:left_top_radius="@dimen/size_16"
+        app:right_bottom_radius="@dimen/size_16"
+        app:right_top_radius="@dimen/size_16"/>
+</RelativeLayout>

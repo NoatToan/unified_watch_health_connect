@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/device_settings_activity_record_edit_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_margin_23dp"
+        android:layout_marginEnd="@dimen/dimen_margin_23dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FontMedium.22sp"/>
+    <TextView
+        android:textColor="@color/selector_feature_item_subtitle_text_color"
+        android:id="@+id/timeView"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_10dp"
+        android:layout_marginStart="@dimen/dimen_margin_23dp"
+        android:layout_marginEnd="@dimen/dimen_margin_23dp"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        style="@style/FontNormal.12sp"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dimen_margin_16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeView">
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/content"
+            android:paddingBottom="@dimen/dimen_margin_5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dimen_margin_23dp"
+            android:paddingEnd="@dimen/dimen_margin_23dp"/>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

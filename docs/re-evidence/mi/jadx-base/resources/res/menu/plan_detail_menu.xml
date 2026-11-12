@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/plan_detail"
+        android:title="@string/training_plan_detail"/>
+    <item
+        android:id="@+id/plan_setting"
+        android:title="@string/training_plan_setting"/>
+    <item
+        android:id="@+id/plan_stop"
+        android:title="@string/training_plan_stop"/>
+</menu>

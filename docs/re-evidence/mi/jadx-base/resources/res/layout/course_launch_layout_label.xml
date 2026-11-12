@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingBottom="5dp"
+    android:text="@string/sport_course_video"
+    android:paddingEnd="@dimen/launch_sport_edge"
+    android:layout_marginStart="@dimen/launch_sport_edge"
+    style="@style/CourseLaunchLabel"/>

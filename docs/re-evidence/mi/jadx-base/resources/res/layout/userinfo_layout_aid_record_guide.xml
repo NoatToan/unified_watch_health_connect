@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/iv_image"
+        android:background="@drawable/ic_aid_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/page_content_padding_horizontal_large"
+        android:layout_marginBottom="@dimen/userinfo_size_16_7"
+        android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+        android:layout_marginEnd="@dimen/page_content_padding_horizontal_large"/>
+    <TextView
+        android:textSize="@dimen/font_13_36"
+        android:textColor="@color/black_80"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/userinfo_medical_file_desc2"
+        android:fontFamily="mipro-regular"
+        android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+        android:layout_marginEnd="@dimen/page_content_padding_horizontal_large"/>
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/tv_start_edit"
+        android:background="@drawable/btn_bg_pink"
+        android:layout_marginTop="@dimen/userinfo_size_15_33"
+        android:layout_marginBottom="@dimen/userinfo_size_15_33"
+        android:text="@string/userinfo_edit_immediately"
+        style="@style/userinfo_Button.FullWidth.Menstrual.Pink"/>
+</LinearLayout>

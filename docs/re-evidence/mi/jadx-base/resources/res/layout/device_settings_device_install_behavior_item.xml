@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_device_install_behavior_item_0"
+    android:background="@drawable/device_settings_cta_install_app_bg"
+    android:padding="@dimen/page_extra_padding_horizontal_large"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dimen_margin_10dp">
+    <TextView
+        android:textColor="@color/text_color"
+        android:id="@+id/device_behavior_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/FontDemiBold.18sp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:orientation="vertical"
+        android:id="@+id/device_behavior_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_5dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

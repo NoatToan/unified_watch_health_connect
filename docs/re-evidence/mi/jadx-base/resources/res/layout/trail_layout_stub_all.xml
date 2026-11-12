@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/time_statistic"
+    android:tag="layout/trail_layout_stub_all_0"
+    android:background="@drawable/trail_item_bg"
+    android:paddingTop="30dp"
+    android:paddingBottom="30dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="11dp">
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@color/trail_black_90white"
+        android:gravity="center"
+        android:id="@+id/statistic_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/trail_time_statistic"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/trail_statistic_icon"
+        android:layout_marginStart="18dp"
+        style="@style/FontMedium"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:orientation="vertical"
+        android:id="@+id/time_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:overScrollMode="never"
+        android:layout_marginStart="17dp"
+        android:layout_marginEnd="17dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+</LinearLayout>

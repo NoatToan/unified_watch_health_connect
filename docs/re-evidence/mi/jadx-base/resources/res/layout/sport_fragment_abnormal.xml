@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/not_activated_group"
+    android:tag="layout/sport_fragment_abnormal_0"
+    android:background="@drawable/sport_route_ai_create_bg"
+    android:visibility="visible"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:elevation="20dp">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textColor="@color/text_color_40"
+        android:gravity="center"
+        android:id="@+id/not_activated_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationY="-40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FontNormal.14sp"/>
+    <Button
+        android:textSize="13sp"
+        android:textColor="@color/color_ff612e"
+        android:id="@+id/goOpenPermissions"
+        android:background="@drawable/shape_19ff612e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sport_open_hr_check"
+        android:translationY="-20dp"
+        android:paddingHorizontal="17dp"
+        android:paddingVertical="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/not_activated_tv"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

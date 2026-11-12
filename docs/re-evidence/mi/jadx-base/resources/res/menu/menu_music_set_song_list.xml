@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_song_list_settings_add_song"
+        android:title="@string/device_settings_music_menu_song_list_settings_add_song"/>
+    <item
+        android:id="@+id/menu_song_list_settings_rename_song_list"
+        android:title="@string/device_settings_music_menu_song_list_settings_rename"/>
+    <item
+        android:id="@+id/menu_song_list_settings_remove_song_list"
+        android:title="@string/device_settings_music_menu_song_list_settings_remove_song_list"/>
+</menu>

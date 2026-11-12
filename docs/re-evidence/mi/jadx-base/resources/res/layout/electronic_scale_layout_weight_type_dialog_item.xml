@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textColor="@color/electronic_scale_weight_type_dialog_text_color"
+    android:id="@+id/title"
+    android:background="@drawable/electronic_scale_bg_weight_type_dialog_item"
+    android:paddingTop="@dimen/dimen_margin_16dp"
+    android:paddingBottom="@dimen/electronic_scale_size_15_67"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/size_26_67"
+    style="@style/FontMedium.16sp"/>

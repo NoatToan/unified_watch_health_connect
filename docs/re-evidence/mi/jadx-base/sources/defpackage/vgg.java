@@ -1,0 +1,725 @@
+package defpackage;
+
+import java.math.BigInteger;
+
+/* JADX INFO: loaded from: classes3.dex */
+public abstract class vgg {
+    public static void A(int[] iArr, int i, int[] iArr2, int i2) {
+        long j = ((long) iArr[i]) & 4294967295L;
+        int i3 = 0;
+        int i4 = 12;
+        int i5 = 5;
+        while (true) {
+            int i6 = i5 - 1;
+            long j2 = ((long) iArr[i + i5]) & 4294967295L;
+            long j3 = j2 * j2;
+            iArr2[i2 + (i4 - 1)] = (i3 << 31) | ((int) (j3 >>> 33));
+            i4 -= 2;
+            iArr2[i2 + i4] = (int) (j3 >>> 1);
+            i3 = (int) j3;
+            if (i6 <= 0) {
+                long j4 = j * j;
+                long j5 = (j4 >>> 33) | (((long) (i3 << 31)) & 4294967295L);
+                iArr2[i2] = (int) j4;
+                int i7 = ((int) (j4 >>> 32)) & 1;
+                long j6 = ((long) iArr[i + 1]) & 4294967295L;
+                int i8 = i2 + 2;
+                long j7 = ((long) iArr2[i8]) & 4294967295L;
+                long j8 = j5 + (j6 * j);
+                int i9 = (int) j8;
+                iArr2[i2 + 1] = (i9 << 1) | i7;
+                int i10 = i9 >>> 31;
+                long j9 = j7 + (j8 >>> 32);
+                long j10 = ((long) iArr[i + 2]) & 4294967295L;
+                int i11 = i2 + 3;
+                long j11 = ((long) iArr2[i11]) & 4294967295L;
+                int i12 = i2 + 4;
+                long j12 = ((long) iArr2[i12]) & 4294967295L;
+                long j13 = j9 + (j10 * j);
+                int i13 = (int) j13;
+                iArr2[i8] = (i13 << 1) | i10;
+                long j14 = j11 + (j13 >>> 32) + (j10 * j6);
+                long j15 = ((long) iArr[i + 3]) & 4294967295L;
+                int i14 = i2 + 5;
+                long j16 = ((long) iArr2[i14]) & 4294967295L;
+                int i15 = i2 + 6;
+                long j17 = ((long) iArr2[i15]) & 4294967295L;
+                long j18 = (j14 & 4294967295L) + (j15 * j);
+                int i16 = (int) j18;
+                iArr2[i11] = (i16 << 1) | (i13 >>> 31);
+                long j19 = j12 + (j14 >>> 32) + (j18 >>> 32) + (j15 * j6);
+                long j20 = j16 + (j19 >>> 32) + (j15 * j10);
+                long j21 = j17 + (j20 >>> 32);
+                long j22 = ((long) iArr[i + 4]) & 4294967295L;
+                int i17 = i2 + 7;
+                long j23 = ((long) iArr2[i17]) & 4294967295L;
+                int i18 = i2 + 8;
+                long j24 = ((long) iArr2[i18]) & 4294967295L;
+                long j25 = (j19 & 4294967295L) + (j22 * j);
+                int i19 = (int) j25;
+                iArr2[i12] = (i19 << 1) | (i16 >>> 31);
+                int i20 = i19 >>> 31;
+                long j26 = (j20 & 4294967295L) + (j25 >>> 32) + (j22 * j6);
+                long j27 = j21 + (j26 >>> 32) + (j22 * j10);
+                long j28 = j26 & 4294967295L;
+                long j29 = j23 + (j27 >>> 32) + (j22 * j15);
+                long j30 = j24 + (j29 >>> 32);
+                long j31 = ((long) iArr[i + 5]) & 4294967295L;
+                int i21 = i2 + 9;
+                long j32 = ((long) iArr2[i21]) & 4294967295L;
+                int i22 = i2 + 10;
+                long j33 = ((long) iArr2[i22]) & 4294967295L;
+                long j34 = j28 + (j * j31);
+                int i23 = (int) j34;
+                iArr2[i14] = (i23 << 1) | i20;
+                long j35 = (j27 & 4294967295L) + (j34 >>> 32) + (j6 * j31);
+                long j36 = (j29 & 4294967295L) + (j35 >>> 32) + (j31 * j10);
+                long j37 = j30 + (j36 >>> 32) + (j31 * j15);
+                long j38 = j32 + (j37 >>> 32) + (j31 * j22);
+                long j39 = j33 + (j38 >>> 32);
+                int i24 = (int) j35;
+                iArr2[i15] = (i23 >>> 31) | (i24 << 1);
+                int i25 = i24 >>> 31;
+                int i26 = (int) j36;
+                iArr2[i17] = i25 | (i26 << 1);
+                int i27 = i26 >>> 31;
+                int i28 = (int) j37;
+                iArr2[i18] = i27 | (i28 << 1);
+                int i29 = i28 >>> 31;
+                int i30 = (int) j38;
+                iArr2[i21] = i29 | (i30 << 1);
+                int i31 = i30 >>> 31;
+                int i32 = (int) j39;
+                iArr2[i22] = i31 | (i32 << 1);
+                int i33 = i32 >>> 31;
+                int i34 = i2 + 11;
+                iArr2[i34] = i33 | ((iArr2[i34] + ((int) (j39 >> 32))) << 1);
+                return;
+            }
+            i5 = i6;
+        }
+    }
+
+    public static void B(int[] iArr, int[] iArr2) {
+        long j = ((long) iArr[0]) & 4294967295L;
+        int i = 12;
+        int i2 = 0;
+        int i3 = 5;
+        while (true) {
+            int i4 = i3 - 1;
+            long j2 = ((long) iArr[i3]) & 4294967295L;
+            long j3 = j2 * j2;
+            iArr2[i - 1] = (i2 << 31) | ((int) (j3 >>> 33));
+            i -= 2;
+            iArr2[i] = (int) (j3 >>> 1);
+            i2 = (int) j3;
+            if (i4 <= 0) {
+                long j4 = j * j;
+                long j5 = (j4 >>> 33) | (((long) (i2 << 31)) & 4294967295L);
+                iArr2[0] = (int) j4;
+                long j6 = ((long) iArr[1]) & 4294967295L;
+                long j7 = ((long) iArr2[2]) & 4294967295L;
+                long j8 = j5 + (j6 * j);
+                int i5 = (int) j8;
+                iArr2[1] = (i5 << 1) | (((int) (j4 >>> 32)) & 1);
+                int i6 = i5 >>> 31;
+                long j9 = j7 + (j8 >>> 32);
+                long j10 = ((long) iArr[2]) & 4294967295L;
+                long j11 = ((long) iArr2[3]) & 4294967295L;
+                long j12 = ((long) iArr2[4]) & 4294967295L;
+                long j13 = j9 + (j10 * j);
+                int i7 = (int) j13;
+                iArr2[2] = (i7 << 1) | i6;
+                long j14 = j11 + (j13 >>> 32) + (j10 * j6);
+                long j15 = j12 + (j14 >>> 32);
+                long j16 = ((long) iArr[3]) & 4294967295L;
+                long j17 = ((long) iArr2[5]) & 4294967295L;
+                long j18 = ((long) iArr2[6]) & 4294967295L;
+                long j19 = (j14 & 4294967295L) + (j16 * j);
+                int i8 = (int) j19;
+                iArr2[3] = (i8 << 1) | (i7 >>> 31);
+                int i9 = i8 >>> 31;
+                long j20 = j15 + (j19 >>> 32) + (j16 * j6);
+                long j21 = j17 + (j20 >>> 32) + (j16 * j10);
+                long j22 = j18 + (j21 >>> 32);
+                long j23 = ((long) iArr[4]) & 4294967295L;
+                long j24 = ((long) iArr2[7]) & 4294967295L;
+                long j25 = ((long) iArr2[8]) & 4294967295L;
+                long j26 = (j20 & 4294967295L) + (j23 * j);
+                int i10 = (int) j26;
+                iArr2[4] = (i10 << 1) | i9;
+                int i11 = i10 >>> 31;
+                long j27 = (j21 & 4294967295L) + (j26 >>> 32) + (j23 * j6);
+                long j28 = j22 + (j27 >>> 32) + (j23 * j10);
+                long j29 = j24 + (j28 >>> 32) + (j23 * j16);
+                long j30 = j25 + (j29 >>> 32);
+                long j31 = ((long) iArr[5]) & 4294967295L;
+                long j32 = ((long) iArr2[9]) & 4294967295L;
+                long j33 = 4294967295L & ((long) iArr2[10]);
+                long j34 = (j27 & 4294967295L) + (j31 * j);
+                int i12 = (int) j34;
+                iArr2[5] = (i12 << 1) | i11;
+                long j35 = (j28 & 4294967295L) + (j34 >>> 32) + (j31 * j6);
+                long j36 = (j29 & 4294967295L) + (j35 >>> 32) + (j10 * j31);
+                long j37 = j30 + (j36 >>> 32) + (j31 * j16);
+                long j38 = j32 + (j37 >>> 32) + (j31 * j23);
+                long j39 = j33 + (j38 >>> 32);
+                int i13 = (int) j35;
+                iArr2[6] = (i13 << 1) | (i12 >>> 31);
+                int i14 = (int) j36;
+                iArr2[7] = (i13 >>> 31) | (i14 << 1);
+                int i15 = i14 >>> 31;
+                int i16 = (int) j37;
+                iArr2[8] = i15 | (i16 << 1);
+                int i17 = i16 >>> 31;
+                int i18 = (int) j38;
+                iArr2[9] = i17 | (i18 << 1);
+                int i19 = i18 >>> 31;
+                int i20 = (int) j39;
+                iArr2[10] = i19 | (i20 << 1);
+                iArr2[11] = (i20 >>> 31) | ((iArr2[11] + ((int) (j39 >> 32))) << 1);
+                return;
+            }
+            i3 = i4;
+        }
+    }
+
+    public static int C(int[] iArr, int i, int[] iArr2, int i2, int[] iArr3, int i3) {
+        long j = (((long) iArr[i]) & 4294967295L) - (((long) iArr2[i2]) & 4294967295L);
+        iArr3[i3] = (int) j;
+        long j2 = (j >> 32) + ((((long) iArr[i + 1]) & 4294967295L) - (((long) iArr2[i2 + 1]) & 4294967295L));
+        iArr3[i3 + 1] = (int) j2;
+        long j3 = (j2 >> 32) + ((((long) iArr[i + 2]) & 4294967295L) - (((long) iArr2[i2 + 2]) & 4294967295L));
+        iArr3[i3 + 2] = (int) j3;
+        long j4 = (j3 >> 32) + ((((long) iArr[i + 3]) & 4294967295L) - (((long) iArr2[i2 + 3]) & 4294967295L));
+        iArr3[i3 + 3] = (int) j4;
+        long j5 = (j4 >> 32) + ((((long) iArr[i + 4]) & 4294967295L) - (((long) iArr2[i2 + 4]) & 4294967295L));
+        iArr3[i3 + 4] = (int) j5;
+        long j6 = (j5 >> 32) + ((((long) iArr[i + 5]) & 4294967295L) - (((long) iArr2[i2 + 5]) & 4294967295L));
+        iArr3[i3 + 5] = (int) j6;
+        return (int) (j6 >> 32);
+    }
+
+    public static int D(int[] iArr, int[] iArr2, int[] iArr3) {
+        long j = (((long) iArr[0]) & 4294967295L) - (((long) iArr2[0]) & 4294967295L);
+        iArr3[0] = (int) j;
+        long j2 = (j >> 32) + ((((long) iArr[1]) & 4294967295L) - (((long) iArr2[1]) & 4294967295L));
+        iArr3[1] = (int) j2;
+        long j3 = (j2 >> 32) + ((((long) iArr[2]) & 4294967295L) - (((long) iArr2[2]) & 4294967295L));
+        iArr3[2] = (int) j3;
+        long j4 = (j3 >> 32) + ((((long) iArr[3]) & 4294967295L) - (((long) iArr2[3]) & 4294967295L));
+        iArr3[3] = (int) j4;
+        long j5 = (j4 >> 32) + ((((long) iArr[4]) & 4294967295L) - (((long) iArr2[4]) & 4294967295L));
+        iArr3[4] = (int) j5;
+        long j6 = (j5 >> 32) + ((((long) iArr[5]) & 4294967295L) - (((long) iArr2[5]) & 4294967295L));
+        iArr3[5] = (int) j6;
+        return (int) (j6 >> 32);
+    }
+
+    public static int E(int[] iArr, int[] iArr2) {
+        long j = (((long) iArr2[0]) & 4294967295L) - (((long) iArr[0]) & 4294967295L);
+        iArr2[0] = (int) j;
+        long j2 = (j >> 32) + ((((long) iArr2[1]) & 4294967295L) - (((long) iArr[1]) & 4294967295L));
+        iArr2[1] = (int) j2;
+        long j3 = (j2 >> 32) + ((((long) iArr2[2]) & 4294967295L) - (((long) iArr[2]) & 4294967295L));
+        iArr2[2] = (int) j3;
+        long j4 = (j3 >> 32) + ((((long) iArr2[3]) & 4294967295L) - (((long) iArr[3]) & 4294967295L));
+        iArr2[3] = (int) j4;
+        long j5 = (j4 >> 32) + ((((long) iArr2[4]) & 4294967295L) - (((long) iArr[4]) & 4294967295L));
+        iArr2[4] = (int) j5;
+        long j6 = (j5 >> 32) + ((((long) iArr2[5]) & 4294967295L) - (4294967295L & ((long) iArr[5])));
+        iArr2[5] = (int) j6;
+        return (int) (j6 >> 32);
+    }
+
+    public static BigInteger F(int[] iArr) {
+        byte[] bArr = new byte[24];
+        for (int i = 0; i < 6; i++) {
+            int i2 = iArr[i];
+            if (i2 != 0) {
+                ahh.a(i2, bArr, (5 - i) << 2);
+            }
+        }
+        return new BigInteger(1, bArr);
+    }
+
+    public static BigInteger G(long[] jArr) {
+        byte[] bArr = new byte[24];
+        for (int i = 0; i < 3; i++) {
+            long j = jArr[i];
+            if (j != 0) {
+                ahh.b(j, bArr, (2 - i) << 3);
+            }
+        }
+        return new BigInteger(1, bArr);
+    }
+
+    public static void H(int[] iArr) {
+        iArr[0] = 0;
+        iArr[1] = 0;
+        iArr[2] = 0;
+        iArr[3] = 0;
+        iArr[4] = 0;
+        iArr[5] = 0;
+    }
+
+    public static int a(int[] iArr, int[] iArr2, int[] iArr3) {
+        long j = (((long) iArr[0]) & 4294967295L) + (((long) iArr2[0]) & 4294967295L);
+        iArr3[0] = (int) j;
+        long j2 = (j >>> 32) + (((long) iArr[1]) & 4294967295L) + (((long) iArr2[1]) & 4294967295L);
+        iArr3[1] = (int) j2;
+        long j3 = (j2 >>> 32) + (((long) iArr[2]) & 4294967295L) + (((long) iArr2[2]) & 4294967295L);
+        iArr3[2] = (int) j3;
+        long j4 = (j3 >>> 32) + (((long) iArr[3]) & 4294967295L) + (((long) iArr2[3]) & 4294967295L);
+        iArr3[3] = (int) j4;
+        long j5 = (j4 >>> 32) + (((long) iArr[4]) & 4294967295L) + (((long) iArr2[4]) & 4294967295L);
+        iArr3[4] = (int) j5;
+        long j6 = (j5 >>> 32) + (((long) iArr[5]) & 4294967295L) + (((long) iArr2[5]) & 4294967295L);
+        iArr3[5] = (int) j6;
+        return (int) (j6 >>> 32);
+    }
+
+    public static int b(int[] iArr, int[] iArr2, int[] iArr3) {
+        long j = (((long) iArr[0]) & 4294967295L) + (((long) iArr2[0]) & 4294967295L) + (((long) iArr3[0]) & 4294967295L);
+        iArr3[0] = (int) j;
+        long j2 = (j >>> 32) + (((long) iArr[1]) & 4294967295L) + (((long) iArr2[1]) & 4294967295L) + (((long) iArr3[1]) & 4294967295L);
+        iArr3[1] = (int) j2;
+        long j3 = (j2 >>> 32) + (((long) iArr[2]) & 4294967295L) + (((long) iArr2[2]) & 4294967295L) + (((long) iArr3[2]) & 4294967295L);
+        iArr3[2] = (int) j3;
+        long j4 = (j3 >>> 32) + (((long) iArr[3]) & 4294967295L) + (((long) iArr2[3]) & 4294967295L) + (((long) iArr3[3]) & 4294967295L);
+        iArr3[3] = (int) j4;
+        long j5 = (j4 >>> 32) + (((long) iArr[4]) & 4294967295L) + (((long) iArr2[4]) & 4294967295L) + (((long) iArr3[4]) & 4294967295L);
+        iArr3[4] = (int) j5;
+        long j6 = (j5 >>> 32) + (((long) iArr[5]) & 4294967295L) + (((long) iArr2[5]) & 4294967295L) + (((long) iArr3[5]) & 4294967295L);
+        iArr3[5] = (int) j6;
+        return (int) (j6 >>> 32);
+    }
+
+    public static int c(int[] iArr, int i, int[] iArr2, int i2, int i3) {
+        long j = (((long) i3) & 4294967295L) + (((long) iArr[i]) & 4294967295L) + (((long) iArr2[i2]) & 4294967295L);
+        iArr2[i2] = (int) j;
+        int i4 = i2 + 1;
+        long j2 = (j >>> 32) + (((long) iArr[i + 1]) & 4294967295L) + (((long) iArr2[i4]) & 4294967295L);
+        iArr2[i4] = (int) j2;
+        int i5 = i2 + 2;
+        long j3 = (j2 >>> 32) + (((long) iArr[i + 2]) & 4294967295L) + (((long) iArr2[i5]) & 4294967295L);
+        iArr2[i5] = (int) j3;
+        int i6 = i2 + 3;
+        long j4 = (j3 >>> 32) + (((long) iArr[i + 3]) & 4294967295L) + (((long) iArr2[i6]) & 4294967295L);
+        iArr2[i6] = (int) j4;
+        int i7 = i2 + 4;
+        long j5 = (j4 >>> 32) + (((long) iArr[i + 4]) & 4294967295L) + (((long) iArr2[i7]) & 4294967295L);
+        iArr2[i7] = (int) j5;
+        int i8 = i2 + 5;
+        long j6 = (j5 >>> 32) + (((long) iArr[i + 5]) & 4294967295L) + (4294967295L & ((long) iArr2[i8]));
+        iArr2[i8] = (int) j6;
+        return (int) (j6 >>> 32);
+    }
+
+    public static int d(int[] iArr, int i, int[] iArr2, int i2) {
+        long j = (((long) iArr[i]) & 4294967295L) + (((long) iArr2[i2]) & 4294967295L);
+        int i3 = (int) j;
+        iArr[i] = i3;
+        iArr2[i2] = i3;
+        int i4 = i + 1;
+        int i5 = i2 + 1;
+        long j2 = (j >>> 32) + (((long) iArr[i4]) & 4294967295L) + (((long) iArr2[i5]) & 4294967295L);
+        int i6 = (int) j2;
+        iArr[i4] = i6;
+        iArr2[i5] = i6;
+        int i7 = i + 2;
+        int i8 = i2 + 2;
+        long j3 = (j2 >>> 32) + (((long) iArr[i7]) & 4294967295L) + (((long) iArr2[i8]) & 4294967295L);
+        int i9 = (int) j3;
+        iArr[i7] = i9;
+        iArr2[i8] = i9;
+        int i10 = i + 3;
+        int i11 = i2 + 3;
+        long j4 = (j3 >>> 32) + (((long) iArr[i10]) & 4294967295L) + (((long) iArr2[i11]) & 4294967295L);
+        int i12 = (int) j4;
+        iArr[i10] = i12;
+        iArr2[i11] = i12;
+        int i13 = i + 4;
+        int i14 = i2 + 4;
+        long j5 = (j4 >>> 32) + (((long) iArr[i13]) & 4294967295L) + (((long) iArr2[i14]) & 4294967295L);
+        int i15 = (int) j5;
+        iArr[i13] = i15;
+        iArr2[i14] = i15;
+        int i16 = i + 5;
+        int i17 = i2 + 5;
+        long j6 = (j5 >>> 32) + (((long) iArr[i16]) & 4294967295L) + (4294967295L & ((long) iArr2[i17]));
+        int i18 = (int) j6;
+        iArr[i16] = i18;
+        iArr2[i17] = i18;
+        return (int) (j6 >>> 32);
+    }
+
+    public static int[] e() {
+        return new int[6];
+    }
+
+    public static long[] f() {
+        return new long[3];
+    }
+
+    public static int[] g() {
+        return new int[12];
+    }
+
+    public static long[] h() {
+        return new long[6];
+    }
+
+    public static boolean i(int[] iArr, int i, int[] iArr2, int i2, int[] iArr3, int i3) {
+        boolean zO = o(iArr, i, iArr2, i2);
+        if (zO) {
+            C(iArr, i, iArr2, i2, iArr3, i3);
+        } else {
+            C(iArr2, i2, iArr, i, iArr3, i3);
+        }
+        return zO;
+    }
+
+    public static boolean j(int[] iArr, int[] iArr2) {
+        for (int i = 5; i >= 0; i--) {
+            if (iArr[i] != iArr2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean k(long[] jArr, long[] jArr2) {
+        for (int i = 2; i >= 0; i--) {
+            if (jArr[i] != jArr2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static int[] l(BigInteger bigInteger) {
+        if (bigInteger.signum() < 0 || bigInteger.bitLength() > 192) {
+            throw new IllegalArgumentException();
+        }
+        int[] iArrE = e();
+        int i = 0;
+        while (bigInteger.signum() != 0) {
+            iArrE[i] = bigInteger.intValue();
+            bigInteger = bigInteger.shiftRight(32);
+            i++;
+        }
+        return iArrE;
+    }
+
+    public static long[] m(BigInteger bigInteger) {
+        if (bigInteger.signum() < 0 || bigInteger.bitLength() > 192) {
+            throw new IllegalArgumentException();
+        }
+        long[] jArrF = f();
+        int i = 0;
+        while (bigInteger.signum() != 0) {
+            jArrF[i] = bigInteger.longValue();
+            bigInteger = bigInteger.shiftRight(64);
+            i++;
+        }
+        return jArrF;
+    }
+
+    public static int n(int[] iArr, int i) {
+        int i2;
+        if (i == 0) {
+            i2 = iArr[0];
+        } else {
+            int i3 = i >> 5;
+            if (i3 < 0 || i3 >= 6) {
+                return 0;
+            }
+            i2 = iArr[i3] >>> (i & 31);
+        }
+        return i2 & 1;
+    }
+
+    public static boolean o(int[] iArr, int i, int[] iArr2, int i2) {
+        for (int i3 = 5; i3 >= 0; i3--) {
+            int i4 = iArr[i + i3] ^ Integer.MIN_VALUE;
+            int i5 = Integer.MIN_VALUE ^ iArr2[i2 + i3];
+            if (i4 < i5) {
+                return false;
+            }
+            if (i4 > i5) {
+                return true;
+            }
+        }
+        return true;
+    }
+
+    public static boolean p(int[] iArr, int[] iArr2) {
+        for (int i = 5; i >= 0; i--) {
+            int i2 = iArr[i] ^ Integer.MIN_VALUE;
+            int i3 = Integer.MIN_VALUE ^ iArr2[i];
+            if (i2 < i3) {
+                return false;
+            }
+            if (i2 > i3) {
+                return true;
+            }
+        }
+        return true;
+    }
+
+    public static boolean q(int[] iArr) {
+        if (iArr[0] != 1) {
+            return false;
+        }
+        for (int i = 1; i < 6; i++) {
+            if (iArr[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean r(long[] jArr) {
+        if (jArr[0] != 1) {
+            return false;
+        }
+        for (int i = 1; i < 3; i++) {
+            if (jArr[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean s(int[] iArr) {
+        for (int i = 0; i < 6; i++) {
+            if (iArr[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean t(long[] jArr) {
+        for (int i = 0; i < 3; i++) {
+            if (jArr[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void u(int[] iArr, int i, int[] iArr2, int i2, int[] iArr3, int i3) {
+        long j = ((long) iArr2[i2]) & 4294967295L;
+        long j2 = ((long) iArr2[i2 + 1]) & 4294967295L;
+        long j3 = ((long) iArr2[i2 + 2]) & 4294967295L;
+        long j4 = ((long) iArr2[i2 + 3]) & 4294967295L;
+        long j5 = ((long) iArr2[i2 + 4]) & 4294967295L;
+        long j6 = ((long) iArr2[i2 + 5]) & 4294967295L;
+        long j7 = ((long) iArr[i]) & 4294967295L;
+        long j8 = j7 * j;
+        iArr3[i3] = (int) j8;
+        long j9 = (j8 >>> 32) + (j7 * j2);
+        iArr3[i3 + 1] = (int) j9;
+        long j10 = (j9 >>> 32) + (j7 * j3);
+        iArr3[i3 + 2] = (int) j10;
+        long j11 = (j10 >>> 32) + (j7 * j4);
+        iArr3[i3 + 3] = (int) j11;
+        long j12 = (j11 >>> 32) + (j7 * j5);
+        iArr3[i3 + 4] = (int) j12;
+        long j13 = (j12 >>> 32) + (j7 * j6);
+        iArr3[i3 + 5] = (int) j13;
+        iArr3[i3 + 6] = (int) (j13 >>> 32);
+        int i4 = 1;
+        int i5 = i3;
+        while (i4 < 6) {
+            int i6 = i5 + 1;
+            long j14 = ((long) iArr[i + i4]) & 4294967295L;
+            long j15 = j6;
+            long j16 = (j14 * j) + (((long) iArr3[i6]) & 4294967295L);
+            iArr3[i6] = (int) j16;
+            int i7 = i5 + 2;
+            int i8 = i4;
+            long j17 = (j16 >>> 32) + (j14 * j2) + (((long) iArr3[i7]) & 4294967295L);
+            iArr3[i7] = (int) j17;
+            int i9 = i5 + 3;
+            long j18 = (j17 >>> 32) + (j14 * j3) + (((long) iArr3[i9]) & 4294967295L);
+            iArr3[i9] = (int) j18;
+            int i10 = i5 + 4;
+            int i11 = i5;
+            long j19 = (j18 >>> 32) + (j14 * j4) + (((long) iArr3[i10]) & 4294967295L);
+            iArr3[i10] = (int) j19;
+            int i12 = i11 + 5;
+            long j20 = (j19 >>> 32) + (j14 * j5) + (((long) iArr3[i12]) & 4294967295L);
+            iArr3[i12] = (int) j20;
+            int i13 = i11 + 6;
+            long j21 = (j20 >>> 32) + (j14 * j15) + (((long) iArr3[i13]) & 4294967295L);
+            iArr3[i13] = (int) j21;
+            iArr3[i11 + 7] = (int) (j21 >>> 32);
+            i4 = i8 + 1;
+            i5 = i6;
+            j6 = j15;
+            j3 = j3;
+        }
+    }
+
+    public static void v(int[] iArr, int[] iArr2, int[] iArr3) {
+        long j = ((long) iArr2[0]) & 4294967295L;
+        long j2 = ((long) iArr2[1]) & 4294967295L;
+        long j3 = ((long) iArr2[2]) & 4294967295L;
+        long j4 = ((long) iArr2[3]) & 4294967295L;
+        long j5 = ((long) iArr2[4]) & 4294967295L;
+        long j6 = ((long) iArr2[5]) & 4294967295L;
+        long j7 = ((long) iArr[0]) & 4294967295L;
+        long j8 = j7 * j;
+        iArr3[0] = (int) j8;
+        long j9 = (j8 >>> 32) + (j7 * j2);
+        iArr3[1] = (int) j9;
+        long j10 = (j9 >>> 32) + (j7 * j3);
+        iArr3[2] = (int) j10;
+        long j11 = (j10 >>> 32) + (j7 * j4);
+        iArr3[3] = (int) j11;
+        long j12 = (j11 >>> 32) + (j7 * j5);
+        iArr3[4] = (int) j12;
+        long j13 = (j12 >>> 32) + (j7 * j6);
+        iArr3[5] = (int) j13;
+        iArr3[6] = (int) (j13 >>> 32);
+        int i = 1;
+        for (int i2 = 6; i < i2; i2 = 6) {
+            long j14 = ((long) iArr[i]) & 4294967295L;
+            long j15 = (j14 * j) + (((long) iArr3[i]) & 4294967295L);
+            iArr3[i] = (int) j15;
+            int i3 = i + 1;
+            long j16 = (j15 >>> 32) + (j14 * j2) + (((long) iArr3[i3]) & 4294967295L);
+            iArr3[i3] = (int) j16;
+            int i4 = i + 2;
+            long j17 = j2;
+            long j18 = (j16 >>> 32) + (j14 * j3) + (((long) iArr3[i4]) & 4294967295L);
+            iArr3[i4] = (int) j18;
+            int i5 = i + 3;
+            long j19 = (j18 >>> 32) + (j14 * j4) + (((long) iArr3[i5]) & 4294967295L);
+            iArr3[i5] = (int) j19;
+            int i6 = i + 4;
+            long j20 = (j19 >>> 32) + (j14 * j5) + (((long) iArr3[i6]) & 4294967295L);
+            iArr3[i6] = (int) j20;
+            int i7 = i + 5;
+            long j21 = (j20 >>> 32) + (j14 * j6) + (((long) iArr3[i7]) & 4294967295L);
+            iArr3[i7] = (int) j21;
+            iArr3[i + 6] = (int) (j21 >>> 32);
+            j4 = j4;
+            j = j;
+            i = i3;
+            j2 = j17;
+        }
+    }
+
+    public static long w(int i, int[] iArr, int i2, int[] iArr2, int i3, int[] iArr3, int i4) {
+        long j = ((long) i) & 4294967295L;
+        long j2 = ((long) iArr[i2]) & 4294967295L;
+        long j3 = (j * j2) + (((long) iArr2[i3]) & 4294967295L);
+        iArr3[i4] = (int) j3;
+        long j4 = ((long) iArr[i2 + 1]) & 4294967295L;
+        long j5 = (j3 >>> 32) + (j * j4) + j2 + (((long) iArr2[i3 + 1]) & 4294967295L);
+        iArr3[i4 + 1] = (int) j5;
+        long j6 = j5 >>> 32;
+        long j7 = ((long) iArr[i2 + 2]) & 4294967295L;
+        long j8 = j6 + (j * j7) + j4 + (((long) iArr2[i3 + 2]) & 4294967295L);
+        iArr3[i4 + 2] = (int) j8;
+        long j9 = ((long) iArr[i2 + 3]) & 4294967295L;
+        long j10 = (j8 >>> 32) + (j * j9) + j7 + (((long) iArr2[i3 + 3]) & 4294967295L);
+        iArr3[i4 + 3] = (int) j10;
+        long j11 = ((long) iArr[i2 + 4]) & 4294967295L;
+        long j12 = (j10 >>> 32) + (j * j11) + j9 + (((long) iArr2[i3 + 4]) & 4294967295L);
+        iArr3[i4 + 4] = (int) j12;
+        long j13 = ((long) iArr[i2 + 5]) & 4294967295L;
+        long j14 = (j12 >>> 32) + (j * j13) + j11 + (4294967295L & ((long) iArr2[i3 + 5]));
+        iArr3[i4 + 5] = (int) j14;
+        return (j14 >>> 32) + j13;
+    }
+
+    public static int x(int i, long j, int[] iArr, int i2) {
+        long j2 = ((long) i) & 4294967295L;
+        long j3 = j & 4294967295L;
+        long j4 = (j2 * j3) + (((long) iArr[i2]) & 4294967295L);
+        iArr[i2] = (int) j4;
+        long j5 = j >>> 32;
+        long j6 = (j2 * j5) + j3;
+        int i3 = i2 + 1;
+        long j7 = (j4 >>> 32) + j6 + (((long) iArr[i3]) & 4294967295L);
+        iArr[i3] = (int) j7;
+        int i4 = i2 + 2;
+        long j8 = (j7 >>> 32) + j5 + (((long) iArr[i4]) & 4294967295L);
+        iArr[i4] = (int) j8;
+        long j9 = j8 >>> 32;
+        int i5 = i2 + 3;
+        long j10 = j9 + (((long) iArr[i5]) & 4294967295L);
+        iArr[i5] = (int) j10;
+        if ((j10 >>> 32) == 0) {
+            return 0;
+        }
+        return xgg.t(6, iArr, i2, 4);
+    }
+
+    public static int y(int i, int i2, int[] iArr, int i3) {
+        long j = ((long) i) & 4294967295L;
+        long j2 = ((long) i2) & 4294967295L;
+        long j3 = (j * j2) + (((long) iArr[i3]) & 4294967295L);
+        iArr[i3] = (int) j3;
+        int i4 = i3 + 1;
+        long j4 = (j3 >>> 32) + j2 + (((long) iArr[i4]) & 4294967295L);
+        iArr[i4] = (int) j4;
+        long j5 = j4 >>> 32;
+        int i5 = i3 + 2;
+        long j6 = j5 + (((long) iArr[i5]) & 4294967295L);
+        iArr[i5] = (int) j6;
+        if ((j6 >>> 32) == 0) {
+            return 0;
+        }
+        return xgg.t(6, iArr, i3, 3);
+    }
+
+    public static int z(int[] iArr, int[] iArr2, int[] iArr3) {
+        int i = 0;
+        long j = 4294967295L;
+        long j2 = ((long) iArr2[0]) & 4294967295L;
+        long j3 = ((long) iArr2[1]) & 4294967295L;
+        long j4 = ((long) iArr2[2]) & 4294967295L;
+        long j5 = ((long) iArr2[3]) & 4294967295L;
+        long j6 = ((long) iArr2[4]) & 4294967295L;
+        long j7 = ((long) iArr2[5]) & 4294967295L;
+        long j8 = 0;
+        while (i < 6) {
+            long j9 = j7;
+            long j10 = ((long) iArr[i]) & j;
+            long j11 = j2;
+            long j12 = (((long) iArr3[i]) & j) + (j10 * j2);
+            iArr3[i] = (int) j12;
+            int i2 = i + 1;
+            long j13 = (j12 >>> 32) + (j10 * j3) + (((long) iArr3[i2]) & j);
+            iArr3[i2] = (int) j13;
+            int i3 = i + 2;
+            long j14 = (j13 >>> 32) + (j10 * j4) + (((long) iArr3[i3]) & j);
+            iArr3[i3] = (int) j14;
+            int i4 = i + 3;
+            long j15 = (j14 >>> 32) + (j10 * j5) + (((long) iArr3[i4]) & j);
+            iArr3[i4] = (int) j15;
+            int i5 = i + 4;
+            long j16 = (j15 >>> 32) + (j10 * j6) + (((long) iArr3[i5]) & j);
+            iArr3[i5] = (int) j16;
+            int i6 = i + 5;
+            long j17 = (j16 >>> 32) + (j10 * j9) + (((long) iArr3[i6]) & j);
+            iArr3[i6] = (int) j17;
+            int i7 = i + 6;
+            long j18 = (j17 >>> 32) + j8 + (((long) iArr3[i7]) & j);
+            iArr3[i7] = (int) j18;
+            j8 = j18 >>> 32;
+            i = i2;
+            j7 = j9;
+            j2 = j11;
+            j3 = j3;
+            j = 4294967295L;
+        }
+        return (int) j8;
+    }
+}

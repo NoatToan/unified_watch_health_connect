@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp">
+    <ImageView
+        android:id="@+id/routeIcon"
+        android:background="@drawable/sport_create_route_bg_square"
+        android:padding="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="@drawable/sport_red_style_selector"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/sport_confirm_route"/>
+</LinearLayout>

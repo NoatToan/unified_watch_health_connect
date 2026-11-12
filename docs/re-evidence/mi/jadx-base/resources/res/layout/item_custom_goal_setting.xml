@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="12sp"
+    android:textColor="@color/common_black"
+    android:gravity="center"
+    android:id="@+id/itemGoalCustom"
+    android:background="@drawable/bg_item_custom_goal_setting"
+    android:layout_width="match_parent"
+    android:layout_height="33dp"/>

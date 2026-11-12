@@ -1,0 +1,70 @@
+package com.xiaomi.fitness.data.valueformatter;
+
+import android.content.Context;
+import com.xiaomi.fitness.chart.entrys.RecyclerBarEntry;
+import com.xiaomi.fitness.common.utils.AppUtil;
+import com.xiaomi.fitness.common.utils.LocaleUtil;
+import com.xiaomi.fitness.common.utils.TimeDateUtil;
+import defpackage.gv5;
+import java.util.Arrays;
+import java.util.Locale;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.StringCompanionObject;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+/* JADX INFO: loaded from: classes7.dex */
+@Metadata(d1 = {"\u0000&\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0006\n\u0002\u0010\b\n\u0002\b\u0005\u0018\u00002\u00020\u0001B\u000f\u0012\u0006\u0010\u000f\u001a\u00020\u000e¢\u0006\u0004\b\u0010\u0010\u0011B\u0013\b\u0016\u0012\b\u0010\u0012\u001a\u0004\u0018\u00010\u0007¢\u0006\u0004\b\u0010\u0010\rJ\u0017\u0010\u0005\u001a\u00020\u00042\u0006\u0010\u0003\u001a\u00020\u0002H\u0016¢\u0006\u0004\b\u0005\u0010\u0006R$\u0010\b\u001a\u0004\u0018\u00010\u00078\u0006@\u0006X\u0086\u000e¢\u0006\u0012\n\u0004\b\b\u0010\t\u001a\u0004\b\n\u0010\u000b\"\u0004\b\f\u0010\r¨\u0006\u0013"}, d2 = {"Lcom/xiaomi/fitness/data/valueformatter/WeightPercentHighLightMarkValueFormatter;", "Lgv5;", "Lcom/xiaomi/fitness/chart/entrys/RecyclerBarEntry;", "barEntry", "", "getBarLabel", "(Lcom/xiaomi/fitness/chart/entrys/RecyclerBarEntry;)Ljava/lang/String;", "Landroid/content/Context;", "mContext", "Landroid/content/Context;", "getMContext", "()Landroid/content/Context;", "setMContext", "(Landroid/content/Context;)V", "", "digits", "<init>", "(I)V", "context", "health_chinaProductRelease"}, k = 1, mv = {2, 0, 0})
+public final class WeightPercentHighLightMarkValueFormatter extends gv5 {
+
+    @Nullable
+    private Context mContext;
+
+    public WeightPercentHighLightMarkValueFormatter(int i) {
+        super(i);
+    }
+
+    @Override // defpackage.gv5, defpackage.onq
+    @NotNull
+    public String getBarLabel(@NotNull RecyclerBarEntry barEntry) {
+        StringBuilder sb;
+        Intrinsics.checkNotNullParameter(barEntry, "barEntry");
+        float y = barEntry.getY();
+        StringCompanionObject stringCompanionObject = StringCompanionObject.INSTANCE;
+        String str = String.format(Locale.US, "%.1f", Arrays.copyOf(new Object[]{Float.valueOf(y)}, 1));
+        Intrinsics.checkNotNullExpressionValue(str, "format(...)");
+        String dateYYYYMMddLocalFormat = TimeDateUtil.getDateYYYYMMddLocalFormat(barEntry.timestamp * ((long) 1000));
+        String str2 = str + gv5.CONNECT_VALUE_STR + "%";
+        if (AppUtil.isRTLDirection()) {
+            sb = new StringBuilder();
+            sb.append(dateYYYYMMddLocalFormat);
+            sb.append(gv5.CONNECT_STR);
+            sb.append(str2);
+        } else {
+            sb = new StringBuilder();
+            sb.append(str2);
+            sb.append(gv5.CONNECT_STR);
+            sb.append(dateYYYYMMddLocalFormat);
+        }
+        String string = sb.toString();
+        if (LocaleUtil.INSTANCE.isTR()) {
+            string = "%" + str + gv5.CONNECT_STR + dateYYYYMMddLocalFormat;
+        }
+        return barEntry.getY() > 0.0f ? string : "";
+    }
+
+    @Nullable
+    public final Context getMContext() {
+        return this.mContext;
+    }
+
+    public final void setMContext(@Nullable Context context) {
+        this.mContext = context;
+    }
+
+    public WeightPercentHighLightMarkValueFormatter(@Nullable Context context) {
+        this(0);
+        this.mContext = context;
+    }
+}

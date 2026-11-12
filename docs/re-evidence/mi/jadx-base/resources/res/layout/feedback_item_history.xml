@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.widget.RightArrowTwoLineTextView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/feedback_item_history_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/page_content_padding_horizontal_large"
+    android:paddingEnd="@dimen/page_content_padding_horizontal_large"
+    app:remindText="@string/feedback_status_submitted"
+    app:showRemind="true"
+    app:subtitleMaxLines="1"
+    app:titleMaxLines="1"/>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_sport_detail_behavior_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.widget.view.DataTitleSimpleView
+        android:id="@+id/dataSimpleTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <View
+        android:background="@color/text_color_10"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginTop="@dimen/dimen_margin_20dp"
+        android:layout_marginHorizontal="@dimen/dimen_margin_18dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_distribute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_30dp"/>
+</LinearLayout>

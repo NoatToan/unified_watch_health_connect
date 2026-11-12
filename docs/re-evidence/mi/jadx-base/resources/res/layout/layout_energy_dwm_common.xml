@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/layout_energy_dwm_common_0"
+    android:paddingBottom="@dimen/health_detail_page_common_margin_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/health_detail_page_common_margin_horizontal">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/detail_recycler"
+        android:background="@drawable/shape_data_item_bg"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"/>
+    <com.xiaomi.fitness.common.devicelist.SportsDeviceListView
+        android:id="@+id/deviceListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.xiaomi.fitness.view.CardUnderstandView
+        android:id="@+id/understandCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_12"
+        app:txtUnderstand="@string/health_data_energy_understand_title"/>
+</LinearLayout>

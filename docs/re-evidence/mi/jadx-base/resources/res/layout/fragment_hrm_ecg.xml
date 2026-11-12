@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_hrm_ecg_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:id="@+id/fl_chart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xiaomi.fitness.chart.view.LineChartRecyclerView
+            android:id="@+id/line_recycler"
+            android:paddingTop="38dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentTop="true"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            app:barBorderColor="@color/bar_chart_pink"
+            app:chartColor="@color/black_80_transparent"
+            app:contentPaddingTop="0dp"
+            app:displayNumbers="80"
+            app:enableEndYAxisLabel="false"
+            app:enableLineFill="false"
+            app:enableScrollToScale="true"
+            app:enableStartYAxisLabel="false"
+            app:enableXAxisLineCircle="false"
+            app:layoutManagerReverseLayout="false"
+            app:recyclerPaddingRight="3dp"
+            app:xAxisFirstDividerColor="@color/bar_chart_pink"
+            app:xAxisScaleDistance="8"
+            app:xAxisSecondDividerColor="@color/bar_chart_pink"
+            app:yAxisLineColor="@color/bar_chart_pink"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.core.widget.NestedScrollView>

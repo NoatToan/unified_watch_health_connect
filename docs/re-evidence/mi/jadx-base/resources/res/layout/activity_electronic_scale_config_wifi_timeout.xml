@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:tag="layout/activity_electronic_scale_config_wifi_timeout_0"
+    android:paddingTop="@dimen/dimen_margin_40dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/margin_27dp"
+    android:paddingEnd="@dimen/margin_27dp">
+    <TextView
+        android:textSize="@dimen/dimen_14sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/electronic_scale_config_wifi_time_out_reason"/>
+    <TextView
+        android:textSize="@dimen/dimen_14sp"
+        android:textStyle="bold"
+        android:paddingTop="@dimen/dimen_margin_40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/electronic_scale_config_wifi_time_out_suggestion"/>
+    <TextView
+        android:textSize="@dimen/dimen_14sp"
+        android:paddingTop="@dimen/dimen_margin_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/electronic_scale_config_wifi_time_out_suggestion_content"/>
+</LinearLayout>

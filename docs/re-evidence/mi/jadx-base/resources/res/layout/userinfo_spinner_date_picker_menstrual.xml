@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.baseui.widget.NumberPickerView
+        android:id="@+id/year"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toStartOf="@+id/month"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:npv_WrapSelectorWheel="false"
+        style="@style/userinfo_Picker.Number.Guide"/>
+    <com.xiaomi.fitness.baseui.widget.NumberPickerView
+        android:id="@+id/month"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toStartOf="@+id/day"
+        app:layout_constraintStart_toEndOf="@+id/year"
+        app:npv_NumberDigits="2"
+        app:npv_WrapSelectorWheel="true"
+        style="@style/userinfo_Picker.Number.Guide"/>
+    <com.xiaomi.fitness.baseui.widget.NumberPickerView
+        android:id="@+id/day"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/month"
+        app:npv_NumberDigits="2"
+        app:npv_WrapSelectorWheel="true"
+        style="@style/userinfo_Picker.Number.Guide"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

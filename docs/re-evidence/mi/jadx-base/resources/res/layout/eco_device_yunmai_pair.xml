@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:tag="layout/eco_device_yunmai_pair_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/electronic_scale_pair"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_10dp"
+        android:scaleType="centerCrop"
+        android:layout_marginHorizontal="@dimen/dimen_margin_20dp"/>
+</LinearLayout>

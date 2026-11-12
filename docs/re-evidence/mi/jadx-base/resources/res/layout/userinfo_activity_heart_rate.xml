@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/userinfo_activity_heart_rate_0"
+    android:background="@color/userinfo_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/dimen_margin_23dp"
+    android:paddingHorizontal="@dimen/page_content_padding_horizontal_large">
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/max_heart_rate_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:showMore="true"
+        app:title="@string/userinfo_max_heart_rate"/>
+    <com.xiaomi.fitness.widget.SwitchButtonBindingSingleLineTextView
+        android:id="@+id/auto_measure_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_8dp"
+        app:showSwitch="true"
+        app:title="@string/userinfo_auto_measure"/>
+</LinearLayout>

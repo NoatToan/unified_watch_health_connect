@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/layout_data_item_barchart_v2_0"
+    android:background="@drawable/selector_round"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.v2.view.HomeCardCommonTitleView
+        android:id="@+id/cardTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_14"
+        android:layout_marginHorizontal="@dimen/size_14"/>
+    <View
+        android:id="@+id/emptySpace"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"/>
+    <androidx.constraintlayout.widget.ConstraintLayout style="@style/healthHomeBottomLayoutV2">
+        <com.xiaomi.fitness.chart.mpchart.barchart.CustomBarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:translationZ="@dimen/dimen_margin_10dp"
+            app:done_color="@color/health_calorie_chart"
+            app:drawRectBgEnable="true"
+            app:duty_cycle="0.3"
+            app:layout_constraintBottom_toTopOf="@+id/xAxisView"
+            app:max_points="23"
+            app:none_done_alpha="0.1"
+            app:none_done_color="@color/health_tab_sleep_empty_bg_color"
+            app:rect_bar_radius="3dp"
+            style="@style/healthHomeChartV2"/>
+        <com.xiaomi.fitness.chart.mpchart.barchart.CustomBarChart
+            android:id="@+id/bg_chart"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            app:drawRectBgEnable="true"
+            app:duty_cycle="0.3"
+            app:layout_constraintBottom_toBottomOf="@+id/barChart"
+            app:layout_constraintTop_toTopOf="@+id/barChart"
+            app:max_points="23"
+            app:none_done_color="@color/transparent"
+            app:rect_bar_radius="3dp"
+            style="@style/healthHomeChartV2"/>
+        <com.xiaomi.fitness.homepage.viewholder.XAxisView
+            android:id="@+id/xAxisView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/healthHomeXAxisViewV2"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

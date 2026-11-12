@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/userinfo_size_53_3"
+    app:navigationContentDescription="@string/userinfo_back"
+    app:navigationIcon="@drawable/baseline_arrow_back_white_24dp">
+    <TextView
+        android:textSize="@dimen/text_size_20"
+        android:textColor="@color/white_90"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/userinfo_medical_id"
+        style="@style/userinfo_TextAppearance.Title"/>
+    <RelativeLayout
+        android:layout_gravity="end"
+        android:id="@+id/custom_menu_lyt"
+        android:visibility="gone"
+        android:layout_width="@dimen/userinfo_size_80"
+        android:layout_height="@dimen/userinfo_size_33_1"
+        android:layout_marginEnd="@dimen/size_21_3">
+        <View
+            android:id="@+id/medical_id_menu"
+            android:background="@drawable/miuix_appcompat_action_mode_immersion_more_normal_dark"
+            android:visibility="visible"
+            android:layout_width="@dimen/userinfo_size_33_1"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"/>
+        <View
+            android:id="@+id/custom_menu_setting"
+            android:background="@drawable/selector_user_center"
+            android:visibility="gone"
+            android:layout_width="@dimen/userinfo_size_33_1"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+</androidx.appcompat.widget.Toolbar>

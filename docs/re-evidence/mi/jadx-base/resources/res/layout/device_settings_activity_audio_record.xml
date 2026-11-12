@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_activity_audio_record_0"
+    android:background="@color/page_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <miuix.miuixbasewidget.widget.FilterSortView
+        android:theme="@style/Audio_Record_FilterSortViewStyle"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/filterSortView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginBottom="@dimen/size_10"
+        android:layout_marginHorizontal="@dimen/page_content_padding_horizontal_large"/>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layoutDirection="locale"/>
+</LinearLayout>

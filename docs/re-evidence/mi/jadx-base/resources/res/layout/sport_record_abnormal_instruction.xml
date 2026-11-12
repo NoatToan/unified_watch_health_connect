@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:background="@drawable/trail_record_abnormal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="15dp">
+    <TextView
+        android:textColor="@color/red"
+        android:id="@+id/instruction_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/trail_sport_record_abnormal_title"
+        android:layout_centerVertical="true"
+        style="@style/FontMedium.16sp"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/close_instruction"
+        android:background="@drawable/sport_record_abnormal_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/dimen_margin_3dp"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>

@@ -1,0 +1,88 @@
+syntax = "proto2";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message CincoAlipayEventMessage {
+    //支付宝二维码页面停留时长统计
+    required uint32 alipayQRLeave1s = 1;//支付宝二维码页面停留1s次数统计
+    required uint32 alipayQRLeave1s5 = 2;//支付宝二维码页面停留1.5s次数统计
+    required uint32 alipayQRLeave2s = 3;//支付宝二维码页面停留2s次数统计
+    required uint32 alipayQRLeave2s5 = 4;//支付宝二维码页面停留2.5s次数统计
+    required uint32 alipayQRLeave3s = 5;//支付宝二维码页面停留3s次数统计
+    required uint32 alipayQRLeave3s5 = 6;//支付宝二维码页面停留3.5s次数统计
+    required uint32 alipayQRLeave4s = 7;//支付宝二维码页面停留4s次数统计
+    required uint32 alipayQRLeave4s5 = 8;//支付宝二维码页面停留4.5s次数统计
+    required uint32 alipayQRLeave5s = 9;//支付宝二维码页面停留5s次数统计
+    required uint32 alipayQRLeave5s5 = 10;//支付宝二维码页面停留5.5s次数统计
+    required uint32 alipayQRLeave6s = 11;//支付宝二维码页面停留6s次数统计
+    required uint32 alipayQRLeave6s5 = 12;//支付宝二维码页面停留6.5s次数统计
+    required uint32 alipayQRLeave7s = 13;//支付宝二维码页面停留7s次数统计
+    required uint32 alipayQRLeave7s5 = 14;//支付宝二维码页面停留7.5s次数统计
+    required uint32 alipayQRLeave8s = 15;//支付宝二维码页面停留8s次数统计
+    required uint32 alipayQRLeave8s5 = 16;//支付宝二维码页面停留8.5s次数统计
+    required uint32 alipayQRLeave9s = 17;//支付宝二维码页面停留9s次数统计
+    required uint32 alipayQRLeave9s5 = 18;//支付宝二维码页面停留9.5s次数统计
+    required uint32 alipayQRLeave10s = 19;//支付宝二维码页面停留10s次数统计
+    required uint32 alipayQRLeave11s = 20;//支付宝二维码页面停留11s次数统计
+    required uint32 alipayQRLeave12s = 21;//支付宝二维码页面停留12s次数统计
+    required uint32 alipayQRLeave13s = 22;//支付宝二维码页面停留13s次数统计
+    required uint32 alipayQRLeave14s = 23;//支付宝二维码页面停留14s次数统计
+    required uint32 alipayQRLeave15s = 24;//支付宝二维码页面停留15s次数统计
+    required uint32 alipayQRLeave16s = 25;//支付宝二维码页面停留16s次数统计
+    required uint32 alipayQRLeave17s = 26;//支付宝二维码页面停留17s次数统计
+    required uint32 alipayQRLeave18s = 27;//支付宝二维码页面停留18s次数统计
+    required uint32 alipayQRLeave19s = 28;//支付宝二维码页面停留19s次数统计
+    required uint32 alipayQRLeave20s = 29;//支付宝二维码页面停留20s次数统计
+    required uint32 alipayQRLeave21s = 30;//支付宝二维码页面停留21s次数统计
+    required uint32 alipayQRLeave22s = 31;//支付宝二维码页面停留22s次数统计
+    required uint32 alipayQRLeave23s = 32;//支付宝二维码页面停留23s次数统计
+    required uint32 alipayQRLeave24s = 33;//支付宝二维码页面停留24s次数统计
+    required uint32 alipayQRLeave25s = 34;//支付宝二维码页面停留25s次数统计
+    required uint32 alipayQRLeave26s = 35;//支付宝二维码页面停留26s次数统计
+    required uint32 alipayQRLeave27s = 36;//支付宝二维码页面停留27s次数统计
+    required uint32 alipayQRLeave28s = 37;//支付宝二维码页面停留28s次数统计
+    required uint32 alipayQRLeave29s = 38;//支付宝二维码页面停留29s次数统计
+    required uint32 alipayQRLeave30s = 39;//支付宝二维码页面停留30s次数统计
+
+    //支付宝条形码页面停留时长统计
+    required uint32 alipayCodeLeave1s = 40;//支付宝条形码页面停留1s次数统计
+    required uint32 alipayCodeLeave1s5 = 41;//支付宝条形码页面停留1.5s次数统计
+    required uint32 alipayCodeLeave2s = 42;//支付宝条形码页面停留2s次数统计
+    required uint32 alipayCodeLeave2s5 = 43;//支付宝条形码页面停留2.5s次数统计
+    required uint32 alipayCodeLeave3s = 44;//支付宝条形码页面停留3s次数统计
+    required uint32 alipayCodeLeave3s5 = 45;//支付宝条形码页面停留3.5s次数统计
+    required uint32 alipayCodeLeave4s = 46;//支付宝条形码页面停留4s次数统计
+    required uint32 alipayCodeLeave4s5 = 47;//支付宝条形码页面停留4.5s次数统计
+    required uint32 alipayCodeLeave5s = 48;//支付宝条形码页面停留5s次数统计
+    required uint32 alipayCodeLeave5s5 = 49;//支付宝条形码页面停留5.5s次数统计
+    required uint32 alipayCodeLeave6s = 50;//支付宝条形码页面停留6s次数统计
+    required uint32 alipayCodeLeave6s5 = 51;//支付宝条形码页面停留6.5s次数统计
+    required uint32 alipayCodeLeave7s = 52;//支付宝条形码页面停留7s次数统计
+    required uint32 alipayCodeLeave7s5 = 53;//支付宝条形码页面停留7.5s次数统计
+    required uint32 alipayCodeLeave8s = 54;//支付宝条形码页面停留8s次数统计
+    required uint32 alipayCodeLeave8s5 = 55;//支付宝条形码页面停留8.5s次数统计
+    required uint32 alipayCodeLeave9s = 56;//支付宝条形码页面停留9s次数统计
+    required uint32 alipayCodeLeave9s5 = 57;//支付宝条形码页面停留9.5s次数统计
+    required uint32 alipayCodeLeave10s = 58;//支付宝条形码页面停留10s次数统计
+    required uint32 alipayCodeLeave11s = 59;//支付宝条形码页面停留11s次数统计
+    required uint32 alipayCodeLeave12s = 60;//支付宝条形码页面停留12s次数统计
+    required uint32 alipayCodeLeave13s = 61;//支付宝条形码页面停留13s次数统计
+    required uint32 alipayCodeLeave14s = 62;//支付宝条形码页面停留14s次数统计
+    required uint32 alipayCodeLeave15s = 63;//支付宝条形码页面停留15s次数统计
+    required uint32 alipayCodeLeave16s = 64;//支付宝条形码页面停留16s次数统计
+    required uint32 alipayCodeLeave17s = 65;//支付宝条形码页面停留17s次数统计
+    required uint32 alipayCodeLeave18s = 66;//支付宝条形码页面停留18s次数统计
+    required uint32 alipayCodeLeave19s = 67;//支付宝条形码页面停留19s次数统计
+    required uint32 alipayCodeLeave20s = 68;//支付宝条形码页面停留20s次数统计
+    required uint32 alipayCodeLeave21s = 69;//支付宝条形码页面停留21s次数统计
+    required uint32 alipayCodeLeave22s = 70;//支付宝条形码页面停留22s次数统计
+    required uint32 alipayCodeLeave23s = 71;//支付宝条形码页面停留23s次数统计
+    required uint32 alipayCodeLeave24s = 72;//支付宝条形码页面停留24s次数统计
+    required uint32 alipayCodeLeave25s = 73;//支付宝条形码页面停留25s次数统计
+    required uint32 alipayCodeLeave26s = 74;//支付宝条形码页面停留26s次数统计
+    required uint32 alipayCodeLeave27s = 75;//支付宝条形码页面停留27s次数统计
+    required uint32 alipayCodeLeave28s = 76;//支付宝条形码页面停留28s次数统计
+    required uint32 alipayCodeLeave29s = 77;//支付宝条形码页面停留29s次数统计
+    required uint32 alipayCodeLeave30s = 78;//支付宝条形码页面停留30s次数统计
+};
+

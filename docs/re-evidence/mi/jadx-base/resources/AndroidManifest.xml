@@ -1,0 +1,3227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="346001"
+    android:versionName="3.46.1"
+    android:compileSdkVersion="35"
+    android:compileSdkVersionCodename="15"
+    package="com.mi.health"
+    platformBuildVersionCode="35"
+    platformBuildVersionName="15">
+    <uses-sdk
+        android:minSdkVersion="26"
+        android:targetSdkVersion="35"/>
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_CONNECT"
+        android:usesPermissionFlags="neverForLocation"/>
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="com.miui.huanji.receivebroadcast"/>
+    <permission
+        android:label="read device status permission"
+        android:name="com.mi.health.provider.device.read"
+        android:protectionLevel="signatureOrSystem"/>
+    <permission
+        android:name="com.xiaomi.mi_connect_service.permission.MI_WEAR_CORE"
+        android:protectionLevel="normal"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <queries package="com.mi.health">
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.MAIN"/>
+        </intent>
+        <package android:name="com.aidong.xiaomiboxing"/>
+        <package android:name="com.baidu.BaiduMap"/>
+        <package android:name="com.autonavi.minimap"/>
+        <package android:name="com.tencent.map"/>
+        <package android:name="com.mi.health"/>
+        <package android:name="com.tencent.mm"/>
+        <package android:name="com.google.android.apps.healthdata"/>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE"/>
+        </intent>
+        <intent>
+            <action android:name="android.media.action.ACTION_VIDEO_CAPTURE"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.BROWSABLE"/>
+            <data android:scheme="https"/>
+        </intent>
+        <package android:name="com.xiaomi.camera.videocapture"/>
+        <package android:name="de.robv.android.xposed.installer"/>
+        <package android:name="com.saurik.substrate"/>
+        <package android:name="com.xiaomi.account"/>
+        <package android:name="com.xiaomi.controlscreen.account"/>
+        <package android:name="com.tencent.mobileqq"/>
+        <package android:name="com.facebook.katana"/>
+        <package android:name="com.sina.weibo"/>
+        <package android:name="com.xiaomi.smarthome"/>
+        <package android:name="com.miui.greenguard"/>
+        <package android:name="com.android.mms"/>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND"/>
+        </intent>
+        <intent>
+            <action android:name="com.android.camera.action.CROP"/>
+        </intent>
+        <package android:name="com.unionpay"/>
+        <package android:name="com.eg.android.AlipayGphone"/>
+        <package android:name="com.mipay.wallet"/>
+        <package android:name="com.xiaomi.market"/>
+        <package android:name="com.xiaomi.aicr"/>
+        <package android:name="com.xiaomi.mi_connect_service"/>
+    </queries>
+    <uses-permission android:name="android.permission.MANAGE_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+    <uses-permission android:name="com.miui.emergency.READ_SOS_CONTACTS"/>
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="miui.permission.ACCESS_BLE_SETTINGS"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="com.miui.notes.permission.ACCESS_NOTE"/>
+    <uses-permission android:name="com.miui.circulate.device.PERSIST"/>
+    <permission
+        android:name="com.mi.fitness.permission.CONSOLE_ALARM_RECEIVE"
+        android:protectionLevel="signatureOrSystem"/>
+    <uses-permission android:name="com.mi.fitness.permission.CONSOLE_ALARM_RECEIVE"/>
+    <uses-permission android:name="android.permission.START_FOREGROUND_SERVICES_FROM_BACKGROUND"/>
+    <uses-permission android:name="miui.permission.ACCESS_RECORDS"/>
+    <queries>
+        <provider android:authorities="records"/>
+        <package android:name="com.android.soundrecorder"/>
+    </queries>
+    <uses-permission android:name="android.permission.REORDER_TASKS"/>
+    <permission
+        android:name="com.mi.health.broadcast.permission.action_login"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="com.mi.health.broadcast.permission.action_login"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="miui.permission.NOTIFICATION_VERIFY"/>
+    <uses-permission android:name="com.android.systemui.permission.NOTIFICATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_CALENDAR"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="miui.permission.powerkeeper.HIDDEN_MODE_PROVIDER"/>
+    <uses-permission android:name="com.xiaomi.permission.AUTH_SERVICE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.NFC"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true"/>
+    <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
+    <uses-permission android:name="android.permission.health.WRITE_OXYGEN_SATURATION"/>
+    <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
+    <uses-permission android:name="android.permission.health.WRITE_ACTIVE_CALORIES_BURNED"/>
+    <uses-permission android:name="android.permission.health.WRITE_EXERCISE"/>
+    <uses-permission android:name="android.permission.health.WRITE_SPEED"/>
+    <uses-permission android:name="android.permission.health.WRITE_SLEEP"/>
+    <uses-permission android:name="android.permission.health.WRITE_EXERCISE_ROUTE"/>
+    <uses-permission android:name="android.permission.health.WRITE_DISTANCE"/>
+    <uses-permission android:name="android.permission.health.WRITE_ELEVATION_GAINED"/>
+    <uses-permission android:name="android.permission.health.READ_EXERCISE_ROUTES"/>
+    <permission
+        android:name="com.mi.health.permission.MIPUSH_RECEIVE"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="com.mi.health.permission.MIPUSH_RECEIVE"/>
+    <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
+    <uses-permission android:name="android.permission.GET_PACKAGE_METADATA"/>
+    <permission
+        android:name="com.mi.health.provider.permission.read_menstruation"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION"/>
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="com.miui.permission.FINGERPRINT_FOD_HEARTRATE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"/>
+    <permission
+        android:name="com.mi.health.permission.health_provider"
+        android:protectionLevel="preinstalled|system|signature"/>
+    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL"/>
+    <uses-permission android:name="miui.permission.ACCESS_ALARM_PROVIDER"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
+    <uses-permission android:name="com.miui.voiceassist.QUERY_ENABLE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="miui.permission.READ_STEPS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"/>
+    <uses-permission android:name="com.xiaomi.permission.BIND_CONTINUITY_SERVICE_INTERNAL"/>
+    <uses-permission android:name="com.xiaomi.permission.BIND_CONTINUITY_SERVICE"/>
+    <uses-permission android:name="com.mi.health.permission.DEFAULT_READ_DATA"/>
+    <uses-permission android:name="com.xiaomi.wearable.permission.DEFAULT_READ_DATA"/>
+    <uses-permission android:name="com.xiaomi.mi_connect_service.permission.MI_WEAR_CORE"/>
+    <permission
+        android:label="BroadcastReceiverPermission"
+        android:name="com.xiaomi.fitness.preference.CHANGE"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="com.xiaomi.fitness.preference.CHANGE"/>
+    <permission
+        android:name="com.mi.health.permission.DEFAULT_READ_DATA"
+        android:protectionLevel="normal"/>
+    <permission
+        android:name="com.mi.health.permission.DEFAULT_WRITE_DATA"
+        android:protectionLevel="normal"/>
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+    <permission
+        android:label="LifecycleReceiverPermission"
+        android:name="com.mi.health.permission.RECEIVER_PROCESS_MESSAGE"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="com.mi.health.permission.RECEIVER_PROCESS_MESSAGE"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="com.android.vending.CHECK_LICENSE"/>
+    <uses-permission android:name="miui.permission.ACCESS_HEADSET_LOCAL"/>
+    <uses-permission android:name="com.xiaomi.mi_connect_service.permission.RECEIVE_ENDPOINT"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_ROUTING"/>
+    <uses-permission android:name="android.permission.QUERY_AUDIO_STATE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <permission
+        android:name="com.mi.health.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="com.mi.health.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"/>
+    <uses-permission android:name="com.miui.bugreport.permission.DUMP_CACHED_LOG"/>
+    <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY"/>
+    <supports-screens
+        android:anyDensity="true"
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:resizeable="true"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false"/>
+    <uses-permission android:name="miui.permission.ACCESS_MILINK_CAST"/>
+    <uses-permission android:name="miui.permission.ACCESS_CAST_PROVIDER"/>
+    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
+    <application
+        android:theme="@style/XiaoMiFitnessTheme"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:name="com.xiaomi.fitness.FitnessApp"
+        android:allowBackup="false"
+        android:hardwareAccelerated="true"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:extractNativeLibs="true"
+        android:usesCleartextTraffic="true"
+        android:resizeableActivity="false"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        android:allowNativeHeapPointerTagging="false">
+        <meta-data
+            android:name="android.supports_size_changes"
+            android:value="true"/>
+        <meta-data
+            android:name="miui.screenOrientation"
+            android:value="1.unspecified,2.portrait"/>
+        <activity
+            android:theme="@style/Theme.App.SplashThemes"
+            android:name="com.xiaomi.fitness.login.SplashActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.mi.health.action.HOME"/>
+                <action android:name="com.mi.health.action.MAIN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity-alias
+            android:name="com.mi.health.home.HomeActivity"
+            android:exported="true"
+            android:targetActivity="com.xiaomi.fitness.login.SplashActivity"/>
+        <meta-data
+            android:name="com.google.android.libraries.wear.companion.oauth.REDIRECT_SCHEME"
+            android:value="com.xiaomi.wearable.google.oauth:/"/>
+        <activity
+            android:name="com.google.android.libraries.wear.companion.oauth.OAuthRedirectActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="com.xiaomi.wearable.google.oauth"/>
+            </intent-filter>
+        </activity>
+        <service
+            android:name="com.miui.tsmclient.sesdk.CardOpenService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.mi.health.platform.action.TRANSIT_OPEN_SERVICE"/>
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="io.sentry.auto-init"
+            android:value="false"/>
+        <receiver
+            android:name="com.xiaomi.fitness.stand.reminder.StandDetectReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="com.mi.health.action.ACTION_STAND_REMINDER_SHOW"/>
+                <action android:name="com.mi.health.action.ACTION_STAND_REMINDER_CANCEL"/>
+                <action android:name="com.mi.health.action.ACTION_STAND_RECORD"/>
+                <action android:name="com.mi.health.action.ACTION_STOP_REMIND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.mi.health.action.ACTION_STAND_DETAIL"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="androidx.room.MultiInstanceInvalidationService"
+            android:exported="false"
+            android:process=":device"
+            android:directBootAware="true"/>
+        <provider
+            android:name="com.xiaomi.fitness.device.manager.provider.DeviceProvider"
+            android:exported="true"
+            android:process=":device"
+            android:authorities="com.mi.health.provider.device"/>
+        <activity
+            android:name="com.xiaomi.fitness.device.manager.ui.add.AddDeviceActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"/>
+        <activity
+            android:name="com.xiaomi.fitness.device.manager.ui.scan.ScanDeviceActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"/>
+        <activity
+            android:name="com.xiaomi.fitness.device.manager.ui.manager.ManagerActivity"
+            android:launchMode="singleTop"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"/>
+        <activity
+            android:name="com.xiaomi.fitness.device.manager.ui.bind.BindBleDeviceDeviceActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.device.manager.ui.bind.BindLocalDeviceActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.device.manager.ui.bind.BindHeadphoneDeviceActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.device.manager.ui.bind.BindHuaMiDeviceDeviceActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.device.manager.ui.bind.RestGuideActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.device.manager.ui.guide.GuideOpenKeepAliveSettingActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.device.manager.ui.bind.BindThirdPartyDeviceActivity"
+            android:screenOrientation="portrait"/>
+        <service
+            android:name="com.xiaomi.fitness.device.manager.internal.DeviceManagerService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":device">
+            <intent-filter android:priority="100">
+                <action android:name="fitness.intent.action.DEVICE"/>
+            </intent-filter>
+        </service>
+        <receiver
+            android:name="com.xiaomi.fitness.device.manager.ConnectNewPhoneReceiver"
+            android:exported="true"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="com.miui.huanji.action.health"/>
+            </intent-filter>
+        </receiver>
+        <activity
+            android:theme="@style/MiuixNoTitle"
+            android:name="com.xiaomi.fitness.main.MainActivity"
+            android:launchMode="singleTask"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"/>
+        <activity
+            android:name="com.xiaomi.fitness.devicesettings.base.CommonBaseActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.devicesettings.guide.OpenPolicyAccessActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.devicesettings.common.contact.ContactsListActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity
+            android:name="com.xiaomi.fitness.devicesettings.common.contact.TopContactsActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout"/>
+        <activity
+            android:name="com.xiaomi.fitness.devicesettings.bluttooth.music.MusicPushActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.devicesettings.bluttooth.music.MusicPushResultActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.devicesettings.bluttooth.music.MusicSubListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.devicesettings.bluttooth.audio.AudioRecordListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.devicesettings.bluttooth.audio.AudioRecordEditActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.xiaomi.fitness.devicesettings.common.offlinemap.OfflineMapManagerActivity"/>
+        <activity android:name="com.xiaomi.fitness.devicesettings.bluttooth.audio.AudioWatchBatchActivity"/>
+        <service
+            android:name="com.xiaomi.fitness.devicesettings.bluttooth.music.MusicPushService"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/Theme.Translucent"
+            android:name="com.xiaomi.fitness.devicesettings.bluttooth.connectnewphone.ConnectNewPhoneActivity"
+            android:exported="true"/>
+        <service
+            android:name="com.xiaomi.fitness.devicesettings.common.alarm.AlarmConsoleService"
+            android:permission="com.mi.fitness.permission.CONSOLE_ALARM_RECEIVE"
+            android:exported="true"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="com.xiaomi.wearable.CONSOLE_ALARM_ALERT"/>
+            </intent-filter>
+        </service>
+        <receiver
+            android:name="com.xiaomi.fitness.devicesettings.common.language.LanguageReceiver"
+            android:enabled="false"
+            android:exported="true"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.xiaomi.fitness.devicesettings.thirdparty.PhoneStateBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.cognition.SCRENE_CHANGE"/>
+                <action android:name="com.xiaomi.cognition.COGNITION_ENGINE_STATUS_CHANGE"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.xiaomi.fitness.devicesettings.xms.DeviceSettingsXmsService"
+            android:exported="true"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="com.xiaomi.fitness.DEVICE_SETTINGS_XMS_SERVICE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+        <receiver
+            android:name="com.xiaomi.fitness.devicesettings.common.offlinemap.receiver.UsbReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"/>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.xiaomi.fitness.devicesettings.bigdata.UploadRecorderForegroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":device"
+            android:foregroundServiceType="connectedDevice"/>
+        <activity
+            android:theme="@style/login_theme"
+            android:name="com.xiaomi.fitness.login.region.RegionSelectActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout"/>
+        <activity
+            android:name="com.xiaomi.fitness.login.region.RegionSelectListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.login.privacy.PrivacyActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.xiaomi.fitness.login.privacy.EasyModeDetailActivity"/>
+        <activity
+            android:name="com.xiaomi.fitness.login.welcome.WelcomeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="miui.extra.window.padding.level"
+                android:value="0"/>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.login.mode.GuidePersonalizeActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:name="com.xiaomi.fitness.login.LoginSupportActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name="com.xiaomi.fitness.login.internaltest.InternalTestActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.login.banner.SplashBannerActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.ftp.ui.FtpTestHistoryActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.ftp.ui.FtpActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden">
+            <meta-data
+                android:name="miui.screenOrientation"
+                android:value="1.unspecified,2.landscape"/>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.ftp.ui.FtpV2Activity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden">
+            <meta-data
+                android:name="miui.screenOrientation"
+                android:value="1.unspecified,2.landscape"/>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.ftp.ui.FtpTestResultActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.ftp.ui.FtpTestResultV2Activity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.ftp.ui.FtpTestIntroduceActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.sporting.IndoorRidingActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.config.SportRemindConfigActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.goal.SportGoalSettingActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.sporting.IndoorRunningActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.sporting.JumpingActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.interval.IntervalTrainingActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.launch.gym.GymLaunchEcoSportActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden">
+            <meta-data
+                android:name="miui.extra.window.padding.level"
+                android:value="0"/>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.launch.gym.report.ReceiveSportReportActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.launch.gym.setting.SmartSceneWebViewActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:hardwareAccelerated="true"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.launch.gym.setting.BeltAdjustWebViewActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:hardwareAccelerated="true"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.launch.gym.setting.GuideWebViewActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:hardwareAccelerated="true"/>
+        <receiver
+            android:name="com.xiaomi.fitness.sport_eco.view.lockscreen.entity.LockScreenReceiver"
+            android:exported="true"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.lockscreen.view.SportLockScreenActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:hardwareAccelerated="true"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport_eco.view.environmental.EcoEnvironmentalActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:hardwareAccelerated="true"/>
+        <service
+            android:name="com.xiaomi.fitness.sport_eco.service.SportKeepAliveService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.xiaomi.fitness.sport_eco.service.foregroundService"/>
+            </intent-filter>
+        </service>
+        <activity
+            android:name="com.xiaomi.fitness.feedback.bugreport.FeedbackActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.feedback.bugreport.FeedbackTypesActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.feedback.bugreport.FeedBackDeviceActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.feedback.bugreport.FeedBackSubCategoryActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.feedback.ui.FeedbackQuestionActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.feedback.history.HistoryActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.feedback.history.HistoryDetailActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <meta-data
+            android:name="com.miui.bugreport.LOG_DIR"
+            android:resource="@xml/log_paths"/>
+        <receiver
+            android:name="com.xiaomi.fitness.feedback.bugreport.FeedBackDumpLogReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.miui.core.intent.ACTION_DUMP_CACHED_LOG"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.xiaomi.fitness.notify.NotifySyncService"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService"/>
+            </intent-filter>
+        </service>
+        <activity
+            android:name="com.xiaomi.fitness.notify.NotifySelectAppActivity"
+            android:exported="false"/>
+        <service
+            android:name="com.xiaomi.fitness.sync.SyncJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":device"/>
+        <service
+            android:name="com.xiaomi.fitness.sync.WeatherLocationService"
+            android:exported="false"
+            android:process=":device"
+            android:foregroundServiceType="location">
+            <intent-filter>
+                <action android:name="com.xiaomi.wearable.home.devices.ble.sync.WeatherSyncService.START"/>
+            </intent-filter>
+        </service>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.ui.GuideEditBirthdayActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.ui.GuideEditHeightActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.ui.GuideEditWeightActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.ui.GuideBodyCompositionFinishActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.ui.GuideEditGenderActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.ui.GuideEditUserInfoActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.goal.GoalManagerActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.goal.SetGoalPageActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.goal.CalorieGoalActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.goal.GoalGuidPageActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.goal.StepGoalActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.goal.StandTimesGoalActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.goal.MhsGoalActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.information.UserIndicatorsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.information.HeartRateActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.goal.GoalSwitchGuidPageActivity"
+            android:screenOrientation="portrait"/>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.fileProvider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.medicalid.view.MedicalIdHomeActivity"
+            android:exported="true"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation">
+            <intent-filter>
+                <action android:name="com.mi.health.action.FIRST_AID_HOME"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.medicalid.view.MedicalIdEditActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.medicalid.view.MedicalIdAddEmergencyContactActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.userinfo.medicalid.view.MedicalIdLockShowSolveActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <receiver android:name="com.xiaomi.fitness.userinfo.UserInfoNotify.UserInfoReceiver"/>
+        <activity
+            android:name="com.xiaomi.fitness.mine.weeklyreport.WeeklyReportAuthActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.mine.personal.data.management.AuthConfigListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.mine.personal.data.management.AppSpecificDataManagementActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.mine.personal.data.management.LabCollaborationManagementActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.mine.NetworkConnectionExceptionFallbackActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.mine.company.CompanyUserWebViewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.xiaomi.fitness.mine.personal.data.management.ThirdPartyAuthActivity"/>
+        <activity
+            android:theme="@style/Theme.Dark"
+            android:name="com.xiaomi.fitness.medal.medaldetail.MedalDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@style/Theme.Dark"
+            android:name="com.xiaomi.fitness.medal.medallist.MedalListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@style/Theme.Dark"
+            android:name="com.xiaomi.fitness.medal.share.MedalShareActivity"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="false"/>
+        <activity
+            android:theme="@style/Theme.Dark"
+            android:name="com.xiaomi.fitness.medal.medallist.CityMedalListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.route.address.AddressSearchActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.xiaomi.fitness.sport.view.route.CreateRouteDetailActivity"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.launch.LaunchSportActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="miui.extra.window.padding.level"
+                android:value="0"/>
+            <meta-data
+                android:name="miui.screenOrientation"
+                android:value="1"/>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.sporting.CommonSportActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation">
+            <meta-data
+                android:name="miui.extra.window.padding.level"
+                android:value="0"/>
+            <intent-filter>
+                <action android:name="com.xiaomi.fitness.sport.activity.COMMON_SPORT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/DialogActivityTheme"
+            android:name="com.xiaomi.fitness.sport.view.config.SportRemindConfigActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.goal.SportGoalSettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.sporting.IndoorRunningActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation">
+            <intent-filter>
+                <action android:name="com.xiaomi.fitness.sport.activity.INDOOR_SPORT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.launch.gym.GymLaunchSportActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="miui.extra.window.padding.level"
+                android:value="0"/>
+        </activity>
+        <activity
+            android:name="com.xiaomi.wearable.home.sport.report.ReceiveSportReportActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.launch.gym.setting.SmartSceneWebViewActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:hardwareAccelerated="true"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.launch.gym.setting.BeltAdjustWebViewActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:hardwareAccelerated="true"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.launch.gym.setting.GuideWebViewActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:hardwareAccelerated="true"/>
+        <receiver
+            android:name="com.xiaomi.fitness.sport.view.lockscreen.entity.LockScreenReceiver"
+            android:exported="true"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.lockscreen.view.SportLockScreenActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.wear.guide.SportBeanModeWearGuideActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.route.detail.RouteDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.route.detail.UserFeedbackActivity"
+            android:screenOrientation="portrait"/>
+        <service
+            android:name="com.xiaomi.fitness.sport.service.SportKeepAliveService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.xiaomi.fitness.sport.service.foregroundService"/>
+            </intent-filter>
+        </service>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.xiaomi.fitness.sport.view.SensingGameCourseSdkCheckActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.xiaomi.fitness.sport.view.sporting.RunningPostureActivity"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.route.RunningRouteListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.route.CreateRouteActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.route.RunningRouteHistoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.justdance.control.JustDanceControlActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.justdance.launch.JustDanceLaunchActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.sport.view.justdance.control.JustDanceShareWebViewActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.common.calendar.CalendarActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|uiMode|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.health.curse.CurseEnterActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="com.mi.health.action.CURSE_ENTER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/health_data_type_curse"
+            android:name="com.xiaomi.fitness.health.curse.CurseMainActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:label="@string/health_data_type_curse"
+            android:name="com.xiaomi.fitness.health.curse.CurseSetActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:label="@string/health_data_type_curse"
+            android:name="com.xiaomi.fitness.health.curse.CurseResetActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:label="@string/health_curse_history"
+            android:name="com.xiaomi.fitness.health.curse.CurseHistoryActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:label="@string/health_curse"
+            android:name="com.xiaomi.fitness.health.curse.CurseEditActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:label="@string/health_curse_record"
+            android:name="com.xiaomi.fitness.health.curse.CurseInfoActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:label="@string/health_curse_forecast_tip"
+            android:name="com.xiaomi.fitness.health.curse.CurseKnownActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.health.threetarget.ShareSportTargetActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.homepage.ShareCaloConsumActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.xiaomi.fitness.health.sleep.ui.setting.SleepSnoreDetectionSettingActivity"/>
+        <activity android:name="com.xiaomi.fitness.health.sleep.ui.setting.DeepShallowSleepDetectionSettingActivity"/>
+        <activity
+            android:name="com.xiaomi.fitness.health.step.RecognizeSettingActivity"
+            android:launchMode="singleTop"/>
+        <activity
+            android:name="com.xiaomi.fitness.health.sleep.ui.SleepLandScapeActivity"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name="com.xiaomi.fitness.health.bloodglucose.holder.BloodGlucoseAGPLand"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name="com.xiaomi.fitness.health.ecg.EcgLandScapeActivity"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name="com.xiaomi.fitness.health.ecg.EcgItemDetailActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.xiaomi.fitness.health.action.VIEW_ECG_DETAIL"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <receiver android:name="com.xiaomi.fitness.health.curse.data.CurseNotify.Receiver"/>
+        <activity
+            android:name="com.xiaomi.fitness.health.sleep.ui.SleepAnimalDetectingActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.health.sleep.ui.SleepAnimalReportActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.health.sleep.ui.SleepAnimalShareActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity"/>
+        <activity
+            android:theme="@style/healthFloatingWindowTheme"
+            android:name="com.xiaomi.fitness.health.ecg.web.EcgWebViewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.health.sleep.rhythm.ui.SleepRhythmMonitorGuideActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.health.sleep.rhythm.ui.SleepRhythmCalendarActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@style/healthFloatingWindowTheme"
+            android:name="com.xiaomi.fitness.health.pingan.PinganHealthCareWebViewActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.nfc.common.CommonBaseActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout"/>
+        <activity
+            android:name="com.xiaomi.fitness.nfc.ui.CardManagerActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"/>
+        <activity
+            android:name="com.xiaomi.fitness.nfc.ui.IssuerActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="miwear"
+                    android:host="card"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.nfc.ui.RechargeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"/>
+        <activity
+            android:name="com.xiaomi.fitness.nfc.ui.debug.SMXCardReaderActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.nfc.ui.IssueDoor3CardActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.nfc.ui.VerifySuperCardActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.xiaomi.fitness.nfc.pay.WebActivity"/>
+        <activity android:name="com.xiaomi.fitness.nfc.ui.realname.RealNameWebViewActivity"/>
+        <service
+            android:name="com.xiaomi.fitness.nfc.service.NfcMierService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.wearable.nfc.XMMIERSERVICE"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.xiaomi.fitness.nfc.service.NfcOpenService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.mi.health.nfc.XMOPENSERVICE"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.xiaomi.fitness.nfc.service.NfcBYDOpenService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.mi.health.nfc.CMDXMOPENSERVICE"/>
+            </intent-filter>
+        </service>
+        <activity
+            android:name="com.xiaomi.fitness.rn.share.ui.DeviceShareActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.rn.share.ui.DeviceShareDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.rn.share.ui.InputUserIdActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.rn.share.ui.ReceiveUserInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@style/rn_transparent"
+            android:name="com.xiaomi.fitness.rn.share.ui.DeviceShareDialogActivity"/>
+        <service
+            android:name="com.xiaomi.fit.fitness.device.mi.research.TestMedicalService"
+            android:exported="true"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="com.mi.health.action.test"/>
+            </intent-filter>
+        </service>
+        <activity
+            android:name="com.xiaomi.fitness.about.AboutActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.about.setting.SettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.about.setting.SportHealthServiceActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.about.version.YRNPluginVersionActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.about.setting.DeviceDualAuthorizationActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.watch.face.FaceCropActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.health_connect.HealthConnectAuthedPermissionsActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.health_connect.HealthConnectPrivacyActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
+            </intent-filter>
+        </activity>
+        <activity-alias
+            android:name="com.xiaomi.fitness.access.HealthConnectPrivacyActivity"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE"
+            android:exported="true"
+            android:targetActivity="com.xiaomi.fitness.access.health_connect.HealthConnectPrivacyActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
+            </intent-filter>
+        </activity-alias>
+        <activity
+            android:name="com.xiaomi.fitness.access.health_connect.HealthConnectIntroductionActivity"
+            android:exported="true"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.AlipayActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.AccessActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.WechatActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.misport.MiSportImportActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.wechatsportimport.WechatDeviceActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.wechatsportimport.manager.AccessDeviceManagerActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.wechatsportimport.manager.DeleteDeviceFromWechatActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.BaseThirdPartyAccessActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.GoogleFitAccessActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.StravaAccessActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.wechatsportimport.WechatSportSettingsNoDevicesActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.access.SuuntoAccessActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@style/EcoActivityTranslucent"
+            android:name="com.mi.health.course.activity.eco.EcoRoutingActivity"
+            android:exported="false"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name="com.mi.health.course.activity.CourseAudioActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden">
+            <meta-data
+                android:name="miui.screenOrientation"
+                android:value="1.unspecified,2.landscape"/>
+        </activity>
+        <activity
+            android:name="com.mi.health.course.activity.eco.EcoCourseAudioActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden">
+            <meta-data
+                android:name="miui.screenOrientation"
+                android:value="1.unspecified,2.landscape"/>
+        </activity>
+        <activity
+            android:name="com.mi.health.course.activity.CourseSmartHrActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.mi.health.course.activity.eco.EcoCourseSmartHrActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.mi.health.course.activity.CourseVideoActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden">
+            <meta-data
+                android:name="miui.screenOrientation"
+                android:value="1.unspecified,2.landscape"/>
+        </activity>
+        <activity
+            android:name="com.mi.health.course.activity.eco.EcoCourseVideoActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden">
+            <meta-data
+                android:name="miui.screenOrientation"
+                android:value="1.unspecified,2.landscape"/>
+        </activity>
+        <activity
+            android:name="com.mi.health.course.activity.CourseLinkTipActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.mi.health.course.activity.CourseInfoActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="uiMode|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.mi.health.course.activity.eco.EcoCourseInfoActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="com.mi.health.course.activity.CourseFeedActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.mi.health.course.activity.CourseCatalogActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden"/>
+        <activity
+            android:name="com.mi.health.course.activity.CourseSearchActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden"/>
+        <activity
+            android:name="com.mi.health.course.activity.CourseVipActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@style/CourseVipTransTheme"
+            android:name="com.mi.health.course.activity.CourseVipTranslucentActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.mi.health.action.CourseVip"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.mi.health.course.activity.CourseMeActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="com.mi.health.course.eco.activity.EcoCourseAudioActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden">
+            <meta-data
+                android:name="miui.screenOrientation"
+                android:value="1.unspecified,2.landscape"/>
+        </activity>
+        <activity
+            android:name="com.mi.health.course.eco.activity.EcoCourseVideoActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden">
+            <meta-data
+                android:name="miui.screenOrientation"
+                android:value="1.unspecified,2.landscape"/>
+        </activity>
+        <activity
+            android:name="com.mi.health.course.eco.activity.EcoCourseLinkTipActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.mi.health.course.activity.CourseSeriseInfoActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="com.mi.health.course.activity.CourseAllCatalogActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden"/>
+        <service
+            android:name="com.xiaomi.push.service.XMPushService"
+            android:enabled="true"
+            android:process=":pushservice"/>
+        <service
+            android:name="com.xiaomi.push.service.XMJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":pushservice"/>
+        <service
+            android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
+            android:permission="com.xiaomi.xmsf.permission.MIPUSH_RECEIVE"
+            android:enabled="true"
+            android:exported="true"/>
+        <service
+            android:name="com.xiaomi.mipush.sdk.MessageHandleService"
+            android:enabled="true"/>
+        <receiver
+            android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.xiaomi.push.service.receivers.PingReceiver"
+            android:exported="false"
+            android:process=":pushservice">
+            <intent-filter>
+                <action android:name="com.xiaomi.push.PING_TIMER"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.xiaomi.fitness.push.core.MessageReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.ERROR"/>
+            </intent-filter>
+        </receiver>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.xiaomi.fitness.schema.SchemaActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboardHidden|keyboard">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="wearable"
+                    android:host="*"/>
+                <data
+                    android:scheme="mihealth"
+                    android:host="*"/>
+                <data
+                    android:scheme="wearable-strava"
+                    android:host="hlththird.io.mi.com"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.habit.ui.HabitListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.habit.ui.AddHabitActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.habit.ui.MyHabitListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.habit.ui.HabitTodayActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.habit.ui.HabitShareActivity"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="false"/>
+        <meta-data
+            android:name="miuiWidgetVersion"
+            android:value="5"/>
+        <receiver
+            android:label="@string/provider_step_label"
+            android:name="com.mi.health.exercise.widget.StepRemoteWidgetProvider"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":widgetProvider">
+            <meta-data
+                android:name="miuiWidgetRefresh"
+                android:value="exposure"/>
+            <meta-data
+                android:name="miuiWidgetRefreshMinInterval"
+                android:value="10000"/>
+            <meta-data
+                android:name="miuiWidget"
+                android:value="true"/>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/step_appwidget_info_2_2"/>
+            <meta-data
+                android:name="supportBackgroundBlur"
+                android:value="true"/>
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="miui.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.mi.health.widget.action.UI_MODE_CHANGED"/>
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:label="@string/provider_step_label"
+            android:name="com.mi.health.exercise.widget.StepRingWidgetProvider_2_1"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":widgetProvider">
+            <meta-data
+                android:name="miuiWidgetRefresh"
+                android:value="exposure"/>
+            <meta-data
+                android:name="miuiWidgetRefreshMinInterval"
+                android:value="10000"/>
+            <meta-data
+                android:name="miuiWidget"
+                android:value="true"/>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/step_appwidget_info_2_1"/>
+            <meta-data
+                android:name="supportBackgroundBlur"
+                android:value="true"/>
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="miui.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.mi.health.widget.action.UI_MODE_CHANGED"/>
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:label="@string/widget_rainbow_label"
+            android:name="com.mi.health.rainbow.WidgetRainbowProvider_2_2"
+            android:exported="true"
+            android:process=":widgetProvider">
+            <meta-data
+                android:name="miuiWidgetRefresh"
+                android:value="exposure"/>
+            <meta-data
+                android:name="miuiWidgetRefreshMinInterval"
+                android:value="10000"/>
+            <meta-data
+                android:name="miuiWidget"
+                android:value="true"/>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rainbow_appwidget_info_2_2"/>
+            <meta-data
+                android:name="supportBackgroundBlur"
+                android:value="true"/>
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="miui.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.mi.health.widget.action.UI_MODE_CHANGED"/>
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:label="@string/widget_rainbow_label"
+            android:name="com.mi.health.rainbow.WidgetRainbowProvider_4_2"
+            android:exported="true"
+            android:process=":widgetProvider">
+            <meta-data
+                android:name="miuiWidgetRefresh"
+                android:value="exposure"/>
+            <meta-data
+                android:name="miuiWidgetRefreshMinInterval"
+                android:value="10000"/>
+            <meta-data
+                android:name="miuiWidget"
+                android:value="true"/>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rainbow_appwidget_info_4_2"/>
+            <meta-data
+                android:name="supportBackgroundBlur"
+                android:value="true"/>
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="miui.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.mi.health.widget.action.UI_MODE_CHANGED"/>
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:label="@string/widget_sleep_label"
+            android:name="com.mi.health.sleep.widget.SleepWidgetProvider"
+            android:exported="true"
+            android:process=":widgetProvider">
+            <meta-data
+                android:name="miuiWidgetRefresh"
+                android:value="exposure"/>
+            <meta-data
+                android:name="miuiWidgetRefreshMinInterval"
+                android:value="10000"/>
+            <meta-data
+                android:name="miuiWidget"
+                android:value="true"/>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/sleep_appwidget_info_2_2"/>
+            <meta-data
+                android:name="supportBackgroundBlur"
+                android:value="true"/>
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="miui.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.mi.health.widget.action.UI_MODE_CHANGED"/>
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:label="@string/widget_sleep_label"
+            android:name="com.mi.health.sleep.widget.SleepWidgetProvider_2_1"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":widgetProvider">
+            <meta-data
+                android:name="miuiWidgetRefresh"
+                android:value="exposure"/>
+            <meta-data
+                android:name="miuiWidgetRefreshMinInterval"
+                android:value="10000"/>
+            <meta-data
+                android:name="miuiWidget"
+                android:value="true"/>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/sleep_appwidget_info_2_1"/>
+            <meta-data
+                android:name="supportBackgroundBlur"
+                android:value="true"/>
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="miui.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.mi.health.widget.action.UI_MODE_CHANGED"/>
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:label="@string/provider_widget_women_health"
+            android:name="com.mi.health.menses.widget.MenstrualPeriodWidgetProvider_2_1"
+            android:enabled="false"
+            android:exported="true"
+            android:process=":widgetProvider">
+            <meta-data
+                android:name="miuiWidgetRefresh"
+                android:value="exposure"/>
+            <meta-data
+                android:name="miuiWidgetRefreshMinInterval"
+                android:value="10000"/>
+            <meta-data
+                android:name="miuiWidget"
+                android:value="true"/>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/menstrual_period_appwidget_info_2_1"/>
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="miui.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.mi.health.widget.action.UI_MODE_CHANGED"/>
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:label="@string/provider_widget_women_health"
+            android:name="com.mi.health.menses.widget.MenstrualPeriodWidgetProvider_2_2"
+            android:enabled="false"
+            android:exported="true"
+            android:process=":widgetProvider">
+            <meta-data
+                android:name="miuiWidgetRefresh"
+                android:value="exposure"/>
+            <meta-data
+                android:name="miuiWidgetRefreshMinInterval"
+                android:value="10000"/>
+            <meta-data
+                android:name="miuiWidget"
+                android:value="true"/>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/menstrual_period_appwidget_info_2_2"/>
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="miui.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.mi.health.widget.action.UI_MODE_CHANGED"/>
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.mi.health.shortcut.LocaleChangeReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <activity
+            android:theme="@style/RouterTheme"
+            android:name="com.mi.health.router.framework.RouterActivity"
+            android:enabled="true"
+            android:exported="true"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="com.mi.health.action.ROUTER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="com.mi.health"
+                    android:host="localhost"
+                    android:path="/d"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="mi.fitness"
+                    android:host="localhost"
+                    android:path="/d"/>
+            </intent-filter>
+        </activity>
+        <provider
+            android:name="com.mi.health.menses.old.MenstruationContentProvider"
+            android:readPermission="com.mi.health.provider.permission.read_menstruation"
+            android:exported="true"
+            android:process=":device"
+            android:authorities="com.mi.health.provider.menstruation"/>
+        <provider
+            android:name="com.mi.health.search.SettingSearchProvider"
+            android:exported="true"
+            android:multiprocess="false"
+            android:authorities="com.mi.health.provider.search"
+            android:grantUriPermissions="true">
+            <intent-filter>
+                <action android:name="miui.intent.action.SETTINGS_SEARCH_PROVIDER"/>
+            </intent-filter>
+        </provider>
+        <service
+            android:name="com.cmcc.server.ICMCCRemoteService"
+            android:exported="true"/>
+        <service
+            android:name="com.mi.fitness.lpamanagement.service.CtESimService"
+            android:exported="true"/>
+        <service
+            android:name="com.euicc.server.IRemoteService"
+            android:exported="true"/>
+        <activity android:name="com.mi.fitness.lpamanagement.ui.webview.LpaWebviewActivity"/>
+        <activity
+            android:name="com.xiaomi.fitness.active.pk.ui.SendingInvitationActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.active.pk.ui.PkRuleActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.active.pk.ui.InviteReceiveActivity"
+            android:enabled="true"
+            android:exported="false"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.mi.health.action.INVITE_RECEIVE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.active.pk.ui.PkProcessDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.active.pk.ui.PkListActivity"
+            android:enabled="true"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|screenLayout|orientation">
+            <intent-filter>
+                <action android:name="com.mi.health.action.PK_LIST"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.active.pk.ui.PkHistoryDetailActivity"
+            android:enabled="true"
+            android:exported="false"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.mi.health.action.PK_HISTORY_DETAIL"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.OTAActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.OTAHelpActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.WeightActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.WeightGuideActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.BabyWeightActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.BalanceWeightActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.VisitorWeightActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.UserAddActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.ClaimRecordsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.DeviceShareActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.ShareMemberActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.AddShareActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.ShareConfirmActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.WifiInfoActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.AboutDeviceActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.DataReportActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.UserManageActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.VirtualMemberDataActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.configwifi.ConfigWifiActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.configwifi.SelectWifiActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.configwifi.ConfigWifiTimeoutActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.WeightHelpActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.PairGuideActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.UserIndicatorsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.electronic.scale.ElectronicScaleWebViewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.eco.device.manager.ui.bind.BindEcoDeviceDeviceActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.eco.device.manager.ui.bind.BindLocalDeviceActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.eco.device.manager.ui.bind.BindMiHomeDeviceActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.eco.device.manager.ui.bind.BindRopeSkippingListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.RelativeCareHomePageActivity"
+            android:exported="true"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.DataSharedToTAActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.DataSharedByTAActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.RelativeDataSettingsActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.TimeScopeAccessibleToTAActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.MyQRCodeActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.InputXiaomiAccountActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.EditIdentityLabelActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.InvitationSentSuccessfullyActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.RelationshipEstablishedActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.ConfirmUserInfoActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.DataAccessibleToTAActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.DataRequestedByTAActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.DataSharedSuccessfullyActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.xiaomi.fitness.relative.ui.NoDataSharedActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.mi.health.message.center.ui.MessageCenterActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:name="com.mibi.sdk.channel.alipay.AlipayMiniProgramCallbackActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.pay.channel.PayChannelActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.pay.result.PayResultActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/TranslucentTheme"
+            android:name="com.xiaomi.fitness.pay.page.PaymentTranslucentActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.pay.order.PaymentOrderPageListActivity"
+            android:exported="false"/>
+        <activity
+            android:label="@string/app_name"
+            android:name="com.xiaomi.fitness.route.track.view.MyTrackLibraryActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="file"/>
+                <data android:mimeType="application/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:mimeType="application/vnd.google-earth.kml+xml"/>
+                <data android:mimeType="application/kml"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:mimeType="text/*"/>
+                <data android:host="*"/>
+                <data android:scheme="content"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:mimeType="*/*"/>
+                <data android:host="*"/>
+                <data android:scheme="file"/>
+                <data android:pathPattern=".*gpx"/>
+                <data android:pathPattern=".*.gpx"/>
+                <data android:pathPattern=".*..*.gpx"/>
+                <data android:pathPattern=".*..*..*.gpx"/>
+                <data android:pathPattern=".*..*..*..*.gpx"/>
+                <data android:pathPattern=".*..*..*..*..*.gpx"/>
+                <data android:pathPattern=".*..*..*..*..*..*.gpx"/>
+                <data android:pathPattern=".*gpx.*"/>
+                <data android:pathPattern=".*.gpx.*"/>
+                <data android:pathPattern=".*..*.gpx.*"/>
+                <data android:pathPattern=".*..*..*.gpx.*"/>
+                <data android:pathPattern=".*..*..*..*.gpx.*"/>
+                <data android:pathPattern=".*..*..*..*..*.gpx.*"/>
+                <data android:pathPattern=".*..*..*..*..*..*.gpx.*"/>
+                <data android:pathPattern=".*kml"/>
+                <data android:pathPattern=".*.kml"/>
+                <data android:pathPattern=".*..*.kml"/>
+                <data android:pathPattern=".*..*..*.kml"/>
+                <data android:pathPattern=".*..*..*..*.kml"/>
+                <data android:pathPattern=".*..*..*..*..*.kml"/>
+                <data android:pathPattern=".*..*..*..*..*..*.kml"/>
+                <data android:pathPattern=".*kml.*"/>
+                <data android:pathPattern=".*.kml.*"/>
+                <data android:pathPattern=".*..*.kml.*"/>
+                <data android:pathPattern=".*..*..*.kml.*"/>
+                <data android:pathPattern=".*..*..*..*.kml.*"/>
+                <data android:pathPattern=".*..*..*..*..*.kml.*"/>
+                <data android:pathPattern=".*..*..*..*..*..*.kml.*"/>
+                <data android:pathPattern=".*tcx"/>
+                <data android:pathPattern=".*.tcx"/>
+                <data android:pathPattern=".*..*.tcx"/>
+                <data android:pathPattern=".*..*..*.tcx"/>
+                <data android:pathPattern=".*..*..*..*.tcx"/>
+                <data android:pathPattern=".*..*..*..*..*.tcx"/>
+                <data android:pathPattern=".*..*..*..*..*..*.tcx"/>
+                <data android:pathPattern=".*tcx.*"/>
+                <data android:pathPattern=".*.tcx.*"/>
+                <data android:pathPattern=".*..*.tcx.*"/>
+                <data android:pathPattern=".*..*..*.tcx.*"/>
+                <data android:pathPattern=".*..*..*..*.tcx.*"/>
+                <data android:pathPattern=".*..*..*..*..*.tcx.*"/>
+                <data android:pathPattern=".*..*..*..*..*..*.tcx.*"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.route.track.view.TrackEditNameActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.route.track.view.TrackDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.ubox_guide.ui.GuideActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.habit_plan.HabitPlanHistoryRecordListActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.common.TrainingTypeListActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.common.PlanCourseListActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.common.PlanHistoryListActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.settings.AbilityPlanSettingFragment"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.common.PlanReportActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.ability_plan.AbilityPlanRunningCourseDetailActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.common.PlanCourseListActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.ability_plan.AbilityPlanDateActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.ability_plan.AbilityPlanDetailActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.ability_plan.AbilityPlanCreateLoadingActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.ability_plan.AbilityPlanQuestionActivity"
+            android:exported="false"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.habit_plan.HabitPlanGuideActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.habit_plan.HabitPlanSuggestActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.habit_plan.HabitPlanManualActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.habit_plan.HabitPlanHomeActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.habit_plan.HabitPlanDetailActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.xiaomi.fitness.training_plan.report.TrainPlanReportShareActivity"
+            android:exported="false"/>
+        <activity
+            android:label="@string/fitness_sport_all"
+            android:name="com.xiaomi.fitness.trail.RecordMainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.share.amap.SharePathVideoAmapActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.trail.RecordEditActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.xiaomi.fitness.detail.SportDetailLandActivity"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name="com.xiaomi.fitness.detail.SportDetailGroupInfoActivity"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name="com.xiaomi.fitness.share.report.SportReportShareActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.share.report.EditSportReportCustomShareActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.track.ExportTrackActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <service
+            android:name="com.xiaomi.fitness.share.mapbox.ScreenRecorderService"
+            android:enabled="true"
+            android:foregroundServiceType="mediaProjection"/>
+        <service
+            android:name="com.xiaomi.fitness.sport_xms.SportXmsService"
+            android:exported="true"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="com.xiaomi.fitness.SPORT_XMS_SERVICE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+        <provider
+            android:name="com.mi.health.appupgrade.provider.AppUpgradeProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.AppUpgrade.fileProvider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/appupgrade_provider_paths"/>
+        </provider>
+        <activity
+            android:name="com.mi.health.appupgrade.ui.AppUpgradeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.rn.settings.ui.RnPolicyActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.rn.settings.ui.RnDeviceNameSetActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.rn.settings.ui.DeviceUpdateActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.privacy.logoff.PassportWebActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.mi.fitness.course.schedule.web.CourseScheduleWebViewActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <provider
+            android:name="com.xiaomi.fitness.research.upgrade.AppUpgradeProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.ResearchAppUpgrade.fileProvider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/research_appupgrade_provider_paths"/>
+        </provider>
+        <activity
+            android:name="com.xiaomi.fitness.research.upgrade.DownloadWebViewActivity"
+            android:exported="false"
+            android:launchMode="singleTop"/>
+        <activity
+            android:theme="@style/RN_Theme"
+            android:name="com.xiaomi.wearable.yrn.views.WearableRNActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden|keyboard"/>
+        <activity
+            android:theme="@style/rn_transparent"
+            android:name="com.xiaomi.fitness.rn.ui.TransparentActivity"/>
+        <activity
+            android:name="com.xiaomi.fitness.webview.WebViewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="action.cc"/>
+                <category android:name="com.mi.health"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.xiaomi.fitness.webview.healthwebview.HealthWebViewActivity"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"/>
+        <activity
+            android:name="com.xiaomi.fitness.webview.DownloadWebViewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@style/Theme.Dark"
+            android:name="com.xiaomi.fitness.heartrate.ui.DetectManualActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@style/Theme.Dark"
+            android:name="com.xiaomi.fitness.heartrate.ui.CameraDetectActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@style/Theme.Dark"
+            android:name="com.xiaomi.fitness.heartrate.ui.FingerDetectActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout"/>
+        <activity
+            android:theme="@style/Theme.Dark"
+            android:name="com.xiaomi.fitness.heartrate.ui.HeartRateReportActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout"/>
+        <activity
+            android:theme="@style/Theme.Dark"
+            android:name="com.xiaomi.fitness.heartrate.ui.PrincipleActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.xiaomi.fitness.heartrate.ui.CitingLiteratureActivity"
+            android:launchMode="singleTop"/>
+        <service
+            android:name="com.xiaomi.fitness.sport_manager.location.SportService"
+            android:exported="true"
+            android:process=":device"
+            android:foregroundServiceType="health|connectedDevice|location">
+            <intent-filter>
+                <action android:name="com.xiaomi.fitness.sport_manager.location.foregroundService"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.xiaomi.fitness.sport_eco_manager.location.SportService"
+            android:exported="true"
+            android:process=":device"
+            android:foregroundServiceType="connectedDevice">
+            <intent-filter>
+                <action android:name="com.xiaomi.fitness.sport_eco_manager.location.foregroundService"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.mi.health_provider.HealthProviderService"
+            android:permission="com.mi.health.permission.health_provider"
+            android:exported="true"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="com.mi.health.action.HEALTH_PROVIDER"/>
+            </intent-filter>
+        </service>
+        <service android:name="com.amap.api.location.APSService"/>
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="fd4393c1a6837d89629b6c6e51dba566"/>
+        <service
+            android:name="com.duokan.airkan.rc_sdk.airkan.AirkanService"
+            android:exported="true"
+            android:process=":device"/>
+        <activity
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:name="com.xiaomi.fitness.sport_capture.ui.SVideoActivity"
+            android:exported="false"
+            android:process=":device"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:name="com.xiaomi.fitness.sport_capture.ui.SPortraitVideoActivity"
+            android:exported="false"
+            android:process=":device"
+            android:screenOrientation="portrait"
+            android:resizeableActivity="false"/>
+        <activity
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:name="com.xiaomi.fitness.sport_capture.ui.SPortraitVideoFixOrientationActivity"
+            android:exported="false"
+            android:process=":device"/>
+        <activity
+            android:name="com.mi.health.uri_parser.ui.NfcScanActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.nfc.action.TAG_DISCOVERED"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                    android:scheme="https"
+                    android:host="region.hlth.io.mi.com"
+                    android:pathPrefix="/applinks/peripheral"/>
+                <data
+                    android:scheme="vnd.android.nfc"
+                    android:host="ext"
+                    android:pathPrefix="/com.xiaomi.wearable:connect"/>
+                <data
+                    android:scheme="vnd.android.nfc"
+                    android:host="ext"
+                    android:pathPrefix="/com.mi.health:connect"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.mi.health.uri_parser.links.HttpLinkActivity"
+            android:exported="true"
+            android:configChanges="orientation|keyboardHidden|keyboard">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="https"
+                    android:host="region.hlth.io.mi.com"
+                    android:pathPattern="/applinks/.*/.*"/>
+                <data
+                    android:scheme="health"
+                    android:host="region.hlth.io.mi.com"
+                    android:pathPattern="/applinks/.*/.*"/>
+                <data
+                    android:scheme="wearable"
+                    android:host="region.hlth.io.mi.com"
+                    android:pathPattern="/applinks/.*/.*"/>
+                <data
+                    android:scheme="https"
+                    android:host="region.hlth.io.mi.com"
+                    android:pathPattern="/abroad_download"/>
+                <data
+                    android:scheme="https"
+                    android:host="hlth.io.mi.com"
+                    android:pathPattern="/download"/>
+            </intent-filter>
+        </activity>
+        <receiver
+            android:name="com.xiaomi.fitness.sleep.trace.SleepTraceReceiver"
+            android:enabled="false"
+            android:exported="false"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+                <action android:name="android.intent.action.DATE_CHANGED"/>
+                <action android:name="android.intent.action.EVENT_REMINDER"/>
+                <action android:name="com.android.deskclock.ALARM_ALERT"/>
+                <action android:name="com.android.deskclock.ALARM_ARRIVING"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.xiaomi.fitness.sleep.trace.SleepTraceService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":device"
+            android:foregroundServiceType="specialUse|microphone">
+            <intent-filter>
+                <action android:name="com.mi.health.sleeptrace.action.BEGIN_TRACE"/>
+                <action android:name="com.mi.health.sleeptrace.action.RESTART_TRACE"/>
+                <action android:name="com.mi.health.sleeptrace.action.EXECUTE_TRACE"/>
+                <action android:name="com.mi.health.sleeptrace.action.RESTORE_WRAPPER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="com.mi.health.sleeptrace.category.SLEEP_TRACE"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.xiaomi.fitness.sleep.behavior.collection.CollectionForegroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":device"
+            android:foregroundServiceType="specialUse|microphone"/>
+        <receiver
+            android:name="com.xiaomi.fitness.sleep.behavior.collection.DetectionBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="com.mi.health.action.SLEEP_DETECTION_REVEIVER"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.xiaomi.xms.wearable.WearableXmsService"
+            android:exported="true"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="com.xiaomi.wearable.XMS_WEARABLE_SERVICE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+        <activity
+            android:theme="@style/xms_DialogTransParent"
+            android:name="com.xiaomi.xms.wearable.ui.TransparentActivity"
+            android:taskAffinity="com.xiaomi.xms.wearable"/>
+        <service
+            android:name="com.autonavi.minimap.wearable.AMapWearableConnectService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="com.autonavi.minimap.wearable.action.connect"/>
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false"/>
+        <service
+            android:name="com.xiaomi.fitness.keep_alive.KeepAliveJobSchedulerService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"
+            android:process=":device"/>
+        <service
+            android:name="com.xiaomi.fitness.keep_alive.KeepAliveService"
+            android:exported="true"
+            android:process=":device"
+            android:foregroundServiceType="connectedDevice|location">
+            <intent-filter>
+                <action android:name="com.mi.health.KeepAliveService.START"/>
+            </intent-filter>
+        </service>
+        <receiver
+            android:name="com.xiaomi.fitness.keep_alive.AlarmBroadcastReceiver"
+            android:exported="false"
+            android:process=":device"/>
+        <receiver
+            android:name="com.xiaomi.fitness.keep_alive.BootCompletedReceiver"
+            android:enabled="false"
+            android:exported="true"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED"/>
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED"/>
+                <action android:name="android.bluetooth.headset.profile.action.CONNECTION_STATE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <activity
+            android:name="com.mi.health.qrcode.CaptureActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.xiaomi.wearable.scan.action.QRCODE_SCAN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <provider
+            android:name="com.xiaomi.fitness.service.RectifiedUriFileProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.fileprovider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name"
+            android:name="com.mi.health.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:taskAffinity="com.mi.health"
+            android:launchMode="singleTask"/>
+        <receiver
+            android:name="com.xiaomi.fitness.motion.recognition.schedule.SceneRecogBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":device">
+            <intent-filter>
+                <action android:name="com.mi.health.action.START_RECOGNITION_SERVICE"/>
+                <action android:name="com.mi.health.action.STOP_RECOGNITION_SERVICE"/>
+                <action android:name="com.mi.health.action.AUTO_RECOGNITION_SERVICE"/>
+                <action android:name="com.mi.health.action.SCENE_RESTART"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.xiaomi.fitness.motion.recognition.SceneForegroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":device"
+            android:foregroundServiceType="specialUse">
+            <intent-filter>
+                <action android:name="com.mi.health.action.START_ANALYZE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+        <activity
+            android:name="com.xiaomi.fitness.baseui.common.CommonBaseActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.mi.health.action.ACTION_NOTICE_CLICK"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <receiver
+            android:name="services.reminder.TimedBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+        <service
+            android:name="com.xiaomi.wearable.core.MiWearCoreService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.mi.health.MiWearCoreService"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.xiaomi.fitness.service.DefaultRemoteService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="100">
+                <action android:name="mi.intent.action.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+        <activity
+            android:theme="@style/Theme.App.Jump"
+            android:name="com.xiaomi.fitness.service.JumpActivity"
+            android:enabled="true"
+            android:exported="true"
+            android:launchMode="singleTop"/>
+        <provider
+            android:name="com.xiaomi.fitness.dataprovider.DataContentProvider"
+            android:readPermission="com.mi.health.permission.DEFAULT_READ_DATA"
+            android:writePermission="com.mi.health.permission.DEFAULT_WRITE_DATA"
+            android:exported="true"
+            android:process=":device"
+            android:authorities="com.mi.health.provider.main"/>
+        <provider
+            android:name="com.ReactNativeBlobUtil.Utils.FileProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.provider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+        <provider
+            android:name="com.reactnative.ivpusic.imagepicker.YRNImageCropProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.YRNImageCropProvider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+        <activity
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:name="com.yalantis.ucrop.UCropActivity"/>
+        <provider
+            android:name="com.imagepicker.ImagePickerProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.imagepickerprovider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/imagepicker_provider_paths"/>
+        </provider>
+        <activity
+            android:theme="@style/PluginActivityStyle"
+            android:name="com.miot.rn.plugin.activity.PluginRNActivity"
+            android:screenOrientation="behind"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"/>
+        <activity
+            android:theme="@style/NoActionBarDark"
+            android:name="com.miot.rn.plugin.debug.PluginErrorInfoActivity"
+            android:screenOrientation="behind"/>
+        <service
+            android:name="com.xiaomi.smarthome.localcontrol.common.ILocalControlService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":widgetControl"/>
+        <service android:name="com.xiaomi.process.ProcessInitData$DataShareServiceMain"/>
+        <service
+            android:name="com.xiaomi.process.ProcessInitData$DataShareServicePlugin0"
+            android:process=":plugin0"/>
+        <service
+            android:name="com.xiaomi.process.ProcessInitData$DataShareServicePlugin1"
+            android:process=":plugin1"/>
+        <service
+            android:name="com.xiaomi.process.ProcessInitData$DataShareServicePlugin2"
+            android:process=":plugin2"/>
+        <service
+            android:name="com.xiaomi.process.ProcessInitData$DataShareServicePlugin3"
+            android:process=":plugin3"/>
+        <service
+            android:name="com.xiaomi.process.ProcessInitData$DataShareServicePlugin4"
+            android:process=":plugin4"/>
+        <service
+            android:name="com.xiaomi.process.ProcessInitData$DataShareServiceFrame1"
+            android:process=":frame1"/>
+        <service
+            android:name="com.xiaomi.process.ProcessInitData$DataShareServiceFrame2"
+            android:process=":frame2"/>
+        <service
+            android:name="com.xiaomi.process.ProcessInitData$DataShareServiceCamera"
+            android:process=":camera"/>
+        <service
+            android:name="com.xiaomi.process.ProcessInitData$DataShareServiceWidgetControl"
+            android:process=":widgetControl"/>
+        <provider
+            android:name="com.xiaomi.smarthome.controls.WidgetControlFileProvider"
+            android:exported="true"
+            android:process=":widgetControl"
+            android:authorities="com.mi.health.export.fileprovider">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths_export"/>
+        </provider>
+        <meta-data
+            android:name="miuixpreference"
+            android:value="3.1"/>
+        <meta-data
+            android:name="os_private_label"
+            android:value="PRIVATE_OS020"/>
+        <meta-data
+            android:name="appcompat"
+            android:value="3.1"/>
+        <service
+            android:name="com.xiaomi.passport.accountmanager.OwnAppXiaomiAccountAuthenticatorService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.xiaomi.accounts.AccountAuthenticator"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.xiaomi.account.service.AppAccountExchangeService"
+            android:permission="com.xiaomi.permission.CLOUD_MANAGER"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.account.action.BIND_ACCOUNT_EXCHANGE_SERVICE_V2"/>
+            </intent-filter>
+        </service>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false"/>
+        <activity
+            android:theme="@style/PassportTheme.NoActionBar"
+            android:name="com.xiaomi.passport.ui.internal.PickCountryCodeActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/PassportTheme.Transparent"
+            android:label=""
+            android:name="com.xiaomi.passport.ui.page.UserAvatarUpdateActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <provider
+            android:name="com.xiaomi.passport.ui.settings.provider.PassportFileProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.passport.fileprovider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/passport_provider_file_paths"/>
+        </provider>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.xiaomi.passport.ui.sns.WXEntryActivity"
+            android:exported="true"/>
+        <activity
+            android:theme="@style/PassportTheme.NoActionBar"
+            android:name="com.xiaomi.passport.ui.internal.ConfirmCredentialActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="com.xiaomi.account.action.XIAOMI_ACCOUNT_QUICK_LOGIN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/PassportTheme.NoActionBar"
+            android:name="com.xiaomi.passport.ui.page.AccountLoginActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity
+            android:theme="@style/PassportTheme.NoActionBar"
+            android:label="@string/passport_account_user_details"
+            android:name="com.xiaomi.passport.ui.page.UserInfoActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/PassportTheme.NoActionBar"
+            android:name="com.xiaomi.passport.ui.internal.PassportJsbWebViewActivity"
+            android:exported="false"
+            android:launchMode="singleTop"/>
+        <activity
+            android:theme="@style/Theme.YRN.Store"
+            android:name="com.xiaomi.yrn.controller.ui.YRNCMainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:resizeableActivity="true"/>
+        <activity
+            android:theme="@style/Theme.YRN.Store"
+            android:name="com.xiaomi.yrn.controller.ui.YRNCSingleTaskMainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"/>
+        <activity
+            android:theme="@style/Theme.YRN.Store.Transparent"
+            android:name="com.xiaomi.yrn.controller.ui.YRNCTransparentMainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden|keyboard"/>
+        <activity
+            android:theme="@style/Theme.YRN.Store.Dark"
+            android:name="com.xiaomi.yrn.controller.ui.YRNCLiveSingleTaskMainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"/>
+        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
+        <activity
+            android:name="com.xiaomi.yrn.channel.debugui.YRNKitActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name="com.xiaomi.yrn.channel.debugui.YRNDevModeActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity
+            android:name="com.xiaomi.yrn.channel.debugui.YRNDetailInfoActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name="com.xiaomi.yrn.channel.debugui.YRNSimpleInfoActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name="com.xiaomi.yrn.view.ui.YRNActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:name="com.xiaomi.accountsdk.diagnosis.ui.PassportDiagnosisActivity"/>
+        <provider
+            android:name="com.miui.circulate.api.util.CarUtils.CarIconProvider"
+            android:exported="true"
+            android:authorities="com.mi.health.export.fileprovider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/car_icon_paths"/>
+        </provider>
+        <meta-data
+            android:name="miuixbasewidget"
+            android:value="1"/>
+        <meta-data
+            android:name="flexible"
+            android:value="1"/>
+        <meta-data
+            android:name="popupwidget"
+            android:value="1"/>
+        <meta-data
+            android:name="androidbasewidget"
+            android:value="1"/>
+        <meta-data
+            android:name="miuixstretchablewidget"
+            android:value="1"/>
+        <meta-data
+            android:name="slidingwidget"
+            android:value="1"/>
+        <meta-data
+            android:name="pickerwidget"
+            android:value="1"/>
+        <activity
+            android:theme="@style/MipaySdk.Theme.Web"
+            android:name="com.mipay.sdk.app.MipayWebActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:name="com.mipay.sdk.app.RequestPermissionActivity"/>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.pay.ChannelPayEntryActivity"
+            android:exported="false"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc">
+            <intent-filter>
+                <action android:name="com.mibi.sdk.action.PAY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.pay.prepare.PrepareActivity"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"/>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.deduct.ui.DeductEntryActivity"
+            android:exported="false"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc">
+            <intent-filter>
+                <action android:name="com.mibi.sdk.action.DEDUCT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.deduct.ui.SignDeductEntryActivity"
+            android:exported="false"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc">
+            <intent-filter>
+                <action android:name="com.mibi.sdk.action.SIGN_DEDUCT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.deduct.ui.DeductActivity"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"/>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.deduct.ui.SignDeductActivity"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"/>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.deduct.ui.CheckDeductOrderActivity"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"/>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.deduct.ui.CheckSignDeductOrderActivity"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"/>
+        <activity
+            android:theme="@style/UnionPay"
+            android:name="com.mibi.sdk.deduct.ui.UnionpayActivity"
+            android:exported="false"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.partner.ui.PartnerPayEntryActivity"
+            android:exported="false"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc">
+            <intent-filter>
+                <action android:name="com.mibi.sdk.action.PARTNER_PAY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.partner.ui.PartnerRechargeEntryActivity"
+            android:exported="false"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc">
+            <intent-filter>
+                <action android:name="com.mibi.sdk.action.PARTNER_RECHARGE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.partner.ui.PartnerPayActivity"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"/>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.partner.ui.PartnerRechargeActivity"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"/>
+        <meta-data
+            android:name="PPPaySDK"
+            android:value="true"/>
+        <meta-data
+            android:name="CurrentEnvironment"
+            android:value="PROD"/>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.channel.alipay.AlipayChannelActivity"
+            android:exported="false"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc">
+            <intent-filter>
+                <action android:name="com.mibi.sdk.action.ALIPAY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.channel.mipay.MipayChannelActivity"
+            android:exported="false"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard">
+            <intent-filter>
+                <action android:name="com.mibi.sdk.action.MIPAY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.channel.wxpay.WXEntryActivity"
+            android:exported="true"
+            android:taskAffinity="com.mi.health"
+            android:launchMode="singleTask"/>
+        <activity-alias
+            android:name="com.mi.health.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:targetActivity="com.mibi.sdk.channel.wxpay.WXEntryActivity"/>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.channel.wxpay.WxpayChannelActivity"
+            android:exported="false"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc">
+            <intent-filter>
+                <action android:name="com.mibi.sdk.action.WXPAY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.channel.wxpay.WXPayEntryActivity"
+            android:exported="false"
+            android:taskAffinity="com.xiaomi.payment.WX"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"/>
+        <activity-alias
+            android:name="com.mi.health.wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:targetActivity="com.mibi.sdk.channel.wxpay.WXPayEntryActivity"/>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.basic.auth.PaymentCheckPasswordActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity
+            android:theme="@style/MipayPub.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.basic.sms.PaymentVerifySMSCodeActivity"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <meta-data
+            android:name="transition"
+            android:value="1"/>
+        <meta-data
+            android:name="viewpager"
+            android:value="2"/>
+        <meta-data
+            android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
+            android:value="GlideModule"/>
+        <meta-data
+            android:name="recyclerview_card"
+            android:value="1"/>
+        <meta-data
+            android:name="recyclerview"
+            android:value="2"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+            android:exported="false"/>
+        <service
+            android:name="com.google.android.play.core.assetpacks.AssetPackExtractionService"
+            android:enabled="false"
+            android:exported="true">
+            <meta-data
+                android:name="com.google.android.play.core.assetpacks.versionCode"
+                android:value="20202"/>
+        </service>
+        <service
+            android:name="com.google.android.play.core.assetpacks.ExtractionForegroundService"
+            android:enabled="false"
+            android:exported="false"
+            android:foregroundServiceType="dataSync"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+        <service
+            android:name="androidx.health.platform.client.impl.sdkservice.HealthDataSdkService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="androidx.health.platform.client.ACTION_BIND_SDK_SERVICE"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+            android:enabled="@bool/enable_system_alarm_service_default"
+            android:exported="false"
+            android:directBootAware="false"/>
+        <service
+            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:enabled="@bool/enable_system_job_service_default"
+            android:exported="true"
+            android:directBootAware="false"/>
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:enabled="@bool/enable_system_foreground_service_default"
+            android:exported="false"
+            android:directBootAware="false"/>
+        <receiver
+            android:name="androidx.work.impl.utils.ForceStopRunnable.BroadcastReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:directBootAware="false"/>
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy.BatteryChargingProxy"
+            android:enabled="false"
+            android:exported="false"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy.BatteryNotLowProxy"
+            android:enabled="false"
+            android:exported="false"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_OKAY"/>
+                <action android:name="android.intent.action.BATTERY_LOW"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy.StorageNotLowProxy"
+            android:enabled="false"
+            android:exported="false"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="android.intent.action.DEVICE_STORAGE_LOW"/>
+                <action android:name="android.intent.action.DEVICE_STORAGE_OK"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy.NetworkStateProxy"
+            android:enabled="false"
+            android:exported="false"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+            android:enabled="false"
+            android:exported="false"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+            android:enabled="@bool/enable_system_alarm_service_default"
+            android:exported="false"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+            android:permission="android.permission.DUMP"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS"/>
+            </intent-filter>
+        </receiver>
+        <meta-data
+            android:name="nestedheader"
+            android:value="3.1"/>
+        <service
+            android:name="androidx.camera.core.impl.MetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="androidx.camera.core.impl.MetadataHolderService.DEFAULT_CONFIG_PROVIDER"
+                android:value="androidx.camera.camera2.Camera2Config$DefaultProvider"/>
+        </service>
+        <meta-data
+            android:name="cardview"
+            android:value="1"/>
+        <meta-data
+            android:name="graphics"
+            android:value="2"/>
+        <meta-data
+            android:name="springback"
+            android:value="3.1"/>
+        <meta-data
+            android:name="nest"
+            android:value="2"/>
+        <meta-data
+            android:name="haptic"
+            android:value="1"/>
+        <meta-data
+            android:name="smooth"
+            android:value="1"/>
+        <meta-data
+            android:name="core"
+            android:value="2"/>
+        <provider
+            android:name="io.sentry.android.core.SentryInitProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.SentryInitProvider"/>
+        <provider
+            android:name="io.sentry.android.core.SentryPerformanceProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.SentryPerformanceProvider"
+            android:initOrder="200"/>
+        <uses-library
+            android:name="androidx.window.extensions"
+            android:required="false"/>
+        <uses-library
+            android:name="androidx.window.sidecar"
+            android:required="false"/>
+        <meta-data
+            android:name="dynamicoverscroller"
+            android:value="2"/>
+        <meta-data
+            android:name="recyclerview_animator"
+            android:value="2"/>
+        <meta-data
+            android:name="folme"
+            android:value="2"/>
+        <service
+            android:name="no.nordicsemi.android.support.v18.scanner.ScannerService"
+            android:exported="false"/>
+        <receiver
+            android:name="no.nordicsemi.android.support.v18.scanner.PendingIntentReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="no.nordicsemi.android.support.v18.ACTION_FOUND"/>
+            </intent-filter>
+        </receiver>
+        <meta-data
+            android:name="com.miui.bugreport.DEFAULT_LOG_DIR"
+            android:resource="@xml/default_log_paths"/>
+        <provider
+            android:name="com.miui.bugreport.logprovider.DumpLogProvider"
+            android:permission="com.miui.bugreport.permission.DUMP_CACHED_LOG"
+            android:exported="true"
+            android:authorities="com.mi.health.provider.bugreport">
+            <intent-filter>
+                <action android:name="com.miui.bugreport.intent.ACTION_DUMP_CACHED_LOG"/>
+            </intent-filter>
+        </provider>
+        <receiver
+            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+            android:permission="android.permission.DUMP"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SKIP_FILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION"/>
+            </intent-filter>
+        </receiver>
+        <meta-data
+            android:name="animation"
+            android:value="1"/>
+        <service
+            android:name="com.miui.tsmclient.service.DKFRequestService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.mi.health.action.DKF_REQUEST_SERVICE"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.xiaomi.digitalkey.wearable.DigitalKeyService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="org.carconnectivity.android.digitalkey.action.service"/>
+            </intent-filter>
+        </service>
+        <provider
+            android:name="com.miui.tsmclient.database.TSMProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.platform.provider"/>
+        <provider
+            android:name="com.miui.tsmclient.database.TSMPublicProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.platform.provider.public"/>
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:exported="false"
+            android:configChanges="screenSize|orientation|navigation|keyboardHidden"/>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:exported="false"
+            android:configChanges="screenSize|orientation|navigation|keyboardHidden"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.alipay.sdk.app.PayResultActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:configChanges="screenSize|orientation|navigation|keyboardHidden">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.alipay.sdk.app.AlipayResultActivity"
+            android:exported="true"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name="com.alipay.sdk.app.H5OpenAuthActivity"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:configChanges="screenSize|orientation|navigation|keyboardHidden"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <meta-data
+            android:name="MIPUSH_SDK_VERSION_CODE"
+            android:value="50708"/>
+        <meta-data
+            android:name="MIPUSH_SDK_VERSION_NAME"
+            android:value="5_7_8-C"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.xiaomi.mipush.sdk.NotificationClickedActivity"
+            android:enabled="true"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance">
+            <meta-data
+                android:name="supportStyle"
+                android:value="scene|voip"/>
+        </activity>
+        <meta-data
+            android:name="com.xiaomi.continuity.sdk.VERSION_CODE"
+            android:value="3002040"/>
+        <meta-data
+            android:name="com.xiaomi.continuity.sdk.VERSION_NAME"
+            android:value="3.2.040.10.0412183"/>
+        <provider
+            android:name="com.xiaomi.continuity.InitializationProvider"
+            android:exported="false"
+            android:authorities="com.mi.health.continuity-startup"/>
+        <meta-data
+            android:name="devicebaseinfo"
+            android:value="1"/>
+        <meta-data
+            android:name="theme"
+            android:value="1"/>
+        <meta-data
+            android:name="spring"
+            android:value="1"/>
+        <activity
+            android:theme="@style/Mibi.Theme.TranslucentStatus"
+            android:name="com.mibi.sdk.common.account.AccountInteractActivity"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"/>
+        <activity
+            android:theme="@style/Theme.PlayCore.Transparent"
+            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+            android:exported="false"
+            android:stateNotNeeded="true"/>
+    </application>
+</manifest>

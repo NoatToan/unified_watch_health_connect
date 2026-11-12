@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/clContent"
+    android:tag="layout/banner_announcement_style_layout_0"
+    android:background="@drawable/banner_announcement_bg_shape"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/dimen_margin_14dp"
+    android:paddingEnd="@dimen/dimen_margin_10dp"
+    android:paddingVertical="12dp">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivLeft"
+        android:padding="4dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textColor="@color/banner_announcement_content_text_color"
+        android:ellipsize="marquee"
+        android:id="@+id/tvContent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:layout_marginStart="2dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_close"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/ivLeft"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FontMedium.14sp"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_close"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/banner_announcement_close_icon"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

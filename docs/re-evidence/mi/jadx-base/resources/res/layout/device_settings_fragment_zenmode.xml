@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/layoutView"
+    android:tag="layout/device_settings_fragment_zenmode_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/page_content_padding_horizontal_large"
+    android:paddingEnd="@dimen/page_content_padding_horizontal_large">
+    <com.xiaomi.fitness.widget.SwitchButtonBindingTwoLineTextView
+        android:id="@+id/zenModeSwitchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:subtitle="@string/device_settings_zenmode_sync_desc"
+        app:title="@string/device_settings_zenmode_sync_title"/>
+</LinearLayout>

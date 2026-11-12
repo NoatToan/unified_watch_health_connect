@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/view_jumping_sport_target_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ProgressBar
+        android:id="@+id/target_pb"
+        android:tag="binding_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:progressDrawable="@drawable/view_indoor_progress_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
+    <TextView
+        android:textSize="16dp"
+        android:textColor="@color/sport_detail_color"
+        android:id="@+id/target"
+        android:tag="binding_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="@+id/target_pb"
+        app:layout_constraintTop_toBottomOf="@+id/target_pb"
+        style="@style/FontDemiBold"/>
+    <TextView
+        android:textSize="16.6dp"
+        android:textColor="@color/sport_detail_color"
+        android:tag="binding_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/target_pb"
+        app:layout_constraintTop_toTopOf="@+id/target"
+        style="@style/FontDemiBold"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

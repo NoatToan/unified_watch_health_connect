@@ -1,0 +1,81 @@
+{
+  "parsers": [
+    {"parser": "NumberParser"},
+    {
+      "parser": "AgeParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "LevelParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "RatingParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "SeasonEpisodeParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "TemperatureParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "FractionParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "CurrencyParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "MeasureUnitParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "YearParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "MonthParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "WeekParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "DayParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "HourParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "QuarterParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "MinuteParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "SecondParser",
+      "deps": ["NumberParser"]
+    },
+    {
+      "parser": "DateTimeParser",
+      "deps": ["YearParser", "MonthParser", "WeekParser", "DayParser", "HourParser", "QuarterParser", "MinuteParser", "SecondParser"]
+    },
+    {
+      "parser": "FestivalParser",
+      "deps": ["NumberParser", "YearParser", "DayParser", "HourParser"]
+    },
+    {
+      "parser": "LunarDateParser",
+      "deps": ["NumberParser", "YearParser", "HourParser"]
+    }
+  ]
+}

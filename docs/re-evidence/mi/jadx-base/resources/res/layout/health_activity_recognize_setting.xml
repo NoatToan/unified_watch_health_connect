@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/health_activity_recognize_setting_0"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/page_content_padding_horizontal_large">
+    <com.xiaomi.fitness.widget.SwitchButtonBindingTwoLineTextView
+        android:layout_gravity="top"
+        android:id="@+id/health_tv_switch_recognize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:subtitle="@string/health_recognize_setting_subtitle"
+        app:title="@string/health_recognize_setting_title"/>
+</FrameLayout>

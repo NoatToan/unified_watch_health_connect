@@ -1,0 +1,248 @@
+package com.xiaomi.fitness.watch.face.edit.entity;
+
+import com.xiaomi.wearable.hm.ChangeListenerImpl;
+import defpackage.p1j;
+import kotlin.Metadata;
+import kotlin.enums.EnumEntries;
+import kotlin.enums.EnumEntriesKt;
+import org.jetbrains.annotations.NotNull;
+
+/* JADX INFO: loaded from: classes10.dex */
+@Metadata(d1 = {"\u0000\u001b\n\u0002\u0018\u0002\n\u0002\u0010\u0010\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0010\b\n\u0003\bÑ\u0001\b\u0086\u0081\u0002\u0018\u00002\b\u0012\u0004\u0012\u00020\u00000\u0001B#\b\u0002\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\u0006\u0010\u0004\u001a\u00020\u0003\u0012\b\b\u0001\u0010\u0005\u001a\u00020\u0006¢\u0006\u0004\b\u0007\u0010\bR\u0011\u0010\u0002\u001a\u00020\u0003¢\u0006\b\n\u0000\u001a\u0004\b\t\u0010\nR\u0011\u0010\u0004\u001a\u00020\u0003¢\u0006\b\n\u0000\u001a\u0004\b\u000b\u0010\nR\u0011\u0010\u0005\u001a\u00020\u0006¢\u0006\b\n\u0000\u001a\u0004\b\f\u0010\rj\u0002\b\u000ej\u0002\b\u000fj\u0002\b\u0010j\u0002\b\u0011j\u0002\b\u0012j\u0002\b\u0013j\u0002\b\u0014j\u0002\b\u0015j\u0002\b\u0016j\u0002\b\u0017j\u0002\b\u0018j\u0002\b\u0019j\u0002\b\u001aj\u0002\b\u001bj\u0002\b\u001cj\u0002\b\u001dj\u0002\b\u001ej\u0002\b\u001fj\u0002\b j\u0002\b!j\u0002\b\"j\u0002\b#j\u0002\b$j\u0002\b%j\u0002\b&j\u0002\b'j\u0002\b(j\u0002\b)j\u0002\b*j\u0002\b+j\u0002\b,j\u0002\b-j\u0002\b.j\u0002\b/j\u0002\b0j\u0002\b1j\u0002\b2j\u0002\b3j\u0002\b4j\u0002\b5j\u0002\b6j\u0002\b7j\u0002\b8j\u0002\b9j\u0002\b:j\u0002\b;j\u0002\b<j\u0002\b=j\u0002\b>j\u0002\b?j\u0002\b@j\u0002\bAj\u0002\bBj\u0002\bCj\u0002\bDj\u0002\bEj\u0002\bFj\u0002\bGj\u0002\bHj\u0002\bIj\u0002\bJj\u0002\bKj\u0002\bLj\u0002\bMj\u0002\bNj\u0002\bOj\u0002\bPj\u0002\bQj\u0002\bRj\u0002\bSj\u0002\bTj\u0002\bUj\u0002\bVj\u0002\bWj\u0002\bXj\u0002\bYj\u0002\bZj\u0002\b[j\u0002\b\\j\u0002\b]j\u0002\b^j\u0002\b_j\u0002\b`j\u0002\baj\u0002\bbj\u0002\bcj\u0002\bdj\u0002\bej\u0002\bfj\u0002\bgj\u0002\bhj\u0002\bij\u0002\bjj\u0002\bkj\u0002\blj\u0002\bmj\u0002\bnj\u0002\boj\u0002\bpj\u0002\bqj\u0002\brj\u0002\bsj\u0002\btj\u0002\buj\u0002\bvj\u0002\bwj\u0002\bxj\u0002\byj\u0002\bzj\u0002\b{j\u0002\b|j\u0002\b}j\u0002\b~j\u0002\b\u007fj\u0003\b\u0080\u0001j\u0003\b\u0081\u0001j\u0003\b\u0082\u0001j\u0003\b\u0083\u0001j\u0003\b\u0084\u0001j\u0003\b\u0085\u0001j\u0003\b\u0086\u0001j\u0003\b\u0087\u0001j\u0003\b\u0088\u0001j\u0003\b\u0089\u0001j\u0003\b\u008a\u0001j\u0003\b\u008b\u0001j\u0003\b\u008c\u0001j\u0003\b\u008d\u0001j\u0003\b\u008e\u0001j\u0003\b\u008f\u0001j\u0003\b\u0090\u0001j\u0003\b\u0091\u0001j\u0003\b\u0092\u0001j\u0003\b\u0093\u0001j\u0003\b\u0094\u0001j\u0003\b\u0095\u0001j\u0003\b\u0096\u0001j\u0003\b\u0097\u0001j\u0003\b\u0098\u0001j\u0003\b\u0099\u0001j\u0003\b\u009a\u0001j\u0003\b\u009b\u0001j\u0003\b\u009c\u0001j\u0003\b\u009d\u0001j\u0003\b\u009e\u0001j\u0003\b\u009f\u0001j\u0003\b \u0001j\u0003\b¡\u0001j\u0003\b¢\u0001j\u0003\b£\u0001j\u0003\b¤\u0001j\u0003\b¥\u0001j\u0003\b¦\u0001j\u0003\b§\u0001j\u0003\b¨\u0001j\u0003\b©\u0001j\u0003\bª\u0001j\u0003\b«\u0001j\u0003\b¬\u0001j\u0003\b\u00ad\u0001j\u0003\b®\u0001j\u0003\b¯\u0001j\u0003\b°\u0001j\u0003\b±\u0001j\u0003\b²\u0001j\u0003\b³\u0001j\u0003\b´\u0001j\u0003\bµ\u0001j\u0003\b¶\u0001j\u0003\b·\u0001j\u0003\b¸\u0001j\u0003\b¹\u0001j\u0003\bº\u0001j\u0003\b»\u0001j\u0003\b¼\u0001j\u0003\b½\u0001j\u0003\b¾\u0001j\u0003\b¿\u0001j\u0003\bÀ\u0001j\u0003\bÁ\u0001j\u0003\bÂ\u0001j\u0003\bÃ\u0001j\u0003\bÄ\u0001j\u0003\bÅ\u0001j\u0003\bÆ\u0001j\u0003\bÇ\u0001j\u0003\bÈ\u0001j\u0003\bÉ\u0001j\u0003\bÊ\u0001j\u0003\bË\u0001j\u0003\bÌ\u0001j\u0003\bÍ\u0001j\u0003\bÎ\u0001j\u0003\bÏ\u0001j\u0003\bÐ\u0001j\u0003\bÑ\u0001j\u0003\bÒ\u0001j\u0003\bÓ\u0001j\u0003\bÔ\u0001j\u0003\bÕ\u0001j\u0003\bÖ\u0001¨\u0006×\u0001"}, d2 = {"Lcom/xiaomi/fitness/watch/face/edit/entity/WidgetTypeData;", "", "key", "", "widgetName", "stringRes", "", "<init>", "(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;I)V", "getKey", "()Ljava/lang/String;", "getWidgetName", "getStringRes", "()I", ChangeListenerImpl.SETTING_GROUP_TYPE_SPORT, "ACTIVITY_INDEX", "STEP", "CALORIE", "STAND", "INTENSITY", "HEART_RATE", "OXYGEN", "PRESSURE", "ENERGY", "BATTERY_LEVEL", "DATE", "CARD_BAG", "WEATHER_CONDITION", DialWidgetType.UVI, DialWidgetType.AQI, "HUMIDITY", "WIND_LEVEL", "ALARM", "STOP_WATCH", "COUNT_DOWN", "COMPASS", "PHOTO_GRAPH", "MUSIC_CONTROLLER", "WECHAT_PAYMENT", "ALIPAY_PAYMENT_CODE", "BLOOD_PRESSURE", "VITALITY_VALUE", "JS_APPLICATION", "LUA_APPLICATION", "TRAINING_STATUS", "SLEEP", DialWidgetType.ECG, "CURRENT_TEMPERATURE", "PRECIPITATION_PROBABILITY", "RUN_OUTDOOR", "WALK_OUTDOOR", "RUN_INDOOR", "MOUNTAIN_CLIMB", "CROSS_COUNTRY", "CYCLING_OUTDOOR", "CYCLING_INDOOR", "FREE_TRAINING", "SWIM_INDOOR", "SWIM_OUTDOOR", "ELLIPTICAL_MACHINE", "YOGA", "ROWING_MACHINE", "ROPE_SKIPPING", "ON_FOOT", "HIGH_INTENSITY_GAP_TRAINING", "TRIATHLON", "SAILBOAT", "PADDLE_BOARD", "WATER_POLO", "AQUATIC_SPORT", "SURFING", "CANOEING", "KAYAK_RAFTING", "ROWING", "MOTORBOAT", "WEB_SWIMMING", "DRIVING", "FANCY_SWIMMING", "SNORKELING", "KITE_SURFING", "INDOOR_SURFING", "DRAGON_BOAT", "FREE_DIVING", "RECREATIONAL_SCUBA_DIVING", "INSTRUMENT_DIVING", "ROCK_CLIMBING", "SKATE", "ROLLER_SKATING", "PARKOUR", "ATV", "PARAGLIDER", "BMX", "HEEL_TO_TOE_WALK", "CLIMBING_MACHINE", "CLIMB_STAIRS", "STEPPER", "CORE_TRAINING", "FLEXIBILITY_TRAINING", "PILATES", "GYMNASTICS", "STRETCH", "STRENGTH_TRAINING", "CROOS_FIT", "AEROBICS", "PHYSICAL_TRAINING", "WALL_BALL", "DUMBBELL_TRAINING", "BARBELL_TRAINING", "WEIGHT_LIFTING", "DEAD_LIFT", "BOBBY_JUMP", "SIT_UPS", "FUNCTIONAL_TRAINING", "UPPER_LIMB_TRAINING", "LOWER_LIMB_TRAINING", "WAIST_TRAINING", "BACK_TRAINING", "SPINNING_BIKE", "STROLLER", "STEP_TRAINING", "HORIZONTAL_BAR", "PARALLEL_BARS", "GROUP_GYMNASTICS", "KICK_BOXING", "BATTLE_ROPE", "MIXES_AEROBIC", "WALK_INDOOR", "INDOOR_FITNESS", "SQUARE_DANCE", "BELLY_DANCE", "BALLET", "STREET_DANCE", "FITNESS_ZUMBA", "NATIONAL_DANCE", "JAZZ", "LATIN_DANCE", "HIP_HOP_DANCE", "POLE_DANCING", "BREAK_DANCE", "BALLROM_DANCING", "MODEN_DANCE", "DANCE", "BOXING", "WRESTLING", "MARTIAL_ARTS", "TAICHI", "MUAY_THAI", "JUDO", "TAEKWONDO", "KARATE", "FREE_SPARRING", "SWORDSMANSHIP", "FENCING", "JUJITSU", "FOOTBALL", "BASKETBALL", "VOLLEYBALL", "BASEBALL", "SOFTBALL", "RUGBY", "HOCKEY", "PINGPONG", "BADMINTON", "TENNIS", "CRICKET", "HANDBALL", "BOWLING", "SQUASH", "BILLIARDS", "BEACH_FOOTBALL", "BEACH_VOLLEYBALL", "SEPAK_TAKRAW", "GOLF", "TABLE_SOCCER", "INDOOR_SOCCER", "SANDBAG", "BOCCE", "JAI_BALL", "DOOR_KICK", "DODGE_BALL", "SHUFFLEBOARD", "OUTDOOR_SKATING", "CURLING", "SNOW_SPORTS", "SNOWMOBILE", "PUCK", "SNOW_CAR", "SLED", "INDOOR_SKATING", "SNOW_BOARD", "SKIING", "COUNTRY_SKIING", "ARCHERY", "DARTS", "HORSE_RIDING", "TUG_OF_WAR", "HULA_HOOP", "FLY_KITE", "FISHING", "FRISBEE", "KICK_THE_SHUTTLECOCK", "SWING", "SOMATOSENSORY_GAME", "ESPORTS", "INTERNATIONAL_CHESS", "CHECKERS", "GO", "BRIDGE", "BOARD_GAME", "INDOOR_ROCK_CLIMBING", "OUTDOOR_ROCK_CLIMBING", "EQUESTRIAN", "TRACK_AND_FIELD", "RACING_CAR", "NONE", "watch-face_chinaProductRelease"}, k = 1, mv = {2, 0, 0}, xi = 48)
+public enum WidgetTypeData {
+    SPORT("sport", "运动", p1j.d2),
+    ACTIVITY_INDEX(DialWidgetType.ACTIVITY_INDEX, "活⼒指标", p1j.C1),
+    STEP("step", "步数", p1j.f2),
+    CALORIE("calorie", "卡路里", p1j.I1),
+    STAND("stand", "站立", p1j.e2),
+    INTENSITY("intensity", "中高强度训练", p1j.S1),
+    HEART_RATE("heartRate", "心率", p1j.Q1),
+    OXYGEN(DialWidgetType.OXYGEN, "血氧", p1j.Y1),
+    PRESSURE("pressure", "压力", p1j.b2),
+    ENERGY("energy", "能量", p1j.P1),
+    BATTERY_LEVEL(DialWidgetType.BATTERY_LEVEL, "电量", p1j.G1),
+    DATE(DialWidgetType.DATE, "日期", p1j.N1),
+    CARD_BAG(DialWidgetType.CARD_BAG, "卡包", p1j.J1),
+    WEATHER_CONDITION(DialWidgetType.WEATHER_CONDITION, "天气状况", p1j.k2),
+    UVI(DialWidgetType.UVI, "紫外线强", p1j.i2),
+    AQI(DialWidgetType.AQI, "空气质量", p1j.F1),
+    HUMIDITY(DialWidgetType.HUMIDITY, "湿度", p1j.R1),
+    WIND_LEVEL(DialWidgetType.WIND_LEVEL, "⻛力级别", p1j.U1),
+    ALARM(DialWidgetType.ALARM, "闹钟", p1j.D1),
+    STOP_WATCH(DialWidgetType.STOP_WATCH, "秒表", p1j.g2),
+    COUNT_DOWN(DialWidgetType.COUNT_DOWN, "倒计时", p1j.L1),
+    COMPASS(DialWidgetType.COMPASS, "指南针", p1j.K1),
+    PHOTO_GRAPH(DialWidgetType.PHOTO_GRAPH, "拍照", p1j.Z1),
+    MUSIC_CONTROLLER(DialWidgetType.MUSIC_CONTROLLER, "音乐控制器", p1j.W1),
+    WECHAT_PAYMENT(DialWidgetType.WECHAT_PAYMENT, "微信支付", p1j.l2),
+    ALIPAY_PAYMENT_CODE("alipayPaymentCode", "支付宝付款码", p1j.E1),
+    BLOOD_PRESSURE("bloodPressure", "血压", p1j.H1),
+    VITALITY_VALUE("vitalityValue", "元气值", p1j.j2),
+    JS_APPLICATION("jsApplication", "JS应用", p1j.T1),
+    LUA_APPLICATION("luaApplication", "Lua应用", p1j.V1),
+    TRAINING_STATUS("trainingStatus", "训练状态", p1j.h2),
+    SLEEP("sleep", "睡眠", p1j.c2),
+    ECG(DialWidgetType.ECG, "心电", p1j.O1),
+    CURRENT_TEMPERATURE(DialWidgetType.CURRENT_TEMPERATURE, "当前温度", p1j.M1),
+    PRECIPITATION_PROBABILITY(DialWidgetType.PRECIPITATION_PROBABILITY, "降水概率", p1j.a2),
+    RUN_OUTDOOR("", "户外跑步", p1j.M4),
+    WALK_OUTDOOR("", "健走", p1j.B5),
+    RUN_INDOOR("", "室内跑步", p1j.L4),
+    MOUNTAIN_CLIMB("", "登山", p1j.o4),
+    CROSS_COUNTRY("", "越野", p1j.f3),
+    CYCLING_OUTDOOR("", "户外骑行", p1j.j3),
+    CYCLING_INDOOR("", "室内单车", p1j.i3),
+    FREE_TRAINING("", "自由训练", p1j.D3),
+    SWIM_INDOOR("", "泳池游泳", p1j.m5),
+    SWIM_OUTDOOR("", "开放水域游泳", p1j.n5),
+    ELLIPTICAL_MACHINE("", "椭圆机", p1j.s3),
+    YOGA("", "瑜伽", p1j.H5),
+    ROWING_MACHINE("", "划船机", p1j.J4),
+    ROPE_SKIPPING("", "跳绳", p1j.H4),
+    ON_FOOT("", "徒步", p1j.r4),
+    HIGH_INTENSITY_GAP_TRAINING("", "高强度间歇训练", p1j.M3),
+    TRIATHLON("", "铁人三项", p1j.v5),
+    SAILBOAT("", "帆船", p1j.N4),
+    PADDLE_BOARD("", "桨板", p1j.u4),
+    WATER_POLO("", "水球", p1j.D5),
+    AQUATIC_SPORT("", "水上运动", p1j.B2),
+    SURFING("", "滑水", p1j.l5),
+    CANOEING("", "皮划艇", p1j.Y2),
+    KAYAK_RAFTING("", "皮艇漂流", p1j.e4),
+    ROWING("", "划船", p1j.I4),
+    MOTORBOAT("", "摩托艇", p1j.n4),
+    WEB_SWIMMING("", "蹼泳", p1j.E5),
+    DRIVING("", "跳水", p1j.q3),
+    FANCY_SWIMMING("", "花样游泳", p1j.v3),
+    SNORKELING("", "浮潜", p1j.V4),
+    KITE_SURFING("", "风筝冲浪", p1j.h4),
+    INDOOR_SURFING("", "室内冲浪", p1j.W3),
+    DRAGON_BOAT("", "龙舟", p1j.p3),
+    FREE_DIVING("", "自由潜水", p1j.B3),
+    RECREATIONAL_SCUBA_DIVING("", "休闲水肺潜水", p1j.E4),
+    INSTRUMENT_DIVING("", "仪表潜水", p1j.X3),
+    ROCK_CLIMBING("", "攀岩", p1j.F4),
+    SKATE("", "滑板", p1j.S4),
+    ROLLER_SKATING("", "轮滑", p1j.G4),
+    PARKOUR("", "跑酷", p1j.x4),
+    ATV("", "沙滩车", p1j.D2),
+    PARAGLIDER("", "滑翔伞", p1j.v4),
+    BMX("", "小轮车", p1j.Q2),
+    HEEL_TO_TOE_WALK("", "竞走", p1j.L3),
+    CLIMBING_MACHINE("", "爬楼机", p1j.b3),
+    CLIMB_STAIRS("", "爬楼梯", p1j.a3),
+    STEPPER("", "踏步机", p1j.g5),
+    CORE_TRAINING("", "核心训练", p1j.c3),
+    FLEXIBILITY_TRAINING("", "柔韧训练", p1j.y3),
+    PILATES("", "普拉提", p1j.z4),
+    GYMNASTICS("", "体操", p1j.J3),
+    STRETCH("", "拉伸", p1j.j5),
+    STRENGTH_TRAINING("", "力量训练", p1j.i5),
+    CROOS_FIT("", "交叉训练", p1j.g3),
+    AEROBICS("", "健身操", p1j.A2),
+    PHYSICAL_TRAINING("", "体能训练", p1j.y4),
+    WALL_BALL("", "墙球", p1j.C5),
+    DUMBBELL_TRAINING("", "哑铃训练", p1j.r3),
+    BARBELL_TRAINING("", "杠铃训练", p1j.I2),
+    WEIGHT_LIFTING("", "举重", p1j.F5),
+    DEAD_LIFT("", "硬拉", p1j.m3),
+    BOBBY_JUMP("", "波比跳", p1j.S2),
+    SIT_UPS("", "仰卧起坐", p1j.R4),
+    FUNCTIONAL_TRAINING("", "功能性训练", p1j.F3),
+    UPPER_LIMB_TRAINING("", "上肢训练", p1j.x5),
+    LOWER_LIMB_TRAINING("", "下肢训练", p1j.j4),
+    WAIST_TRAINING("", "腰腹训练", p1j.z5),
+    BACK_TRAINING("", "背部训练", p1j.E2),
+    SPINNING_BIKE("", "动感单车", p1j.c5),
+    STROLLER("", "漫步机", p1j.k5),
+    STEP_TRAINING("", "踏步训练", p1j.f5),
+    HORIZONTAL_BAR("", "单杠", p1j.P3),
+    PARALLEL_BARS("", "双杠", p1j.w4),
+    GROUP_GYMNASTICS("", "团体操", p1j.I3),
+    KICK_BOXING("", "搏击操", p1j.f4),
+    BATTLE_ROPE("", "战绳", p1j.L2),
+    MIXES_AEROBIC("", "混合有氧", p1j.l4),
+    WALK_INDOOR("", "室内步行", p1j.A5),
+    INDOOR_FITNESS("", "室内健身", p1j.S3),
+    SQUARE_DANCE("", "广场舞", p1j.d5),
+    BELLY_DANCE("", "肚皮舞", p1j.O2),
+    BALLET("", "芭蕾舞", p1j.G2),
+    STREET_DANCE("", "街舞", p1j.h5),
+    FITNESS_ZUMBA("", "尊巴", p1j.I5),
+    NATIONAL_DANCE("", "民族舞", p1j.q4),
+    JAZZ("", "爵士舞", p1j.a4),
+    LATIN_DANCE("", "拉丁舞", p1j.i4),
+    HIP_HOP_DANCE("", "嘻哈舞", p1j.N3),
+    POLE_DANCING("", "钢管舞", p1j.B4),
+    BREAK_DANCE("", "霹雳舞", p1j.W2),
+    BALLROM_DANCING("", "交际舞", p1j.H2),
+    MODEN_DANCE("", "现代舞", p1j.m4),
+    DANCE("", "舞蹈", p1j.k3),
+    BOXING("", "拳击", p1j.V2),
+    WRESTLING("", "摔跤", p1j.G5),
+    MARTIAL_ARTS("", "武术", p1j.k4),
+    TAICHI("", "太极", p1j.s5),
+    MUAY_THAI("", "泰拳", p1j.p4),
+    JUDO("", "柔道", p1j.b4),
+    TAEKWONDO("", "跆拳道", p1j.r5),
+    KARATE("", "空手道", p1j.d4),
+    FREE_SPARRING("", "自由搏击", p1j.C3),
+    SWORDSMANSHIP("", "剑术/剑道", p1j.p5),
+    FENCING("", "击剑", p1j.w3),
+    JUJITSU("", "柔术", p1j.c4),
+    FOOTBALL("", "足球", p1j.A3),
+    BASKETBALL("", "篮球", p1j.K2),
+    VOLLEYBALL("", "排球", p1j.y5),
+    BASEBALL("", "棒球", p1j.J2),
+    SOFTBALL("", "垒球", p1j.a5),
+    RUGBY("", "橄榄球", p1j.K4),
+    HOCKEY("", "曲棍球", p1j.O3),
+    PINGPONG("", "乒乓球", p1j.A4),
+    BADMINTON("", "羽毛球", p1j.F2),
+    TENNIS("", "网球", p1j.t5),
+    CRICKET("", "板球", p1j.e3),
+    HANDBALL("", "手球", p1j.K3),
+    BOWLING("", "保龄球", p1j.U2),
+    SQUASH("", "壁球", p1j.e5),
+    BILLIARDS("", "台球", p1j.P2),
+    BEACH_FOOTBALL("", "沙滩足球", p1j.M2),
+    BEACH_VOLLEYBALL("", "沙滩排球", p1j.N2),
+    SEPAK_TAKRAW("", "藤球", p1j.P4),
+    GOLF("", "高尔夫球", p1j.H3),
+    TABLE_SOCCER("", "桌上足球", p1j.q5),
+    INDOOR_SOCCER("", "室内足球", p1j.V3),
+    SANDBAG("", "沙包球", p1j.O4),
+    BOCCE("", "地掷球", p1j.T2),
+    JAI_BALL("", "回力球", p1j.Z3),
+    DOOR_KICK("", "门球", p1j.o3),
+    DODGE_BALL("", "躲避球", p1j.n3),
+    SHUFFLEBOARD("", "砂壶球", p1j.Q4),
+    OUTDOOR_SKATING("", "户外滑冰", p1j.t4),
+    CURLING("", "冰壶", p1j.h3),
+    SNOW_SPORTS("", "雪上运动", p1j.Y4),
+    SNOWMOBILE("", "雪地摩托", p1j.Z4),
+    PUCK("", "冰球", p1j.C4),
+    SNOW_CAR("", "雪车", p1j.X4),
+    SLED("", "雪橇", p1j.U4),
+    INDOOR_SKATING("", "室内滑冰", p1j.U3),
+    SNOW_BOARD("", "单板滑雪", p1j.W4),
+    SKIING("", "双板滑雪", p1j.T4),
+    COUNTRY_SKIING("", "越野滑雪", p1j.d3),
+    ARCHERY("", "射箭", p1j.C2),
+    DARTS("", "飞镖", p1j.l3),
+    HORSE_RIDING("", "骑马", p1j.Q3),
+    TUG_OF_WAR("", "拔河", p1j.w5),
+    HULA_HOOP("", "呼啦圈", p1j.R3),
+    FLY_KITE("", "放风筝", p1j.z3),
+    FISHING("", "钓鱼", p1j.x3),
+    FRISBEE("", "飞盘", p1j.E3),
+    KICK_THE_SHUTTLECOCK("", "踢毽子", p1j.g4),
+    SWING("", "秋千", p1j.o5),
+    SOMATOSENSORY_GAME("", "体感游戏", p1j.b5),
+    ESPORTS("", "电子竞技", p1j.u3),
+    INTERNATIONAL_CHESS("", "国际象棋", p1j.Y3),
+    CHECKERS("", "国际跳棋", p1j.Z2),
+    GO("", "围棋", p1j.G3),
+    BRIDGE("", "桥牌", p1j.X2),
+    BOARD_GAME("", "桌游", p1j.R2),
+    INDOOR_ROCK_CLIMBING("", "室内攀岩", p1j.T3),
+    OUTDOOR_ROCK_CLIMBING("", "户外攀岩", p1j.s4),
+    EQUESTRIAN("", "马术", p1j.t3),
+    TRACK_AND_FIELD("", "田径", p1j.u5),
+    RACING_CAR("", "赛车", p1j.D4),
+    NONE("none", "无", p1j.X1);
+
+    private static final /* synthetic */ EnumEntries $ENTRIES = EnumEntriesKt.enumEntries(values());
+
+    @NotNull
+    private final String key;
+    private final int stringRes;
+
+    @NotNull
+    private final String widgetName;
+
+    WidgetTypeData(String str, String str2, int i) {
+        this.key = str;
+        this.widgetName = str2;
+        this.stringRes = i;
+    }
+
+    @NotNull
+    public static EnumEntries<WidgetTypeData> getEntries() {
+        return $ENTRIES;
+    }
+
+    @NotNull
+    public final String getKey() {
+        return this.key;
+    }
+
+    public final int getStringRes() {
+        return this.stringRes;
+    }
+
+    @NotNull
+    public final String getWidgetName() {
+        return this.widgetName;
+    }
+}

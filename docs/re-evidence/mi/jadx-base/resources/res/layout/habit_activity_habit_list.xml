@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/rootView"
+    android:tag="layout/habit_activity_habit_list_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:tag="binding_1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:orientation="vertical"
+            android:id="@+id/refreshView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.xiaomi.fitness.habit.widget.StateLayout
+                android:id="@+id/stateView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.xiaomi.fitness.habit.widget.MoreRecyclerView
+                    android:id="@+id/listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="@dimen/page_padding_horizontal_large"
+                    android:layout_marginEnd="@dimen/page_padding_horizontal_large"/>
+            </com.xiaomi.fitness.habit.widget.StateLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <include
+            android:id="@+id/emptyView"
+            android:visibility="gone"
+            layout="@layout/habit_today_empty_item"/>
+    </FrameLayout>
+</LinearLayout>

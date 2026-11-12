@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/divide_line"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:importantForAccessibility="no">
+    <View
+        android:background="@color/common_divider_bg_color"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/electronic_scale_size_0_33"
+        android:layout_marginTop="@dimen/dimen_margin_20dp"
+        android:layout_marginBottom="@dimen/dimen_margin_20dp"
+        android:layout_marginStart="@dimen/dimen_margin_18dp"
+        android:layout_marginEnd="@dimen/dimen_margin_18dp"/>
+</FrameLayout>

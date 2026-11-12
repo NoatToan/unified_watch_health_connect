@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_layout"
+    android:tag="layout/item_watch_app_layout_setting_0"
+    android:background="@drawable/common_card_bg_white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dimen_margin_12dp">
+    <ImageView
+        android:id="@+id/layout_icon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+        android:layout_marginVertical="@dimen/page_extra_padding_horizontal_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textColor="@color/text_color"
+        android:id="@+id/layout_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_margin_16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/layout_icon"
+        app:layout_constraintStart_toEndOf="@+id/layout_icon"
+        app:layout_constraintTop_toTopOf="@+id/layout_icon"
+        style="@style/FontNormal.16sp"/>
+    <ImageView
+        android:id="@+id/check_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/selector_common_circle_check"
+        android:layout_marginEnd="@dimen/page_content_padding_horizontal_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

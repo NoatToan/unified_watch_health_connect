@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#e85559"
+        android:id="@+id/txt_month"
+        android:focusable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"/>
+    <com.xiaomi.fitness.baseui.calendar.view.WeekCalendarView
+        android:id="@+id/monthCalendar"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:calendarTxtFontRes="@font/misanslatin_bold"
+        app:hollowCircleColor="@color/text_color_60"
+        app:hollowCircleStroke="1dp"
+        app:isShowOtherMonthDate="false"
+        app:layout_scrollFlags="scroll"
+        app:selectCircleColor="@color/text_color"
+        app:selectCircleRadius="20dp"
+        app:solarSelectTextColor="@color/text_color"
+        app:solarTextColor="@color/text_color"
+        app:solarTextSize="14sp"
+        app:todaySolarSelectTextColor="#ff585d"
+        app:todaySolarTextColor="#ff585d"
+        app:todayWeekBgColor="@color/health_calendar_today_bg"/>
+</LinearLayout>

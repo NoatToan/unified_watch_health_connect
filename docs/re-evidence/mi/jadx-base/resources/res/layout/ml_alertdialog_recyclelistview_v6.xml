@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<view xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ml_alertdialog__listview"
+    android:scrollbars="vertical"
+    android:layoutAnimation="@null"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:cacheColorHint="@null"
+    android:divider="@color/common_transparent"
+    android:overScrollMode="ifContentScrolls"
+    class="com.xiaomi.fitness.baseui.widget.MLAlertController$RecycleListView"/>

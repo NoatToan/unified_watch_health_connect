@@ -1,0 +1,94 @@
+package com.xiaomi.fitness.health.sleep.ui.holder;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.os.Bundle;
+import android.view.View;
+import com.xiaomi.fit.fitness.export.data.item.SleepSegmentReport;
+import com.xiaomi.fitness.common.utils.ArrayUtils;
+import com.xiaomi.fitness.health.sleep.ui.SleepSpo2DetailFragment;
+import com.xiaomi.fitness.health.sleep.ui.holder.SleepSpo2DayHolderV2;
+import com.xiaomi.fitness.health.sleep.utils.SleepTrackHelper;
+import com.xiaomi.fitness.util.HealthUtil;
+import com.xiaomi.fitness.widget.RightArrowSingleLineTextView;
+import defpackage.c0j;
+import defpackage.eri;
+import defpackage.qxi;
+import java.io.Serializable;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
+import org.jetbrains.annotations.NotNull;
+
+/* JADX INFO: loaded from: classes9.dex */
+@Metadata(d1 = {"\u0000.\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\u0018\u0000 \u000f2\u00020\u0001:\u0001\u000fB\u000f\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0004\b\u0004\u0010\u0005J\u000e\u0010\u000b\u001a\u00020\f2\u0006\u0010\r\u001a\u00020\u000eR\u000e\u0010\u0006\u001a\u00020\u0007X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\b\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\t\u001a\u00020\nX\u0082\u000e¢\u0006\u0002\n\u0000¨\u0006\u0010"}, d2 = {"Lcom/xiaomi/fitness/health/sleep/ui/holder/SleepSpo2DayHolderV2;", "", "view", "Landroid/view/View;", "<init>", "(Landroid/view/View;)V", "mContext", "Landroid/content/Context;", "mRootView", "rightArrowSingleLineTextView", "Lcom/xiaomi/fitness/widget/RightArrowSingleLineTextView;", "updateReport", "", "report", "Lcom/xiaomi/fit/fitness/export/data/item/SleepSegmentReport;", "Companion", "health_chinaProductRelease"}, k = 1, mv = {2, 0, 0}, xi = 48)
+public final class SleepSpo2DayHolderV2 {
+
+    @NotNull
+    private static final String TAG = "SleepSpo2DayHolder";
+
+    @NotNull
+    private final Context mContext;
+
+    @NotNull
+    private final View mRootView;
+
+    @NotNull
+    private RightArrowSingleLineTextView rightArrowSingleLineTextView;
+
+    public SleepSpo2DayHolderV2(@NotNull View view) {
+        Intrinsics.checkNotNullParameter(view, "view");
+        Context context = view.getContext();
+        Intrinsics.checkNotNullExpressionValue(context, "getContext(...)");
+        this.mContext = context;
+        View viewFindViewById = view.findViewById(eri.Z9);
+        Intrinsics.checkNotNullExpressionValue(viewFindViewById, "findViewById(...)");
+        this.mRootView = viewFindViewById;
+        View viewFindViewById2 = viewFindViewById.findViewById(eri.be);
+        Intrinsics.checkNotNullExpressionValue(viewFindViewById2, "findViewById(...)");
+        RightArrowSingleLineTextView rightArrowSingleLineTextView = (RightArrowSingleLineTextView) viewFindViewById2;
+        this.rightArrowSingleLineTextView = rightArrowSingleLineTextView;
+        rightArrowSingleLineTextView.showMore(true);
+        this.rightArrowSingleLineTextView.setStartIconVisible(false);
+        this.rightArrowSingleLineTextView.updateTitleMaxLines(3);
+        this.rightArrowSingleLineTextView.setTitle(c0j.zd);
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public static final void updateReport$lambda$0(SleepSegmentReport report, SleepSpo2DayHolderV2 this$0, View view) {
+        Intrinsics.checkNotNullParameter(report, "$report");
+        Intrinsics.checkNotNullParameter(this$0, "this$0");
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("report", report);
+        bundle.putSerializable("record_list", (Serializable) report.getSpo2Records());
+        HealthUtil.INSTANCE.gotoPage(this$0.mContext, SleepSpo2DetailFragment.class, bundle, null);
+        SleepTrackHelper.INSTANCE.trackSleepDayItemClick(2);
+    }
+
+    public final void updateReport(@NotNull final SleepSegmentReport report) {
+        Intrinsics.checkNotNullParameter(report, "report");
+        if (!ArrayUtils.isEmpty(report.getSpo2Records()) && report.getAvgSpo2() != null) {
+            Integer avgSpo2 = report.getAvgSpo2();
+            Intrinsics.checkNotNull(avgSpo2);
+            if (avgSpo2.intValue() > 0) {
+                this.mRootView.setVisibility(0);
+                this.mRootView.requestLayout();
+                Resources resources = this.mContext.getResources();
+                int i = qxi.z1;
+                Integer avgSpo3 = report.getAvgSpo2();
+                Intrinsics.checkNotNull(avgSpo3);
+                String quantityString = resources.getQuantityString(i, avgSpo3.intValue(), report.getAvgSpo2());
+                Intrinsics.checkNotNullExpressionValue(quantityString, "getQuantityString(...)");
+                this.rightArrowSingleLineTextView.setRemindText(quantityString);
+                this.rightArrowSingleLineTextView.setOnClickListener(new View.OnClickListener() { // from class: kzm
+                    @Override // android.view.View.OnClickListener
+                    public final void onClick(View view) {
+                        SleepSpo2DayHolderV2.updateReport$lambda$0(report, this, view);
+                    }
+                });
+                return;
+            }
+        }
+        this.mRootView.setVisibility(8);
+        this.mRootView.requestLayout();
+    }
+}

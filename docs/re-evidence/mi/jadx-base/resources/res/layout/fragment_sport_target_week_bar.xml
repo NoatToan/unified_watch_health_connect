@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.health.threetarget.view.TargetWeekBarView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/targetWeekBarView"
+    android:tag="layout/fragment_sport_target_week_bar_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/size_5"
+    android:layout_marginHorizontal="@dimen/health_target_weekview_margin"/>

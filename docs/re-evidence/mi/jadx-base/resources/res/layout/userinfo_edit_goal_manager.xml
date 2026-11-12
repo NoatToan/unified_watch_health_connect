@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/userinfo_edit_goal_manager_0"
+    android:background="@color/userinfo_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/userinfo_desc_black"
+        android:id="@+id/editViewDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_20dp"
+        android:text="@string/userinfo_target_edit_desc"
+        android:layout_marginStart="@dimen/dimen_margin_26dp"
+        android:layout_marginEnd="84dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/linear_all_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editViewDesc">
+        <com.xiaomi.fitness.widget.SwitchButtonBindingSingleLineTextView
+            android:id="@+id/mhs_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_margin_3dp"
+            android:paddingStart="@dimen/dimen_margin_26dp"
+            android:paddingEnd="@dimen/dimen_margin_22dp"
+            app:title="@string/userinfo_target_medium_high_strength_activity"/>
+        <com.xiaomi.fitness.widget.SwitchButtonBindingSingleLineTextView
+            android:id="@+id/stand_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_margin_15dp"
+            android:paddingStart="@dimen/dimen_margin_26dp"
+            android:paddingEnd="@dimen/dimen_margin_22dp"
+            app:showSwitch="true"
+            app:title="@string/userinfo_active_stage_stand"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

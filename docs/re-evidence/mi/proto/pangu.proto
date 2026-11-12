@@ -1,0 +1,46 @@
+syntax = "proto2";
+
+import "statis_base.proto";
+import "silence_mode.proto";
+import "event_base.proto";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message PanguStatisticsMessage {
+    required StatisBaseMessage base 			= 1; //通用统计信息
+    required SilenceMode silenceMode 			= 2; //勿扰模式
+    required uint32 backlightLevel 				= 3; //背光亮度
+	required uint32 dialId 						= 4; //表盘使用情况统计
+	
+	required LcdEventMessage LcdEvent			= 5; //
+	
+    required MenuEventMessage EventByShortcut 	= 6; //快捷入口点击进入
+	required MenuEventMessage EventByMenu 		= 7; //菜单入口点击进入
+	required MenuEventMessage EventByDial 		= 8; //表盘入口点击进入
+	
+	required XiaoaiEventMessage XiaoaiEvent 	= 9; //
+	required MoreEventMessage 	MoreEvent		= 10;//
+	required SportEventMessage 	SportEvent		= 11;//
+	required NotifyEventMessage NotifyEvent 	= 12;//
+	required DialEventMessage	DialEvent		= 13;//
+	
+	required ShortcutEventMessage ShortcutLess3S= 14;//快捷入口 展示时长 0-3S的统计
+	required ShortcutEventMessage ShortcutLess5S= 15;//快捷入口 展示时长 3-5S的统计
+	required ShortcutEventMessage ShortcutLess8S= 16;//快捷入口 展示时长 5-8S的统计
+	required ShortcutEventMessage ShortcutLess10S= 17;//快捷入口 展示时长 8-10S的统计
+	required ShortcutEventMessage ShortcutLessOther= 18;//快捷入口 展示时长 大于10S的统计
+	
+	required AbnormalRebootCountMessage AbnormalRebootCount = 19; // 异常重启原因计数
+	required float bloodOxygenColor = 20; // 用户血氧测量CTR系数 
+	required MenuEventMessage EventByXiaoai 		= 21; //小爱入口进入
+	required fitDataMeasureEventMessage spo2        = 22; //血氧
+	required fitDataMeasureEventMessage hr          = 23; //心率
+	required fitDataMeasureEventMessage stress      = 24; //压力
+	required breathEventMessage breath           	= 25; //呼吸训练
+	required cycleEventMessage cycle				= 26; //女性健康
+	required nfcEventMessage nfc					= 27; //NFC刷卡统计
+	required AlipayEventMessage alipay				= 28; //支付宝
+	required AlipayEventMessage weixin				= 29; //微信
+	required UpgrateEventMessage upgrate			= 30; //升级
+	required AlexaEventMessage alexa				= 31; //alexa
+};

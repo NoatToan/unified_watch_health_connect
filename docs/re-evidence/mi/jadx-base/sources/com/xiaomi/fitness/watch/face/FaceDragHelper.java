@@ -1,0 +1,24 @@
+package com.xiaomi.fitness.watch.face;
+
+import kotlin.Metadata;
+import org.jetbrains.annotations.NotNull;
+
+/* JADX INFO: loaded from: classes10.dex */
+@Metadata(d1 = {"\u0000\u0014\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0003\n\u0002\u0010\b\n\u0002\b\u0005\bÆ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003R\u001a\u0010\u0004\u001a\u00020\u0005X\u0086\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\u0006\u0010\u0007\"\u0004\b\b\u0010\t¨\u0006\n"}, d2 = {"Lcom/xiaomi/fitness/watch/face/FaceDragHelper;", "", "<init>", "()V", "buttonTop", "", "getButtonTop", "()I", "setButtonTop", "(I)V", "watch-face_chinaProductRelease"}, k = 1, mv = {2, 0, 0}, xi = 48)
+public final class FaceDragHelper {
+
+    @NotNull
+    public static final FaceDragHelper INSTANCE = new FaceDragHelper();
+    private static int buttonTop;
+
+    private FaceDragHelper() {
+    }
+
+    public final int getButtonTop() {
+        return buttonTop;
+    }
+
+    public final void setButtonTop(int i) {
+        buttonTop = i;
+    }
+}

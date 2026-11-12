@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/relative_care_no_data_shared_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:gravity="center"
+        android:id="@+id/banner_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/relative_care_data_not_shared_temporarily"
+        android:drawableTop="@drawable/relative_care_ic_data_not_shared"
+        android:drawablePadding="@dimen/dimen_margin_10dp"
+        android:translationY="-40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

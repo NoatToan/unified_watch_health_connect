@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="12sp"
+    android:textColor="@color/course_catalog_text"
+    android:gravity="center"
+    android:background="@drawable/course_catalog_tag"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:layout_width="wrap_content"
+    android:layout_height="32dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginStart="12dp"/>

@@ -1,0 +1,56 @@
+syntax = "proto2";
+
+package com.huami.proto;
+
+message SportEffectHistoryMessage {
+    repeated    uint32                year                                                 = 1;    /* 最近28天运动记录的年份 */
+    repeated    uint32                month                                                = 2;    /* 最近28天运动记录的月份 */
+    repeated    uint32                day                                                  = 3;    /* 最近28天运动记录的日数 */
+    repeated    float                 training_load_peak                                   = 4;    /* 最近28天运动记录的训练负荷值（epoc） */
+    repeated    float                 TrainingLoadBalance_anaerobic                        = 5;    /* 最近28天无氧训练负荷平衡值 */
+    repeated    float                 TrainingLoadBalance_high_intensity_aerobic           = 6;    /* 最近28天高强度有氧训练负荷平衡值 */
+    repeated    float                 TrainingLoadBalance_low_intensity_aerobic            = 7;    /* 最近28天低强度有氧训练负荷平衡值 */
+    repeated    float                 VO2Max_history                                       = 8;    /* 最近28天运动记录中产生的最大摄氧量 */
+    optional    int32                 flag                                                 = 9;    /* 当前运动记录中已经存放到的index */
+    repeated    float                 Training_Load_Weekly_history                         = 10;   /* 最近28天的每天的周运动负荷值 */
+    repeated    float                 Training_Load_Monthly_history                        = 11;   /* 最近28天的每天的月运动负荷值x */
+    repeated    uint32                Training_Load_Weekly_Optimal_Min_history             = 12;   /* 最近28天的每天的周运动负荷值最小值 */
+    repeated    uint32                Training_Load_Weekly_Optimal_Max_history             = 13;   /* 最近28天的每天的周运动负荷值最大值 */
+    repeated    uint32                Training_Load_Weekly_Optimal_overreaching_history    = 14;   /* 最近28天的每天的周运动负荷值过量值 */
+    repeated    uint32                updateTime_history                                   = 15;   /* 最近28天运动效果最后一次更新时间 */
+}
+
+message SportEffectMessage {
+    optional    uint32                       result_ver                                            = 1;    /* 输出结构体的版本号 */
+    optional    uint32                       VO2                                                   = 2;    /* 实时的摄氧量 */
+    optional    uint32                       Activity_Class                                        = 3;    /* 运动强度（40-100） */
+    optional    uint32                       maximalHR                                             = 4;    /* 本次运动产生的最大心率(>0:有效值，0：无效值) */
+    optional    uint32                       result_size                                           = 5;    /* 输出结构体的大小 */
+    optional    float                        EPOC                                                  = 6;    /* 实时的训练负荷（epoc，>0:有效值，0：无效值); (ml/kg) */
+    optional    float                        VO2max                                                = 7;    /* 最大摄氧量，(>0:有效值，0：无效值) (ml/kg/min) */
+    optional    float                        Aerobic_Training_Effect                               = 8;    /* 有氧训练效果，输出范围(0~5) */
+    optional    float                        Anaerobic_Training_Effect                             = 9;    /* 无氧训练效果，输出范围(0~5) */
+    repeated    float                        Running_Performance_Predict                           = 10;   /* 5千米、10千米、半马、全马的跑步时间预测值（单位：分钟） */
+    optional    uint32                       Recovery_Time                                         = 11;   /* 本次运动后的恢复时间 */
+    optional    uint32                       Training_Load_Weekly_Optimal_Min                      = 12;   /* 周训练负荷的最小值 */
+    optional    uint32                       Training_Load_Weekly_Optimal_Max                      = 13;   /* 周训练负荷的最大值 */
+    optional    uint32                       Training_Load_Weekly_Optimal_overreaching             = 14;   /* 周训练负荷的过量值 */
+    optional    float                        Training_Load_Weekly                                  = 15;   /* 周训练负荷的总值 */
+    optional    float                        Training_Load_Monthly                                 = 16;   /* 月训练负荷的总值 */
+    optional    float                        TrainingLoadBalance_Anaerobic_Monthly                 = 17;   /* 月无氧训练负荷平衡的总值 */
+    optional    float                        TrainingLoadBalance_High_Intensity_Aerobic_Monthly    = 18;   /* 月高强度有氧训练负荷平衡的总值 */
+    optional    float                        TrainingLoadBalance_Low_Intensity_Aerobic_Monthly     = 19;   /* 月低强度有氧训练负荷平衡的总值 */
+    optional    uint32                       lastvalid_vo2max_utc_time                             = 20;   /* 最新产生有效最大摄氧量的时间（UTC0时间） */
+    optional    uint32                       lastvalid_vo2max_fix_value                            = 21;   /* 最新产生有效最大摄氧量的值 */
+    optional    uint32                       if_valid_vo2max_raise                                 = 22;   /* 输出两次最大摄氧量（本次有效VO2max、上一次有效VO2max）的比较结果：0 不可比较, 1 比上一次高, 2 比上一次低, 3 相等 */
+    optional    uint32                       Workout_Label                                         = 23;   /* 锻炼标签 */
+    optional    uint32                       Lactate_Threshold_Hr                                  = 24;   /* 乳酸阈心率 (bpm) */
+    optional    float                        Lactate_Threshold_Speed                               = 25;   /* 乳酸阈配速(m/s) */
+    optional    uint32                       sport_end_utc_time                                    = 26;   /* 本次运动结束的时间 (UTC0时间) */
+    optional    SportEffectHistoryMessage    huami_sports_history_result_t                         = 27;   /* 历史28天运动记录数据 */
+    optional    float                        Aerobic_hr_rate                                       = 28;   /* 有氧心率占比,(0~100%) */
+    optional    float                        Anaerobic_hr_rate                                     = 29;   /* 无氧心率占比,(0~100%) */
+    optional    float                        Aerobic_speed_rate                                    = 30;   /* 有氧配速占比,(0~100%) */
+    optional    float                        Anaerobic_speed_rate                                  = 31;   /* 无氧配速占比,(0~100%) */
+    optional    int32                        physical_state                                        = 32;   /* 实时体能状态, -20~20 */
+}

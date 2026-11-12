@@ -1,0 +1,25 @@
+package com.xiaomi.fitness.watch.face.edit.photo.crop;
+
+import kotlin.Metadata;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.internal.FunctionReferenceImpl;
+
+/* JADX INFO: loaded from: classes10.dex */
+@Metadata(k = 3, mv = {2, 0, 0}, xi = 48)
+public /* synthetic */ class FaceEditPhotoCropFragment$initStyleList2$styleAdapter$1 extends FunctionReferenceImpl implements Function1<Integer, Unit> {
+    public FaceEditPhotoCropFragment$initStyleList2$styleAdapter$1(Object obj) {
+        super(1, obj, FaceEditPhotoCropFragment.class, "onStyleClick", "onStyleClick(I)V", 0);
+    }
+
+    @Override // kotlin.jvm.functions.Function1
+    /* JADX INFO: renamed from: invoke */
+    public /* bridge */ /* synthetic */ Unit invoke2(Integer num) {
+        invoke(num.intValue());
+        return Unit.INSTANCE;
+    }
+
+    public final void invoke(int i) {
+        ((FaceEditPhotoCropFragment) this.receiver).onStyleClick(i);
+    }
+}

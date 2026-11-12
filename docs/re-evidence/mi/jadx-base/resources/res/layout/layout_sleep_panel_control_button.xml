@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <include layout="@layout/layout_division_line"/>
+    <TextView
+        android:id="@+id/btn_control_panel"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginBottom="@dimen/size_30"
+        android:text="@string/health_common_panel_button_opened"
+        style="@style/CommonBtn.Normal"/>
+</LinearLayout>

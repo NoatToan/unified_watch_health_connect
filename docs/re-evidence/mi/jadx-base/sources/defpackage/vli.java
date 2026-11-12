@@ -1,0 +1,30 @@
+package defpackage;
+
+/* JADX INFO: loaded from: classes10.dex */
+public final class vli {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public static int f37007a = 2131165504;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public static int f37008b = 2131167614;
+    public static int c = 2131167686;
+    public static int common_btn_border_width = 2131165330;
+    public static int common_btn_corner_round_radius = 2131165331;
+    public static int common_btn_height = 2131165332;
+    public static int common_btn_margin = 2131165333;
+    public static int common_btn_single_line_width = 2131165334;
+    public static int common_btn_text_size = 2131165335;
+    public static int common_btn_top_label_margin = 2131165336;
+    public static int common_btn_two_column_width = 2131165337;
+    public static int common_card_item_radius = 2131165340;
+    public static int common_dialog_size_23_3 = 2131165344;
+    public static int common_divider_height = 2131165345;
+    public static int common_item_set_des_text_size = 2131165346;
+    public static int common_item_set_title_text_size = 2131165349;
+    public static int common_set_item_height = 2131165353;
+    public static int common_set_item_margin = 2131165354;
+    public static int common_set_item_margin_end = 2131165355;
+    public static int common_set_margin_start = 2131165356;
+    public static int common_title_left_margin = 2131165358;
+}

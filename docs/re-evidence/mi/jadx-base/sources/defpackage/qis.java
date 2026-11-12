@@ -1,0 +1,42 @@
+package defpackage;
+
+import android.text.TextUtils;
+
+/* JADX INFO: loaded from: classes4.dex */
+public final class qis {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public int f31559a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public int[] f31560b;
+    public int c;
+    public int d;
+    public String e;
+    public String f;
+    public String g;
+
+    public qis(int i, int[] iArr, String str, String str2, String str3) {
+        this.f31559a = i;
+        this.f31560b = iArr;
+        this.e = str;
+        this.f = str2;
+        this.g = str3;
+        str = TextUtils.isEmpty(str) ? str2 : str;
+        this.c = -1000;
+        if ("regions".equals(str)) {
+            this.c = 1001;
+        } else if ("water".equals(str)) {
+            this.c = 1002;
+        } else if ("buildings".equals(str)) {
+            this.c = 1003;
+        } else if ("roads".equals(str)) {
+            this.c = 1004;
+        } else if ("labels".equals(str)) {
+            this.c = 1005;
+        } else if ("borders".equals(str)) {
+            this.c = 1006;
+        }
+        this.d = (i * 1000) + iArr.hashCode();
+    }
+}

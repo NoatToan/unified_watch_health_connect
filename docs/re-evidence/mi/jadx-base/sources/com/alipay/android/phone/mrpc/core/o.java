@@ -1,0 +1,112 @@
+package com.alipay.android.phone.mrpc.core;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.http.Header;
+
+/* JADX INFO: loaded from: classes.dex */
+public final class o extends t {
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    private String f5753b;
+    private byte[] c;
+    private boolean g;
+    private ArrayList<Header> e = new ArrayList<>();
+    private Map<String, String> f = new HashMap();
+    private String d = "application/x-www-form-urlencoded";
+
+    public o(String str) {
+        this.f5753b = str;
+    }
+
+    public final String a() {
+        return this.f5753b;
+    }
+
+    public final String b(String str) {
+        Map<String, String> map = this.f;
+        if (map == null) {
+            return null;
+        }
+        return map.get(str);
+    }
+
+    public final String c() {
+        return this.d;
+    }
+
+    public final ArrayList<Header> d() {
+        return this.e;
+    }
+
+    public final boolean e() {
+        return this.g;
+    }
+
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || o.class != obj.getClass()) {
+            return false;
+        }
+        o oVar = (o) obj;
+        byte[] bArr = this.c;
+        if (bArr == null) {
+            if (oVar.c != null) {
+                return false;
+            }
+        } else if (!bArr.equals(oVar.c)) {
+            return false;
+        }
+        String str = this.f5753b;
+        String str2 = oVar.f5753b;
+        if (str == null) {
+            if (str2 != null) {
+                return false;
+            }
+        } else if (!str.equals(str2)) {
+            return false;
+        }
+        return true;
+    }
+
+    public final int hashCode() {
+        Map<String, String> map = this.f;
+        int iHashCode = ((map == null || !map.containsKey("id")) ? 1 : this.f.get("id").hashCode() + 31) * 31;
+        String str = this.f5753b;
+        return iHashCode + (str == null ? 0 : str.hashCode());
+    }
+
+    public final String toString() {
+        return String.format("Url : %s,HttpHeader: %s", this.f5753b, this.e);
+    }
+
+    public final void a(String str) {
+        this.d = str;
+    }
+
+    public final byte[] b() {
+        return this.c;
+    }
+
+    public final void a(String str, String str2) {
+        if (this.f == null) {
+            this.f = new HashMap();
+        }
+        this.f.put(str, str2);
+    }
+
+    public final void a(Header header) {
+        this.e.add(header);
+    }
+
+    public final void a(boolean z) {
+        this.g = z;
+    }
+
+    public final void a(byte[] bArr) {
+        this.c = bArr;
+    }
+}

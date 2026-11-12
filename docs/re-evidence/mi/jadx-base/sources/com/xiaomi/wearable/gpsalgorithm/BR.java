@@ -1,0 +1,53 @@
+package com.xiaomi.wearable.gpsalgorithm;
+
+/* JADX INFO: loaded from: classes2.dex */
+public class BR {
+    public static final int _all = 0;
+    public static final int accessoryDevice = 1;
+    public static final int addSongList = 2;
+    public static final int allInfo = 3;
+    public static final int categoryData = 4;
+    public static final int channelViewModel = 5;
+    public static final int click = 6;
+    public static final int clickListener = 7;
+    public static final int currentDevice = 8;
+    public static final int data = 9;
+    public static final int detail = 10;
+    public static final int device = 11;
+    public static final int deviceInfo = 12;
+    public static final int ftpData = 13;
+    public static final int info = 14;
+    public static final int isUbox = 15;
+    public static final int item = 16;
+    public static final int label = 17;
+    public static final int launchBean = 18;
+    public static final int listener = 19;
+    public static final int localSportBean = 20;
+    public static final int mainViewModel = 21;
+    public static final int medal = 22;
+    public static final int mineViewModel = 23;
+    public static final int nameStr = 24;
+    public static final int navigation = 25;
+    public static final int night = 26;
+    public static final int normalSportBean = 27;
+    public static final int onClick = 28;
+    public static final int orderId = 29;
+    public static final int phoneData = 30;
+    public static final int player = 31;
+    public static final int previewUrl = 32;
+    public static final int priceValue = 33;
+    public static final int regionViewModel = 34;
+    public static final int report = 35;
+    public static final int resultViewModel = 36;
+    public static final int rnDeviceInfo = 37;
+    public static final int scannedDeviceInfo = 38;
+    public static final int shareListHelper = 39;
+    public static final int song = 40;
+    public static final int songlist = 41;
+    public static final int startTimestamp = 42;
+    public static final int tabListData = 43;
+    public static final int titleData = 44;
+    public static final int viewModel = 45;
+    public static final int viewmodel = 46;
+    public static final int vm = 47;
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="@dimen/dimen_13sp"
+        android:textColor="@color/text_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sport_route_create_detail_intro_subtitle"
+        android:alpha="0.4"/>
+    <TextView
+        android:textSize="@dimen/dimen_14sp"
+        android:textColor="@color/text_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/sport_route_create_detail_intro_content"
+        android:fontFamily="@font/misanslatin_bold"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/sport_route_create_detail_intro_icon"/>
+</LinearLayout>

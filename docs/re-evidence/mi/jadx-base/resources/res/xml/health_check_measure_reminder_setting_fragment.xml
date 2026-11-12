@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.xiaomi.fitness.health.todayhealth.ui.setting.HealthCheckMeasureReminderSwitchPreferenceCompat
+        android:layout="@layout/layout_two_textview_switch_button_customer"
+        android:title="@string/health_check_setting_measure_remind_element_measure_remind"
+        android:key="reminder_enable"
+        android:summary="@string/health_check_setting_measure_remind_element_measure_remind_sub"/>
+    <PreferenceCategory
+        android:layout="@layout/miuix_preference_category_layout_empty"
+        android:key="reminder_enable_group"
+        android:dependency="reminder_enable">
+        <miuix.preference.TextPreference
+            android:layout="@layout/health_healthcheck_preference_text"
+            android:title="@string/health_check_setting_measure_remind_element_repeat_remind"
+            android:key="reminder_repeat_mode"
+            android:dependency="reminder_enable_group"/>
+        <miuix.preference.DropDownPreference
+            android:layout="@layout/health_healthcheck_preference_text"
+            android:title="@string/health_check_setting_measure_remind_element_daily_remind_count"
+            android:key="reminder_daily_count"
+            android:dependency="reminder_enable_group"/>
+    </PreferenceCategory>
+</PreferenceScreen>

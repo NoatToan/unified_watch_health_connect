@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/health_fragment_curse_bar_chart_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/top_guide"
+        layout="@layout/health_layout_curse_top_guide"/>
+    <com.xiaomi.fitness.chart.view.BarChartRecyclerView
+        android:id="@+id/bar_recycler"
+        android:layout_marginTop="30dp"
+        app:barChartMaxWidth="@dimen/size_10"
+        app:barChartRoundRectRadiusRatio="0.25"
+        app:chartColor="@color/health_curse_cycle_day"
+        app:displayNumbers="6"
+        app:enableStartYAxisLabel="false"
+        style="@style/ChartBaseStyle"/>
+    <com.xiaomi.fitness.view.MultiDataTitleView
+        android:id="@+id/dataTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"/>
+</FrameLayout>

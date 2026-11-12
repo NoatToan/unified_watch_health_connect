@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/view_eco_sport_head_0"
+    android:fitsSystemWindows="false"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View
+        android:id="@+id/top"
+        android:background="@color/color_fdecd2"
+        android:layout_width="0dp"
+        android:layout_height="138dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <View
+        android:background="@drawable/shape_sport_head"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top"/>
+    <com.xiaomi.fitness.widget.view.HomeHeaderView
+        android:id="@+id/sport_header_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_28dp"
+        app:header_desc="@string/sport_advise0"
+        app:header_rightArrowShow="false"
+        app:header_title="@string/sport"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

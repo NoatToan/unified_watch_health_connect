@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/device_settings_fragment_alarm_clock_add_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.xiaomi.fitness.devicesettings.widget.TimePicker
+            android:id="@+id/time_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:textColor="@color/common_hint_des_txt_color"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/tv_time_clock_desc"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            style="@style/FontRegular.12sp"/>
+        <View
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+            android:layout_marginEnd="@dimen/page_content_padding_horizontal_large"
+            style="@style/HorizontalSeparatorLine"/>
+        <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+            android:id="@+id/alarm_type_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+            android:layout_marginEnd="@dimen/page_content_padding_horizontal_large"
+            app:title="@string/device_settings_common_repeat"/>
+        <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+            android:id="@+id/alarm_smart_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+            android:layout_marginEnd="@dimen/page_content_padding_horizontal_large"
+            app:subtitle="@string/device_settings_intelligent_notify_desc"
+            app:title="@string/device_settings_intelligent_notify"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

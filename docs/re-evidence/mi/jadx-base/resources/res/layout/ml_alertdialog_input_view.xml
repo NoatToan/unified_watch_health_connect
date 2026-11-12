@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="14.67sp"
+    android:textColor="@color/common_text_color_gray"
+    android:textColorHint="#c1c1c1"
+    android:id="@+id/ml_alertdialog_input_text"
+    android:background="@drawable/ml_alertdialog_chat_bottom_enter_bg_light"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:singleLine="true"
+    android:paddingStart="13.33dp"
+    android:paddingEnd="13.33dp"/>

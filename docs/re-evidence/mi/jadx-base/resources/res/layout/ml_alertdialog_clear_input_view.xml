@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.baseui.dialog.ClearEditText xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="14sp"
+    android:id="@+id/ml_alertdialog_clear_input_text"
+    android:background="@drawable/dialog_search_text_bg_f0f0f0"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:text=""
+    android:hint=""
+    android:drawablePadding="14dp"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"/>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/course_eco_launch_layout_post_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.widget.view.RatioImageView
+        android:id="@+id/imgView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        app:ratio="1.72"
+        app:shapeAppearance="@style/CourseShapeImage"/>
+    <View
+        android:background="@drawable/shape_course_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <TextView
+        android:textSize="15sp"
+        android:textColor="@color/common_white"
+        android:ellipsize="end"
+        android:layout_gravity="start|bottom"
+        android:id="@+id/titleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
+        android:maxLines="4"
+        android:shadowColor="#33000000"
+        android:shadowDy="2"
+        android:shadowRadius="6"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="24dp"/>
+</FrameLayout>

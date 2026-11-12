@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dimen_margin_26dp"
+    android:paddingTop="@dimen/dimen_margin_16dp"
+    android:paddingRight="@dimen/dimen_margin_26dp"
+    android:paddingBottom="@dimen/dimen_margin_16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:textColor="@color/eco_device_text_color_black"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/device_continue_to_bind_rope_title"/>
+    <TextView
+        android:textColor="@color/eco_device_text_color_black"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_16dp"
+        android:text="@string/device_continue_to_bind_rope_content"
+        style="@style/FontRegular.16sp"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_marginTop="@dimen/dimen_margin_26dp"
+        android:src="@drawable/device_dialog_button_confirm_rope"/>
+</LinearLayout>

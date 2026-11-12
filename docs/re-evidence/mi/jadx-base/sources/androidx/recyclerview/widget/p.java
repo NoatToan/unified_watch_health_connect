@@ -1,0 +1,60 @@
+package androidx.recyclerview.widget;
+
+import androidx.recyclerview.widget.RecyclerView.d0;
+import java.util.List;
+
+/* JADX INFO: loaded from: classes.dex */
+public abstract class p<T, VH extends RecyclerView.d0> extends RecyclerView.Adapter<VH> {
+    final d<T> mDiffer;
+    private final d.b<T> mListener;
+
+    public class a implements d.b<T> {
+        public a() {
+        }
+
+        @Override // androidx.recyclerview.widget.d.b
+        public void a(List<T> list, List<T> list2) {
+            p.this.onCurrentListChanged(list, list2);
+        }
+    }
+
+    public p(h.f<T> fVar) {
+        a aVar = new a();
+        this.mListener = aVar;
+        d<T> dVar = new d<>(new b(this), new c.a(fVar).a());
+        this.mDiffer = dVar;
+        dVar.a(aVar);
+    }
+
+    public List<T> getCurrentList() {
+        return this.mDiffer.b();
+    }
+
+    public T getItem(int i) {
+        return this.mDiffer.b().get(i);
+    }
+
+    @Override // androidx.recyclerview.widget.RecyclerView.Adapter
+    public int getItemCount() {
+        return this.mDiffer.b().size();
+    }
+
+    public void onCurrentListChanged(List<T> list, List<T> list2) {
+    }
+
+    public void submitList(List<T> list) {
+        this.mDiffer.e(list);
+    }
+
+    public void submitList(List<T> list, Runnable runnable) {
+        this.mDiffer.f(list, runnable);
+    }
+
+    public p(c<T> cVar) {
+        a aVar = new a();
+        this.mListener = aVar;
+        d<T> dVar = new d<>(new b(this), cVar);
+        this.mDiffer = dVar;
+        dVar.a(aVar);
+    }
+}

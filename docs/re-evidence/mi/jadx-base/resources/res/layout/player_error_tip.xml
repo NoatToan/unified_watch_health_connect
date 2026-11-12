@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/movie_player_net_error_tip"
+    android:background="@color/color_212121"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/movie_player_net_error_content_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+        <TextView
+            android:textSize="13sp"
+            android:textColor="@android:color/white"
+            android:id="@+id/error_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="54dp"
+            android:text="@string/common_exoplay_player_data_error_tip"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/player_error_retry"
+            android:background="@drawable/player_net_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="52.4dp"/>
+    </LinearLayout>
+</RelativeLayout>

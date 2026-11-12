@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_understand_bloodpressure_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_blood_pressure_understand_first_desc"
+            app:understand_title="@string/health_blood_pressure_understand_first_title"/>
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_blood_pressure_understand_second_desc"/>
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_blood_pressure_understand_third_desc"
+            app:understand_title="@string/health_blood_pressure_understand_third_title"/>
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_20"
+            android:layout_marginBottom="@dimen/size_20"
+            app:understand_detail="@string/health_blood_pressure_understand_orgin"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

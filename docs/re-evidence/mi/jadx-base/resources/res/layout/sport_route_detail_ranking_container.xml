@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_scroll_view"
+    android:tag="layout/sport_route_detail_ranking_container_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:paddingTop="@dimen/dimen_margin_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dimen_margin_30dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:orientation="vertical"
+            android:id="@+id/punch_in_ranking_list_recycler"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:orientation="vertical"
+            android:id="@+id/grade_ranking_list_recycler"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:textSize="@dimen/dimen_13sp"
+            android:textColor="@color/text_color_40"
+            android:gravity="center"
+            android:id="@+id/no_data_tv"
+            android:paddingTop="@dimen/dimen_margin_40dp"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sport_no_one_run_this_route_remind"
+            android:drawableTop="@drawable/sport_grey_trophy"
+            android:drawablePadding="@dimen/dimen_margin_13dp"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

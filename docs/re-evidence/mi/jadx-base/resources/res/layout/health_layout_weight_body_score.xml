@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.health.weight.ui.view.BodyIndicatorEstimationCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/body_indicator_estimation"
+    android:tag="layout/health_layout_weight_body_score_0"
+    android:background="@drawable/shape_data_item_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_20dp"
+    android:layout_marginBottom="@dimen/health_detail_page_common_margin_vertical"/>

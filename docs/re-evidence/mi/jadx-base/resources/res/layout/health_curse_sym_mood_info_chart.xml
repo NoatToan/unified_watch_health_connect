@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="18dp">
+    <TextView
+        android:textSize="18sp"
+        android:textColor="@color/text_color"
+        android:id="@+id/typeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        style="@style/FontMedium"/>
+    <com.xiaomi.fitness.chart.view.ScrollChartRecycleView
+        android:id="@+id/face_chart_recycler"
+        android:scrollbars="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:layout_marginTop="@dimen/dimen_margin_12dp"
+        android:overScrollMode="never"
+        android:paddingEnd="@dimen/dimen_margin_32dp"
+        app:displayNumbers="8"
+        app:enableEndYAxisLabel="true"
+        app:enableScrollToScale="true"
+        app:enableStartYAxisLabel="false"
+        app:enableXAxisLineCircle="true"
+        app:lineStrokeWidth="6"
+        app:xAxisScaleDistance="10"
+        app:yAxisLabelSize="3"
+        app:yAxisLabelVerticalPadding="30dp"
+        app:yAxisMaximum="6"/>
+</LinearLayout>

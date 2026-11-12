@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/layout_stand_dwm_common_0"
+    android:paddingBottom="@dimen/health_detail_page_common_margin_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/health_detail_page_common_margin_horizontal">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_stand_detail"
+        android:background="@drawable/shape_data_item_bg"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_12"
+        android:overScrollMode="never"/>
+    <com.xiaomi.fitness.health.stand.StandManualSetView
+        android:id="@+id/standManualView"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_12"/>
+    <com.xiaomi.fitness.view.CardUnderstandView
+        android:id="@+id/understandCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:txtUnderstand="@string/health_data_explain_stand"/>
+</LinearLayout>

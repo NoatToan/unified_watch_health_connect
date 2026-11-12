@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/feedback_icon_feedback_add"
+    android:layout_width="@dimen/feedback_img_size"
+    android:layout_height="@dimen/feedback_img_size"
+    android:scaleType="centerCrop"
+    android:alpha="0.6"/>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/dimen_margin_12dp">
+    <androidx.recyclerview.widget.RecyclerView
+        android:orientation="vertical"
+        android:id="@+id/recycler"
+        android:background="@drawable/shape_card_bg_inner_today_health"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="4dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    <TextView
+        android:textSize="@dimen/dimen_14sp"
+        android:textColor="@color/text_color_60"
+        android:id="@+id/instruction_tv"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_14dp"
+        android:layout_marginStart="@dimen/dimen_margin_6dp"/>
+</LinearLayout>

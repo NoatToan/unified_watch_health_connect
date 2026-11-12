@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/heartrate_activity_detect_manual_0"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/heartrate_iv_detect_example"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/heartrate_img_fp_principle_bg"
+        android:scaleType="centerCrop"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <TextView
+        android:textSize="@dimen/heartrate_welcome_des_text_size"
+        android:textColor="@color/white_80"
+        android:id="@+id/heartrate_tv_detect_des"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7.3dp"
+        android:text="@string/heartrate_fp_detect_desc"
+        android:lineSpacingMultiplier="1.2"
+        android:layout_marginStart="@dimen/heartrate_welcome_padding_h"
+        android:layout_marginEnd="@dimen/heartrate_welcome_padding_h"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/heartrate_tv_start_detect"
+        android:background="@drawable/dialog_common_primary_button_bg"
+        android:layout_marginBottom="32dp"
+        android:minHeight="46.7dp"
+        android:text="@string/heartrate_start_detect"
+        android:paddingStart="@dimen/dimen_margin_10dp"
+        android:paddingEnd="@dimen/dimen_margin_10dp"
+        android:layout_marginStart="@dimen/heartrate_welcome_padding_h"
+        android:layout_marginEnd="@dimen/heartrate_welcome_padding_h"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/BaseButton.Positive.DetectButton"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

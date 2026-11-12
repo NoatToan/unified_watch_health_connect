@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="@dimen/dimen_18sp"
+        android:textColor="@color/text_color"
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="@dimen/dimen_14sp"
+        android:textColor="@color/text_color_60"
+        android:id="@+id/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"/>
+    <include
+        android:id="@+id/monday"
+        layout="@layout/item_plan_setting_day"/>
+    <include
+        android:id="@+id/tuesday"
+        layout="@layout/item_plan_setting_day"/>
+    <include
+        android:id="@+id/wednesday"
+        layout="@layout/item_plan_setting_day"/>
+    <include
+        android:id="@+id/thursday"
+        layout="@layout/item_plan_setting_day"/>
+    <include
+        android:id="@+id/friday"
+        layout="@layout/item_plan_setting_day"/>
+    <include
+        android:id="@+id/saturday"
+        layout="@layout/item_plan_setting_day"/>
+    <include
+        android:id="@+id/sunday"
+        layout="@layout/item_plan_setting_day"/>
+</LinearLayout>

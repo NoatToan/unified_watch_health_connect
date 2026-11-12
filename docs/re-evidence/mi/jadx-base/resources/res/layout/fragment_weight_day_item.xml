@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/container"
+    android:tag="layout/fragment_weight_day_item_0"
+    android:paddingBottom="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xiaomi.fitness.chart.view.LineChartRecyclerView
+            android:id="@+id/line_chart_recycler"
+            app:enableScrollToScale="true"
+            app:enableStartYAxisLabel="false"
+            app:enableXAxisLineCircle="true"
+            app:lineColor="@color/weight_chart_color"
+            app:lineHighLightType="4"
+            app:linePointRadius="@dimen/size_2"
+            app:linePointSelectCircleStroke="true"
+            app:linePointSelectRadius="@dimen/size_2"
+            app:linePointSelectStrokeWidth="@dimen/size_2"
+            app:lineSelectCircles="1"
+            app:lineShaderBeginColor="@color/energy_shader_begin"
+            app:lineShaderEndColor="@color/energy_shader_end"
+            app:lineStrokeWidth="6"
+            app:xAxisLabelPosition="0"
+            style="@style/ChartBaseStyle"/>
+        <com.xiaomi.fitness.view.DataTitleView
+            android:id="@+id/dataTitleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+    <include
+        android:id="@+id/layout_weight_day_detail"
+        layout="@layout/health_layout_weight_day_detail"/>
+</LinearLayout>

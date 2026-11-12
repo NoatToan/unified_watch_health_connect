@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/training_card_shape"
+    android:padding="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="17sp"
+        android:textColor="@color/text_color"
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/misanslatin_regular"/>
+    <TextView
+        android:textSize="13sp"
+        android:textColor="@color/text_color_40"
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/misanslatin_medium"/>
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_12dp"
+        android:layout_marginStart="@dimen/dimen_margin_8dp"
+        android:layout_marginEnd="@dimen/dimen_margin_8dp"
+        app:flexWrap="wrap"/>
+</LinearLayout>

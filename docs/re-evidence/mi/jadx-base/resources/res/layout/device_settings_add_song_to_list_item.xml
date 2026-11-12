@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:id="@+id/vibrateBgView"
+    android:tag="layout/device_settings_add_song_to_list_item_0"
+    android:paddingTop="@dimen/dimen_margin_20dp"
+    android:paddingBottom="@dimen/dimen_margin_20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/page_content_padding_horizontal_large"
+    android:paddingEnd="@dimen/page_content_padding_horizontal_large">
+    <TextView
+        android:textSize="@dimen/dimen_15sp"
+        android:textStyle="bold"
+        android:textColor="@color/switch_black"
+        android:id="@+id/song_list_name_tv"
+        android:tag="binding_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_margin_16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/song_list_select_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.appcompat.widget.AppCompatCheckedTextView
+        android:id="@+id/song_list_select_view"
+        android:background="@drawable/selector_common_circle_check_with_enable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

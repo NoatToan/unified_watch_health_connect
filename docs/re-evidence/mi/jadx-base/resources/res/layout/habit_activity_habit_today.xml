@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/habit_activity_habit_today_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <miuix.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/page_padding_horizontal_large"
+        android:layout_marginEnd="@dimen/page_padding_horizontal_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <View
+        android:background="@color/black_20_transparent"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+    <Button
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/punchView"
+        android:layout_width="@dimen/common_btn_single_line_width"
+        android:layout_height="@dimen/common_btn_height"
+        android:layout_marginTop="@dimen/common_title_left_margin"
+        android:layout_marginBottom="@dimen/common_title_left_margin"
+        android:text="@string/habit_punch"
+        style="@style/CommonBtn.Primary"/>
+</LinearLayout>

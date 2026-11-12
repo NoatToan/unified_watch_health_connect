@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_fragment_music_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/page_content_padding_horizontal_large"
+    android:paddingEnd="@dimen/page_content_padding_horizontal_large">
+    <com.xiaomi.fitness.widget.RightArrowBindingSingleLineTextView
+        android:id="@+id/deviceSettingView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/device_settings_mucis_setting"/>
+    <com.xiaomi.fitness.widget.SwitchButtonSingleLineTextView
+        android:id="@+id/appSettingView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_10dp"
+        app:title="@string/device_settings_mucis_setting_app"/>
+</LinearLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:tag="layout/device_item_device_0"
+    android:background="@drawable/selector_card_bg"
+    android:paddingTop="@dimen/device_add_device_item_padding_v"
+    android:paddingBottom="@dimen/device_add_device_item_padding_v"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.widget.SquareImageView
+        android:id="@+id/device_iv_device_dial"
+        android:layout_width="@dimen/device_item_device_dial_size"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"/>
+    <TextView
+        android:textSize="@dimen/device_add_device_name_text_size"
+        android:textColor="@color/device_text_color_black"
+        android:gravity="center"
+        android:id="@+id/device_tv_device_name"
+        android:tag="binding_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:maxLines="2"
+        style="@style/FontMedium.16sp"/>
+</LinearLayout>

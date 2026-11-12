@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_fragment_huami_sleep_setting_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/page_content_padding_horizontal_large"
+    android:paddingEnd="@dimen/page_content_padding_horizontal_large">
+    <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+        android:id="@+id/sleep_aids_detection_view"
+        android:tag="binding_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:subtitle="@string/device_settings_detection_sleep_aids_des"
+        app:title="@string/device_settings_detection_sleep_aids"/>
+    <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+        android:id="@+id/sleep_breath_quality_view"
+        android:tag="binding_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:subtitle="@string/device_settings_detection_sleep_respiration_des"
+        app:title="@string/device_settings_detection_sleep_respiration"/>
+</LinearLayout>

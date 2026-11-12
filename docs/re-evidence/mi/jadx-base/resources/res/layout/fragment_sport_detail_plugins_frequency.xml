@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_sport_detail_plugins_frequency_0"
+    android:paddingBottom="@dimen/dimen_margin_18dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.widget.view.DataTitleSimpleView
+        android:id="@+id/dataSimpleTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/itemViewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_margin_20dp">
+        <com.xiaomi.fitness.baseui.widget.SportDetailItemView
+            android:id="@+id/detailItemView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:itemGravity="0"
+            app:itemHeight="100dp"
+            app:txtNameColor="@color/text_color"
+            app:txtNameSize="@dimen/font_10"
+            app:txtValueColor="@color/text_color"
+            app:txtValueFont="@font/misanslatin_demibold"
+            app:txtValueSize="@dimen/dimen_26sp"/>
+        <com.xiaomi.fitness.baseui.widget.SportDetailItemView
+            android:id="@+id/detailItemView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:itemGravity="0"
+            app:itemHeight="100dp"
+            app:txtNameColor="@color/text_color"
+            app:txtNameSize="@dimen/font_10"
+            app:txtValueColor="@color/text_color"
+            app:txtValueFont="@font/misanslatin_demibold"
+            app:txtValueSize="@dimen/dimen_26sp"/>
+    </LinearLayout>
+</LinearLayout>

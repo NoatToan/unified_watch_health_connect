@@ -1,0 +1,65 @@
+
+\data\
+ngram 1=18
+ngram 2=37
+
+\1-grams:
+-0.7337321	</s>
+-1.812913	<any>/ask_for	-0.5746989
+-1.335792	<any>/call	-0.7564605
+-1.636822	<any>/haoma	-0.5134225
+-0.7337321	<any>/name	-1.297216
+-1	<any>/norm_tag	-1.821765
+-1.034762	<any>/operation	-1.779596
+-1.335792	<any>/orientation	-0.7564605
+-0.9378521	<any>/phone	-1.090177
+-1.511883	<any>/quantifiers	-1.064854
+-99	<s>	-1.774515
+-10	<unk>
+-2.113943	个/eps	-0.2477845
+-2.113943	到/eps	-0.2123925
+-1.511883	和/eps	-1.029462
+-1.335792	的/eps	-1.145919
+-1.414973	给/eps	-0.6895138
+-1.636822	通话/eps	-0.5134225
+
+\2-grams:
+-0.1272427	<any>/ask_for <any>/call
+-0.06694679	<any>/call <any>/name
+-0.1249387	<any>/haoma </s>
+-0.9208187	<any>/name </s>
+-1.39794	<any>/name <any>/haoma
+-0.4436975	<any>/name <any>/norm_tag
+-1.048061	<any>/name <any>/operation
+-1.048061	<any>/name <any>/phone
+-0.6197888	<any>/name 的/eps
+-1.39794	<any>/name 通话/eps
+-0.3679768	<any>/norm_tag </s>
+-1.146128	<any>/norm_tag <any>/haoma
+-0.4815756	<any>/norm_tag <any>/operation
+-0.7962494	<any>/norm_tag 通话/eps
+-0.7640648	<any>/operation <any>/name
+-0.4149733	<any>/operation <any>/phone
+-0.4493909	<any>/operation <any>/quantifiers
+-1.113943	<any>/operation 个/eps
+-0.06694679	<any>/orientation <any>/name
+-0.2498775	<any>/phone </s>
+-1.20412	<any>/phone 到/eps
+-0.50515	<any>/phone 给/eps
+-0.03441757	<any>/quantifiers <any>/phone
+-1.065095	<s> <any>/ask_for
+-0.7504209	<s> <any>/call
+-0.6368221	<s> <any>/operation
+-0.6368221	<s> <any>/orientation
+-1.065095	<s> <any>/phone
+-0.7504209	<s> 和/eps
+-0.30103	个/eps <any>/phone
+-0.30103	到/eps <any>/name
+-0.03441757	和/eps <any>/name
+-0.845098	的/eps <any>/haoma
+-0.1805456	的/eps <any>/norm_tag
+-0.845098	的/eps <any>/phone
+-0.07918125	给/eps <any>/name
+-0.1249387	通话/eps </s>
+
+\end\

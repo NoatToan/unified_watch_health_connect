@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@drawable/device_settings_bg_white_radius_16"
+    android:padding="18dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp">
+    <com.xiaomi.fitness.devicesettings.bluttooth.widget.view.WidgetGroupView
+        android:id="@+id/widget_group"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        app:wgv_item_radius="8.7dp"
+        app:wgv_selectable="false"
+        app:wgv_show_add_mask="false"
+        app:wgv_show_empty_item="false"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_drag_icon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/device_settings_ic_change_index"
+        android:scaleType="center"
+        android:layout_centerVertical="true"
+        android:paddingStart="50dp"
+        android:paddingEnd="0dp"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_remind_fragment_event_edit_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/page_content_padding_horizontal_large">
+    <miuix.androidbasewidget.widget.EditText
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/text_color_40"
+        android:gravity="start|top"
+        android:id="@+id/editEventContentEDT"
+        android:background="@null"
+        android:paddingTop="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="11.6dp"
+        android:hint="@string/device_settings_reminder_hint_event_title"
+        android:maxLines="6"
+        android:maxLength="25"
+        android:inputType="textMultiLine"
+        style="@style/FontRegular.16sp"/>
+    <TextView
+        android:textColor="@color/red"
+        android:id="@+id/edit_content_exceeded_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        style="@style/FontRegular.12sp"/>
+    <View
+        android:layout_marginBottom="30dp"
+        style="@style/HorizontalSeparatorLine"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/editEventTimeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/device_settings_remind_common_time"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/editEventPeriodView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/device_settings_common_period"/>
+</LinearLayout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_interval_training_duration_tab_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.widget.RightArrowBindingSingleLineTextView
+        android:id="@+id/tv_duration_of_each_group"
+        android:tag="binding_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_20dp"
+        android:paddingStart="@dimen/margin_27dp"
+        android:paddingEnd="@dimen/dimen_margin_22dp"
+        app:icon="@drawable/course_each_group"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showMore="true"
+        app:title="@string/sport_rope_duration_of_each_group"/>
+    <com.xiaomi.fitness.widget.RightArrowBindingSingleLineTextView
+        android:id="@+id/tv_rest_duration"
+        android:tag="binding_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin_27dp"
+        android:paddingEnd="@dimen/dimen_margin_22dp"
+        app:icon="@drawable/course_rest_duration"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_duration_of_each_group"
+        app:showMore="true"
+        app:title="@string/sport_rope_rest_duration"/>
+    <com.xiaomi.fitness.widget.RightArrowBindingSingleLineTextView
+        android:id="@+id/tv_number_of_training_groups"
+        android:tag="binding_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin_27dp"
+        android:paddingEnd="@dimen/dimen_margin_22dp"
+        app:icon="@drawable/course_training_groups"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rest_duration"
+        app:showMore="true"
+        app:title="@string/sport_rope_number_of_training_groups"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

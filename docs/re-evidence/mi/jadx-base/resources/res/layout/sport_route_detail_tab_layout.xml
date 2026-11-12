@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.tabs.TabLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tab_layout"
+    android:tag="layout/sport_route_detail_tab_layout_0"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:tabBackground="@color/page_white_bg"
+    app:tabGravity="center"
+    app:tabIconTint="@color/white_50"
+    app:tabIndicator="@drawable/shape_tab_indicator"
+    app:tabIndicatorAnimationMode="linear"
+    app:tabIndicatorFullWidth="false"
+    app:tabIndicatorHeight="3dp"
+    app:tabMode="fixed"
+    app:tabSelectedTextColor="@color/text_color"
+    app:tabTextColor="@color/text_color_60"/>

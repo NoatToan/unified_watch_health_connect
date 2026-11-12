@@ -1,0 +1,80 @@
+syntax = "proto2";
+
+package com.huami.proto;
+message PHNExerciseInfoMessage {
+  optional  uint32    flag_recommended_exercise      = 1;    /* 当日是否有锻炼推荐，0: 无推荐，休息；1: 当日trimp推荐；2: 当日剩余trimp推荐 */
+  optional  uint32    hr_lower_zone1                 = 2;    /* zone1推荐的心率下限 */
+  optional  uint32    hr_upper_zone1                 = 3;    /* zone1推荐的心率上限 */
+  optional  uint32    hr_lower_zone2                 = 4;    /* zone2推荐的心率下限 */
+  optional  uint32    hr_upper_zone2                 = 5;    /* zone2推荐的心率上限 */
+  optional  uint32    hr_lower_zone3                 = 6;    /* zone3推荐的心率下限 */
+  optional  uint32    hr_upper_zone3                 = 7;    /* zone3推荐的心率上限 */
+  optional  uint32    duration_zone1                 = 8;    /* zone1推荐的锻炼分钟数 */
+  optional  uint32    duration_zone2                 = 9;    /* zone2推荐的锻炼分钟数 */
+  optional  uint32    duration_zone3                 = 10;   /* zone3推荐的锻炼分钟数 */
+  optional  uint32    daily_recommend_intensity      = 11;   /* 当日推荐强度，0：无；1：低强度；2：中强度；3：高强度。（V1.1更新） */
+}
+
+message PHNFlagsMessage {
+  optional  uint32    flag_last_week_trimp_completed      = 1;    /* 上周计划完成状态：0：不显示；1：上周无计划（第一周）；2：0<=上周完成度<80%；3：80%<=上周完成度<100%；4：100%；5：100%<=上周完成度<150%；6：150%<=上周完成度。（V1.1更新） */
+  optional  uint32    flag_compare_last_week_recommend    = 2;    /* 本周计划相对上周变化的状态：0:不显示;1:第一周;2:减少;3:维持;4:增加;5:运动循环导致的降低。（V1.1更新） */
+  optional  uint32    flag_last_week_TSB                  = 3;    /* 上周tsb状态：0:不显示;1:上周的TSB低于-30的天数超过两天。（V1.1更新） */
+  optional  uint32    flag_exercise_on_rest_days          = 4;    /* 休息日进行锻炼：0:不显示;1:休息日进行锻炼.（V1.1更新） */
+  optional  uint32    flag_sleep_state_last_night         = 5;    /* 昨晚睡眠状态：0:不显示;1:昨晚睡眠状态差.（V1.1更新） */
+  optional  uint32    flag_exercise_before_go_to_bed      = 6;    /* 睡前运动状态：0:不显示;1:睡前高强度运动.（V1.1更新） */
+  optional  uint32    flag_daily_recommend_excess         = 7;    /* 训练计划过高：0:不显示;1:推荐的是高强度训练.（V1.1更新） */
+  optional  uint32    flag_exercise_wake_up               = 8;    /* 醒后运动状态：0:不提醒;1:醒后高强度运动.（V1.1更新） */
+  optional  uint32    flag_warm_up_alert                  = 9;    /* 运动热身提醒：0:不提醒;1:热身时间过短警告.（V1.1更新） */
+  optional  uint32    flag_current_exercise_standard      = 10;   /* 单次训练达标：0:不提醒;1:本次锻炼达标提示.（V1.1更新） */
+}
+
+message PHNResultMessage {
+  required  string    version                                  = 1;    /* 版本号，当前是1.0 */
+  optional  int32     daily_trimp_scores                       = 2;    /* 当日实时trimp score */
+  optional  uint32    minutes_over_20m                         = 3;    /* 当时实时运动时间大于20min片段的总分钟数 */
+  repeated  int32     trimp_42_days                            = 4;    /* 前42天的trimp score，初始值为-1，设备关机的日期补-1 */
+  repeated  float     atl_42_days                              = 5;    /* 前42天的ATL，初始值为0，设备关机的日期补0 */
+  repeated  float     ctl_42_days                              = 6;    /* 前42天的CTL，初始值为0，设备关机的日期补0 */
+  repeated  float     tsb_42_days                              = 7;    /* 前42天的stress balance，初始值为0，设备关机的日期补0 */
+  optional  uint32    current_weekday                          = 8;    /* 当日为7天中的第几天，第一天为0 */
+  optional  uint32    flag_tsb_below_20_in_a_week              = 9;    /* 上周是否有tsb_below_20 */
+  optional  uint32    flag_tsb_below_20_in_10_days             = 10;   /* 前十天是否有tsb_below_20 */
+  optional  uint32    flag_tsb_below_20_ever                   = 11;   /* 以前是否有tsb_below_20 */
+  optional  uint32    flag_historical_trimp                    = 12;   /* 以前是否有trimp score */
+  optional  float     thelast_historical_trimp_ctl             = 13;   /* 历史上最近一次的CTL */
+  optional  float     thelast_trimp_ctl_last_week              = 14;   /* 上周最近一次的CTL */
+  optional  float     thelast_trimp_ctl_a_week_before_last_week    = 15;   /* 上上周最近一次的CTL */
+  optional  uint32    count_daily_exercise                     = 16;   /* 上周锻炼天数 */
+  optional  float     trimp_weekly_recommend                   = 17;   /* 本周trimp推荐均值 */
+  optional  float     trimp_daily_max                          = 18;   /* 当日trimp推荐最大值 */
+  optional  float     trimp_daily_recommended                  = 19;   /* 当日trimp推荐值 */
+  optional  float     trimp_week_completed                     = 20;   /* 本周已获得的trimp总值 */
+  optional  uint32    percent_completed_week_trimp             = 21;   /* 本周已完成trimp百分比，单位% */
+  optional  uint32    percent_completed_daily_trimp            = 22;   /* 当日已完成trimp百分比，单位% */
+  optional  PHNExerciseInfoMessage  exercise_recommended_info  = 23;   /* 见PHNExerciseInfoMessage注释 */
+  required  uint32    last_update_time                         = 24;   /* 更新时间,单位s */
+  required  int32     last_update_time_zone                    = 25;   /* 时区，十五分钟为一个单位，如东八区：+32 */
+  //optional  uint32    rest_day                                 = 26;   /* 休息日，小端模式下低7bit分别代表周一到周日，如果是休息日置1（V1.1删除） */
+  optional  uint32    plan_start_utc0_time                     = 27;   /* 计划开始的时间，UTC0时间 */
+  optional  uint32    exercise_day                             = 28;   /* 锻炼日，小端模式下低7bit分别代表周一到周日，如果是锻炼日置1（V1.1更新） */
+  optional  uint32    flag_set_high_intensity_day              = 29;   /* 用户是否设置高强度日:0不设置，1设置.（V1.1更新） */
+  optional  uint32    days_of_phn_plan                         = 30;   /* 用户使用phn的天数（V1.1更新） */
+  optional  uint32    weekly_set_exercise_days                 = 31;   /* 用户设置的每周锻炼日天数（V1.1更新） */
+  optional  uint32    set_reduce_intensity                     = 32;   /* 用户手动降强度（需要在day_end时重置）:0不降强度;1手动降强度.（V1.1更新） */
+  optional  uint32    counter_training_cycle                   = 33;   /* 运动循环的第几周 0-3（V1.1更新） */
+  optional  float     ramp_rate                                = 34;   /* 周推荐斜坡率（V1.1更新） */
+  optional  float     last_week_trimp_recommend                = 35;   /* 上周的周推荐值（V1.1更新） */
+  optional  float     last_week_trimp_completed                = 36;   /* 上周完成的trimp（V1.1更新） */
+  optional  uint32    last_week_trimp_completed_percent        = 37;   /* 上周的周完成度（V1.1更新） */
+  repeated  uint32    this_week_achieved_intensity             = 38;    /* 本周当日之前每天的强度（V1.1更新） */
+  repeated  uint32    weekly_high_intensity_day                = 39;    /* 每周计算的高强度日: 0休息日;2锻炼日;3高强度日（V1.1更新） */
+  repeated  uint32    this_week_achieved_weekly_completed_percent   = 40;    /* 本周当日之前每天的周完成度（V1.1更新） */
+  repeated  uint32    this_week_achieved_daily_completed_percent    = 41;    /* 本周当日之前每天的日完成度（V1.1更新） */
+  optional  uint32    daily_high_intensity_mins                = 42;   /* 当日连续10mins以上高强度的时长（V1.1更新） */
+  optional  uint32    daily_active_trimp                       = 43;   /* 当日小于20min的片段的trimp score（V1.1更新） */
+  optional  uint32    daily_exercise_trimp                     = 44;   /* 当日大于20min的片段的trimp score（V1.1更新） */
+  optional  uint32    daily_exercise_mins                      = 45;   /* 当日大于20min的片段的分钟数（V1.1更新） */
+  optional  int32     compare_last_week_recommend_percent      = 46;   /* 本周计划相对上周的变化百分比（V1.1更新） */
+  optional  uint32    yesterday_recommend_flag                 = 47;   /* 昨日计划状态（V1.1更新） */
+  optional  PHNFlagsMessage    phn_flags                       = 48;   /* 状态码集合（V1.1更新） */
+}

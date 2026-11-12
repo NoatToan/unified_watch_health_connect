@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<miuix.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/device_rv_content"
+    android:tag="layout/eco_fragment_other_device_tab_v4_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/dimen_margin_10dp"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent"/>

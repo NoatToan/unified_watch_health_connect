@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:tag="layout/fragmet_sport_detail_step_down_up_item_0"
+    android:padding="@dimen/dimen_margin_8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+    <TextView
+        android:textColor="@color/text_color"
+        android:gravity="left"
+        android:id="@+id/speed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/trail_sport_summary_step_speed"
+        android:layout_weight="1"/>
+    <TextView
+        android:textColor="@color/text_color"
+        android:gravity="center"
+        android:id="@+id/downUp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/trail_sport_summary_step_time"
+        android:layout_weight="1"/>
+    <TextView
+        android:textColor="@color/text_color"
+        android:gravity="center"
+        android:id="@+id/level"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/trail_sport_summary_step_down_up"
+        android:layout_weight="1"/>
+    <TextView
+        android:textColor="@color/text_color"
+        android:gravity="center"
+        android:id="@+id/time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/trail_sport_summary_step_level"
+        android:layout_weight="1"/>
+</LinearLayout>

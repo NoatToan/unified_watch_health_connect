@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/layout_sleep_day_heart_rate"
+    android:tag="layout/health_layout_sleep_day_heart_rate_v2_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/size_18">
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/rightArrowView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

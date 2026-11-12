@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<miuix.springback.view.SpringBackLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:scrollableView="@+id/scroll_view">
+    <miuix.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:textSize="@dimen/text_size_12"
+            android:textColor="@color/text_color"
+            android:id="@+id/heartrate_tv_citing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_margin_14dp"
+            android:layout_marginStart="@dimen/dimen_margin_23dp"
+            android:layout_marginEnd="@dimen/dimen_margin_23dp"/>
+    </miuix.core.widget.NestedScrollView>
+</miuix.springback.view.SpringBackLayout>

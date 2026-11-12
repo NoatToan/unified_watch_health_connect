@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/container"
+    android:tag="layout/health_layout_weight_focus_index_0"
+    android:background="@drawable/shape_data_item_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/health_detail_page_common_margin_vertical">
+    <include
+        android:id="@+id/layout_common_icon_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_20"
+        layout="@layout/health_layout_common_card_icon_title"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_20"
+        android:overScrollMode="never"/>
+</LinearLayout>

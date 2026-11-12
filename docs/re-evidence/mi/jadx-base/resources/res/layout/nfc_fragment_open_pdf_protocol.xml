@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<miuix.springback.view.SpringBackLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_container"
+    android:tag="layout/nfc_fragment_open_pdf_protocol_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:scrollableView="@+id/scrollView">
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/protocol_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</miuix.springback.view.SpringBackLayout>

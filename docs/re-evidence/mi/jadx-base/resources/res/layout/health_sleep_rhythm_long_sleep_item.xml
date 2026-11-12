@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:theme="@style/FontRegular.16sp"
+        android:id="@+id/sleep_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:theme="@style/FontRegular.16sp"
+        android:id="@+id/sleep_duration_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@+id/sleep_time_tv"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <com.xiaomi.fitness.chart.view.SleepChartRecyclerView
+        android:id="@+id/chart_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="337dp"
+        android:layout_marginTop="5dp"
+        android:overScrollMode="never"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sleep_time_tv"
+        app:sleepItemHeight="218dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

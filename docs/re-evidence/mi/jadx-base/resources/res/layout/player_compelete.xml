@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/movie_player_complete_root"
+    android:background="@color/color_212121"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="14sp"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:id="@+id/player_compete_restart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/common_exoplay_play_retry"
+        android:drawableTop="@drawable/player_retry"
+        android:drawablePadding="10dp"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

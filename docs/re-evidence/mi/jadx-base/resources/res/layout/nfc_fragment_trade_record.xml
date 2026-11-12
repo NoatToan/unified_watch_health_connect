@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:tag="layout/nfc_fragment_trade_record_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.nfc.widget.ScrollingTabContainer
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/tabLayoutView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nfc_card_trade_record_tab_height"
+        android:fillViewport="true"
+        android:paddingStart="@dimen/nfc_card_trade_record_tab_padding_left"
+        android:paddingEnd="@dimen/nfc_card_trade_record_tab_padding_right"/>
+    <View style="@style/HorizontalSeparatorLine"/>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+</LinearLayout>

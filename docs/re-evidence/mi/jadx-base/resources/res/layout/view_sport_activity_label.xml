@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:textColor="@color/device_tab_item_title_color"
+    android:gravity="center_vertical"
+    android:id="@+id/title"
+    android:tag="layout/view_sport_activity_label_0"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_42"
+    android:layout_marginStart="15dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    style="@style/FontRegular.12sp"/>

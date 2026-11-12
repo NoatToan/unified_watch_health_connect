@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<miuix.springback.view.SpringBackLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_understand_running_indicator_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:scrollableView="@+id/scroll_view">
+    <miuix.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.xiaomi.fitness.view.UnderstandItemView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:understand_title="@string/health_running_indicator_title_1"/>
+            <com.xiaomi.fitness.view.UnderstandItemView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:understand_detail="@string/health_running_indicator_des_1"/>
+            <com.xiaomi.fitness.view.UnderstandItemView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:understand_title="@string/health_running_indicator_title_2"/>
+            <com.xiaomi.fitness.view.UnderstandItemView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:understand_detail="@string/health_running_indicator_des2"/>
+        </LinearLayout>
+    </miuix.core.widget.NestedScrollView>
+</miuix.springback.view.SpringBackLayout>

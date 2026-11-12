@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/medal_item_layout_header_0"
+    android:clipChildren="false"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.medal.medallist.FixDragLayout
+        android:orientation="horizontal"
+        android:id="@+id/fixDragLayout"
+        android:clipChildren="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/medal_viewpager"
+            android:clipChildren="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
+    </com.xiaomi.fitness.medal.medallist.FixDragLayout>
+    <com.xiaomi.fitness.medal.MedalBannerIndicator
+        android:id="@+id/medal_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="13dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fixDragLayout"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

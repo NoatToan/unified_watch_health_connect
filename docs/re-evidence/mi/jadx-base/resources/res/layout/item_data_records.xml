@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/item_data_records_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="@dimen/dimen_14sp"
+        android:id="@+id/tv_hospital_heart_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="44"
+        android:fontFamily="@font/misanslatin_bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="@dimen/dimen_14sp"
+        android:id="@+id/tv_unit_hospital_heart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/health_data_rate_unit_only"
+        android:fontFamily="@font/misanslatin_bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_hospital_heart_rate"
+        app:layout_constraintStart_toEndOf="@+id/tv_hospital_heart_rate"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="@dimen/dimen_14sp"
+        android:id="@+id/tv_status_hospital_heart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/health_hrm_fibrillation_none"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_unit_hospital_heart"/>
+    <TextView
+        android:textSize="@dimen/dimen_13sp"
+        android:textColor="@color/black_40"
+        android:id="@+id/tv_time_hospital_heart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8月14日 14:29"
+        android:layout_marginEnd="@dimen/dimen_margin_30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_status_hospital_heart"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,218 @@
+syntax = "proto2";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+message TypeMessage {
+  required uint32 type = 1; /* 基础类型 */
+  optional uint32 subtype = 2; /* 运动子类，0无效，1自动检测，2间歇训练 ,3训练模板 4,运动课程 5,PHN运动*/
+}
+
+message DistanceMessage {
+  optional float distance = 1; /* 距离 , unit: meter */
+}
+message NumberMessage {
+  optional uint32 totalNumberOfJumps = 1; /* 总计数 */
+  optional uint32 totalTimesOfRowing = 2; /* 总划数 */
+  optional uint32 numberOfBreak = 3; /* 断绳次数 */
+}
+
+message PressureMessage {
+  optional uint32 averagePressure = 1; /* 平均压力 */
+  optional uint32 maximumPressure = 2; /* 最高压力 */
+  optional uint32 minimumPressure = 3; /* 最低压力 */
+}
+
+message DownhillMessage {
+  optional uint32 timesOfDownhill = 1; /* 滑降次数 */
+  optional uint32 totalDistanceOfDownhill = 2; /* 累计滑降距离 ,m */
+  optional uint32 maximumDownhillDrop = 3; /* 最大滑降落差 ,m */
+  optional uint32 totalDownhillDrop = 4; /* 累计滑降落差 ,m */
+}
+message TimeMessage {
+  optional uint32 totalTime = 1; /* 总用时 ,s */
+  optional uint32 exerciseTime = 2; /* 运动用时 ,s */
+  optional uint32 pauseTime = 3; /* 暂停时间 ,s */
+  optional uint32 restTimeBetweenGroups = 4; /* 组间休息总用时 ,s */
+  optional uint32 swimmingTime = 5; /* 游泳用时*铁三,s */
+  optional uint32 cyclingTime = 6; /* 骑行用时*铁三,s */
+  optional uint32 runningTime = 7; /* 跑步用时*铁三,s */
+  optional uint32 switchTime1 = 8; /* 换项用时1*铁三,s */
+  optional uint32 switchTime2 = 9; /* 换项用时2*铁三,s */
+  //optional uint32 marathon_21km = 10; /* 半马成绩 ,s */ /* 转移到MarathonMessage */
+  //optional uint32 marathon_42km = 11; /* 全马成绩 ,s */ /* 转移到MarathonMessage */
+}
+message MarathonMessage {
+  required uint32 type = 1; /* 类型 0-半马，1-全马 */
+  required uint32 timeUsage = 2; /* 成绩 ,s */
+  required uint32 distance = 3; /* 距离 ,m */
+}
+message FloorsMessage {
+  optional uint32 upstairFloors = 1; /* 上楼层数 */
+  optional uint32 downstairFloors = 2; /* 下楼层数 */
+  optional float upstairHeight = 3; /* 上楼高度 ,米 */
+  optional float downstairHeight = 4; /* 下楼高度 ,米 */
+  optional float averageFloorsClimbedPerMinute = 5; /* 平均每分钟上楼层数 */
+}
+message SwimMessage {
+  optional uint32 mainSwimmingStyle = 1; /* 主泳姿，1：蛙泳；2：自由泳；3：仰泳；4：蝶泳；5：未识别泳姿；6：混合泳 */
+  optional uint32 trips = 2; /* 趟数 */
+  optional uint32 totalStrokes = 3; /* 总划水次数 */
+  optional uint32 averageDistancePerStroke = 4; /* 平均划水距离 ,cm */
+  optional uint32 swolf = 5; /* Swolf */
+  optional uint32 averageStrokeRate = 6; /* 平均划水速率，次/分 */
+  optional uint32 maximumStrokeRate = 7; /* 最大划水速率，次/分 */
+  optional uint32 poolLength = 8; /* 泳池长度，用于计算Swolf */
+  optional uint32 unit = 9; /* 泳池长度单位 ,0米，1码 */
+}
+message PaceMessage {
+  optional float averagePace = 1; /* 平均配速 , unit: seoncd/meter */
+  optional float bestPace = 2; /* 最佳配速 , unit: seoncd/meter */
+}
+message StepsMessage {
+  optional float averageCadence = 1; /* 平均步频 , unit: steps/second */
+  optional float maximumCadence = 2; /* 最高步频 , unit: steps/second */
+  optional uint32 averageStride = 3; /* 平均步幅 , unit: centimeter */
+  optional uint32 steps = 4; /* 步数 */
+}
+message SpeedMessage {
+  optional float averageSpeed = 1; /* 平均速度 , unit: meter/second */
+  optional float maximumSpeed = 2; /* 最大速度 , unit: meter/second */
+}
+message AltitudeMessage {
+  optional sint32 highestAltitude = 1; /* 最高海拔 ,cm ,向下取整到m */
+  optional sint32 lowestAltitude = 2; /* 最低海拔 ,cm ,向下取整到m */
+  optional sint32 averageAltitude = 3; /* 平均海拔 ,cm ,向下取整到m */
+  optional uint32 totalClimbDistance = 4; /* 累计爬坡 ,cm ,向下取整到m */
+  optional uint32 elevationGain = 5; /* 累计上升 ,cm ,向下取整到m */
+  optional uint32 elevationLoss = 6; /* 累计下降 ,cm ,向下取整到m */
+}
+message SlopeMessage {
+  optional uint32 averageSlope = 1; /* 平均坡度 ,% */
+  optional uint32 maximumSlope = 2; /* 最大坡度 ,% */
+}
+message SWingMessage {
+  optional uint32 totalTimesOfSwing = 1; /* 总挥拍次数 */
+  optional uint32 timesOfForehandSwing = 2; /* 正手挥拍次数 */
+  optional uint32 timesOfBackhandSwing = 3; /* 反手挥拍次数 */
+  optional uint32 serveTimes = 4; /* 发球次数 */
+  optional uint32 forehandPercentage = 5; /* 正手比例 */
+  optional uint32 backhandPercentage = 6; /* 反手比例 */
+  optional uint32 percentageOfServeTimes = 7; /* 发球比例 */
+}
+message CaloriesMessage {
+  optional uint32 cal = 1; /* 消耗,kCal */
+}
+message RowingMessage {
+  optional uint32 averageRowingFrequency = 1; /* 平均划频 , unit: counts per minute */
+  optional uint32 highestRowingFrequency = 2; /* 最高划频 , unit: counts per minute */
+  optional float averagePullingTime = 3; /* 平均拉桨时间 ， 秒 */
+  optional float averagePaddleTime = 4; /* 平均收桨时间 ， 秒 */
+}
+message FrequencyMessage {
+  optional uint32 averageFrequency = 1; /* 平均频率, unit: counts per second */
+  optional uint32 highestFrequency = 2; /* 最高频率, unit: counts per second */
+}
+message HeartRateMessage {
+  optional uint32 averageHeartRate = 1; /* 平均心率 */
+  optional uint32 maximumHeartRate = 2; /* 最高心率 */
+  optional uint32 minimumHeartRate = 3; /* 最低心率 */
+}
+message TempMessage {
+  optional float averageTemperature = 1; /* 平均温度 ,°C */
+  optional float highestTemperature = 2; /* 最高温度 ,°C */
+  optional float lowestTemperature = 3; /* 最低温度 ,°C */
+}
+message OtherMessage {
+  optional uint32 totalGroups = 1; /* 总组数 */
+  optional uint32 maximumSpO2 = 2; /* 最高血氧饱和度,% */
+  optional uint32 minimumSpO2 = 3; /* 最低血氧饱和度,% */
+  optional float aerobicTrainingEffect = 4; /* 有氧TE ,保留一位小数*/
+  optional float anaerobicTrainingEffect = 5; /* 无氧TE ,保留一位小数*/
+  optional uint32 trainingLoadOfThisActivity = 6; /* 本次运动负荷 */
+  optional uint32 VO2max = 7; /* 最大摄氧量 */
+}
+
+
+message ChartMessage {
+  optional bool hr = 1; /* 心率图 */
+  optional bool speed = 2; /* 速度图 */
+  optional bool pace = 3; /* 配速图 */
+  optional bool altitude = 4; /* 海拔图 */
+  optional bool gps = 5; /* 轨迹图 */
+  optional bool temp = 6; /* 温度图 */
+}
+
+message RecordMessage {
+  required uint32 trackId = 1; /* 运动开始Unix时间 单位S */
+  required uint32 parentId = 2; /* 父运动开始时间，标记父运动，0为无效，说明该运动为父类 */
+  required int32 zone = 3; /* 运动开始时区 ，1/4h */
+  //required uint32 unit = 4; /* 距离单位，0公里，1英里 */
+  optional sint32 latitude = 5; /* 第一个GPS点经度 */
+  optional sint32 longitude = 6; /* 第一个GPS点纬度 */
+  optional sint32 altitude = 7; /* 第一个GPS点高度 */
+  optional int32 maxLatitude = 8; /* 最大纬度 */
+  optional int32 minLatitude = 9; /* 最小纬度 */
+  optional int32 maxLongitude = 10; /* 最大经度 */
+  optional int32 minLongitude = 11; /* 最小经度 */
+  optional string courseTitle = 12; /* 训练名称 */
+}
+
+message HeartrateZoneMessage {
+  required uint32 type = 1; /* 区间类型 0最大心率区间，1储备心率区间 */
+  repeated uint32 heart = 2; /* 6个数，心率值 */
+  repeated uint32 zone = 3; /* 6个数，区间值，单位s，取整显示分，取余累计到下一区间 */
+}
+message SlopeChartMessage {
+  optional uint32 uphillDistance = 1; /* 上坡距离 ， 米 */
+  optional uint32 downhillDistance = 2; /* 下坡距离 ， 米 */
+  optional uint32 uphillTime = 3; /* 上坡时间 ， 秒 */
+  optional uint32 downhillTime = 4; /* 下坡时间 ， 秒 */
+}
+message GoalMessage {
+  required uint32 type = 1; /* 目标类型: 0 无目标 2 目标用时 3 目标距离 4 目标消耗 5 目标趟数 6 目标计次 7 有氧TE 8 无氧TE */
+  required float data = 2; /* 目标值 对于单位 2(S) 3(m) 4(kcal) 5(趟) 6(次) */
+}
+message GolfMessage {
+  optional uint32 totalSwings = 1; /* 总杆数 */
+  optional float averageBeat = 2; /* 平均节奏，四舍五入到小数点后1位 */
+  optional float averageUpTime = 3; /* 平均上杆，向下取整到小数点后2位 */
+  optional float averageDownTime = 4; /* 平均下杆，向下取整到小数点后2位 */
+  //optional uint32 averageAngle = 5; /* 平均平面，数据类型错误，已丢弃 */
+  optional uint32 averageScore = 6; /* 平均得分 */
+  optional int32 averageAngle = 7; /* 平均平面 */
+}
+message PowerMessage {
+  optional uint32 averagePower = 1; /* 平均功率 */
+  optional uint32 maximumPower = 2; /* 最大功率 */
+  optional uint32 deviceWork = 3; /* 功 */
+}
+message SportSummaryMessage {
+  required string version = 1[default = "2.1"]; /* 版本号 */
+  required RecordMessage record = 2; /* 运动记录 */
+  optional TypeMessage type = 3; /* 运动类型 */
+  optional DistanceMessage distance = 4; /* 距离类 */
+  optional NumberMessage number = 5; /* 计数类 */
+  optional DownhillMessage downhill = 6; /* 滑降类 */
+  optional TimeMessage times = 7; /* 用时类 */
+  optional FloorsMessage floors = 8; /* 楼层类 */
+  optional SwimMessage swim = 9; /* 游泳类 */
+  optional PaceMessage pace = 10; /* 配速类 */
+  optional StepsMessage steps = 11; /* 步频类 */
+  //optional SpeedMessage speed = 12; /* 速度类 app不建议使用，保持精度一致 */
+  optional AltitudeMessage altitude = 13; /* 海拔类 */
+  optional SlopeMessage slope = 14; /* 坡度类 */
+  optional SWingMessage swing = 15; /* 挥拍类 */
+  optional CaloriesMessage calories = 16; /* 消耗类 */
+  optional RowingMessage rowing = 17; /* 划船类 */
+  optional FrequencyMessage frequency = 18; /* 频率类 */
+  optional HeartRateMessage heartRate = 19; /* 心率类 */
+  optional TempMessage temp = 20; /* 温度类 */
+  optional OtherMessage other = 21; /* 其它类 */
+  optional HeartrateZoneMessage hrZone = 22; /* 心率区间类 */
+  optional SlopeChartMessage slopeChart = 23; /* 坡度分布图 */
+  //optional ChartMessage chart = 25; /* 曲线与图表类 */
+  repeated MarathonMessage marathon = 26; /* 马拉松信息 */
+  optional PressureMessage pressure = 27; /* 压力类 */
+  optional GoalMessage Goal = 28; /* 目标类 */
+  optional GolfMessage Golf = 29; /* 高尔夫类 */
+  optional PowerMessage Power = 30; /* 功率计类 */
+}

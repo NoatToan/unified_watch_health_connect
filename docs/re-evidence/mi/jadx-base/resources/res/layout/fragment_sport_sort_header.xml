@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_sport_sort_header_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="@dimen/dimen_12sp"
+        android:textColor="@color/selector_feature_item_title_text_color"
+        android:gravity="start|center_vertical"
+        android:id="@+id/test_tite"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:layout_marginTop="@dimen/dimen_margin_13dp"
+        android:text="@string/device_settings_ble_watch_widget_enable_label"
+        android:paddingStart="@dimen/page_content_padding_horizontal_large"
+        android:paddingEnd="@dimen/page_content_padding_horizontal_large"/>
+    <miuix.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

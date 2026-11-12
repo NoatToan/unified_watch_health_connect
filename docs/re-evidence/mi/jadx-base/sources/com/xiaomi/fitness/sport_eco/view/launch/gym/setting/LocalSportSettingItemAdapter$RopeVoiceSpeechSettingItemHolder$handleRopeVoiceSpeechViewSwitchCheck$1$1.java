@@ -1,0 +1,58 @@
+package com.xiaomi.fitness.sport_eco.view.launch.gym.setting;
+
+import com.xiaomi.fitness.widget.button.ISwitchButton;
+import kotlin.Metadata;
+import kotlin.ResultKt;
+import kotlin.Unit;
+import kotlin.coroutines.Continuation;
+import kotlin.coroutines.intrinsics.IntrinsicsKt__IntrinsicsKt;
+import kotlin.coroutines.jvm.internal.Boxing;
+import kotlin.coroutines.jvm.internal.DebugMetadata;
+import kotlin.coroutines.jvm.internal.SuspendLambda;
+import kotlin.jvm.functions.Function2;
+import kotlin.jvm.functions.Function3;
+import kotlinx.coroutines.CoroutineScope;
+
+/* JADX INFO: loaded from: classes10.dex */
+@Metadata(d1 = {"\u0000\n\n\u0000\n\u0002\u0010\u0002\n\u0002\u0018\u0002\u0010\u0000\u001a\u00020\u0001*\u00020\u0002H\n"}, d2 = {"<anonymous>", "", "Lkotlinx/coroutines/CoroutineScope;"}, k = 3, mv = {2, 0, 0}, xi = 48)
+@DebugMetadata(c = "com.xiaomi.fitness.sport_eco.view.launch.gym.setting.LocalSportSettingItemAdapter$RopeVoiceSpeechSettingItemHolder$handleRopeVoiceSpeechViewSwitchCheck$1$1", f = "LocalSportSettingItemAdapter.kt", i = {}, l = {}, m = "invokeSuspend", n = {}, s = {})
+public final class LocalSportSettingItemAdapter$RopeVoiceSpeechSettingItemHolder$handleRopeVoiceSpeechViewSwitchCheck$1$1 extends SuspendLambda implements Function2<CoroutineScope, Continuation<? super Unit>, Object> {
+    final /* synthetic */ ISwitchButton $switchButton;
+    int label;
+    final /* synthetic */ LocalSportSettingItemAdapter.RopeVoiceSpeechSettingItemHolder this$0;
+    final /* synthetic */ LocalSportSettingItemAdapter this$1;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public LocalSportSettingItemAdapter$RopeVoiceSpeechSettingItemHolder$handleRopeVoiceSpeechViewSwitchCheck$1$1(LocalSportSettingItemAdapter.RopeVoiceSpeechSettingItemHolder ropeVoiceSpeechSettingItemHolder, LocalSportSettingItemAdapter localSportSettingItemAdapter, ISwitchButton iSwitchButton, Continuation<? super LocalSportSettingItemAdapter$RopeVoiceSpeechSettingItemHolder$handleRopeVoiceSpeechViewSwitchCheck$1$1> continuation) {
+        super(2, continuation);
+        this.this$0 = ropeVoiceSpeechSettingItemHolder;
+        this.this$1 = localSportSettingItemAdapter;
+        this.$switchButton = iSwitchButton;
+    }
+
+    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
+    public final Continuation<Unit> create(Object obj, Continuation<?> continuation) {
+        return new LocalSportSettingItemAdapter$RopeVoiceSpeechSettingItemHolder$handleRopeVoiceSpeechViewSwitchCheck$1$1(this.this$0, this.this$1, this.$switchButton, continuation);
+    }
+
+    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
+    public final Object invokeSuspend(Object obj) {
+        IntrinsicsKt__IntrinsicsKt.getCOROUTINE_SUSPENDED();
+        if (this.label != 0) {
+            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+        }
+        ResultKt.throwOnFailure(obj);
+        this.this$0.mViewBinding.D.setSwitch(true);
+        this.this$0.setVoiceSpeechVisible(true);
+        Function3 function3 = this.this$1.mOnItemSwitchChangedListener;
+        if (function3 != null) {
+            function3.invoke(Boxing.boxInt(this.this$0.getBindingAdapterPosition()), this.$switchButton, this.this$1.mDataList.get(this.this$0.getBindingAdapterPosition()));
+        }
+        return Unit.INSTANCE;
+    }
+
+    @Override // kotlin.jvm.functions.Function2
+    public final Object invoke(CoroutineScope coroutineScope, Continuation<? super Unit> continuation) {
+        return ((LocalSportSettingItemAdapter$RopeVoiceSpeechSettingItemHolder$handleRopeVoiceSpeechViewSwitchCheck$1$1) create(coroutineScope, continuation)).invokeSuspend(Unit.INSTANCE);
+    }
+}

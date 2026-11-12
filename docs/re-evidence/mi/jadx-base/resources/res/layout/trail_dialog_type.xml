@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/trail_dialog_type_0"
+    android:background="@color/trail_menu_bg_color"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp">
+    <miuix.springback.view.SpringBackLayout
+        android:background="@color/trail_menu_bg_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:scrollableView="@+id/recyclerView">
+        <androidx.recyclerview.widget.RecyclerView
+            android:orientation="vertical"
+            android:id="@+id/recyclerView"
+            android:background="@color/trail_menu_bg_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    </miuix.springback.view.SpringBackLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.heartrate.camera.VideoPreviewView
+        android:id="@+id/preview_detect"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/hr_sb_detect_progress"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_margin_47dp"
+        android:layout_marginBottom="@dimen/dimen_margin_40dp"
+        android:maxHeight="@dimen/dimen_margin_47dp"
+        android:indeterminateOnly="false"
+        android:progressDrawable="@drawable/drawable_seekbar_progress_red"
+        android:minHeight="@dimen/dimen_margin_47dp"
+        android:thumb="@null"
+        android:thumbOffset="0dp"
+        android:layout_marginStart="26.7dp"
+        android:layout_marginEnd="26.7dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+        android:textSize="@dimen/font_12"
+        android:textColor="@color/white_90"
+        android:gravity="center"
+        android:id="@+id/hr_tv_progress_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_data"
+        app:layout_constraintBottom_toBottomOf="@+id/hr_sb_detect_progress"
+        app:layout_constraintEnd_toEndOf="@+id/hr_sb_detect_progress"
+        app:layout_constraintStart_toStartOf="@+id/hr_sb_detect_progress"
+        app:layout_constraintTop_toTopOf="@+id/hr_sb_detect_progress"/>
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/hr_group_progress"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="hr_sb_detect_progress, hr_tv_progress_text"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

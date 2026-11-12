@@ -1,0 +1,98 @@
+package defpackage;
+
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
+import androidx.databinding.ViewDataBinding;
+import com.xiaomi.fitness.baseui.widget.ScrollTitleBar;
+import com.xiaomi.fitness.mine.MineViewModel;
+import com.xiaomi.fitness.widget.RightArrowBindingTwoLineTextView;
+import com.xiaomi.fitness.widget.view.HomeHeaderView;
+import com.xiaomi.fitness.widget.view.RoundImageView;
+
+/* JADX INFO: loaded from: classes9.dex */
+public abstract class f0g extends ViewDataBinding {
+    public final RightArrowBindingTwoLineTextView A;
+    public final RightArrowBindingTwoLineTextView B;
+    public final RightArrowBindingTwoLineTextView C;
+    public final RightArrowBindingTwoLineTextView D;
+    public final ImageView E;
+    public final RightArrowBindingTwoLineTextView F;
+    public final RightArrowBindingTwoLineTextView G;
+    public final RightArrowBindingTwoLineTextView H;
+    public final RightArrowBindingTwoLineTextView I;
+    public final View J;
+    public final RightArrowBindingTwoLineTextView K;
+    public final RightArrowBindingTwoLineTextView L;
+    public final AppCompatImageView M;
+    public final ConstraintLayout N;
+    public final ConstraintLayout O;
+    public final ConstraintLayout P;
+    public final ImageView Q;
+    public final View R;
+    public final TextView S;
+    public final AppCompatTextView T;
+    public final HomeHeaderView U;
+    public final View V;
+    public final View W;
+    public final RightArrowBindingTwoLineTextView X;
+    public final RightArrowBindingTwoLineTextView Y;
+    public final RightArrowBindingTwoLineTextView Z;
+    public final RightArrowBindingTwoLineTextView a0;
+    public final RightArrowBindingTwoLineTextView b0;
+    public final NestedScrollView c0;
+    public final RightArrowBindingTwoLineTextView d0;
+    public final RightArrowBindingTwoLineTextView e0;
+    public final ScrollTitleBar f0;
+    public final TextView g0;
+    public final TextView h0;
+    public final RoundImageView i0;
+    public final RightArrowBindingTwoLineTextView j0;
+    public final RightArrowBindingTwoLineTextView k0;
+    public MineViewModel l0;
+
+    public f0g(Object obj, View view, int i, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView2, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView3, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView4, ImageView imageView, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView5, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView6, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView7, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView8, View view2, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView9, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView10, AppCompatImageView appCompatImageView, ConstraintLayout constraintLayout, ConstraintLayout constraintLayout2, ConstraintLayout constraintLayout3, ImageView imageView2, View view3, TextView textView, AppCompatTextView appCompatTextView, HomeHeaderView homeHeaderView, View view4, View view5, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView11, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView12, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView13, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView14, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView15, NestedScrollView nestedScrollView, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView16, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView17, ScrollTitleBar scrollTitleBar, TextView textView2, TextView textView3, RoundImageView roundImageView, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView18, RightArrowBindingTwoLineTextView rightArrowBindingTwoLineTextView19) {
+        super(obj, view, i);
+        this.A = rightArrowBindingTwoLineTextView;
+        this.B = rightArrowBindingTwoLineTextView2;
+        this.C = rightArrowBindingTwoLineTextView3;
+        this.D = rightArrowBindingTwoLineTextView4;
+        this.E = imageView;
+        this.F = rightArrowBindingTwoLineTextView5;
+        this.G = rightArrowBindingTwoLineTextView6;
+        this.H = rightArrowBindingTwoLineTextView7;
+        this.I = rightArrowBindingTwoLineTextView8;
+        this.J = view2;
+        this.K = rightArrowBindingTwoLineTextView9;
+        this.L = rightArrowBindingTwoLineTextView10;
+        this.M = appCompatImageView;
+        this.N = constraintLayout;
+        this.O = constraintLayout2;
+        this.P = constraintLayout3;
+        this.Q = imageView2;
+        this.R = view3;
+        this.S = textView;
+        this.T = appCompatTextView;
+        this.U = homeHeaderView;
+        this.V = view4;
+        this.W = view5;
+        this.X = rightArrowBindingTwoLineTextView11;
+        this.Y = rightArrowBindingTwoLineTextView12;
+        this.Z = rightArrowBindingTwoLineTextView13;
+        this.a0 = rightArrowBindingTwoLineTextView14;
+        this.b0 = rightArrowBindingTwoLineTextView15;
+        this.c0 = nestedScrollView;
+        this.d0 = rightArrowBindingTwoLineTextView16;
+        this.e0 = rightArrowBindingTwoLineTextView17;
+        this.f0 = scrollTitleBar;
+        this.g0 = textView2;
+        this.h0 = textView3;
+        this.i0 = roundImageView;
+        this.j0 = rightArrowBindingTwoLineTextView18;
+        this.k0 = rightArrowBindingTwoLineTextView19;
+    }
+}

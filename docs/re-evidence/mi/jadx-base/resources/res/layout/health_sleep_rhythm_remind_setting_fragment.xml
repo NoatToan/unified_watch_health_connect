@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<miuix.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/spring_back_target"
+    android:tag="layout/health_sleep_rhythm_remind_setting_fragment_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.xiaomi.fitness.widget.SwitchButtonBindingSingleLineTextView
+            android:id="@+id/remind_enable_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/page_content_padding_horizontal_large"
+            android:paddingEnd="@dimen/page_content_padding_horizontal_large"
+            app:title="@string/health_blood_pressure_daily_reminders"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="vertical"
+            android:id="@+id/remind_enable_content"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.xiaomi.fitness.common.HealthRemindSelectCountView
+                android:id="@+id/remind_repeat_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:id="@+id/remind_repeat_times_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/page_content_padding_horizontal_large"
+                android:paddingEnd="@dimen/page_content_padding_horizontal_large"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</miuix.core.widget.NestedScrollView>

@@ -1,0 +1,18 @@
+package com.mi.health.course.data;
+
+import com.xiaomi.fitness.common.extensions.ResourceExtKt;
+import defpackage.czi;
+import kotlin.Metadata;
+import org.jetbrains.annotations.NotNull;
+
+/* JADX INFO: loaded from: classes5.dex */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÆ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, d2 = {"Lcom/mi/health/course/data/Resolution1080;", "Lcom/mi/health/course/data/Resolution;", "<init>", "()V", "course_chinaProductRelease"}, k = 1, mv = {2, 0, 0}, xi = 48)
+public final class Resolution1080 extends Resolution {
+
+    @NotNull
+    public static final Resolution1080 INSTANCE = new Resolution1080();
+
+    private Resolution1080() {
+        super(ResolutionKt.RESOLUTION_RANGE_1080, ResourceExtKt.getString(czi.course_video_1080), null);
+    }
+}

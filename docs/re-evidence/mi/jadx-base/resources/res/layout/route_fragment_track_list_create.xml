@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.route.track.view.MyTrackLibraryViewPagerDelegate xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/route_fragment_track_list_create_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/noDataInclude"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.42"
+        layout="@layout/route_layout_no_track_list"/>
+    <com.xiaomi.fitness.baseui.recyclerview.MoreRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/create_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:id="@+id/create_btn"
+        android:visibility="gone"
+        android:text="@string/route_create_track"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/CommonBtn.Primary"/>
+</com.xiaomi.fitness.route.track.view.MyTrackLibraryViewPagerDelegate>

@@ -1,0 +1,43 @@
+{
+  "code": 0,
+  "message": "ok",
+  "result": {
+    "list": [
+      {
+        "model": "xiaomi.watch.mars",
+        "pd_id": 1711,
+        "pd_name": "小米手表",
+        "pd_type": 1,
+        "pd_size": {
+          "width": 368,
+          "height": 448,
+          "radius": 60,
+          "ratio": 0.8
+        },
+        "blt_name": "Mi Watch ",
+        "big_icon": "https://cdn.cnbj1.fds.api.mi-img.com/mijia-healthapp-watch-data-online/icon/big_91e4c6d79456832e25e51a117fc419d4.png",
+        "small_icon": "https://cdn.cnbj1.fds.api.mi-img.com/mijia-healthapp-watch-data-online/icon/small_b063741ea972196ddfdcdd3f27c23628.png",
+        "status_android": 3,
+        "alias": "baiji",
+        "priv_uuid": {
+          "service": "7495FE00-a7f3-424b-92dd-4a006a3aef56",
+          "proto_tx": "74950001-a7f3-424b-92dd-4a006a3aef56",
+          "proto_rx": "74950002-a7f3-424b-92dd-4a006a3aef56",
+          "fitness": "74950003-a7f3-424b-92dd-4a006a3aef56"
+        },
+        "feature": [
+          "esim",
+          "nfc",
+          "watchface",
+          "xiaoai",
+          "notification"
+        ],
+        "xiaoai": {
+          "client_id": "396248878963237888"
+        },
+        "ota_type": 0
+      }
+    ],
+    "last_modify_time": 1569859200
+  }
+}

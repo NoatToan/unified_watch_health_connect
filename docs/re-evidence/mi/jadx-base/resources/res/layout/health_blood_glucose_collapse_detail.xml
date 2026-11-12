@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/blood_glucose_detail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <include layout="@layout/health_blood_glucose_collapse_level"/>
+    <include layout="@layout/health_blood_glucose_collapse_sleep"/>
+    <include layout="@layout/health_blood_glucose_collapse_sport"/>
+    <include layout="@layout/health_blood_glucose_collapse_agp"/>
+</LinearLayout>

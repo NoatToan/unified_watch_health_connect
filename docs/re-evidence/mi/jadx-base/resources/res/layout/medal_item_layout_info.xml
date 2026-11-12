@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/medal_item_layout_info_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/dimen_margin_8dp">
+    <ImageView
+        android:id="@+id/medal_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="@dimen/dimen_12sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:id="@+id/medal_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13.3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medal_icon"/>
+    <TextView
+        android:textSize="@dimen/dimen_12sp"
+        android:textColor="#8f8f8f"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:id="@+id/medal_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medal_name"
+        app:layout_goneMarginTop="@dimen/dimen_margin_2dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

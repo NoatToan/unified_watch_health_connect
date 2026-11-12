@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/trail_sport_record_video_share_switch_map_style_item_0"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/style_icon_selected_ring"
+        android:background="@drawable/trail_ic_style_item_selected"
+        android:visibility="invisible"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:importantForAccessibility="no"
+        app:layout_constraintBottom_toBottomOf="@+id/style_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+        android:id="@+id/style_icon"
+        android:layout_width="@dimen/dimen_margin_40dp"
+        android:layout_height="@dimen/dimen_margin_40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/style_icon_selected_ring"
+        app:layout_constraintEnd_toEndOf="@+id/style_icon_selected_ring"
+        app:layout_constraintStart_toStartOf="@+id/style_icon_selected_ring"
+        app:layout_constraintTop_toTopOf="@+id/style_icon_selected_ring"/>
+    <TextView
+        android:textSize="@dimen/dimen_10sp"
+        android:textColor="@color/white_90"
+        android:id="@+id/style_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_6dp"
+        app:layout_constraintEnd_toEndOf="@+id/style_icon"
+        app:layout_constraintStart_toStartOf="@+id/style_icon"
+        app:layout_constraintTop_toBottomOf="@+id/style_icon"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

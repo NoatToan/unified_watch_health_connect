@@ -1,0 +1,98 @@
+package defpackage;
+
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Group;
+import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.RecyclerView;
+import com.xiaomi.fitness.sport.view.justdance.control.JustDanceClickAreaView;
+import com.xiaomi.fitness.sport.view.justdance.control.JustDanceControlViewModel;
+import com.xiaomi.fitness.sport.view.justdance.control.JustDancePauseSliderView;
+import com.xiaomi.fitness.sport.view.justdance.control.JustDanceTouchAreaView;
+
+/* JADX INFO: loaded from: classes10.dex */
+public abstract class t9n extends ViewDataBinding {
+    public final TextView A;
+    public final ImageView B;
+    public final JustDanceClickAreaView C;
+    public final ConstraintLayout D;
+    public final ProgressBar E;
+    public final TextView F;
+    public final View G;
+    public final ImageView H;
+    public final TextView I;
+    public final TextView J;
+    public final ImageView K;
+    public final TextView L;
+    public final ConstraintLayout M;
+    public final TextView N;
+    public final TextView O;
+    public final EditText P;
+    public final View Q;
+    public final RecyclerView R;
+    public final JustDancePauseSliderView S;
+    public final TextView T;
+    public final Group U;
+    public final RecyclerView V;
+    public final TextView W;
+    public final ImageView X;
+    public final ConstraintLayout Y;
+    public final ImageView Z;
+    public final ImageView a0;
+    public final ImageView b0;
+    public final TextView c0;
+    public final TextView d0;
+    public final JustDanceTouchAreaView e0;
+    public final ConstraintLayout f0;
+    public final TextView g0;
+    public final ImageView h0;
+    public final ImageView i0;
+    public final ImageView j0;
+    public final TextView k0;
+    public JustDanceControlViewModel l0;
+
+    public t9n(Object obj, View view, int i, TextView textView, ImageView imageView, JustDanceClickAreaView justDanceClickAreaView, ConstraintLayout constraintLayout, ProgressBar progressBar, TextView textView2, View view2, ImageView imageView2, TextView textView3, TextView textView4, ImageView imageView3, TextView textView5, ConstraintLayout constraintLayout2, TextView textView6, TextView textView7, EditText editText, View view3, RecyclerView recyclerView, JustDancePauseSliderView justDancePauseSliderView, TextView textView8, Group group, RecyclerView recyclerView2, TextView textView9, ImageView imageView4, ConstraintLayout constraintLayout3, ImageView imageView5, ImageView imageView6, ImageView imageView7, TextView textView10, TextView textView11, JustDanceTouchAreaView justDanceTouchAreaView, ConstraintLayout constraintLayout4, TextView textView12, ImageView imageView8, ImageView imageView9, ImageView imageView10, TextView textView13) {
+        super(obj, view, i);
+        this.A = textView;
+        this.B = imageView;
+        this.C = justDanceClickAreaView;
+        this.D = constraintLayout;
+        this.E = progressBar;
+        this.F = textView2;
+        this.G = view2;
+        this.H = imageView2;
+        this.I = textView3;
+        this.J = textView4;
+        this.K = imageView3;
+        this.L = textView5;
+        this.M = constraintLayout2;
+        this.N = textView6;
+        this.O = textView7;
+        this.P = editText;
+        this.Q = view3;
+        this.R = recyclerView;
+        this.S = justDancePauseSliderView;
+        this.T = textView8;
+        this.U = group;
+        this.V = recyclerView2;
+        this.W = textView9;
+        this.X = imageView4;
+        this.Y = constraintLayout3;
+        this.Z = imageView5;
+        this.a0 = imageView6;
+        this.b0 = imageView7;
+        this.c0 = textView10;
+        this.d0 = textView11;
+        this.e0 = justDanceTouchAreaView;
+        this.f0 = constraintLayout4;
+        this.g0 = textView12;
+        this.h0 = imageView8;
+        this.i0 = imageView9;
+        this.j0 = imageView10;
+        this.k0 = textView13;
+    }
+}

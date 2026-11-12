@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/basic_tab_item"
+    android:tag="layout/face_market_basic_tab_item_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dimen_margin_20dp">
+    <ImageView
+        android:id="@+id/face_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textColor="@color/text_color"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:id="@+id/face_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_10dp"
+        android:singleLine="true"
+        android:layout_marginHorizontal="@dimen/dimen_margin_16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/face_icon"
+        style="@style/FontDemiBold.14sp"/>
+    <TextView
+        android:textColor="@color/text_color_40"
+        android:gravity="center_horizontal"
+        android:id="@+id/face_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        app:layout_constraintEnd_toEndOf="@+id/face_icon"
+        app:layout_constraintStart_toStartOf="@+id/face_icon"
+        app:layout_constraintTop_toBottomOf="@+id/face_name"
+        style="@style/FontRegular.12sp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

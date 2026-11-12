@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.xiaomi.fitness.widget.view.RoundImageView
+            android:id="@+id/icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:id="@+id/icon_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/icon"
+            app:layout_constraintEnd_toEndOf="@+id/icon"
+            app:layout_constraintStart_toStartOf="@+id/icon"
+            app:layout_constraintTop_toTopOf="@+id/icon"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:textColor="@color/text_color"
+        android:id="@+id/name"
+        android:paddingBottom="@dimen/dimen_margin_10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:singleLine="true"/>
+</LinearLayout>

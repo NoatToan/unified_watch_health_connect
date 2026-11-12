@@ -1,0 +1,1233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="abbrev_a_hour_ago">
+        <item quantity="other">ཆུ་ཚོད་%d གོང་།</item>
+    </plurals>
+    <plurals name="abbrev_half_hour_ago">
+        <item quantity="other">དུས་ཚོད་ཕྱེད་ཀའི་སྔོན།</item>
+    </plurals>
+    <plurals name="abbrev_in_a_hour">
+        <item quantity="other">ཆུ་ཚོད་%d ཡི་རྗེས།</item>
+    </plurals>
+    <plurals name="abbrev_in_half_hour">
+        <item quantity="other">དུས་ཚོད་ཕྱེད་ཀའི་རྗེས།</item>
+    </plurals>
+    <plurals name="abbrev_in_less_than_one_minute">
+        <item quantity="other">མྱུར་ཏུ།</item>
+    </plurals>
+    <plurals name="abbrev_in_num_minutes">
+        <item quantity="other">སྐར་མ%dརྗེས།</item>
+    </plurals>
+    <plurals name="abbrev_less_than_one_minute_ago">
+        <item quantity="other">ད་གིན།</item>
+    </plurals>
+    <plurals name="abbrev_num_minutes_ago">
+        <item quantity="other">སྐར་མ%dསྔོན།</item>
+    </plurals>
+    <plurals name="blood_sugar_device_active_range_time_day">
+        <item quantity="other">ཉིན་%1$d</item>
+    </plurals>
+    <plurals name="blood_sugar_device_active_range_time_hour">
+        <item quantity="other">ཆུ་ཚོད་%1$d</item>
+    </plurals>
+    <plurals name="blood_sugar_device_active_range_time_minutes">
+        <item quantity="other">སྐར་མ་%1$d</item>
+    </plurals>
+    <plurals name="common_min_unit_kilometer_desc">
+        <item quantity="other">%1$skm</item>
+    </plurals>
+    <plurals name="common_min_unit_meter_desc">
+        <item quantity="other">%1$sm</item>
+    </plurals>
+    <plurals name="common_selected_num">
+        <item quantity="other">ཚན་པ་%1$dབདམས་ཟིན།</item>
+    </plurals>
+    <plurals name="common_share_unit_kilometer_desc">
+        <item quantity="other">%1$sKM</item>
+    </plurals>
+    <plurals name="common_share_unit_meter_desc">
+        <item quantity="other">%1$sM</item>
+    </plurals>
+    <plurals name="common_unit_calorie">
+        <item quantity="other">ཁཱ་སྟོང་གཅིག</item>
+    </plurals>
+    <plurals name="common_unit_calorie_desc">
+        <item quantity="other">%1$dསྟོང་ཁེ།</item>
+    </plurals>
+    <plurals name="common_unit_day_desc">
+        <item quantity="other">ཉིན་%1$d</item>
+    </plurals>
+    <plurals name="common_unit_heart_rate">
+        <item quantity="other">ཐེངས/སྐར་མ།</item>
+    </plurals>
+    <plurals name="common_unit_heart_rate_desc">
+        <item quantity="other">%1$dཐེངས་/སྐར་མ་རེར།</item>
+    </plurals>
+    <plurals name="common_unit_heart_rate_desc2">
+        <item quantity="other">%1$dཐེངས་/སྐར་མ་རེར།</item>
+    </plurals>
+    <plurals name="common_unit_kilometer">
+        <item quantity="other">སྤྱི་ལེ།</item>
+    </plurals>
+    <plurals name="common_unit_kilometer_desc_new">
+        <item quantity="other">ཀུང་ལི་%1$s</item>
+    </plurals>
+    <plurals name="common_unit_meter_desc_new">
+        <item quantity="other">%1$sསྨི་</item>
+    </plurals>
+    <plurals name="common_unit_rope_count">
+        <item quantity="other">གྲངས་</item>
+    </plurals>
+    <plurals name="common_unit_rowing_machine_count">
+        <item quantity="other">ཐེངས།</item>
+    </plurals>
+    <plurals name="common_unit_step">
+        <item quantity="other">གོམ་པ།</item>
+    </plurals>
+    <plurals name="common_unit_step_desc">
+        <item quantity="other">གོམ་གྲངས་%1$d</item>
+    </plurals>
+    <plurals name="common_unit_swim_count">
+        <item quantity="other">ཐེངས་</item>
+    </plurals>
+    <plurals name="common_unit_time">
+        <item quantity="other">ཐེངས།</item>
+    </plurals>
+    <plurals name="common_unit_time_desc">
+        <item quantity="other">ཐེངས་%1$d</item>
+    </plurals>
+    <plurals name="common_unit_time_rope_skipping_desc">
+        <item quantity="other">ཐེངས་%1$d</item>
+    </plurals>
+    <plurals name="common_unit_time_rowing_desc">
+        <item quantity="other">ཐེངས་%1$d</item>
+    </plurals>
+    <plurals name="common_unit_year_old">
+        <item quantity="other">ལོ།</item>
+    </plurals>
+    <plurals name="controller_auth_count_down">
+        <item quantity="other">&quot;%1$s&quot;སྟེང་མངོན་པའི་ར་སྤྲོད་ཨང་ནང་འཇུག་བྱོས་ （%2$d秒）</item>
+    </plurals>
+    <plurals name="course_benefit_days">
+        <item quantity="other">ཉིན་%dཚོགས་མི་འཕྲོག་ཐུབ་སོང་། ངའི་&gt;སློབ་ཁྲིད་ཚོགས་མིའི་ཤོག་ངོས་ནས་ལྟ་ཞིབ་བྱས།</item>
+    </plurals>
+    <plurals name="course_content_segment">
+        <item quantity="other">ཁྱོན་%d</item>
+    </plurals>
+    <plurals name="course_practised_num">
+        <item quantity="other">སྦྱང་བརྡར་ཐེངས་%dབྱས།</item>
+    </plurals>
+    <plurals name="course_pre_time">
+        <item quantity="other">སྐར་ཆ་ %d ལྟ་ཚོད་གྱིས།</item>
+    </plurals>
+    <plurals name="course_series_item_info_courses">
+        <item quantity="other">སློབ་ཚན་ %d</item>
+    </plurals>
+    <plurals name="course_series_item_info_persons">
+        <item quantity="other">མི་%dསྦྱང་མྱོང་།</item>
+    </plurals>
+    <plurals name="course_start_times">
+        <item quantity="other">སྦྱོང་བརྡར་ཐེངས་%dའགོག་ཚུགས།</item>
+    </plurals>
+    <plurals name="day_in_simplify">
+        <item quantity="other">ཉིན་%1$d</item>
+    </plurals>
+    <plurals name="device_last_charged_time">
+        <item quantity="other">ཐེངས་གོང་མར་གློག་བསགས་ནས་ཉིན་%1$dཟིན།</item>
+    </plurals>
+    <plurals name="device_last_full_charged_time">
+        <item quantity="other">ཐེངས་གོང་མར་གློག་བསགས་ཟིན་རྗེས་བར་ཉིན་%1$dཟིན།</item>
+    </plurals>
+    <plurals name="device_manager_face_entrance_count">
+        <item quantity="other">ཉེ་ལམ་གསར་པ་%1$dབསྣོནན་ཡོད།</item>
+    </plurals>
+    <plurals name="device_manager_face_entrance_item_tb">
+        <item quantity="other">%1$s ཨང་%2$dཔ། ཁྱོན་%3$dརེ།</item>
+    </plurals>
+    <plurals name="device_settings_alarm_add_max_expression_plurals">
+        <item quantity="other">མང་ཤོས་སུའང་དྲིལ་སྒྲོག་ཆུ་ཚོད།%1$sཁ་སྣོན་བྱ་ཐུབ།</item>
+    </plurals>
+    <plurals name="device_settings_alarm_clocks">
+        <item quantity="other">དྲིལ་སྒྲོག་ཆུ་ཚོད་གྲངས་%1$d</item>
+    </plurals>
+    <plurals name="device_settings_common_items">
+        <item quantity="other">རྣམ་གྲངས་%1$d</item>
+    </plurals>
+    <plurals name="device_settings_common_minute">
+        <item quantity="other">སྐར་མ%1$d</item>
+    </plurals>
+    <plurals name="device_settings_common_unit_heart_rate_desc">
+        <item quantity="other">%1$dཐེངས་/སྐར་མ་རེར།</item>
+    </plurals>
+    <plurals name="device_settings_contact_list_max_count">
+        <item quantity="other">2.མང་ཤོས་སུ་རྒྱུན་སྤྱོད་འབྲེལ་གཏུག་པ་%1$dསྣོན་ཆོག</item>
+    </plurals>
+    <plurals name="device_settings_event_content_max_length">
+        <item quantity="other">མང་ཤོས་ལའང་ཡིག་འབྲུ་%1$dའགོད་ཆོག</item>
+    </plurals>
+    <plurals name="device_settings_event_minder_add_max_expression">
+        <item quantity="other">མང་ཤོས་སུའང་དོན་དག་ཁག་%1$dཁ་སྣོན་བྱ་ཐུབ།</item>
+    </plurals>
+    <plurals name="device_settings_heart_rate_monitor_freq">
+        <item quantity="other">སྐར་མ་%1$dཐེངས་གཅིག</item>
+    </plurals>
+    <plurals name="device_settings_heart_rate_warning_freq">
+        <item quantity="other">%1$dཐེངས/སྐར་མ་རེར།</item>
+    </plurals>
+    <plurals name="device_settings_huami_shortcut_quantity_limit_tips">
+        <item quantity="other">མང་ཤོས་སུའང་%1$d</item>
+    </plurals>
+    <plurals name="device_settings_huami_sporttype_quantity_limit_tips">
+        <item quantity="other">མང་ཤོས་སུའང་%1$d</item>
+    </plurals>
+    <plurals name="device_settings_hypoxemia_notice_threshold_percent">
+        <item quantity="other">%1$d%%</item>
+    </plurals>
+    <plurals name="device_settings_mine_route_distance">
+        <item quantity="other">སྤྱིའི་རིང་ཚད་སྤྱི་ལེ་%1$s</item>
+    </plurals>
+    <plurals name="device_settings_music_list_size_desc">
+        <item quantity="other">གཞས%1$d</item>
+    </plurals>
+    <plurals name="device_settings_push_result_msg_plurals_fail">
+        <item quantity="other">གླུ་གཞས་%1$dའདྲེན་འཇུག་མ་ཐུབ།</item>
+    </plurals>
+    <plurals name="device_settings_push_result_msg_plurals_success">
+        <item quantity="other">གླུ་གཞས་%1$dའདྲེན་འཇུག་ཐུབ་ཟིན།</item>
+    </plurals>
+    <plurals name="device_settings_share_location_sms_content_hours">
+        <item quantity="other">ཁྱེད་ནི་ངའི་བྲེལ་མྱུར་འབྲེལ་གཏུག་མི་སྣ་ཡིན། ངས་ཁྱེད་དང་མཉམ་དུ་ངའི་མིག་སྔའི་ས་གནས་མཉམ་སྤྱོད་བྱེད་བཞིན་ཡོད། མཉམ་སྤྱོད་དུས་ཚོད་ནི་ཆུ་ཚོད་%1$dཡིན། %2$s སྣེ་སྟོན།：སྦྲེལ་མཐུད་འདི་མཉམ་སྤྱོད་ས་གནས་ཀྱི་བརྒྱུད་རིམ་ཁྲོད་མུ་མཐུད་དུ་ས་གནས་ཆ་འཕྲིན་གསར་བསྒྱུར་བྱེད་རྒྱུ་ཡིན་པས་དུས་ལྟར་དོ་སྣང་བྱེད་རོགས།</item>
+    </plurals>
+    <plurals name="device_settings_sos_contact_set_count">
+        <item quantity="other">མི་སྣ་%1$dསྒྲིག་འགོད་ཟིན།</item>
+    </plurals>
+    <plurals name="device_settings_spo2_freq_freq">
+        <item quantity="other">སྐར་མ་%1$dཐེངས་གཅིག</item>
+    </plurals>
+    <plurals name="device_settings_todo_limit_toast">
+        <item quantity="other">སྒྲུབ་རྒྱུའི་ལས་དོན་མང་ཤོས་%1$dགསར་སྣོན་བྱས་ཆོག</item>
+    </plurals>
+    <plurals name="device_settings_todo_select_count">
+        <item quantity="other">ཚན་པ%1$dབདམས་ཟིན།</item>
+    </plurals>
+    <plurals name="device_settings_track_del_des">
+        <item quantity="other">བདམས་པའི་ལམ་ཐིག་%1$d་ཙམ་སུབ་རྒྱུ་གཏན་འཁེལ་ཡིན་ནམ།</item>
+    </plurals>
+    <plurals name="device_settings_unit_heart_rate">
+        <item quantity="other">ཐེངས/སྐར་མ།</item>
+    </plurals>
+    <plurals name="device_settings_widget_below_min_count_description">
+        <item quantity="other">ཆེས་ཉུང་ན་ལྷུ་ལག་ཆུང་བ་%dའཇོག་དགོས་།</item>
+    </plurals>
+    <plurals name="device_settings_widget_dialog_support_num">
+        <item quantity="other">%dརེ།</item>
+    </plurals>
+    <plurals name="device_settings_widget_manager_max_toast">
+        <item quantity="other">མང་ཤོས་སུའང་ཤོག་བྱང་།%dབསྣན་ཆོག</item>
+    </plurals>
+    <plurals name="device_settings_widget_over_max_count_description">
+        <item quantity="other">ཆེས་མང་ན་ལྷུ་ལག་ཆུང་བ་%dསྣོན་ཆོག་ལྷུ་ལག་ཆུང་བའི་གྲངས་ཚད་ལ་སླེབས་ཡོད།</item>
+    </plurals>
+    <plurals name="device_settings_world_clock_select_number_v2">
+        <item quantity="other">ཚན་པ་%1$dབདམས་ཟིན།</item>
+    </plurals>
+    <plurals name="device_tab_device_size">
+        <item quantity="other">ཁྱོན་%1$d</item>
+    </plurals>
+    <plurals name="face_band_me_count">
+        <item quantity="other">ངའི་ཆུ་ཚོད་སྒྲོམ།（%1$d）</item>
+    </plurals>
+    <plurals name="face_common_picture">
+        <item quantity="other">འདྲ་པར།%1$s</item>
+    </plurals>
+    <plurals name="face_common_video">
+        <item quantity="other">བརྙན་ཟློས།%1$s</item>
+    </plurals>
+    <plurals name="face_detail_danmaku_hour_download">
+        <item quantity="other">ཆུ་ཚོད་%1$s %2$d གོང་ཆུ་ཚོད་སྒྲོམ་ཕབ་ལེན་བྱས།</item>
+    </plurals>
+    <plurals name="face_detail_danmaku_hour_purchase">
+        <item quantity="other">ཆུ་ཚོད་%1$s %2$d གོང་ཆུ་ཚོད་སྒྲོམ་ཉོས།</item>
+    </plurals>
+    <plurals name="face_detail_danmaku_hour_try_out">
+        <item quantity="other">ཆུ་ཚོད་%1$s %2$d གོང་ཆུ་ཚོད་སྒྲོམ་བེད་སྤྱོད་ཚོད་ལྟ་བྱས།</item>
+    </plurals>
+    <plurals name="face_detail_danmaku_minute_download">
+        <item quantity="other">སྐར་མ་%1$s %2$d གོང་ཆུ་ཚོད་སྒྲོམ་ཕབ་ལེན་བྱས།</item>
+    </plurals>
+    <plurals name="face_detail_danmaku_minute_purchase">
+        <item quantity="other">སྐར་མ་%1$s %2$d གོང་ཆུ་ཚོད་སྒྲོམ་ཉོས།</item>
+    </plurals>
+    <plurals name="face_detail_danmaku_minute_try_out">
+        <item quantity="other">སྐར་མ་%1$s %2$d གོང་ཆུ་ཚོད་སྒྲོམ་བེད་སྤྱོད་ཚོད་ལྟ་བྱས།</item>
+    </plurals>
+    <plurals name="face_download_count">
+        <item quantity="other">ཐེངས་%1$dཕབ་ལེན་བྱས།</item>
+    </plurals>
+    <plurals name="face_me_count">
+        <item quantity="other">ངའི་ཆུ་ཚོད་སྒྲོམ།（%1$d）</item>
+    </plurals>
+    <plurals name="face_pay_try_out_toast">
+        <item quantity="other">ཚོད་ལྟ་ལེགས་གྲུབ་ཟིན། སྐར་མ་%1$dཡི་རྗེས་མཇུག་སྒྲིལ།</item>
+    </plurals>
+    <plurals name="face_photo_add_desc">
+        <item quantity="other">པར་རིས་%1$d</item>
+    </plurals>
+    <plurals name="face_photo_delete_confirm_desc">
+        <item quantity="other">ཆུ་ཚོད་སྒྲོམ་ནས་པར་རིས་%1$dསུབ་གཏན་ཡིན་ནམ།</item>
+    </plurals>
+    <plurals name="face_photo_most">
+        <item quantity="other">ཆེས་མང་ན་པར་རིས%1$dསྣོན་འཇུག་བྱེད།</item>
+    </plurals>
+    <plurals name="face_save_fail_too_much_video_count_last">
+        <item quantity="other">ཆེས་མང་ན་བརྙན་ཟློས་%dམ་གཏོགས་བསྐུར་མི་ཐུབ་།</item>
+    </plurals>
+    <plurals name="face_save_fail_too_much_video_count_pre">
+        <item quantity="other">བརྙན་ཟློས་%dཡར་བསྐུར་བ་ཕམ་སོང་།</item>
+    </plurals>
+    <plurals name="face_save_fail_video_duration_long">
+        <item quantity="other">བརྙན་ཟློས་%sབསྐུར་བ་ཕམ་སོང་། སྐར་ཆ་གསུམ་གྱི་ནང་གི་བརྙན་ཟློས་གྱི་ཐོན་ཁུངས་བརྒྱུད་སྤྲོད་བྱེད་རོགས།</item>
+    </plurals>
+    <plurals name="face_video_add_desc">
+        <item quantity="other">བརྙན་ཟློས་%1$d</item>
+    </plurals>
+    <plurals name="face_video_delete_confirm_desc">
+        <item quantity="other">ཆུ་ཚོད་སྒྲོམ་ནང་ནས་བརྙན་ཟློས་%1$dའདི་སུབ་པ་གཏན་འཁེལ་ལམ།</item>
+    </plurals>
+    <plurals name="habit_day_num">
+        <item quantity="other">ཉིན་%1$dབསྟུད་མར་འབྱོར་འགོད་བྱས།</item>
+    </plurals>
+    <plurals name="habit_people_num">
+        <item quantity="other">མི་%1$dཡིས་རྒྱུན་འཁྱོངས་བྱས།</item>
+    </plurals>
+    <plurals name="habit_share_days">
+        <item quantity="other">ཉིན།</item>
+    </plurals>
+    <plurals name="habit_world_clock_select_number_v2">
+        <item quantity="other">ཚན་པ་%1$dབདམས་ཟིན།</item>
+    </plurals>
+    <plurals name="health_blood_glucose_max_value_unit">
+        <item quantity="other">ཁྲག་གི་མངར་ཆ། &gt;%1$smmol/L</item>
+    </plurals>
+    <plurals name="health_blood_glucose_min_value_unit">
+        <item quantity="other">ཁྲག་གི་མངར་ཆ། ≤%1$smmol/L</item>
+    </plurals>
+    <plurals name="health_blood_glucose_unit">
+        <item quantity="other">mmol/L</item>
+    </plurals>
+    <plurals name="health_blood_glucose_value_unit">
+        <item quantity="other">%1$smmol/L</item>
+    </plurals>
+    <plurals name="health_blood_glucose_value_unit_short">
+        <item quantity="other">%1$s mmol/L</item>
+    </plurals>
+    <plurals name="health_blood_pressure_exception_count">
+        <item quantity="other">ཐེངས།</item>
+    </plurals>
+    <plurals name="health_blood_pressure_pulse_unit">
+        <item quantity="other">ཐེངས/སྐར་མ།</item>
+    </plurals>
+    <plurals name="health_blood_pressure_pulse_value_unit">
+        <item quantity="other">%1$dཐེངས་/སྐར་མ་རེར།</item>
+    </plurals>
+    <plurals name="health_body_age_format">
+        <item quantity="other">ལོ་%1$d</item>
+    </plurals>
+    <plurals name="health_body_score_format">
+        <item quantity="other">སྐར་མ་%1$d</item>
+    </plurals>
+    <plurals name="health_calo_biscuit">
+        <item quantity="other">ཧ་ལམ་བག་ལེབ་ %1$d</item>
+    </plurals>
+    <plurals name="health_calo_chicken">
+        <item quantity="other">ཧ་ལམ་བྱ་རྐང་ %1$d</item>
+    </plurals>
+    <plurals name="health_calo_ice">
+        <item quantity="other">ཧ་ལམ་འཁྱགས་པ་བྱི་རིལ། %1$d</item>
+    </plurals>
+    <plurals name="health_check_complete_check_indicator">
+        <item quantity="other">ཉམས་ལེན་གྱི་དམིགས་ཚད་ཁག་%1$dལེགས་གྲུབ་བྱུང་བ་།</item>
+    </plurals>
+    <plurals name="health_check_risk_count">
+        <item quantity="other">དམིགས་ཚད་%1$d ལ་བདེ་ཐང་གི་ཉེན་ཁ་ཡོད་།</item>
+    </plurals>
+    <plurals name="health_check_total_measurement">
+        <item quantity="other">ཐེངས་འདིར་ཁྱོན་བསྡོམས་བདེ་ཐང་གི་དམིགས་ཚད་ཁག་%1$dཚད་ལེན་བྱས་།</item>
+    </plurals>
+    <plurals name="health_common_items">
+        <item quantity="other">%1$dརྣམ་གྲངས།</item>
+    </plurals>
+    <plurals name="health_common_minute_unit">
+        <item quantity="other">སྐར་མ་%1$d</item>
+    </plurals>
+    <plurals name="health_common_unit_calorie_av">
+        <item quantity="other">སྟོང་ཁཱ་/%1$d</item>
+    </plurals>
+    <plurals name="health_common_unit_calorie_desc">
+        <item quantity="other">%1$dཁེ་ལོ་རི།</item>
+    </plurals>
+    <plurals name="health_common_unit_mh">
+        <item quantity="other">སྐར་མ།</item>
+    </plurals>
+    <plurals name="health_common_unit_step">
+        <item quantity="other">གོམ་པ།</item>
+    </plurals>
+    <plurals name="health_common_unit_step_av">
+        <item quantity="other">གོམ་པ་/%1$d</item>
+    </plurals>
+    <plurals name="health_common_unit_step_desc">
+        <item quantity="other">གོམ་གྲངས་%1$d</item>
+    </plurals>
+    <plurals name="health_common_unit_step_desc2">
+        <item quantity="other">གོམ་གྲངས་%1$d</item>
+    </plurals>
+    <plurals name="health_curse_cycle_days">
+        <item quantity="other">འཁོར་ཡུན་ནི་ཉིན་%1$d</item>
+    </plurals>
+    <plurals name="health_curse_danger_will">
+        <item quantity="other">ཁམས་ཕུད་དུས་ཚོད་སྔོན་དཔག་ལྟར་ཉིན་ %d ཡི་རྗེས་འགོ་ཚུགས།</item>
+    </plurals>
+    <plurals name="health_curse_danger_will_before">
+        <item quantity="other">ཁམས་ཕུད་དུས་ཚོད་ཉིན་ %d ཡི་རྗེས་འགོ་ཚུགས་རྒྱུ་རེད།</item>
+    </plurals>
+    <plurals name="health_curse_danger_with_ovum">
+        <item quantity="other">ཁམས་ཕུད་དུས་ཚོད་ཀྱི་ཉིན་ %d ལ་འཁེལ། དེ་རིང་ཁམས་ཕུད་དུས་ཚོད་རེད།</item>
+    </plurals>
+    <plurals name="health_curse_day">
+        <item quantity="other">ཉིན་</item>
+    </plurals>
+    <plurals name="health_curse_day_number">
+        <item quantity="other">ཉིན་%1$dཔ།</item>
+    </plurals>
+    <plurals name="health_curse_days_after_number">
+        <item quantity="other">ཉིན་%1$dརྗེས།</item>
+    </plurals>
+    <plurals name="health_curse_days_bracket">
+        <item quantity="other">（ཉིན་%d）</item>
+    </plurals>
+    <plurals name="health_curse_days_left_future">
+        <item quantity="other">སྔོན་རྩིས་ལྟར་ན་མཇུག་སྒྲིལ་བར་ཉིན་%dའདུག</item>
+    </plurals>
+    <plurals name="health_curse_days_left_pre">
+        <item quantity="other">ད་དུང་ཉིན་%dའདུག</item>
+    </plurals>
+    <plurals name="health_curse_easy_pregnancy_before">
+        <item quantity="other">ཁམས་ཕུད་དུས་ཚོད་ཉིན་ %d ཡི་རྗེས་འགོ་ཚུགས་རྒྱུ་རེད།</item>
+    </plurals>
+    <plurals name="health_curse_in_days">
+        <item quantity="other">ཟླ་མཚན་ཉིན་གྲངས་%1$d</item>
+    </plurals>
+    <plurals name="health_curse_in_future">
+        <item quantity="other">སྔོན་རྩིས་ལྟར་ན་ཟླ་མཚན་བབ་པའི་ཉིན།%d</item>
+    </plurals>
+    <plurals name="health_curse_in_pre">
+        <item quantity="other">ཟླ་མཚན་བབ་པའི་ཉིན་%d</item>
+    </plurals>
+    <plurals name="health_curse_in_start_before">
+        <item quantity="other">ཟླ་མཚན་ཉིན་%dརྗེས་ནས་འགོ་ཚུགས་སྲིད།</item>
+    </plurals>
+    <plurals name="health_curse_in_start_will">
+        <item quantity="other">སྔོན་རྩིན་ལྟར་ན་ཟླ་མཚན་ཉིན་%dརྗེས་ནས་འགོ་ཚུགས།</item>
+    </plurals>
+    <plurals name="health_curse_ovum_start">
+        <item quantity="other">ཉིན་%dརྗེས་ཁམས་དམར་དོན་འགོ་ཚུགས།</item>
+    </plurals>
+    <plurals name="health_curse_period">
+        <item quantity="other">འཁོར་ཚད་ཉིན་%d</item>
+    </plurals>
+    <plurals name="health_curse_temp_trend_curse_in_future">
+        <item quantity="other">སྔོན་རྩིས་ལྟར་ན་ཉིན་ %d རྗེས་ནས་ཟླ་མཚན་གྱི་དུས་སུ་འཛུལ་སྲིད།</item>
+    </plurals>
+    <plurals name="health_curse_temp_trend_ovum_in_future">
+        <item quantity="other">སྔོན་རྩིས་ལྟར་ན་ཉིན་ %d རྗེས་ནས་ཁམས་དམར་འདོན་པའི་དུས་སུ་འཛུལ་སྲིད།</item>
+    </plurals>
+    <plurals name="health_curse_widget_easy_pregnancy_before_desc">
+        <item quantity="other">ཉིན་%1$d ཡི་རྗེས་ཁམས་ཕུད་དུས་ཚོད་རེད།</item>
+    </plurals>
+    <plurals name="health_curse_widget_forecast_before_desc">
+        <item quantity="other">ཉིན་%1$dཡི་རྗེས་ཟླ་མཚན་སྔོན་དཔགས།</item>
+    </plurals>
+    <plurals name="health_curse_widget_forecast_process_desc">
+        <item quantity="other">སྔོན་དཔགས་ལྟར་ན་ཟླ་མཚན་ཉིན་%1$dཔ།</item>
+    </plurals>
+    <plurals name="health_curse_widget_in_desc">
+        <item quantity="other">ཟླ་མཚན་འབབ་པའི་ཉིན་%1$d</item>
+    </plurals>
+    <plurals name="health_curse_widget_ovum_process_desc">
+        <item quantity="other">ཁམས་ཕུད་དུས་ཀྱི་ཉིན་ %1$d རེད།</item>
+    </plurals>
+    <plurals name="health_ecg_remaining_count_to_analyze">
+        <item quantity="other">ཞིབ་འགྲེལ་བྱ་ཐེངས་ལྷག་མ་ད་དུང་ཐེངས་%1$dའདུག</item>
+    </plurals>
+    <plurals name="health_hearing_noise_count">
+        <item quantity="other">ཐེངས་%1$d</item>
+    </plurals>
+    <plurals name="health_heart_health_unit_heart_rate_desc">
+        <item quantity="other">%1$sཐེངས་/སྐར་མ།</item>
+    </plurals>
+    <plurals name="health_home_blood_glucose_value_unit">
+        <item quantity="other">ཁྲག་གི་མངར་ཆ། %1$smmol/L</item>
+    </plurals>
+    <plurals name="health_medication_count_unit">
+        <item quantity="other">རྐང་%1$s</item>
+    </plurals>
+    <plurals name="health_medium_height_duration_desc_with_space">
+        <item quantity="other">ནུས་ཚད་མཐོ་འབྲིང་གི་འགུལ་བསྐྱོད་སྐར་མ་ %1$d</item>
+    </plurals>
+    <plurals name="health_mh_home_title">
+        <item quantity="other">དྲག་ཚད་འབྲིང་ཙམ་སྐར་མ%1$d</item>
+    </plurals>
+    <plurals name="health_n60_avg_heart_rate">
+        <item quantity="other">ཆ་སྙོམས་སྙིང་འཕར་ཚད། %1$sསྐར་མ་རེར།/ཐེངས།</item>
+    </plurals>
+    <plurals name="health_n60_avg_heart_rate_common">
+        <item quantity="other">ཆ་སྙོམས་སྙིང་འཕར་ཚད། %1$sསྐར་མ་རེར།/ཐེངས།</item>
+    </plurals>
+    <plurals name="health_n60_ecg_count_of_symptom_type">
+        <item quantity="other">%1$dརིགས་ཀྱི་ནད་རྟགས།</item>
+    </plurals>
+    <plurals name="health_n60_expert_interpretation_service_remaining_time">
+        <item quantity="other">རིན་མེད་འགྲེལ་བརྗོད་ཀྱི་གོ་སྐབས་ཐེངས་མ་%1$dལྷག་འདུག</item>
+    </plurals>
+    <plurals name="health_share_calo_calo_consum">
+        <item quantity="other">སྟོང་ཁཱ་ %1$d ཟད།</item>
+    </plurals>
+    <plurals name="health_share_sport_target_month_caluli_chickenleg">
+        <item quantity="other">འཛད་ཚད་ཁྱོན་≈བྱ་རྐང་%1$.1f</item>
+    </plurals>
+    <plurals name="health_share_sport_target_month_reach_day">
+        <item quantity="other">ཉིན་%1$d</item>
+    </plurals>
+    <plurals name="health_share_sport_target_month_step">
+        <item quantity="other">བར་ཐག་ཁྱོན≈སྤྱི་ལེ%1$.1f</item>
+    </plurals>
+    <plurals name="health_sleep_all_day_stress_more_desc">
+        <item quantity="other">ཉེ་ཆར་ཉིན་མ་%1$dནང་ལ་ཁྱེད་རང་གནོན་ཤུགས་ཆེ་དྲག་འདུག</item>
+    </plurals>
+    <plurals name="health_sleep_awake_count">
+        <item quantity="other">ཐེངས་%1$d</item>
+    </plurals>
+    <plurals name="health_sleep_breath_quality_value">
+        <item quantity="other">གཉིད་ཉལ་སྐབས་དབུགས་འབྱིན་རྔུབ་ཀྱི་སྤུས་ཚད་སྐར་མ་%1$d</item>
+    </plurals>
+    <plurals name="health_sleep_breath_rate_value_and_unit">
+        <item quantity="other">སྐར་མ་རེར་ཐེངས་%1$d</item>
+    </plurals>
+    <plurals name="health_sleep_compare_avg_awake_count_decrease">
+        <item quantity="other">ཐེ་གཏོགས་མ་བྱས་གོང་གི་ཆ་སྙོམས་མཚན་མོའི་རིག་པ་དྭངས་གསལ་གྱི་ཐེངས་གྲངས་ཐེངས་%1$sཉུང་དུ་ཕྱིན།</item>
+    </plurals>
+    <plurals name="health_sleep_compare_avg_awake_count_increase">
+        <item quantity="other">ཐེ་གཏོགས་མ་བྱས་གོང་གི་ཆ་སྙོམས་མཚན་མོའི་རིག་པ་དྭངས་གསལ་གྱི་ཐེངས་གྲངས་ཐེངས་%1$sམང་དུ་ཕྱིན།</item>
+    </plurals>
+    <plurals name="health_sleep_compare_avg_nap_count_decrease">
+        <item quantity="other">ཐེ་གཏོགས་མ་བྱས་གོང་གི་ཆ་སྙོམས་ཉིན་རེའི་གཉིད་ཆུང་ཐེངས་%1$sཉུང་དུ་ཕྱིན།</item>
+    </plurals>
+    <plurals name="health_sleep_compare_avg_nap_count_increase">
+        <item quantity="other">ཐེ་གཏོགས་མ་བྱས་གོང་གི་ཆ་སྙོམས་ཉིན་རེའི་གཉིད་ཆུང་ཐེངས་%1$sམང་དུ་ཕྱིན།</item>
+    </plurals>
+    <plurals name="health_sleep_continuity_desc">
+        <item quantity="other">ཉེ་ཆར་ཁྱེད་རང་དགོང་མོ་%1$d་ལ་གཉིད་པའི་དུས་སུ་རྟག་པར་གཉིད་བསད་ཀྱི་འདུག</item>
+    </plurals>
+    <plurals name="health_sleep_data_collect_has_history_not_finish_desc">
+        <item quantity="other">གཉིད་ཆགས་གཞི་གྲངས་གསར་སྒྱུར་བྱེད་པར་ད་དུང་དགོང་མོ་%1$dགཞི་གྲངས་དགོས།</item>
+    </plurals>
+    <plurals name="health_sleep_data_collect_not_finish_desc">
+        <item quantity="other">ད་དུང་དགོང་མོ་%1$dགཉིད་ཆགས་གཞི་གྲངས་དགོས།</item>
+    </plurals>
+    <plurals name="health_sleep_data_collect_not_finish_dialog_subtitle">
+        <item quantity="other">གཉིད་པའི་སྲོག་ཆགས་གསར་བ་ལ་ལྟ་ཞིབ་བྱས་ནས་གསར་དུ་བརྗེས་པའི་སྙན་ཞུ་ལྟར།ད་དུང་གོན་ཆས་བཏགས་ནས་དགོང་མོ་%1$d་གཉིད་དགོས།</item>
+    </plurals>
+    <plurals name="health_sleep_data_collect_not_finish_has_history_dialog_subtitle">
+        <item quantity="other">གཉིད་པའི་སྲོག་ཆགས་གསར་བ་ལ་ལྟ་ཞིབ་བྱས་ནས་གསར་དུ་བརྗེས་པའི་སྙན་ཞུ་ལྟར།ད་དུང་གོན་ཆས་བཏགས་ནས་དགོང་མོ་%1$dགཉིད་དགོས། “ཤེས་སོང”མནན་ནས་ཐེངས་སྔོན་མར་བྱུང་པའི་མཐིལ་རྟོགས་སྙན་ཞུ་ལ་བལྟ་ཙམ་བྱས།</item>
+    </plurals>
+    <plurals name="health_sleep_daytime_nap_more_desc">
+        <item quantity="other">ཉེ་ཆར་ཉིན་མ་%1$d་ལ་ཁྱེད་རང་གི་ཉིན་མོའི་དུས་ཚོད་རིང་དྲག་པ།</item>
+    </plurals>
+    <plurals name="health_sleep_distribute_view_normal_wake_percent">
+        <item quantity="other">ཐེངས་%1$d</item>
+    </plurals>
+    <plurals name="health_sleep_dream_talk_count_unit">
+        <item quantity="other">ཐེངས།</item>
+    </plurals>
+    <plurals name="health_sleep_insufficient_data_warning">
+        <item quantity="other">ད་རུང་དགོང་མོ་%1$dལ་ཁྱེད་རང་གི་གཉིད་ཆགས་གཞི་གྲངས་ཁྱེད་རང་དང་འཚམ་པའི་གཉིད་ཆགས་སྲོག་ཆགས་ལ་འགྲུབ་ཐུབ།</item>
+    </plurals>
+    <plurals name="health_sleep_intensity_desc">
+        <item quantity="other">ཉེ་ཆར་ཁྱེད་རང་ཉིན་མ་%1$dནང་གཉིད་མ་ཉལ་གོང་གི་ཆུ་ཚོད་གཉིས་ནང་དུ་ཚད་མཐོའི་ལུས་སྦྱོང་བྱེད་འདུག</item>
+    </plurals>
+    <plurals name="health_sleep_interfere_day_sleep_count_unit">
+        <item quantity="other">ཆ་སྙོམས་ཀྱིས་གཉིད་པའི་ཐེངས་གྲངས：ཐེངས་%1$s</item>
+    </plurals>
+    <plurals name="health_sleep_interfere_days_count">
+        <item quantity="other">འཆར་གཞིའི་ཉིན་ %1$d རེད།</item>
+    </plurals>
+    <plurals name="health_sleep_interfere_detail_day_count">
+        <item quantity="other">འཆར་གཞིའི་ཉིན་ %1$d རེད།</item>
+    </plurals>
+    <plurals name="health_sleep_interfere_not_opened_entry_desc">
+        <item quantity="other">ཉིན་%1$dལ་ཁྱོད་ཀྱི་གཉིད་ཀྱི་གནད་དོན་ཇེ་ལེགས་སུ་གཏོང་།</item>
+    </plurals>
+    <plurals name="health_sleep_interfere_report_history_date_range_total_days">
+        <item quantity="other">%1$s ~ %2$s | 共ཁྱོན་ཉིན་%3$d</item>
+    </plurals>
+    <plurals name="health_sleep_interfere_set_tip">
+        <item quantity="other">ཁྱོད་ཀྱི་འཆར་གཞིའི་འཁོར་ཡུན་ནང་གཉིད་པའི་དམིགས་འབེན་གཏན་འཁེལ་བྱེད་རོགས།གཉིད་པའི་སྐབས་སུ་དུས་ཚོད་%1$d小時ཡིན་པའི་བསམ་འཆར་བཏོན།</item>
+    </plurals>
+    <plurals name="health_sleep_interfere_sleep_count_unit">
+        <item quantity="other">ཐེངས་%1$d</item>
+    </plurals>
+    <plurals name="health_sleep_interfere_task_list_count">
+        <item quantity="other">（%1$d/%2$d）</item>
+    </plurals>
+    <plurals name="health_sleep_interfere_task_sleep_in_short_time_message">
+        <item quantity="other">ཉིན་དཀར་གཉིད་ན་ཆེས་བཟང་ན་དུས་ཚོད་%1$dལས་བརྒལ་མི་རུང་།་མཚན་མོའི་གཉིད་ལ་ཤུགས་རྐྱེན་མི་ཐེབས་པའི་ཆེད་དུ།</item>
+    </plurals>
+    <plurals name="health_sleep_interfere_task_tip_message1">
+        <item quantity="other">ཉལ་བའི་སྔོན་གྱི་%1$dལ་གློག་རྡུལ་སྒྲིག་ཆས་བཞག་ནས་འོད་སྔོན་པོ་འགོག་པ་དང་ནག་འབུད་རྒྱུ་ཡིས་གཉིད་ལ་ཤུགས་རྐྱེན་ཐེབས་པར་སྔོན་འགོག་བྱེད་དགོས།</item>
+    </plurals>
+    <plurals name="health_sleep_interfere_task_tip_message2">
+        <item quantity="other">དུས་ཚོད་ལྔ་པའི་རྗེས་ནས་འཚིག་ཇ་འཐུང་བར་སྔོན་འགོག་བྱེད་དགོས། ཚད་ལས་བརྒལ་ན་གཉིད་ཀྱི་སྤུས་ཚད་ལ་ཤུགས་རྐྱེན་ཐེབས་སྲིད།</item>
+    </plurals>
+    <plurals name="health_sleep_interfere_task_workout_30_minute_title">
+        <item quantity="other">ལུས་རྩལ་སྐར་མ་ %1$d བྱེད།</item>
+    </plurals>
+    <plurals name="health_sleep_interpretation_what_you_need_to_keep_in_mind_multiple">
+        <item quantity="other">དོ་སྣང་དགོས་པ་པ་གཤམ་གསལ%1$dཡོད：</item>
+    </plurals>
+    <plurals name="health_sleep_rhythm_cycle_desc">
+        <item quantity="other">འཁོར་ཡུན་ཉིན་%1$d</item>
+    </plurals>
+    <plurals name="health_sleep_rhythm_download_pdf_use_remind">
+        <item quantity="other">ཁྱེད་ཀྱི་མིག་སྔའི་ལྟ་ཞིབ་དུས་འཁོར་ནང་གཉིད་ཀྱི་འགྱུར་ཁུག་ཉིན་ %1$d མི་འདང་བས། དུས་འཁོར་འདིའི་གཞི་གྲངས་ལ་ཟུར་ལྟའི་རིན་ཐང་མེད། སྨན་པས་འདིར་བརྟེན་ནས་ཐག་གཅོད་བྱ་ཐབས་བྲལ།</item>
+    </plurals>
+    <plurals name="health_sleep_rhythm_measurement_day_ended_desc">
+        <item quantity="other">ལྟ་ཞིབ་ཚད་ལེན་འཁོར་ཡུན་ཉིན་%1$d་པ།</item>
+    </plurals>
+    <plurals name="health_sleep_rhythm_measurement_day_margin_end_desc">
+        <item quantity="other">མཇུག་སྒྲིལ་པར་ད་དུང་ཉིན%1$dཡོད།</item>
+    </plurals>
+    <plurals name="health_sleep_rhythm_wake_up_time_list">
+        <item quantity="other">ཐེངས་%1$s་གཉིད་ལས་སད་རྗེས་སླར་ཡང་གཉིད་ཁུག་པར་ཟད་གྲོན་གྱི་དུས་ཚོད།</item>
+    </plurals>
+    <plurals name="health_sleep_schedule_earlier_than_zero_time_desc">
+        <item quantity="other">ཉེ་ཆར་དགོང་མོ་%1$dལ་ཁྱེད་རང་ཆུ་ཚོད་བཅུ་གཉིས་སྔོན་ནས་ཉལ་ཡོད།</item>
+    </plurals>
+    <plurals name="health_sleep_schedule_later_than_zero_time_desc">
+        <item quantity="other">ཉེ་ཆར་དགོང་མོ་%1$dལ་ཁྱེད་རང་ཆུ་ཚོད་བཅུ་གཉིས་རྗེས་ནས་ཉལ་ཡོད།</item>
+    </plurals>
+    <plurals name="health_sleep_score_unit">
+        <item quantity="other">སྐར་གྲངས་</item>
+    </plurals>
+    <plurals name="health_sleep_score_unit_with_value">
+        <item quantity="other">སྐར་གྲངས་%1$d</item>
+    </plurals>
+    <plurals name="health_sleep_snore_decibel_unit">
+        <item quantity="other">ཧྥུན་པེ།</item>
+    </plurals>
+    <plurals name="health_sleep_unit_min">
+        <item quantity="other">%1$dmin</item>
+    </plurals>
+    <plurals name="health_sleep_unit_rowing_machine_count">
+        <item quantity="other">ཐེངས།</item>
+    </plurals>
+    <plurals name="health_sleep_wakeup_count">
+        <item quantity="other">%d ཚེ་།</item>
+    </plurals>
+    <plurals name="health_spo2_home_value">
+        <item quantity="other">ཁྲག་རླུང་ཚད་ལོངས་ཚད།%1$d%%</item>
+    </plurals>
+    <plurals name="health_sport_lactate_threshold_heart_rate_data_unit">
+        <item quantity="other">འོ་སྐྱུར་གྲངས་ཀྱི་སྙིང་འཕར་ཚད་སྐར་མ་རེར་ཐེངས་%1$s</item>
+    </plurals>
+    <plurals name="health_sport_lactate_threshold_pace_data_unit">
+        <item quantity="other">འོ་སྐྱུར་གྲངས་ཀྱི་མྱུར་ཚད་སྤྱི་ལེ་རེར་ཐེངས་%1$s</item>
+    </plurals>
+    <plurals name="health_stand_count_desc">
+        <item quantity="other">ཐེངས་%1$d</item>
+    </plurals>
+    <plurals name="health_stand_count_desc_no_value">
+        <item quantity="other">ཡངས་ལངས་ནས་འགུལ་བསྐྱོད་བྱེད་ཐེངས།</item>
+    </plurals>
+    <plurals name="health_stand_unit_time">
+        <item quantity="other">ཐེངས།</item>
+    </plurals>
+    <plurals name="health_stand_unit_time_av">
+        <item quantity="other">ཐེངས་/%1$d</item>
+    </plurals>
+    <plurals name="health_target_calories_unit">
+        <item quantity="other">དམིགས་ཡུལ་སྟོང་ཁཱ།%1$d</item>
+    </plurals>
+    <plurals name="health_target_mhs_unit">
+        <item quantity="other">དམིགས་ཡལ་སྐར་མ%1$d</item>
+    </plurals>
+    <plurals name="health_target_stand_child_av">
+        <item quantity="other">ཐེངས་/%1$d</item>
+    </plurals>
+    <plurals name="health_target_stand_times_unit">
+        <item quantity="other">དམིགས་ཡལ་ཐེངས་%1$d</item>
+    </plurals>
+    <plurals name="health_target_step_unit">
+        <item quantity="other">དམིགས་ཡུལ་གོམ་གྲངས་%1$d</item>
+    </plurals>
+    <plurals name="health_target_tips_10_cal">
+        <item quantity="other">ད་དུང་སྟོང་ཁཱ་%1$dའཛད་ཐུབ་ཚེ། དེ་རིང་གི་ཁཱ་ལུ་ལི་ཡི་དམིགས་ཡུལ་གྲུབ་ཐུབ་པས། ཤུགས་རྒྱོབ།</item>
+    </plurals>
+    <plurals name="health_target_tips_10_mh">
+        <item quantity="other">ད་དུང་འབྲིང་མཐོའི་དྲག་ཚད་ཀྱི་སྦྱོང་བརྡར་སྐར་མ་%1$dབྱས་ཚེ། དེ་རིང་གི་དམིགས་ཡུལ་གྲུབ་ཐུབ་པས། ཤུགས་རྒྱོབ།</item>
+    </plurals>
+    <plurals name="health_target_tips_10_step">
+        <item quantity="other">ད་དུང་གོམ་པ་%1$dབསྐྱོན་ཐུབ་ཚེ། དེ་རིང་གི་གོམ་གྲངས་དམིགས་ཡུལ་གྲུབ་ཐུབ་པས། ཤུགས་རྒྱོབ།</item>
+    </plurals>
+    <plurals name="health_target_tips_remain_cal">
+        <item quantity="other">ད་དུང་སྟོང་ཁཱ་%1$dའཛད་ཐུབ་ཚེ། གཞི་ནས་དེ་རིང་གི་ཁཱ་ལུ་ལི་ཡི་དམིགས་ཡུལ་གྲུབ་ཐུབ།</item>
+    </plurals>
+    <plurals name="health_target_tips_remain_mh">
+        <item quantity="other">ད་དུང་འབྲིང་མཐོའི་དྲག་ཚད་ཀྱི་སྦྱོང་བརྡར་སྐར་མ་%1$dབྱས་ཚེ། གཞི་ནས་དེ་རིང་གི་དམིགས་ཡུལ་གྲུབ་ཐུབ།</item>
+    </plurals>
+    <plurals name="health_target_tips_remain_step">
+        <item quantity="other">ད་དུང་གོམ་པ་%1$dབསྐྱོན་ཚེ། གཞི་ནས་དེ་རིང་གི་གོམ་གྲངས་དམིགས་ཡུལ་གྲུབ་ཐུབ།</item>
+    </plurals>
+    <plurals name="health_target_tips_stand_50">
+        <item quantity="other">མ་འོངས་པའི་ཆུ་ཚོད་%1$dཁྲོད། ཆུ་ཚོད་རེར་ཡར་ཐེངས་གཅིག་ལངས་ཏེ་འགུལ་བསྐྱོད་གནང་ཚེ་དམིགས་ཡུལ་གྲུབ་ཐུབ།</item>
+    </plurals>
+    <plurals name="health_today_health_measured_items_abnormal_hr_high">
+        <item quantity="other">ཐེངས་/སྐར་མ།%dམཐོ་དྲགས་པ་།</item>
+    </plurals>
+    <plurals name="health_today_health_measured_items_abnormal_hr_high_range">
+        <item quantity="other">ཐེངས་/སྐར་མ།%1$d ~ %2$dམཐོ་དྲགས་པ་།</item>
+    </plurals>
+    <plurals name="health_today_health_measured_items_abnormal_hr_low">
+        <item quantity="other">ཐེངས་/སྐར་མ།%dདམའ་དྲགས་པ་།</item>
+    </plurals>
+    <plurals name="health_today_health_measured_items_abnormal_hr_low_range">
+        <item quantity="other">ཐེངས་/སྐར་མ།%1$d ~ %2$dདམའ་དྲགས་པ་།</item>
+    </plurals>
+    <plurals name="health_today_health_measured_items_abnormal_spo2_low">
+        <item quantity="other">%%%dདམའ་དྲགས་པ་།</item>
+    </plurals>
+    <plurals name="health_today_health_measured_items_abnormal_spo2_low_range">
+        <item quantity="other">%1$d%% ~ %2$d%%དམའ་དྲགས་པ་།</item>
+    </plurals>
+    <plurals name="health_today_health_measured_items_abnormal_times_title">
+        <item quantity="other">ཐེངས་%dརྒྱུན་ལྡན་མིན་པ།</item>
+    </plurals>
+    <plurals name="health_today_health_measured_items_normal">
+        <item quantity="other">ཞིབ་བཤེར་&lt;a href=&quot;%1$s&quot;&gt;%dཁག&lt;/a&gt;ལེགས་གྲུབ་ཟིན་པ་།</item>
+    </plurals>
+    <plurals name="health_today_health_sleep_duration_long_time">
+        <item quantity="other">དུས་ཚོད་%1$.1fཡིས་རིང་།</item>
+    </plurals>
+    <plurals name="health_today_health_sleep_duration_short_time">
+        <item quantity="other">དུས་ཚོད་%1$.1fཡིས་ཐུང་།</item>
+    </plurals>
+    <plurals name="health_today_health_summary_des_abnormal">
+        <item quantity="other">རྒྱུན་ལྡན་མིན་པའི་དཔེ་དུམ་ལ་གཙོ་གནད་དུ་དོ་སྣང་བྱེད་རོགས། སྙན་ཞུ་ལས་མངོན་པ་ལྟར་ན་ཁྱོད་ཀྱི་དམིགས་ཚད་%dལ་བདེ་ཐང་གི་ཉེན་ཁ་ཡོད་པ་རེད། གལ་ཏེ་ལུས་ཕུང་མི་བདེ་ན་དུས་ལྟར་སྨན་བཅོས་བྱེད་རོགས།</item>
+    </plurals>
+    <plurals name="health_unit_calorie_space">
+        <item quantity="other">སྟོང་ཁཱ།</item>
+    </plurals>
+    <plurals name="health_unit_count_per_week">
+        <item quantity="other">ཐེངས་གྲངས། གཟའ་འཁོར།</item>
+    </plurals>
+    <plurals name="health_unit_min_1_av">
+        <item quantity="other">སྐར་མ་/%1$d</item>
+    </plurals>
+    <plurals name="health_unit_spo2_percent_desc">
+        <item quantity="other">%1$d%%</item>
+    </plurals>
+    <plurals name="health_valid_stand_desc_with_space">
+        <item quantity="other">ཡར་ལངས་ཐེངས་ %1$d</item>
+    </plurals>
+    <plurals name="health_vitality_acquire_desc">
+        <item quantity="other">%1$sཉིན་འདིར་ཟུངས་ཤུགས་ %2$d ཐོབ།</item>
+    </plurals>
+    <plurals name="health_vitality_min_in_simplify">
+        <item quantity="other">སྐར་མ་%1$d</item>
+    </plurals>
+    <plurals name="health_vitality_target_disparity">
+        <item quantity="other">དམིགས་ཡུལ་རྗེས་མའི་བར་ཟུངས་ཤུགས་%1$dདགོས།</item>
+    </plurals>
+    <plurals name="health_vitality_value">
+        <item quantity="other">ཟུངས་ཤུགས།</item>
+    </plurals>
+    <plurals name="health_wake_up_in_night_count_unit">
+        <item quantity="other">ཐེངས་%1$s་པ།</item>
+    </plurals>
+    <plurals name="health_wake_up_in_night_time_unit">
+        <item quantity="other">སླར་ཡང་གཉིད་ཁུག་པར་ཟད་གྲོན་གྱི་དུས་ཚོད་ནི་སྐར་མ་%1$s</item>
+    </plurals>
+    <plurals name="health_weight_compared_with_more_days_gain">
+        <item quantity="other">%1$s KG，ཉིན་གོང་མ་ལས་%2$d%3$sKGམཐོ་རུ་ཕྱིན་འདུག</item>
+    </plurals>
+    <plurals name="health_weight_compared_with_more_days_loss">
+        <item quantity="other">%1$s KG ཉིན་%2$dགོང་ལས་%3$sKGདམའ་རུ་ཕྱིན་འདུག</item>
+    </plurals>
+    <plurals name="health_weight_home_title">
+        <item quantity="other">གཟུགས་པོའི་ལྗིད་ཚད%sསྤྱི་རྒྱ།</item>
+    </plurals>
+    <plurals name="heartrate_fp_detect_time_remainder">
+        <item quantity="other">སྐར་ཆ་%1$dལྷག་ཡོད།</item>
+    </plurals>
+    <plurals name="hour_in_simplify">
+        <item quantity="other">ཆུ་ཚོད། ་%1$d</item>
+    </plurals>
+    <plurals name="login_splach_banner_count_down">
+        <item quantity="other">%1$d སྐར་ཆ་ | མཆོངས།</item>
+    </plurals>
+    <plurals name="medal_city_medal_to_unlock">
+        <item quantity="other">གྲོང་ཁྱེར་%1$dཁ་ཕྱེ་རྒྱུ་རེད།</item>
+    </plurals>
+    <plurals name="medal_count">
+        <item quantity="other">རྟགས་མ་ཁྱོན་%1$dཐོབ་འདུག ཉེ་འཆར་རྟགས་མ་%2$dཐོབ་འདུག</item>
+    </plurals>
+    <plurals name="medal_total_got_count">
+        <item quantity="other">ཁྱོན་བསྡོམས་%1$d次ཐོ་བའདུག</item>
+    </plurals>
+    <plurals name="medal_total_won">
+        <item quantity="other">རྣམ་པར་རྒྱལ་ཐེངས་ཁྱོན་བསྡོམས་%1$d次</item>
+    </plurals>
+    <plurals name="min_in_simplify">
+        <item quantity="other">སྐར་མ%1$d</item>
+    </plurals>
+    <plurals name="min_in_simplify_2">
+        <item quantity="other">སྐར་མ་%1$d</item>
+    </plurals>
+    <plurals name="mine_delect_track_title">
+        <item quantity="other">བདམས་པའི་ལམ་ཐིག་%1$d་ཙམ་སུབ་རྒྱུ་གཏན་འཁེལ་ཡིན་ནམ།</item>
+    </plurals>
+    <plurals name="mine_route_distance">
+        <item quantity="other">སྤྱིའི་རིང་ཚད་སྤྱི་ལེ་%1$s</item>
+    </plurals>
+    <plurals name="mine_track_install_fail">
+        <item quantity="other">བརྒྱུད་ལམ་%1$dསྐུར་མ་ཐུབ། ཡང་བསྐྱར་ཚོད་ལྟ་བྱོས།</item>
+    </plurals>
+    <plurals name="mine_vip_to_left">
+        <item quantity="other">ཉིན་%1$dལྷག་ཡོད།</item>
+    </plurals>
+    <plurals name="miuix_appcompat_items_selected">
+        <item quantity="other">ཚན་པ%dབདམས་ཟིན།</item>
+    </plurals>
+    <plurals name="n_blank_days">
+        <item quantity="other">ཉིན་%1$d</item>
+    </plurals>
+    <plurals name="n_days">
+        <item quantity="other">ཉིན་%1$d</item>
+    </plurals>
+    <plurals name="nfc_car_card_leave_plural">
+        <item quantity="other">ཉིན་%1$dལྷག་འདུག</item>
+    </plurals>
+    <plurals name="nfc_common_card_num">
+        <item quantity="other">ཁྱོན་ཤོག་གྲངས་%1$d</item>
+    </plurals>
+    <plurals name="nfc_common_unit_word_des">
+        <item quantity="other">ཡི་འབྲུ་མང་ཤོས་ལའང་%1$dལས་བརྒལ་མི་རུང་།</item>
+    </plurals>
+    <plurals name="nfc_issue_card_hold_on_">
+        <item quantity="other">སྒྲིག་ཆས་དང་ཁ་པར་སྦྲེལ་མཐུད་རྒྱུན་གཏན་ཡིན་དགོས།\nབརྒྱུད་རིམ་འདིར་ཕལ་ཆེར་སྐར་མ་%1$dདགོས་པས། ངང་སྒུག་གནང་རོགས།</item>
+    </plurals>
+    <plurals name="notify_sms_reply_delay_time">
+        <item quantity="other">ཁ་པར་འབྱོར་རྗེེས་སྐར་ཆ་%1$dརྗེས་སུ་དྲན་སྐུལ་བྱེད།</item>
+    </plurals>
+    <plurals name="notify_unit_second">
+        <item quantity="other">སྐར་ཆ།</item>
+    </plurals>
+    <plurals name="pk_history_brief_win_percent">
+        <item quantity="other">ཁྱོན་ཐེངས་%1$d རྒྱལ་ཚད་%2$d%%</item>
+    </plurals>
+    <plurals name="provider_exercise_goal_unit">
+        <item quantity="other">གོམ་པ།</item>
+    </plurals>
+    <plurals name="provider_exercise_goal_value">
+        <item quantity="other">དམིགས་ཡུལ་གོམ་གྲངས%1$d</item>
+    </plurals>
+    <plurals name="provider_step_goal_unit">
+        <item quantity="other">གོམ་པ།</item>
+    </plurals>
+    <plurals name="record_unit_calorie">
+        <item quantity="other">kcal</item>
+    </plurals>
+    <plurals name="record_unit_kilometer_space">
+        <item quantity="other"> km</item>
+    </plurals>
+    <plurals name="record_unit_kilometer_with_unit">
+        <item quantity="other">སྤྱི་ལེ་%1$s</item>
+    </plurals>
+    <plurals name="record_unit_meter_space">
+        <item quantity="other"> m</item>
+    </plurals>
+    <plurals name="record_unit_meter_with_unit">
+        <item quantity="other">རྨིད་%1$s</item>
+    </plurals>
+    <plurals name="record_unit_meter_without_space">
+        <item quantity="other">m</item>
+    </plurals>
+    <plurals name="record_unit_step_length">
+        <item quantity="other">cm</item>
+    </plurals>
+    <plurals name="report_unit_seconds_1">
+        <item quantity="other">secs</item>
+    </plurals>
+    <plurals name="report_unit_speed_meter_sed">
+        <item quantity="other">m/s</item>
+    </plurals>
+    <plurals name="rn_share_accept_user_count">
+        <item quantity="other">སྤྱོད་མཁན་%1$dཙམ་གྱིས་མཉམ་སྤྱོད་དང་ལེན་བྱས་པ་རེད།</item>
+    </plurals>
+    <plurals name="segment_count">
+        <item quantity="other">དུམ་བུ་ %d</item>
+    </plurals>
+    <plurals name="sport_adjustment_distance_detail">
+        <item quantity="other">གལ་ཏེ་གཞི་གྲངས་ལ་འཛོལ་ཆ་ཡོད་ན།ལག་སྒུལ་དག་བཅོས་བྱེད་རོགས། བཟོ་བཅོས་བྱས་ཆོག་པའི་བར་ཐག་ཁྱབ་ཁོངས་ནི།སྤྱི་ལེ %1$.2f-- %2$.2f</item>
+    </plurals>
+    <plurals name="sport_course_series_item_info_courses">
+        <item quantity="other">སློབ་ཚན་ %d</item>
+    </plurals>
+    <plurals name="sport_course_series_item_info_persons">
+        <item quantity="other">མི་%dསྦྱང་མྱོང་།</item>
+    </plurals>
+    <plurals name="sport_local_sport_setting_speed">
+        <item quantity="other">%1$dསྤྱི་ལེ/རེར།</item>
+    </plurals>
+    <plurals name="sport_rope_group">
+        <item quantity="other">ཚོ་%1$s</item>
+    </plurals>
+    <plurals name="sport_rope_group_first">
+        <item quantity="other">%1$s</item>
+    </plurals>
+    <plurals name="sport_rope_group_second">
+        <item quantity="other">%1$s</item>
+    </plurals>
+    <plurals name="sport_rope_jump_frequency">
+        <item quantity="other">འགུལ་ཚད་（རེར་/སྐར་）</item>
+    </plurals>
+    <plurals name="sport_rope_minute">
+        <item quantity="other">སྐར་མ%1$s</item>
+    </plurals>
+    <plurals name="sport_rope_number">
+        <item quantity="other">རྐང་%1$s</item>
+    </plurals>
+    <plurals name="sport_rope_second">
+        <item quantity="other">སྐར་ཆ་%1$s</item>
+    </plurals>
+    <plurals name="sport_rope_stumble_count">
+        <item quantity="other">ཆད་པ།（ཐེངས）</item>
+    </plurals>
+    <plurals name="sport_rope_target_calories">
+        <item quantity="other">དམིགས་ཡུལ་སྟོང་ཁཱ།%1$s</item>
+    </plurals>
+    <plurals name="sport_rope_unit_frequency">
+        <item quantity="other">%1$sགྲངས།/སྐར་མ།</item>
+    </plurals>
+    <plurals name="sport_rope_unit_number">
+        <item quantity="other">རྐང་%1$s</item>
+    </plurals>
+    <plurals name="sport_route_distance">
+        <item quantity="other">སྤྱི་ལི་%1$s</item>
+    </plurals>
+    <plurals name="sport_route_finish_count">
+        <item quantity="other">ཐེངས་%dགྲུབ་ཟིན།</item>
+    </plurals>
+    <plurals name="sport_route_heat">
+        <item quantity="other">རྒྱུག་མྱོང་བའི་མི་གྲངས%1$s</item>
+    </plurals>
+    <plurals name="sport_route_popularity">
+        <item quantity="other">རྒྱུག་མྱོང་བའི་མི་གྲངས%1$d</item>
+    </plurals>
+    <plurals name="sport_route_start">
+        <item quantity="other">འགོ་འཛུགས་ས་དང་ཁྱེད་བར་སྤྱི་ལེ་%1$sའདུག</item>
+    </plurals>
+    <plurals name="sport_running_group_people">
+        <item quantity="other">མི་%d བསྣན་ཟིན།</item>
+    </plurals>
+    <plurals name="sport_running_route_popularity_running_times">
+        <item quantity="other">ཐེངས་%1$d</item>
+    </plurals>
+    <plurals name="sport_unit_kilometer">
+        <item quantity="other">སྤྱི་ལེ།</item>
+    </plurals>
+    <plurals name="sport_unit_meter">
+        <item quantity="other">སྨི།</item>
+    </plurals>
+    <plurals name="time_update_days_before">
+        <item quantity="other">ཉིན་%1$dསྔོན།</item>
+    </plurals>
+    <plurals name="trail_common_country_and_region_count_des">
+        <item quantity="other">%1$dརེ།</item>
+    </plurals>
+    <plurals name="trail_common_country_and_region_count_unit">
+        <item quantity="other">རེ།</item>
+    </plurals>
+    <plurals name="trail_hint_unit_kcal">
+        <item quantity="other">ཁཱ་སྟོང་གཅིག</item>
+    </plurals>
+    <plurals name="trail_hint_unit_meter">
+        <item quantity="other">སྨི།</item>
+    </plurals>
+    <plurals name="trail_hint_unit_minute">
+        <item quantity="other">སྐར་མ།</item>
+    </plurals>
+    <plurals name="trail_hint_unit_step">
+        <item quantity="other">གོམ་པ།</item>
+    </plurals>
+    <plurals name="trail_label_count">
+        <item quantity="other">%1$sརེ།</item>
+    </plurals>
+    <plurals name="trail_label_step">
+        <item quantity="other">གོམ་པ།</item>
+    </plurals>
+    <plurals name="trail_label_times">
+        <item quantity="other">ཐེངས་</item>
+    </plurals>
+    <plurals name="trail_row_energy_working_unit">
+        <item quantity="other">ཝ་</item>
+    </plurals>
+    <plurals name="trail_share_unit_kilometer">
+        <item quantity="other"> KM</item>
+    </plurals>
+    <plurals name="trail_sport_data_group_count">
+        <item quantity="other">ཚོགས་པ/ལུས་སྦྱོང་བརྒྱུད་རིམ།</item>
+    </plurals>
+    <plurals name="trail_sport_group_info_title_desc">
+        <item quantity="other">ལུས་སྦྱོང་བརྒྱུད་རིམ་ཁྱོན་ཚོགས་ཆུང་%d</item>
+    </plurals>
+    <plurals name="trail_sport_highest_altitude">
+        <item quantity="other">མཚོ་འཕགས་མཐོ་ཚད་མཐོ་ཤོས་སྨི་%1$s</item>
+    </plurals>
+    <plurals name="trail_sport_highest_pace">
+        <item quantity="other">མྱུར་ཚད་མགྱོགས་ཤོས་%1$s</item>
+    </plurals>
+    <plurals name="trail_sport_highest_speed">
+        <item quantity="other">མྱུར་ཚད་མགྱོགས་ཤོས་%1$sསྟོང་སྨི་/ཆུ་ཚོད་</item>
+    </plurals>
+    <plurals name="trail_sport_hour_unit">
+        <item quantity="other">ཆུ་ཚོད་%d</item>
+    </plurals>
+    <plurals name="trail_sport_hour_unit_only">
+        <item quantity="other">ཆུ་ཚོད་</item>
+    </plurals>
+    <plurals name="trail_sport_lactate_threshold_heart_rate_unit">
+        <item quantity="other">ཐེངས།/སྐར་མ།</item>
+    </plurals>
+    <plurals name="trail_sport_lactate_threshold_pace_unit">
+        <item quantity="other">/སྤྱི་ལེ།</item>
+    </plurals>
+    <plurals name="trail_sport_max_heart">
+        <item quantity="other">སྙིང་འཕར་ཚད་མཐོ་ཤོས་%1$sཐེངས་/སྐར་མ་</item>
+    </plurals>
+    <plurals name="trail_sport_power_unit">
+        <item quantity="other">W</item>
+    </plurals>
+    <plurals name="trail_sport_punch_distribute_unit">
+        <item quantity="other">G</item>
+    </plurals>
+    <plurals name="trail_sport_report_sports_frisbee_throws_number">
+        <item quantity="other">གཡུགས་ཐེངས།</item>
+    </plurals>
+    <plurals name="trail_sport_report_sports_jump_rope_break_count">
+        <item quantity="other">བར་ཆད་ཐེངས་གྲངས།</item>
+    </plurals>
+    <plurals name="trail_sport_report_sports_jump_rope_count">
+        <item quantity="other">ཐག་མཆོངས་ཐེངས་གྲངས།</item>
+    </plurals>
+    <plurals name="trail_sport_report_sports_punch_count">
+        <item quantity="other">ཁུ་ཚུར་སྣུན་ཐེངས།</item>
+    </plurals>
+    <plurals name="trail_sport_report_unit_bpm_plurals">
+        <item quantity="other">BPM</item>
+    </plurals>
+    <plurals name="trail_sport_swim_time_unit">
+        <item quantity="other">s</item>
+    </plurals>
+    <plurals name="trail_sport_times">
+        <item quantity="other">ལུས་སྦྱོང་ཐེངས་གྲངས་%d</item>
+    </plurals>
+    <plurals name="trail_sport_unit_distance_min">
+        <item quantity="other">སྐར་མ་རེར་སྨི་%1$.1f</item>
+    </plurals>
+    <plurals name="trail_sport_unit_speed_plurals">
+        <item quantity="other">%sསྤྱི་ལེ/རེར།</item>
+    </plurals>
+    <plurals name="trail_unit_score_desc_new">
+        <item quantity="other">སྐར་མ་%1$s</item>
+    </plurals>
+    <plurals name="trail_unit_time_rope_skipping">
+        <item quantity="other">ཐེངས།</item>
+    </plurals>
+    <plurals name="training_plan_ability_count_times">
+        <item quantity="other">ཐེངས་%dཡི་སྦྱོང་བརྡར་ལེགས་གྲུབ་བྱུང་ཡོད།</item>
+    </plurals>
+    <plurals name="training_plan_ability_course_duration_view">
+        <item quantity="other">སྐར་མ་%d</item>
+    </plurals>
+    <plurals name="training_plan_ability_course_item_duration">
+        <item quantity="other">དུས་ཡུན་སྐར་མ་%d</item>
+    </plurals>
+    <plurals name="training_plan_ability_course_loop">
+        <item quantity="other">× %d ཚོ་ཆུང་།</item>
+    </plurals>
+    <plurals name="training_plan_ability_date_num_tip">
+        <item quantity="other">ཉིན་ %1$d ~ %2$d འདེམས་རོགས།</item>
+    </plurals>
+    <plurals name="training_plan_ability_days_unit">
+        <item quantity="other">ཉིན།</item>
+    </plurals>
+    <plurals name="training_plan_ability_duration_unit">
+        <item quantity="other">གཟའ་འཁོར།</item>
+    </plurals>
+    <plurals name="training_plan_ability_item_duration">
+        <item quantity="other">སྐར་མ་%d</item>
+    </plurals>
+    <plurals name="training_plan_ability_total_time">
+        <item quantity="other">ཉིན།</item>
+    </plurals>
+    <plurals name="training_plan_calorie">
+        <item quantity="other">སྟོང་ཁཱ།</item>
+    </plurals>
+    <plurals name="training_plan_distance_kilo_meter">
+        <item quantity="other">སྤྱི་ལེ།</item>
+    </plurals>
+    <plurals name="training_plan_distance_meter">
+        <item quantity="other">སྨི།</item>
+    </plurals>
+    <plurals name="training_plan_duration_hour">
+        <item quantity="other">ཆུ་ཚོད་</item>
+    </plurals>
+    <plurals name="training_plan_duration_minute">
+        <item quantity="other">སྐར་མ།</item>
+    </plurals>
+    <plurals name="training_plan_duration_second">
+        <item quantity="other">སྐར་ཆ།</item>
+    </plurals>
+    <plurals name="training_plan_habit_day_unit">
+        <item quantity="other">ཉིན།</item>
+    </plurals>
+    <plurals name="training_plan_habit_distance_unit">
+        <item quantity="other">སྤྱི་ལེ།</item>
+    </plurals>
+    <plurals name="training_plan_habit_item_content">
+        <item quantity="other">ཆུང་རྒྱུག་ལུས་སྦྱོང་སྤྱི་ལེ་ %s</item>
+    </plurals>
+    <plurals name="training_plan_habit_medal_count_title">
+        <item quantity="other">སྦྱོང་བརྡར་ཐེངས་%dབྱས་ཟིན།</item>
+    </plurals>
+    <plurals name="training_plan_habit_time_training">
+        <item quantity="other">ཐེངས་%dཡི་སྦྱོང་བརྡར་ལེགས་གྲུབ་བྱུང་ཡོད།</item>
+    </plurals>
+    <plurals name="training_plan_history_total_days">
+        <item quantity="other">ཁྱོན་བསྡོམས་ཉིན་ %d</item>
+    </plurals>
+    <plurals name="training_plan_report_basic_info_course_count_time">
+        <item quantity="other">ཐེངས་ %1$d/%2$d</item>
+    </plurals>
+    <plurals name="training_plan_report_basic_info_days_count">
+        <item quantity="other">ཁྱོན་བསྡོམས་ཉིན་ %d རྒྱུན་འཁྱོངས་བྱས་ཡོད།</item>
+    </plurals>
+    <plurals name="unit_hour_1">
+        <item quantity="other">ཆུ་ཚོད་</item>
+    </plurals>
+    <plurals name="unit_hour_2">
+        <item quantity="other">ཆུ་ཚོད་</item>
+    </plurals>
+    <plurals name="unit_hour_desc">
+        <item quantity="other">དུས་ཚོད%1$d</item>
+    </plurals>
+    <plurals name="unit_hour_desc2">
+        <item quantity="other">ཆུ་ཚོད་%1$d</item>
+    </plurals>
+    <plurals name="unit_kilometer_space">
+        <item quantity="other">སྤྱི་ལེ།</item>
+    </plurals>
+    <plurals name="unit_kilometer_without_space">
+        <item quantity="other">སྤྱི་ལེ།</item>
+    </plurals>
+    <plurals name="unit_meter_space">
+        <item quantity="other">སྨི།</item>
+    </plurals>
+    <plurals name="unit_meter_without_space">
+        <item quantity="other">སྨི།</item>
+    </plurals>
+    <plurals name="unit_min_1">
+        <item quantity="other">སྐར་མ།</item>
+    </plurals>
+    <plurals name="unit_min_2">
+        <item quantity="other">སྐར་མ།</item>
+    </plurals>
+    <plurals name="unit_min_desc">
+        <item quantity="other">སྐར་མ%1$d</item>
+    </plurals>
+    <plurals name="unit_min_desc2">
+        <item quantity="other">སྐར་མ་%1$d</item>
+    </plurals>
+    <plurals name="unit_min_desc2_with_space">
+        <item quantity="other">སྐར་མ་%1$d</item>
+    </plurals>
+    <plurals name="unit_min_desc3">
+        <item quantity="other">སྐར་མ་%1$d</item>
+    </plurals>
+    <plurals name="unit_point_desc">
+        <item quantity="other">སྐར་མ་%1$d</item>
+    </plurals>
+    <plurals name="unit_seconds_1">
+        <item quantity="other">སྐར་ཆ།</item>
+    </plurals>
+    <plurals name="unit_seconds_desc">
+        <item quantity="other">སྐར་ཆ། %1$d</item>
+    </plurals>
+    <plurals name="unit_seconds_short_desc">
+        <item quantity="other">སྐར་ཆ%1$d</item>
+    </plurals>
+    <plurals name="unit_speed_meter_sed">
+        <item quantity="other">སྨི/སྐར་ཆ།</item>
+    </plurals>
+    <plurals name="userinfo_birthday_format">
+        <item quantity="other">（ལོ་%1$d）</item>
+    </plurals>
+    <plurals name="userinfo_common_unit_age">
+        <item quantity="other">ལོ་%1$d</item>
+    </plurals>
+    <plurals name="userinfo_common_unit_calorie">
+        <item quantity="other">ཁཱ་སྟོང་གཅིག</item>
+    </plurals>
+    <plurals name="userinfo_common_unit_heart_rate">
+        <item quantity="other">ཐེངས/སྐར་མ།</item>
+    </plurals>
+    <plurals name="userinfo_common_unit_step">
+        <item quantity="other">གོམ་པ།</item>
+    </plurals>
+    <plurals name="userinfo_common_unit_time">
+        <item quantity="other">ཐེངས།</item>
+    </plurals>
+    <plurals name="userinfo_lactate_threshold_heart_rate_data_unit">
+        <item quantity="other">%1$sཐེངས/སྐར་མ།</item>
+    </plurals>
+    <plurals name="userinfo_lactate_threshold_pace_data_unit">
+        <item quantity="other">%1$s/སྤྱི་ལེ།</item>
+    </plurals>
+    <plurals name="userinfo_target_calories_unit">
+        <item quantity="other">དམིགས་ཡུལ་སྟོང་ཁཱ།%1$d</item>
+    </plurals>
+    <plurals name="userinfo_target_mhs_unit">
+        <item quantity="other">དམིགས་ཡལ་སྐར་མ%1$d</item>
+    </plurals>
+    <plurals name="userinfo_target_stand_times_unit">
+        <item quantity="other">དམིགས་ཡལ་ཐེངས་%1$d</item>
+    </plurals>
+    <plurals name="userinfo_target_step_unit">
+        <item quantity="other">དམིགས་ཡུལ་གོམ་གྲངས་%1$d</item>
+    </plurals>
+    <plurals name="userinfo_unit_heart_rate_space">
+        <item quantity="other">%1$dཐེངས་/སྐར་མ་རེར།</item>
+    </plurals>
+    <plurals name="userinfo_unit_min">
+        <item quantity="other">སྐར་མ།</item>
+    </plurals>
+    <plurals name="userinfo_user_age_display_format_year">
+        <item quantity="other">ལོ་%1$d</item>
+    </plurals>
+    <plurals name="widget_unit_step_goal">
+        <item quantity="other">དམིགས་ཡུལ། %s</item>
+    </plurals>
+    <plurals name="yrn_amap_cluster_running_group_count">
+        <item quantity="other">%dརེ།</item>
+    </plurals>
+</resources>

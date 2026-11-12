@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_fragment_vitality_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/page_content_padding_horizontal_large"
+    android:paddingEnd="@dimen/page_content_padding_horizontal_large">
+    <com.xiaomi.fitness.widget.SwitchButtonBindingTwoLineTextView
+        android:id="@+id/vitality_enabled_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:subtitle="@string/device_settings_vitality_enabled_desc"
+        app:title="@string/device_settings_vitality_enabled_title"/>
+    <com.xiaomi.fitness.widget.SwitchButtonBindingTwoLineTextView
+        android:id="@+id/vitality_progress_button"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:subtitle="@string/device_settings_vitality_progress_desc"
+        app:title="@string/device_settings_vitality_progress_title"/>
+    <com.xiaomi.fitness.widget.SwitchButtonBindingTwoLineTextView
+        android:id="@+id/vitality_limit_button"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:subtitle="@string/device_settings_vitality_limit_desc"
+        app:title="@string/device_settings_vitality_limit_title"/>
+</LinearLayout>

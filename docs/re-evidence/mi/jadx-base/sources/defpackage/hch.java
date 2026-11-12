@@ -1,0 +1,26 @@
+package defpackage;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import com.miui.tsmclient.sesdk.OrderData;
+import com.xiaomi.fitness.nfc.widget.RecordListItemView;
+
+/* JADX INFO: loaded from: classes9.dex */
+public class hch extends s82<OrderData.OrderRecordDetail.OrderFlow> {
+    public hch(Context context) {
+        super(context);
+    }
+
+    @Override // defpackage.s82
+    /* JADX INFO: renamed from: d, reason: merged with bridge method [inline-methods] */
+    public void a(View view, int i, OrderData.OrderRecordDetail.OrderFlow orderFlow) {
+        ((RecordListItemView) view).d(orderFlow);
+    }
+
+    @Override // defpackage.s82
+    /* JADX INFO: renamed from: e, reason: merged with bridge method [inline-methods] */
+    public View b(Context context, OrderData.OrderRecordDetail.OrderFlow orderFlow, ViewGroup viewGroup) {
+        return new RecordListItemView(context);
+    }
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.widget.view.RoundImageView
+        android:id="@+id/icon"
+        android:tag="layout/layout_share_profile_0"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:src="@drawable/main_tab_me_normal"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <TextView
+        android:textSize="15sp"
+        android:textColor="#ffffffff"
+        android:id="@+id/nickView"
+        android:tag="layout/layout_share_profile_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@+id/icon"/>
+    <TextView
+        android:textSize="12sp"
+        android:textColor="#ffffffff"
+        android:id="@+id/dateView"
+        android:tag="layout/layout_share_profile_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/nickView"
+        app:layout_constraintTop_toBottomOf="@+id/nickView"/>
+    <com.xiaomi.fitness.detail.view.RingView
+        android:id="@+id/logoView"
+        android:tag="layout/layout_share_profile_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/ShareLogo"/>
+</merge>

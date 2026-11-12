@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/face_layout_edit_tab_item_0"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="@dimen/dialog_text_size_16"
+        android:textColor="@color/footer_desc"
+        android:gravity="center_horizontal"
+        android:id="@+id/tab_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_26dp"
+        android:layout_marginBottom="@dimen/dimen_margin_20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FontLatinMedium"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

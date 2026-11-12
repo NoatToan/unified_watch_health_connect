@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/device_settings_music_settings_song_item_0"
+    android:paddingTop="@dimen/dimen_margin_15dp"
+    android:paddingBottom="@dimen/dimen_margin_15dp"
+    android:focusable="true"
+    android:clickable="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/page_content_padding_horizontal_large"
+    android:paddingEnd="@dimen/page_content_padding_horizontal_large">
+    <TextView
+        android:textSize="@dimen/dimen_16sp"
+        android:textColor="@color/text_color"
+        android:id="@+id/song_name_tv"
+        android:tag="binding_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_10dp"
+        android:singleLine="true"
+        android:layout_marginEnd="@dimen/dimen_margin_16dp"
+        app:layout_constraintEnd_toStartOf="@+id/song_more"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="@dimen/size_12"
+        android:textColor="@color/text_color_40"
+        android:id="@+id/song_artist_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_2dp"
+        android:singleLine="true"
+        android:layout_marginEnd="@dimen/dimen_margin_16dp"
+        app:layout_constraintEnd_toStartOf="@+id/song_more"
+        app:layout_constraintStart_toStartOf="@+id/song_name_tv"
+        app:layout_constraintTop_toBottomOf="@+id/song_name_tv"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/song_more"
+        android:background="@drawable/icon_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

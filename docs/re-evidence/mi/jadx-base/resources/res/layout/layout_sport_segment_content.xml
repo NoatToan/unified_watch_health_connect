@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textColor="@color/text_color"
+        android:gravity="center"
+        android:id="@+id/texDistance"
+        android:layout_width="@dimen/dimen_margin_40dp"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dimen_margin_16dp"
+        android:layout_marginEnd="@dimen/size_10"
+        style="@style/FontMedium.14sp"/>
+    <com.xiaomi.fitness.detail.view.SportPaceSegmentView
+        android:gravity="center_vertical"
+        android:id="@+id/paceSegmentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

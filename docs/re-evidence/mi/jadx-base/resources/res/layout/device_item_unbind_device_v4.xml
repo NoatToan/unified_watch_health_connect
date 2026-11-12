@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:tag="layout/device_item_unbind_device_v4_0"
+    android:background="@color/device_page_background"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/dimen_margin_18dp"
+    android:paddingEnd="@dimen/dimen_margin_18dp">
+    <TextView
+        android:id="@+id/unbind_btn"
+        android:layout_marginTop="12dp"
+        android:text="@string/device_unbind"
+        style="@style/CommonBtn.Normal"/>
+</LinearLayout>

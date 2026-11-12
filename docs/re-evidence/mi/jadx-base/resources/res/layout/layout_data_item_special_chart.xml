@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/selector_round"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/img_sport_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_20dp"
+        android:src="@drawable/huami_shortcut_icon_pai"
+        android:scaleType="center"
+        android:layout_marginStart="@dimen/margin_20dp"/>
+    <TextView
+        android:textColor="@color/health_home_txt_color"
+        android:id="@+id/txt_sport_type_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_7dp"
+        android:layout_marginStart="@dimen/dimen_margin_20dp"
+        style="@style/FontMedium.16sp"/>
+    <TextView
+        android:textColor="@color/health_home_txt_color"
+        android:id="@+id/txt_data_content_str"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_20dp"
+        style="@style/FontRegular.11sp"/>
+    <androidx.appcompat.widget.LinearLayoutCompat style="@style/healthHomeBottomLayout">
+        <com.xiaomi.fitness.chart.mpchart.barchart.CustomBarChart
+            android:id="@+id/bar_chart"
+            app:none_done_alpha="0.1"
+            style="@style/healthHomeChart"/>
+        <com.xiaomi.fitness.homepage.viewholder.XAxisView
+            android:id="@+id/XAxisView"
+            style="@style/healthHomeXAxisView"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:tag="layout/plan_start_btn_0"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true">
+    <ImageView
+        android:id="@+id/lockIndicator"
+        android:visibility="gone"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ability_course_not_ready_icon"
+        android:layout_marginEnd="@dimen/dimen_margin_6dp"/>
+    <TextView
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:id="@+id/startTraining"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:text="@string/training_plan_ability_start"
+        android:fontFamily="@font/misanslatin_regular"/>
+</LinearLayout>

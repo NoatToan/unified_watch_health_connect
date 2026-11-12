@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_fragment_stand_detect_0"
+    android:paddingTop="@dimen/device_settings_list_padding_top"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/page_content_padding_horizontal_large">
+    <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+        android:id="@+id/stand_detect_reminder_toggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/device_settings_stand_detect_title"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/stand_detect_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/device_settings_wrist_screen_wake_start"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/stand_detect_end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/device_settings_wrist_screen_wake_end"/>
+    <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+        android:id="@+id/nap_toggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/device_settings_sedentary_siesta"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/nap_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/device_settings_nap_start"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/nap_end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/device_settings_nap_end"/>
+</LinearLayout>

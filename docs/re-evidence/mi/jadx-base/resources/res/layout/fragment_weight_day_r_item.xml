@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_weight_day_r_item_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/container"
+        android:tag="binding_1"
+        android:paddingBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.xiaomi.fitness.view.DataTitleView
+                android:id="@+id/dataTitleView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_margin_20dp"/>
+        </FrameLayout>
+        <include
+            android:id="@+id/layout_weight_day_detail"
+            layout="@layout/health_layout_weight_day_detail"/>
+    </LinearLayout>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/NoDataTitleView"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_data"
+        android:drawableTop="@drawable/icon_nothing"
+        android:drawablePadding="@dimen/dimen_margin_10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

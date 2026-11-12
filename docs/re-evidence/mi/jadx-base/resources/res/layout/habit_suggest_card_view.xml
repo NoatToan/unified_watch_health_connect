@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sport_week_card"
+    android:background="@drawable/habit_suggest_card_bg"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/suggest_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/training_plan_habit_suggest_every_week"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/habit_main_textStyle"/>
+    <TextView
+        android:id="@+id/suggest_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/suggest_title"
+        style="@style/habit_secondary_textStyle"/>
+    <TextView
+        android:textSize="42sp"
+        android:gravity="bottom"
+        android:id="@+id/suggest_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:fontFamily="@font/misanslatin_demibold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/suggest_desc"/>
+    <TextView
+        android:textSize="12sp"
+        android:id="@+id/suggest_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/misanslatin_regular"
+        app:layout_constraintBaseline_toBaselineOf="@+id/suggest_value"
+        app:layout_constraintStart_toEndOf="@+id/suggest_value"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

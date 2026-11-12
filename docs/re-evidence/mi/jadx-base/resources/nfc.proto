@@ -1,0 +1,10 @@
+syntax = "proto2";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message NfcMessage {
+    required bool nfcState = 1; // true打开，false关闭
+    required uint32 nfcInRfFiledNum = 2; // NFC进场次数
+    required uint32 nfcInRfFiledTime = 3; // NFC进场时间，单位毫秒
+};
+

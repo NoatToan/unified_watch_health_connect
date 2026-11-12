@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/blood_glucose_collapse_sleep"
+    android:background="@drawable/selector_card_bg"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dimen_margin_12dp"
+    android:layout_marginHorizontal="@dimen/page_padding_horizontal_large">
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_12dp"
+        android:layout_marginBottom="@dimen/dimen_margin_20dp"
+        layout="@layout/layout_blood_glucose_sleep_icon_title"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/blood_glucose_sleep_recycle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

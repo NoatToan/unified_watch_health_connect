@@ -1,0 +1,76 @@
+package defpackage;
+
+import com.google.protobuf.nano.CodedOutputByteBufferNano;
+import java.io.IOException;
+
+/* JADX INFO: loaded from: classes2.dex */
+public final class l5f extends ak8<l5f> {
+    public int c;
+    public String d;
+    public int e;
+
+    public l5f() {
+        m();
+    }
+
+    @Override // defpackage.ak8, defpackage.dsf
+    public int b() {
+        int iB = super.b() + CodedOutputByteBufferNano.l(1, this.c) + CodedOutputByteBufferNano.v(2, this.d);
+        int i = this.e;
+        return i != 0 ? iB + CodedOutputByteBufferNano.y(3, i) : iB;
+    }
+
+    @Override // defpackage.ak8, defpackage.dsf
+    public void j(CodedOutputByteBufferNano codedOutputByteBufferNano) throws IOException {
+        codedOutputByteBufferNano.W(1, this.c);
+        codedOutputByteBufferNano.m0(2, this.d);
+        int i = this.e;
+        if (i != 0) {
+            codedOutputByteBufferNano.p0(3, i);
+        }
+        super.j(codedOutputByteBufferNano);
+    }
+
+    public l5f m() {
+        this.c = 0;
+        this.d = "";
+        this.e = 0;
+        this.f1122b = null;
+        this.f15887a = -1;
+        return this;
+    }
+
+    @Override // defpackage.dsf
+    /* JADX INFO: renamed from: n, reason: merged with bridge method [inline-methods] */
+    public l5f e(o34 o34Var) throws IOException {
+        while (true) {
+            int iA = o34Var.A();
+            if (iA == 0) {
+                return this;
+            }
+            if (iA == 8) {
+                int iP = o34Var.p();
+                switch (iP) {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                        this.c = iP;
+                        break;
+                }
+            } else if (iA == 18) {
+                this.d = o34Var.z();
+            } else if (iA == 24) {
+                this.e = o34Var.B();
+            } else if (!l(o34Var, iA)) {
+                return this;
+            }
+        }
+    }
+}

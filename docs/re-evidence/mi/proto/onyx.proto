@@ -1,0 +1,184 @@
+syntax = "proto2";
+import "nanopb.proto";
+import "event.proto";
+import "silence_mode.proto";
+import "statis_base.proto";
+import "nfc.proto";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+
+message onyxEventMessage
+{
+    //各页面展示次数
+    required uint32 gotoCompassPage = 1;       // 指南针页面
+    required uint32 gotoDialAlipayPage = 2;    // 进入支付宝副屏应用 大于2s计数
+    required uint32 gotoSportHistory = 3;      //运动记录应用
+    repeated uint32 gotoSportDetailPage = 4[(nanopb).max_count = 25]; // 进入运动记录详情页面的次数, 运动类型数组, 见SPORT_TYPE_E
+    required uint32 gotoSportPage = 5;         // 进入运动应用
+    required uint32 gotoDialSportPage = 6;     // 进入运动副屏应用 大于2s计数
+    required uint32 gotoMusicPage = 7;         // 进入音乐应用
+    required uint32 gotoDialMusicPage = 8;     // 进入音乐副屏应用 大于2s计数
+    required uint32 gotoHeartPage = 9;         // 进入心率应用
+    required uint32 gotoDialHeartPage = 10;    // 进入心率副屏应用 大于2s计数
+    required uint32 gotoSpO2page = 11;         // 进入血氧饱和度应用
+    required uint32 gotoPaiPage = 12;          // 进入 PAI 应用
+    required uint32 gotoDialPaiPage = 13;      // 进入 PAI 副屏应用 大于2s计数
+    required uint32 gotoWeatherPage = 14;      // 进入天气应用
+    required uint32 gotoWeatherSecondPage = 15;// 查看天气第二屏
+    required uint32 gotoDialWeatherPage = 16;  // 进入天气副屏应用 大于2s计数
+    required uint32 gotoEventPage = 17;        // 进入日程应用
+    required uint32 gotoDialEventPage = 18;    // 进入日程副屏应用 大于2s计数
+    required uint32 gotoAlarmPage = 19;        // 进入闹钟页面
+    required uint32 gotoDialAlarmPage = 20;    // 进入闹钟副屏页面 大于2s计数
+    required uint32 gotoStopwatchPage = 21;    // 进入秒表页面
+    required uint32 gotoCountdownPage = 22;    // 进入倒计时页面
+    required uint32 gotoNfcCardPage = 23;      // 进入卡包界面
+    required uint32 gotoDialNfcCadePage = 24;  // 进入卡包副屏界面 大于2s计数
+    required uint32 gotoActivityPage = 25;     // 进入活动目标界面
+    required uint32 gotoDialActivityPage = 26; // 进入活动目标副屏界面 大于2s计数
+    //消息通知
+    repeated NotifyMessage notify = 27[(nanopb).max_count = 55]; //消息通知信息
+    //事件统计
+    required uint32 compassCalibrateSuccessNum = 28;// 指南针校准成功+1
+    required uint32 alipayBindSuccessNum = 29;      // 支付宝绑定成功+1
+    repeated uint32 spo2Calc = 30[(nanopb).max_count = 5];// 血氧饱和度计算, 未佩戴失败:数组0, 佩戴失败:数组1 成功:数组2
+    required uint32 lcdOnBecauseOfWrist = 31;       // 抬腕亮屏次数
+    repeated uint32 lcdOff = 32[(nanopb).max_count = 3];// 灭屏计数 自动: 0; 落腕灭屏:1 盖屏灭屏:2
+    required uint32 eventTimeUp = 33;               // 日程时间到 +1
+    repeated uint32 unlock = 34[(nanopb).max_count = 2];// 0: 长按实体键解锁成功 +1 1:长按实体键解锁失败 +1
+    required uint32 setAlarm = 35;                  // 每次编辑闹钟点击完成时+1
+    required uint32 useStopwatch = 36;              // 点击秒表开始按钮 +1
+    required uint32 forgetWristOffLockPasswd = 37;  // (离腕锁屏)在倒计时锁定界面点击忘记密码 +1
+    required uint32 countDownTimeup = 38;            // 倒计时时间到;
+    required BatterySaverMode batterySaverOff = 39; // 省电模式关闭
+    required BatterySaverMode batterySaverOn = 40;  // 省电模式开启
+    required uint32 lockScreen = 41;                // 锁屏次数
+    required uint32 findPhone = 42;                 // 查找手机次数
+    required uint32 turnOnTheaterMode = 43;         // 开启剧场模式次数
+    required uint32 turnOnkeepWatchAwake = 44;      // 开启持续亮屏 +1
+    required uint32 addCardSuccess = 45;            // 成功添加一张卡+1
+    required uint32 bindingSuccess = 46;            // 绑定成功
+    required uint32 rebootNum = 47;                 // 点击重启 +1
+    required uint32 powerOff = 48;                  // 点击关机 +1
+    required uint32 systemUpdateImmediately = 49;   // 点击立刻更新 +1
+    required uint32 systemUpdateCancle = 50;        // 点击取消更新的+1
+    repeated uint32 updateFail = 51[(nanopb).max_count = 5];//disconnect:array[0] wifi disconnect:array[1] other:array[2]
+    //状态统计
+    repeated SportStatusMessage sportStatus = 52[(nanopb).max_count = 25];// 运动状态(最后一次)
+    repeated uint32 sportIndoorCalibrate = 53[(nanopb).max_count = 2];// 室内跑校准,数组1 运动估算距离 数组2 校准值
+    required uint32 swimPoolLength = 54;               // 泳道长度
+    required uint32 activityTarget = 55;               // 修改活动环使用目标类型 (最近一次状态) 0: 步数 1: 消耗
+    required DndEventMessage dndMode = 56;             // 勿扰模式
+    required uint32 powerOffBatteryValue = 57;         // 关机电量
+    required uint32 powerOnBatteryValue = 58;          // 开机电量
+    required uint32 changeBatteryValue = 59;           // 充电时电量
+
+    // 设置页面
+    required uint32 autoScreenOffTime = 60;            // 自动息屏时长
+    required uint32 lcdOnBecauseOfWristStatus = 61;    // 抬腕亮屏使用状态
+    required bool wristOffLockStatus = 62;             // 离腕锁定是否开启
+    required uint32 quickAccessApp = 63;               // 快速启动ID
+    repeated bool quickEntryApp = 64[(nanopb).max_count = 8];// 副屏ID
+    required bool autoLight = 65;                      // false: 关闭, true: 开启
+    // 表盘
+    required uint32 currentDialId = 66;                 // 现在的表盘ID
+    required uint32 currentDialNum = 67;                // 现在表盘数目
+
+    // nand 读写打点
+    required NandMessage nandMessage = 68;
+
+    // 文件系统打点
+    required uint32 fat_freesize = 69;                  // 当前的剩余容量
+    required int32 fat_dropsize = 70;                   // 上一次剩余容量异常的差值
+    required uint64 fat_droptime = 71;                  // 上一次剩余容量异常的日期时间
+    required uint32 fat_format = 72;                    // 格式化的总次数
+    required uint32 fat_dosfsck = 73;                   // 修复的总次数
+
+    // 蓝牙升级打点
+    required DfuUpgradeMessage firmware = 74;          //固件升级
+    required DfuUpgradeMessage base_res = 75;          //基础资源升级
+    required DfuUpgradeMessage inc_res = 76;           //增量资源升级
+    required DfuUpgradeMessage font = 77;              //字体升级
+
+    //new
+    repeated uint32 updataerrscreen = 78[(nanopb).max_count = 3];//弹出更新失败页面 +1   Wi-Fi断开=1，手表与App断连=0，其他=2
+    repeated uint32 updataimmediatelyscreen = 79[(nanopb).max_count = 2];//弹出更新立即页面 +1   确认更新=1取消更新=0
+    optional uint32 remindershock = 80;                 // 通知振动  开=1（默认）关=0
+    optional uint32 seePAIrate = 81;                 // 在「 PAI 心率区间」页面停留超过 2 秒
+    optional uint32 seePAIexplain = 82;                 // 在「PAI 说明」页面停留超过 10 秒
+    optional DialtoolMessage dialtool = 83;    //如果当前使用为组件表盘，连接 App 时发送当前参数值
+    optional uint32 coutdowntime = 84;         //启动的倒计时时长 单位分钟
+    optional uint32 reminderstand = 85;         //收到站立提醒的提示时
+    optional uint32 reminderstandcomplete = 86;         //站立提醒完成反馈弹出时
+    optional uint32 recoverymode = 87; // 来源作为参数 设置=1  忘记密码=2  绑定过程中=3
+    repeated uint32 usecarcount= 88[(nanopb).max_count = 2]; // 数组的0下标:公交卡  用一次加一， 1.门禁卡 用一次加一
+    optional uint32 volsetcount= 89; // 0:0.25   1.25-50 2:50-75 3:100
+    optional uint32 volbycontrol= 90; // 控制中心点击音量调节按钮+1
+    repeated uint32 Offwristlock= 91[(nanopb).max_count = 3]; //  数组的0下标:解锁成功   1.密码错误 2.成功
+    optional uint32 alarmreminder = 92;	 // 每次闹钟时间到+1
+    repeated uint32 alarmreminderclick = 93[(nanopb).max_count = 2]; // 数组的0下标:关闭   1.小睡
+    optional uint32 QNEinto = 94;                 // 气压计进入
+    optional uint32 QNEgps = 95;                 // 气压计gps定位成功
+    repeated uint32 schedulereminderclick = 96[(nanopb).max_count = 2]; // 数组的0下标:关闭   1.稍后
+    repeated uint32 flymode = 97[(nanopb).max_count = 2]; //  数组的0下标:飞行模式关闭   1.飞行模式打开
+    repeated uint32 blestatus = 98[(nanopb).max_count = 2]; //  数组的0下标:蓝牙关   1.蓝牙开
+    repeated uint32 bleconnect = 99[(nanopb).max_count = 2]; //  数组的0下标:连接失败   1.连接成功
+    optional uint32 bleconnectsuccess = 100;                 // 成功配对时打点
+    optional uint32 bleconnectfail = 101;                 // 未能成功配对时打点
+    optional uint32 blelistclick = 102;                 // 蓝牙列表点击已连接设备
+    optional uint32 bleconnectclose = 103;                 // 蓝夜设备详情页点击取消配对
+    repeated uint32 modifypwd = 104[(nanopb).max_count = 2]; //  修改密码 数组的0下标:成功   1.其他
+    repeated uint32 NFCstatus = 105[(nanopb).max_count = 2]; //  nfc 数组的0下标:关   1.蓝牙开
+    repeated uint32 ringreminder = 106[(nanopb).max_count = 2]; //  铃声 数组的0下标:开   1.关
+    optional uint32 languageselect = 107;	 // 每次操作修改手表语言
+    optional lightscreentimeMessage lightscreentime = 108; //  定时抬腕亮屏启用时间段
+    optional wifiuseMessage startwifi = 109; //  启用 Wi-Fi 
+    optional wifiuseMessage closewifi = 110; //  关闭 Wi-Fi
+    optional uint32 wifiTipspage = 111;                 // 进入输入WiFi密码的提示页
+    optional uint32 wifipwdcorrect = 112;                 // 用户同步密码且输入正确连接上WiFi时上报
+    optional uint32 volbysetting = 113;                 // 从设置里去调节音量
+    optional bool   sysVibration = 114;			//通知振动 1：open 0：close
+    repeated uint32 ratemeasure = 115[(nanopb).max_count = 2]; // 心率数组的0下标:失败   1.成功
+    optional uint32 pressureinto = 116;			//进入压力应用
+    repeated uint32 pressureautomeasure = 117[(nanopb).max_count = 2]; // 压力数组的0下标:停用   1.自动
+    repeated uint32 pressuremeasureresult = 118[(nanopb).max_count = 3]; // 压力数组的0下标:未佩戴情况下失败   1.佩戴情况下失败 2.成功
+    optional uint32 aplayscreen = 119;			//在支付宝的二维码/条形码界面停留  二维码=1  2
+    optional uint32 assistantcarid = 120;			//点击智能助理中任意一张卡片时
+    optional uint32 assistantinto = 121;			//在智能助理页面停留 2s 时+1
+    optional uint32 assistantVAD = 122;			//在智能助理页点击语音助手卡片
+    optional uint32 dialchangemode = 123; // 滑动屏幕=1,使用数字表冠=2 ,3
+    optional uint32 activityobjectives = 124; // 在「活动目标」页面点击「我的目标」
+    optional uint32 stopwatchstart = 125; // 秒表开始时
+    optional uint32 stopwatchreset = 126; // 本次秒表的计次次数重置前的计时时长
+    repeated uint32 scheduledelete= 127[(nanopb).max_count = 3]; // 日程删除数组的0下标:删除   1.仅删除此日程 2.删除所有将来日程
+    optional uint32 scheduleedit = 128; // 日程编辑时间
+    optional bool   watchdir = 129;			//手表方向 1：左 0：右
+    optional uint32 lightsetting = 130; // 点击显示与亮度列表中某项功能
+    optional uint32 rateabnormalreminder = 131; // 收到异常心搏提醒时
+    optional uint32 ratewarnreminder = 132; // 收到心率预警提醒时
+    optional uint32 findmoblie = 133; // 找手机功能使用
+    optional uint32 gotosleep = 134; // 点击「现在入睡」
+    optional uint32 gotowakeup = 135; // 点击「我醒了」
+    optional uint32 sleepscreen = 136; // 睡眠应用界面展现时 +1
+    optional uint32 sleepgoal = 137; // 在「设置目标」页面点击完成
+    optional uint32 sleepstop = 138; // 点击停用
+    optional uint32 sleepreminder = 139; // 收到就寝提醒时
+    optional uint32 nobindrecovery = 140; // 未绑定情况下恢复出厂
+    optional uint32 nobindsupervise = 141; // 未绑定情况下查看监管信息
+    optional uint32 bindsetlanguage = 142; // 海外固件绑定时设置手表语言
+    optional uint32 updatebyuser = 143; // 用户主动从手表端发起系统更新
+    optional uint32 sportremindersave = 144; // 运动提醒
+    //onyx额外的消息通知-兼容onyx之前的埋点协议
+    repeated NotifyMessage notifyExt = 145[(nanopb).max_count = 50]; //消息通知信息
+};
+
+message onyxStatisticsMessage {
+    required StatisBaseMessage base = 1; //通用统计信息
+    required SilenceMode silenceMode = 2; //勿扰模式
+    required uint32 backlightLevel = 3; //背光亮度
+
+    required onyxEventMessage event = 4; //打点事件
+    optional NfcMessage nfc = 5;
+};
+

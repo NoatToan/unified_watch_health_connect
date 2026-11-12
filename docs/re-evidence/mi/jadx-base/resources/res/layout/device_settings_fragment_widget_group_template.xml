@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_fragment_widget_group_template_0"
+    android:background="@color/device_settings_widget_manager_page_bg"
+    android:paddingBottom="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="6dp">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_template"
+        android:background="@color/device_settings_widget_manager_page_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="3dp"/>
+</LinearLayout>

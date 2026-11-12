@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_enabled="false"
+        android:drawable="@drawable/huami_shortcut_icon_pai_disable"/>
+    <item android:drawable="@drawable/health_data_pai_square"/>
+</selector>

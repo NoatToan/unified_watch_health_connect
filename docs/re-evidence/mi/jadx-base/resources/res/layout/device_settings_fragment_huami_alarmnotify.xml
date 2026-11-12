@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_fragment_huami_alarmnotify_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/setting_item_second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_25dp"
+        android:layout_marginBottom="@dimen/dimen_margin_15dp"
+        android:text="@string/device_settings_alarm_notify_tip"
+        android:layout_marginStart="26dp"/>
+    <com.xiaomi.fitness.widget.button.SetSwitchView
+        android:id="@+id/alarmNotifyView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:switchShow="true"
+        app:switch_des="@string/device_settings_alarm_notify_setting_desc"
+        app:switch_desShow="true"
+        app:switch_lineShow="false"
+        app:switch_name="@string/device_settings_alarm_notify_setting_open"/>
+</LinearLayout>

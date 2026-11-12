@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_factorytest_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/page_content_padding_horizontal_large"
+    android:paddingEnd="@dimen/page_content_padding_horizontal_large">
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/modeuser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="MODE USER"/>
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/modeuserdebug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="MODE USER DEBUG"/>
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/modeeng"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="MODE ENG"/>
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/modemedicalmeter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="MODE MEDICAL_METER"/>
+    <com.xiaomi.fitness.widget.view.DividerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/dump_log_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="DUMP LOG"/>
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/dump_media_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="DUMP MEDIA"/>
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/SMXCardReaderView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="SMXCardReader"/>
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/nfcConfigView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="NFC Config"/>
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/set_brightness_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="SET BRIGHTNESS"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

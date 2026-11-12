@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_face_wear_os_0"
+    android:background="@color/face_market_page_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.watch.face.widget.StateLayout
+        android:id="@+id/state_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/go_more"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <com.xiaomi.fitness.baseui.recyclerview.MoreRecyclerView
+            android:orientation="vertical"
+            android:id="@+id/mRecyclerView"
+            android:paddingTop="14dp"
+            android:clipToPadding="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/face_common_entrance_start"
+            android:paddingEnd="@dimen/face_common_entrance_start"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    </com.xiaomi.fitness.watch.face.widget.StateLayout>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/go_more"
+        android:text="@string/common_more"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/CommonBtn.Normal"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

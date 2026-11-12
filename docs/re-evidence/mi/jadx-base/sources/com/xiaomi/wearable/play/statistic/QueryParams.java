@@ -1,0 +1,110 @@
+package com.xiaomi.wearable.play.statistic;
+
+import com.miui.tsmclient.net.TSMAuthContants;
+import com.xiaomi.onetrack.OneTrack;
+import com.xiaomi.onetrack.b.g;
+
+/* JADX INFO: loaded from: classes2.dex */
+public enum QueryParams {
+    APPID(g.d),
+    RECORD("rec"),
+    URL_PATH("url"),
+    URL_TITLE("url_title"),
+    ACTION_NAME("action_name"),
+    SESSION_ID("_id"),
+    VISIT_TYPE("v_type"),
+    RANDOM_NUMBER("rand"),
+    API_VERSION("apiv"),
+    API_VERSION_STR("apiv_str"),
+    VISIT_SCOPE_CUSTOM_VARIABLES("_cvar"),
+    TOTAL_NUMBER_OF_VISITS("_idvc"),
+    PREVIOUS_VISIT_TIMESTAMP("_viewts"),
+    FIRST_VISIT_TIMESTAMP("_idts"),
+    CAMPAIGN_NAME(OneTrack.Param.UTM_CAMPAIGN),
+    CAMPAIGN_ID("utm_id"),
+    CAMPAIGN_SOURCE("utm_source"),
+    REFER_TYPE("ref_type"),
+    REFER_URL("ref_url"),
+    REFER_TERM("ref_term"),
+    SCREEN_RESOLUTION("res"),
+    HOURS("h"),
+    MINUTES("m"),
+    SECONDS("s"),
+    USER_AGENT("ua"),
+    LANGUAGE(TSMAuthContants.PARAM_LANGUAGE),
+    ExpId("eid"),
+    USER_ID("uid"),
+    SESSION_START("new_visit"),
+    DEVICE_ID("did"),
+    SCREEN_SCOPE_CUSTOM_VARIABLES("cvar"),
+    LINK(OneTrack.Param.LINK),
+    DOWNLOAD("download"),
+    SEARCH_KEYWORD("search"),
+    SEARCH_CATEGORY("search_cat"),
+    SEARCH_NUMBER_OF_HITS("search_count"),
+    GOAL_ID("idgoal"),
+    REVENUE("revenue"),
+    AUTHENTICATION_TOKEN("token_auth"),
+    COUNTRY("country"),
+    LATITUDE("lat"),
+    LONGITUDE("long"),
+    DATETIME_OF_REQUEST("cdt"),
+    CONTENT_NAME("c_n"),
+    CONTENT_PIECE("c_p"),
+    CONTENT_TARGET("c_t"),
+    CONTENT_INTERACTION("c_i"),
+    EVENT_CATEGORY("e_c"),
+    EVENT_ACTION("e_a"),
+    EVENT_NAME("e_n"),
+    EVENT_VALUE("e_v"),
+    EVENT_EXT("e_x"),
+    ECOMMERCE_TYPE("ec_type"),
+    ECOMMERCE_TRANS_ID("ec_id"),
+    ECOMMERCE_REVENUE("ec_revenue"),
+    ECOMMERCE_DISCOUNT("ec_dt"),
+    ECOMMERCE_SHIPPING("ec_sh"),
+    ECOMMERCE_PRODUCTS("ec_items"),
+    LOCATION_CITY("l_city"),
+    SEND_IMAGE("send_image"),
+    VOID_PARAMETER("o2o_splitter"),
+    REACH_ITEMS("rc_items"),
+    CLIENT_VERSION("cv"),
+    RCCARD_ITEMS("rccard_items"),
+    REACH_ID("stock_id"),
+    REACH_TYPE("type"),
+    TRACE_ID("trace_id"),
+    ITEM_CATEGORY("item_category"),
+    ITEM_SUB_CATEGORY("item_subcategory"),
+    ITEM_THIRD_CATEGORY("item_thirdcategory"),
+    DURATION("duration"),
+    ITEM_TYPE("item_type"),
+    POSITION_TYPE("position_type"),
+    POSITION("position"),
+    REACH_TIME("reach_time"),
+    EXT("ext"),
+    APP_NAME("app"),
+    TRACEID("traceid"),
+    IMEID("imeid"),
+    CLIENT_TS("client_ts"),
+    PAGE_ACTIONS("page_actions"),
+    EXPOSE_TIMESTAMP("e_t"),
+    IS_CLICK("is_clk"),
+    CLIENT_TIME("c_t"),
+    IS_VIEW("is_view"),
+    VIEW_DURATION("v_d"),
+    IS_DISLIKE("is_dislike"),
+    DISKLIKE_REASON("dislike_reason"),
+    STOCK_POSITION("pos"),
+    REACH_PATH("path");
+
+    private final String value;
+
+    QueryParams(String str) {
+        this.value = str;
+    }
+
+    @Override // java.lang.Enum
+    public String toString() {
+        return this.value;
+    }
+}

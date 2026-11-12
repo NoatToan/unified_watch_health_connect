@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textColor="@color/text_color_60"
+    android:gravity="center"
+    android:background="@drawable/shape_card_bg_pressed"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/sport_check_all_courses"
+    android:paddingVertical="@dimen/dimen_margin_12dp"
+    style="@style/FontNormal.16sp"/>

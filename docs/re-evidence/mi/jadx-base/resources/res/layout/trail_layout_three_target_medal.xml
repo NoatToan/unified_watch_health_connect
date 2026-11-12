@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/trail_layout_three_target_medal_0"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/health_target_medal_item_margin_end">
+    <ImageView
+        android:id="@+id/medal_icon"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:scaleType="centerCrop"
+        android:layout_marginHorizontal="@dimen/dimen_margin_10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/text_color"
+        android:ellipsize="end"
+        android:id="@+id/medal_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_5dp"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="@+id/medal_icon"
+        app:layout_constraintStart_toStartOf="@+id/medal_icon"
+        app:layout_constraintTop_toBottomOf="@+id/medal_icon"/>
+    <TextView
+        android:textSize="11sp"
+        android:textColor="@color/text_color_60"
+        android:ellipsize="end"
+        android:id="@+id/medal_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_5dp"
+        android:maxWidth="250dp"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="@+id/medal_icon"
+        app:layout_constraintStart_toStartOf="@+id/medal_icon"
+        app:layout_constraintTop_toBottomOf="@+id/medal_name"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

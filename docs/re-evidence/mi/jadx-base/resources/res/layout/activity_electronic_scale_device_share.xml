@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/activity_electronic_scale_device_share_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.widget.RightArrowBindingSingleLineTextView
+        android:id="@+id/device_share_manage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/electronic_scale_dimen_margin_27dp"
+        android:paddingEnd="@dimen/electronic_scale_dimen_margin_22dp"
+        app:icon="@drawable/electronic_sale_device_manage"
+        app:showMore="true"
+        app:title="@string/electronic_sale_device_share_manager"/>
+    <com.xiaomi.fitness.widget.RightArrowBindingSingleLineTextView
+        android:id="@+id/device_share_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/electronic_scale_dimen_margin_27dp"
+        android:paddingEnd="@dimen/electronic_scale_dimen_margin_22dp"
+        app:icon="@drawable/electronic_sale_device_account"
+        app:showMore="true"
+        app:title="@string/electronic_sale_device_share_account"/>
+</LinearLayout>

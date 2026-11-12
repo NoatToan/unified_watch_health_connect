@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_target_mh_intensity_r_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/dimen_margin_13dp">
+    <com.xiaomi.fitness.widget.view.DataTitleSimpleView
+        android:id="@+id/dataSimpleTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <View
+        android:background="@color/divider_color"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginHorizontal="@dimen/dimen_margin_20dp"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/itemViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/margin_20dp">
+            <com.xiaomi.fitness.relative.view.TargetRItemView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/targetRItemView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <com.xiaomi.fitness.relative.view.TargetRItemView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/targetRItemView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

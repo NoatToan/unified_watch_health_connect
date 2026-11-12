@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:tag="layout/layout_running_indicator_widget_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/page_padding_horizontal_large">
+    <include
+        android:id="@+id/current_running_indicator"
+        android:visibility="gone"
+        layout="@layout/layout_current_running_indicator"/>
+    <include
+        android:id="@+id/training_frequency_suggestion"
+        android:visibility="gone"
+        layout="@layout/layout_training_suggestion"/>
+</LinearLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/health_fragment_sleep_permission_setting_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/page_content_padding_horizontal_large">
+    <TextView
+        android:id="@+id/guide_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_20dp"
+        android:layout_marginBottom="@dimen/dimen_margin_18dp"/>
+    <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+        android:id="@+id/auto_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/guide_text"
+        app:subtitle="@string/health_turing_on_is_recommended"
+        app:title="@string/health_sleep_permission_auto_start"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/run_in_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/auto_start"
+        app:remindTextEnable="true"
+        app:subtitle="@string/health_sleep_permission_no_restriction_recommended"
+        app:title="@string/health_sleep_permission_run_in_bg"/>
+</RelativeLayout>

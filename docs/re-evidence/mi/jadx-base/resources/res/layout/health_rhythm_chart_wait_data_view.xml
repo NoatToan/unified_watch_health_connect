@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/health_rhythm_chart_wait_data_view_0"
+    android:background="@drawable/health_rhythm_chart_empty_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/health_rhythm_empty_icon"
+        android:background="@drawable/common_loading_rotate"
+        android:layout_width="25dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="@dimen/page_padding_horizontal_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="@dimen/dimen_16sp"
+        android:textColor="@color/text_color"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/health_rhythm_wait_data_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/health_rhythm_empty_icon"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,45 @@
+syntax = "proto2";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+/** 全天开启/定时开启及时间段/关闭 */
+message SwitchTimeSlot {
+    required uint32 switchFlag = 1; /** 0.关闭, 1.全天开启定时, 2.开启及时间段 */
+    optional uint32 startHour = 2[default = 0];
+    optional uint32 endHour = 3[default = 0];
+    optional uint32 startMin = 4[default = 0];
+    optional uint32 endMin = 5[default = 0];
+}
+
+/** 暂不开启/立即开启/智能开启/自定义开始及时间段 */
+message NoDistrubModeState {
+    required uint32 stateFlag = 1; /** 0.暂不开启, 1.立即开启, 2.智能开启, 3.自定义开始及时间段 */
+    optional uint32 startHour = 2[default = 0];
+    optional uint32 endHour = 3[default = 0];
+    optional uint32 startMin = 4[default = 0];
+    optional uint32 endMin = 5[default = 0];
+}
+
+/** 编辑表盘元素 */
+message WatchFaceEditor {
+    required uint32 watchFaceId = 1; /** 表盘id */
+    repeated uint32 watchFaceEditIds = 2; /** 表盘元素ids */
+}
+
+/** Como&Ness Settings*/
+message ComoNessSettingMessage {
+    required uint32 autoScreenOffTime = 1; /** 设置-自动息屏设置项 , 5~15s */
+    required bool screenLockSwitch = 2; /** 设置-锁屏设置 */
+    required SwitchTimeSlot notificationScreenOn = 3; /** 设置-通知亮屏设置项  */
+    required SwitchTimeSlot wristScreenOn = 4; /** 设置-抬腕亮屏设置项  */
+    repeated uint32 widgetSortList = 5; /** 设置-快捷应用使用情况统计  */
+    required uint32 vibratingStrength = 6; /**  设置-震动强度使用情况 0(低强度) 1(中强度) 2(高强度) */
+    required uint32 timeDisplayFormat = 7; /** 设置-时间格式使用情况 0(12小时制), 1(24小时制) */
+    required uint32 dateDisplayFormat = 8; /** 设置-日期格式使用情况 0(年/月/日), 1(年/日/月), 2(月/日/年), 3(日/月/年) */
+    required uint32 longPressKeyOpenApp = 9; /** 设置-长按按键打开应用 */
+    required NoDistrubModeState noDistrubModeState = 10; /** 勿扰-开启方式 */
+    required uint32 screenBrightnessLevel = 11; /** 亮度等级 */
+    optional bool autoScreenBrightnessSwitch = 12[default = false]; /** 自动亮度设置状态  0(开启), 1(关闭) */
+    required WatchFaceEditor watchFaceEditor = 13; /** 当前可编辑表盘元素 */
+    optional float bloodOxygenColor = 14; /** 用户血氧测量CTR系数 */
+}

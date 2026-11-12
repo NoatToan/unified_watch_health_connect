@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/health_fragment_temp_trend_support_devices_list_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/support_devices_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/bind_button"
+            android:layout_width="@dimen/common_btn_two_column_width"
+            android:layout_height="@dimen/common_btn_height"
+            android:text="@string/health_sleep_rhythm_guide_buy_dialog_to_bind_device"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/buy_button"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/CommonBtn.Primary"/>
+        <Button
+            android:id="@+id/buy_button"
+            android:layout_width="@dimen/common_btn_two_column_width"
+            android:layout_height="@dimen/common_btn_height"
+            android:text="@string/health_sleep_purchase_device"
+            android:layout_marginStart="@dimen/page_extra_padding_horizontal_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bind_button"
+            style="@style/CommonBtn.Primary"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

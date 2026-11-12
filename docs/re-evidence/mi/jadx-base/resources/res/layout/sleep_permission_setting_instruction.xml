@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:background="@drawable/sleep_permission_setting_instruction_shape_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="14.67dp"
+    android:paddingVertical="10.3dp">
+    <TextView
+        android:textColor="@color/text_color_40"
+        android:id="@+id/instruction_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="52dp"
+        style="@style/FontMedium.13sp"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/close_instruction"
+        android:background="@drawable/ic_sleep_permission_instruction_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="11.33dp"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/device_settings_device_install_app_debug_fragment_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.widget.RightArrowBindingTwoLineTextView
+        android:id="@+id/device_install_app_view"
+        android:tag="binding_1"
+        android:paddingHorizontal="@dimen/page_content_padding_horizontal_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="应用列表"
+        style="@style/DeviceSettingsInfoListItem"/>
+    <com.xiaomi.fitness.widget.RightArrowBindingTwoLineTextView
+        android:id="@+id/device_monitor_app_view"
+        android:tag="binding_2"
+        android:paddingHorizontal="@dimen/page_content_padding_horizontal_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/device_install_app_view"
+        app:title="监控信息"
+        style="@style/DeviceSettingsInfoListItem"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

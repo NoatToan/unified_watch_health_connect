@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.chart.view.BarChartRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/summary_recycler_view"
+    style="@style/BarChartRecyclerViewStyle.SleepDistribute.Week"/>

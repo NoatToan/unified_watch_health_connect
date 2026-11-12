@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/device_settings_fragment_authorize_unlock_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <LinearLayout
+        android:orientation="vertical"
+        android:paddingTop="@dimen/device_settings_list_padding_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/page_content_padding_horizontal_large">
+        <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+            android:id="@+id/unlock_laptop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:subtitle="@string/device_settings_authorize_unlock_laptop_description"
+            app:title="@string/device_settings_unlock_laptop"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:textColor="@color/text_color"
+            android:layout_gravity="bottom|center_horizontal"
+            android:id="@+id/unlock_device_help_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="26dp"
+            android:text="@string/device_settings_view_help"
+            style="@style/FontRegular.14sp"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

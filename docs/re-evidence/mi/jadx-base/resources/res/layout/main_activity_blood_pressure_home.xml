@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/main_activity_blood_pressure_home_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/widget_top_bar"
+        layout="@layout/widget_top_bar"/>
+    <miuix.miuixbasewidget.widget.FilterSortView
+        android:theme="@style/FilterSortViewStyle"
+        android:id="@+id/filter_sort_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_7"
+        android:layout_marginBottom="@dimen/size_7"
+        android:layoutDirection="ltr"
+        android:layout_marginStart="@dimen/size_23_33"
+        android:layout_marginEnd="@dimen/size_23_33"/>
+    <com.xiaomi.fitness.chart.view.BarChartRecyclerView
+        android:id="@+id/bp_bar_chart"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_255_8"
+        app:barChartRoundRectRadiusRatio="0.3"
+        app:chartColor="@color/blood_pressure_chart"
+        app:contentPaddingTop="@dimen/size_71_7"
+        app:displayNumbers="48"
+        app:enableCharValueDisplay="false"
+        app:enableEndYAxisLabel="true"
+        app:enableStartYAxisLabel="false"
+        app:enableXAxisBg="true"
+        app:enableXAxisFirstGridLine="false"
+        app:enableXAxisThirdGridLine="false"
+        app:recyclerPaddingRight="10dp"/>
+</LinearLayout>

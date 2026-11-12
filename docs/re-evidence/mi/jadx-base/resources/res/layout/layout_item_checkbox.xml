@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="15sp"
+    android:textColor="@drawable/selector_feedback_checkbox_txt"
+    android:id="@+id/checkBoxLabel"
+    android:background="@drawable/selector_feedback_checkbox"
+    android:paddingTop="@dimen/dimen_margin_12dp"
+    android:paddingBottom="@dimen/dimen_margin_12dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:button="@null"
+    android:paddingStart="@dimen/dimen_margin_15dp"
+    android:paddingEnd="@dimen/dimen_margin_15dp"/>

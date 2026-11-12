@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.device.manager.ui.tab.DeviceStatusView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/device_item_device_status_v4_0"
+    android:paddingBottom="@dimen/dimen_margin_16dp"
+    android:descendantFocusability="afterDescendants"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dimen_margin_8dp"/>

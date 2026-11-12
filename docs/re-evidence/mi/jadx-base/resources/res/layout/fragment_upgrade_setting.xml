@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_upgrade_setting_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/page_content_padding_horizontal_large">
+    <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+        android:id="@+id/update_while_idle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showSwitch="true"
+        app:subtitle="@string/update_when_idle_desc"
+        app:title="@string/update_when_idle_title"/>
+    <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+        android:id="@+id/update_use_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/update_while_idle"
+        app:showSwitch="true"
+        app:subtitle="@string/update_use_mobile_desc"
+        app:title="@string/update_use_mobile_title"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

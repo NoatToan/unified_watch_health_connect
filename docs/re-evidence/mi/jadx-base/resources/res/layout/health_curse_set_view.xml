@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/labelView"
+        android:tag="layout/health_curse_set_view_0"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/HealthCurseDesc"/>
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/itemView"
+        android:tag="layout/health_curse_set_view_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingStart="@dimen/dimen_margin_14dp"
+        app:layout_constraintTop_toBottomOf="@+id/labelView"
+        app:remindText="辅助标题"
+        app:showRemind="true"
+        app:title="标题标题标题标题"/>
+    <com.xiaomi.fitness.widget.view.DividerView
+        android:id="@+id/divider"
+        android:tag="layout/health_curse_set_view_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemView"/>
+</merge>

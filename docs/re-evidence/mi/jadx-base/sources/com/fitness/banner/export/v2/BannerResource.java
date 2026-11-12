@@ -1,0 +1,58 @@
+package com.fitness.banner.export.v2;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import kotlin.Metadata;
+import org.jetbrains.annotations.NotNull;
+
+/* JADX INFO: loaded from: classes4.dex */
+@Retention(RetentionPolicy.RUNTIME)
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0002\b\u0002\b\u0086\u0002\u0018\u0000 \u00022\u00020\u0001:\u0001\u0002B\u0000¨\u0006\u0003"}, d2 = {"Lcom/fitness/banner/export/v2/BannerResource;", "", "Companion", "banner-export_chinaProductRelease"}, k = 1, mv = {2, 0, 0}, xi = 48)
+public @interface BannerResource {
+
+    /* JADX INFO: renamed from: Companion, reason: from kotlin metadata */
+    @NotNull
+    public static final Companion INSTANCE = Companion.$$INSTANCE;
+    public static final int DEVICE_TAB_DEVICE_USE_TIP = 13;
+    public static final int DEVICE_TAB_HAS_DEVICE_BANNER = 12;
+    public static final int DEVICE_TAB_NO_DEVICE_BANNER = 11;
+    public static final int FACE_MARKET_BANNER = 17;
+    public static final int HEALTH_TAB_ANNOUNCEMENT = 1;
+    public static final int HEALTH_TAB_BANNER = 6;
+    public static final int HEALTH_TAB_FITNESS_CARD = 2;
+    public static final int HEALTH_TAB_OPERATION_1 = 3;
+    public static final int HEALTH_TAB_OPERATION_2 = 4;
+    public static final int HEALTH_TAB_OPERATION_3 = 5;
+    public static final int MINE_TAB_BANNER = 14;
+    public static final int RUNNING_GROUP = 201;
+    public static final int SPLASH_BANNER = 15;
+    public static final int SPORT_TAB_COURSE_LIST = 10;
+    public static final int SPORT_TAB_OPERATION_1 = 7;
+    public static final int SPORT_TAB_OPERATION_2 = 8;
+    public static final int SPORT_TAB_OPERATION_CITY_LOCATION = 9;
+
+    @Metadata(d1 = {"\u0000\u0014\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0003\n\u0002\u0010\b\n\u0002\b\u0011\b\u0086\u0003\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003R\u000e\u0010\u0004\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u0006\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u0007\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\b\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\t\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\n\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u000b\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\f\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\r\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u000e\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u000f\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u0010\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u0011\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u0012\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u0013\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u0014\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u0015\u001a\u00020\u0005X\u0086T¢\u0006\u0002\n\u0000¨\u0006\u0016"}, d2 = {"Lcom/fitness/banner/export/v2/BannerResource$Companion;", "", "<init>", "()V", "HEALTH_TAB_ANNOUNCEMENT", "", "HEALTH_TAB_FITNESS_CARD", "HEALTH_TAB_OPERATION_1", "HEALTH_TAB_OPERATION_2", "HEALTH_TAB_OPERATION_3", "HEALTH_TAB_BANNER", "SPORT_TAB_OPERATION_1", "SPORT_TAB_OPERATION_2", "SPORT_TAB_OPERATION_CITY_LOCATION", "SPORT_TAB_COURSE_LIST", "DEVICE_TAB_NO_DEVICE_BANNER", "DEVICE_TAB_HAS_DEVICE_BANNER", "DEVICE_TAB_DEVICE_USE_TIP", "MINE_TAB_BANNER", "SPLASH_BANNER", "FACE_MARKET_BANNER", "RUNNING_GROUP", "banner-export_chinaProductRelease"}, k = 1, mv = {2, 0, 0}, xi = 48)
+    public static final class Companion {
+        static final /* synthetic */ Companion $$INSTANCE = new Companion();
+        public static final int DEVICE_TAB_DEVICE_USE_TIP = 13;
+        public static final int DEVICE_TAB_HAS_DEVICE_BANNER = 12;
+        public static final int DEVICE_TAB_NO_DEVICE_BANNER = 11;
+        public static final int FACE_MARKET_BANNER = 17;
+        public static final int HEALTH_TAB_ANNOUNCEMENT = 1;
+        public static final int HEALTH_TAB_BANNER = 6;
+        public static final int HEALTH_TAB_FITNESS_CARD = 2;
+        public static final int HEALTH_TAB_OPERATION_1 = 3;
+        public static final int HEALTH_TAB_OPERATION_2 = 4;
+        public static final int HEALTH_TAB_OPERATION_3 = 5;
+        public static final int MINE_TAB_BANNER = 14;
+        public static final int RUNNING_GROUP = 201;
+        public static final int SPLASH_BANNER = 15;
+        public static final int SPORT_TAB_COURSE_LIST = 10;
+        public static final int SPORT_TAB_OPERATION_1 = 7;
+        public static final int SPORT_TAB_OPERATION_2 = 8;
+        public static final int SPORT_TAB_OPERATION_CITY_LOCATION = 9;
+
+        private Companion() {
+        }
+    }
+}

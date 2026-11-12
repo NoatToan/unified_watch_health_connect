@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/course_layout_video_hr_0"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="28sp"
+        android:textColor="@color/common_black"
+        android:id="@+id/hrView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="--"
+        android:fontFamily="@font/misanslatin_demibold"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+        android:id="@+id/hr_icon_view"
+        android:layout_width="11dp"
+        android:layout_height="9dp"
+        android:src="@drawable/course_audio_heartrate_img"
+        android:layout_marginStart="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/hr_label"
+        app:layout_constraintLeft_toRightOf="@+id/hrView"
+        app:layout_constraintTop_toTopOf="@+id/hrView"
+        app:layout_constraintVertical_chainStyle="packed"/>
+    <TextView
+        android:textSize="10sp"
+        android:textColor="@color/black"
+        android:id="@+id/hr_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/hrView"
+        app:layout_constraintStart_toStartOf="@+id/hr_icon_view"
+        app:layout_constraintTop_toBottomOf="@+id/hr_icon_view"/>
+    <com.mi.health.course.widget.HrLevelView
+        android:id="@+id/hr_level_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/hr_label"
+        app:layout_constraintStart_toEndOf="@+id/hr_label"
+        app:layout_constraintTop_toTopOf="@+id/hr_label"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

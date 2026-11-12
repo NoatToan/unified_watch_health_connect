@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/selector_bottom_button_normal"
+    android:layout_width="wrap_content"
+    android:layout_height="32dp"
+    android:paddingStart="@dimen/dimen_margin_15dp"
+    android:paddingEnd="@dimen/dimen_margin_15dp">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textSize="12sp"
+        android:textColor="@color/selector_common_btn_normal_text_color"
+        android:id="@+id/city_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/remove_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_common_delete_black"
+        android:contentDescription="@string/common_delete"
+        android:layout_marginStart="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/city_label"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

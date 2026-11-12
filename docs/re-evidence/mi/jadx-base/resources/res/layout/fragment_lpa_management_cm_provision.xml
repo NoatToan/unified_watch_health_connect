@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_lpa_management_cm_provision_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/cm_provision_method_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_set_margin_start"
+        android:layout_marginEnd="@dimen/common_set_margin_start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/lpa_management_cm_provision_app"/>
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/cm_provision_method_qrcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_set_margin_start"
+        android:layout_marginEnd="@dimen/common_set_margin_start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cm_provision_method_app"
+        app:title="@string/lpa_management_provision_qrcode"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

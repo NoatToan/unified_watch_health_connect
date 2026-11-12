@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl"
+    android:tag="layout-large/view_eco_launch_indoor_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/run_indoor_iv"
+        android:background="@drawable/indoor_run_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1.54:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="@dimen/font_14"
+        android:textColor="@color/sport_color_black"
+        android:gravity="center_vertical"
+        android:id="@+id/proposal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="@string/sport_phone_plaec"
+        android:drawablePadding="5.3dp"
+        android:drawableEnd="@drawable/sport_arrow_right"
+        android:fontFamily="@font/misanslatin_semibold"
+        android:layout_marginStart="14dp"
+        app:layout_constraintStart_toStartOf="@+id/run_indoor_iv"
+        app:layout_constraintTop_toTopOf="@+id/run_indoor_iv"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

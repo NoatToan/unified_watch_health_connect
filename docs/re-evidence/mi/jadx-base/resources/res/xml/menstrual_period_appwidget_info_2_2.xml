@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="110dp"
+    android:minHeight="110dp"
+    android:updatePeriodMillis="600000"
+    android:initialLayout="@layout/layout_menstrual_period_widget_2_2"
+    android:previewImage="@drawable/widget_menses_preview_2_2"
+    android:targetCellWidth="2"
+    android:targetCellHeight="2"/>

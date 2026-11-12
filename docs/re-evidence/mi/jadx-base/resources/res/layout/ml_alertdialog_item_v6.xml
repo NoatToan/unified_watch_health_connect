@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.baseui.widget.MLTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="@dimen/dimen_14sp"
+    android:textColor="@color/black"
+    android:ellipsize="marquee"
+    android:gravity="center_vertical"
+    android:id="@+id/ml_alertdialog_text1"
+    android:background="@drawable/ml_alertdialog_list_item_first_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="47.33dp"
+    android:singleLine="true"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"/>

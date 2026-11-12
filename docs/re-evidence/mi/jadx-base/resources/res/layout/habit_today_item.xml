@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/backgroundView"
+        android:background="@drawable/habit_punch_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="23sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:id="@+id/habitNameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="@dimen/page_extra_padding_horizontal_large"
+        app:layout_constraintStart_toStartOf="@+id/backgroundView"
+        app:layout_constraintTop_toTopOf="@+id/backgroundView"/>
+    <TextView
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:id="@+id/habitTimeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        app:layout_constraintStart_toStartOf="@+id/habitNameView"
+        app:layout_constraintTop_toBottomOf="@+id/habitNameView"/>
+    <TextView
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:id="@+id/itemHabitPunchView"
+        android:background="@color/habit_punch_btn_yellow"
+        android:layout_width="78dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/backgroundView"
+        app:layout_constraintStart_toStartOf="@+id/habitNameView"
+        app:layout_constraintTop_toBottomOf="@+id/habitTimeView"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

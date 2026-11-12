@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_device_install_app_item_0"
+    android:background="@drawable/device_settings_cta_install_app_bg"
+    android:padding="@dimen/page_extra_padding_horizontal_large"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dimen_margin_10dp">
+    <TextView
+        android:textColor="@color/text_color"
+        android:id="@+id/device_install_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/FontDemiBold.16sp"/>
+    <TextView
+        android:textColor="@color/text_color_40"
+        android:id="@+id/device_install_app_package_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_2dp"
+        style="@style/FontMedium.12sp"/>
+    <TextView
+        android:textColor="@color/text_color_40"
+        android:id="@+id/device_install_app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_2dp"
+        style="@style/FontMedium.12sp"/>
+    <TextView
+        android:textColor="@color/text_color_40"
+        android:id="@+id/device_install_app_install_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_2dp"
+        style="@style/FontMedium.12sp"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

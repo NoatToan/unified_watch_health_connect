@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/stand_container"
+    android:tag="layout/fragment_stand_week_item_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xiaomi.fitness.chart.view.BarChartRecyclerView
+            android:id="@+id/recycler"
+            app:barChartMaxWidth="@dimen/size_10"
+            app:barSpace="0.7"
+            app:chartColor="@color/health_stand_chart"
+            app:displayNumbers="7"
+            app:enableStartYAxisLabel="false"
+            app:enableXAxisBg="true"
+            style="@style/ChartBaseStyle"/>
+        <com.xiaomi.fitness.view.DataTitleView
+            android:id="@+id/dataTitleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+    <include
+        android:id="@+id/ll_card"
+        layout="@layout/layout_stand_dwm_common"/>
+</LinearLayout>

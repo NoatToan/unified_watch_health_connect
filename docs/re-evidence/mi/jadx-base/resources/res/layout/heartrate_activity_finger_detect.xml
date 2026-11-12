@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:tag="layout/heartrate_activity_finger_detect_0"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="horizontal"
+        android:id="@+id/v_top_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.22"/>
+    <include
+        android:id="@+id/layout_title"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/v_top_line"
+        layout="@layout/heartrate_layout_camera_detecting_title"/>
+    <include
+        android:id="@+id/layout_finger_detecting_anim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/v_top_line"
+        layout="@layout/heartrate_layout_finger_detecting_anim"/>
+    <TextView
+        android:textSize="13.36sp"
+        android:textColor="@color/white_60"
+        android:gravity="center"
+        android:id="@+id/tv_finger_area_label"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:text="@string/heartrate_fp_area"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

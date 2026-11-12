@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lyt_content"
+    android:tag="layout/fragment_record_detail_blood_pressure_0"
+    android:paddingTop="@dimen/dimen_margin_20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="@dimen/font_15"
+        android:textColor="#f22424"
+        android:id="@+id/tv_abnormal"
+        android:background="@drawable/shape_evaluation_bg"
+        android:paddingTop="@dimen/size_10"
+        android:paddingBottom="@dimen/size_10"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_2"
+        android:paddingStart="@dimen/size_16"
+        android:paddingEnd="@dimen/size_16"
+        android:layout_marginStart="@dimen/page_padding_horizontal_large"
+        android:layout_marginEnd="@dimen/page_padding_horizontal_large"/>
+    <TextView
+        android:textColor="@color/text_color_40"
+        android:gravity="center"
+        android:id="@+id/tv_no_data"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_data"
+        android:drawableTop="@drawable/ic_no_data"
+        android:layout_centerInParent="true"
+        style="@style/FontRegular.14sp"/>
+    <miuix.springback.view.SpringBackLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tv_abnormal"
+        app:scrollOrientation="vertical"
+        app:scrollableView="@+id/recycler">
+        <miuix.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </miuix.springback.view.SpringBackLayout>
+</RelativeLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_watch_app_layout_setting_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/app_layout_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="@dimen/page_padding_horizontal_large"/>
+    <Button
+        android:id="@+id/btn_applayout_continue"
+        android:tag="binding_1"
+        android:text="@string/web_continue"
+        style="@style/CommonBtn.Red"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

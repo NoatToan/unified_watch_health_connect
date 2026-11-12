@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+enum StandbydialMode {
+    ONOFF = 0; //关闭
+    ISSMART = 1; //智能开启
+    SPECIALTIME = 2; //定时开启
+    ALWAYS = 3;//全天开启
+};
+
+enum StandbydialPattern {
+    NONE = 0; //无
+    DIGIT = 1; //智能开启
+    POINTER = 2; //定时开启
+};
+
+

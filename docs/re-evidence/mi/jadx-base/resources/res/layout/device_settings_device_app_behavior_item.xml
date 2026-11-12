@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:textColor="@color/text_color_40"
+    android:id="@+id/device_install_app_behavior_tv"
+    android:tag="layout/device_settings_device_app_behavior_item_0"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dimen_margin_5dp"
+    style="@style/FontMedium.12sp"/>

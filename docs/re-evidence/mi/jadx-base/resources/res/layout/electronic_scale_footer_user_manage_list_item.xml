@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/electronic_scale_footer_user_manage_list_item_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:id="@+id/ll_add_virtual_account"
+        android:background="@drawable/shape_data_item_bg"
+        android:paddingTop="27dp"
+        android:paddingBottom="27dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/electronic_scale_icon_item_add"/>
+        <TextView
+            android:textSize="12sp"
+            android:textColor="@color/electronic_scale_black_50"
+            android:id="@+id/user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/electronic_scale_add_virtual_account"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

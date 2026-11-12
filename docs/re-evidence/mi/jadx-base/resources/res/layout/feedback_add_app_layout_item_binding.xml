@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_item_linear"
+    android:tag="layout/feedback_add_app_layout_item_binding_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.widget.RightArrowBindingSingleLineTextView
+        android:id="@+id/app_item_binding"
+        android:tag="binding_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:showBackground="false"/>
+</FrameLayout>

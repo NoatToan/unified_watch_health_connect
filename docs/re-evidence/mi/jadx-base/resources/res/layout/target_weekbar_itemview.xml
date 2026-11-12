@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.health.threetarget.model.ThreeTargetView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/targetItemView"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:textColor="@color/text_color"
+        android:gravity="center"
+        android:id="@+id/target_week_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        style="@style/FontMedium.12sp"/>
+</LinearLayout>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.watch.face.edit.ui.WatchFaceView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/watchFaceView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>

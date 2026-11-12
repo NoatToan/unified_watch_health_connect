@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/size_15"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/health_detail_page_common_margin_vertical">
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_detail"
+        android:background="@drawable/shape_data_item_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/health_detail_page_common_margin_vertical"
+        android:overScrollMode="never"
+        android:layout_marginHorizontal="@dimen/health_detail_page_common_margin_horizontal"/>
+    <com.xiaomi.fitness.view.CardUnderstandView
+        android:id="@+id/understandCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/health_detail_page_common_margin_vertical"
+        android:layout_marginHorizontal="@dimen/health_detail_page_common_margin_horizontal"
+        app:txtUnderstand="@string/health_data_explain_mh_intensity"/>
+</LinearLayout>

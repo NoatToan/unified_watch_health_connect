@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/restartPlan"
+        android:visible="false"
+        android:title="@string/restart_the_plan"/>
+    <item
+        android:id="@+id/planHistory"
+        android:title="@string/historical_data"/>
+</menu>

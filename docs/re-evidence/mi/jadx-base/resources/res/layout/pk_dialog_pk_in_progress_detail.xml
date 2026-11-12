@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tag="layout/pk_dialog_pk_in_progress_detail_0"
+    android:paddingBottom="@dimen/dimen_margin_10dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/layout_pk_user_active_goal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_invite_description"
+        android:layout_marginHorizontal="@dimen/size_26_67"
+        layout="@layout/pk_layout_user_active_goal"/>
+</FrameLayout>

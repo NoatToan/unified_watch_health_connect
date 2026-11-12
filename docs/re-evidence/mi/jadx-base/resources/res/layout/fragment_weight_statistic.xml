@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_weight_statistic_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/layout_switch"
+        layout="@layout/common_switch_header"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xiaomi.fitness.chart.view.LineChartRecyclerView
+            android:id="@+id/chart_recycler"
+            app:displayNumbers="7"
+            app:enableEndYAxisLabel="true"
+            app:enableScrollToScale="true"
+            app:enableStartYAxisLabel="false"
+            app:enableXAxisLineCircle="true"
+            app:lineColor="@color/weight_chart_color"
+            app:lineHighLightType="4"
+            app:linePointRadius="@dimen/size_2"
+            app:linePointSelectCircleStroke="true"
+            app:linePointSelectRadius="@dimen/size_2"
+            app:linePointSelectStrokeWidth="@dimen/size_2"
+            app:lineSelectCircles="1"
+            app:lineShaderBeginColor="@color/energy_shader_begin"
+            app:lineShaderEndColor="@color/energy_shader_end"
+            app:lineStrokeWidth="6"
+            style="@style/ChartBaseStyle"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/max_min_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:layout_marginHorizontal="@dimen/health_detail_page_common_margin_horizontal"/>
+    </FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/detail_recycler"
+        android:background="@drawable/shape_data_item_bg"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/health_detail_page_common_margin_vertical"
+        android:overScrollMode="never"
+        android:layout_marginHorizontal="@dimen/health_detail_page_common_margin_horizontal"/>
+</LinearLayout>

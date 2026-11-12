@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/course_eco_launch_layout_grid_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/size_5"
+    android:paddingEnd="@dimen/size_5">
+    <TextView
+        android:id="@+id/labelView"
+        android:text="@string/sport_course_recommend"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/CourseLaunchLabel"/>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/moreView"
+        android:text="@string/common_more"
+        android:drawablePadding="3dp"
+        android:drawableEnd="@drawable/ic_base_right_arrow_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/labelView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/labelView"
+        style="@style/CourseLaunchLabel"/>
+    <miuix.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/labelView"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

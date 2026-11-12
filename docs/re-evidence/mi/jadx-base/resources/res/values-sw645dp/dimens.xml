@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="chart_common_padding_end">72.3dp</dimen>
+    <dimen name="chart_common_padding_start">58.67dp</dimen>
+    <dimen name="chart_more_number_padding_end">78.3dp</dimen>
+    <dimen name="common_btn_single_line_width">336dp</dimen>
+    <dimen name="common_btn_two_column_width">161dp</dimen>
+    <dimen name="device_add_device_margin_end">32dp</dimen>
+    <dimen name="health_card_data_title_margin_start">-40dp</dimen>
+    <dimen name="health_sleep_chart_item_height">35dp</dimen>
+    <dimen name="health_temperature_data_margin">100dp</dimen>
+    <dimen name="health_top_guide_indicator_text_width">275dp</dimen>
+    <dimen name="login_guide_person_mode_img_width">168dp</dimen>
+    <dimen name="login_welcome_page_margin">58.6dp</dimen>
+    <dimen name="message_center_horizontal_padding">44dp</dimen>
+    <dimen name="miuix_appcompat_window_extra_padding_horizontal_huge">68dp</dimen>
+    <dimen name="miuix_appcompat_window_extra_padding_horizontal_large">44dp</dimen>
+    <dimen name="miuix_appcompat_window_extra_padding_horizontal_small">28dp</dimen>
+    <dimen name="page_content_padding_horizontal_large">70dp</dimen>
+    <dimen name="page_extra_padding_horizontal_large">42dp</dimen>
+    <dimen name="page_padding_horizontal_large">28dp</dimen>
+    <dimen name="page_padding_horizontal_large_cut_12_dp">16dp</dimen>
+</resources>

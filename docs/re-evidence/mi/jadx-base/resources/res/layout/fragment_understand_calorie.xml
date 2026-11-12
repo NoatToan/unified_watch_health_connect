@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_understand_calorie_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <LinearLayout
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/size_20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:id="@+id/uiv_calories_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_calories_total_detail"
+            app:understand_title="@string/health_calories_total_title"/>
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:id="@+id/uiv_calories_resting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_calories_resting_detail"
+            app:understand_title="@string/health_calories_resting_title"/>
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:id="@+id/uiv_calories_active"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_calories_active_detail"
+            app:understand_title="@string/health_calories_active_title"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,43 @@
+package androidx.health.connect.client.aggregate;
+
+import java.time.Duration;
+import kotlin.Function;
+import kotlin.Metadata;
+import kotlin.jvm.internal.FunctionAdapter;
+import kotlin.jvm.internal.FunctionReferenceImpl;
+import kotlin.jvm.internal.Intrinsics;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+/* JADX INFO: loaded from: classes.dex */
+@Metadata(k = 3, mv = {1, 8, 0}, xi = 48)
+public /* synthetic */ class AggregateMetric$Companion$durationMetric$2 implements AggregateMetric.a.b, FunctionAdapter {
+    public static final AggregateMetric$Companion$durationMetric$2 INSTANCE = new AggregateMetric$Companion$durationMetric$2();
+
+    public final boolean equals(@Nullable Object obj) {
+        if ((obj instanceof AggregateMetric.a.b) && (obj instanceof FunctionAdapter)) {
+            return Intrinsics.areEqual(getFunctionDelegate(), ((FunctionAdapter) obj).getFunctionDelegate());
+        }
+        return false;
+    }
+
+    @Override // kotlin.jvm.internal.FunctionAdapter
+    @NotNull
+    public final Function<?> getFunctionDelegate() {
+        return new FunctionReferenceImpl(1, Duration.class, "ofMillis", "ofMillis(J)Ljava/time/Duration;", 0);
+    }
+
+    public final int hashCode() {
+        return getFunctionDelegate().hashCode();
+    }
+
+    @Override // kotlin.jvm.functions.Function1
+    /* JADX INFO: renamed from: invoke */
+    public /* bridge */ /* synthetic */ Object invoke2(Object obj) {
+        return invoke(((Number) obj).longValue());
+    }
+
+    public final Duration invoke(long j) {
+        return Duration.ofMillis(j);
+    }
+}

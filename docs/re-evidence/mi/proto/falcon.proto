@@ -1,0 +1,69 @@
+syntax = "proto2";
+
+import "silence_mode.proto";
+import "statis_base.proto";
+import "nfc.proto";
+import "standbydial.proto";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message FalconEventMessage {
+    //屏幕点亮次数
+    required uint32 lcdOnBecauseOfPress = 1; //按键点亮屏幕次数
+    required uint32 lcdOnBecauseOfEvent = 2; //抬腕或通知提醒等点亮屏幕次数
+
+    //首页流出统计
+    required uint32 dial2DND = 3; //表盘进入勿扰次数
+    required uint32 dial2Notify = 4; //表盘进入通知页面次数
+    required uint32 dial2MainItem1 = 5; //表盘进入主菜单第一项次数
+
+    //各页面展示次数
+    required uint32 statusPage1 = 6; //状态第一页
+    required uint32 statusPage2 = 7; //状态第二页
+    required uint32 sportPage = 8; //运动页面
+    required uint32 sportHistoryPage = 9; //运动历史页面
+    required uint32 sportSettingPage = 10; //运动设置页面
+    required uint32 weatherPage = 11; //天气页面
+    required uint32 alarmPage = 12; //闹钟页面
+    required uint32 timerPage = 13; //计时器页面
+    required uint32 timerStopwatchPage = 14; //秒表页面
+    required uint32 timerCountdownPage = 15; //倒计时页面
+    required uint32 compassPage = 16; //指南针页面
+    required uint32 settingPage = 17; //设置页面
+    required uint32 settingWatchfacePage = 18; //设置表盘页面
+    required uint32 settingLongpressPage = 19; //设置长按按键功能页面
+    required uint32 settingBacklightPage = 20; //设置背光亮度页面
+
+    //运动统计
+    required uint32 waitGpsLocationNum = 21; //等待gps定位成功次数
+    required uint32 skipGpsLocationNum = 22; //跳过gps定位次数
+    required uint32 sportPage1Num = 23; //运动第一页展示次数
+    required uint32 sportPage2Num = 24; //运动第二页展示次数
+    required uint32 sportPage3Num = 25; //运动第三页展示次数
+
+    //功能使用统计
+    required uint32 stopwatchNum = 26; //使用秒表次数
+    required uint32 countdownNum = 27; //使用倒计时次数
+    required uint32 compassNum = 28; //使用指南针次数
+    optional uint32 alipayQRCodeNum = 29 [default = 0]; //使用支付宝二维码次数
+    optional uint32 alipayCode128Num = 30 [default = 0]; //使用支付宝条形码次数
+
+    optional uint32 dialId = 31 [default = 0]; //表盘ID
+
+    optional uint32 paiPageNum = 32; //pai入口展示次数
+    optional uint32 paiDetailPage = 33; //pai详情展示次数
+    optional uint32 paiHelpPage = 34; //pai帮助展示次数
+};
+
+message FalconStatisticsMessage {
+    required StatisBaseMessage base = 1; //通用统计信息
+    required SilenceMode silenceMode = 2; //勿扰模式
+    required uint32 backlightLevel = 3; //背光亮度
+
+    optional FalconEventMessage event = 4; //打点事件
+    optional NfcMessage nfc = 5;
+
+    optional StandbydialMode standbydialMode = 6; //常亮屏开关模式
+    optional StandbydialPattern standbydialPattern = 7; //常亮屏表盘样式
+};
+

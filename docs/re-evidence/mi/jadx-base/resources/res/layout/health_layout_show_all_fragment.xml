@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/clContent"
+    android:tag="layout/health_layout_show_all_fragment_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/page_padding_horizontal_large"
+    android:layout_marginEnd="@dimen/page_padding_horizontal_large_cut_12_dp">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

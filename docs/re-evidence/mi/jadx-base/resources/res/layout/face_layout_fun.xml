@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/selector_white"
+    android:layout_width="match_parent"
+    android:layout_height="53dp"
+    android:paddingStart="@dimen/dimen_margin_26dp"
+    android:paddingEnd="@dimen/dimen_margin_26dp">
+    <TextView
+        android:textSize="15.33sp"
+        android:textColor="@color/face_common_text"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/mNameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:textSize="12.67sp"
+        android:textColor="@color/face_common_text"
+        android:layout_gravity="end|center_vertical"
+        android:id="@+id/funSlectView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"/>
+    <ImageView
+        android:layout_gravity="end|center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/face_fun_arrow"/>
+</FrameLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/access_delete_device_from_wechat_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/access_imgview_add_delete_devices"
+        android:background="@drawable/access_add_device_success_icon"
+        android:layout_width="@dimen/access_dimen_margin_100dp"
+        android:layout_height="@dimen/access_dimen_margin_100dp"
+        android:layout_marginTop="@dimen/access_dimen_margin_100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textColor="@color/access_black"
+        android:id="@+id/device_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/access_dimen_margin_50dp"
+        android:text="@string/access_add_device"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/access_imgview_add_delete_devices"
+        style="@style/FontMedium.20sp"/>
+    <Button
+        android:textSize="@dimen/dimen_16sp"
+        android:textColor="@color/access_text_white"
+        android:id="@+id/delete_device_btn"
+        android:layout_marginBottom="@dimen/dimen_margin_26dp"
+        android:text="@string/access_delete_device"
+        android:layout_marginStart="@dimen/dimen_margin_23dp"
+        android:layout_marginEnd="@dimen/dimen_margin_23dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Button.FullWidth.Menstrual.Orange"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

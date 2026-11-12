@@ -1,0 +1,22 @@
+package defpackage;
+
+import android.content.Context;
+import android.content.res.Configuration;
+import android.graphics.Typeface;
+import android.os.Build;
+import androidx.annotation.RestrictTo;
+
+/* JADX INFO: loaded from: classes5.dex */
+@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
+public class a6q {
+    public static Typeface a(Context context, Typeface typeface) {
+        return b(context.getResources().getConfiguration(), typeface);
+    }
+
+    public static Typeface b(Configuration configuration, Typeface typeface) {
+        if (Build.VERSION.SDK_INT < 31 || configuration.fontWeightAdjustment == Integer.MAX_VALUE || configuration.fontWeightAdjustment == 0) {
+            return null;
+        }
+        return Typeface.create(typeface, r8f.b(typeface.getWeight() + configuration.fontWeightAdjustment, 1, 1000), typeface.isItalic());
+    }
+}

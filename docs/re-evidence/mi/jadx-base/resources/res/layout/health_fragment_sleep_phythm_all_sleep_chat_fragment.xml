@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/health_fragment_sleep_phythm_all_sleep_chat_fragment_0"
+    android:background="@color/page_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/dimen_margin_10dp"
+    android:layout_marginHorizontal="@dimen/page_padding_horizontal_large"
+    android:paddingHorizontal="@dimen/page_extra_padding_horizontal_large">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:id="@+id/sleep_detail_chat_root_view"
+        android:tag="binding_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/long_sleep_divider_line">
+        <include
+            android:id="@+id/health_sleep_detail_title_des"
+            layout="@layout/health_sleep_detail_title_des"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sleep_detail_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_margin_10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <include
+        android:id="@+id/sleep_detail_chat_empty_view"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/long_sleep_divider_line"
+        layout="@layout/health_rhythm_chart_empty_view"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

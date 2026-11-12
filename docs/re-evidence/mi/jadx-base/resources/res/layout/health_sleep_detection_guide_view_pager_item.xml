@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/dimen_margin_30dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="19.3dp">
+    <ImageView
+        android:id="@+id/guide_image"
+        android:layout_width="307dp"
+        android:layout_height="233dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/size_20"
+        android:adjustViewBounds="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:textColor="@color/text_color"
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_10"
+        android:layout_below="@+id/guide_image"
+        android:layout_centerHorizontal="true"
+        style="@style/FontMedium.20sp"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textColor="@color/text_color_40"
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:maxLines="5"
+        android:layout_below="@+id/title"
+        app:autoSizeMaxTextSize="@dimen/font_14"
+        app:autoSizeMinTextSize="3sp"
+        app:autoSizeTextType="uniform"
+        style="@style/FontMedium.13sp"/>
+</RelativeLayout>

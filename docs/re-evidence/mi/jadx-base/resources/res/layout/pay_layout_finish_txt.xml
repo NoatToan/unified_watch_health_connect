@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:textColor="@color/selector_common_btn_normal_text_color"
+    android:id="@+id/save_btn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/ui_save"
+    android:layout_marginEnd="@dimen/dimen_margin_16dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    style="@style/FontMedium.16sp"/>

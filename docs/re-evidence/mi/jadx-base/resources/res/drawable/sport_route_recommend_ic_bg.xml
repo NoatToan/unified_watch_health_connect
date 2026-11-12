@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
+    android:height="16dp"
+    android:width="58dp"
+    android:autoMirrored="true"
+    android:viewportWidth="58"
+    android:viewportHeight="16">
+    <path
+        android:fillColor="@drawable/_sport_route_recommend_ic_bg__0_res_0x7f080097"
+        android:pathData="M0,4a4,4 0,0 1,4 -4h50a4,4 0,0 1,4 4v8a4,4 0,0 1,-4 4H4a4,4 0,0 1,-4 -4V4z"/>
+</vector>

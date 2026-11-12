@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<miuix.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/data_source_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:textSize="@dimen/text_size_12"
+            android:textColor="@color/text_color_40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/health_target_data_source_dialog_desc"
+            android:layout_marginHorizontal="@dimen/dimen_margin_18dp"
+            android:layout_marginVertical="@dimen/dimen_margin_10dp"
+            style="@style/FontNormal"/>
+    </LinearLayout>
+</miuix.core.widget.NestedScrollView>

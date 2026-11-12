@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/title_bar"
+    android:tag="layout/relative_care_home_title_bar_0"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/add_or_my_code"
+        android:layout_width="@dimen/dimen_round_33.33dp"
+        android:layout_height="@dimen/dimen_round_33.33dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+        android:id="@+id/icon_notification"
+        android:background="@drawable/relative_care_ic_notification"
+        android:layout_width="@dimen/dimen_round_33.33dp"
+        android:layout_height="@dimen/dimen_round_33.33dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/relative_care_message_center"
+        android:layout_marginEnd="@dimen/dimen_margin_10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/add_or_my_code"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+        android:id="@+id/small_red_dot"
+        android:background="@drawable/icon_feature_item_remind"
+        android:visibility="gone"
+        android:layout_width="7dp"
+        android:layout_height="7dp"
+        android:translationY="@dimen/dimen_margin_1dp"
+        android:importantForAccessibility="no"
+        app:layout_constraintEnd_toEndOf="@+id/icon_notification"
+        app:layout_constraintTop_toTopOf="@+id/icon_notification"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

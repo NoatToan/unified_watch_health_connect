@@ -1,0 +1,54 @@
+package androidx.paging;
+
+import com.miui.tsmclient.net.TSMAuthContants;
+import com.xiaomi.fitness.statistics.StatConstants;
+import defpackage.ghe;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.ranges.RangesKt___RangesKt;
+import org.jetbrains.annotations.NotNull;
+
+/* JADX INFO: loaded from: classes.dex */
+@Metadata(d1 = {"\u0000&\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0005\n\u0002\u0010\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0007\bÀ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0013\u0010\u0014J?\u0010\u000b\u001a\u00020\n2\u0006\u0010\u0003\u001a\u00020\u00022\u0006\u0010\u0005\u001a\u00020\u00042\u0006\u0010\u0006\u001a\u00020\u00042\u0006\u0010\u0007\u001a\u00020\u00042\u0006\u0010\b\u001a\u00020\u00042\u0006\u0010\t\u001a\u00020\u0001H\u0002¢\u0006\u0004\b\u000b\u0010\fJ;\u0010\u0011\u001a\u00020\n\"\b\b\u0000\u0010\r*\u00020\u00012\u0006\u0010\u0003\u001a\u00020\u00022\f\u0010\u000f\u001a\b\u0012\u0004\u0012\u00028\u00000\u000e2\f\u0010\u0010\u001a\b\u0012\u0004\u0012\u00028\u00000\u000e¢\u0006\u0004\b\u0011\u0010\u0012¨\u0006\u0015"}, d2 = {"Landroidx/paging/DistinctListsDiffDispatcher;", "", "Lghe;", "callback", "", "startBoundary", "endBoundary", StatConstants.PARAM_START, StatConstants.PARAM_END, TSMAuthContants.PARAM_PAYLOAD, "", "dispatchChange", "(Lghe;IIIILjava/lang/Object;)V", "T", "Landroidx/paging/NullPaddedList;", "oldList", "newList", "dispatchDiff", "(Lghe;Landroidx/paging/NullPaddedList;Landroidx/paging/NullPaddedList;)V", "<init>", "()V", "paging-runtime_release"}, k = 1, mv = {1, 4, 2})
+public final class DistinctListsDiffDispatcher {
+
+    @NotNull
+    public static final DistinctListsDiffDispatcher INSTANCE = new DistinctListsDiffDispatcher();
+
+    private DistinctListsDiffDispatcher() {
+    }
+
+    private final void dispatchChange(ghe callback, int startBoundary, int endBoundary, int start, int end, Object payload) {
+        int i = startBoundary - start;
+        if (i > 0) {
+            callback.onChanged(start, i, payload);
+        }
+        int i2 = end - endBoundary;
+        if (i2 > 0) {
+            callback.onChanged(endBoundary, i2, payload);
+        }
+    }
+
+    public final <T> void dispatchDiff(@NotNull ghe callback, @NotNull NullPaddedList<T> oldList, @NotNull NullPaddedList<T> newList) {
+        Intrinsics.checkNotNullParameter(callback, "callback");
+        Intrinsics.checkNotNullParameter(oldList, "oldList");
+        Intrinsics.checkNotNullParameter(newList, "newList");
+        int iMax = Math.max(oldList.getPlaceholdersBefore(), newList.getPlaceholdersBefore());
+        int iMin = Math.min(oldList.getPlaceholdersBefore() + oldList.getStorageCount(), newList.getPlaceholdersBefore() + newList.getStorageCount());
+        int i = iMin - iMax;
+        if (i > 0) {
+            callback.onRemoved(iMax, i);
+            callback.onInserted(iMax, i);
+        }
+        int iMin2 = Math.min(iMax, iMin);
+        int iMax2 = Math.max(iMax, iMin);
+        dispatchChange(callback, iMin2, iMax2, RangesKt___RangesKt.coerceAtMost(oldList.getPlaceholdersBefore(), newList.getSize()), RangesKt___RangesKt.coerceAtMost(oldList.getPlaceholdersBefore() + oldList.getStorageCount(), newList.getSize()), DiffingChangePayload.ITEM_TO_PLACEHOLDER);
+        dispatchChange(callback, iMin2, iMax2, RangesKt___RangesKt.coerceAtMost(newList.getPlaceholdersBefore(), oldList.getSize()), RangesKt___RangesKt.coerceAtMost(newList.getPlaceholdersBefore() + newList.getStorageCount(), oldList.getSize()), DiffingChangePayload.PLACEHOLDER_TO_ITEM);
+        int size = newList.getSize() - oldList.getSize();
+        if (size > 0) {
+            callback.onInserted(oldList.getSize(), size);
+        } else if (size < 0) {
+            callback.onRemoved(oldList.getSize() + size, -size);
+        }
+    }
+}

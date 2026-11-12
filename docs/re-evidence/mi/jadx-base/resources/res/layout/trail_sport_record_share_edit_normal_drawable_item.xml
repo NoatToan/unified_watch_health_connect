@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:id="@+id/edit_drawable_item"
+    android:background="@drawable/share_card_item_bg_pressed"
+    android:layout_width="80dp"
+    android:layout_height="80dp">
+    <RelativeLayout
+        android:id="@+id/drawable_group"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerInParent="true">
+        <ImageView
+            android:gravity="center"
+            android:id="@+id/drawable_label"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/customize_btn"
+        android:background="@drawable/sport_share_customize_shape_card_bg_normal"
+        android:visibility="gone"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerInParent="true">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:textColor="@color/white_90"
+            android:gravity="center"
+            android:id="@+id/customization_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/trail_customize"
+            android:drawableTop="@drawable/trail_customize_bg"
+            android:drawablePadding="@dimen/dimen_margin_4dp"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+</RelativeLayout>

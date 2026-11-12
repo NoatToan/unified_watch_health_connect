@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/rn_share_activity_device_share_0"
+    android:background="@color/rn_share_page_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <miuix.miuixbasewidget.widget.FilterSortView
+        android:theme="@style/rn_share_FilterSortViewStyle"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/filterSortView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginBottom="@dimen/size_10"
+        android:layoutDirection="ltr"
+        android:layout_marginHorizontal="@dimen/page_content_padding_horizontal_large"/>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"/>
+</LinearLayout>

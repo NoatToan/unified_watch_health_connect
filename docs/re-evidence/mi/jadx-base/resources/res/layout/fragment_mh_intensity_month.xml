@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_mh_intensity_month_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.chart.view.BarChartRecyclerView
+        android:id="@+id/recycler"
+        app:barChartRoundRectRadiusRatio="0.25"
+        app:chartColor="@color/health_mh_intensity_chart"
+        app:displayNumbers="31"
+        app:enableStartYAxisLabel="false"
+        app:xAxisLabelPosition="1"
+        app:xAxisScaleDistance="7"
+        app:xFirstLinePosition="2"
+        style="@style/ChartBaseStyle"/>
+    <com.xiaomi.fitness.view.DataTitleView
+        android:id="@+id/dataTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

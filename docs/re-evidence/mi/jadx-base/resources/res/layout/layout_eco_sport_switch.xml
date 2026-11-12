@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="15.33sp"
+        android:textStyle="bold"
+        android:textColor="@color/common_textcolor_1"
+        android:id="@+id/title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5"
+        android:layout_marginStart="23dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="12.67sp"
+        android:textColor="@color/black_50_transparent"
+        android:gravity="start"
+        android:id="@+id/detail_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        app:layout_constraintEnd_toStartOf="@+id/switcher"
+        app:layout_constraintStart_toStartOf="@+id/title_tv"
+        app:layout_constraintTop_toBottomOf="@+id/title_tv"/>
+    <com.xiaomi.fitness.widget.button.SwitchButton
+        android:id="@+id/switcher"
+        android:layout_width="@dimen/lib_sb_width"
+        android:layout_height="@dimen/lib_sb_height"
+        android:layout_marginTop="@dimen/size_4"
+        android:layout_marginEnd="23dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

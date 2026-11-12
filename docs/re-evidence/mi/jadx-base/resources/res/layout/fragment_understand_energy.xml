@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_understand_energy_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_data_energy_understand_detail"/>
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_data_energy_consumption_detail"
+            app:understand_title="@string/health_data_energy_consumption_title"/>
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_data_energy_recovery_detail"
+            app:understand_title="@string/health_data_energy_recovery_title"/>
+        <View
+            android:background="@color/common_divider_bg_color"
+            android:layout_width="match_parent"
+            android:layout_height="0.67dp"
+            android:layout_marginTop="@dimen/size_40"
+            android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+            android:layout_marginEnd="@dimen/page_content_padding_horizontal_large"/>
+        <TextView
+            android:textSize="@dimen/font_14"
+            android:textColor="@color/text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_40"
+            android:text="@string/health_data_energy_info"
+            android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+            android:layout_marginEnd="@dimen/page_content_padding_horizontal_large"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

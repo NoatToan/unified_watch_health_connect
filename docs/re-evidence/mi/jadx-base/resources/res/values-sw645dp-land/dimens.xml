@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="health_avatar_margin_end">20dp</dimen>
+    <dimen name="health_target_calendar_padding">20dp</dimen>
+    <dimen name="health_target_chart_height">273dp</dimen>
+    <dimen name="health_target_medal_item_margin_end">40dp</dimen>
+    <dimen name="health_target_weekview_margin">25dp</dimen>
+    <dimen name="ui_target_medal_item_margin_end">60dp</dimen>
+</resources>

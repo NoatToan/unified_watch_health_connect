@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingVertical="3dp">
+    <RelativeLayout
+        android:background="@drawable/habit_item_bg_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="10dp">
+        <TextView
+            android:textSize="11sp"
+            android:textColor="@color/text_color"
+            android:gravity="center"
+            android:id="@+id/firstHabitTimeView"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            style="@style/FontMedium.12sp"/>
+        <ImageView
+            android:id="@+id/deleteView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_common_delete_black"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/habit_pass_time_delete"
+            android:layout_marginStart="2dp"
+            android:layout_toEndOf="@+id/firstHabitTimeView"/>
+    </RelativeLayout>
+</FrameLayout>

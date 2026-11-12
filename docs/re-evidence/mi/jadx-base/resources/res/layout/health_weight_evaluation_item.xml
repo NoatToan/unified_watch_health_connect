@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.health.weight.view.WeightEvaluationView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/weight_evaluation_view"
+    android:tag="layout/health_weight_evaluation_item_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>

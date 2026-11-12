@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:tag="layout/fragment_sleep_interfere_history_0"
+    android:background="@color/page_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/dimen_margin_12dp">
+    <com.xiaomi.fitness.baseui.widget.CommonTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar_height"
+        android:layout_marginTop="@dimen/dimen_margin_36dp"/>
+    <FrameLayout
+        android:id="@+id/content_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.xiaomi.fitness.baseui.recyclerview.MoreRecyclerView
+            android:id="@+id/history_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_margin_10dp"/>
+    </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/layout_sleep_efficiency_valid_detail_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textSize="14.52sp"
+        android:id="@+id/efficiency_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="@dimen/dimen_14sp"
+        android:id="@+id/reference_range_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/health_sleep_efficiency_valid_range"
+        android:layout_marginHorizontal="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/efficiency_tv"/>
+    <com.xiaomi.fitness.health.sleep.view.widget.SleepStageProgressBarView
+        android:id="@+id/sleep_stage_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="@dimen/dimen_margin_18dp"
+        android:paddingHorizontal="@dimen/dimen_margin_8dp"
+        app:layout_constraintTop_toBottomOf="@+id/reference_range_tv"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/stage_detail_list_recycler_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_16dp"
+        app:cardBackgroundColor="@color/common_card_light_gery_ccf6f7f9_0dffffff_color"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/sleep_stage_progress_bar">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sleep_efficiency_detail_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/dimen_margin_18dp"
+            android:paddingVertical="@dimen/dimen_margin_16dp"/>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

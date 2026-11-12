@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_hrm_manually_measured_records_list_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/dimen_margin_10dp">
+    <TextView
+        android:id="@+id/hrm_abnormal_high_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_25dp"
+        android:layout_marginBottom="@dimen/size_30"
+        android:text="@string/health_fib_desc"
+        android:layout_marginStart="@dimen/size_20"
+        android:layout_marginEnd="@dimen/size_20"
+        style="@style/FontRegular.14sp"/>
+    <RelativeLayout
+        android:id="@+id/lyt_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_no_data"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_data"
+            android:drawableTop="@drawable/ic_no_data"
+            android:layout_centerInParent="true"/>
+        <miuix.springback.view.SpringBackLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scrollOrientation="vertical"
+            app:scrollableView="@+id/recycler">
+            <miuix.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </miuix.springback.view.SpringBackLayout>
+    </RelativeLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

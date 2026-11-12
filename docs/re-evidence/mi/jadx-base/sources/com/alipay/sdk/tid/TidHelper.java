@@ -1,0 +1,5 @@
+package com.alipay.sdk.tid;
+
+/* JADX INFO: loaded from: classes.dex */
+public class TidHelper {
+}

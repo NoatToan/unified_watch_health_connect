@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/device_settings_fragment_emergency_contact_list_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/device_settings_sos_contact_set_desc"
+        android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FontRegular.12sp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/desc"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/manual"
+            android:text="@string/device_settings_sos_contact_set_manual"
+            android:layout_weight="1"
+            android:layout_marginEnd="6.7dp"
+            style="@style/CommonBtn.Normal"/>
+        <TextView
+            android:id="@+id/address"
+            android:text="@string/device_settings_sos_contact_set_address_book"
+            android:layout_weight="1"
+            android:layout_marginStart="6.7dp"
+            style="@style/CommonBtn.Primary"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

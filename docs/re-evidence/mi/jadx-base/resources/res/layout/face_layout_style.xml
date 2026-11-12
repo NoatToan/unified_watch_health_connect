@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/dimen_margin_14dp">
+    <com.xiaomi.fitness.watch.face.export.exportview.FaceInfoView
+        android:id="@+id/bgView"
+        android:layout_width="105dp"
+        android:layout_height="105dp"/>
+    <com.xiaomi.fitness.watch.face.export.exportview.FaceInfoView
+        android:id="@+id/mImageView"
+        android:layout_width="105dp"
+        android:layout_height="105dp"/>
+</FrameLayout>

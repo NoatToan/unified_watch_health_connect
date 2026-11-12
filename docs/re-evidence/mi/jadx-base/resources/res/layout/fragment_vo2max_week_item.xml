@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/vo2max_container"
+    android:tag="layout/fragment_vo2max_week_item_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xiaomi.fitness.chart.view.LineChartRecyclerView
+            android:id="@+id/recycler"
+            app:displayNumbers="7"
+            app:enableScrollToScale="true"
+            app:enableStartYAxisLabel="false"
+            app:enableXAxisLineCircle="true"
+            app:lineColor="@color/vo2max_chart"
+            app:linePointRadius="@dimen/size_2"
+            app:linePointSelectCircleStroke="true"
+            app:linePointSelectRadius="@dimen/size_2"
+            app:linePointSelectStrokeWidth="@dimen/size_2"
+            app:lineSelectCircles="1"
+            app:lineShaderBeginColor="@color/vo2max_shader_begin"
+            app:lineShaderEndColor="@color/vo2max_shader_end"
+            app:lineStrokeWidth="6"
+            style="@style/ChartBaseStyle"/>
+        <com.xiaomi.fitness.view.DataTitleView
+            android:id="@+id/dataTitleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+    <include
+        android:id="@+id/ll_card"
+        layout="@layout/layout_vo2max_wm_common"/>
+</LinearLayout>

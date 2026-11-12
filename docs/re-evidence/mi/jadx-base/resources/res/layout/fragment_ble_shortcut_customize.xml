@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_ble_shortcut_customize_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:layoutDirection="ltr">
+        <ImageView
+            android:id="@+id/watch_icon"
+            android:layout_width="200dp"
+            android:layout_height="200dp"/>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="35dp"
+            android:src="@drawable/ic_shortcut_arrow"
+            android:layout_alignBottom="@+id/watch_icon"
+            android:layout_marginStart="-40dp"
+            android:layout_toEndOf="@+id/watch_icon"/>
+    </RelativeLayout>
+    <TextView
+        android:textSize="@dimen/dimen_14sp"
+        android:textColor="@color/selector_feature_item_title_text_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/device_settings_down_button_customize_info"
+        android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+        android:layout_marginEnd="@dimen/page_content_padding_horizontal_large"/>
+    <com.xiaomi.fitness.widget.RightArrowSingleLineTextView
+        android:id="@+id/current_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/page_content_padding_horizontal_large"
+        android:layout_marginEnd="@dimen/page_content_padding_horizontal_large"
+        app:title="@string/device_settings_down_button_customize"/>
+</LinearLayout>

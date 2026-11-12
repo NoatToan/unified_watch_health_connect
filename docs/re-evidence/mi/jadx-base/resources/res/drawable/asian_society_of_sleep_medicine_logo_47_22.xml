@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:gravity="center"
+        android:height="22dp"
+        android:width="47dp">
+        <bitmap android:src="@drawable/asian_society_of_sleep_medicine_logo_47_22_4x"/>
+    </item>
+</layer-list>

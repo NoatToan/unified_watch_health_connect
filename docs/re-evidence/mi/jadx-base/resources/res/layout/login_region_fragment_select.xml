@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/login_region_fragment_select_0"
+    android:background="@color/login_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="@dimen/dimen_15sp"
+        android:textColor="@color/login_black"
+        android:gravity="center_vertical"
+        android:id="@+id/select_country_btn"
+        android:background="@drawable/login_region_shape_select_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/login_region_select_item_height"
+        android:layout_marginTop="31dp"
+        android:drawableRight="@drawable/icon_right_round_arrow"
+        android:paddingStart="13dp"
+        android:paddingEnd="13dp"
+        android:layout_marginStart="@dimen/login_padding_23dp"
+        android:layout_marginEnd="@dimen/login_padding_23dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_marginBottom="@dimen/login_size_27"
+        android:text="@string/login_next_step"
+        android:layout_marginStart="@dimen/login_padding_23dp"
+        android:layout_marginEnd="@dimen/login_padding_23dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Button.FullWidth.Menstrual.Orange"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

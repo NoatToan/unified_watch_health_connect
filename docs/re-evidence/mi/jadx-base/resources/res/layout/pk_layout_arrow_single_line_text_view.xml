@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/pk_layout_arrow_single_line_text_view_0"
+    android:background="@drawable/pk_rounded_corner_shape_card_bg"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/dimen_margin_30dp"
+        android:layout_height="@dimen/dimen_margin_30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dimen_margin_18dp"
+        android:layout_alignParentStart="true"/>
+    <TextView
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/text_color"
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dimen_margin_12dp"
+        android:layout_toEndOf="@+id/logo"
+        style="@style/FontMedium"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/right_arrow"
+        android:background="@drawable/ic_base_right_arrow_icon"
+        android:layout_width="@dimen/dimen_margin_30dp"
+        android:layout_height="@dimen/dimen_margin_30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/dimen_margin_18dp"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>

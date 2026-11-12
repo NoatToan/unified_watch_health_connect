@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Dialog.Text.Title"/>
+    <TextView
+        android:id="@+id/tv_jump_today"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/today"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Dialog.Text.Today"/>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/tv_dialog_description"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_title"
+        style="@style/Dialog.Text.Description"/>
+    <com.xiaomi.fitness.baseui.widget.SpinnerDatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_174"
+        android:layout_marginTop="@dimen/dimen_margin_16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_description"
+        app:sdp_layout="@layout/layout_for_date_picker_dialog_11"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/activity_sport_group_info_landscape_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_25dp">
+        <ImageView
+            android:id="@+id/ic_back"
+            android:background="@drawable/ic_base_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/back"
+            android:paddingStart="@dimen/dimen_margin_18dp"
+            android:paddingEnd="@dimen/dimen_margin_6dp"
+            android:layout_marginStart="@dimen/dimen_margin_18dp"
+            android:layout_marginEnd="@dimen/dimen_margin_6dp"/>
+        <TextView
+            android:textSize="@dimen/font_17"
+            android:textStyle="bold"
+            android:textColor="@color/text_color"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/title_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/trail_sport_segment_title"/>
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_18dp"
+        android:layout_marginHorizontal="30dp"/>
+</LinearLayout>

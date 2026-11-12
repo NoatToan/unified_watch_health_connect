@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/activity_sleep_rhythm_monitor_guide_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <com.xiaomi.fitness.health.sleep.ui.setting.baseui.SleepGuideCarouselIndicator
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/viewPagerIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"/>
+    <TextView
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:id="@+id/tvOpenMonitor"
+        android:background="@drawable/selector_bottom_btn_positive_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="28dp"
+        android:maxWidth="336dp"
+        android:text="@string/health_sleep_rhythm_open_rhythm_monitoring"
+        android:layout_marginHorizontal="28dp"
+        android:paddingHorizontal="@dimen/size_20"
+        android:paddingVertical="13dp"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

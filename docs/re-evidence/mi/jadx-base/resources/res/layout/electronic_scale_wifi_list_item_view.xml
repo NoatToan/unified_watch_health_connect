@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:minHeight="50dp">
+    <TextView
+        android:textSize="18dp"
+        android:textColor="@color/text_color"
+        android:id="@+id/ssid"
+        android:background="@android:color/transparent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:text=""
+        android:hint="@string/electronic_scale_common_wifi_name"
+        android:drawableBottom="@android:color/transparent"
+        android:layout_weight="1"/>
+    <ImageView
+        android:id="@+id/lock"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/electronic_scale_icon_lock"/>
+    <ImageView
+        android:id="@+id/siginal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="12dp"
+        android:src="@drawable/electronic_scale_icon_wifi_grey0"/>
+</LinearLayout>

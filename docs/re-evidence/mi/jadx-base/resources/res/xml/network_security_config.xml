@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false"/>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">cnbj1.fds.api.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">f1.market.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">api.ucashier.mipay.com
+        </domain>
+        <domain includeSubdomains="true">m.mipay.com
+        </domain>
+        <domain includeSubdomains="true">cdn.fds.api.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">static.pay.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">m.pay.mipay.com
+        </domain>
+        <domain includeSubdomains="true">tsmapi.pay.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">sf.pay.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">cdn.cnbj1.fds.api.mi-img.com
+        </domain>
+        <domain includeSubdomains="true">staging.tsmapi.pay.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">staging1.tsmapi.pay.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">staging2.tsmapi.pay.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">staging.api.ucashier.mipay.com
+        </domain>
+        <domain includeSubdomains="true">staging.sf.pay.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">staging.static.pay.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">staging.m.pay.mipay.com
+        </domain>
+        <domain includeSubdomains="true">account.preview.n.xiaomi.net
+        </domain>
+        <domain includeSubdomains="true">file.market.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">staging-hlth.io.mi.com
+        </domain>
+        <domain includeSubdomains="true">preview4test.access.speech.ai.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">203.100.92.67
+        </domain>
+        <domain includeSubdomains="true">118.26.252.252
+        </domain>
+        <domain includeSubdomains="true">access.speech.ai.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">resolver.msg.xiaomi.net
+        </domain>
+        <domain includeSubdomains="true">st-watch.iot.mi.com
+        </domain>
+        <domain includeSubdomains="true">dev.fe.home.mi.com
+        </domain>
+        <domain includeSubdomains="true">st.iot.home.mi.com
+        </domain>
+        <domain includeSubdomains="true">watch.iot.mi.com
+        </domain>
+        <domain includeSubdomains="true">res.eco.mi.com
+        </domain>
+        <domain includeSubdomains="true">www.mi.com
+        </domain>
+        <domain includeSubdomains="true">en.miui.com
+        </domain>
+        <domain includeSubdomains="true">account.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">10.38.161.157
+        </domain>
+        <domain includeSubdomains="true">amap.com
+        </domain>
+        <domain includeSubdomains="true">www.curve.app
+        </domain>
+        <domain includeSubdomains="true">service.weibo.com
+        </domain>
+        <domain includeSubdomains="true">staging-cnbj2-fds.api.xiaomi.net
+        </domain>
+        <domain includeSubdomains="true">h5-test.sys.tv.mi.com
+        </domain>
+        <domain includeSubdomains="true">m.staging.mibi.n.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">xms.be.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">xms.be.test.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">staging.billapi.n.xiaomi.com
+        </domain>
+        <domain includeSubdomains="true">https://www.test.pajk.cn
+        </domain>
+        <domain includeSubdomains="true">https://www.jk.cn
+        </domain>
+        <domain includeSubdomains="true">https://www.pre.jk.cn
+        </domain>
+    </domain-config>
+    <debug-overrides>
+        <trust-anchors>
+            <certificates src="system"/>
+            <certificates src="user"/>
+        </trust-anchors>
+    </debug-overrides>
+</network-security-config>

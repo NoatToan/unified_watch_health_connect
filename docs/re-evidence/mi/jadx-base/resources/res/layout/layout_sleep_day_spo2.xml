@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/layout_sleep_day_spo2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <include layout="@layout/layout_division_line"/>
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_20"
+        layout="@layout/layout_common_icon_title"/>
+    <FrameLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xiaomi.fitness.view.DataTitleView
+            android:id="@+id/dataTitleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8"
+            android:layout_marginStart="@dimen/health_card_data_title_margin_start"/>
+        <com.xiaomi.fitness.chart.view.BarChartRecyclerView
+            android:id="@+id/bar_recycler"
+            android:paddingTop="79.6dp"
+            android:layout_height="311dp"
+            android:paddingStart="@dimen/size_18"
+            android:paddingEnd="31.67dp"
+            app:barChartMaxWidth="@dimen/size_5"
+            app:barChartRoundRectRadiusRatio="0.03"
+            app:barChartSegment="1"
+            app:chartColor="@color/spo_chart"
+            app:contentPaddingBottom="31.3dp"
+            app:dynamicAdjustItemFillWidth="true"
+            app:enableStartYAxisLabel="false"
+            app:yAxisMaximum="100"
+            app:yAxisMinimum="60"
+            style="@style/ChartBaseStyle"/>
+    </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+enum SilenceMode {
+    OFF = 0; //关闭
+    ON = 1; //开启
+    SMART = 2; //智能开启
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/shape_card_bg_placeholder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_20dp"
+    android:layout_marginHorizontal="@dimen/page_padding_horizontal_large"
+    android:paddingVertical="@dimen/dimen_margin_16dp">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textColor="@color/text_color_40"
+        android:gravity="center_horizontal"
+        android:id="@+id/guide_open_high_precision_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/health_turn_on_sleep_high_precision_detection_and_get_data"
+        android:drawableTop="@drawable/health_ic_sleep_empty"
+        android:drawablePadding="@dimen/dimen_margin_6dp"
+        android:layout_marginHorizontal="@dimen/page_padding_horizontal_large"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FontRegular.12sp"/>
+    <TextView
+        android:textColor="@color/purple"
+        android:gravity="center"
+        android:id="@+id/go_switch_on_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/health_go_to_enable"
+        android:drawableEnd="@drawable/ic_right_arrow"
+        android:layout_marginHorizontal="@dimen/page_padding_horizontal_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guide_open_high_precision_tv"
+        style="@style/FontRegular.12sp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

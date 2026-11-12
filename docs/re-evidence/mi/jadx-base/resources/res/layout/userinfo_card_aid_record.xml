@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tag="layout/userinfo_card_aid_record_0"
+    android:background="@color/white_80"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <include
+        android:id="@+id/aid_record_guide"
+        android:visibility="visible"
+        layout="@layout/userinfo_layout_aid_record_guide"/>
+    <include
+        android:id="@+id/aid_record_detail"
+        android:visibility="gone"
+        layout="@layout/userinfo_layout_aid_record_detail"/>
+</FrameLayout>

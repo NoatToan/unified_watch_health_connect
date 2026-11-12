@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="78.3dp"
+    android:paddingStart="@dimen/size_10"
+    android:paddingEnd="@dimen/size_10">
+    <com.xiaomi.fitness.widget.view.DurationTextView
+        android:id="@+id/tv_beat_count"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:dtv_dataTextColor="@color/white"
+        app:dtv_dataTextFontFamily="mitype-bold"
+        app:dtv_dataTextSize="32dp"
+        app:dtv_unitTextColor="@color/white_90"
+        app:dtv_unitTextFontFamily="mipro-light"
+        app:dtv_unitTextSize="@dimen/size_26_67"/>
+    <TextView
+        android:textSize="26.3sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxHeight="240dp"
+        android:maxLines="2"
+        android:fontFamily="mipro-medium"
+        android:autoSizeTextType="uniform"/>
+    <TextView
+        android:textSize="@dimen/text_size_12"
+        android:textColor="@color/white_80"
+        android:gravity="center"
+        android:id="@+id/tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_10dp"
+        android:maxWidth="326.6641dp"/>
+</LinearLayout>

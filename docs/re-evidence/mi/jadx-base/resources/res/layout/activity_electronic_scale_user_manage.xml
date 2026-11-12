@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/activity_electronic_scale_user_manage_0"
+    android:background="@color/page_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <miuix.springback.view.SpringBackLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        app:scrollableView="@+id/spring_back_target">
+        <miuix.core.widget.NestedScrollView
+            android:id="@+id/spring_back_target"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/layout_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.xiaomi.fitness.electronic.scale.widget.UserManageHeaderView
+                    android:id="@+id/header_view_user_manage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <com.xiaomi.fitness.electronic.scale.widget.NoScrollRecyclerView
+                    android:id="@+id/user_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"/>
+                <com.xiaomi.fitness.electronic.scale.widget.UserManageFooterView
+                    android:id="@+id/footer_view_user_manage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </miuix.core.widget.NestedScrollView>
+    </miuix.springback.view.SpringBackLayout>
+</RelativeLayout>

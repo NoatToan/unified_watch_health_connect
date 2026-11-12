@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/img_finished"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110.6dp"
+        android:src="@drawable/heartrate_ic_detect_finished"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_26dp"
+        android:text="@string/heartrate_detect_finished"
+        android:layout_below="@+id/img_finished"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="mipro-medium"/>
+</RelativeLayout>

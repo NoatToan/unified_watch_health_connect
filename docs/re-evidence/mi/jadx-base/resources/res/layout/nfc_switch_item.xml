@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/selector_bottom_button_normal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/dimen_margin_16dp"
+    android:paddingEnd="@dimen/dimen_margin_8dp"
+    android:layout_marginEnd="@dimen/dimen_margin_12dp">
+    <TextView
+        android:id="@+id/switch_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_8dp"
+        android:layout_marginBottom="@dimen/dimen_margin_8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FontMedium.12sp"/>
+    <ImageView
+        android:id="@+id/switch_delete_ic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_common_delete_black"
+        android:layout_marginStart="@dimen/dimen_margin_6dp"
+        android:layout_marginEnd="@dimen/dimen_margin_8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/switch_time"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

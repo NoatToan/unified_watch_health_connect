@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl_content"
+    android:tag="layout/login_activity_splash_banner_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivBanner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+    <TextView
+        android:textColor="@color/black"
+        android:layout_gravity="end|top"
+        android:id="@+id/tvCountDown"
+        android:background="@drawable/shape_data_item_bg"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="3s | 跳过"
+        android:layout_marginEnd="20dp"/>
+</FrameLayout>

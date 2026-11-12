@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entries>
+    <Application>
+        <PackageName>com.ct.client
+        </PackageName>
+        <SignatureHash>52:B0:A5:B4:07:3A:CD:E4:C7:3A:E0:5D:3C:87:97:5D:FD:A3:9A:A1:E7:7C:A7:8C:65:1E:FA:B5:B1:34:E2:1D
+        </SignatureHash>
+    </Application>
+    <Application>
+        <PackageName>com.example.ct_test
+        </PackageName>
+        <SignatureHash>A3:27:BD:10:AE:ED:8D:6C:08:B0:8A:1C:A2:82:3C:CA:DC:D8:A1:1A:0F:E2:DF:69:7A:91:2E:A3:C3:46:27:74
+        </SignatureHash>
+    </Application>
+</Entries>

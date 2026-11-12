@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/sleep_menu_share"
+        android:title="@string/health_sleep_menu_snore_share"/>
+    <item
+        android:id="@+id/sleep_menu_delete"
+        android:title="@string/health_sleep_menu_snore_delete"/>
+</menu>

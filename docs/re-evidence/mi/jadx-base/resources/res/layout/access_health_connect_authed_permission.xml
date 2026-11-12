@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/type_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="@dimen/dimen_margin_3dp"
+        android:layout_marginBottom="@dimen/dimen_margin_3dp"
+        android:src="@drawable/health_connect_common_type"
+        android:layout_marginStart="@dimen/dimen_margin_3dp"/>
+    <TextView
+        android:textSize="@dimen/dimen_15sp"
+        android:textColor="@color/text_color"
+        android:id="@+id/type_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/misanslatin_medium"
+        android:layout_marginStart="@dimen/dimen_margin_13dp"/>
+</LinearLayout>

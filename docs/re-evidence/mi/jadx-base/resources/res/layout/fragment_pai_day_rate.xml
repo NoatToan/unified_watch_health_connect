@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_pai_day_rate_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/dimen_margin_13dp">
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:id="@+id/tv_today_pai_count"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:paddingStart="20dp"/>
+    <com.xiaomi.fitness.chart.view.LineChartRecyclerView
+        android:id="@+id/rate_recycler"
+        android:background="@color/common_white"
+        android:paddingTop="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:paddingEnd="@dimen/size_30"
+        app:chartColor="@color/fitness_pai_chart"
+        app:displayNumbers="144"
+        app:enableEndYAxisLabel="false"
+        app:enableLineFill="false"
+        app:enableStartYAxisLabel="true"
+        app:enableXAxisBg="false"
+        app:enableXAxisDisplayLabel="false"
+        app:enableXAxisFirstGridLine="false"
+        app:enableXAxisGridLine="false"
+        app:enableXAxisLabel="false"
+        app:enableXAxisLineCircle="false"
+        app:lineStrokeWidth="3"
+        app:yAxisMaximum="240"
+        app:yAxisMinimum="40"/>
+    <com.xiaomi.fitness.health.pai.view.PaiLimitGridView
+        android:id="@+id/paiLimitGridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

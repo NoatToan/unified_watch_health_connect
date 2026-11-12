@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.widget.RightArrowBindingSingleLineTextView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/feedback_item_tv_app_question"
+    android:tag="layout/feedback_item_app_question_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/page_extra_padding_horizontal_large"
+    app:showBackground="false"/>

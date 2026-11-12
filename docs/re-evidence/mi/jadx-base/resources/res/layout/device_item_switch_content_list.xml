@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.widget.SwitchButtonBindingTwoLineTextView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/device_fiv_feature_item"
+    android:tag="layout/device_item_switch_content_list_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/dimen_margin_14dp"
+    android:paddingEnd="@dimen/dimen_margin_10dp"/>

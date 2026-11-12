@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/energy_container"
+    android:tag="layout/fragment_energy_month_item_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xiaomi.fitness.chart.view.BarChartRecyclerView
+            android:id="@+id/bar_recycler"
+            app:barChartRoundRectRadiusRatio="0.4"
+            app:barSpace="0.6"
+            app:chartColor="@color/data_energy"
+            app:displayNumbers="31"
+            app:enableAverageRectF="false"
+            app:enableCharValueDisplay="false"
+            app:enableStartYAxisLabel="false"
+            app:enableXAxisBg="true"
+            app:enableXAxisThirdGridLine="false"
+            app:rateChartLightColor="@color/data_energy"
+            app:xAxisLabelPosition="1"
+            app:xAxisScaleDistance="7"
+            app:xFirstLinePosition="2"
+            style="@style/ChartBaseStyle"/>
+        <com.xiaomi.fitness.view.DataTitleView
+            android:id="@+id/dataTitleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+    <include
+        android:id="@+id/ll_card"
+        layout="@layout/layout_energy_dwm_common"/>
+</LinearLayout>

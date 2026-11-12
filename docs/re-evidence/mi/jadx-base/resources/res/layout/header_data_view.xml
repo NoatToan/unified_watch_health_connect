@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="77.7dp">
+    <LinearLayout
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/dimen_margin_15dp"
+        android:layout_marginEnd="@dimen/dimen_margin_18dp">
+        <TextView
+            android:textColor="@color/header_black"
+            android:id="@+id/header_view_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/FontNormal.24sp"/>
+        <TextView
+            android:textColor="@color/header_black"
+            android:id="@+id/header_view_tv_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/FontRegular.14sp"/>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/header_view_iv_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_16dp"
+        android:layout_marginRight="@dimen/dimen_margin_14dp"
+        android:src="@drawable/button_add_white"
+        android:contentDescription="@string/health_add_new_device"/>
+</merge>

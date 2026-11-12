@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.electronic.scale.view.TripletItemWithIconCardView
+        android:id="@+id/weight_control_advice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/electronic_scale_health_detail_page_common_margin_vertical"/>
+</LinearLayout>

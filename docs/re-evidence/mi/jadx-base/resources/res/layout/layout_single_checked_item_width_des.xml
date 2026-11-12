@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View
+        android:id="@+id/dialog_bottom_line"
+        style="@style/SettingsLineStyle.Top"/>
+    <CheckedTextView
+        android:textSize="15sp"
+        android:textColor="@color/text_color"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:id="@+id/dialog_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_16dp"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/ml_alertdialog_checkbox_radio"
+        android:paddingStart="16dp"
+        android:paddingEnd="20dp"
+        style="@style/FontRegular"/>
+    <TextView
+        android:textColor="@color/text_color_50"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:id="@+id/dialog_des_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_margin_16dp"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/ml_alertdialog_checkbox_list_radio_2"
+        android:paddingStart="16dp"
+        android:paddingEnd="20dp"
+        style="@style/FontRegular.12sp"/>
+</LinearLayout>

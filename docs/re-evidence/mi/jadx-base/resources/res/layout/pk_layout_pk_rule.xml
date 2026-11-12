@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tag="layout/pk_layout_pk_rule_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/page_content_padding_horizontal_large">
+        <TextView
+            android:textColor="@color/text_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:text="@string/pk_rule_detail_title"
+            style="@style/FontMedium.14sp"/>
+        <TextView
+            android:textColor="@color/text_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pk_rule_detail"
+            style="@style/FontRegular.14sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_margin_30dp"
+            android:text="@string/pk_rule_keep_in_mind"
+            style="@style/FontMedium.14sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pk_rule_note_detail"
+            style="@style/FontRegular.14sp"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

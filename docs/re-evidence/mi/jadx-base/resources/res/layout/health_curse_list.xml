@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/health_curse_list_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:tag="binding_1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <include
+            android:id="@+id/emptyView"
+            android:visibility="gone"
+            layout="@layout/view_text_icon"/>
+        <com.xiaomi.fitness.baseui.recyclerview.MoreRecyclerView
+            android:orientation="vertical"
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:layout_marginHorizontal="@dimen/page_padding_horizontal_large"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    </FrameLayout>
+    <Button
+        android:layout_gravity="bottom|center_horizontal"
+        android:id="@+id/addView"
+        android:layout_marginTop="20dp"
+        android:text="@string/health_curse_add"
+        style="@style/CommonBtn.Primary"/>
+</LinearLayout>

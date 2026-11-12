@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.health.weight.ui.view.TripletItemWithIconCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/weight_control_advice"
+    android:tag="layout/health_layout_weight_control_suggest_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/health_detail_page_common_margin_vertical"/>

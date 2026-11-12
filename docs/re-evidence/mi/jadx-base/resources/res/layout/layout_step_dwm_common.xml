@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:tag="layout/layout_step_dwm_common_0"
+    android:paddingBottom="@dimen/size_15"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/health_detail_page_common_margin_horizontal">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_step_detail"
+        android:background="@drawable/shape_data_item_bg"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_12"
+        android:overScrollMode="never"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_step_active_model"
+        android:background="@drawable/shape_data_item_bg"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/health_detail_page_common_margin_vertical"
+        android:overScrollMode="never"/>
+</LinearLayout>

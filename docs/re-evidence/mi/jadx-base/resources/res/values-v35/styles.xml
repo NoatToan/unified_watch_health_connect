@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RN_EditTextStyle" parent="@style/EditTextStyle">
+        <item name="android:background">@color/transparent</item>
+        <item name="android:useLocalePreferredLineHeightForMinimum">false</item>
+    </style>
+</resources>

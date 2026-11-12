@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.widget.FeatureItemBindingView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/device_fibv_scan_device_info"
+    android:tag="layout/device_item_scan_device_result_0"
+    android:background="@drawable/selector_card_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:viewPaddingBottom="@dimen/dimen_margin_20dp"
+    app:viewPaddingEnd="@dimen/dimen_margin_18dp"
+    app:viewPaddingStart="@dimen/dimen_margin_18dp"
+    app:viewPaddingTop="@dimen/dimen_margin_20dp"/>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tag="layout/device_settings_fragment_guide_web_view_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        style="?android:attr/progressBarStyleHorizontal"/>
+    <com.xiaomi.fitness.webview.CustomWebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <FrameLayout
+        android:id="@+id/flVideoContainer"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout-large-port/activity_eco_indoor_running_0"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        app:layout_constraintTop_toTopOf="parent"
+        layout="@layout/eco_view_indoor_sport"/>
+    <com.xiaomi.fitness.sport_eco.view.widget.SportCommandView
+        android:id="@+id/sport_command_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_gravity="center"
+        android:id="@+id/lottie"
+        android:background="@color/common_white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_fileName="lottie/countdown_white.json"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="abc_config_prefDialogWidth">440dp</dimen>
+    <dimen name="abc_dialog_fixed_height_major">60%</dimen>
+    <dimen name="abc_dialog_fixed_height_minor">90%</dimen>
+    <dimen name="abc_dialog_fixed_width_major">60%</dimen>
+    <dimen name="abc_dialog_fixed_width_minor">90%</dimen>
+    <dimen name="abc_dialog_min_width_major">55%</dimen>
+    <dimen name="abc_dialog_min_width_minor">80%</dimen>
+    <dimen name="face_common_entrance_start">44dp</dimen>
+    <dimen name="medal_border_margin">33.3dp</dimen>
+    <dimen name="medal_detail_pager_padding">120dp</dimen>
+    <dimen name="medal_list_margin">44dp</dimen>
+    <dimen name="pk_process_detail_crown_padding">56.3dp</dimen>
+    <dimen name="pk_process_detail_score_card_padding">58.67dp</dimen>
+    <dimen name="share_dimen_margin_share_path_item">92dp</dimen>
+    <dimen name="trail_customize_sport_report_share_tablayout_margin">200dp</dimen>
+    <dimen name="trail_sport_customize_preview_padding">182dp</dimen>
+</resources>

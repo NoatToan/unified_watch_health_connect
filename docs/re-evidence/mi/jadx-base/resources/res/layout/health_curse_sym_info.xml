@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="18dp"
+    android:paddingEnd="18dp">
+    <TextView
+        android:textSize="18sp"
+        android:textColor="@color/text_color"
+        android:id="@+id/typeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        style="@style/FontMedium"/>
+    <HorizontalScrollView
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="20dp">
+        <com.xiaomi.fitness.health.curse.view.SymRangeView
+            android:id="@+id/levelView"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"/>
+    </HorizontalScrollView>
+</merge>

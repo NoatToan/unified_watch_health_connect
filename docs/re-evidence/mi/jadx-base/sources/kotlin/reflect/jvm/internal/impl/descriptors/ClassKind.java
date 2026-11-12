@@ -1,0 +1,28 @@
+package kotlin.reflect.jvm.internal.impl.descriptors;
+
+import kotlin.enums.EnumEntries;
+import kotlin.enums.EnumEntriesKt;
+import org.jetbrains.annotations.Nullable;
+
+/* JADX INFO: loaded from: classes2.dex */
+public enum ClassKind {
+    CLASS("class"),
+    INTERFACE("interface"),
+    ENUM_CLASS("enum class"),
+    ENUM_ENTRY(null),
+    ANNOTATION_CLASS("annotation class"),
+    OBJECT("object");
+
+    private static final /* synthetic */ EnumEntries $ENTRIES = EnumEntriesKt.enumEntries(values());
+
+    @Nullable
+    private final String codeRepresentation;
+
+    ClassKind(String str) {
+        this.codeRepresentation = str;
+    }
+
+    public final boolean isSingleton() {
+        return this == OBJECT || this == ENUM_ENTRY;
+    }
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="26.66dp"
+    android:paddingRight="26.66dp"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+    <TextView
+        android:textSize="16.66sp"
+        android:textStyle="bold"
+        android:id="@+id/sport_level_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        app:layout_constraintBottom_toTopOf="@+id/sport_time_txt"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <TextView
+        android:textSize="12.66sp"
+        android:textColor="#66000000"
+        android:id="@+id/sport_time_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sport_guideline"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="horizontal"
+        android:id="@+id/sport_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_begin="35dp"/>
+    <TextView
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:id="@+id/sport_value_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

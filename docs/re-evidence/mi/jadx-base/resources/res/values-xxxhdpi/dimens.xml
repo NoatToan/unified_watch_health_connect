@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="mibi_text_size_payment_action_bar">15sp</dimen>
+    <dimen name="mibi_text_size_payment_general">14sp</dimen>
+    <dimen name="mibi_text_size_payment_small">12sp</dimen>
+    <dimen name="miui_pub_list_preferred_item_height">54.65dp</dimen>
+    <dimen name="miui_pub_list_preferred_item_height_large">62.32dp</dimen>
+    <dimen name="miui_pub_list_preferred_item_height_small">45dp</dimen>
+</resources>

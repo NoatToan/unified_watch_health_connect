@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<keep_alive_filter>
+    <filter
+        packageName="miwear"
+        serviceName="miwear-service"/>
+</keep_alive_filter>

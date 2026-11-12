@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/pay_order_other_right_arrow_single_line_text_view_0"
+    android:background="@drawable/shape_card_bg_normal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/dimen_margin_12dp">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/dimen_margin_30dp"
+        android:layout_height="@dimen/dimen_margin_30dp"
+        android:src="@drawable/pay_pingan_health_care"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/page_extra_padding_horizontal_large"
+        android:layout_alignParentStart="true"/>
+    <TextView
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/text_color"
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pay_pingan_health"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dimen_margin_12dp"
+        android:layout_toEndOf="@+id/logo"
+        style="@style/FontMedium"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/right_arrow"
+        android:background="@drawable/ic_base_right_arrow_icon"
+        android:layout_width="@dimen/dimen_margin_30dp"
+        android:layout_height="@dimen/dimen_margin_30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/page_extra_padding_horizontal_large"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/health_check_menu_remind"
+        android:title="@string/health_check_setting_measure_remind_title"/>
+    <item
+        android:id="@+id/health_check_menu_all_records"
+        android:title="@string/health_check_setting_historical_report_title"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/health_check_menu_delete"
+        android:title="@string/health_check_setting_delete_report_title"
+        app:showAsAction="never"/>
+</menu>

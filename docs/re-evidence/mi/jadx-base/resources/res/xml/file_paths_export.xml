@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <cache-path
+        name="glide_cache"
+        path="image_cache/"/>
+    <cache-path
+        name="internal_download"
+        path="app_download/"/>
+    <files-path
+        name="miui_widget_icon"
+        path="miui_widget_icon/"/>
+    <external-cache-path
+        name="app_download"
+        path="app_download/"/>
+</paths>

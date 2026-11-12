@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/health_layout_sleep_rhythm_diary_record_list_view_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:theme="@style/FontMedium.16sp"
+        android:textColor="@color/text_color_40"
+        android:id="@+id/sleep_rhythm_diary_measure_times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sleep_rhythm_diary_measure_times"/>
+    <TextView
+        android:theme="@style/FontMedium.24sp"
+        android:textColor="@color/text_color"
+        android:id="@+id/sleep_rhythm_diary_measure_times_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_10dp"/>
+    <TextView
+        android:theme="@style/FontMedium.16sp"
+        android:textColor="@color/text_color"
+        android:id="@+id/sleep_rhythm_diary_measure_times_duration_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_10dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/sleep_rhythm_diary_list_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_10dp"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

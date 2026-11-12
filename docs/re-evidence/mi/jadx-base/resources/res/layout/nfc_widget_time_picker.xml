@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center_horizontal"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.baseui.widget.NumberPickerView
+        android:textColorHighlight="@color/colorPrimary"
+        android:id="@+id/hour"
+        android:focusable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:labelTextColor="@color/colorPrimary"
+        style="@style/Picker.Number.DateDialog.V12"/>
+    <com.xiaomi.fitness.baseui.widget.NumberPickerView
+        android:textColorHighlight="@color/colorPrimary"
+        android:id="@+id/minute"
+        android:focusable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:labelTextColor="@color/colorPrimary"
+        app:layout_constraintHorizontal_weight="1"
+        style="@style/Picker.Number.DateDialog.V12"/>
+</LinearLayout>

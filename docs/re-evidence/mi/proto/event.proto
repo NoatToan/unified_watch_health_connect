@@ -1,0 +1,62 @@
+syntax = "proto2";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message SportStatusMessage
+{
+    optional uint32 distanceTarge = 1;    // 距离目标
+    optional uint32 timeTarge = 2;        // 时间目标
+    optional uint32 calTarge = 3;         // 消耗目标
+    required bool autoPause = 4;          // 自动暂停
+    required uint32 sportGraph = 5;       // 运动图表 见 SPORT_CHART_E
+}
+
+message BatterySaverMode
+{
+    required uint32 count = 1;            //次数
+    required uint32 batteryValue = 2;     //电量
+}
+message DndEventMessage
+{
+    required uint32 dndMode = 1;         //勿扰类型        关闭=0 智能=1 定时=2 开启=3
+    required uint32 dndInHour = 2;       //打开勿扰时间小时
+    required uint32 dndInMin = 3;        //打开勿扰时间分钟
+    required uint32 dndOutHour = 4;      //关闭勿扰时间小时
+    required uint32 dndOutMin = 5;       //关闭勿扰时间分钟
+}
+
+message NotifyMessage
+{
+    required uint32 recive = 1;          // 收到的通知数目
+    required uint32 detail = 2;          // 点击进入通知详情页次数
+}
+
+message NandMessage
+{
+    required uint32 writeTimes = 1;
+    required uint32 readTimes = 2;
+    required uint32 eraseTimes = 3;
+}
+
+message DfuUpgradeMessage
+{
+    required uint32 upgradeTime = 1;   // 升级次数
+    required uint32 upgradeFailTime = 2; //失败次数
+}
+
+message DialtoolMessage
+{
+    required uint32 Dialid = 1;   // 表盘 ID
+    required uint32 Dialtoolid = 2; //组件槽 ID
+	required uint32 Dialselectid = 3; //数据项 ID
+}
+message lightscreentimeMessage
+{
+    required uint32 starttime = 1;   // 开始时间
+    required uint32 endtime = 2; //结束时间
+}
+message wifiuseMessage
+{
+    required uint32 starttime = 1;   // 开始时间
+    required uint32 endtime = 2; //电量
+}

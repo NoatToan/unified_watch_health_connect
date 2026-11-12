@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/card_weight_segmental_fat_0"
+    android:background="@drawable/shape_data_item_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_20"
+        layout="@layout/layout_common_icon_title"/>
+    <include layout="@layout/layout_division_line"/>
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/iv_weight_segmental_fat"
+        android:layout_width="160.3dp"
+        android:layout_height="210.67dp"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/ic_weight_segmental_fat"/>
+</LinearLayout>

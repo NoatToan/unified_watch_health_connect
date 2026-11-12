@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.fitness.watch.face.widget.StateLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/state_view"
+    android:tag="layout/fragment_face_category_0"
+    android:background="@color/face_market_page_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/category_rv"
+        android:tag="binding_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dimen_margin_13dp"
+        android:layout_marginHorizontal="@dimen/dimen_margin_12dp"/>
+</com.xiaomi.fitness.watch.face.widget.StateLayout>

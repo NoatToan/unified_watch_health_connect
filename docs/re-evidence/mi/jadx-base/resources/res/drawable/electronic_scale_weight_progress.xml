@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@android:id/background"
+        android:drawable="@color/black_08_transparent"/>
+    <item
+        android:id="@android:id/progress"
+        android:drawable="@color/electronic_scale_black"/>
+</layer-list>

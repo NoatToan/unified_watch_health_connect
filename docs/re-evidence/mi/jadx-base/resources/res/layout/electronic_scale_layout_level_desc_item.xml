@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:id="@+id/ll_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/size_10">
+    <TextView
+        android:gravity="center_vertical"
+        android:id="@+id/levelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/dimen_margin_6dp"
+        android:drawableStart="@drawable/electronic_scale_bg_level_desc_color_hint"
+        style="@style/FontRegular.12sp"/>
+</LinearLayout>

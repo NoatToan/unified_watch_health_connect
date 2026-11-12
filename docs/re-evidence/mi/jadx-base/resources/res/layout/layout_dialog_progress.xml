@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:background="@drawable/common_popup_bottom_bg"
+    android:paddingTop="5dp"
+    android:paddingBottom="@dimen/dimen_margin_15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/progress_margin"
+    android:paddingEnd="@dimen/progress_margin">
+    <TextView
+        android:textColor="@color/common_btn_normal_text_color"
+        android:id="@+id/mNameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="13dp"
+        android:text="@string/common_installing"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FontMedium.16sp"/>
+    <TextView
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/progressInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FontMedium.16sp"/>
+    <miuix.androidbasewidget.widget.ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressInfo"
+        style="@style/ProgressDialog"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

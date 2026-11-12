@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:id="@+id/label"
+    android:background="@drawable/shape_card_bg_pressed"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:layout_marginEnd="@dimen/dimen_margin_12dp"
+    android:paddingHorizontal="@dimen/dimen_margin_16dp"
+    android:paddingVertical="8dp"
+    style="@style/FontMedium.12sp"/>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget>
+    <feature name="Data"/>
+    <feature name="com.mipay.hybrid.feature.ImageSelector"/>
+    <feature name="ImageSelector"/>
+    <feature name="Navigator"/>
+    <feature name="WebView"/>
+    <feature name="ImmersionMenu"/>
+    <feature name="UI"/>
+    <access
+        origin="http://staging.m.pay.mipay.com"
+        subdomains="false"/>
+    <access
+        origin="https://m.mipay.com"
+        subdomains="false"/>
+</widget>

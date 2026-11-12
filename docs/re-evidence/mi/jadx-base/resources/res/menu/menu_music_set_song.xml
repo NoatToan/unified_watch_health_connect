@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_song_settings_add_songlist"
+        android:title="@string/device_settings_music_menu_song_setting_add_songlist"/>
+    <item
+        android:id="@+id/menu_song_settings_remove_song"
+        android:title="@string/device_settings_music_menu_song_setting_remove_song"/>
+</menu>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="200dp">
+    <com.xiaomi.fitness.baseui.widget.NumberPickerView
+        android:id="@+id/number_picker"
+        android:tag="layout/layout_seconds_picker_0"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
+    <TextView
+        android:textSize="@dimen/dimen_10sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:id="@+id/unit_tv"
+        android:tag="layout/layout_seconds_picker_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:text="@string/device_settings_heart_rate_warning_unit"/>
+</merge>

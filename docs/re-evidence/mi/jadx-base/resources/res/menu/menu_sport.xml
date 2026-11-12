@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/target_manage"
+        android:title="@string/health_target_manage"/>
+    <item
+        android:id="@+id/target_data_recommend"
+        android:title="@string/health_target_data_recommend"
+        app:showAsAction="never"/>
+</menu>

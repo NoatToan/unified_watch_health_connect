@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/device_settings_fragment_ble_spo2_setting_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/page_content_padding_horizontal_large">
+        <com.xiaomi.fitness.widget.SwitchButtonBindingTwoLineTextView
+            android:id="@+id/spo2SwitchView"
+            android:tag="binding_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:subtitle="@string/device_settings_spo2_detection_all_dat_des"
+            app:title="@string/device_settings_spo2_switch_title"/>
+        <com.xiaomi.fitness.widget.RightArrowBindingTwoLineTextView
+            android:id="@+id/blodLowView"
+            android:tag="binding_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:subtitle="@string/device_settings_hypoxemia_notice_des"
+            app:title="@string/device_settings_hypoxemia_notice_title"/>
+        <com.xiaomi.fitness.widget.RightArrowBindingTwoLineTextView
+            android:id="@+id/spoSettingView"
+            android:tag="binding_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/device_settings_spo2_monitor_title"/>
+        <com.xiaomi.fitness.devicesettings.widget.SetRadioGroup
+            android:id="@+id/frequencyView"
+            android:tag="binding_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.xiaomi.fitness.devicesettings.widget.DeviceReminderView
+            android:tag="binding_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_margin_40dp"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

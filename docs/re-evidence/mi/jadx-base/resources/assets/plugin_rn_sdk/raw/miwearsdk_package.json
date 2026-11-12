@@ -1,0 +1,10 @@
+{
+  "name": "miwear",
+  "version": "2.0.3",
+  "api_level": 20003,
+  "miot_api_level":10087,
+  "min_native_api_level": {
+    "android": 20001,
+    "ios": 20001
+  }
+}

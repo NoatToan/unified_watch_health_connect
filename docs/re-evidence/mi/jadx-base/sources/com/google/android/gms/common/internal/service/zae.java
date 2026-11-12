@@ -1,0 +1,17 @@
+package com.google.android.gms.common.internal.service;
+
+import android.os.RemoteException;
+import com.google.android.gms.common.api.Api;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+/* JADX INFO: loaded from: classes4.dex */
+final class zae extends zah {
+    public zae(zad zadVar, GoogleApiClient googleApiClient) {
+        super(googleApiClient);
+    }
+
+    @Override // com.google.android.gms.common.api.internal.BaseImplementation.ApiMethodImpl
+    public final /* synthetic */ void doExecute(Api.AnyClient anyClient) throws RemoteException {
+        ((zal) ((zai) anyClient).getService()).zaa(new zaf(this));
+    }
+}

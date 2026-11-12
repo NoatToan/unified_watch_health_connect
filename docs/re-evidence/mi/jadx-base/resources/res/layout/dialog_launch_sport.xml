@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/launch_sport_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent">
+    <TextView
+        android:textSize="@dimen/dimen_13sp"
+        android:gravity="center_horizontal"
+        android:id="@+id/outdoor_launch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fitness_run_outdoor"
+        android:drawableTop="@drawable/habit_launch_sport_outdoor_run"
+        android:drawablePadding="8dp"
+        android:layout_weight="1"/>
+    <TextView
+        android:textSize="@dimen/dimen_13sp"
+        android:gravity="center_horizontal"
+        android:id="@+id/walk_launch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fitness_walk_outdoor"
+        android:drawableTop="@drawable/habit_launch_sport_walk"
+        android:drawablePadding="8dp"
+        android:layout_weight="1"/>
+    <TextView
+        android:textSize="@dimen/dimen_13sp"
+        android:gravity="center_horizontal"
+        android:id="@+id/indoor_launch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fitness_run_indoor"
+        android:drawableTop="@drawable/habit_launch_sport_indoor_run"
+        android:drawablePadding="8dp"
+        android:layout_weight="1"/>
+</LinearLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textColor="@color/text_color_40"
+    android:id="@+id/device_tv_device_label_name"
+    android:tag="layout/device_item_device_label_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/device_item_add_device_label_margin_top"
+    android:layout_marginStart="@dimen/dimen_margin_18dp"
+    style="@style/FontNormal.12sp"/>

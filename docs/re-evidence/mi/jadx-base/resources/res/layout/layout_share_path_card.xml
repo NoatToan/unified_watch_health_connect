@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.share.view.ShareProfileView
+        android:id="@+id/profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:descTxtColor="@color/common_white"
+        app:titleTxtColor="@color/common_white"/>
+    <com.xiaomi.fitness.share.view.ShareDataView
+        android:id="@+id/recycler_detail"
+        android:layout_alignParentBottom="true"
+        style="@style/ShareData"/>
+    <TextView
+        android:textSize="32sp"
+        android:textColor="@color/common_white"
+        android:id="@+id/txtDistance"
+        android:layout_above="@+id/txtSportName"
+        android:layout_marginStart="12dp"
+        android:layout_alignParentStart="true"
+        style="@style/ShareValueTxt"/>
+    <TextView
+        android:textColor="@color/common_white"
+        android:id="@+id/txtSportName"
+        android:layout_marginBottom="12dp"
+        android:layout_above="@+id/recycler_detail"
+        android:layout_marginStart="@dimen/margin_share"
+        android:layout_alignParentStart="true"
+        style="@style/ShareTypeTxt"/>
+</RelativeLayout>

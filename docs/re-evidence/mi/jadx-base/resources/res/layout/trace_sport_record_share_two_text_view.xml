@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textColor="#80ffffff"
+        android:gravity="center"
+        android:id="@+id/first_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="@dimen/dimen_margin_12dp"
+        android:text="@string/trail_sport_share_edit_tab_title_data_desc"
+        style="@style/FontMedium.12sp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:orientation="horizontal"
+        android:id="@+id/first_txt_recyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    <TextView
+        android:textColor="#80ffffff"
+        android:gravity="center"
+        android:id="@+id/second_label"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="@dimen/dimen_margin_12dp"
+        android:text="@string/trail_sport_share_edit_tab_title_data_chart_type"
+        style="@style/FontMedium.12sp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:orientation="horizontal"
+        android:id="@+id/second_txt_recyclerView"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+</LinearLayout>

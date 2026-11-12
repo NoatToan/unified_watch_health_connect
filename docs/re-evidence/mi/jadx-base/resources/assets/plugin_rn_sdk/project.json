@@ -1,0 +1,10 @@
+{
+  "name": "miwear",
+  "version": "2.0.3",
+  "platform": "android",
+  "is_sdk_bundle": true,
+  "sdk_api_level": 20003,
+  "min_native_api_level": 20001,
+  "build_time": 1703507965000,
+  "signature": 1048576
+}

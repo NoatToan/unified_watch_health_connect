@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/fragment_hearing_day_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.fitness.chart.view.BarChartRecyclerView
+        android:id="@+id/recycler"
+        app:barChartRoundRectRadiusRatio="0.25"
+        app:chartColor="@color/hearing_chart"
+        app:displayNumbers="48"
+        app:enableCharValueDisplay="false"
+        app:enableEndYAxisLabel="true"
+        app:enableStartYAxisLabel="false"
+        app:enableXAxisBg="true"
+        app:enableXAxisFirstGridLine="false"
+        app:enableXAxisThirdGridLine="false"
+        app:recyclerPaddingRight="10dp"
+        style="@style/ChartBaseStyle"/>
+</LinearLayout>

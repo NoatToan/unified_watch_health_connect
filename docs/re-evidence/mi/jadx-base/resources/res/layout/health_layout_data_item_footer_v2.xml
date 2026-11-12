@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_manage_btn"
+    android:tag="layout/health_layout_data_item_footer_v2_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/size_16">
+    <TextView
+        android:textColor="@color/text_color_80"
+        android:gravity="center"
+        android:id="@+id/tvManageHealthData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/health_manage_health_functions"
+        android:layout_centerHorizontal="true"
+        android:drawableEnd="@drawable/ic_base_right_arrow_icon"
+        style="@style/FontMedium.16sp"/>
+</RelativeLayout>

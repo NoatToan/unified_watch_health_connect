@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/spinner_container"
+    android:tag="layout/health_remind_select_count_spinner_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/page_content_padding_horizontal_large"
+    android:paddingEnd="@dimen/page_content_padding_horizontal_large">
+    <TextView
+        android:textSize="@dimen/dimen_16sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_color"
+        android:gravity="start"
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/size_10"
+        android:layout_toStartOf="@+id/spinner"
+        android:layout_alignParentStart="true"
+        android:paddingVertical="14dp"/>
+    <miuix.appcompat.widget.Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>

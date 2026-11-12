@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/createPlanProgressRoot"
+    android:background="@drawable/training_card_shape"
+    android:paddingTop="22dp"
+    android:paddingBottom="22dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp">
+    <miuix.androidbasewidget.widget.ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:progress="20"
+        android:progressDrawable="@drawable/ability_plan_create_progress"
+        style="?attr/progressBarHorizontalStyle"/>
+    <TextView
+        android:textSize="17sp"
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/misanslatin_bold"/>
+    <TextView
+        android:textSize="13sp"
+        android:textColor="@color/text_color_40"
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"/>
+</LinearLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="face_market_item_padding">45dp</dimen>
+    <dimen name="miuix_appcompat_window_extra_padding_horizontal_huge">68dp</dimen>
+    <dimen name="miuix_appcompat_window_extra_padding_horizontal_large">44dp</dimen>
+    <dimen name="miuix_appcompat_window_extra_padding_horizontal_small">28dp</dimen>
+    <dimen name="page_content_padding_horizontal_large">70dp</dimen>
+    <dimen name="page_extra_padding_horizontal_large">42dp</dimen>
+    <dimen name="page_padding_horizontal_large">28dp</dimen>
+    <dimen name="page_padding_horizontal_large_cut_12_dp">16dp</dimen>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@color/text_color"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/alertView"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nfc_union_card_pos_alert"/>
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@color/text_color"
+        android:autoLink="all"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/supportBankListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="@string/nfc_union_card_support_blank"/>
+    <TextView
+        android:id="@+id/addView"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/nfc_common_step_next"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        style="@style/CommonBtn.Primary"/>
+</LinearLayout>

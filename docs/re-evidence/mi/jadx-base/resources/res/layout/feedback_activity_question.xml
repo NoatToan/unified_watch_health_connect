@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<miuix.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/feedback_activity_question_0"
+    android:background="@color/feedback_device_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:paddingHorizontal="@dimen/page_padding_horizontal_large">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/feedback_rv_device_list"
+        android:tag="binding_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</miuix.core.widget.NestedScrollView>

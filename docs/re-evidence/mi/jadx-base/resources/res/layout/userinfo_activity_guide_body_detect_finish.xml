@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/userinfo_activity_guide_body_detect_finish_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.Guideline
+                android:orientation="horizontal"
+                android:id="@+id/guide_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintGuide_percent="0.15"/>
+            <TextView
+                android:id="@+id/tv_subtitle"
+                android:text="@string/userinfo_guide_body_detect_finish_tip"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/userinfo_GuideSubTitleText"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/userinfo_size_100"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_subtitle"/>
+            <TextView
+                android:id="@+id/tv_go_next"
+                android:layout_marginBottom="@dimen/userinfo_size_27"
+                android:text="@string/common_known"
+                android:layout_marginStart="@dimen/dimen_margin_26dp"
+                android:layout_marginEnd="@dimen/dimen_margin_26dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="1"
+                style="@style/userinfo_Button.FullWidth.Menstrual.Orange"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

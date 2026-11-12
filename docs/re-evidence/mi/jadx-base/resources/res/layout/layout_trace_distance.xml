@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlDistance"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <com.xiaomi.fitness.share.view.ShareBoldTextView
+        android:textSize="40sp"
+        android:textColor="@color/common_white"
+        android:gravity="end"
+        android:id="@+id/txtDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="110dp"
+        android:minWidth="100dp"
+        android:layout_alignParentStart="true"
+        app:strokeTextSize="40sp"
+        app:strokeTextWidth="8"/>
+    <com.xiaomi.fitness.share.view.ShareBoldTextView
+        android:textSize="40sp"
+        android:textColor="@color/common_white"
+        android:id="@+id/txtUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        app:strokeTextSize="40sp"
+        app:strokeTextWidth="8"/>
+</RelativeLayout>

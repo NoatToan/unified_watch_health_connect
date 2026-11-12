@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/device_settings_fragment_huami_hr_setting_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/page_content_padding_horizontal_large"
+    android:paddingEnd="@dimen/page_content_padding_horizontal_large">
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/heartView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:subtitle="@string/device_settings_detection_heart_rate_des"
+        app:title="@string/device_settings_detection_heart_rate"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/highWarningView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:subtitle="@string/device_settings_high_hr_notify_des"
+        app:title="@string/device_settings_high_hr_notify"/>
+    <com.xiaomi.fitness.widget.RightArrowTwoLineTextView
+        android:id="@+id/lowHrWarningView"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:subtitle="@string/device_settings_low_hr_warning_des"
+        app:title="@string/device_settings_low_hr_warning_title"/>
+    <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+        android:id="@+id/activityDetectionView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:subtitle="@string/device_settings_detection_activity_des"
+        app:title="@string/device_settings_detection_activity"/>
+    <com.xiaomi.fitness.widget.SwitchButtonTwoLineTextView
+        android:id="@+id/heartHealthyDetectionView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:subtitle="@string/device_settings_detection_heart_healthy_des"
+        app:title="@string/device_settings_detection_heart_healthy"/>
+    <com.xiaomi.fitness.devicesettings.widget.DeviceReminderView
+        android:tag="binding_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_margin_40dp"/>
+</LinearLayout>

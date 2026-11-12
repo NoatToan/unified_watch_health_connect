@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/fragment_understand_physical_status_0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_vitality_understand_detail_desc"
+            app:understand_title="@string/health_vitality_understand_detail_title"/>
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_vitality_understand_calculate_desc"
+            app:understand_title="@string/health_vitality_understand_calculate_title"/>
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_vitality_understand_calculate_rule_desc"
+            app:understand_title="@string/health_vitality_understand_calculate_rule_title"/>
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_vitality_understand_max_value_desc"
+            app:understand_title="@string/health_vitality_understand_max_value_title"/>
+        <com.xiaomi.fitness.view.UnderstandItemView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:understand_detail="@string/health_vitality_understand_set_goal_desc"
+            app:understand_title="@string/health_vitality_understand_set_goal_title"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

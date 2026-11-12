@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/page_padding_horizontal_large">
+    <com.xiaomi.fitness.health.sleep.view.widget.DonutChartView
+        android:id="@+id/sleep_stage_chart"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginHorizontal="@dimen/page_padding_horizontal_large"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <View
+        android:id="@+id/gapSpace2"
+        android:layout_width="1dp"
+        android:layout_height="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sleep_stage_chart"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/stage_detail_list_recycler_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/common_card_light_gery_ccf6f7f9_0dffffff_color"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/gapSpace2">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/stage_detail_list_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    </androidx.cardview.widget.CardView>
+    <View
+        android:id="@+id/gapSpace3"
+        android:layout_width="1dp"
+        android:layout_height="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stage_detail_list_recycler_cardview"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

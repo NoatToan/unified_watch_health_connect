@@ -1,0 +1,119 @@
+package com.xiaomi.fitness.trail.widget;
+
+import android.view.View;
+import com.xiaomi.fitness.baseui.dialog.CommonDialog;
+import com.xiaomi.fitness.baseui.dialog.DialogParams;
+import com.xiaomi.fitness.baseui.dialog.a;
+import com.xiaomi.fitness.common.utils.TimeUtils;
+import defpackage.bsi;
+import defpackage.ivi;
+import kotlin.Metadata;
+import kotlin.jvm.internal.DefaultConstructorMarker;
+import kotlin.jvm.internal.Intrinsics;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+/* JADX INFO: loaded from: classes10.dex */
+@Metadata(d1 = {"\u00004\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0007\n\u0002\u0010\t\n\u0002\b\u0004\u0018\u0000 \u00182\b\u0012\u0004\u0012\u00020\u00020\u0001:\u0002\u0017\u0018B\u0007¢\u0006\u0004\b\u0003\u0010\u0004J\u0012\u0010\n\u001a\u00020\u000b2\b\u0010\f\u001a\u0004\u0018\u00010\rH\u0014J\u000e\u0010\u000e\u001a\u00020\u00002\u0006\u0010\u000f\u001a\u00020\bJ\u0006\u0010\u0010\u001a\u00020\bJ\u000e\u0010\u0011\u001a\u00020\u00002\u0006\u0010\u0012\u001a\u00020\bJ\u0006\u0010\u0013\u001a\u00020\bJ\u0006\u0010\u0014\u001a\u00020\u0015J\u0016\u0010\u0016\u001a\u00020\u000b2\u0006\u0010\u000f\u001a\u00020\b2\u0006\u0010\u0012\u001a\u00020\bR\u0010\u0010\u0005\u001a\u0004\u0018\u00010\u0006X\u0082\u000e¢\u0006\u0002\n\u0000R\u000e\u0010\u0007\u001a\u00020\bX\u0082\u000e¢\u0006\u0002\n\u0000R\u000e\u0010\t\u001a\u00020\bX\u0082\u000e¢\u0006\u0002\n\u0000¨\u0006\u0019"}, d2 = {"Lcom/xiaomi/fitness/trail/widget/TrailTimePickerDialog;", "Lcom/xiaomi/fitness/baseui/dialog/CommonDialog;", "Lcom/xiaomi/fitness/baseui/dialog/DialogParams;", "<init>", "()V", "mTimePicker", "Lcom/xiaomi/fitness/trail/widget/TimePicker;", "currentHour", "", "currentMinute", "initCustomView", "", "rootView", "Landroid/view/View;", "setCurrentHour", "hour", "getCurrentHour", "setCurrentMinute", "minute", "getCurrentMinute", "getTimeSeconds", "", "setMaxTime", "Builder", "Companion", "sport-record_chinaProductRelease"}, k = 1, mv = {2, 0, 0}, xi = 48)
+public final class TrailTimePickerDialog extends CommonDialog<DialogParams> {
+
+    /* JADX INFO: renamed from: Companion, reason: from kotlin metadata */
+    @NotNull
+    public static final Companion INSTANCE = new Companion(null);
+    private int currentHour;
+    private int currentMinute;
+
+    @Nullable
+    private TimePicker mTimePicker;
+
+    @Metadata(d1 = {"\u0000\u001c\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0010\u000e\n\u0002\b\u0004\u0018\u00002\u0014\u0012\u0004\u0012\u00020\u0000\u0012\u0004\u0012\u00020\u0002\u0012\u0004\u0012\u00020\u00030\u0001B\u000f\u0012\u0006\u0010\t\u001a\u00020\b¢\u0006\u0004\b\n\u0010\u000bJ\u000f\u0010\u0004\u001a\u00020\u0000H\u0014¢\u0006\u0004\b\u0004\u0010\u0005J\u000f\u0010\u0006\u001a\u00020\u0003H\u0014¢\u0006\u0004\b\u0006\u0010\u0007¨\u0006\f"}, d2 = {"Lcom/xiaomi/fitness/trail/widget/TrailTimePickerDialog$Builder;", "Lcom/xiaomi/fitness/baseui/dialog/a;", "Lcom/xiaomi/fitness/baseui/dialog/DialogParams;", "Lcom/xiaomi/fitness/trail/widget/TrailTimePickerDialog;", "getThis", "()Lcom/xiaomi/fitness/trail/widget/TrailTimePickerDialog$Builder;", "internalCreate", "()Lcom/xiaomi/fitness/trail/widget/TrailTimePickerDialog;", "", "name", "<init>", "(Ljava/lang/String;)V", "sport-record_chinaProductRelease"}, k = 1, mv = {2, 0, 0})
+    public static final class Builder extends a<Builder, DialogParams, TrailTimePickerDialog> {
+        /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+        public Builder(@NotNull String name) {
+            super(new DialogParams(name));
+            Intrinsics.checkNotNullParameter(name, "name");
+        }
+
+        @Override // com.xiaomi.fitness.baseui.dialog.a
+        @NotNull
+        public Builder getThis() {
+            return this;
+        }
+
+        @Override // com.xiaomi.fitness.baseui.dialog.a
+        @NotNull
+        public TrailTimePickerDialog internalCreate() {
+            return new TrailTimePickerDialog();
+        }
+    }
+
+    @Metadata(d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\b\u0086\u0003\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003J\u000e\u0010\u0004\u001a\u00020\u00052\u0006\u0010\u0006\u001a\u00020\u0007¨\u0006\b"}, d2 = {"Lcom/xiaomi/fitness/trail/widget/TrailTimePickerDialog$Companion;", "", "<init>", "()V", "defaultBuilder", "Lcom/xiaomi/fitness/trail/widget/TrailTimePickerDialog$Builder;", "name", "", "sport-record_chinaProductRelease"}, k = 1, mv = {2, 0, 0}, xi = 48)
+    public static final class Companion {
+        private Companion() {
+        }
+
+        public /* synthetic */ Companion(DefaultConstructorMarker defaultConstructorMarker) {
+            this();
+        }
+
+        @NotNull
+        public final Builder defaultBuilder(@NotNull String name) {
+            Intrinsics.checkNotNullParameter(name, "name");
+            Builder canceledOnTouchOutside = new Builder(name).setCustomLayoutId(ivi.f2).setCancelable(true).setCanceledOnTouchOutside(true);
+            Intrinsics.checkNotNullExpressionValue(canceledOnTouchOutside, "setCanceledOnTouchOutside(...)");
+            return canceledOnTouchOutside;
+        }
+    }
+
+    public final int getCurrentHour() {
+        Integer currentHour;
+        TimePicker timePicker = this.mTimePicker;
+        if (timePicker == null || (currentHour = timePicker.getCurrentHour()) == null) {
+            return 0;
+        }
+        return currentHour.intValue();
+    }
+
+    public final int getCurrentMinute() {
+        Integer currentMinute;
+        TimePicker timePicker = this.mTimePicker;
+        if (timePicker == null || (currentMinute = timePicker.getCurrentMinute()) == null) {
+            return 0;
+        }
+        return currentMinute.intValue();
+    }
+
+    public final long getTimeSeconds() {
+        return TimeUtils.getTodayOffsetMills(0, getCurrentHour(), getCurrentMinute()) / ((long) 1000);
+    }
+
+    @Override // com.xiaomi.fitness.baseui.dialog.CommonDialog
+    public void initCustomView(@Nullable View rootView) {
+        super.initCustomView(rootView);
+        TimePicker timePicker = rootView != null ? (TimePicker) rootView.findViewById(bsi.z7) : null;
+        this.mTimePicker = timePicker;
+        if (timePicker != null) {
+            timePicker.setCurrentHour(Integer.valueOf(this.currentHour));
+            timePicker.setCurrentMinute(Integer.valueOf(this.currentMinute));
+        }
+    }
+
+    @NotNull
+    public final TrailTimePickerDialog setCurrentHour(int hour) {
+        this.currentHour = hour;
+        return this;
+    }
+
+    @NotNull
+    public final TrailTimePickerDialog setCurrentMinute(int minute) {
+        this.currentMinute = minute;
+        return this;
+    }
+
+    public final void setMaxTime(int hour, int minute) {
+        TimePicker timePicker = this.mTimePicker;
+        if (timePicker != null) {
+            timePicker.h(hour, minute);
+        }
+    }
+}

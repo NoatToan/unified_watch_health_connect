@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="@dimen/font_12"
+    android:textColor="@color/feedback_common_textcolor_2"
+    android:gravity="center_horizontal"
+    android:id="@+id/feedback_item_tv_label_title"
+    android:tag="layout/feedback_item_label_0"
+    android:paddingTop="@dimen/dimen_margin_15dp"
+    android:paddingBottom="@dimen/dimen_margin_4dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/dimen_margin_30dp"
+    android:paddingEnd="0dp"/>

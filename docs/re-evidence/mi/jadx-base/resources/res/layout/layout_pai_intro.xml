@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="245dp">
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:background="@drawable/selector_white_top_round"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <com.rd.PageIndicatorView2
+        android:id="@+id/pageIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:piv_animationType="scale"
+        app:piv_dynamicCount="true"
+        app:piv_interactiveAnimation="true"
+        app:piv_selectedColor="@color/black"
+        app:piv_unselectedColor="@color/black_10"
+        app:piv_viewPager="@+id/viewPager2"/>
+    <TextView
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:id="@+id/tv_pai_intro_know"
+        android:background="@drawable/common_btn_round_gray"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginBottom="23dp"
+        android:text="@string/health_pai_intro_know"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"/>
+</RelativeLayout>

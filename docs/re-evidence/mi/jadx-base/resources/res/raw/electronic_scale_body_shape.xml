@@ -1,0 +1,55 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="73dp"
+    android:height="73dp"
+    android:viewportWidth="73"
+    android:viewportHeight="73">
+    <path
+        android:name="坐标轴"
+        android:fillColor="#00000000"
+        android:pathData="M71.2591,70.6489L72,72H1V1L2.3947,1.9153"
+        android:strokeWidth="0.351827"
+        android:strokeColor="#8C93B0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:name="运动员型"
+        android:fillColor="#1A8C93B0"
+        android:pathData="M2,3H38V27H2V3Z" />
+    <path
+        android:name="肥胖"
+        android:fillColor="#1A8C93B0"
+        android:pathData="M38.5,3H70.0002V42H60.5V15H38.5V3Z" />
+    <path
+        android:name="偏胖"
+        android:fillColor="#1A8C93B0"
+        android:pathData="M60,42V15.5103H38.5V27H51.5V42H60Z" />
+    <path
+        android:name="肌肉型"
+        android:fillColor="#1A8C93B0"
+        android:pathData="M2,27.5H38V42H2V27.5Z" />
+    <path
+        android:name="消瘦型"
+        android:fillColor="#1A8C93B0"
+        android:pathData="M2,57h24v14h-24z" />
+    <path
+        android:name="肌肉苗条型"
+        android:fillColor="#1A8C93B0"
+        android:pathData="M2,42.5H26V56.5H2V42.5Z" />
+    <path
+        android:name="苗条型"
+        android:fillColor="#1A8C93B0"
+        android:pathData="M26.5,42.5H38V56.5H26.5V42.5Z" />
+    <path
+        android:name="偏瘦型"
+        android:fillColor="#1A8C93B0"
+        android:pathData="M26.5,57H51.001V71H26.5V57Z" />
+    <path
+        android:name="隐形肥胖"
+        android:fillColor="#1A8C93B0"
+        android:pathData="M51.5,42.5H70V71H51.5V42.5Z" />
+    <path
+        android:name="健康型"
+        android:fillColor="#00D6BA"
+        android:pathData="M38.5,27.5H51V56.5H38.5V27.5Z" />
+</vector>
+
