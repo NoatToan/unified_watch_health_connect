@@ -2998,3 +2998,39 @@ yếu tố gamification nhẹ; xa hơn là community khoe trang bị. Cần Room
   SUCCESSFUL, 528 test `failures=0 errors=0`. Không có thiết bị thật khả dụng lúc agent chạy (mất kết
   nối adb giữa chừng — xem D-1188) nên không chụp màn hình xác nhận trực quan lúc đó; đã xác nhận lại
   bằng mắt trên máy thật khác hôm sau (2026-11-12, không lỗi/crash khi mở app).
+
+## Gear entry trên Home + chọn kế hoạch Higdon Novice → lịch thật + check-in (D-1191)
+
+- **D-1191** · 2026-11-12 · Gear thêm vào Home (dưới Races) + chọn 1 trong 4 plan Hal Higdon Novice → generate lịch ngày thật, check-in từ Training lẫn Home — **Chốt**
+  **Phần A**: `feature/gear` giờ có thêm entry point ở Home (bên cạnh row Profile cũ, D-1186) —
+  `GearEntryCard` (cùng hình dạng `TrainingEntryCard`), đặt ngay sau Races carousel, trước Training
+  entry (thứ tự cuối list: Races → Gear → Training).
+  **Phần B**: User chọn 1 trong 4 plan Higdon Novice (5K/10K/Half/Marathon) đã mô tả tĩnh sẵn trong
+  `feature/training` (D-1185) — nay thêm hành động "Chọn kế hoạch này" (xác nhận thay thế nếu đang theo
+  plan khác + chọn ngày bắt đầu, mặc định hôm nay) → generate lịch ngày thật từ
+  `HigdonNoviceSchedules.kt` (`core/model`, pure function, transcribe chính xác bảng km chính thức của
+  halhigdon.com cho cả 4 plan, verify lại 2026-11-12 — không suy diễn/làm tròn tự ý). Các plan khác
+  (Couch to 5K, Galloway, Daniels VDOT, Hanson's, Pfitzinger, Intermediate 10K) **vẫn chỉ mô tả tĩnh**,
+  không chọn được — cố ý giới hạn phạm vi.
+  **Mô hình ngày**: mỗi ngày trong tuần là 1 *vị trí* (0=cột "Thứ Hai" của bảng gốc...6="Chủ Nhật"),
+  không ép `startDate` về đúng thứ Hai thật — `dayOffset = tuần×7 + vị trí` cộng thẳng vào `startDate`,
+  ngày/thứ hiển thị vẫn là ngày thật, chỉ là nhịp tuần không bắt buộc bắt đầu từ thứ Hai. Đơn giản hơn
+  để test/suy luận, brief không yêu cầu phải khớp thứ thật.
+  **Room**: `UnifiedHealthDatabase` v3→v4 (`AutoMigration`, 2 bảng thêm thuần túy — `active_training_plan`
+  (1 dòng duy nhất, @Upsert) + `training_checkins` (chỉ ngày đã check-in mới có dòng)). **Không lưu cả
+  lịch** — lịch luôn generate lại từ `HigdonNoviceSchedules` mỗi lần đọc, chỉ overlay check-in từ Room.
+  Chọn plan mới xoá check-in của plan cũ.
+  **Formatter dùng chung** (`scheduledDayDescription`) đặt ở `core/designsystem` vì cả
+  `feature/training` và `feature/home` đều cần mà không được phụ thuộc lẫn nhau.
+  **Home**: khi có plan đang active, `TrainingEntryCard` cũ được thay bằng card "hôm nay chạy gì" +
+  nút check-in ngay tại Home (đúng yêu cầu gốc "để user biết và checkin"); không có plan active thì
+  Home y như cũ.
+  **Không làm**: liên kết với lịch sử hoạt động/workout thật đã ghi nhận (check-in là bookkeeping độc
+  lập, không phải "đã chạy thật theo thiết bị") — cố ý, brief yêu cầu không lẫn 2 việc.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug` BUILD
+  SUCCESSFUL sau rebase lên main (gồm cả D-1189/D-1190) — soát 76 file `TEST-*.xml`, không file nào
+  thiếu `failures="0" errors="0"`. Test mới: `HigdonNoviceSchedulesTest` (14, đối chiếu từng tuần/ngày
+  race với bảng gốc), `RoomTrainingPlanRepositoryTest` (7, fake DAO theo đúng convention project —
+  chưa có precedent Robolectric cho Room DAO trong repo này), `TrainingPlanViewModelTest` (3),
+  `HomeViewModelTest` bổ sung (+4: không plan / hôm nay có lịch / đã check-in / ngày nghỉ). Chưa có
+  thiết bị/emulator khả dụng lúc agent chạy — chưa xác nhận trực quan trên máy thật.

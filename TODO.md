@@ -24,6 +24,13 @@ Protocol gaps per brand: `docs/protocols/<BRAND>_IMPLEMENTATION_BRIEF.md` (items
 
 - [ ] **Garmin:** whether pairing completes without the Garmin Connect cloud `registerDevice` step; whether firmware ever requires the service-4 registration path; 5023 battery layout; the four FIT checks in `FitHealthMapper` (resting HR 273, HRV 389, sampling scheme, per-activity counters); meaning of capability bit 29.
 - [ ] **Zepp:** resting HR type 58 layout (inferred), sleep-stage enum, PAI/sport-summary/GPS layouts, `allowLocalBinding` on current firmware.
+- [ ] **Xiaomi (non-Huami) driver — brand new, un-started RE project.** Confirmed 2026-11-12 (D-804/
+  D-1188) on a real Xiaomi Smart Band 10: it speaks neither the Zepp OS channel nor the legacy 0x0009
+  auth at all, so `:driver:zepp` correctly refuses it (user-facing message, not a bug). Xiaomi's own
+  (newer Band 8/9/10, Band 7 Pro) protocol has never been reverse-engineered here. Needs the real
+  Xiaomi Wear or Mi Fitness companion APK (not Zepp's own app) placed in `docs/apks/` before any
+  protocol work starts, per CLAUDE.md's "never guess a vendor protocol without checking evidence first"
+  rule — blocked until the user supplies it.
 - [ ] **Huawei:** direct BLE now works only for watches that report `authenticVersion == 0`; all other
   watches fail fast with a clear message (no CAK/HiChain extraction). Still open: service-7 response
   layouts, 0x0132 zone/IANA real-watch echo, 0x0103 support-vector edge cases, live-HR nesting/periodic
@@ -39,9 +46,11 @@ Protocol gaps per brand: `docs/protocols/<BRAND>_IMPLEMENTATION_BRIEF.md` (items
 - [ ] Charts: swipe to previous periods, tap a bar to inspect, a data-source priority screen.
 - [ ] Device-native hourly distance/energy/exercise for the Day view (currently split by step share, D-207).
 - [ ] Record types for blood pressure, temperature, weight and body composition (stored as raw payloads today).
-- [ ] Training mode (D-1185 shipped the static 5K/10K/21K/42K guide, `feature/training`, entry on Home) —
-  not personalized at all yet: no link to the user's own workout history, no "pick a plan and track
-  progress against it". That's the natural next step whenever it's wanted.
+- [ ] Training mode (D-1185 static guide; D-1191 added picking one of the 4 Hal Higdon Novice plans,
+  a generated day-by-day calendar, and check-in from the calendar or Home) — still open: the other
+  plans (Couch to 5K, Galloway, Daniels VDOT, Hanson's, Pfitzinger, Intermediate 10K) aren't selectable,
+  only described; and check-in is independent bookkeeping, not linked to the user's actual recorded
+  workouts/activities yet (tapping "done" doesn't check whether a matching real run was synced).
 - [ ] Weight data source (manual entry as its own record type; D-1183 wired Imperial/Metric *display*
   for distance/weight across Home + Activity — this item is now just about where weight values
   themselves come from, not units).
