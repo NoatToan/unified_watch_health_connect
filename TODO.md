@@ -54,10 +54,17 @@ Protocol gaps per brand: `docs/protocols/<BRAND>_IMPLEMENTATION_BRIEF.md` (items
 - [ ] Weight data source (manual entry as its own record type; D-1183 wired Imperial/Metric *display*
   for distance/weight across Home + Activity — this item is now just about where weight values
   themselves come from, not units).
-- [ ] Localization (D-1184 did `core/designsystem` + `feature/devices` + `feature/home` + the Profile
-  EN/VI toggle — still open: `feature/profile`'s own content, `feature/activity`, `feature/onboarding`,
-  `feature/races`, `app/.../notifications/`'s 1 string, and the known gaps D-1184 left on purpose
-  (ViewModel-built snackbar/toast text, `compactLabel()`, chart a11y descriptions in `HealthCharts.kt`).
+- [ ] Localization — D-1184 did `core/designsystem`/`feature/devices`/`feature/home`; D-1192 fixed the
+  language-control bug (it always read "English" even when correctly following a Vietnamese system
+  locale — now a real tri-state System/English/Tiếng Việt picker) and finished `feature/profile`,
+  `feature/activity`, `feature/onboarding`, `app/.../notifications`. Still open:
+  **`feature/races`/`feature/training`/`feature/gear`** — Vietnamese-only, no English version at all
+  (~176 lines of editorial/marketing content: training-plan day text, race listings, gear copy) —
+  needs natural translation, not mechanical extraction; its own dedicated task. Also still open, D-1184's
+  original known gaps: ViewModel-built snackbar/toast text (needs `@ApplicationContext Context`
+  injected into several ViewModels), `compactLabel()`'s 6-char layout constraint, chart a11y
+  descriptions inside `Canvas` `DrawScope` lambdas in `HealthCharts.kt`. Also not yet confirmed on a
+  real device: system-locale-follow and override-persists-across-restart actually work end to end.
 - [ ] "Tủ đồ" (wardrobe) follow-up to D-1186's gear catalog (`feature/gear`, Profile entry, read-only
   browse + color picker, live): let the user add a product + the color variant they own, light
   gamification to encourage engagement (needs a new Room entity, e.g. `OwnedGear`, referencing the

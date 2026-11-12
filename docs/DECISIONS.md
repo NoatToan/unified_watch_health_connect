@@ -3034,3 +3034,31 @@ yếu tố gamification nhẹ; xa hơn là community khoe trang bị. Cần Room
   chưa có precedent Robolectric cho Room DAO trong repo này), `TrainingPlanViewModelTest` (3),
   `HomeViewModelTest` bổ sung (+4: không plan / hôm nay có lịch / đã check-in / ngày nghỉ). Chưa có
   thiết bị/emulator khả dụng lúc agent chạy — chưa xác nhận trực quan trên máy thật.
+
+## Fix locale-toggle bug: tri-state language control, default theo máy (D-1192)
+
+- **D-1192** · 2026-11-12 · "Theo máy / English / Tiếng Việt" thay cho toggle nhị phân cũ — **Chốt**
+  **Bug thật tìm ra lúc user review**: toggle cũ (D-1184) đọc
+  `AppCompatDelegate.getApplicationLocales().toLanguageTags().startsWith("vi")` — chuỗi này **rỗng**
+  khi user chưa từng đổi (đang theo system locale), `"".startsWith("vi")` luôn `false`, nên control
+  luôn hiện/coi app là "English" **kể cả khi máy đang ở tiếng Việt và app đang hiển thị đúng tiếng Việt
+  theo system-follow** — đúng nguyên nhân "app đang bị lẫn tiếng Anh tiếng Việt" user báo.
+  Thay bằng `LanguageChoice` 3 trạng thái (SYSTEM/ENGLISH/VIETNAMESE) qua dialog radio-button:
+  - SYSTEM: đọc tag rỗng → hiện "Theo máy (Tiếng Việt)"/"(English)" — label phụ lấy từ
+    `Resources.getSystem().configuration.locales[0]`, **không** dùng `Locale.getDefault()` (bị chính
+    AppCompat ghi đè khi có override, dùng nhầm sẽ tái lặp đúng lớp bug vừa sửa).
+  - Chọn "Theo máy" → `LocaleListCompat.getEmptyLocaleList()` (xác nhận tồn tại thật trong
+    `androidx.core:core-1.19.1` qua `javap` trực tiếp trên jar đã resolve, không đoán API).
+  - Giữ nguyên quyết định persistence của D-1184 (AppCompat tự lưu, không thêm field
+    `UserPreferences`).
+  **Localize nốt**: `feature/profile` (0% → full, bao gồm chính dialog ngôn ngữ — trước đây D-1184 cố
+  ý để lại vì "theo follow-up riêng", giờ là lúc làm), `feature/activity`, `feature/onboarding`,
+  `app/.../notifications` (6 string thật, không phải 1 như D-1040 ước tính cũ).
+  **Chưa làm, cố ý** (việc lớn, cần task riêng): `feature/races`/`feature/training`/`feature/gear` vẫn
+  hardcode tiếng Việt, không có bản tiếng Anh — ~176 dòng literal tiếng Việt, là nội dung
+  editorial/marketing (lịch tập, tin giải chạy, mô tả sản phẩm) cần dịch tự nhiên, không phải
+  `stringResource` cơ học — bỏ dở ở đây thay vì làm vội cho xong.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug` BUILD
+  SUCCESSFUL. Chưa có thiết bị/emulator khả dụng lúc agent chạy — chưa xác nhận trực quan đổi ngôn ngữ
+  hệ thống → app tự theo, hay override giữ nguyên qua restart; cần test trên máy thật trước khi coi
+  D-1184's follow-up này đã đóng hẳn.
