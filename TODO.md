@@ -13,6 +13,10 @@ Protocol gaps per brand: `docs/protocols/<BRAND>_IMPLEMENTATION_BRIEF.md` (items
   added later to `docs/re-evidence/garmin/` or `docs/real-device-demo/` when available) — log here once
   it lands, with watch model and whether it uses Multi-Link (unit-tested only so far).
 - [ ] Same run for a real **Zepp/Amazfit** watch (needs the user's auth key, or a fresh local bind).
+  Done 2026-11-12 for a **Xiaomi Smart Band 10** instead: confirmed (D-804/D-1188) it does NOT speak
+  the Zepp/Huami protocol at all — no matching GATT service found, `UnsupportedDeviceException` as
+  designed. Xiaomi's own (non-Huami) protocol is a completely separate, un-started reverse-engineering
+  project (needs the Xiaomi Wear/Mi Fitness APK + `device-protocol-re`) — not a `:driver:zepp` bug.
 - [ ] Garmin app-level auth (XXTEA 5101→5111) is implemented; verify on an unbonded watch that the
   soft-bond fallback lets the watch drive Garmin Auth, and confirm the 5111 frame-encryption switch.
 

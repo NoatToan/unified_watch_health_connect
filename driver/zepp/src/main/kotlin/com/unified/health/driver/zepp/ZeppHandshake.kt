@@ -94,7 +94,16 @@ internal class ZeppHandshake(
         }
         val legacy = gatt.findCharacteristic(ZeppUuids.LEGACY_AUTH, ZeppUuids.SERVICE_MILI_SECONDARY)
             ?: gatt.findCharacteristic(ZeppUuids.LEGACY_AUTH, ZeppUuids.SERVICE_MILI)
-            ?: throw UnsupportedDeviceException("Watch exposes neither a supported channel auth module nor the legacy auth characteristic")
+            // D-805: hit by real Xiaomi Smart Band 8/9/10 (D-804 predicted this — they're matched to
+            // this driver by BLE name only, for display, but don't actually speak Huami/Zepp) — the
+            // watch exposes neither the Zepp OS channel nor the legacy 0x0009 characteristic at all,
+            // so there is nothing this driver can negotiate. User-facing message, same pattern as
+            // HuaweiSession's unsupportedAuth(): explain why and point at the real companion app.
+            ?: throw UnsupportedDeviceException(
+                "This watch doesn't use the Zepp/Huami protocol this driver supports (no matching " +
+                    "Bluetooth service found) — this is expected for some newer Xiaomi Smart Band " +
+                    "models. Sync it through the Xiaomi Wear/Mi Fitness app and Health Connect instead.",
+            )
         authenticateLegacy(legacy, authKey, confirmBind)
         return null
     }

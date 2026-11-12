@@ -69,7 +69,7 @@ internal class AndroidGattClient private constructor(
                 _connected.value = true
                 connectWaiter?.complete(Unit)
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED || status != BluetoothGatt.GATT_SUCCESS) {
-                connectWaiter?.completeExceptionally(GattException("Connection failed (status $status)"))
+                connectWaiter?.completeExceptionally(GattException(friendlyConnectionFailureMessage(status)))
                 onLinkLost()
             }
         }
@@ -318,4 +318,36 @@ internal class AndroidGattClient private constructor(
         suspend fun connect(context: Context, device: BluetoothDevice, options: GattOptions): AndroidGattClient =
             AndroidGattClient(device, options).also { it.open(context, options.connectTimeoutMs) }
     }
+}
+
+/**
+ * D-1189: a user-facing explanation for a failed `onConnectionStateChange`, keyed by the raw Android
+ * GATT status code — these numeric codes (Android's own `BluetoothGattCallback` constants plus a few
+ * widely-seen-but-undocumented ones from the Bluetooth stack) meant nothing to a user before ("status
+ * 147, connection failed"). Unknown/undocumented codes still show the raw number so a support
+ * conversation or a future addition here has something concrete to go on, but phrased as a sentence,
+ * not a bare error code.
+ */
+internal fun friendlyConnectionFailureMessage(status: Int): String = when (status) {
+    // GATT_CONN_TIMEOUT — watch stopped responding (out of range, asleep, or busy with another app).
+    8 -> "Lost connection to the watch — it stopped responding. Make sure it's nearby and awake, then try again."
+    // GATT_CONN_TERMINATE_PEER_USER — the watch itself hung up (often a user action on the watch side,
+    // e.g. unpairing from its own settings, or it's already connected to another phone/app).
+    19 -> "The watch ended the connection. Check it isn't already connected to another phone or app (like Zepp/Mi Fitness), then try again."
+    // GATT_CONN_TERMINATE_LOCAL_HOST — the phone side closed the link (often this app itself, or
+    // Android reclaiming the radio); surfacing it is still useful since it means the link didn't fail
+    // on the watch's end.
+    22 -> "The connection was closed before setup finished. Try connecting again."
+    // GATT_CONN_FAIL_ESTABLISH — the BLE link itself never came up (interference, distance, or the
+    // watch rejecting the connection attempt outright).
+    62 -> "Couldn't establish a Bluetooth link with the watch. Move it closer to your phone and try again."
+    // GATT_ERROR — Android's catch-all; the vendor apps hit this often enough that a stale GATT
+    // service cache is one common cause, which is why connect() already calls refreshGattCache()
+    // before discovery — but it can still surface here on the very first connection attempt.
+    133 -> "Bluetooth connection failed (a known flaky Android error). This often clears up on a retry — try connecting again, or toggle Bluetooth off and on if it keeps happening."
+    // 147 isn't one of the documented BluetoothGatt constants; it's commonly reported across Android
+    // BLE apps as an internal Bluetooth-stack error, often tied to the phone's own GATT client table
+    // being under pressure from repeated connect/disconnect cycles rather than anything the watch did.
+    147 -> "Connection failed due to a Bluetooth stack error on the phone. Try again in a moment — if it persists, toggling Bluetooth off and on (or restarting the app) usually clears it."
+    else -> "Connection failed (Bluetooth error $status). Try connecting again; if it keeps happening, toggle Bluetooth off and on."
 }

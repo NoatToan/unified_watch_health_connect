@@ -754,9 +754,14 @@ Format: `D-<số>` · ngày · phạm vi · quyết định · lý do. Trạng t
 - **D-803** · 2026-11-08 · Hiệu ứng 3D giả lập trong `WatchImage` — **Chốt**
   Không hãng nào (Garmin, Huawei, Honor, Amazfit/Zepp, Xiaomi, COROS, Polar) công bố asset 3D official (GLB/GLTF/USDZ) hay bộ ảnh xoay 360° cho sản phẩm của họ, nên `WatchImage` giả 3D trên ảnh 2D phẳng: nghiêng phối cảnh (`graphicsLayer` rotationX/Y) khi kéo, lật vào (`rotationY` từ -90°) khi `revealKey` đổi (lúc kết nối), và một vệt sáng chạy theo hướng nghiêng.
   Lý do: vẫn cho cảm giác sản phẩm "sống" mà không cần tải model 3D (giữ offline, không quyền INTERNET) hay tự dựng model trái phép.
-- **D-804** · 2026-11-08 · Xiaomi Smart Band 8/9/10 (và 7 Pro) giữ trong catalog chỉ để hiển thị — **Tạm**
+- **D-804** · 2026-11-08, xác nhận 2026-11-12 · Xiaomi Smart Band 8/9/10 (và 7 Pro) giữ trong catalog chỉ để hiển thị — **Chốt**
   Các model này dùng giao thức riêng của Xiaomi, không phải Huami/Zepp (chỉ Mi Band 5/6 và Xiaomi Smart Band 7 là Huami/Zepp thật); vẫn giữ trong `WatchCatalog` (vendor `ZEPP`) để hiện đúng tên và ảnh khi nhận ra tên quảng bá.
   Lý do: driver `:driver:zepp` (giao thức Huami) nhiều khả năng không nói chuyện được với các model này dù nhận diện được tên; cần driver Xiaomi riêng hoặc xác nhận trên máy thật trước khi coi là hỗ trợ đầy đủ.
+  **Xác nhận trên máy thật 2026-11-12** (D-1188): user pair **Xiaomi Smart Band 10** thật, driver `:driver:zepp`
+  throw đúng như dự đoán — không tìm thấy service GATT nào của Zepp (`UnsupportedDeviceException` ở
+  `ZeppHandshake.kt:97`, "Watch exposes neither a supported channel auth module nor the legacy auth
+  characteristic", xem D-1188). Xiaomi (non-Huami) **chưa từng được triển khai** trong app này — đây
+  là gap đã biết, không phải bug, và không có driver Xiaomi riêng nào đang làm dở.
 
 ## Pair with QR code (D-9xx)
 
@@ -2916,3 +2921,43 @@ yếu tố gamification nhẹ; xa hơn là community khoe trang bị. Cần Room
   version SDK mới hơn image nếu AGP cần auto-download.
   **Chưa verify được chạy thật lại trên GitHub** (fix này đang nằm trên worktree branch, chưa push) —
   push xong cần xem tab Actions 1 lần nữa để xác nhận.
+
+## Xiaomi Smart Band 10 real-device confirmation + friendlier Zepp error message (D-1188)
+
+- **D-1188** · 2026-11-12 · Thông báo lỗi thân thiện khi watch không nói chuyện được giao thức Zepp — **Chốt**
+  User pair **Xiaomi Smart Band 10** thật (model BLE name suffix "30DC", vendor matched `ZEPP` chỉ vì
+  tên quảng bá, theo D-804). `ZeppHandshake.authenticate()` connect GATT + discover service thành công
+  (status=0) nhưng không tìm thấy `CHANNEL_DOWN`/`CHANNEL_UP` (service MILI, Zepp OS channel v1/v2) lẫn
+  `LEGACY_AUTH` — xác nhận thật Band 10 không expose bất kỳ service Huami/Zepp nào, đúng dự đoán D-804.
+  Message lỗi cũ ("Watch exposes neither a supported channel auth module nor the legacy auth
+  characteristic") quá kỹ thuật cho user cuối — nó hiện thẳng lên UI (`DeviceDetailViewModel`'s
+  `it.message ?: "Operation failed"`, không qua lớp dịch message nào khác). Viết lại theo đúng pattern
+  `HuaweiSession.unsupportedAuth()` đã dùng (giải thích lý do + hướng dẫn thay thế): báo đây là watch
+  không dùng giao thức Zepp/Huami, driver này không hỗ trợ, và hướng dẫn sync qua app Xiaomi
+  Wear/Mi Fitness + Health Connect thay vì connect trực tiếp.
+  **Không mở rộng sang xây driver Xiaomi riêng** trong lần này — Xiaomi (non-Huami) là giao thức hoàn
+  toàn chưa RE/implement, cần APK Xiaomi Wear/Mi Fitness thật trong `docs/apks/` + agent
+  `device-protocol-re` nếu muốn làm, việc riêng khi user quyết định ưu tiên.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :driver:zepp:testDebugUnitTest` BUILD
+  SUCCESSFUL — không test nào assert message cũ nên không cần sửa test. Chỉ đổi 1 string, không đổi
+  logic/control flow.
+
+## Friendly messages for raw Android GATT connection-failure status codes (D-1189)
+
+- **D-1189** · 2026-11-12 · `friendlyConnectionFailureMessage(status)` thay cho "Connection failed (status N)" — **Chốt**
+  User báo thấy "status 147, connection failed" khi pair thất bại — message cũ ở
+  `AndroidGattClient.kt`'s `onConnectionStateChange` chỉ nối chuỗi `"Connection failed (status
+  $status)"`, không giải thích gì, hiện thẳng lên UI qua cùng đường `it.message` như mọi
+  `WearableProtocolException` khác.
+  Thêm hàm thuần `friendlyConnectionFailureMessage(status: Int): String` map các mã GATT status hay
+  gặp nhất sang câu giải thích + gợi ý hành động: 8 (`GATT_CONN_TIMEOUT`), 19
+  (`GATT_CONN_TERMINATE_PEER_USER`), 22 (`GATT_CONN_TERMINATE_LOCAL_HOST`), 62
+  (`GATT_CONN_FAIL_ESTABLISH`), 133 (`GATT_ERROR`, đã có workaround `refreshGattCache()` sẵn nhưng vẫn
+  có thể gặp ở lần connect đầu), và **147** (không phải hằng số `BluetoothGatt` chính thức nào — lỗi
+  nội bộ Bluetooth stack thường gặp khi phone có nhiều chu kỳ connect/disconnect liên tiếp, không hẳn
+  do watch). Mã lạ không nằm trong danh sách vẫn giữ nguyên số trong câu (để còn có cái tra cứu sau),
+  nhưng viết thành câu chứ không phải chỉ con số trần.
+  **Verify**: test mới `AndroidGattClientTest.kt` (3 test: mọi status đã biết ra câu thật không phải
+  số trần, status 147 có gợi ý "try again", status lạ vẫn giữ số gốc) — `core:ble` trước đây chưa có
+  thư mục test nào. `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug`
+  BUILD SUCCESSFUL.
