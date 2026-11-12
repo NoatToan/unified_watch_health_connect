@@ -39,6 +39,7 @@ import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.GearImage
 import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.formatVnd
+import com.unified.health.core.designsystem.theme.ChromeRipple
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.model.GearItem
 import com.unified.health.core.model.GearVariant
@@ -62,7 +63,8 @@ internal fun GearDetailScreen(state: GearDetailUiState, onBack: () -> Unit, onSe
         topBar = {
             TopAppBar(
                 title = {},
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } },
+                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
+                navigationIcon = { ChromeRipple { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } } },
             )
         },
     ) { padding ->

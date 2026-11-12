@@ -50,6 +50,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.component.TrainingHeroImage
+import com.unified.health.core.designsystem.theme.ChromeRipple
 import com.unified.health.core.designsystem.theme.Spacing
 
 /**
@@ -78,9 +79,12 @@ internal fun TrainingScreen(onBack: () -> Unit, onOpenRunningForm: () -> Unit) {
         topBar = {
             TopAppBar(
                 title = { Text("Chế độ luyện tập") },
+                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    ChromeRipple {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
                     }
                 },
             )

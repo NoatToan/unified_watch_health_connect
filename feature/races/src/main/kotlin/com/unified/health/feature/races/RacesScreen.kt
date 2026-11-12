@@ -29,6 +29,7 @@ import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.ErrorState
 import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.RaceCard
+import com.unified.health.core.designsystem.theme.ChromeRipple
 import com.unified.health.core.designsystem.theme.Spacing
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -73,7 +74,8 @@ internal fun RacesScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Giải chạy sắp tới") },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } },
+                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
+                navigationIcon = { ChromeRipple { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } } },
             )
         },
     ) { padding ->

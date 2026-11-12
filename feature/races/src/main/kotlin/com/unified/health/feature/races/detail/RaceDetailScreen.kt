@@ -45,6 +45,7 @@ import com.unified.health.core.designsystem.component.RaceNameText
 import com.unified.health.core.designsystem.component.TerrainBadge
 import com.unified.health.core.designsystem.component.ctaLabel
 import com.unified.health.core.designsystem.component.formatVnd
+import com.unified.health.core.designsystem.theme.ChromeRipple
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.util.launchInCustomTab
 import com.unified.health.core.model.Race
@@ -70,7 +71,8 @@ internal fun RaceDetailScreen(state: RaceDetailUiState, onBack: () -> Unit) {
         topBar = {
             TopAppBar(
                 title = {},
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } },
+                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
+                navigationIcon = { ChromeRipple { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } } },
                 // Transparent so the back button floats over the header image/gradient (D-1114), not
                 // a solid app-bar strip above it.
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),

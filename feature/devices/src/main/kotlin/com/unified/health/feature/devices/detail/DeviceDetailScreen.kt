@@ -60,6 +60,7 @@ import com.unified.health.core.designsystem.component.ConnectionStatusChip
 import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.SectionHeader
+import com.unified.health.core.designsystem.theme.ChromeRipple
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.feature.devices.R
 import com.unified.health.feature.devices.TappableWatchImage
@@ -117,9 +118,12 @@ internal fun DeviceDetailScreen(
         topBar = {
             TopAppBar(
                 title = { Text((state as? DeviceDetailUiState.Success)?.device?.name ?: stringResource(R.string.device_fallback_title)) },
+                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back))
+                    ChromeRipple {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back))
+                        }
                     }
                 },
             )
