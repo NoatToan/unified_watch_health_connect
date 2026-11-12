@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:background="@color/s36"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_52dp">
+    <TextView
+        android:ellipsize="end"
+        android:id="@+id/wl_content"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_42dp"
+        android:text=""
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        app:layout_constraintEnd_toStartOf="@+id/wl_notice_more"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/NoticeView.Content"/>
+    <TextView
+        android:id="@+id/wl_notice_more"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_42dp"
+        android:text="@string/wl_know_more"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/NoticeView.ClickText"/>
+    <View
+        android:id="@+id/line"
+        android:background="@drawable/wl_line_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_10dp"
+        app:layout_constraintTop_toBottomOf="@+id/wl_notice_more"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

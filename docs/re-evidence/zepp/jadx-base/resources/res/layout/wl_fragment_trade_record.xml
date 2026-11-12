@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.wallet.ui.view.NoticeBarView
+        android:id="@+id/wl_noticebarview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_52dp"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <com.huami.wallet.ui.view.MyTextView
+        android:ellipsize="marquee"
+        android:id="@+id/wl_tv_xiaomi_notice"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_40dp"
+        android:text=""
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:layout_marginStart="@dimen/size_18dp"
+        android:layout_marginEnd="@dimen/size_18dp"
+        style="@style/NoticeView.Content"/>
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_indicator"
+        android:background="@color/s36"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_36dp"/>
+    <View
+        android:id="@+id/divider"
+        style="@style/HorizontalLine.Dim"/>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

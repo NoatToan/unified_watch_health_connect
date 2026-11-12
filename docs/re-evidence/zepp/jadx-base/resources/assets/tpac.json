@@ -1,0 +1,168 @@
+{
+   "wechat": {
+      "appid": "wx9ad0060a6cff3d45",
+      "scope": [
+         "snsapi_userinfo"
+      ],
+      "redirect_url": "https://hm.xiaomi.com/watch.do",
+      "third_name": "wechat-watch-android"
+   },
+   "xiaomi": {
+      "appid": "2882303761517383915",
+      "scope": [
+         "1",
+         "6000",
+         "16001",
+         "20000"
+      ],
+      "redirect_url": "https://hm.xiaomi.com/watch.do",
+      "third_name": "mi-watch",
+     "skip_confirm": false,
+     "keep_cookies": true
+   },
+   "facebook": {
+      "appid": "1820804051497732",
+      "scope": [
+         "public_profile",
+         "email"
+      ],
+      "third_name": "facebook"
+   },
+   "google": {
+      "appid": "551201481744-bvu119df0a6nc0qqu7dpq1h40d6lr5jv.apps.googleusercontent.com",
+      "scope": [
+         "email",
+         "profile"
+      ],
+      "third_name": "google"
+   },
+   "line": {
+      "appid": "1567904126",
+      "third_name": "watch-line"
+   },
+   "huami_phone": {
+      "third_name": "huami_phone"
+   },
+  "lisbon": {
+    "appid": "576048142760282112",
+    "platform": 1,
+    "scope": [
+      "1",
+      "20000"
+    ],
+    "redirect_url": "https://api-mifit-cn.huami.com/huami.health.loginview.do",
+    "third_name": "xiaomi-hm-mifit-lisbon",
+    "skip_confirm": false
+  },
+  "osprey": {
+    "appid": "576048774711872512",
+    "platform": 1,
+    "scope": [
+      "1",
+      "20000"
+    ],
+    "redirect_url": "https://api-mifit-cn.huami.com/huami.health.loginview.do",
+    "third_name": "xiaomi-hm-mifit-osprey",
+    "skip_confirm": false
+  },
+  "lincs": {
+    "appid": "585110839086812160",
+    "platform": 1,
+    "scope": [
+      "1",
+      "20000"
+    ],
+    "redirect_url": "https://api-mifit-cn.huami.com/huami.health.loginview.do",
+    "third_name": "xiaomi-hm-mifit-lincs",
+    "skip_confirm": false
+  },
+  "newton": {
+    "appid": "585110263938681856",
+    "platform": 1,
+    "scope": [
+      "1",
+      "20000"
+    ],
+    "redirect_url": "https://api-mifit-cn.huami.com/huami.health.loginview.do",
+    "third_name": "xiaomi-hm-mifit-newton",
+    "skip_confirm": false
+  },
+  "prague": {
+    "appid": "585114957603934208",
+    "platform": 1,
+    "scope": [
+      "1",
+      "20000"
+    ],
+    "redirect_url": "https://api-mifit-cn.huami.com/huami.health.loginview.do",
+    "third_name": "xiaomi-hm-mifit-prague",
+    "skip_confirm": false
+  },
+  "kongming": {
+    "appid": "560789118762616832",
+    "platform": 1,
+    "scope": [
+      "1",
+      "6000",
+      "20000"
+    ],
+    "redirect_url": "https://api-mifit-cn.huami.com/huami.health.loginview.do",
+    "third_name": "xiaomi-hm-mifit-device",
+    "skip_confirm": false
+  },
+  "como": {
+    "appid": "594841768042694656",
+    "platform": 1,
+    "scope": [
+      "1",
+      "20000"
+    ],
+    "redirect_url": "https://api-mifit-cn.huami.com/huami.health.loginview.do",
+    "third_name": "xiaomi-hm-mifit-como",
+    "skip_confirm": false
+  },
+  "ness": {
+    "appid": "614036531195154432",
+    "platform": 1,
+    "scope": [
+      "1",
+      "20000"
+    ],
+    "redirect_url": "https://api-mifit-cn.huami.com/huami.health.loginview.do",
+    "third_name": "xiaomi-hm-mifit-ness",
+    "skip_confirm": false
+  },
+  "bonn": {
+    "appid": "612659413408289792",
+    "platform": 1,
+    "scope": [
+      "1",
+      "20000"
+    ],
+    "redirect_url": "https://api-mifit-cn.huami.com/huami.health.loginview.do",
+    "third_name": "xiaomi-hm-mifit-bonn",
+    "skip_confirm": false
+  },
+  "hamburg": {
+    "appid": "612660040968441856",
+    "platform": 1,
+    "scope": [
+      "1",
+      "20000"
+    ],
+    "redirect_url": "https://api-mifit-cn.huami.com/huami.health.loginview.do",
+    "third_name": "xiaomi-hm-mifit-hamburg",
+    "skip_confirm": false
+  },
+  "volga": {
+    "appid": "612648183633284096",
+    "platform": 1,
+    "scope": [
+      "1",
+      "20000"
+    ],
+    "redirect_url": "https://api-mifit-cn.huami.com/huami.health.loginview.do",
+    "third_name": "xiaomi-hm-mifit-volga",
+    "skip_confirm": false
+  }
+}

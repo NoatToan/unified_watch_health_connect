@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" app:startDestination="@+id/phone_alert_setting_fragment">
+    <fragment
+        android:name="com.xiaomi.hm.health.ui.smartplay.btphone.phonecallalertsetting.PhoneAlertSettingFragment"
+        android:id="@+id/phone_alert_setting_fragment">
+        <action
+            android:id="@+id/to_contact_fragment"
+            app:destination="@+id/bt_phone_contact_fragment"/>
+        <action
+            android:id="@+id/to_guide_fragment"
+            app:destination="@+id/bt_phone_guide_fragment"/>
+    </fragment>
+    <fragment
+        android:name="com.xiaomi.hm.health.ui.smartplay.btphone.BtPhoneSettingGuideFragment"
+        android:id="@+id/bt_phone_guide_fragment">
+        <action
+            android:id="@+id/guide_back_to_bt_phone"
+            app:popUpTo="@+id/phone_alert_setting_fragment"/>
+        <action
+            android:id="@+id/guide_to_pair_result_fragment"
+            app:destination="@+id/bt_phone_pair_result_fragment"/>
+    </fragment>
+    <fragment
+        android:name="com.xiaomi.hm.health.ui.smartplay.btphone.BtPhonePairResultFragment"
+        android:id="@+id/bt_phone_pair_result_fragment">
+        <action
+            android:id="@+id/pair_result_back_to_bt_phone"
+            app:popUpTo="@+id/phone_alert_setting_fragment"/>
+        <action
+            android:id="@+id/pair_result_back_to_alert_setting"
+            app:popUpTo="@+id/phone_alert_setting_fragment"/>
+    </fragment>
+    <fragment
+        android:name="com.xiaomi.hm.health.ui.smartplay.btphone.contact.BtContactFragment"
+        android:id="@+id/bt_phone_contact_fragment">
+        <action
+            android:id="@+id/contact_back_to_bt_phone"
+            app:popUpTo="@+id/phone_alert_setting_fragment"/>
+    </fragment>
+</navigation>

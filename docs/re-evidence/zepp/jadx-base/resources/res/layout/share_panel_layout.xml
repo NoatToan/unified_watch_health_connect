@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:huami="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/share_panel_height">
+    <View
+        android:background="@color/s1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.074"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:id="@+id/recycler"
+        android:scrollbars="none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:paddingStart="@dimen/share_card_recycler_padding_horizontal"
+        android:paddingEnd="@dimen/share_card_recycler_padding_horizontal"
+        huami:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+</FrameLayout>

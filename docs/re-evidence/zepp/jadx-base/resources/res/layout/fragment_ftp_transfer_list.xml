@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/attention"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:background="@drawable/ic_alert_20"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:backgroundTint="@color/s2"/>
+            <TextView
+                android:textSize="14sp"
+                android:textColor="@color/s2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/file_manager_no_task"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+    </FrameLayout>
+    <ListView
+        android:id="@+id/file_manager_transfer_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:animateLayoutChanges="true"/>
+</FrameLayout>

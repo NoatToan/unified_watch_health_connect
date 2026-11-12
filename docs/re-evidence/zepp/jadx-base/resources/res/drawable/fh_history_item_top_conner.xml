@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners
+        android:topLeftRadius="@dimen/fh_history_item_conner"
+        android:topRightRadius="@dimen/fh_history_item_conner"/>
+    <solid android:color="@color/fh_history_rv_bg_color"/>
+</shape>

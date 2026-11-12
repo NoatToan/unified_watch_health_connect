@@ -1,0 +1,503 @@
+syntax = "proto2";
+
+import "statis_base.proto";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+/** 屏幕点亮 */
+message LcdOnEvent {
+    required uint32 lcdOnByPress = 1; /** 按键点亮 */
+    required uint32 lcdOnByEvent = 2; /** 抬腕点亮 */
+    required uint32 lcdOnByNotify = 3; /** 通知提醒点亮 */
+}
+/** 屏幕熄灭 */
+message LcdOffEvent {
+    required uint32 lcdOffScreenPalm = 1; /** 盖掌息屏  */
+    required uint32 lcdOffScreenWrist = 2; /** 落腕息屏 */
+    required uint32 lcdOffScreenAuto = 3; /** 自动息屏 */
+}
+
+/** OTA */
+message OtaUpdateEvent {
+    required uint32 otaFailedFontCount = 1; /** 字库升级失败次数 */
+    required uint32 otaFailedResourceCount = 2; /** 资源升级失败次数 */
+    required uint32 otaFailedFirmwareCount = 3; /** 固件升级失败次数 */
+    required uint32 otaFirmwareSuccessCount = 4; /** 整体固件升级成功次数 */
+}
+/** GPS Update */
+message GpsUpdateEvent {
+    required uint32 gpsUpdateSuccessCount = 1; /** GPS升级成功次数 */
+    required uint32 gpsUpdateFailedCount = 2; /** GPS升级失败次数 */
+}
+/** AGPS Update */
+message AgpsUpdateEvent {
+    required uint32 agpsUpdateSuccessCount = 1; /** AGPS升级成功次数 */
+    required uint32 agpsUpdateFailedCount = 2; /** AGPS升级失败次数 */
+}
+/** 关机 */
+message ShutdownEvent {
+    required uint32 shutdownFromSettingCount = 1; /** 关机 设置页进入关机 */
+    required uint32 shutdownFromQRCount = 2; /** 关机 二维码页面进入 */
+    required uint32 shutdownFromFromUpdateFailedCount = 3; /** 关机 升级失败页面进入 */
+}
+/** 恢复出厂 */
+message ResetFactoryEvent {
+    required uint32 resetFactoryFromSettingCount = 1; /** 恢复出厂 设置页进入 */
+    required uint32 resetFactoryFromQRCount = 2;     /** 恢复出厂 二维码页面进入 */
+    required uint32 resetFactoryFromUpdateFailedCount = 3; /** 恢复出厂 升级失败页面进入 */
+}
+/** 表盘列表展示 */
+message WatchFaceDisplayEvent {
+    required uint32 longPressOpenCount = 1; /** 长按表盘进入 */
+    required uint32 settingOpenCount = 2; /** 表盘入口点击进入 */
+    required uint32 xiaoaiOpenCount = 3; /** 从小爱进入 */
+}
+/** --------------应用入口------ */
+message PortalEvent {
+    required uint32 openSourceAppList = 1;/** App list 点击进入 */
+    required uint32 openSourceWidget = 2;/** 快捷入口点击进入 */
+    required uint32 openSourceWatchFace = 3;/** 表盘点击进入 */
+    required uint32 openSourceXiaoAi = 4;/** 从小爱进入 */
+}
+
+/** 来电提醒 */
+message CallingEvent {
+    required uint32 ignore = 1; /** 忽略 */
+    required uint32 hungUp = 2; /** 挂断 */
+    required uint32 replyMessage = 3;/** 短信回复 */
+    required uint32 none = 4; /** 无操作 */
+}
+
+/** 待办事项提醒展示次数	 */
+message TodoListEvent {
+    required uint32 complete = 1; /** 完成 */
+    required uint32 later = 2; /** 稍后提醒 */
+    required uint32 ignore = 3; /** 忽略 */
+}
+
+/** 日程提醒统计 */
+message ScheduleEvent {
+    required uint32 close = 1;
+    required uint32 later = 2;
+}
+
+/** 闹钟提醒次数		 */
+message AlarmRemindEvent {
+    required uint32 complete = 1; /** 完成 */
+    required uint32 later = 2; /** 稍后提醒 */
+    required uint32 none = 3; /** 无操作 */
+}
+
+/** 闹钟创建次数统计	 */
+message AlarmCreateEvent {
+    required uint32 createByXiaoAi = 1; /** 通过小爱同学创建 */
+    required uint32 createByAlexa = 2;  /** 通过 Alexa 创建 */
+    required uint32 createByDevice = 3; /** 通过手表创建 */
+}
+
+/** 月经期提醒次数 */
+message MenstruationRemindEvent {
+    required uint32 start = 1; /** 已经开始 */
+    required uint32 ignore = 2; /** 忽略 */
+}
+
+/** 排卵日提醒次数 */
+message OvulationRemindEvent {
+    required uint32 open = 1; /** 打开女性健康 */
+    required uint32 ignore = 2; /** 忽略 */
+}
+
+
+/** ----------------------------------------------------------------------------------- */
+
+/** -------表盘 */
+message WatchFaceEvent {
+    required WatchFaceDisplayEvent watchFaceListDisplayCount = 1; /** 表盘列表长按进入 */
+    required uint32 watchFaceEditCount = 2; /** 可编辑表盘自定义次数 */
+}
+
+/** -------系统 */
+message SystemEvent {
+    required LcdOnEvent lcdOnCount = 1; /** 屏幕点亮次数 */
+    required LcdOffEvent lcdOffCount = 2; /** 屏幕息屏次数 */
+    required OtaUpdateEvent otaUpdateCount = 3; /** 固件升级次数 */
+    required GpsUpdateEvent gpsUpdateCount = 4; /** GPS升级次数 */
+    required AgpsUpdateEvent agpsUpdateCount = 5; /** AGPS升级次数 */
+    required uint32 appListOpenCount = 6; /** 按键打开AppList次数 */
+}
+
+/** -------设置 */
+message SettingEvent {
+    required uint32 widgetSettingCount = 1; /** 快捷应用点击次数 */
+    required uint32 favoriteSettingCount = 2; /** 使用偏好点击次数 */
+    required uint32 longPressSettingCount = 3; /** 长按按键点击次数 */
+    required uint32 vibrationLevelSettingCount = 4; /** 振动强度点击次数 */
+    required ShutdownEvent shutdownCount = 5; /** 关机次数 */
+    required ResetFactoryEvent resetFactoryCount = 6; /** 恢复出厂次数 */
+}
+
+/** -------控制中心 */
+message ControlCenterEvent {
+    required uint32 controlCenterOpenCount = 1; /** 控制中心打开次数 */
+    required uint32 controlCenterNodistrabCount = 2; /** 控制中心打开勿扰次数 */
+    required uint32 controlCenterAlarmCount = 3; /** 控制中心打开闹钟次数 */
+}
+
+/** -------通知提醒 */
+message NotifyAndRemind {
+    required uint32 notificationListShowCount = 1; /** 通知列表展示次数 */
+    required uint32 notificationNotifyShowCount = 2; /** APP通知提醒展示次数	 */
+    required CallingEvent callingShowEvent = 3; /** 来电提醒 */
+    required uint32 standRemindCount = 4; /** 站立提醒次数 */
+    required uint32 standRemindUpCount = 5; /** 站立达标提醒次数 */
+    required uint32 stepRemindUpCount = 6; /** 步数达标提醒次数 */
+    required TodoListEvent todoListEvent = 7; /** 待办事项提醒展示 */
+    required ScheduleEvent scheduleEvent = 8; /** 日程提醒统计 */
+    required AlarmRemindEvent alarmRemindEvent = 9; /** 闹钟提醒次数 */
+    required AlarmCreateEvent alarmCreateEvent = 10; /** 闹钟创建次数统计 */
+    required uint32 paiTargetComplete30 = 11; /** PAI 达标30 提醒展示次数 */
+    required uint32 paiTargetComplete50 = 12; /** PAI 达标50 提醒展示次数 */
+    required uint32 paiTargetComplete100 = 13; /** PAI 达标100 提醒展示次数 */
+    required MenstruationRemindEvent menstruationRemindEvent = 14; /** 月经提醒次数 */
+    required OvulationRemindEvent ovulationRemindEvent = 15;/** 排卵日提醒次数 */
+
+}
+
+/** -------音乐控制操作 */
+message MusicControllerEvent {
+    required uint32 volumeXiaoAi = 1; /** 通过小爱同学调节音量次数 */
+    required uint32 nexrPreXiaoAi = 2; /** 通过小爱控制上一首下一首次数 */
+    required uint32 playPauseXiaoAi = 3; /** 通过小爱暂停/播放音乐次数 */
+    required uint32 volumeAlexa = 4; /**  通过 Alexa 调节音量次数 */
+    required uint32 nexrPreAlexa = 5; /** 通过 Alexa 控制上一首下一首次数 */
+    required uint32 playPauseAlexa = 6; /** 通过 Alexa 暂停/播放音乐次数 */
+    required uint32 volumeTouch = 7; /** 进入音乐页面调节音量次数 */
+    required uint32 nexrPreTouch = 8; /** 进入音乐页面控制上一首下一首次数 */
+    required uint32 playPauseTouch = 9; /** 进入音乐页面点击暂停/播放音乐次数 */
+}
+
+message VoiceRequestEvent {
+    required uint32  success = 1;/** 成功请求 */
+    required uint32  errorUnknow = 2;/** 未知错误 */
+    required uint32  errorNetwork = 3;/** 网络错误0x03 */
+    required uint32  errorTimeout = 4;/** 网络超时0x04 */
+    required uint32  errorAuth = 5;/** 未授权0x07 */
+    required uint32  errorTtsTimeout = 6;/** TTS_TIME_OUT_0x09 */
+    required uint32  disconnect = 7;/** 未连接手机，无法使用 */
+    required uint32  uploading = 8;/** 手环正在上传数据，暂时无法使用 */
+}
+
+message VoiceResponseEvent {
+    required uint32 alarmTimers = 1;/** Alarms and Timers */
+    required uint32 alarmReminder = 2;/** Named Alarms and Reminders */
+    required uint32 lists = 3;/** Lists */
+    required uint32 weather = 4;/** Weather */
+}
+
+/** Alexa */
+message AlexaEvent {
+    required uint32 alexaPageCount = 1;/** 进入Alexa页面次数	 */
+    required VoiceRequestEvent alexaRequestEvent = 2;/** 请求结果	 */
+    required VoiceResponseEvent alexaResponseEvent  = 3;/**  语音命中领域	   */
+}
+
+
+/** 小爱 */
+message XiaoAiEvent {
+    required uint32 xiaoaiPageCount = 1;/** 进入小爱同学页面次数	 */
+    required VoiceRequestEvent XiaoAiRequestEvent = 2;/** 小爱同学请求结果	 */
+    required VoiceResponseEvent XiaoAiResponseEvent = 3;/** 语音命中领域	 */
+    required uint32 guideCount = 4;/** 小爱同学显示引导语次数	 */
+}
+
+
+message GpsSportBeforeTimeEvent {
+    required uint32 searchTime0_1 = 1;/** 0~1s */
+    required uint32 searchTime1_3 = 2;/** 1~3s */
+    required uint32 searchTime3_5 = 3;/** 3~5s */
+    required uint32 searchTime5_10 = 4;/** 5~10s */
+    required uint32 searchTimeThan10 = 5;/** >10s */
+}
+
+message GpsSporttingTimeEvent {
+    required uint32 searchTime0_15 = 1;/** 0~15s */
+    required uint32 searchTime15_20 = 2;/** 15~25s */
+    required uint32 searchTime25_35 = 3;/** 25~35s */
+    required uint32 searchTime35_6min = 4;/** 35s~6min */
+    required uint32 searchTimeThan6min = 5;/** >6min */
+}
+
+/** 运动 */
+message SportEvent {
+    required uint32 ignoreGpsCount = 1;/** 运动前GPS定位中跳过次数	 */
+    required GpsSportBeforeTimeEvent gpsSportBeforeTimeEvent = 2;/** 运动前等待GPS定位成功时长	 */
+    required GpsSporttingTimeEvent gpsSporttingTimeEvent = 3;/** 运动GPS定位时长（设备自身GPS进行定位） */
+    required uint32 GpsFailedBeforeSport = 4;/** 运动前GPS定位失败次数	 */
+    required uint32 GpsFailedSportting = 5;/** 运动GPS定位失败次数（设备自身GPS进行定位） */
+}
+
+message BloodOxyMeasureSuccessEvent {
+    required uint32 measureFromWidget = 1;/** 快捷入口测量成功 */
+    required uint32 measureFromDetail = 2;/** 详情页测量成功 */
+}
+
+message BloodOxyMeasureFailedEvent {
+    required uint32 measureBadSignal = 1;/** 信号不好 */
+    required uint32 measureWithoutWrist = 2;/** 离腕未佩戴 */
+}
+message BloodOxyPressMeasureEvent {
+    required uint32 pressInWidget = 1;/** 快捷入口点击测量 */
+    required uint32 pressInDetail = 2;/** 详情页点击测量 */
+}
+message BloodOxyGetvalueTimeEvent {
+    required uint32 getValueTime1_15 = 1;/** [ 0s, 15s ] */
+    required uint32 getValueTime15_30 = 2;/** ( 15s, 30s] */
+    required uint32 getValueTime30_45 = 3;/** (30s，45s ] */
+    required uint32 getValueTimeThan45 = 4;/** 大于45s */
+}
+message BloodOxyGetStableValueTimeEvent {
+    required uint32 getValueTime1_15 = 1;/** [ 0s, 15s ] */
+    required uint32 getValueTime15_30 = 2;/** ( 15s, 30s] */
+    required uint32 getValueTime30_45 = 3;/** (30s，45s ] */
+    required uint32 getValueTimeThan45 = 4;/** 大于45s */
+}
+
+/** 血氧饱和度 */
+message BloodOxygenEvent {
+    required BloodOxyMeasureSuccessEvent bloodOxyMeasureSuccessEvent = 1;/** 血氧测量成功页面 - 展示次数		 */
+    required BloodOxyMeasureFailedEvent bloodOxyMeasureFailedEvent = 2;/** 血氧测量失败页面 - 展示次数		 */
+    required BloodOxyPressMeasureEvent bloodOxyPressMeasureEvent = 3;/** 点击测量血氧次数	 */
+    required uint32 restartMeasureCount = 4;/** 血氧结果页面- 重新测量点击次数	 */
+    required BloodOxyGetvalueTimeEvent bloodOxyGetvalueTimeEvent = 5;/** 血氧第一次出值的时长统计	 */
+    required BloodOxyGetStableValueTimeEvent bloodOxyGetStableValueTimeEvent = 6;/** 血氧第一次出稳定值的时长统计	 */
+}
+
+message BreatheTrainResultEvent {
+    required uint32 resultLowHeart = 1;/** 心率降低 */
+    required uint32 resultHeightHeart = 2;/** 心率升高 */
+    required uint32 resultNormalHeart = 3;/** 心率无变化 */
+    required uint32 resultSingleHeart = 4;/** 只有一个心率 */
+    required uint32 resultNoWear = 5;/** 未佩戴 */
+}
+message BreatheTrainCountEvent {
+    required uint32 train1minutes = 1;/** 1分钟 */
+    required uint32 train2minutes = 2;/** 2分钟 */
+    required uint32 train3minutes = 3;/** 3分钟 */
+    required uint32 train4minutes = 4;/** 4分钟 */
+    required uint32 train5minutes = 5;/** 5分钟 */
+}
+/** 呼吸训练 */
+message BreatheTrainEvent {
+    required BreatheTrainResultEvent breatheTrainResultEvent = 1;/** 呼吸训练结果页面 - 展示次数	 */
+    required BreatheTrainCountEvent breatheTrainCountEvent = 2;/** 呼吸训练进行次数 */
+}
+
+message HeartMeasureSuccessEvent {
+    required uint32 measureFromWidget = 1;/** 快捷入口测量成功 */
+    required uint32 measureFromDetail = 2;/** 详情页测量成功 */
+}
+message HeartMeasureFailedEvent {
+    required uint32 measureBadSignal = 1;/** 信号不好 */
+    required uint32 measureWithoutWrist = 2;/** 离腕未佩戴 */
+}
+message HeartPressMeasureEvent {
+    required uint32 pressInWidget = 1;/** 快捷入口点击测量 */
+    required uint32 pressInDetail = 2;/** 详情页点击测量 */
+}
+message HeartGetvalueTimeEvent {
+    required uint32 getValueTime0_10 = 1;/** [ 0s, 10s ] */
+    required uint32 getValueTime10_20 = 2;/** ( 10s, 20s] */
+    required uint32 getValueTime20_30 = 3;/** (20s，30s ] */
+}
+message HeartGetStableValueTimeEvent {
+    required uint32 getValueTime0_10 = 1;/** [ 0s, 10s ] */
+    required uint32 getValueTime10_20 = 2;/** ( 10s, 20s] */
+    required uint32 getValueTime20_30 = 3;/** (20s，30s ] */
+}
+/** 心率 */
+message HeartEvent {
+    required HeartMeasureSuccessEvent heartMeasureSuccessEvent = 1;/** 心率测量成功页面 - 展示次数		 */
+    required HeartMeasureFailedEvent heartMeasureFailedEvent = 2;/** 心率测量失败页面 - 展示次数		 */
+    required HeartPressMeasureEvent heartPressMeasureEvent = 3;/** 点击测量心率次数	 */
+    required uint32 restartMeasureCount = 4;/** 心率结果页面- 重新测量点击次数	 */
+    required HeartGetvalueTimeEvent heartGetvalueTimeEvent = 5;/** 心率第一次出值的时长统计	 */
+    required HeartGetStableValueTimeEvent heartGetStableValueTimeEvent = 6;/** 心率第一次出稳定值的时长统计	 */
+
+}
+
+message PressureMeasureSuccessEvent {
+    required uint32 measureFromWidget = 1;/** 快捷入口测量成功 */
+    required uint32 measureFromDetail = 2;/** 详情页测量成功 */
+}
+message PressureMeasureFailedEvent {
+    required uint32 measureBadSignal = 1;/** 信号不好 */
+    required uint32 measureWithoutWrist = 2;/** 离腕未佩戴 */
+}
+message PressurePressMeasureEvent {
+    required uint32 pressInWidget = 1;/** 快捷入口点击测量 */
+    required uint32 pressInDetail = 2;/** 详情页点击测量 */
+}
+message PressureGetvalueTimeEvent {
+    required uint32 getValueTime0_15 = 1;/** [ 0s, 15s ] */
+    required uint32 getValueTime15_30 = 2;/** ( 15s, 30s] */
+    required uint32 getValueTime30_45 = 3;/** (30s，45s ] */
+}
+message PressureGetStableValueTimeEvent {
+    required uint32 getValueTime0_15 = 1;/** [ 0s, 15s ] */
+    required uint32 getValueTime15_30 = 2;/** ( 15s, 30s] */
+    required uint32 getValueTime30_45 = 3;/** (30s，45s ] */
+}
+/** 压力 */
+message PressureEvent {
+    required PressureMeasureSuccessEvent pressureMeasureSuccessEvent = 1;/** 压力测量成功页面 - 展示次数		 */
+    required PressureMeasureFailedEvent pressureMeasureFailedEvent = 2;/** 压力测量失败页面 - 展示次数		 */
+    required PressurePressMeasureEvent pressurePressMeasureEvent = 3;/** 点击测量压力次数	 */
+    required uint32 restartMeasureCount = 4;/** 压力结果页面- 重新测量点击次数	 */
+    required PressureGetvalueTimeEvent pressureGetvalueTimeEvent = 5;/** 压力第一次出值的时长统计	 */
+    required PressureGetStableValueTimeEvent pressureGetStableValueTimeEvent = 6;/** 压力第一次出稳定值的时长统计	 */
+
+}
+
+message PeriodRecordCountEvent {
+    required uint32 startByWidget = 1;/** 快捷入口记录 */
+    required uint32 startByDetail = 2;/** 详情页记录 */
+    required uint32 startByPopwindow = 3;/** 月经提醒弹窗记录 */
+}
+message PeriodCompleteCountEvent {
+    required uint32 startByWidget = 1;/** 快捷入口记录 */
+    required uint32 startByDetail = 2;/** 详情页记录 */
+}
+/** 女性健康 */
+message WomenHealthEvent {
+    required PeriodRecordCountEvent periodRecordCountEvent = 1;/** 记录经期次数	 */
+    required PeriodCompleteCountEvent periodCompleteCountEvent = 2;/** 结束经期次数	 */
+}
+
+message AlipayDisplayCountEvent {
+    required uint32 openFromWidget = 1;/** 1.快捷入口进入条形码/二维码页面 */
+    required uint32 openFromApplist = 2;/** 2.applist进入条形码/二维码界面 */
+    required uint32 openFromWatchface = 3;/** 3.表盘进入条形码/二维码界面 */
+    required uint32 openFromWatchXiaoAi = 4;/** 4.小爱进入条形码/二维码界面 */
+    required uint32 openFromWatchBarcode = 5;/** 5.条形码进入二维码 二维码进入条形码  */
+
+}
+message AlipayQRDisplayTimeEvent {
+    required uint32 displayTime1_3 = 1;/** 0-3s */
+    required uint32 displayTime3_5 = 2;/** 3~5s */
+    required uint32 displayTime5_8 = 3;/** 5~8s */
+    required uint32 displayTime8_10 = 4;/** 8~10s */
+    required uint32 displayTimeThan10 = 5;/** >10s */
+}
+
+message AlipayBarDisplayTimeEvent {
+    required uint32 displayTime1_3 = 1;/** 0-3s */
+    required uint32 displayTime3_5 = 2;/** 3~5s */
+    required uint32 displayTime5_8 = 3;/** 5~8s */
+    required uint32 displayTime8_10 = 4;/** 8~10s */
+    required uint32 displayTimeThan10 = 5;/** >10s */
+}
+/** 支付宝 */
+message AlipayEvent {
+    required AlipayDisplayCountEvent alipayQRDisplayCountEvent = 1;/** 付款码-二维码页面显示次数统计 */
+    required AlipayQRDisplayTimeEvent alipayQRDisplayTimeEvent = 2;/** 付款码-二维码页面停留时长分布统计 */
+    required AlipayDisplayCountEvent alipayBarDisplayCountEvent = 3;/** 付款码-条形码显示次数统计 */
+    required AlipayBarDisplayTimeEvent alipayBarDisplayTimeEvent = 4;/** 付款码-条形码页面停留时长统计 */
+}
+
+/** NFC刷卡 */
+message NFCEvent {
+    required uint32 NFCScanBusCount = 1;/** 1.默认卡=公交卡 */
+    required uint32 NFCScanDoorCount = 2;/** 2.默认卡=门禁卡 */
+    required uint32 NFCScanPayCount = 3;/** 3.默认卡=银联卡 */
+}
+
+
+/** -------应用入口 */
+message ApplicationPortal {
+    required PortalEvent stepActivity = 1;/** 活动目标 */
+    required PortalEvent pai = 2;/** pai */
+    required PortalEvent heart = 3;/** 心率 */
+    required PortalEvent sleep = 4;/** 睡眠 */
+    required PortalEvent bloodOxygen = 5;/** 血氧 */
+    required PortalEvent pressure = 6;/** 压力 */
+    required PortalEvent womenHealth = 7;/** 女性健康 */
+    required PortalEvent alarm = 8;/** 闹钟 */
+    required PortalEvent weather = 9;/** 天气 */
+    required PortalEvent music = 10;/** 音乐 */
+    required PortalEvent card = 11;/** 卡包 */
+    required PortalEvent alipay = 12;/** 支付宝 */
+    required PortalEvent sport = 13;/** 运动 */
+    required PortalEvent worldClock = 14;/** 世界时钟 */
+    required PortalEvent countDown = 15;/** 倒计时 */
+    required PortalEvent stopWatch = 17;/** 秒表 */
+    required PortalEvent timeDoser = 18;/** 番茄时钟 */
+    required PortalEvent compass = 19;/** 指南针 */
+    required PortalEvent xiaoAi = 20;/** 小爱 */
+    required PortalEvent alexa = 21;/** alexa */
+    required PortalEvent breatheTrain = 22;/** 呼吸训练 */
+    required PortalEvent findPhone  = 23;/** 查找手机 */
+    required PortalEvent remoteCamera  = 24;/** 遥控拍照 */
+    required PortalEvent sportRecord = 25;/** 运动记录 */
+    required PortalEvent moreApp  = 26;/** 更多 */
+    required PortalEvent setting = 27;/** 设置 */
+
+}
+
+/** --------------微信支付应用入口------ */
+message WxPayPortalEvent {
+    required uint32 openSourceAppList = 1;/** App list 点击进入 */
+    required uint32 openSourceWidget = 2;/** 快捷入口点击进入 */
+    required uint32 openSourceWatchFace = 3;/** 表盘点击进入 */
+    required uint32 openSourceXiaoAi = 4;/** 从小爱进入 */
+    required uint32 openSourceInternal = 5;/** 微信支付内部进入 */
+
+} 
+
+message WxPayPageAliveEvent {
+    required uint32 aliveTime0_1 = 1;/** 0~1s */
+    required uint32 aliveTime1_3 = 2;/** 1~3s */
+    required uint32 aliveTime3_5 = 3;/** 3~5s */
+    required uint32 aliveTime5_10 = 4;/** 5~10s */
+    required uint32 aliveTimeThan10 = 5;/** >10s */
+}
+
+message WxPayBarCodeEnterEvent {
+    required uint32 enterByQRCode = 1;/** 二维码页面进入 */
+    required uint32 enterByUnBindPage = 2;/** 解绑页面进入 */
+}
+
+message WxPayEvent {
+    required WxPayPortalEvent wxPayPortalEvent = 1;/** 进入页面 */
+    required WxPayPageAliveEvent pageQRCodeAliveTime = 2;/** 二维码页面停留时长 */
+    required WxPayPageAliveEvent pageBarCodeAliveTime = 3;/** 条形码页面停留时长 */
+    required WxPayBarCodeEnterEvent barCodeEnterType = 4;/** 条形码显示进入类型 */
+    required uint32 wxPayUnbindCount = 5;/** 微信支付解绑次数 */
+    required uint32 wxPayOpenSuccessCount = 6;/** 微信开通成功次数 */
+    required uint32 wxPayOpenFaildCount = 7;/** 微信开通失败次数 */
+}
+
+
+/** Como&Ness */
+message ComoNessStatisticsMessage {
+    required WatchFaceEvent watchFaceEvent = 1;
+    required SystemEvent systemSettingEvent = 2;
+    required SettingEvent settingEvent = 3;
+    required ControlCenterEvent controlCenterEvent = 4;
+    required NotifyAndRemind notifyAndRemind = 5;
+    required ApplicationPortal application = 6;
+    required MusicControllerEvent musicControllerEvent = 7;
+    required AlexaEvent alexaEvent = 8;
+    required XiaoAiEvent xiaoAiEvent = 9;
+    required SportEvent sportEvent = 10;
+    required BloodOxygenEvent bloodOxygenEvent = 11;
+    required BreatheTrainEvent breatheTrainEvent = 12;
+    required HeartEvent heartEvent = 13;
+    required PressureEvent pressureEvent = 14;
+    required WomenHealthEvent womenHealthEvent = 15;
+    required AlipayEvent alipayEvent = 16;
+    required NFCEvent nfcEvent = 17;
+    required StatisBaseMessage base = 18;
+    optional float bloodOxygenColor = 19;
+    optional uint32 atrialFibrillationNotice = 20;
+    optional WxPayEvent  wxPayEvent= 21;
+}

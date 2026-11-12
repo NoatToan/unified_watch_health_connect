@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/slp_bg_rect"
+    android:layout_width="match_parent"
+    android:layout_height="202dp">
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:id="@+id/gap"
+        android:background="@color/s4"
+        android:layout_width="5.7dp"
+        android:layout_height="match_parent">
+        <View
+            android:background="@color/s33"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+</LinearLayout>

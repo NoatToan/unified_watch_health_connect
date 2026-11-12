@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_guide_connect"
+    app:startDestination="@+id/connect_guide_fragment">
+    <fragment
+        android:name="com.huami.watch.musicupload.fragment.WifiConnectionGuideFragment"
+        android:id="@+id/connect_guide_fragment"/>
+    <action
+        android:id="@+id/to_guide_fragment"
+        app:destination="@+id/connect_guide_fragment"/>
+</navigation>

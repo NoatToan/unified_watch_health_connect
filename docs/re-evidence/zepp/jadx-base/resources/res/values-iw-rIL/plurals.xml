@@ -1,0 +1,973 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="Ndays">
+        <item quantity="one">יום 1</item>
+        <item quantity="other">%1$d ימים</item>
+    </plurals>
+    <plurals name="Nhours">
+        <item quantity="one">שעה 1</item>
+        <item quantity="other">%1$d שעות</item>
+    </plurals>
+    <plurals name="Nminutes">
+        <item quantity="one">דקה 1</item>
+        <item quantity="other">%1$d דקות</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="one">עקב שדרוג המותג, על האפוטרופוס שלך לאשר את פרטי החשבון כדי להגן על אבטחת הנתונים שלך. אשר בהקדם האפשרי. אחרת, החשבון שלך יוקפא בעוד יום %1$s.</item>
+        <item quantity="two">עקב שדרוג המותג, על האפוטרופוס שלך לאשר את פרטי החשבון כדי להגן על אבטחת הנתונים שלך. אשר בהקדם האפשרי. אחרת החשבון שלך יוקפא בעוד %1$sימים.</item>
+        <item quantity="many">עקב שדרוג המותג, על האפוטרופוס שלך לאשר את פרטי החשבון כדי להגן על אבטחת הנתונים שלך. אשר בהקדם האפשרי. אחרת, החשבון שלך יוקפא בעוד %1$sימים.</item>
+        <item quantity="other">עקב שדרוג המותג, על האפוטרופוס שלך לאשר את פרטי החשבון כדי להגן על אבטחת הנתונים שלך. אשר בהקדם האפשרי. אחרת, החשבון שלך יוקפא בעוד %1$sימים.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="one">הגעת למספר המרבי של הזנות חשבון או סיסמה. נסה שוב בעוד דקה %s</item>
+        <item quantity="two">הגעת למספר המרבי של הזנות חשבון או סיסמה. נסה שוב בעוד %s דקות</item>
+        <item quantity="many">הגעת למספר המרבי של הזנות חשבון או סיסמה. נסה שוב בעוד %s דקות</item>
+        <item quantity="other">הגעת למספר המרבי של הזנות חשבון או סיסמה. נסה שוב בעוד %s דקות</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="one">שם החשבון או הסיסמה שגויים. נותר לך ניסיון חוזר %s</item>
+        <item quantity="two">שם החשבון או הסיסמה שגויים. נותרו לך %s ניסיונות חוזרים</item>
+        <item quantity="many">שם החשבון או הסיסמה שגויים. נותרו לך %s ניסיונות חוזרים</item>
+        <item quantity="other">שם החשבון או הסיסמה שגויים. נותרו לך %s ניסיונות חוזרים</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="one">קורס %d</item>
+        <item quantity="two">קורסים %d</item>
+        <item quantity="many">קורסים %d</item>
+        <item quantity="other">קורסים %d</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="one">רטוט שוב דקה %s מאוחר יותר</item>
+        <item quantity="two">רטוט שוב %s דקות מאוחר יותר</item>
+        <item quantity="many">רטוט שוב %s דקות מאוחר יותר</item>
+        <item quantity="other">רטוט שוב %s דקות מאוחר יותר</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="one">עקפת %d%% משתמשים אחרים היום</item>
+        <item quantity="two">עקפת %d%% משתמשים אחרים היום</item>
+        <item quantity="many">עקפת %d%% משתמשים אחרים היום</item>
+        <item quantity="other">עקפת %d%% משתמשים אחרים היום</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="one">ניתן להוסיף לכל היותר יישום%1$d ל&apos;רשימת היישומים&apos;</item>
+        <item quantity="two">ניתן להוסיף לכל היותר %1$d יישומים ל&apos;רשימת היישומים&apos;</item>
+        <item quantity="many">ניתן להוסיף לכל היותר %1$d יישומים ל&apos;רשימת היישומים&apos;</item>
+        <item quantity="other">ניתן להוסיף לכל היותר %1$d יישומים ל&apos;רשימת היישומים&apos;</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="one">ניתן להוסיף לכל היותר יישום %1$d ל&apos;רשימת עוד&apos;</item>
+        <item quantity="two">ניתן להוסיף לכל היותר %1$d יישומים ל&apos;רשימה עוד&apos;</item>
+        <item quantity="many">ניתן להוסיף לכל היותר %1$d יישומים ל&apos;רשימה עוד&apos;</item>
+        <item quantity="other">ניתן להוסיף לכל היותר %1$d יישומים ל&apos;רשימה עוד&apos;</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="one">בהשוואה ללפני יום %1$d</item>
+        <item quantity="two">בהשוואה ללפני יום %1$d</item>
+        <item quantity="many">בהשוואה ללפני יום %1$d</item>
+        <item quantity="other">בהשוואה ללפני יום %1$d</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="one">כייל במשך יום %d</item>
+        <item quantity="two">מכויל %d ימים</item>
+        <item quantity="many">מכויל %d ימים</item>
+        <item quantity="other">כייל במשך %d ימים</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="one">נדרש כיול כל יום %d לצורך מחקר בנושא סינון לחץ הדם שהושק על-ידי Peking University First Hospital</item>
+        <item quantity="two">נדרש כיול כל %d ימים לצורך מחקר בנושא סינון לחץ הדם שהושק על-ידי Peking University First Hospital</item>
+        <item quantity="many">נדרש כיול כל %d ימים לצורך מחקר בנושא סינון לחץ הדם שהושק על-ידי Peking University First Hospital</item>
+        <item quantity="other">נדרש כיול כל %d ימים לצורך מחקר בנושא סינון לחץ הדם שהושק על-ידי Peking University First Hospital</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="one">כייל יום %d מאוחר יותר</item>
+        <item quantity="two">כייל %d ימים מאוחר יותר</item>
+        <item quantity="many">כייל %d ימים מאוחר יותר</item>
+        <item quantity="other">כייל %d ימים מאוחר יותר</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="one">יעד %d הושג</item>
+        <item quantity="two">%d יעדים הושגו</item>
+        <item quantity="many">%d יעדים הושגו</item>
+        <item quantity="other">%d יעדים הושגו</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="one">פריט %d זקוק לתשומת הלב שלך</item>
+        <item quantity="two">%d פריטים זקוקים לתשומת הלב שלך</item>
+        <item quantity="many">%d פריטים זקוקים לתשומת הלב שלך</item>
+        <item quantity="other">%d פריטים זקוקים לתשומת הלב שלך</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="one">פריט %d לא השיג את יעדו</item>
+        <item quantity="two">%d פריטים לא השיגו את יעדם</item>
+        <item quantity="many">%d פריטים לא השיגו את יעדם</item>
+        <item quantity="other">%d פריטים לא השיגו את יעדם</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="one">ברכות!\nב-%1$d הימים האחרונים עלית</item>
+        <item quantity="two">ברכות!\nב-%1$d הימים האחרונים עלית</item>
+        <item quantity="many">ברכות!\nב-%1$d הימים האחרונים עלית</item>
+        <item quantity="other">ברכות!\nב-%1$d הימים האחרונים עלית</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="one">ציון </item>
+        <item quantity="two">‏ציונים</item>
+        <item quantity="many">‏ציונים</item>
+        <item quantity="other">‏ציונים</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="one">ניתן להוסיף עד איש קשר מוביל %1$d והוא יסונכרן לשעון באופן אוטומטי</item>
+        <item quantity="two">ניתן להוסיף עד %1$d אנשי קשר מובילים והם יסונכרנו לשעון באופן אוטומטי</item>
+        <item quantity="many">ניתן להוסיף עד %1$d אנשי קשר מובילים והם יסונכרנו לשעון באופן אוטומטי</item>
+        <item quantity="other">ניתן להוסיף עד %1$d אנשי קשר מובילים והם יסונכרנו לשעון באופן אוטומטי</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="one">קורס %d</item>
+        <item quantity="two">קורסים %d</item>
+        <item quantity="many">קורסים %d</item>
+        <item quantity="other">קורסים %d</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="one">התכנית תתחיל בעוד יום %d</item>
+        <item quantity="two">התכנית תתחיל בעוד %d ימים</item>
+        <item quantity="many">התכנית תתחיל בעוד %d ימים</item>
+        <item quantity="other">התכנית תתחיל בעוד %d ימים</item>
+    </plurals>
+    <plurals name="daily_interval">
+        <item quantity="one">יום</item>
+        <item quantity="other">%1$d ימים</item>
+    </plurals>
+    <plurals name="days_after">
+        <item quantity="one">כעבור %1$d ימים</item>
+        <item quantity="other">כעבור %1$d ימים</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="one">לפני %1$d ימים</item>
+        <item quantity="other">לפני %1$d ימים</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="one">הורדה %d</item>
+        <item quantity="two">%d הורדות</item>
+        <item quantity="many">%d הורדות</item>
+        <item quantity="other">%d הורדות</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="zero">%1$d שניות.</item>
+        <item quantity="one">%1$d שניות.</item>
+        <item quantity="two">%1$d שניות.</item>
+        <item quantity="many">%1$d שניות.</item>
+        <item quantity="other">%1$d שניות.</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="one">מרווח נתונים: שנייה %1$s</item>
+        <item quantity="two">מרווח נתונים: %1$s שניות</item>
+        <item quantity="many">מרווח נתונים: %1$s שניות</item>
+        <item quantity="other">מרווח נתונים: %1$s שניות</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="one">שנייה %1$s</item>
+        <item quantity="two">‏%1$s שניות</item>
+        <item quantity="many">‏%1$s שניות</item>
+        <item quantity="other">‏%1$s שניות</item>
+    </plurals>
+    <plurals name="endByCount">
+        <item quantity="one">; פעם 1</item>
+        <item quantity="other">; חזור %1$d פעמים בסהכ</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="one">%d תזכורת</item>
+        <item quantity="two">%d שתי תזכורות</item>
+        <item quantity="many">%d תזכורות</item>
+        <item quantity="other">%d תזכורות</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="one">קלוריה %1$d</item>
+        <item quantity="two">%1$d קלוריות</item>
+        <item quantity="many">%1$d קלוריות</item>
+        <item quantity="other">%1$d קלוריות</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="one">קלוריה %1$d</item>
+        <item quantity="two">%1$d קלוריות</item>
+        <item quantity="many">%1$d קלוריות</item>
+        <item quantity="other">%1$d קלוריות</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="one">שיעור %1$s</item>
+        <item quantity="two">%1$s שיעורים</item>
+        <item quantity="many">%1$s שיעורים</item>
+        <item quantity="other">%1$s שיעורים</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="one">%1$s של המחזור החודשי, נותרו %2$s.</item>
+        <item quantity="two">%1$s של המחזור החודשי, נותרו %2$s.</item>
+        <item quantity="many">%1$s של המחזור החודשי, נותרו %2$s.</item>
+        <item quantity="other">%1$s של המחזור החודשי, נותרו %2$s.</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="one">בערך %1$s של המחזור החודשי, נותרו %2$s.</item>
+        <item quantity="two">בערך %1$s של המחזור החודשי, נותרו %2$s.</item>
+        <item quantity="many">בערך %1$s של המחזור החודשי, נותרו %2$s.</item>
+        <item quantity="other">בערך %1$s של המחזור החודשי, נותרו %2$s.</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="one">%1$s של המחזור החודשי, נותרו בערך %2$s.</item>
+        <item quantity="two">%1$s של המחזור החודשי, נותרו בערך %2$s.</item>
+        <item quantity="many">%1$s של המחזור החודשי, נותרו בערך %2$s.</item>
+        <item quantity="other">%1$s של המחזור החודשי, נותרו בערך %2$s.</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="one">צופה %1$s</item>
+        <item quantity="two">%1$s צופים</item>
+        <item quantity="many">%1$s צופים</item>
+        <item quantity="other">%1$s צופים</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">יום %1$d</item>
+        <item quantity="two">יום %1$d</item>
+        <item quantity="many">יום %1$d</item>
+        <item quantity="other">יום %1$d</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="one">י&apos;%1$d</item>
+        <item quantity="two">%1$dי&apos;</item>
+        <item quantity="many">%1$dי&apos;</item>
+        <item quantity="other">%1$dי&apos;</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="one">ביטול (%1$dשנ&apos;)</item>
+        <item quantity="two">ביטול (%1$dשנ&apos;)</item>
+        <item quantity="many">ביטול (%1$dשנ&apos;)</item>
+        <item quantity="other">ביטול (%1$dשנ&apos;)</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="one">מוריד. עליך להמתין דקה %s לערך</item>
+        <item quantity="two">מוריד. עליך להמתין %s דקות לערך</item>
+        <item quantity="many">מוריד. עליך להמתין %s דקות לערך</item>
+        <item quantity="other">מוריד. עליך להמתין %s דקות לערך</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="one">מקצה אימון %d הסתיים</item>
+        <item quantity="two">%d מקצי אימון הסתיימו</item>
+        <item quantity="many">%d מקצי אימון הסתיימו</item>
+        <item quantity="other">%d מקצי אימון הסתיימו</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="one">‏פעם %d לדקה</item>
+        <item quantity="two">‏%d פעמים לדקה</item>
+        <item quantity="many">‏%d פעמים לדקה</item>
+        <item quantity="other">‏%d פעמים לדקה</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="one">על דף הבית להכיל לפחות כרטיס %1$d</item>
+        <item quantity="two">על דף הבית להכיל לפחות %1$d כרטיסים</item>
+        <item quantity="many">על דף הבית להכיל לפחות %1$d כרטיסים</item>
+        <item quantity="other">על דף הבית להכיל לפחות %1$d כרטיסים</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="one">דופק ממוצע פעימה %1$d בדקה</item>
+        <item quantity="two">דופק ממוצע %1$d פעימות בדקה</item>
+        <item quantity="many">דופק ממוצע %1$d פעימות בדקה</item>
+        <item quantity="other">דופק ממוצע %1$d פעימות בדקה</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="one">פעם בדקה</item>
+        <item quantity="two">‏ פעמים בדקה</item>
+        <item quantity="many">‏ פעמים בדקה</item>
+        <item quantity="other">‏ פעמים בדקה</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="one">לפני דקה %d</item>
+        <item quantity="two">לפני %d דקות</item>
+        <item quantity="many">לפני %d דקות</item>
+        <item quantity="other">לפני %d דקות</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="one">מקצה %d</item>
+        <item quantity="two">מקצה %d</item>
+        <item quantity="many">מקצה %d</item>
+        <item quantity="other">מקצה %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="one">הזכר לי שניה %d אחרי שנכנסת שיחת טלפון</item>
+        <item quantity="two">הזכר לי %d שניות אחרי שנכנסת שיחת טלפון</item>
+        <item quantity="many">הזכר לי %d שניות אחרי שנכנסת שיחת טלפון</item>
+        <item quantity="other">הזכר לי %d שניות אחרי שנכנסת שיחת טלפון</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="one">ניתן להוסיף עד מקסימום של הודעת SMS %1$d</item>
+        <item quantity="two">ניתן להוסיף עד מקסימום של %1$d הודעות SMS</item>
+        <item quantity="many">ניתן להוסיף עד מקסימום של %1$d הודעות SMS</item>
+        <item quantity="other">ניתן להוסיף עד מקסימום של %1$d הודעות SMS</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="one">שמור לפחות %1$d הודעות SMS</item>
+        <item quantity="two">שמור לפחות %1$d הודעות SMS</item>
+        <item quantity="many">שמור לפחות %1$d הודעות SMS</item>
+        <item quantity="other">שמור לפחות %1$d הודעות SMS</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="one">הזן תו %d לכל היותר</item>
+        <item quantity="two">הזן %d תוים לכל היותר</item>
+        <item quantity="many">הזן %d תוים לכל היותר</item>
+        <item quantity="other">הזן %d תוים לכל היותר</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="one">רשומת הקפה %1$d</item>
+        <item quantity="two">‏%1$d רשומות הקפה</item>
+        <item quantity="many">‏%1$d רשומות הקפה</item>
+        <item quantity="other">‏%1$d רשומות הקפה</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="one">צפיה %d</item>
+        <item quantity="two">%d צפיות</item>
+        <item quantity="many">%d צפיות</item>
+        <item quantity="other">%d צפיות</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="one">חודש %1$d</item>
+        <item quantity="two">‏%1$d חודשים</item>
+        <item quantity="many">‏%1$d חודשים</item>
+        <item quantity="other">‏%1$d חודשים</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="one">בערך דקה %1$d ביום</item>
+        <item quantity="two">בערך %1$d דקות ביום</item>
+        <item quantity="many">בערך %1$d דקות ביום</item>
+        <item quantity="other">בערך %1$d דקות ביום</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="one">נטען לאחרונה לפני %d יום</item>
+        <item quantity="two">נטען לאחרונה לפני %d יומיים</item>
+        <item quantity="many">נטען לאחרונה לפני %d ימים</item>
+        <item quantity="other">נטען לאחרונה לפני %d ימים</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="one">%d יעד שהושג</item>
+        <item quantity="two">%d יעדים שהושגו</item>
+        <item quantity="many">%d יעדים שהושגו</item>
+        <item quantity="other">%d יעדים שהושגו</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="one">%d צעד</item>
+        <item quantity="two">%d צעדים</item>
+        <item quantity="many">%d צעדים</item>
+        <item quantity="other">%d צעדים</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="one">%d %s</item>
+        <item quantity="two">%d %s</item>
+        <item quantity="many">%d %s</item>
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="monthly_interval">
+        <item quantity="one">חודש</item>
+        <item quantity="other">%1$d חודשים</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="one">%d&quot;</item>
+        <item quantity="two">%d&quot;</item>
+        <item quantity="many">%d&quot;</item>
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="one">שנ&apos; %d</item>
+        <item quantity="two">%d שנ&apos;</item>
+        <item quantity="many">%d שנ&apos;</item>
+        <item quantity="other">%d שנ&apos;</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="one">ישן יותר משנה %1$d. לא ניתן לנתח את %2$s</item>
+        <item quantity="two">ישן יותר מ-%1$d שנים. לא ניתן לנתח את %2$s</item>
+        <item quantity="many">ישן יותר מ-%1$d שנים. לא ניתן לנתח את %2$s</item>
+        <item quantity="other">ישן יותר מ-%1$d שנים. לא ניתן לנתח את %2$s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="one">צעיר מ-%1$d שנים. לא ניתן לנתח את %2$s</item>
+        <item quantity="two">צעיר מ-%1$d שנים. לא ניתן לנתח את %2$s</item>
+        <item quantity="many">צעיר מ-%1$d שנים. לא ניתן לנתח את %2$s</item>
+        <item quantity="other">צעיר מ-%1$d שנים. לא ניתן לנתח את %2$s</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="one">%s רגל</item>
+        <item quantity="two">%s רגל</item>
+        <item quantity="many">%s רגל</item>
+        <item quantity="other">%s רגל</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="one">%s אינץ&apos;</item>
+        <item quantity="two">%s אינץ&apos;</item>
+        <item quantity="many">%s אינץ&apos;</item>
+        <item quantity="other">%s אינץ&apos;</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="one">שניה %d</item>
+        <item quantity="two">%d שניות</item>
+        <item quantity="many">%d שניות</item>
+        <item quantity="other">%d שניות</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="one">אימון</item>
+        <item quantity="two">‏ אימונים</item>
+        <item quantity="many">‏ אימונים</item>
+        <item quantity="other">‏ אימונים</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="one">משתתף %d</item>
+        <item quantity="two">%d משתתפים</item>
+        <item quantity="many">%d משתתפים</item>
+        <item quantity="other">%d משתתפים</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="one">דקה</item>
+        <item quantity="two">‏ דקות</item>
+        <item quantity="many">‏ דקות</item>
+        <item quantity="other">‏ דקות</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="one">ניתן להוסיף עד מקסימום של הודעת SMS %1$d</item>
+        <item quantity="two">ניתן להוסיף עד מקסימום של %1$d הודעות SMS</item>
+        <item quantity="many">ניתן להוסיף עד מקסימום של %1$d הודעות SMS</item>
+        <item quantity="other">ניתן להוסיף עד מקסימום של %1$d הודעות SMS</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="one">שמור לפחות %1$d הודעות SMS</item>
+        <item quantity="two">שמור לפחות %1$d הודעות SMS</item>
+        <item quantity="many">שמור לפחות %1$d הודעות SMS</item>
+        <item quantity="other">שמור לפחות %1$d הודעות SMS</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="one">פריט %1$d נבחר</item>
+        <item quantity="two">%1$d פריטים נבחרו</item>
+        <item quantity="many">%1$d פריטים נבחרו</item>
+        <item quantity="other">%1$d פריטים נבחרו</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="one">רכבת על אופניים לפני יום %1$d</item>
+        <item quantity="two">רכבת על אופניים לפני %1$d ימים</item>
+        <item quantity="many">רכבת על אופניים לפני %1$d ימים</item>
+        <item quantity="other">רכבת על אופניים לפני %1$d ימים</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="one">שעה</item>
+        <item quantity="two">‏ שעות</item>
+        <item quantity="many">‏ שעות</item>
+        <item quantity="other">‏ שעות</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="one">‏ קק&quot;ל</item>
+        <item quantity="two">‏ קק&quot;ל</item>
+        <item quantity="many">‏ קק&quot;ל</item>
+        <item quantity="other">‏ קק&quot;ל</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="one">רצת לפני יום %1$d</item>
+        <item quantity="two">רצת לפני %1$d ימים</item>
+        <item quantity="many">רצת לפני %1$d ימים</item>
+        <item quantity="other">רצת לפני %1$d ימים</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="one">שנייה</item>
+        <item quantity="two">‏ שניות</item>
+        <item quantity="many">‏ שניות</item>
+        <item quantity="other">‏ שניות</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="one">קליפ שמע %1$d התגלה היום</item>
+        <item quantity="two">‏%1$d קליפי שמע התגלו היום</item>
+        <item quantity="many">‏%1$d קליפי שמע התגלו היום</item>
+        <item quantity="other">‏%1$d קליפי שמע התגלו היום</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="one">צעד</item>
+        <item quantity="two">צעדים</item>
+        <item quantity="many">צעדים</item>
+        <item quantity="other">צעדים</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="one">צעדת לפני יום %1$d</item>
+        <item quantity="two">צעדת לפני %1$d ימים</item>
+        <item quantity="many">צעדת לפני %1$d ימים</item>
+        <item quantity="other">צעדת לפני %1$d ימים</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">יום %d</item>
+        <item quantity="other">%d ימים</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">שעה %d</item>
+        <item quantity="other">%d שעות</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="one">%d צעד</item>
+        <item quantity="two">%d צעדים</item>
+        <item quantity="many">%d צעדים</item>
+        <item quantity="other">%d צעדים</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="one">איכות נשימה בשינה של %1$d. אנו ממליצים שתשים לב לנשימה בשינה באופן רציף. אם אינך חש בטוב, היוועץ במומחה בתחום הבריאות</item>
+        <item quantity="two">איכות נשימה בשינה של %1$d. אנו ממליצים שתשים לב לנשימה בשינה באופן רציף. אם אינך חש בטוב, היוועץ במומחה בתחום הבריאות</item>
+        <item quantity="many">איכות נשימה בשינה של %1$d. אנו ממליצים שתשים לב לנשימה בשינה באופן רציף. אם אינך חש בטוב, היוועץ במומחה בתחום הבריאות</item>
+        <item quantity="other">איכות נשימה בשינה של %1$d. אנו ממליצים שתשים לב לנשימה בשינה באופן רציף. אם אינך חש בטוב, היוועץ במומחה בתחום הבריאות</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip_short">
+        <item quantity="one">ציון איכות נשימה בשינה: %1$d. שים לב לתנאי הנשימה שלך בשינה. אם אינך חש בטוב, פנה לקבלת ייעוץ רפואי</item>
+        <item quantity="two">ציון איכות נשימה בשינה: %1$d. שים לב לתנאי הנשימה שלך בשינה. אם אינך חש בטוב, פנה לקבלת ייעוץ רפואי</item>
+        <item quantity="many">ציון איכות נשימה בשינה: %1$d. Please pay close attention to your sleep breathing conditions. אם אינך חש בטוב, פנה לקבלת ייעוץ רפואי</item>
+        <item quantity="other">ציון איכות נשימה בשינה: %1$d. שים לב לתנאי הנשימה שלך בשינה. אם אינך חש בטוב, פנה לקבלת ייעוץ רפואי</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="one">איכות נשימה בשינה של %1$d. אנו ממליצים שתפנה לקבלת ייעוץ רפואי כדי לקבוע אם יש לך בעיות נשימה בשינה</item>
+        <item quantity="two">איכות נשימה בשינה של %1$d. אנו ממליצים שתפנה לקבלת ייעוץ רפואי כדי לקבוע אם יש לך בעיות נשימה בשינה</item>
+        <item quantity="many">איכות נשימה בשינה של %1$d. אנו ממליצים שתפנה לקבלת ייעוץ רפואי כדי לקבוע אם יש לך בעיות נשימה בשינה</item>
+        <item quantity="other">איכות נשימה בשינה של %1$d. אנו ממליצים שתפנה לקבלת ייעוץ רפואי כדי לקבוע אם יש לך בעיות נשימה בשינה</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip_short">
+        <item quantity="one">ציון איכות נשימה בשינה: %1$d. אם הציון מתחת ל-80 מספר פעמים, פנה לקבלת ייעוץ רפואי</item>
+        <item quantity="two">ציון איכות נשימה בשינה: %1$d. אם הציון מתחת ל-80 מספר פעמים, פנה לקבלת ייעוץ רפואי</item>
+        <item quantity="many">ציון איכות נשימה בשינה: %1$d. אם הציון מתחת ל-80 מספר פעמים, פנה לקבלת ייעוץ רפואי</item>
+        <item quantity="other">ציון איכות נשימה בשינה: %1$d. אם הציון מתחת ל-80 מספר פעמים, פנה לקבלת ייעוץ רפואי</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="one">איכות נשימה בשינה של %1$d, המשך כך</item>
+        <item quantity="two">איכות נשימה בשינה של %1$d, המשך כך</item>
+        <item quantity="many">איכות נשימה בשינה של %1$d, המשך כך</item>
+        <item quantity="other">איכות נשימה בשינה של %1$d, המשך כך</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip_short">
+        <item quantity="one">ציון איכות נשימה בשינה: %1$d. המשך כך</item>
+        <item quantity="two">ציון איכות נשימה בשינה: %1$d. המשך כך</item>
+        <item quantity="many">ציון איכות נשימה בשינה: %1$d. המשך כך</item>
+        <item quantity="other">ציון איכות נשימה בשינה: %1$d. המשך כך</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="one">תוקף ביטוח הריצה יפוג בעוד יום %1$d, לחץ לחידוש</item>
+        <item quantity="two">תוקף ביטוח הריצה יפוג בעוד %1$d ימים, לחץ לחידוש</item>
+        <item quantity="many">תוקף ביטוח הריצה יפוג בעוד %1$d ימים, לחץ לחידוש</item>
+        <item quantity="other">תוקף ביטוח הריצה יפוג בעוד %1$d ימים, לחץ לחידוש</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="one">פריט %d לא סונכרן</item>
+        <item quantity="two">%d פריטים לא סונכרנו</item>
+        <item quantity="many">%d פריטים לא סונכרנו</item>
+        <item quantity="other">%d פריטים לא סונכרנו</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="one">פריט %d לא סונכרן</item>
+        <item quantity="two">%d פריטים לא סונכרנו</item>
+        <item quantity="many">%d פריטים לא סונכרנו</item>
+        <item quantity="other">%d פריטים לא סונכרנו</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="one">מקצה רכיבה %1$d (אופניים)</item>
+        <item quantity="two">%1$d מקצי רכיבה (אופניים)</item>
+        <item quantity="many">%1$d מקצי רכיבה (אופניים)</item>
+        <item quantity="other">%1$d מקצי רכיבה (אופניים)</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="one">מקצה מכשיר אליפטי %1$d</item>
+        <item quantity="two">%1$d מקצי מכשיר אליפטי</item>
+        <item quantity="many">%1$d מקצי מכשיר אליפטי</item>
+        <item quantity="other">%1$d מקצי מכשיר אליפטי</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="one">אימון סגנון חופשי %1$d</item>
+        <item quantity="two">%1$d אימוני סגנון חופשי</item>
+        <item quantity="many">%1$d אימוני סגנון חופשי</item>
+        <item quantity="other">%1$d אימוני סגנון חופשי</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="one">מקצה ריצה %1$d</item>
+        <item quantity="two">%1$d מקצי ריצה</item>
+        <item quantity="many">%1$d מקצי ריצה</item>
+        <item quantity="other">%1$d מקצי ריצה</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="one">מקצה שחיה %1$d</item>
+        <item quantity="two">%1$d מקצי שחיה</item>
+        <item quantity="many">%1$d מקצי שחיה</item>
+        <item quantity="other">%1$d מקצי שחיה</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="one">אימון: מקצה %1$d</item>
+        <item quantity="two">אימון: %1$d מקצים</item>
+        <item quantity="many">אימון: %1$d מקצים</item>
+        <item quantity="other">אימון: %1$d מקצים</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="one">מקצה תריאטלון %1$d</item>
+        <item quantity="two">%1$d מקצי תריאטלון</item>
+        <item quantity="many">%1$d מקצי תריאטלון</item>
+        <item quantity="other">%1$d מקצי תריאטלון</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="one">מקצה הליכה %1$d</item>
+        <item quantity="two">%1$d מקצי הליכה</item>
+        <item quantity="many">%1$d מקצי הליכה</item>
+        <item quantity="other">%1$d מקצי הליכה</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="one">פעילות גופנית: מקצה %1$d</item>
+        <item quantity="two">פעילות גופנית: %1$d מקצים</item>
+        <item quantity="many">פעילות גופנית: %1$d מקצים</item>
+        <item quantity="other">פעילות גופנית: %1$d מקצים</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="one">הוסף עד אירוע %d</item>
+        <item quantity="two">הוסף עד %d אירועים</item>
+        <item quantity="many">הוסף עד %d אירועים</item>
+        <item quantity="other">הוסף עד %d אירועים</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="one">שיא אישי: יום %d</item>
+        <item quantity="two">שיא אישי: %d ימים</item>
+        <item quantity="many">שיא אישי: %d ימים</item>
+        <item quantity="other">שיא אישי: %d ימים</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="one">עקפת %d%% משתמשים אחרים</item>
+        <item quantity="two">עקפת %d%% משתמשים אחרים</item>
+        <item quantity="many">עקפת %d%% משתמשים אחרים</item>
+        <item quantity="other">עקפת %d%% משתמשים אחרים</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="zero">פעמים</item>
+        <item quantity="one">פעמים</item>
+        <item quantity="two">פעמים</item>
+        <item quantity="many">פעמים</item>
+        <item quantity="other">פעמים</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="one">יום</item>
+        <item quantity="two">ימים</item>
+        <item quantity="many">ימים</item>
+        <item quantity="other">ימים</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="zero">ציון</item>
+        <item quantity="one">ציון</item>
+        <item quantity="two">ציון</item>
+        <item quantity="many">ציון</item>
+        <item quantity="other">ציון</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="zero">‎%dפעמים</item>
+        <item quantity="one">‎%dפעם</item>
+        <item quantity="other">‎%dפעמים</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="one">ציון השינה עלה ב-%d ביחס לחודש הקודם.</item>
+        <item quantity="two">ציון השינה עלה ב-%d ביחס לחודש הקודם.</item>
+        <item quantity="many">ציון השינה עלה ב-%d ביחס לחודש הקודם.</item>
+        <item quantity="other">ציון השינה עלה ב-%d ביחס לחודש הקודם.</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="one">ציון השינה של חודש זה הוא %d, המשך כך.</item>
+        <item quantity="two">ציון השינה של חודש זה הוא %d, המשך כך.</item>
+        <item quantity="many">ציון השינה של חודש זה הוא %d, המשך כך.</item>
+        <item quantity="other">ציון השינה של חודש זה הוא %d, המשך כך.</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="one">ציון השינה עלה ב-%d ביחס לשבוע הקודם.</item>
+        <item quantity="two">ציון השינה עלה ב-%d ביחס לשבוע הקודם.</item>
+        <item quantity="many">ציון השינה עלה ב-%d ביחס לשבוע הקודם.</item>
+        <item quantity="other">ציון השינה עלה ב-%d ביחס לשבוע הקודם.</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="one">ציון השינה של שבוע זה הוא %d, המשך כך.</item>
+        <item quantity="two">ציון השינה של שבוע זה הוא %d, המשך כך.</item>
+        <item quantity="many">ציון השינה של שבוע זה הוא %d, המשך כך.</item>
+        <item quantity="other">ציון השינה של שבוע זה הוא %d, המשך כך.</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="one">קליפ שמע %1$d הוקלט היום.</item>
+        <item quantity="two">%1$d קליפים של שמע הוקלטו היום.</item>
+        <item quantity="many">%1$d קליפים של שמע הוקלטו היום.</item>
+        <item quantity="other">%1$d קליפים של שמע הוקלטו היום.</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="one">קליפ %1$d</item>
+        <item quantity="two">%1$d קליפים</item>
+        <item quantity="many">%1$d קליפים</item>
+        <item quantity="other">%1$d קליפים</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="one">פעילויות שהסתיימו:%1$d מפגש של %2$s</item>
+        <item quantity="two">פעילויות שהסתיימו:%1$d מפגש של %2$s</item>
+        <item quantity="many">פעילויות שהסתיימו:%1$d מפגש של %2$s</item>
+        <item quantity="other">פעילויות שהסתיימו:%1$d מפגש של %2$s</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="one">צעד</item>
+        <item quantity="two">צעדים</item>
+        <item quantity="many">צעדים</item>
+        <item quantity="other">צעדים</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="one">צעד</item>
+        <item quantity="two">צעדים</item>
+        <item quantity="many">צעדים</item>
+        <item quantity="other">צעדים</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="one">צעדים ליום</item>
+        <item quantity="two">צעדים ליום</item>
+        <item quantity="many">צעדים ליום</item>
+        <item quantity="other">צעדים ליום</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="one">‏&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; פעמים</item>
+        <item quantity="two">‏&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; פעמים</item>
+        <item quantity="many">‏&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; פעמים</item>
+        <item quantity="other">‏&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; פעמים</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="one">‏מככב בראש הרשימה&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; יום</item>
+        <item quantity="two">‏מככב בראש הרשימה כבר&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; ימים</item>
+        <item quantity="many">‏מככב בראש הרשימה כבר&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; ימים</item>
+        <item quantity="other">‏מככב בראש הרשימה כבר&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; ימים</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="one">היה בראש הרשימה פעם %1$d</item>
+        <item quantity="two">היה בראש הרשימה %1$d פעמים</item>
+        <item quantity="many">היה בראש הרשימה %1$d פעמים</item>
+        <item quantity="other">היה בראש הרשימה %1$d פעמים</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="one">היה בראש הרשימה למשך יום %1$d</item>
+        <item quantity="two">היה בראש הרשימה למשך %1$d ימים</item>
+        <item quantity="many">היה בראש הרשימה למשך %1$d ימים</item>
+        <item quantity="other">היה בראש הרשימה למשך %1$d ימים</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="one">עשה התאמה עם חבר %1$d:</item>
+        <item quantity="two">עשה התאמה עם %1$d חברים:</item>
+        <item quantity="many">עשה התאמה עם %1$d חברים:</item>
+        <item quantity="other">עשה התאמה עם %1$d חברים:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="one">‏זמן&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; ריצה</item>
+        <item quantity="two">‏זמני&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; ריצה</item>
+        <item quantity="many">‏זמני&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; ריצה</item>
+        <item quantity="other">‏Ran&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; פעמים</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="one">רשומת ריצה %1$d לא הועלתה</item>
+        <item quantity="two">‏%1$d רשומות ריצה לא הועלו</item>
+        <item quantity="many">‏%1$d רשומות ריצה לא הועלו</item>
+        <item quantity="other">‏%1$d רשומות ריצה לא הועלו</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="one">משתתף %1$d</item>
+        <item quantity="two">‏%1$d משתתפים</item>
+        <item quantity="many">‏%1$d משתתפים</item>
+        <item quantity="other">‏%1$d משתתפים</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="zero">‎%dשעות</item>
+        <item quantity="one">‎%dשעה</item>
+        <item quantity="other">‎%dשעות</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="zero">‎%dדקות</item>
+        <item quantity="one">‎%dדקה</item>
+        <item quantity="other">‎%dדקות</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="one">פעם %1$d</item>
+        <item quantity="two">‏%1$d פעמים</item>
+        <item quantity="many">‏%1$d פעמים</item>
+        <item quantity="other">‏%1$d פעמים</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="one">ברכות!\nב-%1$dהימים האחרונים איבדת</item>
+        <item quantity="two">ברכות!\nב-%1$dהימים האחרונים איבדת</item>
+        <item quantity="many">ברכות!\nב-%1$dהימים האחרונים איבדת</item>
+        <item quantity="other">ברכות!\nב-%1$dהימים האחרונים איבדת</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="one">יש רשומת משקל %1$d הממתינה לפדיון.</item>
+        <item quantity="two">יש %1$d רשומות משקל הממתינות לפדיון.</item>
+        <item quantity="many">יש %1$d רשומות משקל הממתינות לפדיון.</item>
+        <item quantity="other">יש %1$d רשומות משקל הממתינות לפדיון.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="one">ניתן להוסיף לכל היותר לוח זמנים %1$d</item>
+        <item quantity="two">ניתן להוסיף לכל היותר %1$d לוחות זמנים</item>
+        <item quantity="many">ניתן להוסיף לכל היותר %1$d לוחות זמנים</item>
+        <item quantity="other">ניתן להוסיף לכל היותר %1$d לוחות זמנים</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="one">לא ניתן לנתח עבור מבוגרים בני יותר מ %d שנה</item>
+        <item quantity="two">לא ניתן לנתח עבור מבוגרים בני יותר מ %d שנה</item>
+        <item quantity="many">לא ניתן לנתח עבור מבוגרים בני יותר מ %d שנה</item>
+        <item quantity="other">לא ניתן לנתח עבור מבוגרים בני יותר מ %d שנה</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="one">לא ניתן לנתח לנתח עבור מתאמנים צעירים בני פחות מ%d שנה</item>
+        <item quantity="two">לא ניתן לנתח לנתח עבור מתאמנים צעירים בני פחות מ%d שנה</item>
+        <item quantity="many">לא ניתן לנתח לנתח עבור מתאמנים צעירים בני פחות מ%d שנה</item>
+        <item quantity="other">לא ניתן לנתח לנתח עבור מתאמנים צעירים בני פחות מ%d שנה</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="one">%d קלוריה</item>
+        <item quantity="two">%d קלוריות</item>
+        <item quantity="many">%d קלוריות</item>
+        <item quantity="other">%d קלוריות</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="one">קורס %d</item>
+        <item quantity="two">קורסים %d</item>
+        <item quantity="many">קורסים %d</item>
+        <item quantity="other">קורסים %d</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="one">תוקף הקורס יפוג בעוד %d יום</item>
+        <item quantity="two">תוקף הקורס יפוג בעוד %d ימים</item>
+        <item quantity="many">תוקף הקורס יפוג בעוד %d ימים</item>
+        <item quantity="other">תוקף הקורס יפוג בעוד %d ימים</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="one">%d צפיה</item>
+        <item quantity="two">%d צפיות</item>
+        <item quantity="many">%d צפיות</item>
+        <item quantity="other">%d צפיות</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="one">סה&quot;כ סטים: %d</item>
+        <item quantity="two">סה&quot;כ סטים: %d</item>
+        <item quantity="many">סה&quot;כ סטים: %d</item>
+        <item quantity="other">סה&quot;כ סטים: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="one">נלמד פעם: %d</item>
+        <item quantity="two">נלמד פעמים: %d</item>
+        <item quantity="many">נלמד פעמים: %d</item>
+        <item quantity="other">נלמד פעמים: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="one">מתחיל בעוד יום %d</item>
+        <item quantity="two">מתחיל בעוד %d ימים</item>
+        <item quantity="many">מתחיל בעוד %d ימים</item>
+        <item quantity="other">מתחיל בעוד %d ימים</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="one">התאמנת למשך דקה  %1$d </item>
+        <item quantity="two">התאמנת למשך  %1$d  דקות</item>
+        <item quantity="many">התאמנת למשך  %1$d  דקות</item>
+        <item quantity="other">התאמנת למשך  %1$d  דקות</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="one">התאמנת למשך שניה  %1$d </item>
+        <item quantity="two">התאמנת למשך  %1$d  שניות</item>
+        <item quantity="many">התאמנת למשך  %1$d  שניות</item>
+        <item quantity="other">התאמנת למשך  %1$d  שניות</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="one">יום %1$d של קורס אימון: עליך להשלים אותו בתוך %3$s (%2$d דקות)</item>
+        <item quantity="two">יום %1$d של קורס אימון: עליך להשלים אותו בתוך %3$s (%2$d דקות)</item>
+        <item quantity="many">יום %1$d של קורס אימון: עליך להשלים אותו בתוך %3$s (%2$d דקות)</item>
+        <item quantity="other">יום %1$d של קורס אימון: עליך להשלים אותו בתוך %3$s (%2$d דקות)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="one">שניה  %1$d </item>
+        <item quantity="two"> %1$d  שניות</item>
+        <item quantity="many"> %1$d  שניות</item>
+        <item quantity="other"> %1$d  שניות</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="one">פעם  %1$d </item>
+        <item quantity="two"> %1$d  פעמים</item>
+        <item quantity="many"> %1$d  פעמים</item>
+        <item quantity="other"> %1$d  פעמים</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="one">הפסקת למשך שניה  %1$d </item>
+        <item quantity="two">הפסקת למשך  %1$d  שניות</item>
+        <item quantity="many">הפסקת למשך  %1$d  שניות</item>
+        <item quantity="other">הפסקת למשך  %1$d  שניות</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="one"> צעד</item>
+        <item quantity="two"> צעדים</item>
+        <item quantity="many"> צעדים</item>
+        <item quantity="other"> צעדים</item>
+    </plurals>
+    <plurals name="user_info_Nhours">
+        <item quantity="one">שעה 1</item>
+        <item quantity="other">%1$d שעות</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="one">מכיוון שהגיל שהזנת הוא מתחת לגיל %1$d, תוכל להמשיך להשתמש ב-Zepp רק לאחר שנקבל את אישור האפוטרופוס שלך ואת הסכמתו.</item>
+        <item quantity="two">מכיוון שהגיל שהזנת הוא מתחת לגיל %1$d, תוכל להמשיך להשתמש ב-Zepp רק לאחר שנקבל את אישור האפוטרופוס שלך ואת הסכמתו.</item>
+        <item quantity="many">מכיוון שהגיל שהזנת הוא מתחת לגיל %1$d, תוכל להמשיך להשתמש ב-Zepp רק לאחר שנקבל את אישור האפוטרופוס שלך ואת הסכמתו.</item>
+        <item quantity="other">מכיוון שהגיל שהזנת הוא מתחת לגיל %1$d, תוכל להמשיך להשתמש ב-Zepp רק לאחר שנקבל את אישור האפוטרופוס שלך ואת הסכמתו.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="one">אחרת, חשבונך יוקפא בעוד יום %1$d .</item>
+        <item quantity="two">אחרת, חשבונך יוקפא בעוד %1$d ימים.</item>
+        <item quantity="many">אחרת, חשבונך יוקפא בעוד %1$d ימים.</item>
+        <item quantity="other">אחרת, חשבונך יוקפא בעוד %1$d ימים.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="one">מתחת לגיל %1$d</item>
+        <item quantity="two">מתחת לגיל %1$d</item>
+        <item quantity="many">מתחת לגיל %1$d</item>
+        <item quantity="other">מתחת לגיל %1$d</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="one">כדי להגן על הפרטיות של נתונים של קטינים, אם אתה מתחת לגיל %1$d, אנו דורשים את הרשאת האפוטרופוס שלך ואת הסכמתו לפני שנספק לך שירותים מלאים.</item>
+        <item quantity="two">כדי להגן על הפרטיות של נתונים של קטינים, אם אתה מתחת לגיל %1$d, אנו דורשים את הרשאת האפוטרופוס שלך ואת הסכמתו לפני שנספק לך שירותים מלאים.</item>
+        <item quantity="many">כדי להגן על הפרטיות של נתונים של קטינים, אם אתה מתחת לגיל %1$d, אנו דורשים את הרשאת האפוטרופוס שלך ואת הסכמתו לפני שנספק לך שירותים מלאים.</item>
+        <item quantity="other">כדי להגן על הפרטיות של נתונים של קטינים, אם אתה מתחת לגיל %1$d, אנו דורשים את הרשאת האפוטרופוס שלך ואת הסכמתו לפני שנספק לך שירותים מלאים.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="one">אשר שאינך מתחת לגיל %1$d</item>
+        <item quantity="two">אשר שאינך מתחת לגיל %1$d</item>
+        <item quantity="many">אשר שאינך מתחת לגיל %1$d</item>
+        <item quantity="other">אשר שאינך מתחת לגיל %1$d</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="one">%s רגל</item>
+        <item quantity="two">%s רגל</item>
+        <item quantity="many">%s רגל</item>
+        <item quantity="other">%s רגל</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="one">%s אינץ&apos;</item>
+        <item quantity="two">%s אינץ&apos;</item>
+        <item quantity="many">%s אינץ&apos;</item>
+        <item quantity="other">%s אינץ&apos;</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="one">%d קלוריה</item>
+        <item quantity="two">%d קלוריות</item>
+        <item quantity="many">%d קלוריות</item>
+        <item quantity="other">%d קלוריות</item>
+    </plurals>
+    <plurals name="weekly_interval">
+        <item quantity="one">שבוע</item>
+        <item quantity="other">%1$d שבועות</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="one">%d קלוריה</item>
+        <item quantity="two">%d קלוריות</item>
+        <item quantity="many">%d קלוריות</item>
+        <item quantity="other">%d קלוריות</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="one">דקה %d</item>
+        <item quantity="two">‏%d דקות</item>
+        <item quantity="many">‏%d דקות</item>
+        <item quantity="other">‏%d דקות</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="one">מקצה %d</item>
+        <item quantity="two">%d מקצים</item>
+        <item quantity="many">%d מקצים</item>
+        <item quantity="other">%d מקצים</item>
+    </plurals>
+    <plurals name="yearly_interval">
+        <item quantity="one">שנה</item>
+        <item quantity="other">%1$d שנים</item>
+    </plurals>
+</resources>

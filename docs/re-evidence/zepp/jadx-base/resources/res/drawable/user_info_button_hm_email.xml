@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="@color/account_ui_p3_30"/>
+            <stroke
+                android:width="@dimen/user_info_round_bg_stroke"
+                android:color="@color/account_ui_p3_30"/>
+            <corners android:radius="2dp"/>
+            <padding
+                android:left="@dimen/user_info_round_bg_stroke"
+                android:top="@dimen/user_info_round_bg_stroke"
+                android:right="@dimen/user_info_round_bg_stroke"
+                android:bottom="@dimen/user_info_round_bg_stroke"/>
+        </shape>
+    </item>
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/p2"/>
+            <stroke
+                android:width="@dimen/user_info_round_bg_stroke"
+                android:color="@color/p2"/>
+            <corners android:radius="2dp"/>
+            <padding
+                android:left="@dimen/user_info_round_bg_stroke"
+                android:top="@dimen/user_info_round_bg_stroke"
+                android:right="@dimen/user_info_round_bg_stroke"
+                android:bottom="@dimen/user_info_round_bg_stroke"/>
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/p3"/>
+            <stroke
+                android:width="@dimen/user_info_round_bg_stroke"
+                android:color="@color/p3"/>
+            <corners android:radius="2dp"/>
+            <padding
+                android:left="@dimen/user_info_round_bg_stroke"
+                android:top="@dimen/user_info_round_bg_stroke"
+                android:right="@dimen/user_info_round_bg_stroke"
+                android:bottom="@dimen/user_info_round_bg_stroke"/>
+        </shape>
+    </item>
+</selector>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@color/black90"
+        android:id="@+id/item_repeat_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20.3dp"/>
+    <CheckBox
+        android:id="@+id/item_repeat_cb"
+        android:clickable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="20.3dp"
+        android:layout_alignParentEnd="true"
+        style="@style/WatchCheckBox"/>
+    <include layout="@layout/split_line_with_margin"/>
+</RelativeLayout>

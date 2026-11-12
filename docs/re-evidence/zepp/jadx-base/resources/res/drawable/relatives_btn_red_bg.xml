@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="#ff6655"/>
+            <size
+                android:height="@dimen/relatives_size_60dp"
+                android:width="@dimen/relatives_size_60dp"/>
+            <stroke
+                android:width="@dimen/relatives_round_bg_stroke"
+                android:color="#ff6655"/>
+            <corners android:radius="42dp"/>
+            <padding
+                android:left="@dimen/relatives_round_bg_stroke"
+                android:top="@dimen/relatives_round_bg_stroke"
+                android:right="@dimen/relatives_round_bg_stroke"
+                android:bottom="@dimen/relatives_round_bg_stroke"/>
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape>
+            <size
+                android:height="@dimen/relatives_size_60dp"
+                android:width="@dimen/relatives_size_60dp"/>
+            <solid android:color="#acacac"/>
+            <stroke
+                android:width="@dimen/relatives_round_bg_stroke"
+                android:color="#acacac"/>
+            <corners android:radius="42dp"/>
+            <padding
+                android:left="@dimen/relatives_round_bg_stroke"
+                android:top="@dimen/relatives_round_bg_stroke"
+                android:right="@dimen/relatives_round_bg_stroke"
+                android:bottom="@dimen/relatives_round_bg_stroke"/>
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <size
+                android:height="@dimen/relatives_size_60dp"
+                android:width="@dimen/relatives_size_60dp"/>
+            <solid android:color="#ff6655"/>
+            <stroke
+                android:width="@dimen/relatives_round_bg_stroke"
+                android:color="#ff6655"/>
+            <corners android:radius="42dp"/>
+            <padding
+                android:left="@dimen/relatives_round_bg_stroke"
+                android:top="@dimen/relatives_round_bg_stroke"
+                android:right="@dimen/relatives_round_bg_stroke"
+                android:bottom="@dimen/relatives_round_bg_stroke"/>
+        </shape>
+    </item>
+</selector>

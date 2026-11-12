@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/default_view"
+        layout="@layout/layout_startup_default"/>
+    <ViewStub
+        android:id="@+id/view_stub_ad"
+        android:layout="@layout/layout_launch_ad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</RelativeLayout>

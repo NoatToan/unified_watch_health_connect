@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/fh_verify_select_color"/>
+    <stroke
+        android:width="0.3dp"
+        android:color="@color/fh_calendar_line_color"/>
+    <corners android:radius="0dp"/>
+    <padding
+        android:left="0.3dp"
+        android:top="0.3dp"
+        android:right="0.3dp"
+        android:bottom="0.3dp"/>
+</shape>

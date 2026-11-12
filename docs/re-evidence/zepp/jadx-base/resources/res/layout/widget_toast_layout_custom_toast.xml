@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/widget_toast_custom_toast_background"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/s46"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/content_txt"
+        android:paddingTop="@dimen/toast_text_padding_vertical"
+        android:paddingBottom="@dimen/toast_text_padding_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/default_padding"
+        android:paddingStart="@dimen/toast_text_padding_horizontal"
+        android:paddingEnd="@dimen/toast_text_padding_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

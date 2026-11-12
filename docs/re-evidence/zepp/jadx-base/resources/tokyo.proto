@@ -1,0 +1,94 @@
+// A very simple protocol definition, consisting of only
+// one message.
+
+syntax = "proto2";
+import "statis_base.proto";
+import "backlightTime.proto";
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message TokyoEventMessage
+{
+    required uint32 stepCount                    = 1;  // 计步点击次数
+	required uint32 heartRateCount               = 2;  // 心率点击次数
+	required uint32 paiCount                     = 3;  // PAI 点击次数
+	required uint32 distanceCount                = 4;  // 距离点击次数
+	required uint32 expendCount                  = 5;  // 消耗点击次数
+	required uint32 weatherCount                 = 6;  // 天气点击次数
+
+	// 闹钟
+	required uint32 alarmOnCount                 = 7;  // 闹钟开启次数
+	required uint32 alarmOffCount                = 8;  // 闹钟关闭次数
+
+	// 勿扰
+	required uint32 silenceOnCountByTimer        = 9;  // 定时勿扰开启次数
+	required uint32 silenceOnCountBySmart        = 10; // 智能勿扰开启次数
+	required uint32 silenceOffCount              = 11; // 勿扰关闭次数
+
+	// 秒表
+	required uint32 stopWatchStartCount          = 12; // 秒表开始点击次数
+	required uint32 stopWatchMarkCount           = 13; // 秒表计次点击次数
+
+	// 运动副屏
+	required uint32 sportScreenUsingCount        = 14; // APP端发起的运动副屏使用次数
+	required uint32 phoneDisconnectBySport       = 15; // 运动中手机断连
+	required uint32 phoneRecoveryBySport         = 16; // 运动中手机恢复
+
+	// 提醒统计
+	required uint32 callPageCount                = 17; // 来电提醒次数
+	required uint32 appNotifyCount               = 18; // app通知提醒次数
+	required uint32 MSMNotifyCount               = 19; // 短信提醒次数
+	required uint32 EMAILNotifyCount             = 20; // 邮件提醒次数
+	required uint32 sedentaryNotifyCount         = 21; // 久坐提醒次数
+	required uint32 reachNotifyCount             = 22; // 达标提醒次数
+	required uint32 highHeartrateNotifyCount     = 23; // 心率预警提醒次数
+	required uint32 perKilometerNotifyCount      = 24; // 每公里提醒次数
+	required uint32 cardiacAbnormalNotifyCount   = 25; // 心搏异常提醒次数
+	required uint32 alarmPageCount               = 26; // 闹钟提醒次数
+	required uint32 careNotifyCount              = 27; // 关爱提醒次数
+
+	// 背光次数统计信息
+	required uint32 lcdOnCountByPress            = 28;  // 背光开启统计
+	required uint32 lcdOffCountByPress           = 29;  // 背光关闭统计
+	required uint32 lcdOnCountByEvent            = 30;  // 开启抬腕点亮背光统计
+	required uint32 lcdOffCountByEvent           = 31;  // 关闭抬腕点亮背光统计
+
+	// 嗡鸣
+	required uint32 buzzerSwOnCount              = 32;  // 按键音-开启
+	required uint32 buzzerSwOffCount             = 33;  // 按键音-关闭
+
+	// 检测模式
+	required uint32 autoHeartRateTestCount        = 34;  // 自动心率检测次数
+	required uint32 sleepAidTestCount             = 35;  // 辅助睡眠检测次数
+	required uint32 autoHeartRateAndSleepAidCount = 36;  // 自动心率+辅助睡眠检测次数
+	required uint32 heartHealthTestCount          = 37;  // 心脏健康检测次数
+	required uint32 testOffCount                  = 38;  // 关闭
+
+	// 频率
+	required uint32 oneMinuteFreqCount            = 39;  // 1分钟
+	required uint32 fiveMinuteFreqCount           = 40;  // 5分钟
+	required uint32 tenMinuteFreqCount            = 41;  // 10分钟
+	required uint32 thirtyMinuteFreqCount         = 42;  // 30分钟
+
+	// 恢复出厂设置
+	required uint32 factoryPageCount             = 43;  //恢复出厂次数
+	
+	// 查找手机
+	required uint32 findPhoneOk                  = 44;  // 查找手机成功
+	required uint32 findPhoneFail                = 45;  // 查找手机失败
+	
+	// 重启
+	required uint32 powerRestartCount            = 46;  // 重启次数
+	
+	// 关机
+	required uint32 powerShutDownCount           = 47;  // 关机次数
+	
+	// 断连
+	required uint32 powerDisconnctCount          = 48;  // 断连次数
+}
+
+message TokyoStatisticMessage 
+{ 
+    required StatisBaseMessage base                      = 1;  // 通用统计信息
+	required TokyoEventMessage event                     = 2;  // 打点事件
+	required BacklightTimeWeekMessage  backlightTimeMsg  = 3;  // 背光事件统计
+}

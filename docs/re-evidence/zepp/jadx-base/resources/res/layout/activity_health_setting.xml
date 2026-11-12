@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:huami="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/theme_window_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaomi.hm.health.baseui.widget.ItemView
+        android:id="@+id/itemStepGoalView"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        huami:itemDivider="gone"
+        huami:itemSwitch="true"
+        huami:itemTitle="@string/step_goal_reminder"/>
+    <com.xiaomi.hm.health.baseui.widget.ItemView
+        android:id="@+id/itemLongSitView"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="10dp"
+        huami:itemDivider="gone"
+        huami:itemSwitch="true"
+        huami:itemTitle="@string/long_sit_reminder"/>
+    <TextView
+        android:textColor="@color/black30"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/long_sit_reminder_info"
+        android:layout_marginStart="20dp"/>
+    <com.xiaomi.hm.health.baseui.widget.ItemView
+        android:id="@+id/itemCalGoalView"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        huami:itemDivider="gone"
+        huami:itemTitle="@string/calorie_goal"/>
+</LinearLayout>

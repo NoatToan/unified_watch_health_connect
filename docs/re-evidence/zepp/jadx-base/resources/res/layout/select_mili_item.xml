@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/s38"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:minHeight="64dp"
+    android:paddingStart="45dp"
+    android:paddingEnd="45dp">
+    <TextView
+        android:textSize="15sp"
+        android:textColor="@color/s1"
+        android:id="@+id/device_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11.5dp"
+        android:layout_alignParentStart="true"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="17.3dp"
+        android:layout_height="17.3dp"
+        android:src="@drawable/ic_arrow_forward_20_2x"
+        android:tint="@color/s2"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"/>
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/s2"
+        android:id="@+id/device_mac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/device_title"
+        android:layout_alignParentStart="true"/>
+    <View
+        android:background="@color/s4"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

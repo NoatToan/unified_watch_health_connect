@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/relatives_item_bg_pressed"/>
+            <stroke
+                android:width="1px"
+                android:color="@color/relatives_black_40_percent"/>
+            <corners
+                android:topLeftRadius="@dimen/relatives_button_left_top_radius"
+                android:topRightRadius="@dimen/relatives_button_right_top_radius"
+                android:bottomLeftRadius="@dimen/relatives_button_left_bottom_radius"
+                android:bottomRightRadius="@dimen/relatives_button_right_bottom_radius"/>
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@android:color/white"/>
+            <stroke
+                android:width="1px"
+                android:color="@color/relatives_black_40_percent"/>
+            <corners
+                android:topLeftRadius="@dimen/relatives_button_left_top_radius"
+                android:topRightRadius="@dimen/relatives_button_right_top_radius"
+                android:bottomLeftRadius="@dimen/relatives_button_left_bottom_radius"
+                android:bottomRightRadius="@dimen/relatives_button_right_bottom_radius"/>
+        </shape>
+    </item>
+</selector>

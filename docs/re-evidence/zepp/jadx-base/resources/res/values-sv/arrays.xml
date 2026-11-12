@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Rulla upp ärmen så att överarmen är bar</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Du ska få in ett finger mellan manschett och arm. Om manschetten är för lös eller för tajt kan det påverka mätningens noggrannhet</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Första mätningen</item>
+        <item>Andra mätningen</item>
+        <item>Tredje mätningen</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Registrera resultatet från första blodtrycksmätningen</item>
+        <item>Registrera resultatet från andra blodtrycksmätningen</item>
+        <item>Registrera resultatet från tredje blodtrycksmätningen</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Låg</item>
+        <item>Normal</item>
+        <item>Hög</item>
+        <item>Väldigt hög</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normal</item>
+        <item>Hög</item>
+        <item>Väldigt hög</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Mycket dålig</item>
+        <item>Dålig</item>
+        <item>Normal</item>
+        <item>Bra</item>
+        <item>Utmärkt</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Mycket låg</item>
+        <item>Låg</item>
+        <item>Normal</item>
+        <item>Ökat</item>
+        <item>Hög</item>
+    </array>
+    <array name="bone_leval">
+        <item>Otillräcklig</item>
+        <item>Normal</item>
+        <item>Bra</item>
+    </array>
+    <array name="brm_leval">
+        <item>Nådde inte mål</item>
+        <item>Nådde mål</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Låg</item>
+        <item>Medium</item>
+        <item>Hög</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Prova att trycka på knappen på klockan. Om klockans skärm är av kopplar du in den för att ladda batteriet.</item>
+        <item>Om det inte går att lösa problemet genom att starta om Bluetooth kan du prova att starta om telefonen.</item>
+        <item>Om bandet är laddat men telefonen inte hittar det kan du prova att starta om Bluetooth på telefonen.</item>
+        <item>Om det inte går att lösa problemet genom att starta om Bluetooth kan du prova att starta om telefonen.</item>
+        <item>Klockdata kan inte synkroniseras medan du tränar. Avsluta sessionen och försök igen.</item>
+        <item>Om bandet är laddat men telefonen inte hittar det kan du prova att starta om Bluetooth på telefonen.</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Är klockan laddad?</item>
+        <item>Har klockan parkopplats med en annan enhet?</item>
+        <item>Prova att starta om Bluetooth</item>
+        <item>Prova att starta om telefonen</item>
+        <item>Kan inte synkronisera data under träning</item>
+        <item>Kan inte synkronisera data under träning</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Shenzhen</item>
+        <item>Foshan</item>
+        <item>Dongguan</item>
+        <item>Beijing</item>
+        <item>Nanjing</item>
+        <item>Suzhou</item>
+        <item>Changzhou</item>
+        <item>Jinan</item>
+        <item>Qingdao</item>
+        <item>Hangzhou</item>
+        <item>Ningbo</item>
+        <item>Zhengzhou</item>
+        <item>Kaifeng</item>
+        <item>Shanghai</item>
+        <item>Shijiazhuang</item>
+        <item>Baoding</item>
+        <item>Chengdu</item>
+        <item>Mianyang</item>
+        <item>Shenyang</item>
+        <item>Dalian</item>
+    </array>
+    <array name="common_level">
+        <item>Otillräcklig</item>
+        <item>Normal</item>
+        <item>Bra</item>
+    </array>
+    <array name="contact_ways">
+        <item>E-post</item>
+        <item>Mobiltelefonnummer</item>
+        <item>WeChat-ID</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Nybörjare på fitnessträning</item>
+        <item>Har grundläggande fitnesserfarenhet</item>
+        <item>Har omfattande fitnesserfarenhet och god form</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Grundläggande</item>
+        <item>Medel</item>
+        <item>Avancerat</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Otillräckliga data</item>
+        <item>Avvikande hjärtslag</item>
+        <item>Inga avvikelser upptäcktes</item>
+        <item>Otillräckliga data</item>
+        <item>Inga avvikelser upptäcktes</item>
+        <item />
+        <item>Inga avvikelser upptäcktes</item>
+        <item>Dålig signalkvalitet</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Justera användningssätt och försök igen.</item>
+        <item>Endast som referens. Uppsök läkare om du upplever obehag.</item>
+        <item>Endast som referens. Uppsök läkare om du upplever obehag.</item>
+        <item>Justera användningssätt och försök igen.</item>
+        <item>Endast som referens. Uppsök läkare om du upplever obehag.</item>
+        <item />
+        <item>Endast som referens. Uppsök läkare om du upplever obehag.</item>
+        <item>Justera användningssätt och försök igen.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Vill bränna fett</item>
+        <item>Vill forma kroppen</item>
+        <item>Vill bygga muskler</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Deffa</item>
+        <item>Forma</item>
+        <item>Bulka</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>Måndag</item>
+        <item>Tisdag</item>
+        <item>Onsdag</item>
+        <item>Torsdag</item>
+        <item>Fredag</item>
+        <item>Lördag</item>
+        <item>Söndag</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Må</item>
+        <item>Ti</item>
+        <item>On</item>
+        <item>To</item>
+        <item>Fr</item>
+        <item>Lö</item>
+        <item>Sö</item>
+    </array>
+    <array name="hr_sport">
+        <item>Pulszon: ljus</item>
+        <item>Pulszon: intensiv</item>
+        <item>Hjärtfrekvensområde: Aerobic</item>
+        <item>Hjärtfrekvenszon: Anaerob</item>
+        <item>Hjärtfrekvensområde: VO2 max</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Lätt</item>
+        <item>Intensiv</item>
+        <item>Aerob</item>
+        <item>Anaerob</item>
+        <item>VO₂ max</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Armhåla</item>
+        <item>Oralt</item>
+        <item>Ändtarm</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Handled</item>
+        <item>Panna</item>
+        <item>Bakom örat</item>
+        <item>Öronsnäcka</item>
+        <item>Hals</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Armhåla</item>
+        <item>Oralt</item>
+        <item>Ändtarm</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Bröst</item>
+        <item>Armhåla</item>
+        <item>Ljumske</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Stäng</item>
+        <item>Nära</item>
+        <item>Långt bort</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Tryck på knappen på bandet för att kontrollera om displayen lyser. Om den inte gör det ska du ladda bandet.\n\nLadda enheten innan du parkopplar %1$s eller %2$s.</item>
+        <item>Om det inte går att lösa problemet genom att starta om Bluetooth kan du prova att starta om telefonen.</item>
+        <item>Om bandet är laddat men telefonen inte hittar det kan du prova att starta om Bluetooth på telefonen.</item>
+        <item>Om det inte går att lösa problemet genom att starta om Bluetooth kan du prova att starta om telefonen.</item>
+        <item>Om det inte går att lösa problemet genom att starta om Bluetooth kan du prova att starta om telefonen.</item>
+        <item>Om det inte går att lösa problemet genom att starta om Bluetooth kan du prova att starta om telefonen.</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Är bandet laddat?</item>
+        <item>Har bandet parkopplats med en annan enhet?</item>
+        <item>Har bandet parkopplats med en annan enhet?</item>
+        <item>Prova att starta om telefonen</item>
+        <item>Har bandet parkopplats med en annan enhet?</item>
+        <item>Har bandet parkopplats med en annan enhet?</item>
+    </array>
+    <array name="month_list">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Maj</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="month_titles">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Maj</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Otillräcklig</item>
+        <item>Normal</item>
+        <item>Bra</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Mycket dålig</item>
+        <item>Dålig</item>
+        <item>Genomsnitt</item>
+        <item>Bra</item>
+        <item>Väldigt bra</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Maj</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s slutar fungera om du inte använder det under en längre tid. Skaka %2$s och försök igen.</item>
+        <item>Batteritiden för %s är 1 år. Om du har använt det under en längre period kanske batteriet är slut.</item>
+        <item>Stäng av Bluetooth på den andra enheten först och parkoppla sedan med telefonen.</item>
+        <item>Om %s är laddat men telefonen inte hittar det kan du prova att starta om Bluetooth på telefonen.</item>
+        <item>Om det inte går att lösa problemet genom att starta om Bluetooth kan du prova att starta om telefonen.</item>
+        <item>Tryck på löparskornas data och öppna nästa aktivitetssida för att synkronisera data automatiskt</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Skaka %s</item>
+        <item>Är %s laddade?</item>
+        <item>Har %s parkopplats med en annan telefon i närheten?</item>
+        <item>Starta om Bluetooth</item>
+        <item>Prova att starta om telefonen</item>
+        <item>Hur ska dina data synkroniseras?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Feta</item>
+        <item>Övervikt</item>
+        <item>Tjock-uppsättning</item>
+        <item>Saknar\nmotion</item>
+        <item>Balanserad</item>
+        <item>Balanserad\nmuskulös</item>
+        <item>Smal</item>
+        <item>Balanserad\nsmal</item>
+        <item>Smal\nmuskulös</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>Måndag</item>
+        <item>Tisdag</item>
+        <item>Onsdag</item>
+        <item>Torsdag</item>
+        <item>Fredag</item>
+        <item>Lördag</item>
+        <item>Söndag</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Aktivitet</item>
+        <item>Långsam gång</item>
+        <item>Gång</item>
+        <item>Snabb gång</item>
+        <item>Löpning</item>
+        <item>Stå</item>
+        <item>Sitta</item>
+        <item>Lätt aktivitet</item>
+        <item>Bär inte</item>
+        <item>Laddar …</item>
+        <item>Ligga ned</item>
+    </array>
+    <array name="timeline_type">
+        <item>Aktivitet</item>
+        <item>Långsam gång</item>
+        <item>Gång</item>
+        <item>Snabb gång</item>
+        <item>Löpning</item>
+        <item>Stå</item>
+        <item>Sitta</item>
+        <item>Lätt aktivitet</item>
+        <item>Bär inte</item>
+        <item>Laddar …</item>
+        <item>Ligga ned</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Ingen begränsning</item>
+        <item>Grundläggande, 1</item>
+        <item>Medel, 2</item>
+        <item>Avancerat, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normal</item>
+        <item>Hög</item>
+        <item>Mycket hög</item>
+    </array>
+    <array name="water_leval">
+        <item>Otillräcklig</item>
+        <item>Normal</item>
+        <item>Bra</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_name">
+        <item>Sö</item>
+        <item>Må</item>
+        <item>Ti</item>
+        <item>On</item>
+        <item>To</item>
+        <item>Fr</item>
+        <item>Lö</item>
+    </array>
+    <array name="weeks">
+        <item>Måndag</item>
+        <item>Tisdag</item>
+        <item>Onsdag</item>
+        <item>Torsdag</item>
+        <item>Fredag</item>
+        <item>Lördag</item>
+        <item>Söndag</item>
+    </array>
+    <array name="weeks_short">
+        <item>Må</item>
+        <item>Ti</item>
+        <item>On</item>
+        <item>To</item>
+        <item>Fr</item>
+        <item>Lö</item>
+        <item>Sö</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Undervikt</item>
+        <item>Balanserad</item>
+        <item>Övervikt</item>
+        <item>Feta</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Placera vågen så nära routern som möjligt för en stark Wi-Fi-signal</item>
+        <item>· Kontrollera att det angivna lösenordet för Wi-Fi-anslutningen stämmer.</item>
+        <item>· Anslut telefonen till Wi-Fi-målroutern och försök sedan öppna en webbsida för att kontrollera om du kommer åt Internet.</item>
+        <item>· Om 2,4 GHz är inaktiverat aktiverar du och väljer det. Vågen stöder inte 5 GHz Wi-Fi. \n· Om dual band är aktiverat inaktiverar du det för att undvika konfigurationsfel på grund av 5 GHz-nätverket.</item>
+        <item>· Om Wi-Fi-routern är ansluten till Internet, Wi-Fi-signalen är stark och routern fungerar med 2,4 GHz aktiverat och dual band inaktiverat provar du att starta om routern.</item>
+        <item>· Om det inte fungerar att starta om routern provar du att starta om telefonen.</item>
+        <item>· Om det inte fungerar att starta om routern provar du att byta ut batteriet.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Står vågen på en plats med stark Wi-Fi-signal?</item>
+        <item>2. Stämmer Wi-Fi-lösenordet?</item>
+        <item>3. Är Wi-Fi-routern korrekt ansluten till Internet?</item>
+        <item>4. Är 2,4 GHz Wi-Fi inaktiverat på routern? Eller är dual band Wi-Fi aktiverat?</item>
+        <item>5. Prova att starta om routern.</item>
+        <item>6. Prova att starta om telefonen.</item>
+        <item>7. Prova att starta om enheten.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>2,4 GHz Wi-Fi anger att den trådlösa routern är inställd på 2,4 GHz.\n5 GHz Wi-Fi anger att den trådlösa routern är inställd på 5 GHz.</item>
+        <item>Ställ in routern enligt följande steg:\n1. Ange routerns inloggningsadress i webbläsarens adressfält och logga in i den trådlösa routerns gränssnitt. \n2. Hitta den trådlösa routerns inställningsknapp. \n3. Stäng av dual band-knappen. \n4. Aktivera 2,4 GHz Wi-Fi.</item>
+        <item>Du kan kontrollera Wi-Fi-bandet på följande två sätt:\n1. Välj [Wi-Fi] &amp;gt; [Egenskap] &amp;gt; [Nätverksband] i Wi-Fi-listan på datorn. \n2. Logga in i routerns gränssnitt.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Vad är 2,4 GHz Wi-Fi och 5 GHz Wi-Fi?</item>
+        <item>· Hur aktiverar jag 2,4 GHz Wi-Fi på min router?</item>
+        <item>· Hur kontrollerar jag Wi-Fi-bandet?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Normal</item>
+        <item>Övervikt</item>
+        <item>Feta</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> lbs</item>
+    </array>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" app:startDestination="@+id/nav_sport_setting_home">
+    <fragment
+        android:name="com.xiaomi.hm.health.device.settings.sport.SportSettingHomeFragment"
+        android:id="@+id/nav_sport_setting_home">
+        <action
+            android:id="@+id/to_sport_data_setting_home"
+            app:destination="@+id/nav_sport_data_setting_home"/>
+        <action
+            android:id="@+id/to_sport_types"
+            app:destination="@+id/nav_sport_types"/>
+    </fragment>
+    <fragment
+        android:label="SportDataSettingHome"
+        android:name="com.xiaomi.hm.health.device.settings.sport.SportDataSettingHomeFragment"
+        android:id="@+id/nav_sport_data_setting_home"/>
+    <activity
+        android:label="@string/widget_sport_order"
+        android:name="com.xiaomi.hm.health.device.settings.sport.MiliSportSettingActivity"
+        android:id="@+id/nav_sport_types"/>
+</navigation>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/s36"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+    <RadioGroup
+        android:orientation="horizontal"
+        android:id="@+id/tab_group"
+        android:background="@drawable/bo_ui_filter_tab_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/bo_ui_size_17dp"
+        android:layout_marginStart="@dimen/bo_ui_size_15dp"
+        android:layout_marginEnd="@dimen/bo_ui_size_15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <RadioButton
+            android:id="@+id/tab_day"
+            android:background="@color/bo_ui_tab_start_bg_selector"
+            android:checked="true"
+            android:text="@string/bo_ui_day"
+            android:layout_weight="1"
+            style="@style/bo_ui_Tab_Selector"/>
+        <RadioButton
+            android:id="@+id/tab_week"
+            android:background="@color/bo_ui_tab_middle_bg_selector"
+            android:text="@string/bo_ui_week"
+            android:layout_weight="1"
+            style="@style/bo_ui_Tab_Selector"/>
+        <RadioButton
+            android:id="@+id/tab_month"
+            android:background="@color/bo_ui_tab_middle_bg_selector"
+            android:text="@string/bo_ui_month"
+            android:layout_weight="1"
+            style="@style/bo_ui_Tab_Selector"/>
+        <RadioButton
+            android:id="@+id/tab_year"
+            android:background="@color/bo_ui_tab_end_bg_selector"
+            android:text="@string/bo_ui_year"
+            android:layout_weight="1"
+            style="@style/bo_ui_Tab_Selector"/>
+    </RadioGroup>
+</androidx.constraintlayout.widget.ConstraintLayout>

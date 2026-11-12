@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:id="@+id/root_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.huami.lib.rainbow.titlebar.RainbowTitleBar
+            android:id="@+id/title_bar"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationTint="@color/s5"
+            app:statusBarMode="dark"
+            app:title="@string/moving_ui_detailed_data_label"
+            app:titleTextColor="@color/s5"/>
+        <View
+            android:background="@color/moving_ui_sport_detail_header_divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/moving_ui_divider_size_dp1"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</FrameLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.huami.widget.typeface.TypefaceTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textColor="@color/s1"
+    android:id="@+id/afppgHeadDesc"
+    android:background="@drawable/bg_round_s38_6dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/abnormal_heart_rate_description"
+    android:fontFamily="lt-bold"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    style="@style/Rainbow.TextAppearance.Body4"/>

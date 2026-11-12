@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/trans"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/dialog_empty_area"/>
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="@drawable/dialog_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="@dimen/person_info_setting_text_size"
+            android:textColor="@color/s1"
+            android:gravity="center"
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/person_info_setting_title_height"
+            android:text="@string/keep_alive_fragment_title"/>
+        <View
+            android:background="@color/s4"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+        <ListView
+            android:id="@+id/keep_alive_fragment_list"
+            android:layout_width="match_parent"
+            android:layout_height="312dp"
+            android:divider="@color/s4"
+            android:dividerHeight="1px"/>
+        <View
+            android:background="@color/s4"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+        <TextView
+            android:textSize="@dimen/person_info_setting_text_size"
+            android:textColor="@color/s1"
+            android:gravity="center"
+            android:id="@+id/keep_alive_fragment_cancel"
+            android:background="@drawable/btn_bottom_radius"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height_max"
+            android:text="@string/cancel"/>
+    </LinearLayout>
+</LinearLayout>

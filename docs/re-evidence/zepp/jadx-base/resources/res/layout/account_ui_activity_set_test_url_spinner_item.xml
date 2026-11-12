@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/account_ui_gray40"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+    <TextView
+        android:textSize="18sp"
+        android:textColor="@color/account_ui_black"
+        android:gravity="start|center_vertical"
+        android:id="@+id/activity_set_test_url_spinner_item_txt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+</LinearLayout>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/time_ll"
+    android:background="@color/s38"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <View style="@style/viewExerciseXAxisDividerStyle"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:id="@+id/day_xaxis_layout"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_6dp"
+                android:layout_marginEnd="@dimen/size_6dp">
+                <TextView
+                    android:layout_alignParentStart="true"
+                    style="@style/ExerciseMonthStyle"/>
+                <TextView style="@style/ExerciseMonthStyle"/>
+                <TextView style="@style/ExerciseMonthStyle"/>
+                <TextView style="@style/ExerciseMonthStyle"/>
+                <TextView
+                    android:layout_alignParentEnd="true"
+                    style="@style/ExerciseMonthStyle"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/week_xaxis_layout"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_6dp"
+                android:layout_marginEnd="@dimen/size_6dp">
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+            </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/month_xaxis_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_6dp"
+                android:layout_marginEnd="@dimen/size_6dp">
+                <com.huami.widget.typeface.TypefaceTextView
+                    android:id="@+id/month_xaxis_start"
+                    android:layout_alignParentStart="true"
+                    style="@style/ExerciseMonthStyle"/>
+                <com.huami.widget.typeface.TypefaceTextView
+                    android:id="@+id/month_xaxis_10"
+                    style="@style/ExerciseMonthStyle"/>
+                <com.huami.widget.typeface.TypefaceTextView
+                    android:id="@+id/month_xaxis_20"
+                    style="@style/ExerciseMonthStyle"/>
+                <com.huami.widget.typeface.TypefaceTextView
+                    android:id="@+id/month_xaxis_end"
+                    android:layout_alignParentEnd="true"
+                    style="@style/ExerciseMonthStyle"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/year_xaxis_layout"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_6dp"
+                android:layout_marginEnd="@dimen/size_6dp">
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+                <TextView style="@style/ExerciseAxisStyle"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <View style="@style/viewExerciseXAxisDividerStyle"/>
+    </LinearLayout>
+    <View
+        android:id="@+id/divider"
+        android:background="@color/s38"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@+id/time_layout"/>
+</RelativeLayout>

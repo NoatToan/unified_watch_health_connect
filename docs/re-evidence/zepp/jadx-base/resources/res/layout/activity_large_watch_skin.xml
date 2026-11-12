@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_container"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_gravity="center"
+        android:id="@+id/cinco_container"
+        android:layout_width="160dp"
+        android:layout_height="482dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="482dp"
+            android:src="@drawable/watch_skin_detail_mi"/>
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/large_iv"
+            android:layout_width="96dp"
+            android:layout_height="193dp"
+            android:layout_marginTop="124dp"
+            android:src="@drawable/icon_cinco_dial_default_bg"/>
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/transparent_iv"
+            android:layout_width="96dp"
+            android:layout_height="193dp"
+            android:layout_marginTop="124dp"/>
+    </FrameLayout>
+</FrameLayout>

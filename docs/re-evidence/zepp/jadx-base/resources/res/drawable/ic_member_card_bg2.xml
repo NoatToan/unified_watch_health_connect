@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
+    android:height="90dp"
+    android:width="355dp"
+    android:autoMirrored="true"
+    android:viewportWidth="355"
+    android:viewportHeight="90">
+    <path
+        android:fillColor="@drawable/_ic_member_card_bg2__0_res_0x7f08000c"
+        android:pathData="M6,0L349,0A6,6 0,0 1,355 6L355,84A6,6 0,0 1,349 90L6,90A6,6 0,0 1,0 84L0,6A6,6 0,0 1,6 0z"
+        android:strokeColor="#00000000"
+        android:strokeWidth="1"
+        android:fillType="evenOdd"/>
+    <group>
+        <clip-path android:pathData="M6,0L349,0A6,6 0,0 1,355 6L355,84A6,6 0,0 1,349 90L6,90A6,6 0,0 1,0 84L0,6A6,6 0,0 1,6 0z"/>
+        <path
+            android:fillColor="#ffffff"
+            android:pathData="M332.5,107.5m-81.5,0a81.5,81.5 0,1 1,163 0a81.5,81.5 0,1 1,-163 0"
+            android:strokeColor="#00000000"
+            android:strokeWidth="1"
+            android:strokeAlpha="0.149"
+            android:fillAlpha="0.149"
+            android:fillType="evenOdd"/>
+    </group>
+    <group>
+        <clip-path android:pathData="M6,0L349,0A6,6 0,0 1,355 6L355,84A6,6 0,0 1,349 90L6,90A6,6 0,0 1,0 84L0,6A6,6 0,0 1,6 0z"/>
+        <path
+            android:fillColor="#ffffff"
+            android:pathData="M262.5,51.5m-18.5,0a18.5,18.5 0,1 1,37 0a18.5,18.5 0,1 1,-37 0"
+            android:strokeColor="#00000000"
+            android:strokeWidth="1"
+            android:strokeAlpha="0.0866"
+            android:fillAlpha="0.0866"
+            android:fillType="evenOdd"/>
+    </group>
+    <group>
+        <clip-path android:pathData="M6,0L349,0A6,6 0,0 1,355 6L355,84A6,6 0,0 1,349 90L6,90A6,6 0,0 1,0 84L0,6A6,6 0,0 1,6 0z"/>
+        <path
+            android:fillColor="#ffffff"
+            android:pathData="M184,97m-45,0a45,45 0,1 1,90 0a45,45 0,1 1,-90 0"
+            android:strokeColor="#00000000"
+            android:strokeWidth="1"
+            android:strokeAlpha="0.0498"
+            android:fillAlpha="0.0498"
+            android:fillType="evenOdd"/>
+    </group>
+</vector>

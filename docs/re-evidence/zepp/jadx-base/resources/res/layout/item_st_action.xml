@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textColor="@color/s1"
+    android:id="@+id/tv_st_action"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawablePadding="12dp"
+    android:drawableStart="@drawable/shape_oval_s41"
+    android:paddingStart="14dp"
+    style="@style/Rainbow.TextAppearance.Body4"/>

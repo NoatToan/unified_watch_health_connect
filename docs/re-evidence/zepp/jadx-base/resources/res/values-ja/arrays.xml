@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>1回鳴らす</item>
+        <item>毎日</item>
+        <item>月曜日から金曜日</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>プール水泳、オープンウォータースイミング、トライアスロンなどのスポーツは完全にサポートされています</item>
+        <item>最大酸素摂取量 (V02Max)のデータを提供します</item>
+        <item>豊富なデータとスポーツ設定項目</item>
+        <item>あなたの目標に合わせてリアルタイムでトレーニングを指導します</item>
+        <item>トレーニング効果（TE）データを通じて、毎回の運動を理解するのに役立ちます</item>
+    </array>
+    <array name="bind_guide_main_title_everest2">
+        <item>最大酸素摂取量（VO2Max）データを提供します。\n個人運動能力の正確な評価</item>
+        <item>ICカードとアクセス制御カードにさよなら。\n 旅行中または通勤をする際に、ウォッチでスキャンすれば代金を支払えます。</item>
+        <item>2つのモードを自由に切り替えます。\n 超ロングスタンバイとスマートシステムを自由に選択できます。</item>
+        <item>70時間連続でGPS位置を特定できます。\n アウトドアエクササイズ中に何も心配せずに済みます。</item>
+    </array>
+    <array name="bind_guide_main_title_everest2_oversea">
+        <item>最大酸素摂取量（VO2Max）データを提供します。\n個人運動能力の正確な評価</item>
+        <item>2つのモードを自由に切り替えます。\n 超ロングスタンバイとスマートシステムを自由に選択できます。</item>
+        <item>70時間連続でGPS位置を特定できます。\n アウトドアエクササイズ中に何も心配せずに済みます。</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>「Xiao Ai」ですべてを制御するための1つの鍵\nあなたの家を音声制御でスマートにしてください。</item>
+        <item>バスカード、アクセスカード、銀聯カード\n旅行、仕事、そして消費のためには、時計をスワイプするだけです。</item>
+        <item>携帯電話なしで12種類のスポーツの身体状態を観察できる\n運動中にもっと自由を望んでいる人のために</item>
+        <item>ブルートゥースで電話をサポート\n携帯電話を使用せずに電話をかけたり電話に出たりする</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>Alexaを開くための1つの鍵\n音声認識で進めなさい</item>
+        <item>携帯電話なしで12種類のスポーツの身体状態を観察できる\n運動中にもっと自由を望んでいる人のために</item>
+        <item>ブルートゥースで電話をサポート\n携帯電話を使用せずに電話をかけたり電話に出たりする</item>
+    </array>
+    <array name="bind_guide_main_title_xihu">
+        <item>eSIMカードをサポートします\n携帯電話に接続せずに、電話をかけたり、インターネットにアクセスすることもできます</item>
+        <item>「Xiao Ai」ですべてを制御するための1つの鍵\nあなたの家を音声制御でスマートにしてください。</item>
+        <item>携帯電話を抜きにして10種類のスポーツを楽しめます\n誰でも自由にスポーツを楽しめられます</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item>*ランニングのみ対応</item>
+        <item />
+        <item>*ランニングのみ対応。スポーツ設定で開く必要があります</item>
+        <item />
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item>*現在、一部の地域でのみご利用いただけます。</item>
+        <item />
+        <item />
+        <item />
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>上腕に服が被らないようにし、袖は苦しくない状態でまくります</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>腕帯の下に指を 1 本入れられる状態である必要があります。腕帯が緩すぎたり、きつすぎたりすると、測定の精度に影響する場合があります</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>1 回目の測定</item>
+        <item>2 回目の測定</item>
+        <item>3 回目の測定</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>1 回目の血圧測定結果を記録</item>
+        <item>2 回目の血圧測定結果を記録</item>
+        <item>3 回目の血圧測定結果を記録</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>低い</item>
+        <item>標準</item>
+        <item>高い</item>
+        <item>非常に高い</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>標準</item>
+        <item>高い</item>
+        <item>非常に高い</item>
+    </array>
+    <array name="body_score_leval">
+        <item>非常に悪い</item>
+        <item>悪い</item>
+        <item>普通</item>
+        <item>良い</item>
+        <item>非常に良い</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>非常に低い</item>
+        <item>低い</item>
+        <item>標準</item>
+        <item>やや高い</item>
+        <item>高い</item>
+    </array>
+    <array name="bone_leval">
+        <item>不足</item>
+        <item>標準</item>
+        <item>優良</item>
+    </array>
+    <array name="brm_leval">
+        <item>基準未満</item>
+        <item>基準クリア</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>低</item>
+        <item>中</item>
+        <item>高</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>腕時計上のボタンを押してみてください。腕時計の画面が点灯しない場合、腕時計を充電器に接続してバッテリーを充電してください。</item>
+        <item>@string/band_watch_item_2</item>
+        <item>バンドのバッテリーがあるにもかかわらずスマートフォンに表示されない場合、スマートフォンのBluetoothを再起動してみてください。</item>
+        <item>Bluetoothを再起動しても問題が解決されない場合、スマートフォンを再起動してみてください。</item>
+        <item>運動している間、腕時計データは同期されません。セッションを終了してから再度同期してみてください。</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>腕時計は充電されていますか？</item>
+        <item>腕時計は他のデバイスとペアリングされていますか？</item>
+        <item>Bluetoothを再起動してみる</item>
+        <item>スマートフォンを再起動してみる</item>
+        <item>ワークアウト中はデータを同期できません</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>広州</item>
+        <item>深セン</item>
+        <item>佛山</item>
+        <item>東莞</item>
+        <item>北京</item>
+        <item>南京</item>
+        <item>蘇州</item>
+        <item>常州</item>
+        <item>済南</item>
+        <item>青島</item>
+        <item>杭州</item>
+        <item>寧波</item>
+        <item>鄭州</item>
+        <item>開封</item>
+        <item>上海</item>
+        <item>石家荘</item>
+        <item>保定</item>
+        <item>成都</item>
+        <item>綿陽</item>
+        <item>瀋陽</item>
+        <item>大連</item>
+    </array>
+    <array name="common_level">
+        <item>不足</item>
+        <item>標準</item>
+        <item>優</item>
+    </array>
+    <array name="contact_ways">
+        <item>メールアドレス</item>
+        <item>電話番号</item>
+        <item>WeChat ID</item>
+    </array>
+    <array name="difficulty_content">
+        <item>フィットネストレーニング初心者</item>
+        <item>基本的なフィットネスの経験者</item>
+        <item>フィットネスの経験豊かで、既にシェイプアップされた体の持ち主</item>
+    </array>
+    <array name="difficulty_title">
+        <item>初級</item>
+        <item>中級</item>
+        <item>上級</item>
+    </array>
+    <array name="ecg_afib">
+        <item>データ不足</item>
+        <item>異常心拍数</item>
+        <item>異常が見つかりませんでした</item>
+        <item>データ不足</item>
+        <item>異常が見つかりませんでした</item>
+        <item />
+        <item>異常が見つかりませんでした</item>
+        <item>信号品質が悪い</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>使用方法を調整してからもう一度お試しください</item>
+        <item>ご参考までです。気分が悪い場合は、医師にご相談ください。</item>
+        <item>ご参考までです。気分が悪い場合は、医師にご相談ください。</item>
+        <item>使用方法を調整してからもう一度お試しください</item>
+        <item>ご参考までです。気分が悪い場合は、医師にご相談ください。</item>
+        <item />
+        <item>ご参考までです。気分が悪い場合は、医師にご相談ください。</item>
+        <item>使用方法を調整してからもう一度お試しください</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>脂肪燃焼を目指す</item>
+        <item>ボディラインのシェイプを目指す</item>
+        <item>筋肉増強を目指す</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>ダイエット</item>
+        <item>シェイプアップ</item>
+        <item>バルクアップ</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>月</item>
+        <item>火</item>
+        <item>水</item>
+        <item>木</item>
+        <item>金</item>
+        <item>土</item>
+        <item>日</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>月</item>
+        <item>火</item>
+        <item>水</item>
+        <item>木</item>
+        <item>金</item>
+        <item>土</item>
+        <item>日</item>
+    </array>
+    <array name="hr_sport">
+        <item>心拍ゾーン: ライト</item>
+        <item>心拍ゾーン: インテンシブ</item>
+        <item>心拍ゾーン: 有酸素</item>
+        <item>心拍ゾーン: 無酸素</item>
+        <item>心拍ゾーン：最大酸素摂取量 (VO₂ max)</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>ライト</item>
+        <item>インテンシブ</item>
+        <item>有酸素</item>
+        <item>無酸素</item>
+        <item>最大酸素摂取量 (VO₂ max)</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>わきの下</item>
+        <item>口腔</item>
+        <item>直腸</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>手首</item>
+        <item>額</item>
+        <item>耳の後ろ</item>
+        <item>内耳</item>
+        <item>首</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>わきの下</item>
+        <item>口腔</item>
+        <item>直腸</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>胸</item>
+        <item>わきの下</item>
+        <item>足の付け根</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>すぐ近く</item>
+        <item>近く</item>
+        <item>少し遠く</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>バンドのボタンをタップしてディスプレイが 点灯するかを確認してください。点灯しない場合は、バンドを充電してください。\n\n%1$s または %2$s をペアリングする前に、デバイスを充電してください。</item>
+        <item>@string/band_watch_item_2</item>
+        <item>バンドのバッテリーがあるにもかかわらずスマートフォンに表示されない場合、スマートフォンのBluetoothを再起動してみてください。</item>
+        <item>Bluetoothを再起動しても問題が解決されない場合、スマートフォンを再起動してみてください。</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>バンドは充電されていますか？</item>
+        <item>バンドは他のデバイスとペアリングされていますか？</item>
+        <item>@string/help_title_2</item>
+        <item>スマートフォンを再起動してみる</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>1月</item>
+        <item>2月</item>
+        <item>3月</item>
+        <item>4月</item>
+        <item>5月</item>
+        <item>6月</item>
+        <item>7月</item>
+        <item>8月</item>
+        <item>9月</item>
+        <item>10月</item>
+        <item>11月</item>
+        <item>12月</item>
+    </array>
+    <array name="month_titles">
+        <item>1 月</item>
+        <item>2 月</item>
+        <item>3 月</item>
+        <item>4 月</item>
+        <item>5 月</item>
+        <item>6 月</item>
+        <item>7 月</item>
+        <item>8 月</item>
+        <item>9 月</item>
+        <item>10 月</item>
+        <item>11 月</item>
+        <item>12 月</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>不足</item>
+        <item>標準</item>
+        <item>優良</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>バッテリー残量低下通知</item>
+        <item>着信通知</item>
+        <item>座りすぎ通知</item>
+        <item>目標達成通知</item>
+        <item>天気予報通知</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>非常に悪い</item>
+        <item>悪い</item>
+        <item>標準</item>
+        <item>良い</item>
+        <item>非常に良い</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>最初</item>
+        <item>二番目</item>
+        <item>第3</item>
+        <item>第4</item>
+        <item>最後</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>1月</item>
+        <item>2月</item>
+        <item>3月</item>
+        <item>4月</item>
+        <item>5月</item>
+        <item>6月</item>
+        <item>7月</item>
+        <item>8月</item>
+        <item>9月</item>
+        <item>10月</item>
+        <item>11月</item>
+        <item>12月</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$sは長期間使用されていないと動作を停止します。%2$sを振ってから再度試してみてください。</item>
+        <item>%sの電池寿命は1年です。それ以上使用している場合は、電池が切れてしまっている可能性があります。</item>
+        <item>まず相手のデバイスでBluetoothをオフにしてから、あなたのスマートフォンとペアリングしてください。</item>
+        <item>%sの電池があるにもかかわらずスマートフォンに表示されない場合、スマートフォンのBluetoothを再起動してみてください。</item>
+        <item>Bluetoothを再起動しても問題が解決されない場合、スマートフォンを再起動してみてください。</item>
+        <item>ランニングシューズデータをタップして、次のアクティビティページに移動すると、自動的にデータを同期します。</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>%sを振ってください</item>
+        <item>%sは充電されていますか？</item>
+        <item>%sは付近にある別のスマートフォンとペアリングされていますか？</item>
+        <item>Bluetoothを再起動</item>
+        <item>スマートフォンを再起動してみる</item>
+        <item>データはどのように同期しますか？</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>隠れ肥満</item>
+        <item>過体重</item>
+        <item>太め体型</item>
+        <item>運動不足\n型</item>
+        <item>標準体型</item>
+        <item>標準\n筋肉質体型</item>
+        <item>痩せ型</item>
+        <item>標準\n痩せ型</item>
+        <item>細マッチョ\n体型</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>月</item>
+        <item>火</item>
+        <item>水</item>
+        <item>木</item>
+        <item>金</item>
+        <item>土</item>
+        <item>日</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>アクティビティ</item>
+        <item>スローウォーキング</item>
+        <item>ウォーキング</item>
+        <item>ファストウォーキング</item>
+        <item>ラン</item>
+        <item>立つ</item>
+        <item>座る</item>
+        <item>軽いアクティビティ</item>
+        <item>未装着</item>
+        <item>充電中</item>
+        <item>横になる</item>
+    </array>
+    <array name="timeline_type">
+        <item>アクティビティ</item>
+        <item>スローウォーキング</item>
+        <item>ウォーキング</item>
+        <item>ファストウォーキング</item>
+        <item>ランニング</item>
+        <item>スタンディング</item>
+        <item>座る</item>
+        <item>軽いアクティビティ</item>
+        <item>未装着</item>
+        <item>充電中…</item>
+        <item>横になる</item>
+    </array>
+    <array name="train_difficulity">
+        <item>制限なし</item>
+        <item>初級、1</item>
+        <item>中級、2</item>
+        <item>上級、3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>標準</item>
+        <item>高い</item>
+        <item>非常に高い</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>初心者</item>
+        <item>初級</item>
+        <item>普通</item>
+        <item>中級</item>
+        <item>良好</item>
+        <item>優秀</item>
+        <item>抜群</item>
+    </array>
+    <array name="water_leval">
+        <item>不足</item>
+        <item>標準</item>
+        <item>優良</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>月</item>
+        <item>火</item>
+        <item>水</item>
+        <item>木</item>
+        <item>金</item>
+        <item>土</item>
+        <item>日</item>
+    </array>
+    <array name="week_days">
+        <item>月曜日</item>
+        <item>火曜日</item>
+        <item>水曜日</item>
+        <item>木曜日</item>
+        <item>金曜日</item>
+        <item>土曜日</item>
+        <item>日曜日</item>
+    </array>
+    <array name="week_name">
+        <item>（日）</item>
+        <item>（月）</item>
+        <item>（火）</item>
+        <item>（水）</item>
+        <item>（木）</item>
+        <item>（金）</item>
+        <item>（土）</item>
+    </array>
+    <array name="weeks">
+        <item>月曜日</item>
+        <item>火曜日</item>
+        <item>水曜日</item>
+        <item>木曜日</item>
+        <item>金曜日</item>
+        <item>土曜日</item>
+        <item>日曜日</item>
+    </array>
+    <array name="weeks_short">
+        <item>（月）</item>
+        <item>（火）</item>
+        <item>（水）</item>
+        <item>（木）</item>
+        <item>（金）</item>
+        <item>（土）</item>
+        <item>（日）</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>痩せ気味</item>
+        <item>標準</item>
+        <item>太り気味</item>
+        <item>肥満</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· 強い Wi-Fi 信号を確保するため、体脂肪計はできるだけルーターの近くに置いてください。</item>
+        <item>· Wi-Fi 接続の入力パスワードが正しいかどうかを確認してください。</item>
+        <item>· スマートフォンを目的の Wi-Fi ルーターに接続してから Web ページを開き、インターネットにアクセスできるかどうかを確認してみてください。</item>
+        <item>· 2.4GHz が無効になっている場合は、有効にして選択してください。体脂肪計は 5GHz Wi-Fi をサポートしていません。 \n· デュアル バンドが有効になっている場合は、5GHz ネットワークによる設定障害を回避するために無効にしてください。</item>
+        <item>· Wi-Fi ルーターがインターネットに接続されており、Wi-Fi 信号が強く、2.4GHz が有効な状態でルーターが機能している場合は、ルーターを再起動してみてください。</item>
+        <item>· ルーターを再起動しても上手くいかない場合は、スマートフォンを再起動してみてください。</item>
+        <item>· ルーターを再起動しても上手くいかない場合は、バッテリーを入れ直してみてください。</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. 体脂肪計は Wi-Fi 信号の強い場所にありますか?</item>
+        <item>2. Wi-Fi のパスワードは正しいですか?</item>
+        <item>3. Wi-Fi ルーターは正常にインターネットに接続されていますか?</item>
+        <item>4. 2.4GHz Wi-Fi はルーターで無効になっていますか? または、デュアル バンドの Wi-Fi が有効になっていますか?</item>
+        <item>5. ルーターを再起動してみてください。</item>
+        <item>6. スマートフォンを再起動してみてください。</item>
+        <item>7. デバイスを再起動してみてください。</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>2.4 GHz Wi-Fi は、ワイヤレス ルーターが 2.4 GHz で動作することを意味します。\n5 GHz Wi-Fi は、ワイヤレス ルーターが 5 GHz で動作することを意味します。</item>
+        <item>以下の手順に従ってルーターを設定します。\n1. ブラウザのアドレス バーにルーターのログイン アドレスを入力し、ワイヤレス ルーターのバックグラウンドにログインします。 \n2. ワイヤレス ルーターの設定ボタンを探します。 \n3. デュアル バンドのボタンをオフにします。 \n4. 2.4 GHz Wi-Fi を有効にします。</item>
+        <item>Wi-Fi の帯域を確認するには、次の 2 つの方法があります。\n1. コンピューターの Wi-Fi リストで、[Wi-Fi] &amp;gt; [プロパティ] &amp;gt; [ネットワーク帯域] を選択します。 \n2. ルーターのバックグラウンドにログインします。</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· 2.4 GHz Wi-Fi および 5 GHz Wi-Fi とは何ですか?</item>
+        <item>· ルーターで 2.4 GHz Wi-Fi を有効にするにはどうしたらよいですか?</item>
+        <item>· Wi-Fi の帯域を確認するには、どうしたらよいですか?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>正常</item>
+        <item>過体重</item>
+        <item>肥満</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> 斤</item>
+        <item> lb</item>
+    </array>
+</resources>

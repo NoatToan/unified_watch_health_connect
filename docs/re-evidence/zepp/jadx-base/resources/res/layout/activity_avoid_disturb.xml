@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:huami="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/enable_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        huami:ltv_title="@string/open_avoid_disturb_tips"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/start_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        huami:ltv_title="@string/avoid_disturb_on_time"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/stop_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        huami:ltv_title="@string/avoid_disturb_off_time"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/light_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        huami:ltv_checked="true"
+        huami:ltv_title="@string/avoid_light_title"/>
+</LinearLayout>

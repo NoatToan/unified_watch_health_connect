@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>无网络</title>
+    <g id="无网络" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(7.000000, 14.000000)">
+            <path d="M49.4716241,10.9698233 C43.2091051,4.22230088 34.2633357,-1.07326628e-13 24.331395,-1.07326628e-13 C14.8194966,-1.07326628e-13 6.21211882,3.87271333 -1.85646059e-13,10.1274017" id="Path" stroke="#B2B2B2" stroke-width="2" stroke-linejoin="bevel"></path>
+            <path d="M34.3091207,13.7172074 C31.294062,12.2523557 27.9086801,11.43072 24.331395,11.43072 C18.0550454,11.43072 12.3694267,13.9599391 8.23815392,18.0547619" id="Path" stroke="#B2B2B2" stroke-width="2" stroke-linejoin="bevel"></path>
+            <path d="M27.6573053,23.3528348 C26.6048942,23.0332831 25.4882127,22.86144 24.331395,22.86144 C21.1501419,22.86144 18.272419,24.1610069 16.2001489,26.2582178" id="Path" stroke="#B2B2B2" stroke-width="2" stroke-linejoin="bevel"></path>
+            <circle id="Oval-Copy-4" fill="#B2B2B2" cx="24.786" cy="31.59" r="2.43"></circle>
+        </g>
+        <g id="Group" transform="translate(34.000000, 27.000000)" stroke="#B2B2B2" stroke-linejoin="bevel" stroke-width="2">
+            <circle id="Oval" cx="11" cy="11" r="11"></circle>
+            <line x1="11" y1="7" x2="11" y2="12" id="Path" stroke-linecap="square"></line>
+            <line x1="11" y1="16" x2="11" y2="16.5" id="Path" stroke-linecap="square"></line>
+        </g>
+    </g>
+</svg>

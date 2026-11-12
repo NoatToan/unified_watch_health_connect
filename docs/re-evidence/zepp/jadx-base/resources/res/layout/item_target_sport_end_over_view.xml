@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.huami.widget.typeface.TypefaceTextView
+        android:textSize="17sp"
+        android:textColor="@color/s1"
+        android:gravity="center_horizontal"
+        android:id="@+id/over_view_item_content_target"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="ow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <com.huami.widget.typeface.TypefaceTextView
+        android:textSize="12.7sp"
+        android:textColor="@color/s2"
+        android:gravity="center_horizontal"
+        android:id="@+id/over_view_item_desc_target"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="lt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/over_view_item_content_target"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

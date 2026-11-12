@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:exitFadeDuration="@android:integer/config_shortAnimTime">
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="@color/black_30"/>
+            <corners
+                android:topRightRadius="100dp"
+                android:bottomRightRadius="100dp"/>
+        </shape>
+    </item>
+    <item>
+        <ripple android:color="@color/black_20">
+            <item>
+                <shape>
+                    <solid android:color="@color/white_100"/>
+                    <corners
+                        android:topRightRadius="100dp"
+                        android:bottomRightRadius="100dp"/>
+                </shape>
+            </item>
+        </ripple>
+    </item>
+</selector>

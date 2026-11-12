@@ -1,0 +1,835 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="access_door_search_count_tip">
+        <item quantity="one">%1$d výsledok bol nájdený.</item>
+        <item quantity="few">%1$d výsledky boli nájdené.</item>
+        <item quantity="other">%1$d výsledky boli nájdené.</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="one">Kvôli inovácii značky musí v záujme ochrany bezpečnosti vašich údajov informácie o účte potvrdiť váš zákonný zástupca. Potvrďte ich čo najskôr. Ak tak neurobíte, váš účet bude o %1$sdeň zmrazený.</item>
+        <item quantity="few">Kvôli inovácii značky musí v záujme ochrany bezpečnosti vašich údajov informácie o účte potvrdiť váš zákonný zástupca. Potvrďte ich čo najskôr. Ak tak neurobíte, váš účet bude o %1$sdni zmrazený.</item>
+        <item quantity="other">Kvôli inovácii značky musí v záujme ochrany bezpečnosti vašich údajov informácie o účte potvrdiť váš zákonný zástupca. Potvrďte ich čo najskôr. Ak tak neurobíte, váš účet bude o %1$sdní zmrazený.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="one">Bol dosiahnutý maximálny počet účtov alebo hesiel. Skúste to znova o %s minútu.</item>
+        <item quantity="few">Bol dosiahnutý maximálny počet účtov alebo hesiel. Skúste to znova o %s minúty.</item>
+        <item quantity="other">Bol dosiahnutý maximálny počet účtov alebo hesiel. Skúste to znova o %s minút.</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="one">Názov účtu alebo heslo sú nesprávne. Zostáva vám %s pokus.</item>
+        <item quantity="few">Názov účtu alebo heslo sú nesprávne. Zostávajú vám %s pokusy.</item>
+        <item quantity="other">Názov účtu alebo heslo sú nesprávne. Zostáva vám %s pokusov.</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="one">%d kurz</item>
+        <item quantity="few">%d kurzy</item>
+        <item quantity="other">%d kurzov</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="one">Vibrovať znova o %s minútu</item>
+        <item quantity="few">Vibrovať znova o %s minúty</item>
+        <item quantity="other">Vibrovať znova o %s minút</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="one">Dnes ste pred %d %% používateľov</item>
+        <item quantity="few">Dnes ste pred %d %% používateľov</item>
+        <item quantity="other">Dnes ste pred %d %% používateľov</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="one">Do zoznamu aplikácií možno pridať najviac %d aplikáciu</item>
+        <item quantity="few">Do zoznamu aplikácií možno pridať najviac %d aplikácie</item>
+        <item quantity="other">Do zoznamu aplikácií možno pridať najviac %d aplikácií</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="one">Do zoznamu Viac možno pridať najviac %d aplikáciu</item>
+        <item quantity="few">Do zoznamu Viac možno pridať najviac %d aplikácie</item>
+        <item quantity="other">Do zoznamu Viac možno pridať najviac %d aplikácií</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="one">V porovnaní s pred %1$d dňom</item>
+        <item quantity="few">V porovnaní s pred %1$d dňami</item>
+        <item quantity="many">V porovnaní s pred %1$d dňom</item>
+        <item quantity="other">V porovnaní s pred %1$d dňami</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="one">Kalibrované na %d deň</item>
+        <item quantity="few">Kalibrované na %d dni</item>
+        <item quantity="other">Kalibrované na %d dní</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="one">Kontrola krvného tlaku v rámci výskumného projektu nemocnice First Hospital Pekinskej univerzity vyžaduje každý %d deň kalibráciu.</item>
+        <item quantity="few">Kontrola krvného tlaku v rámci výskumného projektu nemocnice First Hospital Pekinskej univerzity vyžaduje každé %d dni kalibráciu.</item>
+        <item quantity="other">Kontrola krvného tlaku v rámci výskumného projektu nemocnice First Hospital Pekinskej univerzity vyžaduje každých %d dní kalibráciu.</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="one">Kalibrovať o %d deň</item>
+        <item quantity="few">Kalibrovať o %d dni</item>
+        <item quantity="other">Kalibrovať o %d dní</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="one">Dosiahli ste %d cieľ</item>
+        <item quantity="few">Dosiahli ste %d ciele</item>
+        <item quantity="other">Dosiahli ste %d cieľov</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="one">%d položka si vyžaduje vašu pozornosť</item>
+        <item quantity="few">%d položky si vyžadujú vašu pozornosť</item>
+        <item quantity="many">%d položky si vyžaduje vašu pozornosť</item>
+        <item quantity="other">%d položiek si vyžaduje vašu pozornosť</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="one">%d položka nedosiahla cieľ</item>
+        <item quantity="few">%d položky nedosiahli cieľ</item>
+        <item quantity="many">%d položky nedosiahlo cieľ</item>
+        <item quantity="other">%d položiek nedosiahlo cieľ</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="one">Gratulujeme!\nZa posledný %1$d deň ste pribrali</item>
+        <item quantity="few">Gratulujeme!\nZa posledné %1$d dni ste pribrali</item>
+        <item quantity="other">Gratulujeme!\nZa posledných %1$d dní ste pribrali</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="one">skóre</item>
+        <item quantity="few">skóre</item>
+        <item quantity="other">skóre</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="one">Môžete pridať najviac %1$d najčastejší kontakt, ktorý sa bude automaticky synchronizovať s hodinkami</item>
+        <item quantity="few">Môžete pridať najviac %1$d najčastejšie kontakty, ktoré sa budú automaticky synchronizovať s hodinkami</item>
+        <item quantity="other">Môžete pridať najviac %1$d najčastejších kontaktov, ktoré sa budú automaticky synchronizovať s hodinkami</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="one">%d kurz</item>
+        <item quantity="few">%d kurzy</item>
+        <item quantity="other">%d kurzov</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="one">Kurz sa začína o %d deň</item>
+        <item quantity="few">Kurz sa začína o %d dni</item>
+        <item quantity="other">Kurz sa začína o %d dní</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="one">%d stiahnutie</item>
+        <item quantity="few">%d stiahnutia</item>
+        <item quantity="other">%d stiahnutí</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="one">%1$d sekunda</item>
+        <item quantity="few">%1$d sekundy.</item>
+        <item quantity="other">%1$d sekúnd</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="one">Dátový interval: %1$s sekunda</item>
+        <item quantity="few">Dátový interval: %1$s sekundy</item>
+        <item quantity="other">Dátový interval: %1$s sekúnd</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="one">%1$s sekunda</item>
+        <item quantity="few">%1$s sekundy</item>
+        <item quantity="other">%1$s sekúnd</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="one">%d pripomenutie</item>
+        <item quantity="few">%d pripomenutia</item>
+        <item quantity="other">%d pripomenutí</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">Pretočiť dopredu o %d sekundu</item>
+        <item quantity="few">Pretočiť dopredu o %d sekundy</item>
+        <item quantity="many">Pretočiť dopredu o %d sekundy</item>
+        <item quantity="other">Pretočiť dopredu o %d sekúnd</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">Pretočiť späť o %d sekundu</item>
+        <item quantity="few">Pretočiť späť o %d sekundy</item>
+        <item quantity="many">Pretočiť späť o %d sekundy</item>
+        <item quantity="other">Pretočiť späť o %d sekúnd</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="few">%1$d kcal</item>
+        <item quantity="many">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="few">%1$d kcal</item>
+        <item quantity="many">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="one">%1$s hodina</item>
+        <item quantity="few">%1$s hodiny</item>
+        <item quantity="many">%1$s hodiny</item>
+        <item quantity="other">%1$s hodín</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="one">%1$s menštruačného cyklu, zostáva: %2$s.</item>
+        <item quantity="few">%1$s menštruačného cyklu, zostáva: %2$s.</item>
+        <item quantity="many">%1$s menštruačného cyklu, zostáva: %2$s.</item>
+        <item quantity="other">%1$s menštruačného cyklu, zostáva: %2$s.</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="one">Približne %1$s menštruačného cyklu, zostáva: %2$s.</item>
+        <item quantity="few">Približne %1$s menštruačného cyklu, zostáva: %2$s.</item>
+        <item quantity="many">Približne %1$s menštruačného cyklu, zostáva: %2$s.</item>
+        <item quantity="other">Približne %1$s menštruačného cyklu, zostáva: %2$s.</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="one">%1$s menštruačného cyklu, zostáva približne: %2$s.</item>
+        <item quantity="few">%1$s menštruačného cyklu, zostáva približne: %2$s.</item>
+        <item quantity="many">%1$s menštruačného cyklu, zostáva približne: %2$s.</item>
+        <item quantity="other">%1$s menštruačného cyklu, zostáva približne: %2$s.</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="one">%1$s zobrazenie</item>
+        <item quantity="few">%1$s zobrazenia</item>
+        <item quantity="many">%1$s zobrazenia</item>
+        <item quantity="other">%1$s zobrazení</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">%1$d. deň</item>
+        <item quantity="few">%1$d. deň</item>
+        <item quantity="many">%1$d. deň</item>
+        <item quantity="other">%1$d. deň</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="one">%1$d d.</item>
+        <item quantity="few">%1$d d.</item>
+        <item quantity="many">%1$d d.</item>
+        <item quantity="other">%1$d d.</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="one">Zrušiť (%1$ds)</item>
+        <item quantity="few">Zrušiť (%1$ds)</item>
+        <item quantity="other">Zrušiť (%1$ds)</item>
+    </plurals>
+    <plurals name="fix_hour">
+        <item quantity="one">%1$d hodina</item>
+        <item quantity="few">%1$d hodiny</item>
+        <item quantity="other">%1$d hodín</item>
+    </plurals>
+    <plurals name="fix_minute">
+        <item quantity="one">%1$d minúta</item>
+        <item quantity="few">%1$d minúty</item>
+        <item quantity="other">%1$d minút</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="one">Sťahuje sa. Prosím, počkajte približne %s minútu</item>
+        <item quantity="few">Sťahuje sa. Prosím, počkajte približne %s minúty</item>
+        <item quantity="other">Sťahuje sa. Prosím, počkajte približne %s minút</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="one">Dokončili ste %d tréningovú reláciu</item>
+        <item quantity="few">Dokončili ste %d tréningové relácie</item>
+        <item quantity="other">Dokončili ste %d tréningových relácií</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="one">%d-krát za minútu</item>
+        <item quantity="few">%d-krát za minútu</item>
+        <item quantity="other">%d-krát za minútu</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="one">Domovská stránka musí obsahovať najmenej %1$d kartu</item>
+        <item quantity="few">Domovská stránka musí obsahovať najmenej %1$d karty</item>
+        <item quantity="other">Domovská stránka musí obsahovať najmenej %1$d kariet</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="one">Priemerná srdcová frekvencia: %1$d bpm</item>
+        <item quantity="few">Priemerná srdcová frekvencia: %1$d bpm</item>
+        <item quantity="other">Priemerná srdcová frekvencia: %1$d bpm</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="one">-krát za minútu</item>
+        <item quantity="few">-krát za minútu</item>
+        <item quantity="other">-krát za minútu</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="one">Pred %d minútou</item>
+        <item quantity="few">Pred %d minútami</item>
+        <item quantity="other">Pred %d minútami</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="one">Relácia %d</item>
+        <item quantity="few">Relácia %d</item>
+        <item quantity="other">Relácia %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="one">Pripomenúť mi %d sekundu po telefonáte</item>
+        <item quantity="few">Pripomenúť mi %d sekundy po telefonáte</item>
+        <item quantity="other">Pripomenúť mi %d sekúnd po telefonáte</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="one">Môžete pridať najviac %1$d odpoveď formou SMS</item>
+        <item quantity="few">Môžete pridať najviac %1$d odpovede formou SMS</item>
+        <item quantity="other">Môžete pridať najviac %1$d odpovedí formou SMS</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="one">Ponechajte najmenej %1$d odpoveď formou SMS</item>
+        <item quantity="few">Ponechajte najmenej %1$d odpovede formou SMS</item>
+        <item quantity="other">Ponechajte najmenej %1$d odpovedí formou SMS</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="one">Zadajte maximálne %d znak</item>
+        <item quantity="few">Zadajte maximálne %d znaky</item>
+        <item quantity="many">Zadajte maximálne %d znaku</item>
+        <item quantity="other">Zadajte maximálne %d znakov</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="one">%1$d rekordné kolo</item>
+        <item quantity="few">%1$d rekordné kolá</item>
+        <item quantity="other">%1$d rekordných kôl</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="one">%d zobrazenie</item>
+        <item quantity="few">%d zobrazenia</item>
+        <item quantity="other">%d zobrazení</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="one">%1$d mesiac</item>
+        <item quantity="few">%1$d mesiace</item>
+        <item quantity="other">%1$d mesiacov</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="one">Približne %1$d minúta za deň</item>
+        <item quantity="few">Približne %1$d minúty za deň</item>
+        <item quantity="other">Približne %1$d minút za deň</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="one">Naposledy nabité pred %d dňom</item>
+        <item quantity="few">Naposledy nabité pred %d dňami</item>
+        <item quantity="other">Naposledy nabité pred %d dňami</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="one">Dosiahli ste cieľ: %d</item>
+        <item quantity="few">Dosiahli ste cieľ: %d</item>
+        <item quantity="other">Dosiahli ste cieľ: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="one">%d krok</item>
+        <item quantity="few">%d kroky</item>
+        <item quantity="other">%d krokov</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="one">%d %s</item>
+        <item quantity="few">%d %s</item>
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d nové upozornenie</item>
+        <item quantity="few">%d nové upozornenia</item>
+        <item quantity="many">%d new notifications</item>
+        <item quantity="other">%d nových upozornení</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="one">%d&quot;</item>
+        <item quantity="few">%d&quot;</item>
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="one">%d sekunda</item>
+        <item quantity="few">%d sekundy</item>
+        <item quantity="other">%d sekúnd</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="one">Starší ako %1$d rok. Nie je možné analyzovať: %2$s</item>
+        <item quantity="few">Starší ako %1$d roky. Nie je možné analyzovať: %2$s</item>
+        <item quantity="other">Starší ako %1$d rokov. Nie je možné analyzovať: %2$s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="one">Mladší ako %1$d rok. Nie je možné analyzovať: %2$s</item>
+        <item quantity="few">Mladší ako %1$d roky. Nie je možné analyzovať: %2$s</item>
+        <item quantity="other">Mladší ako %1$d rokov. Nie je možné analyzovať: %2$s</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="one">%s stopa</item>
+        <item quantity="few">%s stopy</item>
+        <item quantity="other">%s stôp</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="one">%s palec</item>
+        <item quantity="few">%s palce</item>
+        <item quantity="other">%s palcov</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="one">%d s</item>
+        <item quantity="few">%d s</item>
+        <item quantity="many">%d s</item>
+        <item quantity="other">%d s</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="one">tréning</item>
+        <item quantity="few">tréningy</item>
+        <item quantity="other">tréningov</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="one">%d účastník</item>
+        <item quantity="few">%d účastníci</item>
+        <item quantity="other">%d účastníkov</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="one"> minúta</item>
+        <item quantity="few"> minúty</item>
+        <item quantity="other"> minút</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="one">Môžete pridať maximálne %1$d odpoveď formou SMS</item>
+        <item quantity="other">Môžete pridať maximálne %1$d odpovedí formou SMS</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="one">Môžete ponechať minimálne %1$d odpoveď formou SMS</item>
+        <item quantity="other">Môžete ponechať minimálne %1$d odpovedí formou SMS</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="one">Vybrali ste %1$d položku</item>
+        <item quantity="few">Vybrali ste %1$d položky</item>
+        <item quantity="other">Vybrali ste %1$d položiek</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="one">Bicyklovali ste sa pred %1$d dňom</item>
+        <item quantity="few">Bicyklovali ste sa pred %1$d dňami</item>
+        <item quantity="other">Bicyklovali ste sa pred %1$d dňami</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="one"> hodina</item>
+        <item quantity="few"> hodiny</item>
+        <item quantity="other"> hodín</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="one"> kcal</item>
+        <item quantity="few"> kcal</item>
+        <item quantity="other"> kcal</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="one">Behali ste pred %1$d dňom</item>
+        <item quantity="few">Behali ste pred %1$d dňami</item>
+        <item quantity="other">Behali ste pred %1$d dňami</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="one"> sekunda</item>
+        <item quantity="few"> sekundy</item>
+        <item quantity="other"> sekúnd</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="one">Dnes bol zistený %1$d zvukový klip</item>
+        <item quantity="few">Dnes boli zistené %1$d zvukové klipy</item>
+        <item quantity="other">Dnes bolo zistených %1$d zvukových klipov</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="one">Krok</item>
+        <item quantity="few">Kroky</item>
+        <item quantity="many">Kroku</item>
+        <item quantity="other">Krokov</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="one">Kráčali ste pred %1$d dňom</item>
+        <item quantity="few">Kráčali ste pred %1$d dňami</item>
+        <item quantity="other">Kráčali ste pred %1$d dňami</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">%d deň</item>
+        <item quantity="few">%d dni</item>
+        <item quantity="many">%d dňa</item>
+        <item quantity="other">%d dní</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">%d hodín</item>
+        <item quantity="few">%d hodiny</item>
+        <item quantity="many">%d hodiny</item>
+        <item quantity="other">%d hodín</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="one">%d krok</item>
+        <item quantity="few">%d kroky</item>
+        <item quantity="many">%d kroku</item>
+        <item quantity="other">%d krokov</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="one">Kvalita dýchania počas spánku je %1$d. Odporúčame vám priebežne venovať pozornosť svojmu dýchaniu počas spánku. Ak sa necítite dobre, vyhľadajte lekársku pomoc</item>
+        <item quantity="few">Kvalita dýchania počas spánku je %1$d. Odporúčame vám priebežne venovať pozornosť svojmu dýchaniu počas spánku. Ak sa necítite dobre, vyhľadajte lekársku pomoc</item>
+        <item quantity="other">Kvalita dýchania počas spánku je %1$d. Odporúčame vám priebežne venovať pozornosť svojmu dýchaniu počas spánku. Ak sa necítite dobre, vyhľadajte lekársku pomoc</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="one">Kvalita dýchania počas spánku je %1$d. Odporúčame vám vyhľadať lekársku pomoc, aby ste zistili, či máte problémy s dýchaním počas spánku</item>
+        <item quantity="few">Kvalita dýchania počas spánku je %1$d. Odporúčame vám vyhľadať lekársku pomoc, aby ste zistili, či máte problémy s dýchaním počas spánku</item>
+        <item quantity="other">Kvalita dýchania počas spánku je %1$d. Odporúčame vám vyhľadať lekársku pomoc, aby ste zistili, či máte problémy s dýchaním počas spánku</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="one">Kvalita dýchania počas spánku je %1$d. Len tak ďalej</item>
+        <item quantity="few">Kvalita dýchania počas spánku je %1$d. Len tak ďalej</item>
+        <item quantity="other">Kvalita dýchania počas spánku je %1$d. Len tak ďalej</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="one">Bežecké poistenie vyprší za %1$d deň, ťuknite pre obnovenie</item>
+        <item quantity="few">Bežecké poistenie vyprší za %1$d dni, ťuknite pre obnovenie</item>
+        <item quantity="many">Bežecké poistenie vyprší za %1$d dňa, ťuknite pre obnovenie</item>
+        <item quantity="other">Bežecké poistenie vyprší za %1$d dní, ťuknite pre obnovenie</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="one">%d položka nebola synchronizovaná</item>
+        <item quantity="few">%d položky neboli synchronizované</item>
+        <item quantity="many">%d položky nebolo synchronizovanej</item>
+        <item quantity="other">%d položiek nebolo synchronizovaných</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="one">%d položka nebola synchronizovaná</item>
+        <item quantity="few">%d položky neboli synchronizované</item>
+        <item quantity="many">%d položky nebolo synchronizovanej</item>
+        <item quantity="other">%d položiek nebolo synchronizovaných</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="one">%1$d jazda na bicykli</item>
+        <item quantity="few">%1$d jazdy na bicykli</item>
+        <item quantity="many">%1$d jazdy na bicykli</item>
+        <item quantity="other">%1$d jázd na bicykli</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="one">%1$d eliptický trenažér</item>
+        <item quantity="few">%1$d eliptické trenažéry</item>
+        <item quantity="many">%1$d eliptického trenažéra</item>
+        <item quantity="other">%1$d eliptických trenažérov</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="one">Bezplatné cvičenie ste absolvovali %1$d-krát</item>
+        <item quantity="few">Bezplatné cvičenie ste absolvovali %1$d-krát</item>
+        <item quantity="other">Bezplatné cvičenie ste absolvovali %1$d-krát</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="one">%1$d beh</item>
+        <item quantity="few">%1$d behy</item>
+        <item quantity="many">%1$d behu</item>
+        <item quantity="other">%1$d behov</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="one">%1$d plávanie</item>
+        <item quantity="few">%1$d plávania</item>
+        <item quantity="many">%1$d plávania</item>
+        <item quantity="other">%1$d plávaní</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="one">Tréning: %1$d relácia</item>
+        <item quantity="few">Tréning: %1$d relácie</item>
+        <item quantity="other">Tréning: %1$d relácií</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="one">%1$d triatlon</item>
+        <item quantity="few">%1$d triatlony</item>
+        <item quantity="many">%1$d triatlonu</item>
+        <item quantity="other">%1$d triatlonov</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="one">%1$d prechádzka</item>
+        <item quantity="few">%1$d prechádzky</item>
+        <item quantity="many">%1$d prechádzky</item>
+        <item quantity="other">%1$d prechádzok</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="one">Cvičenie: %1$d relácia</item>
+        <item quantity="few">Cvičenie: %1$d relácie</item>
+        <item quantity="other">Cvičenie: %1$d relácií</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="one">Pridajte maximálne %d udalosť</item>
+        <item quantity="few">Pridajte maximálne %d udalosti</item>
+        <item quantity="other">Pridajte maximálne %d udalostí</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="one">Osobný rekord: %d deň</item>
+        <item quantity="few">Osobný rekord: %d dni</item>
+        <item quantity="other">Osobný rekord: %d dní</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="one">Ste pred %d %% používateľov</item>
+        <item quantity="few">Ste pred %d %% používateľov</item>
+        <item quantity="other">Ste pred %d %% používateľov</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="one">-krát</item>
+        <item quantity="few">-krát</item>
+        <item quantity="other">-krát</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="one"> deň</item>
+        <item quantity="few"> dni</item>
+        <item quantity="other"> dní</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="one">bod</item>
+        <item quantity="few">body</item>
+        <item quantity="many">bodu</item>
+        <item quantity="other">bodov</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="one">%d-krát</item>
+        <item quantity="few">%d-krát</item>
+        <item quantity="other">%d-krát</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="one">V porovnaní s predchádzajúcim mesiacom sa skóre spánku zvýšilo o %d</item>
+        <item quantity="few">V porovnaní s predchádzajúcim mesiacom sa skóre spánku zvýšilo o %d</item>
+        <item quantity="other">V porovnaní s predchádzajúcim mesiacom sa skóre spánku zvýšilo o %d</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="one">Skóre spánku za tento mesiac je %d. Len tak ďalej!</item>
+        <item quantity="few">Skóre spánku za tento mesiac je %d. Len tak ďalej!</item>
+        <item quantity="other">Skóre spánku za tento mesiac je %d. Len tak ďalej!</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="one">V porovnaní s predchádzajúcim týždňom sa skóre spánku zvýšilo o %d</item>
+        <item quantity="few">V porovnaní s predchádzajúcim týždňom sa skóre spánku zvýšilo o %d</item>
+        <item quantity="other">V porovnaní s predchádzajúcim týždňom sa skóre spánku zvýšilo o %d</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="one">Skóre spánku za tento týždeň je %d. Len tak ďalej!</item>
+        <item quantity="few">Skóre spánku za tento týždeň je %d. Len tak ďalej!</item>
+        <item quantity="other">Skóre spánku za tento týždeň je %d. Len tak ďalej!</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="one">Dnes bol nahraný %1$d zvukový klip.</item>
+        <item quantity="few">Dnes boli nahrané %1$d zvukové klipy.</item>
+        <item quantity="other">Dnes bolo nahraných %1$d zvukových klipov.</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="one">%1$d klip</item>
+        <item quantity="few">%1$d klipy</item>
+        <item quantity="other">%1$d klipov</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="one">Je možné povedať %d sekundu navyše</item>
+        <item quantity="few">Je možné povedať %d sekundy navyše</item>
+        <item quantity="other">Je možné povedať %d sekúnd navyše</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="one">Dokončené aktivity: %1$d-krát %2$s</item>
+        <item quantity="few">Dokončené aktivity: %1$d-krát %2$s</item>
+        <item quantity="many">Dokončené aktivity: %1$d-krát %2$s</item>
+        <item quantity="other">Dokončené aktivity: %1$d-krát %2$s</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="one">krok</item>
+        <item quantity="few">kroky</item>
+        <item quantity="many">kroku</item>
+        <item quantity="other">krokov</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="one">Krok</item>
+        <item quantity="few">Kroky</item>
+        <item quantity="many">Kroku</item>
+        <item quantity="other">Krokov</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="one">Krok/deň</item>
+        <item quantity="few">Kroky/deň</item>
+        <item quantity="many">Kroku/deň</item>
+        <item quantity="other">Krokov/deň</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt;-krát</item>
+        <item quantity="few">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt;-krát</item>
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt;-krát</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="one">Na vrchole rebríčka ste boli &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; deň</item>
+        <item quantity="few">Na vrchole rebríčka ste boli &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; dni</item>
+        <item quantity="other">Na vrchole rebríčka ste boli &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; dní</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="one">Na čele zoznamu %1$d-krát</item>
+        <item quantity="few">Na čele zoznamu %1$d-krát</item>
+        <item quantity="other">Na čele zoznamu %1$d-krát</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="one">Na čele zoznamu %1$d deň</item>
+        <item quantity="few">Na čele zoznamu %1$d dni</item>
+        <item quantity="other">Na čele zoznamu %1$d dní</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="one">Spárované s %1$d priateľom:</item>
+        <item quantity="few">Spárované s %1$d priateľmi:</item>
+        <item quantity="other">Spárované s %1$d priateľmi:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="one">Behali ste &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt;-krát</item>
+        <item quantity="few">Behali ste &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt;-krát</item>
+        <item quantity="other">Behali ste &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt;-krát</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="one">%1$d bežecký rekord nie je nahraný</item>
+        <item quantity="few">%1$d bežecké rekordy nie sú nahrané</item>
+        <item quantity="other">%1$d bežeckých rekordov nie je nahraných</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="one">%1$d účastník</item>
+        <item quantity="few">%1$d účastníci</item>
+        <item quantity="other">%1$d účastníkov</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="one">%d hodina</item>
+        <item quantity="few">%d hodiny</item>
+        <item quantity="other">%d hodín</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="one">%d minúta</item>
+        <item quantity="few">%d minúty</item>
+        <item quantity="other">%d minút</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="one">%1$d-krát</item>
+        <item quantity="few">%1$d-krát</item>
+        <item quantity="other">%1$d-krát</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="one">Gratulujeme!\nZa posledný %1$d deň ste schudli</item>
+        <item quantity="few">Gratulujeme!\nZa posledné %1$d dni ste schudli</item>
+        <item quantity="other">Gratulujeme!\nZa posledných %1$d dní ste schudli</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="one">Existuje %1$d záznam o váhe, čakajúci na potvrdenie.</item>
+        <item quantity="few">Existujú %1$d záznamy o váhe, čakajúce na potvrdenie.</item>
+        <item quantity="other">Existuje %1$d záznamov o váhe, čakajúcich na potvrdenie.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="one">Môžete pridať najviac %1$d rozvrh</item>
+        <item quantity="few">Môžete pridať najviac %1$d rozvrhy</item>
+        <item quantity="other">Môžete pridať najviac %1$d rozvrhov</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="one">Nie je možné analyzovať pre osoby staršie ako %d rok</item>
+        <item quantity="few">Nie je možné analyzovať pre osoby staršie ako %d roky</item>
+        <item quantity="many">Nie je možné analyzovať pre osoby staršie ako %d roku</item>
+        <item quantity="other">Nie je možné analyzovať pre osoby staršie ako %d rokov</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="one">Nie je možné analyzovať pre osoby mladšie ako %d rok</item>
+        <item quantity="few">Nie je možné analyzovať pre osoby mladšie ako %d roky</item>
+        <item quantity="many">Nie je možné analyzovať pre osoby mladšie ako %d roku</item>
+        <item quantity="other">Nie je možné analyzovať pre osoby mladšie ako %d rokov</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="few">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="one">%d kurz</item>
+        <item quantity="few">%d kurzy</item>
+        <item quantity="other">%d kurzov</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="one">Platnosť kurzu uplynie o %d deň</item>
+        <item quantity="few">Platnosť kurzu uplynie o %d dni</item>
+        <item quantity="other">Platnosť kurzu uplynie o %d dní</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="one">%d divák</item>
+        <item quantity="few">%d diváci</item>
+        <item quantity="other">%d divákov</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="one">Celkový počet sérií: %d</item>
+        <item quantity="few">Celkový počet sérií: %d</item>
+        <item quantity="other">Celkový počet sérií: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="one">Počet cvičení: %d</item>
+        <item quantity="few">Počet cvičení: %d</item>
+        <item quantity="other">Počet cvičení: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="one">Začína sa o %d deň</item>
+        <item quantity="few">Začína sa o %d dni</item>
+        <item quantity="other">Začína sa o %d dní</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="one">Trénovali ste  %1$d minútu</item>
+        <item quantity="few">Trénovali ste  %1$d minúty</item>
+        <item quantity="other">Trénovali ste  %1$d minút</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="one">Trénovali ste  %1$d sekundu</item>
+        <item quantity="few">Trénovali ste  %1$d sekundy</item>
+        <item quantity="other">Trénovali ste  %1$d sekúnd</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="one">Deň %1$d tréningového kurzu: Musíte dokončiť %3$s (%2$d minútu)</item>
+        <item quantity="few">Deň %1$d tréningového kurzu: Musíte dokončiť %3$s (%2$d minúty)</item>
+        <item quantity="other">Deň %1$d tréningového kurzu: Musíte dokončiť %3$s (%2$d minút)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="one"> %1$d sekunda</item>
+        <item quantity="few"> %1$d sekundy</item>
+        <item quantity="other"> %1$d sekúnd</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="one"> %1$d -krát</item>
+        <item quantity="few"> %1$d -krát</item>
+        <item quantity="other"> %1$d -krát</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="one">Pozastavené  %1$d sekundu</item>
+        <item quantity="few">Pozastavené  %1$d sekundy</item>
+        <item quantity="other">Pozastavené  %1$d sekúnd</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="one"> krok</item>
+        <item quantity="few"> kroky</item>
+        <item quantity="many"> kroku</item>
+        <item quantity="other"> krokov</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="one">Keďže ste zadali nižší vek ako %1$d rok, aplikáciu Zepp budete môcť ďalej používať, až keď od vášho zákonného zástupcu získame autorizáciu a súhlas.</item>
+        <item quantity="few">Keďže ste zadali nižší vek ako %1$d roky, aplikáciu Zepp budete môcť ďalej používať, až keď od vášho zákonného zástupcu získame autorizáciu a súhlas.</item>
+        <item quantity="other">Keďže ste zadali nižší vek ako %1$d rokov, aplikáciu Zepp budete môcť ďalej používať, až keď od vášho zákonného zástupcu získame autorizáciu a súhlas.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="one">V opačnom prípade bude váš účet o %1$d deň zmrazený.</item>
+        <item quantity="few">V opačnom prípade bude váš účet o %1$d dni zmrazený.</item>
+        <item quantity="other">V opačnom prípade bude váš účet o %1$d dní zmrazený.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="one">Vek menej ako %1$drok</item>
+        <item quantity="few">Vek menej ako %1$droky</item>
+        <item quantity="other">Vek menej ako %1$drokov</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="one">Ak máte menej ako %1$drok, v záujme ochrany osobných údajov mladistvých požadujeme predtým, ako vám poskytneme úplné služby, povolenie a súhlas od vášho zákonného zástupcu.</item>
+        <item quantity="few">Ak máte menej ako %1$droky, v záujme ochrany osobných údajov mladistvých požadujeme predtým, ako vám poskytneme úplné služby, povolenie a súhlas od vášho zákonného zástupcu.</item>
+        <item quantity="other">Ak máte menej ako %1$drokov, v záujme ochrany osobných údajov mladistvých požadujeme predtým, ako vám poskytneme úplné služby, povolenie a súhlas od vášho zákonného zástupcu.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="one">Potvrďte, že máte najmenej %1$drok</item>
+        <item quantity="few">Potvrďte, že máte najmenej %1$droky</item>
+        <item quantity="other">Potvrďte, že máte najmenej %1$drokov</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="one">%s stopa</item>
+        <item quantity="few">%s stopy</item>
+        <item quantity="other">%s stôp</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="one">%s palec</item>
+        <item quantity="few">%s palce</item>
+        <item quantity="other">%s palcov</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="few">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="few">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="one">%d min</item>
+        <item quantity="few">%d min</item>
+        <item quantity="many">%d min</item>
+        <item quantity="other">%d min</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="one">%d relácia</item>
+        <item quantity="few">%d relácie</item>
+        <item quantity="other">%d relácií</item>
+    </plurals>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>暂无</title>
+    <g id="暂无" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M53,34 L53,46 C53,48.209139 51.209139,50 49,50 L15,50 C12.790861,50 11,48.209139 11,46 L11,34 L25,34 L25,34 C25,38.418278 28.581722,42 33,42 C37.418278,42 41,38.418278 41,34 L53,34 Z" id="Combined-Shape" stroke="#B2B2B2" stroke-width="2" stroke-linejoin="bevel"></path>
+        <path d="M53,20 L45.9321613,32.9577043 C45.581695,33.6002259 44.9082586,34 44.1763702,34 L19.8236298,34 C19.0917414,34 18.418305,33.6002259 18.0678387,32.9577043 L11,20 L11,20" id="Path" stroke="#B2B2B2" stroke-width="2" stroke-linecap="round" transform="translate(32.000000, 27.000000) scale(1, -1) translate(-32.000000, -27.000000) "></path>
+        <g id="Group" transform="translate(18.000000, 7.000000)" stroke="#B2B2B2" stroke-linejoin="bevel" stroke-width="2">
+            <line x1="14.5" y1="0" x2="14.5" y2="6" id="Line-2"></line>
+            <g id="Group-2" transform="translate(0.000000, 4.000000)">
+                <line x1="-1.46016532e-12" y1="-9.68114477e-14" x2="4.24264069" y2="4.24264069" id="Line-2-Copy"></line>
+                <line x1="24" y1="-9.68114477e-14" x2="28.2426407" y2="4.24264069" id="Line-2-Copy-2" transform="translate(26.121320, 2.121320) scale(-1, 1) translate(-26.121320, -2.121320) "></line>
+            </g>
+        </g>
+    </g>
+</svg>

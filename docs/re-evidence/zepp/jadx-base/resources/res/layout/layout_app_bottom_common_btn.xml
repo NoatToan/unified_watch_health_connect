@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@drawable/bind_left_text_color"
+        android:gravity="center"
+        android:layout_gravity="start"
+        android:id="@+id/left_btn"
+        android:layout_width="144dp"
+        android:layout_height="93dp"
+        android:text="@string/cancel"/>
+    <TextView
+        android:textColor="@drawable/bind_left_text_color"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/center_btn"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="93dp"
+        android:text="@string/give_up"/>
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@drawable/bind_right_text_color"
+        android:gravity="center"
+        android:layout_gravity="end"
+        android:id="@+id/right_btn"
+        android:layout_width="144dp"
+        android:layout_height="93dp"
+        android:text="@string/retry"/>
+</FrameLayout>

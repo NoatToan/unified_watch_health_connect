@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textColor="@color/s1"
+    android:background="@color/s10"
+    android:paddingTop="17dp"
+    android:paddingBottom="13dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/strength_training_choose_following_exercise"
+    android:paddingStart="3dp"
+    style="@style/Rainbow.TextAppearance.Title3"/>

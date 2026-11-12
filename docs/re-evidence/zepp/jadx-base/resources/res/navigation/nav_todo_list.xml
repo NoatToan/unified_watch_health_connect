@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_todo_list"
+    app:startDestination="@+id/todoListHost">
+    <fragment
+        android:label="TodoListFragment"
+        android:name="com.xiaomi.hm.health.device.settings.todo.TodoListFragment"
+        android:id="@+id/todoListHost">
+        <action
+            android:id="@+id/action_to_editTodo"
+            app:destination="@+id/editTodo"/>
+    </fragment>
+    <fragment
+        android:label="TodoEditFragment"
+        android:name="com.xiaomi.hm.health.device.settings.todo.TodoEditFragment"
+        android:id="@+id/editTodo"/>
+</navigation>

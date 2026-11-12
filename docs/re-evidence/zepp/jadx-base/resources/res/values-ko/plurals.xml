@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="Ndays">
+        <item quantity="one">1 일</item>
+        <item quantity="other">%1$d 일</item>
+    </plurals>
+    <plurals name="Nhours">
+        <item quantity="one">1 시간</item>
+        <item quantity="other">%1$d 시간</item>
+    </plurals>
+    <plurals name="Nminutes">
+        <item quantity="one">1 분</item>
+        <item quantity="other">%1$d분</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="other">브랜드 업그레이드로 인해 데이터 보안 목적으로 보호자가 계정 정보를 확인해야 합니다. 가능한 한 빨리 확인해 주십시오. 그렇지 않은 경우 계정 사용이 %1$s일 동안 중지됩니다.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="other">계정 또는 암호 입력이 최댓값에 도달했습니다. %s 분 후에 다시 시도하세요</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="other">계정 이름이나 암호가 잘못되었습니다. 남은 시도 횟수 %s 회</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="other">%d개 코스</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="other">%s분 후에 다시 진동</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="other">오늘 %d%%의 사용자들을 앞서고 있습니다.</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="other">최대 %1$d개의 앱을 앱 목록에 추가할 수 있습니다</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="other">최대 %1$d개의 앱을 더 보기 목록에 추가할 수 있습니다</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="other">%1$d일 전에 비해</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="other">%d일 동안 보정됨</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="other">북경대학제일병원에서 시행하는 혈압 검사 연구 프로젝트는 %d일마다 교정이 필요합니다</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="other">%d일 후에 보정</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="other">%d개 목표 달성됨</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="other">%d개 항목 주의가 요구됨</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="other">%d개 항목 목표에 도달하지 못함</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="other">축하합니다!\nIn 최근 %1$d일간 체중이 감소했습니다</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="other">점</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="other">최대 %1$d개의 상위 연락처를 추가할 수 있으며, 해당 연락처가 워치에 자동으로 동기화됩니다</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="other">%d개 코스</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="other">코스 %d일 후 시작</item>
+    </plurals>
+    <plurals name="daily_interval">
+        <item quantity="one">날</item>
+        <item quantity="other">%1$d날</item>
+    </plurals>
+    <plurals name="days_after">
+        <item quantity="one">%1$d일 후</item>
+        <item quantity="other">%1$d일 후</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="one">%1$d일 전</item>
+        <item quantity="other">%1$d일 전</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="other">%d개 다운로드</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="zero">%1$d초</item>
+        <item quantity="one">%1$d초</item>
+        <item quantity="other">%1$d초</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="other">데이터 간격: %1$s초</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="other">%1$s초</item>
+    </plurals>
+    <plurals name="endByCount">
+        <item quantity="one">；1회</item>
+        <item quantity="other">；총 %1$d회 반복</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="other">%d개 미리알림</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">%d초 빨리 감기</item>
+        <item quantity="other">%d초 빨리 감기</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">%d초 되감기</item>
+        <item quantity="other">%d초 되감기</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="other">%1$s개 레슨</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="other">생리 %1$s, 남은 기간 %2$s</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="other">생리 %1$s로 예측, 남은 기간 %2$s</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="other">생리 %1$s, 남은 기간 %2$s로 예측</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="other">%1$s명의 시청자</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">%1$d일차</item>
+        <item quantity="other">%1$d일차</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="other">%1$d일</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="other">취소(%1$d초)</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="other">다운로드 중입니다. %s분간 기다리세요</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="other">%d개 트레이닝 세션 완료됨</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="other">%d회/분</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="other">홈페이지에는 %1$d개 이상의 카드가 있어야 합니다</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="other">평균 심박수 %1$dbpm</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="other">분당 회</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="other">%d분 전</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="other">%d번째</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="other">전화가 걸려온 후 %d초 후 미리 알림</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="other">최대 %1$d개의 SMS 답장을 추가할 수 있습니다</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="other">%1$d개 이상의 SMS 답글 보관</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="other">최대 %d자리 입력</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="other">%1$d 랩 기록</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="other">%d 뷰</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="other">%1$d개월</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="other">하루 약%1$d분</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="other">마지막 충전 %d일 전</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="other">목표 달성: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="other">%d 걸음</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="monthly_interval">
+        <item quantity="one">월</item>
+        <item quantity="other">%1$d월</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">새 알림 %d개</item>
+        <item quantity="other">새 알림 %d개</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="other">%d초</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="other">%1$d세 이상입니다. %2$s를 분석할 수 없음</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="other">%1$d세 미만입니다. %2$s를 분석할 수 없음</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="other">%s인치</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="other">%d초</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="other">개 운동</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="other">%d명의 참가자</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="other">분</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="other">최대 %1$d 개의 SMS 답장을 추가할 수 있습니다</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="other">%1$d 개 이상의 SMS 답글 보관</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="other">%1$d개 항목 선택됨</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="other">%1$d일 전에 사이클링을 했습니다</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="other">시간</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="other">kcal</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="other">%1$d일 전에 러닝을 했습니다</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="other">초</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="other">오늘 %1$d개의 오디오 클립이 감지되었습니다</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="other">걸음 수</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="other">%1$d일 전에 걷기를 했습니다</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="other">%d일</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="other">%d시간</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="other">%d 걸음</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="other">수면 호흡의 질이 %1$d입니다. 수면 호흡에 지속적으로 관심을 기울이는 것이 좋습니다. 몸이 불편한 경우에는 의사의 진찰을 받으세요</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip_short">
+        <item quantity="other">수면 호흡 품질 점수: %1$d. 수면 호흡 상태에 주의를 기울이세요. 몸이 불편한 경우에는 의사의 진찰을 받으세요</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="other">수면 호흡의 질이 %1$d입니다. 의사의 진찰을 받아 수면 호흡에 문제가 있는지 여부를 알아보는 것이 좋습니다</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip_short">
+        <item quantity="other">수면 호흡 품질 점수: %1$d. 점수가 80 미만인 경우가 여러 번 반복되면 의사의 진료를 받으세요</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="other">수면 호흡의 질이 %1$d입니다. 계속 유지하세요</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip_short">
+        <item quantity="other">수면 호흡 품질 점수: %1$d. 계속 유지하세요</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="other">%1$d일 후 달리기 보험 만료, 탭하여 갱신</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="other">%d개 항목이 동기화되지 않았습니다.</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="other">%d개 항목이 동기화되지 않았습니다.</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="other">사이클링 %1$d회</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="other">일립티컬 트레이너 %1$d회</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="other">%1$d개 자유 훈련</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="other">달리기 %1$d회</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="other">수영 %1$d회</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="other">트레이닝: %1$d회</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="other">트라이애슬론 %1$d회</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="other">걷기 %1$d회</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="other">운동: %1$d회</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="other">최대 %d개의 이벤트 추가</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="other">개인 최고기록: %d일</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="other">%d%%의 사용자들을 앞서고 있습니다.</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="zero">횟수</item>
+        <item quantity="one">횟수</item>
+        <item quantity="other">횟수</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="other">일</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="zero">등급</item>
+        <item quantity="one">등급</item>
+        <item quantity="other">등급</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="zero">%d회</item>
+        <item quantity="one">%d회</item>
+        <item quantity="other">%d회</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="other">수면 점수가 지난 달에 비해 %d(으)로 올랐습니다.</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="other">이번 달의 수면 점수는 %d입니다. 계속 유지하세요.</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="other">수면 점수가 지난 주에 비해 %d(으)로 올랐습니다.</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="other">이번 주의 수면 점수는 %d입니다. 계속 유지하세요.</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="other">%1$d 오디오 클립이 오늘 녹음됩니다.</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="other">%1$d 클립</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="other">%d초 더 말할 수 있음</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="other">완료된 활동: %2$s %1$d회</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="other">걸음</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="other">걸음</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="other">걸음/일</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt;회</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt;일 동안 1위 차지</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="other">%1$d회 동안 1위</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="other">%1$d일 동안 1위</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="other">%1$d명의 친구와 일치함:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt;회 달림</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="other">%1$d 러닝 기록이 업데이트되지 않음</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="other">%1$d명의 참여자</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="zero">%d시간</item>
+        <item quantity="one">%d시간</item>
+        <item quantity="other">%d시간</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="zero">%d분</item>
+        <item quantity="one">%d분</item>
+        <item quantity="other">%d분</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="other">%1$d회</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="other">축하합니다!\nIn 최근 %1$d일간 체중이 감소했습니다</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="other">요청 대기 중인 %1$d개의 체중 기록이 있습니다.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="other">최대 %1$d개의 일정을 추가할 수 있습니다</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="other">%d세 보다 많은 연령의 사람은 분석할 수 없습니다.</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="other">%d세 보다 적은 연령의 사람은 분석할 수 없습니다.</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="other">%d개 코스</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="other">코스 %d일 후 만료</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="other">%d명 시청</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="other">총 세트: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="other">배운 횟수: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="other">%d일 후 시작</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="other"> %1$d 분 트레이닝 하셨습니다.</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="other"> %1$d 초 트레이닝 하셨습니다.</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="other">트레이닝 코스 %1$d일차: %3$s (%2$d분)을 완료하십시오.</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="other"> %1$d  초</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="other"> %1$d  회</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="other"> %1$d 초 쉬셨습니다.</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="other"> 걸음</item>
+    </plurals>
+    <plurals name="user_info_Nhours">
+        <item quantity="one">1 시간</item>
+        <item quantity="other">%1$d 시간</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="other">입력하신 연령이 %1$d세 미만으로, 보호자의 승인과 동의를 받은 후에 Zepp을 이용할 수 있습니다.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="other">그렇지 않은 경우 계정 사용이 %1$d 일 동안 중지됩니다.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="other">%1$d미만</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="other">미성년자 데이터의 개인 정보를 보호하기 위해 %1$d미만인 경우, 완전한 서비스를 제공하기 전에 보호자의 승인과 동의를 얻어야 합니다.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="other">%1$d미만이 아닌지 확인하십시오</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="other">%s인치</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="weekly_interval">
+        <item quantity="one">주</item>
+        <item quantity="other">%1$d주</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="other">%d분</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="other">%d회</item>
+    </plurals>
+    <plurals name="yearly_interval">
+        <item quantity="one">년</item>
+        <item quantity="other">%1$d년</item>
+    </plurals>
+</resources>

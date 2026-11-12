@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/s38"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RadioGroup
+        android:orientation="horizontal"
+        android:id="@+id/tab_group"
+        android:background="@drawable/common_shape_date_tab_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_card_vertical_margin"
+        android:layout_marginStart="@dimen/common_card_horizon_margin"
+        android:layout_marginEnd="@dimen/common_card_horizon_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <RadioButton
+            android:id="@+id/tab_day"
+            android:background="@drawable/common_selector_date_tab_start"
+            android:checked="true"
+            android:text="@string/hm_common_chart_day"
+            android:layout_weight="1"
+            style="@style/common_date_tab_style"/>
+        <RadioButton
+            android:id="@+id/tab_week"
+            android:background="@drawable/common_selector_date_tab_normal"
+            android:text="@string/hm_common_chart_week"
+            android:layout_weight="1"
+            style="@style/common_date_tab_style"/>
+        <RadioButton
+            android:id="@+id/tab_month"
+            android:background="@drawable/common_selector_date_tab_normal"
+            android:text="@string/hm_common_chart_month"
+            android:layout_weight="1"
+            style="@style/common_date_tab_style"/>
+        <RadioButton
+            android:id="@+id/tab_year"
+            android:background="@drawable/common_selector_date_tab_end"
+            android:text="@string/hm_common_chart_year"
+            android:layout_weight="1"
+            style="@style/common_date_tab_style"/>
+    </RadioGroup>
+</LinearLayout>

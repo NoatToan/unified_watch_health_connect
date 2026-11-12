@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/peyto_container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_109dp">
+    <ImageView
+        android:id="@+id/watch_img"
+        android:layout_width="@dimen/dp_72"
+        android:layout_height="@dimen/dp_72"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/size_36dp"/>
+    <TextView
+        android:textSize="@dimen/size_16sp"
+        android:textColor="@color/s1"
+        android:id="@+id/watch_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/size_128dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_right"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/size_36dp"
+        android:layout_alignParentEnd="true"
+        app:tint="@color/s1"/>
+    <View
+        android:layout_gravity="bottom"
+        android:id="@+id/divider"
+        android:background="@color/s3"
+        android:layout_width="wrap_content"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="@dimen/size_27dp"
+        android:layout_marginEnd="@dimen/size_27dp"/>
+</RelativeLayout>

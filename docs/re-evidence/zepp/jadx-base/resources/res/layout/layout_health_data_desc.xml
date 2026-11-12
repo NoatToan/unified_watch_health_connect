@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.huami.widget.typeface.TypefaceTextView
+        android:textSize="@dimen/size_18sp"
+        android:textStyle="bold"
+        android:textColor="@color/s1"
+        android:gravity="start"
+        android:id="@+id/desc_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="lt"
+        android:textDirection="locale"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <com.huami.widget.typeface.TypefaceTextView
+        android:textSize="@dimen/size_13sp"
+        android:textColor="@color/s2"
+        android:gravity="start"
+        android:id="@+id/desc_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_15dp"
+        android:fontFamily="lt"
+        android:textDirection="locale"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/desc_name"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

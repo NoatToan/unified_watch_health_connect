@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="52dp">
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@drawable/selector_picker_text_color"
+        android:gravity="center_vertical"
+        android:id="@+id/unlock_distance_text"
+        android:background="@drawable/selector_dialog_item_pressed"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/userinfo_male"
+        android:paddingStart="48dp"/>
+</LinearLayout>

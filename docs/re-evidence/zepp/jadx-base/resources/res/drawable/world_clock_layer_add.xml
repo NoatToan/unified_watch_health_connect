@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/world_clock_shape_round"/>
+    <item
+        android:gravity="center"
+        android:id="@+id/world_clock_layer_svg_add"
+        android:drawable="@drawable/ic_add_20"/>
+</layer-list>

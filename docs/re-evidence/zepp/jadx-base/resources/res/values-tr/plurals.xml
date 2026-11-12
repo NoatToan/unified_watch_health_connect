@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="Ndays">
+        <item quantity="one">1 gün</item>
+        <item quantity="other">%1$d gün</item>
+    </plurals>
+    <plurals name="Nhours">
+        <item quantity="one">1 saat</item>
+        <item quantity="other">%1$d saat</item>
+    </plurals>
+    <plurals name="Nminutes">
+        <item quantity="one">1 dakika</item>
+        <item quantity="other">%1$d dakika</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="one">Marka yükseltmesi nedeniyle veri güvenliğinizin korunması adına hesap bilgilerinizin vasiniz tarafından onaylanması gerekir. Lütfen en kısa zamanda onaylayın. Aksi takdirde, hesabınız %1$sgün içinde dondurulacaktır.</item>
+        <item quantity="other">Marka yükseltmesi nedeniyle veri güvenliğinizin korunması adına hesap bilgilerinizin vasiniz tarafından onaylanması gerekir. Lütfen en kısa zamanda onaylayın. Aksi takdirde, hesabınız %1$sgün içinde dondurulacaktır.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="one">Hesap veya parola girişi için maksimum deneme sayısına ulaşıldı. Lütfen %s dakika sonra tekrar deneyin</item>
+        <item quantity="other">Hesap veya parola girişi için maksimum deneme sayısına ulaşıldı. Lütfen %s dakika sonra tekrar deneyin</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="one">Hesap adı veya parola yanlış. Denemek için %s hakkınız kaldı</item>
+        <item quantity="other">Hesap adı veya parola yanlış. Denemek için %s hakkınız kaldı</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="one">%d kurs</item>
+        <item quantity="other">%d kurs</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="one">%s dakika sonra tekrar titre</item>
+        <item quantity="other">%s dakika sonra tekrar titre</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="one">Bugün diğer kullanıcıların %%%d oranında önündesiniz</item>
+        <item quantity="other">Bugün diğer kullanıcıların %%%d oranında önündesiniz</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="one">Uygulama Listesine en fazla %1$d uygulama eklenebilir</item>
+        <item quantity="other">Uygulama Listesine en fazla %1$d uygulama eklenebilir</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="one">Daha Fazla Listesine en fazla %1$d uygulama eklenebilir</item>
+        <item quantity="other">Daha Fazla Listesine en fazla %1$d uygulama eklenebilir</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="one">%1$d gün önce ile karş.</item>
+        <item quantity="other">%1$d gün önce ile karş.</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="one">%d gün için kalibre edildi</item>
+        <item quantity="other">%d gün için kalibre edildi</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="one">Peking University First Hospital tarafından başlatılan kan basıncı izleme araştırması projesi için her %d günde bir kalibrasyon gereklidir</item>
+        <item quantity="other">Peking University First Hospital tarafından başlatılan kan basıncı izleme araştırması projesi için her %d günde bir kalibrasyon gereklidir</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="one">%d gün sonra kalibre edin</item>
+        <item quantity="other">%d gün sonra kalibre edin</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="one">%d hedefe ulaşıldı</item>
+        <item quantity="other">%d hedefe ulaşıldı</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="one">%d ögeye dikkat etmeniz gerekiyor</item>
+        <item quantity="other">%d ögeye dikkat etmeniz gerekiyor</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="one">%d alanda hedefe ulaşılmadı</item>
+        <item quantity="other">%d alanda hedefe ulaşılmadı</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="one">Tebrikler!\nSon %1$d günde kilo aldınız:</item>
+        <item quantity="other">Tebrikler!\nSon %1$d günde kilo aldınız:</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="one">puan</item>
+        <item quantity="other">puan</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="one">Sık görüşülen %1$d kişiye kadar ekleyebilirsiniz. Bu kişiler otomatik olarak saatinizle eşitlenir</item>
+        <item quantity="other">Sık görüşülen %1$d kişiye kadar ekleyebilirsiniz. Bu kişiler otomatik olarak saatinizle eşitlenir</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="one">%d kurs</item>
+        <item quantity="other">%d kurs</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="one">Kurs %d gün içerisinde başlıyor</item>
+        <item quantity="other">Kurs %d gün içerisinde başlıyor</item>
+    </plurals>
+    <plurals name="daily_interval">
+        <item quantity="one">gün</item>
+        <item quantity="other">%1$d gün</item>
+    </plurals>
+    <plurals name="days_after">
+        <item quantity="one">%1$d gün sonra</item>
+        <item quantity="other">%1$d gün sonra</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="one">%1$d gün önce</item>
+        <item quantity="other">%1$d gün önce</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="one">%d indirilme</item>
+        <item quantity="other">%d indirilme</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="zero">%1$d sn.</item>
+        <item quantity="one">%1$d sn.</item>
+        <item quantity="other">%1$d sn.</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="one">Veri aralığı: %1$s saniye</item>
+        <item quantity="other">Veri aralığı: %1$s saniye</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="one">%1$s saniye</item>
+        <item quantity="other">%1$s saniye</item>
+    </plurals>
+    <plurals name="endByCount">
+        <item quantity="one">; 1 kez</item>
+        <item quantity="other">; toplamda %1$d kez tekrarla</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="one">%d hatırlatıcı</item>
+        <item quantity="other">%d hatırlatıcı</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">%d saniye ileri sar</item>
+        <item quantity="other">%d saniye ileri sar</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">%d saniye geri sar</item>
+        <item quantity="other">%d saniye geri sar</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="one">%1$d kal</item>
+        <item quantity="other">%1$d kal</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="one">%1$d kal</item>
+        <item quantity="other">%1$d kal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="one">%1$s ders</item>
+        <item quantity="other">%1$s ders</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="one">Adet döneminde %1$s, %2$s kaldı.</item>
+        <item quantity="other">Adet döneminde %1$s, %2$s kaldı.</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="one">Adet döneminde yaklaşık %1$s, %2$s kaldı.</item>
+        <item quantity="other">Adet döneminde yaklaşık %1$s, %2$s kaldı.</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="one">Adet döneminde %1$s, yaklaşık %2$s kaldı.</item>
+        <item quantity="other">Adet döneminde %1$s, yaklaşık %2$s kaldı.</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="one">%1$s izleyici</item>
+        <item quantity="other">%1$s izleyici</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">%1$d. gün</item>
+        <item quantity="other">%1$d. gün</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="one">%1$dg</item>
+        <item quantity="other">%1$dg</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="one">İptal et (%1$dsn)</item>
+        <item quantity="other">İptal et (%1$dsn)</item>
+    </plurals>
+    <plurals name="fix_hour">
+        <item quantity="one">%1$d saat</item>
+        <item quantity="other">%1$d saat</item>
+    </plurals>
+    <plurals name="fix_minute">
+        <item quantity="one">%1$d dakika</item>
+        <item quantity="other">%1$d dakika</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="one">İndiriliyor. Lütfen yaklaşık %s dakika bekleyin</item>
+        <item quantity="other">İndiriliyor. Lütfen yaklaşık %s dakika bekleyin</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="one">%d antreman seansı tamamlandı</item>
+        <item quantity="other">%d antreman seansı tamamlandı</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="one">%d sefer/dakika</item>
+        <item quantity="other">%d sefer/dakika</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="one">Ana sayfada en az %1$d kart bulunmalıdır</item>
+        <item quantity="other">Ana sayfada en az %1$d kart bulunmalıdır</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="one">Ortalama kalp atış hızı %1$d bpm</item>
+        <item quantity="other">Ortalama kalp atış hızı %1$d bpm</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="one">kez/dk</item>
+        <item quantity="other">kez/dk</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="one">%d dakika önce</item>
+        <item quantity="other">%d dakika önce</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="one">Seans %d</item>
+        <item quantity="other">Seans %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="one">Telefon çağrısından %d saniye sonra bana hatırlat</item>
+        <item quantity="other">Telefon çağrısından %d saniye sonra bana hatırlat</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="one">Maksimum %1$d SMS yanıtı ekleyebilirsiniz</item>
+        <item quantity="other">Maksimum %1$d SMS yanıtı ekleyebilirsiniz</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="one">En fazla %1$d SMS yanıtını tut</item>
+        <item quantity="other">En fazla %1$d SMS yanıtını tut</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="one">%d karaktere kadar girin</item>
+        <item quantity="other">%d karaktere kadar girin</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="one">%1$d tur kaydı</item>
+        <item quantity="other">%1$d tur kaydı</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="one">%d görüntüleme</item>
+        <item quantity="other">%d görüntüleme</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="one">%1$d ay</item>
+        <item quantity="other">%1$d ay</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="one">Günde yaklaşık %1$d dakika</item>
+        <item quantity="other">Günde yaklaşık %1$d dakika</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="one">Son şarj %d gün önce</item>
+        <item quantity="other">Son şarj %d gün önce</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="one">Ulaşılan hedef: %d</item>
+        <item quantity="other">Ulaşılan hedef: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="one">%d adım</item>
+        <item quantity="other">%d adım</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="one">%d %s</item>
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="monthly_interval">
+        <item quantity="one">ay</item>
+        <item quantity="other">%1$d ay</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d yeni bildirim</item>
+        <item quantity="other">%d yeni bildirim</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="one">%d&quot;</item>
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="one">%dsn</item>
+        <item quantity="other">%dsn</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="one">%1$d yaşından büyük. %2$s analiz edilemiyor.</item>
+        <item quantity="other">%1$d yaşından büyük. %2$s analiz edilemiyor.</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="one">%1$d yaşından küçük. %2$s analiz edilemiyor.</item>
+        <item quantity="other">%1$d yaşından küçük. %2$s analiz edilemiyor.</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="one">%s fit</item>
+        <item quantity="other">%s fit</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="one">%s inç</item>
+        <item quantity="other">%s inç</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="one">%dsn</item>
+        <item quantity="other">%dsn</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="one">antrenman</item>
+        <item quantity="other">antrenman</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="one">%d katılımcı</item>
+        <item quantity="other">%d katılımcı</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="one">dakika</item>
+        <item quantity="other">dakika</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="one">Maksimum %1$d SMS yanıtı ekleyebilirsiniz</item>
+        <item quantity="other">Maksimum %1$d SMS yanıtı ekleyebilirsiniz</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="other">En az %1$d SMS yanıtını tut</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="one">%1$d öge seçildi</item>
+        <item quantity="other">%1$d öge seçildi</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="one">%1$d gün önce bisiklete bindiniz</item>
+        <item quantity="other">%1$d gün önce bisiklete bindiniz</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="one">saat</item>
+        <item quantity="other">saat</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="one">kcal</item>
+        <item quantity="other">kcal</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="one">%1$d gün önce koştunuz</item>
+        <item quantity="other">%1$d gün önce koştunuz</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="one">saniye</item>
+        <item quantity="other">saniye</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="one">Bugün %1$d ses klibi algılandı</item>
+        <item quantity="other">Bugün %1$d ses klibi algılandı</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="one">Adım</item>
+        <item quantity="other">Adım</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="one">%1$d gün önce yürüdünüz</item>
+        <item quantity="other">%1$d gün önce yürüdünüz</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">%d gün</item>
+        <item quantity="other">%d gün</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">%d saat</item>
+        <item quantity="other">%d saat</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="one">%d adım</item>
+        <item quantity="other">%d adım</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="one">Uykuda solunum kalitesi %1$d. Uykuda solunumunuza sürekli olarak dikkat etmeniz önerilir. Kendinizi iyi hissetmiyorsanız lütfen tıbbi yardım alın</item>
+        <item quantity="other">Uykuda solunum kalitesi %1$d. Uykuda solunumunuza sürekli olarak dikkat etmeniz önerilir. Kendinizi iyi hissetmiyorsanız lütfen tıbbi yardım alın</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip_short">
+        <item quantity="one">Uykuda solunum kalitesi puanı: %1$d. Lütfen uykuda solunum koşullarınıza çok dikkat edin. Kendinizi iyi hissetmiyorsanız lütfen tıbbi yardım alın</item>
+        <item quantity="other">Uykuda solunum kalitesi puanı: %1$d. Lütfen uykuda solunum koşullarınıza çok dikkat edin. Kendinizi iyi hissetmiyorsanız lütfen tıbbi yardım alın</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="one">Uykuda solunum kalitesi %1$d. Uykuda solunum sorunlarınızın olup olmadığının belirlenmesi için tıbbi yardım almanızı öneriyoruz</item>
+        <item quantity="other">Uykuda solunum kalitesi %1$d. Uykuda solunum sorunlarınızın olup olmadığının belirlenmesi için tıbbi yardım almanızı öneriyoruz</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip_short">
+        <item quantity="one">Uykuda solunum kalitesi puanı: %1$d. Puanın birçok kez 80&apos;in altına düşmesi durumunda lütfen tıbbi yardım alın</item>
+        <item quantity="other">Uykuda solunum kalitesi puanı: %1$d. Puanın birçok kez 80&apos;in altına düşmesi durumunda lütfen tıbbi yardım alın</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="one">Uykuda solunum kalitesi %1$d; böyle devam edin</item>
+        <item quantity="other">Uykuda solunum kalitesi %1$d; böyle devam edin</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip_short">
+        <item quantity="one">Uykuda solunum kalitesi puanı: %1$d. Böyle devam edin</item>
+        <item quantity="other">Uykuda solunum kalitesi puanı: %1$d. Böyle devam edin</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="one">Koşu Sigortası %1$d gün içerisinde sona eriyor, yenilemek için dokunun</item>
+        <item quantity="other">Koşu Sigortası %1$d gün içerisinde sona eriyor, yenilemek için dokunun</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="one">%d öge senkronize edilmedi</item>
+        <item quantity="other">%d öge senkronize edilmedi</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="one">%d öge senkronize edilmedi</item>
+        <item quantity="other">%d öge senkronize edilmedi</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="one">%1$d bisiklet seansı</item>
+        <item quantity="other">%1$d bisiklet seansı</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="one">%1$d eliptik bisiklet seansı</item>
+        <item quantity="other">%1$d eliptik bisiklet seansı</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="one">%1$d Serbest stil antrenman</item>
+        <item quantity="other">%1$d Serbest stil antrenmanlar</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="one">%1$d koşu seansı</item>
+        <item quantity="other">%1$d koşu seansı</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="one">%1$d yüzme seansı</item>
+        <item quantity="other">%1$d yüzme seansı</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="one">Antreman: %1$d seans</item>
+        <item quantity="other">Antreman: %1$d seans</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="one">%1$d triatlon seansı</item>
+        <item quantity="other">%1$d triatlon seansı</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="one">%1$d yürüyüş seansı</item>
+        <item quantity="other">%1$d yürüyüş seansı</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="one">Egzersiz: %1$d seans</item>
+        <item quantity="other">Egzersiz: %1$d seans</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="one">En fazla %d etkinlik ekleyin</item>
+        <item quantity="other">En fazla %d etkinlik ekleyin</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="one">Kişisel rekor: %d gün</item>
+        <item quantity="other">Kişisel rekor: %d gün</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="one">Diğer kullanıcıların %%%d oranının önünde</item>
+        <item quantity="other">Diğer kullanıcıların %d%% oranının önünde</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="zero">Sefer</item>
+        <item quantity="one">Sefer</item>
+        <item quantity="other">Sefer</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="one">Gün</item>
+        <item quantity="other">Gün</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="zero">Puan</item>
+        <item quantity="one">Puan</item>
+        <item quantity="other">Puan</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="zero">‎%ddefa</item>
+        <item quantity="one">‎%dzaman</item>
+        <item quantity="other">‎%ddefa</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="one">Uyku puanı önceki aya kıyasla %d puan arttı.</item>
+        <item quantity="other">Uyku puanı önceki aya kıyasla %d puan arttı.</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="one">Bu ayın uyku puanı %d. Böyle devam edin.</item>
+        <item quantity="other">Bu ayın uyku puanı %d. Böyle devam edin.</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="one">Uyku puanı önceki haftaya kıyasla %d puan arttı.</item>
+        <item quantity="other">Uyku puanı önceki haftaya kıyasla %d puan arttı.</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="one">Bu haftanın uyku puanı %d. Böyle devam edin.</item>
+        <item quantity="other">Bu haftanın uyku puanı %d. Böyle devam edin.</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="one">Bugün %1$d ses klibi kaydedildi.</item>
+        <item quantity="other">Bugün %1$d ses klibi kaydedildi.</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="one">%1$d klip</item>
+        <item quantity="other">%1$d klip</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="one">%d saniye daha denilebilir</item>
+        <item quantity="other">%d saniye daha denilebilir</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="one">Tamamlanan etkinlikler: %1$d adet %2$s oturumu</item>
+        <item quantity="other">Tamamlanan etkinlikler: %1$d adet %2$s oturumu</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="one">adım</item>
+        <item quantity="other">adım</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="one">Adım</item>
+        <item quantity="other">Adım</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="one">Adım/gün</item>
+        <item quantity="other">Adım/gün</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; kez</item>
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; kez</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="one">Listede&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; gün boyunca zirvede kaldı</item>
+        <item quantity="other">Listede&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; gün boyunca zirvede kaldı</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="one">%1$d sefer listenin en üst sırasındaydı</item>
+        <item quantity="other">%1$d sefer listenin en üst sırasındaydı</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="one">%1$d gün boyunca listenin en üst sırasındaydı</item>
+        <item quantity="other">%1$d gün boyunca listenin en üst sırasındaydı</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="one">%1$d arkadaş ile eşleşti:</item>
+        <item quantity="other">%1$d arkadaş ile eşleşti:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; kez çalıştırıldı</item>
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; kez çalıştırıldı</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="one">%1$d koşu kaydı yüklenmedi</item>
+        <item quantity="other">%1$d koşu kaydı yüklenmedi</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="one">%1$d katılımcı</item>
+        <item quantity="other">%1$d katılımcı</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="zero">‎%dsaatler</item>
+        <item quantity="one">‎%dsaat</item>
+        <item quantity="other">‎%dsaatler</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="zero">‎%ddakikalar</item>
+        <item quantity="one">‎%ddakika</item>
+        <item quantity="other">‎%ddakikalar</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="one">%1$d kez</item>
+        <item quantity="other">%1$d kez</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="one">Tebrikler!\nSon %1$d günde kilo verdiniz:</item>
+        <item quantity="other">Tebrikler!\nSon %1$d günde kilo verdiniz:</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="one">Alınmayı bekleyen %1$d kilo kaydı var.</item>
+        <item quantity="other">Alınmayı bekleyen %1$d kilo kaydı var.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="one">En fazla %1$d plan eklenebilir</item>
+        <item quantity="other">En fazla %1$d plan eklenebilir</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="one">%d yaşından daha büyük bireyler için analiz yapılamıyor</item>
+        <item quantity="other">%d yaşından daha büyük bireyler için analiz yapılamıyor</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="one">%d yaşından daha küçük bireyler için analiz yapılamıyor</item>
+        <item quantity="other">%d yaşından daha küçük bireyler için analiz yapılamıyor</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="one">%d kurs</item>
+        <item quantity="other">%d kurs</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="one">Kurs %d gün içinde sona eriyor</item>
+        <item quantity="other">Kurs %d gün içinde sona eriyor</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="one">%d izleyici</item>
+        <item quantity="other">%d izleyici</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="one">Toplam set: %d</item>
+        <item quantity="other">Toplam set: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="one">%d defa öğrenildi</item>
+        <item quantity="other">%d defa öğrenildi</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="one">%d gün içinde başlıyor</item>
+        <item quantity="other">%d gün içinde başlıyor</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="one"> %1$d dk. çalışıldı</item>
+        <item quantity="other"> %1$d dk. çalışıldı</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="one"> %1$d sn çalışıldı</item>
+        <item quantity="other"> %1$d sn çalışıldı</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="one">Eğitim kursunun %1$d. günü: %3$s tamamlamalısınız (%2$d dk)</item>
+        <item quantity="other">Eğitim kursunun %1$d. günü: %3$s tamamlamalısınız (%2$d dk)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="one"> %1$d  saniye</item>
+        <item quantity="other"> %1$d  saniye</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="one"> %1$d  kez</item>
+        <item quantity="other"> %1$d  kez</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="one"> %1$d sn duruldu</item>
+        <item quantity="other"> %1$d sn duruldu</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="one"> adım</item>
+        <item quantity="other"> adım</item>
+    </plurals>
+    <plurals name="user_info_Nhours">
+        <item quantity="one">1 saat</item>
+        <item quantity="other">%1$d saat</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="one">Girdiğiniz yaş %1$d yaşın altında olduğu için sadece vasinizden yetkilendirme ve onay aldıktan sonra Zepp&apos;i kullanmaya devam edebilirsiniz.</item>
+        <item quantity="other">Girdiğiniz yaş %1$d yaşın altında olduğu için sadece vasinizden yetkilendirme ve onay aldıktan sonra Zepp&apos;i kullanmaya devam edebilirsiniz.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="one">Aksi takdirde, hesabınız %1$d gün içinde dondurulacaktır.</item>
+        <item quantity="other">Aksi takdirde, hesabınız %1$d gün içinde dondurulacaktır.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="one">%1$dyaşın altında</item>
+        <item quantity="other">%1$dyaşın altında</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="one">Reşit olmayan kişilerin verilerini korumak adına; %1$dyaşın altındaysanız size tüm hizmetleri sunmadan önce vasinizin onayı ve iznini almamız gereklidir.</item>
+        <item quantity="other">Reşit olmayan kişilerin verilerini korumak adına; %1$dyaşın altındaysanız size tüm hizmetleri sunmadan önce vasinizin onayı ve iznini almamız gereklidir.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="one">Lütfen %1$dyaşın altında olmadığınızı onaylayın</item>
+        <item quantity="other">Lütfen %1$dyaşın altında olmadığınızı onaylayın</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="one">%s fit</item>
+        <item quantity="other">%s fit</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="one">%s inç</item>
+        <item quantity="other">%s inç</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="weekly_interval">
+        <item quantity="one">hafta</item>
+        <item quantity="other">%1$d hafta</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="one">%d dakika</item>
+        <item quantity="other">%d dakika</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="one">%d seans</item>
+        <item quantity="other">%d seans</item>
+    </plurals>
+    <plurals name="yearly_interval">
+        <item quantity="one">yıl</item>
+        <item quantity="other">%1$d yıl</item>
+    </plurals>
+</resources>

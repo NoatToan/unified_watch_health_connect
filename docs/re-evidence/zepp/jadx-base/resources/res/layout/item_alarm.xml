@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="64dp">
+    <View
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <TextView
+        android:textSize="28sp"
+        android:textColor="@color/pink"
+        android:id="@+id/tv_alarm_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"/>
+    <TextView
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:id="@+id/tv_alarm_time_ampm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/tv_alarm_time"/>
+    <ImageView
+        android:id="@+id/iv_alarm_arrow"
+        android:background="@drawable/ic_right_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="16dp"
+        android:layout_alignParentEnd="true"/>
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@color/black90"
+        android:id="@+id/tv_alarm_enable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="3dp"
+        android:layout_toStartOf="@+id/iv_alarm_arrow"/>
+    <include layout="@layout/split_line_with_margin"/>
+</RelativeLayout>

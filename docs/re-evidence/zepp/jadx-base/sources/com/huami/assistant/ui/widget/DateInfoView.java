@@ -1,0 +1,54 @@
+package com.huami.assistant.ui.widget;
+
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.text.format.DateUtils;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.annotation.Nullable;
+import com.huami.assistant.R;
+import com.huami.watch.util.DateDay;
+import com.huami.watch.util.TimeUtil;
+
+/* JADX INFO: loaded from: classes5.dex */
+public class DateInfoView extends LinearLayout {
+    private TextView a;
+    private TextView b;
+    private TextView c;
+
+    public DateInfoView(Context context) {
+        super(context);
+        a(context);
+    }
+
+    private void a(Context context) {
+        View.inflate(context, R.layout.view_date_info, this);
+        this.a = (TextView) findViewById(R.id.date_info_day);
+        this.b = (TextView) findViewById(R.id.date_info_date);
+        this.c = (TextView) findViewById(R.id.date_info_week);
+    }
+
+    public void setTime(long time) {
+        this.a.setText(DateUtils.getRelativeTimeSpanString(DateDay.from(time).dayStartMills(), DateDay.today().dayStartMills(), 86400000L));
+        this.b.setText(DateUtils.formatDateTime(getContext(), time, 524308));
+        this.c.setText(TimeUtil.formatDateTimeByDefaultLocal(time, "EE"));
+    }
+
+    public DateInfoView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        a(context);
+    }
+
+    public DateInfoView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        a(context);
+    }
+
+    @TargetApi(21)
+    public DateInfoView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        a(context);
+    }
+}

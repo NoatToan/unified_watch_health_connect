@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
+    android:height="11dp"
+    android:width="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="11">
+    <path
+        android:fillColor="@drawable/_ic_sky_triangle__0_res_0x7f08000e"
+        android:pathData="M13.2495,0.6404C13.3653,0.7329 13.4705,0.838 13.5631,0.9537L19.599,8.4978C20.7961,9.994 22.5708,10.8984 24.4672,10.9997L64,11C67.3137,11 70,13.6863 70,17L70,130C70,133.3137 67.3137,136 64,136L-271,136C-274.3137,136 -277,133.3137 -277,130L-277,17C-277,13.6863 -274.3137,11 -271,11L-0.692,10.9999C1.3497,10.911 3.2599,9.9443 4.5412,8.3399L10.4386,0.9551C11.1279,0.092 12.3864,-0.0489 13.2495,0.6404Z"
+        android:strokeColor="#00000000"
+        android:strokeWidth="1"
+        android:fillType="evenOdd"/>
+</vector>

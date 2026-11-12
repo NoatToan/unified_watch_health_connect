@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:background="@color/s10"
+    android:layout_width="@dimen/wheel_left_band_w"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/round_bg_stroke"
+    android:layout_marginBottom="@dimen/round_bg_stroke">
+    <View
+        android:background="@color/s14"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/wheel_left_band_center_h"/>
+</LinearLayout>

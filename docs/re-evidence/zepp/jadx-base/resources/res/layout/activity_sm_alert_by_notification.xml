@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:huami="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.huami.lib.view.widget.TipComponent
+        android:id="@+id/sm_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/sm_enable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        huami:ltv_checked="true"
+        huami:ltv_subtitle="@string/enable_sm_alert_tips"
+        huami:ltv_title="@string/enable_sm_alert"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/sm_vibrate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        huami:ltv_tips="@string/custom_vibrate_mode_default"
+        huami:ltv_title="@string/custom_vibrate_mode"/>
+</LinearLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/s10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.rainbow.titlebar.RainbowTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_arrow_back_20_2x"
+        app:title="@string/app_notification_alert"/>
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar">
+        <com.huami.lib.view.widget.TipComponent
+            android:id="@+id/access_tip"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+    <com.xiaomi.hm.health.ui.smartplay.appnotify.view.HeaderView
+        android:id="@+id/header_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_container"/>
+    <com.xiaomi.hm.health.ui.smartplay.appnotify.view.AppList
+        android:id="@+id/notifi_app_list"
+        android:background="@drawable/bg_round_app_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_10dp"
+        android:layout_marginRight="@dimen/size_10dp"
+        android:layout_marginBottom="@dimen/size_16dp"
+        android:layout_below="@+id/header_view"
+        android:layout_marginHorizontal="@dimen/size_10dp"/>
+    <View
+        android:id="@+id/mask_view"
+        android:background="@color/cl_4d000000"
+        android:focusable="true"
+        android:visibility="gone"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/fragment_container"/>
+</RelativeLayout>

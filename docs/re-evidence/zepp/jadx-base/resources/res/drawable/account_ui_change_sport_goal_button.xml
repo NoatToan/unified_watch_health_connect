@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/account_ui_change_sport_goal_confirm_stroke"/>
+            <stroke
+                android:width="@dimen/account_ui_round_bg_stroke"
+                android:color="@color/account_ui_change_sport_goal_confirm_stroke"/>
+            <corners android:radius="@dimen/account_ui_btn_bg_radius"/>
+            <padding
+                android:left="@dimen/account_ui_round_bg_stroke"
+                android:top="@dimen/account_ui_round_bg_stroke"
+                android:right="@dimen/account_ui_round_bg_stroke"
+                android:bottom="@dimen/account_ui_round_bg_stroke"/>
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/account_ui_change_sport_goal_confirm_solid"/>
+            <stroke
+                android:width="@dimen/account_ui_round_bg_stroke"
+                android:color="@color/account_ui_change_sport_goal_confirm_stroke"/>
+            <corners android:radius="@dimen/account_ui_btn_bg_radius"/>
+            <padding
+                android:left="@dimen/account_ui_round_bg_stroke"
+                android:top="@dimen/account_ui_round_bg_stroke"
+                android:right="@dimen/account_ui_round_bg_stroke"
+                android:bottom="@dimen/account_ui_round_bg_stroke"/>
+        </shape>
+    </item>
+</selector>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.rainbow.titlebar.RainbowTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menuIcon="@drawable/ic_tips_20"
+        app:title="@string/title_add_device"/>
+    <ListView
+        android:id="@+id/list_devices"
+        android:paddingTop="@dimen/d2"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/d2"
+        android:layout_marginStart="@dimen/d2"
+        android:layout_marginEnd="@dimen/d2"/>
+</LinearLayout>

@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Brațul superior trebuie să fie gol, cu mâneca răsucită confortabil</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Ar trebui să puteți strecura un deget sub manșetă. Manșetele prea largi sau prea strânse pot afecta precizia măsurării</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Prima măsurare</item>
+        <item>A doua măsurare</item>
+        <item>A treia măsurare</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Înregistrați prima citire a tensiunii arteriale</item>
+        <item>Înregistrați a doua citire a tensiunii arteriale</item>
+        <item>Înregistrați a treia citire a tensiunii arteriale</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Scăzut</item>
+        <item>Normal</item>
+        <item>Înalt</item>
+        <item>Foarte mare</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normal</item>
+        <item>Mare</item>
+        <item>Foarte mare</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Foarte slab</item>
+        <item>Slab</item>
+        <item>Normal</item>
+        <item>Bun</item>
+        <item>Excelent</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Foarte mică</item>
+        <item>Mică</item>
+        <item>Normal</item>
+        <item>Crescută</item>
+        <item>Mare</item>
+    </array>
+    <array name="bone_leval">
+        <item>Insuficient</item>
+        <item>Normal</item>
+        <item>Bun</item>
+    </array>
+    <array name="brm_leval">
+        <item>Nu a atins obiectivele</item>
+        <item>Obiectiv atins</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Scăzut</item>
+        <item>Mediu</item>
+        <item>Ridicat</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Încercați să apăsați butonul de pe ceas, dacă ecranul ceasului este oprit, conectați-l pentru a-i încărca bateria.</item>
+        <item>Datele ceasului nu pot fi sincronizate atunci când vă antrenați. Încheiați sesiunea și reîncercați.</item>
+        <item>Dacă brățara este încărcată, dar telefonul nu o poate vedea, încercați să reporniți Bluetooth-ul telefonului.</item>
+        <item>Dacă repornirea Bluetooth nu rezolvă problema, încercați să reporniți telefonul.</item>
+        <item>Datele ceasului nu pot fi sincronizate atunci când vă antrenați. Încheiați sesiunea și reîncercați.</item>
+        <item>Datele ceasului nu pot fi sincronizate atunci când vă antrenați. Încheiați sesiunea și reîncercați.</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Ceasul este încărcat?</item>
+        <item>Acest ceas este asociat cu un alt dispozitiv?</item>
+        <item>Încercați repornirea Bluetooth</item>
+        <item>Încercați să reporniți telefonul</item>
+        <item>Nu se pot sincroniza datele în timpul antrenamentelor</item>
+        <item>Acest ceas este asociat cu un alt dispozitiv?</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Shenzhen</item>
+        <item>Foshan</item>
+        <item>Dongguan</item>
+        <item>Beijing</item>
+        <item>Nanjing</item>
+        <item>Suzhou</item>
+        <item>Changzhou</item>
+        <item>Jinan</item>
+        <item>Qingdao</item>
+        <item>Hangzhou</item>
+        <item>Ningbo</item>
+        <item>Zhengzhou</item>
+        <item>Kaifeng</item>
+        <item>Shanghai</item>
+        <item>Shijiazhuang</item>
+        <item>Baoding</item>
+        <item>Chengdu</item>
+        <item>Mianyang</item>
+        <item>Shenyang</item>
+        <item>Dalian</item>
+    </array>
+    <array name="common_level">
+        <item>Insuficient</item>
+        <item>Normal</item>
+        <item>Bun</item>
+    </array>
+    <array name="contact_ways">
+        <item>E-mail</item>
+        <item>Număr de telefon mobil</item>
+        <item>WeChat ID</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Începător în antrenamentul de fitness</item>
+        <item>A avut o experiență de fitness de bază</item>
+        <item>A avut o experiență de fitness avansată și și-a intrat în formă</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Elementar</item>
+        <item>Intermediar</item>
+        <item>Avansat</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Date insuficiente</item>
+        <item>Bătăi anormale ale inimii</item>
+        <item>Nu s-a detectat nimic neobișnuit</item>
+        <item>Date insuficiente</item>
+        <item>Nu s-a detectat nimic neobișnuit</item>
+        <item />
+        <item>Nu s-a detectat nimic neobișnuit</item>
+        <item>Calitate slabă a semnalului</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Ajustați metoda de utilizare și încercați din nou.</item>
+        <item>Doar pentru referință. Consultați un medic dacă aveți orice disconfort.</item>
+        <item>Doar pentru referință. Consultați un medic dacă aveți orice disconfort.</item>
+        <item>Ajustați metoda de utilizare și încercați din nou.</item>
+        <item>Doar pentru referință. Consultați un medic dacă aveți orice disconfort.</item>
+        <item />
+        <item>Doar pentru referință. Consultați un medic dacă aveți orice disconfort.</item>
+        <item>Ajustați metoda de utilizare și încercați din nou.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Arderea grăsimilor</item>
+        <item>Modelarea corpului</item>
+        <item>Creșterea masei musculare</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Slăbire</item>
+        <item>Modelare</item>
+        <item>Creștere</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>Luni</item>
+        <item>Marţi</item>
+        <item>Miercuri</item>
+        <item>Joi</item>
+        <item>Vineri</item>
+        <item>Sâmbătă</item>
+        <item>Duminică</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Mie</item>
+        <item>Joi</item>
+        <item>Vi</item>
+        <item>Sâm</item>
+        <item>Dum</item>
+    </array>
+    <array name="hr_sport">
+        <item>Zona ritmului cardiac: Ușoară</item>
+        <item>Zona ritmului cardiac: Intensivă</item>
+        <item>Zona de puls: Aerobic</item>
+        <item>Zona de puls: anaerobic</item>
+        <item>Zona de puls: VO₂ max</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Ușor</item>
+        <item>Intensiv</item>
+        <item>Aerobic</item>
+        <item>Anaerob</item>
+        <item>VO₂ max.</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Axilă</item>
+        <item>Oral</item>
+        <item>Rect</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Încheietura mâinii</item>
+        <item>Frunte</item>
+        <item>În spatele urechii</item>
+        <item>Ureche</item>
+        <item>Gât</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Axilă</item>
+        <item>Oral</item>
+        <item>Rect</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Piept</item>
+        <item>Axilă</item>
+        <item>Zona inghinală</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Închidere</item>
+        <item>Aproape</item>
+        <item>Departe</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Atingeți butonul de pe bandă pentru a verifica dacă afișajul se aprinde. Dacă nu, încărcați brățara.\n\nÎncărcați dispozitivul înainte de a asocia un %1$s sau %2$s.</item>
+        <item>Datele ceasului nu pot fi sincronizate atunci când vă antrenați. Încheiați sesiunea și reîncercați.</item>
+        <item>Dacă brățara este încărcată, dar telefonul nu o poate vedea, încercați să reporniți Bluetooth-ul telefonului.</item>
+        <item>Dacă repornirea Bluetooth nu rezolvă problema, încercați să reporniți telefonul.</item>
+        <item>Dacă repornirea Bluetooth nu rezolvă problema, încercați să reporniți telefonul.</item>
+        <item>Dacă repornirea Bluetooth nu rezolvă problema, încercați să reporniți telefonul.</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Brățara este încărcată?</item>
+        <item>Această brățară este asociată cu un alt dispozitiv?</item>
+        <item>Această brățară este asociată cu un alt dispozitiv?</item>
+        <item>Încercați să reporniți telefonul</item>
+        <item>Această brățară este asociată cu un alt dispozitiv?</item>
+        <item>Această brățară este asociată cu un alt dispozitiv?</item>
+    </array>
+    <array name="month_list">
+        <item>Ian</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Mai</item>
+        <item>Iun</item>
+        <item>Iul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="month_titles">
+        <item>Ian</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Mai</item>
+        <item>Iun</item>
+        <item>Iul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Insuficient</item>
+        <item>Normal</item>
+        <item>Bun</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Foarte slab</item>
+        <item>Slab</item>
+        <item>Mediu</item>
+        <item>Bun</item>
+        <item>Foarte bun</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Ian</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Mai</item>
+        <item>Iun</item>
+        <item>Iul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s va înceta să funcționeze dacă nu îl utilizați pentru o lungă perioadă de timp. Scuturați %2$s și încercați din nou.</item>
+        <item>Durata de viață a bateriei %s este de 1 an. Dacă ați folosit-o pentru o perioadă mai lungă, poate că bateria s-a descărcat.</item>
+        <item>Opriți mai întâi Bluetooth pe celălalt dispozitiv, apoi asociați cu telefonul.</item>
+        <item>Dacă %s este încărcată, dar telefonul nu o poate vedea, încercați să reporniți Bluetooth-ul telefonului.</item>
+        <item>Dacă repornirea Bluetooth nu rezolvă problema, încercați să reporniți telefonul.</item>
+        <item>Atingeți datele încălțărilor de alergare și introduceți următoarea pagină de activitate pentru a sincroniza datele automat</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Scuturați %s</item>
+        <item>%s sunt încărcate?</item>
+        <item>%s sunt asociate cu un alt telefon din apropiere?</item>
+        <item>Repornire Bluetooth</item>
+        <item>Încercați să reporniți telefonul</item>
+        <item>Cum să sincronizați datele?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Obez</item>
+        <item>Supraponderal</item>
+        <item>Robust</item>
+        <item>Lipseşte\nexerciţiul fizic</item>
+        <item>Echilibrat</item>
+        <item>Echilibrat\nmuscular</item>
+        <item>Slab(ă)</item>
+        <item>Echilibrat\nslab(ă)</item>
+        <item>Slab(ă)\nmuscular</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>Luni</item>
+        <item>Marţi</item>
+        <item>Miercuri</item>
+        <item>Joi</item>
+        <item>Vineri</item>
+        <item>Sâmbătă</item>
+        <item>Duminică</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Activitate</item>
+        <item>Mers lent</item>
+        <item>Mers pe jos</item>
+        <item>Mers rapid</item>
+        <item>Alergare</item>
+        <item>În picioare</item>
+        <item>Așezat</item>
+        <item>Activitate ușoară</item>
+        <item>Nu poartă</item>
+        <item>Se încarcă...</item>
+        <item>Întins</item>
+    </array>
+    <array name="timeline_type">
+        <item>Activitate</item>
+        <item>Mers lent</item>
+        <item>Mers pe jos</item>
+        <item>Mers rapid</item>
+        <item>Alergat</item>
+        <item>În picioare</item>
+        <item>Așezat</item>
+        <item>Activitate ușoară</item>
+        <item>Nu poartă</item>
+        <item>Se încarcă...</item>
+        <item>Întins</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Nelimitat</item>
+        <item>Elementar, 1</item>
+        <item>Intermediar, 2</item>
+        <item>Avansat, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normal</item>
+        <item>Mare</item>
+        <item>Foarte mare</item>
+    </array>
+    <array name="water_leval">
+        <item>Insuficient</item>
+        <item>Normal</item>
+        <item>Bun</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_name">
+        <item>Dum</item>
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Mie</item>
+        <item>Joi</item>
+        <item>Vi</item>
+        <item>Sâm</item>
+    </array>
+    <array name="weeks">
+        <item>Luni</item>
+        <item>Marți</item>
+        <item>Miercuri</item>
+        <item>Joi</item>
+        <item>Vineri</item>
+        <item>Sâmbătă</item>
+        <item>Duminică</item>
+    </array>
+    <array name="weeks_short">
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Mie</item>
+        <item>Joi</item>
+        <item>Vi</item>
+        <item>Sâm</item>
+        <item>Dum</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Slab</item>
+        <item>Echilibrat</item>
+        <item>Supraponderal</item>
+        <item>Obez</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Așezați cântarul cât mai aproape posibil de router pentru a asigura un semnal Wi-Fi puternic</item>
+        <item>· Confirmați dacă parola pentru conexiunea Wi-Fi este corectă.</item>
+        <item>· Conectați telefonul la routerul Wi-Fi țintă și apoi încercați să deschideți o pagină web pentru a verifica dacă puteți accesa internetul.</item>
+        <item>· Dacă 2.4 GHz este dezactivată, activați-o și selectați-o. Cântarul nu acceptă 5 GHz Wi-Fi. \n· Dacă banda dublă este activată, dezactivați-o pentru a evita o eroare de configurație din cauza rețelei 5 GHz.</item>
+        <item>· Dacă routerul Wi-Fi este conectat la internet, semnalul Wi-Fi este puternic, iar routerul funcționează cu 2.4 GHz activat și banda dublă dezactivată, încercați să reporniți routerul.</item>
+        <item>· Dacă repornirea routerului nu funcționează, încercați să reporniți telefonul.</item>
+        <item>· Dacă repornirea routerului nu funcționează, încercați să reinstalați bateria.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Cântarul este amplasat într-un loc cu semnal Wi-Fi puternic?</item>
+        <item>2. Parola Wi-Fi este corectă?</item>
+        <item>3. Routerul Wi-Fi este conectat corect la Internet?</item>
+        <item>4. Este 2.4 GHz Wi-Fi dezactivat pe router? Sau este Wi-Fi dual band activat?</item>
+        <item>5. Încercați să reporniți routerul.</item>
+        <item>6. Încercați să reporniți telefonul.</item>
+        <item>7. Încercați să reporniți dispozitivul.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>2.4 GHz Wi-Fi indică faptul că routerul wireless funcționează la 2.4 GHz.\n5 GHz Wi-Fi indică faptul că routerul wireless funcționează la 5 GHz.</item>
+        <item>Configurați routerul conform următorilor pași:\n1. Introduceți adresa de conectare a routerului în bara de adrese a browserului și conectați-vă la fundalul routerului wireless. \n2. Găsiți butonul de setare al routerului wireless. \n3. Opriți butonul de bandă dublă. \n4. Activați conexiunea Wi-Fi de 2.4 GHz.</item>
+        <item>Următoarele două metode se pot utiliza pentru a verifica banda Wi-Fi:\n1. În lista Wi-Fi de pe computer, selectați [Wi-Fi] &amp;gt; [Proprietate] &amp;gt; [Bandă rețea]. \n2. Conectați-vă la fundalul routerului.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Ce reprezintă Wi-Fi de 2.4 GHz și Wi-Fi de 5 GHz?</item>
+        <item>· Cum pot activa conexiunea Wi-Fi de 2.4 GHz pe routerul meu?</item>
+        <item>· Cum pot verifica banda Wi-Fi?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Normal</item>
+        <item>Supraponderal</item>
+        <item>Obez</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> lbs</item>
+    </array>
+</resources>

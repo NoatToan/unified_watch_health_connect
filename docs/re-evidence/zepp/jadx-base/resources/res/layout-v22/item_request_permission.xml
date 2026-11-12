@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/size_18dp"
+    android:paddingTop="@dimen/size_16dp"
+    android:paddingRight="@dimen/size_18dp"
+    android:paddingBottom="@dimen/size_16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/size_96dp"
+    android:paddingHorizontal="@dimen/size_18dp"
+    android:paddingVertical="@dimen/size_16dp">
+    <TextView
+        android:textSize="@dimen/size_14sp"
+        android:textColor="@color/s1"
+        android:id="@+id/tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_12dp"/>
+    <TextView
+        android:textColor="@color/bg_btn_activity_diagnosis"
+        android:gravity="center"
+        android:id="@+id/tv_operation"
+        android:background="@drawable/bg_diagnosis_button"
+        android:paddingLeft="@dimen/size_8dp"
+        android:paddingRight="@dimen/size_8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_30dp"
+        android:minWidth="@dimen/size_96dp"
+        android:text="@string/goto_setting"
+        android:paddingHorizontal="@dimen/size_8dp"/>
+</LinearLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/size_10dp"/>
+            <solid android:color="@color/s2"/>
+            <size
+                android:height="@dimen/size_20dp"
+                android:width="@dimen/size_20dp"/>
+        </shape>
+    </item>
+    <item
+        android:gravity="center"
+        android:id="@+id/world_clock_layer_svg_close"
+        android:drawable="@drawable/ic_close_16"/>
+</layer-list>

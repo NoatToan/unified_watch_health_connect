@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
+    <com.xiaomi.hm.health.bodyfat.view.SquareView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_gravity="end"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginEnd="40dp"
+        app:SquareView_fillColor="@color/p4"/>
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/s5"
+        android:background="@drawable/bodyfat_bg_no_owner_data_tips"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_weight_record_claim"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"/>
+</LinearLayout>

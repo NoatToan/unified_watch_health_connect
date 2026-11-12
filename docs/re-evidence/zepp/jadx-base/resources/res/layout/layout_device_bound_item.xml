@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/device_bound_item_select_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp">
+    <ImageView
+        android:id="@+id/cinco_bg_img"
+        android:layout_width="69dp"
+        android:layout_height="69dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="9dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"/>
+    <TextView
+        android:textSize="15sp"
+        android:textColor="@color/s1"
+        android:id="@+id/device_title_tv"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/cinco_bg_img"/>
+    <ImageView
+        android:layout_width="@dimen/size_15dp"
+        android:layout_height="@dimen/size_15dp"
+        android:src="@drawable/ic_arrow_forward_20_2x"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="19dp"
+        android:layout_alignParentEnd="true"
+        app:tint="@color/s2"/>
+</RelativeLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="@color/s38">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_gravity="end|top"
+        android:id="@+id/delete_img"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/smart_alarm_delete"
+        android:layout_marginEnd="5dp"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/thumbnail_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/img_everest_s"
+        android:scaleType="fitXY"/>
+</androidx.cardview.widget.CardView>

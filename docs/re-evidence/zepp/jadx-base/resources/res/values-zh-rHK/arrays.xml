@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>只響一次</item>
+        <item>每天</item>
+        <item>週一至週五</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>泳池游泳、公開水域游泳、鐵人三項等運動項目已全面支持</item>
+        <item>提供最大攝氧量(V02 Max)數據</item>
+        <item>豐富的運動數據和運動設定項</item>
+        <item>根據你的目標，實時指導你的訓練</item>
+        <item>通過訓練效果(TE)數據幫助你了解每次運動</item>
+    </array>
+    <array name="bind_guide_main_title_everest2">
+        <item>提供最大攝氧量（VO2max）數據\n準確的個人運動能力評估</item>
+        <item>交通卡、門禁卡\n出行上班消費，刷錶搞定</item>
+        <item>兩種模式任意切換\n超長待機和智能系統隨你選擇</item>
+        <item>70小時連續GPS運動\n讓你戶外無憂</item>
+    </array>
+    <array name="bind_guide_main_title_everest2_oversea">
+        <item>提供最大攝氧量（VO2max）數據\n準確的個人運動能力評估</item>
+        <item>兩種模式任意切換\n超長待機和智能系統隨你選擇</item>
+        <item>70小時連續GPS運動\n讓你戶外無憂</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>小爱同学一键即达\n智能家居语音控制，说到做到</item>
+        <item>交通卡、门禁卡、银联卡\n出行上班消费，刷表搞定</item>
+        <item>脱离手机玩转12项运动\n运动谁不想更自由</item>
+        <item>支持蓝牙电话\n拨打接听不用非得用手机</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>Alexa一键即达\n智能语音，说到做到</item>
+        <item>脱离手机玩转12项运动\n运动谁不想更自由</item>
+        <item>支持蓝牙电话\n拨打接听不用非得用手机</item>
+    </array>
+    <array name="bind_guide_main_title_xihu">
+        <item>支持 eSIM 卡\n無需連接手機，也能打電話、上網</item>
+        <item>小愛同學一鍵即達\n智能家居語音控制，說到做到</item>
+        <item>脫離手機玩轉10項運動\n運動誰不想更自由</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item>*只針對跑步運動</item>
+        <item />
+        <item>*只針對跑步運動，需要在運動設定中打開</item>
+        <item />
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item>*目前僅在部分地區可用.</item>
+        <item />
+        <item />
+        <item />
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>露出上臂，確保不受衣物束縛</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>袖鬆緊以剛好能插入一指為宜，過緊過松均會影響測量結果</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>第一次測量</item>
+        <item>第二次測量</item>
+        <item>第三次測量</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>記錄第一次血壓結果</item>
+        <item>記錄第二次血壓結果</item>
+        <item>記錄第三次血壓結果</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>偏低</item>
+        <item>標準</item>
+        <item>偏高</item>
+        <item>高</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>標準</item>
+        <item>偏高</item>
+        <item>高</item>
+    </array>
+    <array name="body_score_leval">
+        <item>很差</item>
+        <item>較差</item>
+        <item>一般</item>
+        <item>良好</item>
+        <item>優秀</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>低</item>
+        <item>偏低</item>
+        <item>標準</item>
+        <item>偏高</item>
+        <item>高</item>
+    </array>
+    <array name="bone_leval">
+        <item>不足</item>
+        <item>標準</item>
+        <item>優</item>
+    </array>
+    <array name="branch_integer_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </array>
+    <array name="branch_string_array">
+        <item>酉</item>
+        <item>戌</item>
+        <item>亥</item>
+        <item>子</item>
+        <item>丑</item>
+        <item>寅</item>
+        <item>卯</item>
+        <item>辰</item>
+        <item>巳</item>
+        <item>午</item>
+        <item>未</item>
+        <item>申</item>
+    </array>
+    <array name="brm_leval">
+        <item>未達標</item>
+        <item>達標</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>低</item>
+        <item>中</item>
+        <item>高</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>請先嘗試按壓手錶按鍵，如果螢幕未點亮，可將手錶接上充電器進行充電, 以確保有電。</item>
+        <item>@string/band_watch_item_2</item>
+        <item>如果手錶有電, 且手機貼近後仍無法搜尋到, 可以嘗試重新開機手機藍牙。</item>
+        <item>如果重啟藍牙無效, 請嘗試重啟手機。</item>
+        <item>當手錶處於運動過程中, App將無法同步到手錶的資料, 請在結束運動後嘗試重新同步。</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>手錶是否有電？</item>
+        <item>附近有其他手機之前連接過手錶？</item>
+        <item>嘗試重新開啟藍牙</item>
+        <item>嘗試重啟手機</item>
+        <item>運動中無法同步資料</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>廣州</item>
+        <item>深圳</item>
+        <item>佛山</item>
+        <item>東莞</item>
+        <item>北京</item>
+        <item>南京</item>
+        <item>蘇州</item>
+        <item>常州</item>
+        <item>濟南</item>
+        <item>青島</item>
+        <item>杭州</item>
+        <item>寧波</item>
+        <item>鄭州</item>
+        <item>開封</item>
+        <item>上海</item>
+        <item>石家莊</item>
+        <item>保定</item>
+        <item>成都</item>
+        <item>綿陽</item>
+        <item>瀋陽</item>
+        <item>大連</item>
+    </array>
+    <array name="common_level">
+        <item>不足</item>
+        <item>標準</item>
+        <item>優</item>
+    </array>
+    <array name="contact_ways">
+        <item>郵箱</item>
+        <item>手機號碼</item>
+        <item>WeChat ID</item>
+    </array>
+    <array name="difficulty_content">
+        <item>未進行過正式的健身訓練</item>
+        <item>有一定的健身基礎</item>
+        <item>有豐富的健身經驗, 擁有令人羡慕的身材</item>
+    </array>
+    <array name="difficulty_title">
+        <item>初級</item>
+        <item>中級</item>
+        <item>高級</item>
+    </array>
+    <array name="ecg_afib">
+        <item>數據不足</item>
+        <item>異常心博</item>
+        <item>未發現異常</item>
+        <item>數據不足</item>
+        <item>未發現異常</item>
+        <item />
+        <item>未發現異常</item>
+        <item>訊號質素差</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>請調整使用方法後重試</item>
+        <item>僅供參考。如有不適，請諮詢醫生</item>
+        <item>僅供參考。如有不適，請諮詢醫生</item>
+        <item>請調整使用方法後重試</item>
+        <item>僅供參考。如有不適，請諮詢醫生</item>
+        <item />
+        <item>僅供參考。如有不適，請諮詢醫生</item>
+        <item>請調整使用方法後重試</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>有一定的贅肉或者肥胖, 希望變苗條</item>
+        <item>身體勻稱, 想雕刻更清晰的肌肉線條</item>
+        <item>希望擁有強健的肌肉型態及力量</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>減脂</item>
+        <item>塑型</item>
+        <item>增肌</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+        <item>日</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>週一</item>
+        <item>週二</item>
+        <item>週三</item>
+        <item>週四</item>
+        <item>週五</item>
+        <item>週六</item>
+        <item>週日</item>
+    </array>
+    <array name="hr_sport">
+        <item>心率區間: 熱身放鬆</item>
+        <item>心率區間: 脂肪燃燒</item>
+        <item>心率區間: 心肺強化</item>
+        <item>心率區間: 耐力強化</item>
+        <item>心率區間: 無氧極限</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>熱身放鬆</item>
+        <item>脂肪燃燒</item>
+        <item>心肺強化</item>
+        <item>耐力強化</item>
+        <item>無氧極限</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>腋下</item>
+        <item>口腔</item>
+        <item>直腸</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>腕部</item>
+        <item>額頭</item>
+        <item>耳後</item>
+        <item>耳蝸</item>
+        <item>頸部</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>腋下</item>
+        <item>口腔</item>
+        <item>直腸</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>胸口</item>
+        <item>腋下</item>
+        <item>腹股溝處</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>貼近</item>
+        <item>適中</item>
+        <item>稍遠</item>
+    </array>
+    <array name="lunar_first_of_month">
+        <item>春節</item>
+        <item>二月</item>
+        <item>三月</item>
+        <item>四月</item>
+        <item>五月</item>
+        <item>六月</item>
+        <item>七月</item>
+        <item>八月</item>
+        <item>九月</item>
+        <item>十月</item>
+        <item>冬月</item>
+        <item>臘月</item>
+    </array>
+    <array name="lunar_str">
+        <item>初一</item>
+        <item>初二</item>
+        <item>初三</item>
+        <item>初四</item>
+        <item>初五</item>
+        <item>初六</item>
+        <item>初七</item>
+        <item>初八</item>
+        <item>初九</item>
+        <item>初十</item>
+        <item>十一</item>
+        <item>十二</item>
+        <item>十三</item>
+        <item>十四</item>
+        <item>十五</item>
+        <item>十六</item>
+        <item>十七</item>
+        <item>十八</item>
+        <item>十九</item>
+        <item>二十</item>
+        <item>廿一</item>
+        <item>廿二</item>
+        <item>廿三</item>
+        <item>廿四</item>
+        <item>廿五</item>
+        <item>廿六</item>
+        <item>廿七</item>
+        <item>廿八</item>
+        <item>廿九</item>
+        <item>三十</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>請先嘗試點觸手環按鍵, 如果螢幕未點亮, 可將手環接上充電器進行充電, 以確保有電。\n\n如果綁定%1$s或%2$s, 可將手環放在充電器上, 以確保有電。</item>
+        <item>@string/band_watch_item_2</item>
+        <item>如果手環有電, 且手機貼近後仍無法搜尋到, 可以嘗試重新開啟手機藍牙。</item>
+        <item>如果重啟藍牙無效, 請嘗試重啟手機。</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>手環是否有電？</item>
+        <item>附近有其他手機之前連接過手環？</item>
+        <item>@string/help_title_2</item>
+        <item>嘗試重啟手機</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>1月</item>
+        <item>2月</item>
+        <item>3月</item>
+        <item>4月</item>
+        <item>5月</item>
+        <item>6月</item>
+        <item>7月</item>
+        <item>8月</item>
+        <item>9月</item>
+        <item>10月</item>
+        <item>11月</item>
+        <item>12月</item>
+    </array>
+    <array name="month_string_array">
+        <item>1月</item>
+        <item>2月</item>
+        <item>3月</item>
+        <item>4月</item>
+        <item>5月</item>
+        <item>6月</item>
+        <item>7月</item>
+        <item>8月</item>
+        <item>9月</item>
+        <item>10月</item>
+        <item>11月</item>
+        <item>12月</item>
+    </array>
+    <array name="month_titles">
+        <item>1月</item>
+        <item>2月</item>
+        <item>3月</item>
+        <item>4月</item>
+        <item>5月</item>
+        <item>6月</item>
+        <item>7月</item>
+        <item>8月</item>
+        <item>9月</item>
+        <item>10月</item>
+        <item>11月</item>
+        <item>12月</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>不足</item>
+        <item>標準</item>
+        <item>優</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_time</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>低電量通知</item>
+        <item>來電提醒</item>
+        <item>久坐提醒</item>
+        <item>活動達標通知</item>
+        <item>每日天氣通知</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>很差</item>
+        <item>差</item>
+        <item>一般</item>
+        <item>好</item>
+        <item>很好</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>第一個</item>
+        <item>第二個</item>
+        <item>第三個</item>
+        <item>第四個</item>
+        <item>最後一個</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>一月</item>
+        <item>二月</item>
+        <item>三月</item>
+        <item>四月</item>
+        <item>五月</item>
+        <item>六月</item>
+        <item>七月</item>
+        <item>八月</item>
+        <item>九月</item>
+        <item>十月</item>
+        <item>十一月</item>
+        <item>十二月</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s長期不用會停止工作, 所以請嘗試晃動%2$s後再試試吧。</item>
+        <item>%s可以運行1年, 如果已經使用超過該時間, 可能是沒電了。</item>
+        <item>可先將該手機藍牙關閉, 然後再使用目前手機進行綁定。</item>
+        <item>如果%s有電, 且手機貼近後仍無法搜尋到, 可以嘗試重新開機手機藍牙。</item>
+        <item>如果重啟藍牙無效, 請嘗試重啟手機。</item>
+        <item>點選首頁跑鞋里程的資料展示入口, 進入跑鞋詳情頁即可自動同步資料。</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>請嘗試晃動%s</item>
+        <item>%s是否有電</item>
+        <item>附近有其他手機連接過%s?</item>
+        <item>嘗試重新開啟藍牙</item>
+        <item>嘗試重啟手機</item>
+        <item>如何同步資料?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>隱性肥胖</item>
+        <item>偏胖型</item>
+        <item>結實型\n偏胖</item>
+        <item>缺乏\n運動型</item>
+        <item>標準型</item>
+        <item>標準\n肌肉型</item>
+        <item>偏瘦型</item>
+        <item>偏瘦\n肌肉型</item>
+        <item>健美\n肌肉型</item>
+    </array>
+    <array name="sky_reminder_repeat_day">
+        <item>週一</item>
+        <item>週二</item>
+        <item>週三</item>
+        <item>週四</item>
+        <item>週五</item>
+        <item>週六</item>
+        <item>週日</item>
+    </array>
+    <array name="sky_reminder_repeat_day_short">
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+        <item>日</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+        <item>日</item>
+    </array>
+    <array name="solar_festival">
+        <item>0101元旦</item>
+        <item>0214情人節</item>
+        <item>0308婦女節</item>
+        <item>0312植樹節</item>
+        <item>0315消權日</item>
+        <item>0401愚人節</item>
+        <item>0404兒童節</item>
+        <item>0422地球日</item>
+        <item>0501勞動節</item>
+        <item>0504青年節</item>
+        <item>0701香港回歸</item>
+        <item>0801建军节</item>
+        <item>0910教師節</item>
+        <item>1001國慶日</item>
+        <item>1031萬聖節</item>
+        <item>1111光棍節</item>
+        <item>1224平安夜</item>
+        <item>1225聖誕節</item>
+    </array>
+    <array name="solar_term">
+        <item>春分</item>
+        <item>清明</item>
+        <item>穀雨</item>
+        <item>立夏</item>
+        <item>小滿</item>
+        <item>芒種</item>
+        <item>夏至</item>
+        <item>小暑</item>
+        <item>大暑</item>
+        <item>立秋</item>
+        <item>處暑</item>
+        <item>白露</item>
+        <item>秋分</item>
+        <item>寒露</item>
+        <item>霜降</item>
+        <item>立冬</item>
+        <item>小雪</item>
+        <item>大雪</item>
+        <item>冬至</item>
+        <item>小寒</item>
+        <item>大寒</item>
+        <item>立春</item>
+        <item>雨水</item>
+        <item>驚蟄</item>
+    </array>
+    <array name="special_festivals">
+        <item>母親節</item>
+        <item>父親節</item>
+        <item>感恩節</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>活動</item>
+        <item>慢走</item>
+        <item>走路</item>
+        <item>快走</item>
+        <item>跑步</item>
+        <item>站立</item>
+        <item>靜坐</item>
+        <item>輕微活動</item>
+        <item>未佩戴</item>
+        <item>充電中</item>
+        <item>躺</item>
+    </array>
+    <array name="timeline_type">
+        <item>活動</item>
+        <item>慢走</item>
+        <item>走路</item>
+        <item>快走</item>
+        <item>跑步</item>
+        <item>站立</item>
+        <item>靜坐</item>
+        <item>輕微活動</item>
+        <item>未佩戴</item>
+        <item>充電中</item>
+        <item>躺</item>
+    </array>
+    <array name="tradition_festival">
+        <item>除夕</item>
+        <item>0101春節</item>
+        <item>0115元宵</item>
+        <item>0505端午</item>
+        <item>0707七夕</item>
+        <item>0815中秋</item>
+        <item>0909重陽</item>
+    </array>
+    <array name="train_difficulity">
+        <item>不限難度</item>
+        <item>初級,1</item>
+        <item>中級,2</item>
+        <item>高級,3</item>
+    </array>
+    <array name="trunk_integer_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </array>
+    <array name="trunk_string_array">
+        <item>辛</item>
+        <item>壬</item>
+        <item>癸</item>
+        <item>甲</item>
+        <item>乙</item>
+        <item>丙</item>
+        <item>丁</item>
+        <item>戊</item>
+        <item>己</item>
+        <item>庚</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>標準</item>
+        <item>偏高</item>
+        <item>高</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>新手</item>
+        <item>入門</item>
+        <item>一般</item>
+        <item>中等</item>
+        <item>良好</item>
+        <item>優秀</item>
+        <item>超群</item>
+    </array>
+    <array name="water_leval">
+        <item>不足</item>
+        <item>標準</item>
+        <item>優</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+        <item>日</item>
+    </array>
+    <array name="week_days">
+        <item>星期一</item>
+        <item>星期二</item>
+        <item>星期三</item>
+        <item>星期四</item>
+        <item>星期五</item>
+        <item>星期六</item>
+        <item>星期日</item>
+    </array>
+    <array name="week_name">
+        <item>日</item>
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+    </array>
+    <array name="week_string_array">
+        <item>日</item>
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+    </array>
+    <array name="weeks">
+        <item>週一</item>
+        <item>週二</item>
+        <item>週三</item>
+        <item>週四</item>
+        <item>週五</item>
+        <item>週六</item>
+        <item>週日</item>
+    </array>
+    <array name="weeks_short">
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+        <item>日</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>偏輕</item>
+        <item>標準</item>
+        <item>偏重</item>
+        <item>過重</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· 儘量將秤靠近路由器，以確保 Wi-Fi 訊號良好</item>
+        <item>· 確認準備連線之 Wi-Fi 的密碼是否輸入正確。</item>
+        <item>· 可將手機連線至秤準備連線的 Wi-Fi，連上後嘗試開啟網頁，確認是否可以正常聯網。</item>
+        <item>· 如果路由器關閉了 2.4G 網絡，請啟用 2.4G 網絡後，選擇 2.4G 網絡進行設定，體脂秤不支援 5G 網絡；\n· 如果路由器啟用了雙頻合一，請先關閉雙頻合一功能，避免由於 5G 頻段網絡而導致網絡設定失敗。</item>
+        <item>· 如果正常聯網，Wi-Fi 訊號良好，路由器並未啟用雙頻合一或未關閉 2.4G 網絡，可以嘗試重新啟動路由器。</item>
+        <item>· 如果路由器重新啟動無效，請嘗試重新啟動手機。</item>
+        <item>· 如果路由器重新啟動無效，請嘗試重新安裝電池。</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1、秤所處位置的 Wi-Fi 訊號是否良好？</item>
+        <item>2、Wi-Fi 密碼是否準確？</item>
+        <item>3、Wi-Fi 是否可以正常聯網？</item>
+        <item>4、檢查路由器是否關閉了 2.4G 網絡？或者是否啟用了雙頻合一？</item>
+        <item>5、嘗試重新啟動路由器。</item>
+        <item>6、嘗試重新啟動手機。</item>
+        <item>7、嘗試重新啟動裝置。</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>2.4G Wi-Fi 是指工作頻段為 2.4GHz 的無線路由器。\n5G Wi-Fi 是指工作頻段為 5GHz 的無線路由器。</item>
+        <item>請按照以下方案設定路由器：\n1. 請在電腦的瀏覽器網址列中輸入路由器的登入位址，登入無線路由器的背景；\n2. 找到無線路由器設定按鈕；\n3. 關閉 Wi-Fi 多頻合一按鈕；\n4. 啟用 2.4GHZ 頻率的 Wi-Fi。</item>
+        <item>可透過以下兩種方法檢視 Wi-Fi 頻段：\n1. 可以透過電腦的 Wi-Fi 列表，選擇【WiFi - 屬性 - 網絡頻段】，來檢視對應的 Wi-Fi 頻段資訊；\n2. 登入路由器背景進行檢視。</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· 什麼是 2.4G 和 5G Wi-Fi？</item>
+        <item>· 路由器如何啟用 2.4G Wi-Fi？</item>
+        <item>· 如何檢視 Wi-Fi 頻段？</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>正常</item>
+        <item>超重</item>
+        <item>肥胖</item>
+    </array>
+    <array name="weight_unit">
+        <item>公斤</item>
+        <item>斤</item>
+        <item>磅</item>
+    </array>
+</resources>

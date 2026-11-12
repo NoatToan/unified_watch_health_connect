@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/bm_common_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/history_rcv"
+        android:background="@drawable/bm_common_shape_rect_corner_white"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"/>
+    <com.huami.widget.typeface.TypefaceTextView
+        android:textSize="14sp"
+        android:textColor="@color/s2"
+        android:id="@+id/no_data_tv"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/bm_common_no_data"
+        style="@style/bm_common_TextStyle_Rtl"/>
+</LinearLayout>

@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Lengan atas harus didedahkan, dan lengan baju anda dilipat ke atas dengan selesa</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Anda mesti dapat masukkan satu jari di bawah kaf. Kaf yang terlalu ketat atau terlalu longgar mungkin akan menjejaskan ketepatan pengukuran</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Pengukuran pertama</item>
+        <item>Pengukuran kedua</item>
+        <item>Pengukuran ketiga</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Catat bacaan tekanan darah pertama</item>
+        <item>Catat bacaan tekanan darah kedua</item>
+        <item>Catat bacaan tekanan darah ketiga</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Rendah</item>
+        <item>Normal</item>
+        <item>Tinggi</item>
+        <item>Sangat tinggi</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normal</item>
+        <item>Tinggi</item>
+        <item>Sangat tinggi</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Sangat rendah</item>
+        <item>Rendah</item>
+        <item>Normal</item>
+        <item>Baik</item>
+        <item>Cemerlang</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Sangat rendah</item>
+        <item>Rendah</item>
+        <item>Normal</item>
+        <item>Bertambah</item>
+        <item>Tinggi</item>
+    </array>
+    <array name="bone_leval">
+        <item>Tidak mencukupi</item>
+        <item>Normal</item>
+        <item>Bagus</item>
+    </array>
+    <array name="brm_leval">
+        <item>Tidak mencapai matlamat</item>
+        <item>Matlamat dicapai</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Rendah</item>
+        <item>Biasa</item>
+        <item>Tinggi</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Cuba tekan butang pada jam tangan, jika skrin jam tangan dimatikan, memasukkan palam untuk mengecas bateri.</item>
+        <item>Data jam tangan tidak dapat disegerakkan semasa anda bersenam. Tamatkan sesi dan cuba semula.</item>
+        <item>Jika gegelang dicas, tetapi telefon tidak dapat mengesan gegelang, cuba mulakan semula Bluetooth telefon.</item>
+        <item>Jika mula semula Bluetooth tidak menyelesaikan masalah, cuba but semula telefon.</item>
+        <item>Data jam tangan tidak dapat disegerakkan semasa anda bersenam. Tamatkan sesi dan cuba semula.</item>
+        <item>Data jam tangan tidak dapat disegerakkan semasa anda bersenam. Tamatkan sesi dan cuba semula.</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Adakah jam tangan anda dicas?</item>
+        <item>Adakah jam tangan ini berpasangan dengan peranti lain?</item>
+        <item>Cuba mula semula Bluetooth</item>
+        <item>Cuba but semula telefon anda</item>
+        <item>Tidak dapat menyegerakkan data semasa senaman</item>
+        <item>Tidak dapat menyegerakkan data semasa senaman</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Shenzhen</item>
+        <item>Foshan</item>
+        <item>Dongguan</item>
+        <item>Beijing</item>
+        <item>Nanjing</item>
+        <item>Suzhou</item>
+        <item>Changzhou</item>
+        <item>Jinan</item>
+        <item>Qingdao</item>
+        <item>Hangzhou</item>
+        <item>Ningbo</item>
+        <item>Zhengzhou</item>
+        <item>Kaifeng</item>
+        <item>Shanghai</item>
+        <item>Shijiazhuang</item>
+        <item>Baoding</item>
+        <item>Chengdu</item>
+        <item>Mianyang</item>
+        <item>Shenyang</item>
+        <item>Dalian</item>
+    </array>
+    <array name="common_level">
+        <item>Tidak mencukupi</item>
+        <item>Normal</item>
+        <item>Baik</item>
+    </array>
+    <array name="contact_ways">
+        <item>E-mel</item>
+        <item>Nombor telefon bimbit</item>
+        <item>ID WeChat</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Baru bermula dalam latihan kecergasan</item>
+        <item>Mempunyai pengalaman kecergasan asas</item>
+        <item>Mempunyai pengalaman kecergasan yang kaya dan telah membina bentuk yang baik</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Permulaan</item>
+        <item>Pertengahan</item>
+        <item>Lanjutan</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Data tidak mencukupi</item>
+        <item>Degupan jantung tidak normal</item>
+        <item>Tiada keabnormalan dikesan</item>
+        <item>Data tidak mencukupi</item>
+        <item>Tiada keabnormalan dikesan</item>
+        <item />
+        <item>Tiada keabnormalan dikesan</item>
+        <item>Kualiti isyarat lemah</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Sila laraskan kaedah penggunaan dan cuba lagi.</item>
+        <item>Untuk rujukan sahaja. Sila berjumpa doktor jika anda berasa apa-apa yang tidak menyelesakan.</item>
+        <item>Untuk rujukan sahaja. Sila berjumpa doktor jika anda berasa apa-apa yang tidak menyelesakan.</item>
+        <item>Sila laraskan kaedah penggunaan dan cuba lagi.</item>
+        <item>Untuk rujukan sahaja. Sila berjumpa doktor jika anda berasa apa-apa yang tidak menyelesakan.</item>
+        <item />
+        <item>Untuk rujukan sahaja. Sila berjumpa doktor jika anda berasa apa-apa yang tidak menyelesakan.</item>
+        <item>Sila laraskan kaedah penggunaan dan cuba lagi.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Menyasarkan untuk membakar lemak</item>
+        <item>Menyasarkan untuk membentuk badan</item>
+        <item>Menyasarkan untuk membina otot</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Memotong</item>
+        <item>Membentuk</item>
+        <item>Pembesaran otot</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>Isnin</item>
+        <item>Selasa</item>
+        <item>Rabu</item>
+        <item>Khamis</item>
+        <item>Jumaat</item>
+        <item>Sabtu</item>
+        <item>Ahad</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Isn</item>
+        <item>Sel</item>
+        <item>Rab</item>
+        <item>Kha</item>
+        <item>Jum</item>
+        <item>Sab</item>
+        <item>Ahd</item>
+    </array>
+    <array name="hr_sport">
+        <item>Zon kadar degupan jantung: Cahaya</item>
+        <item>Zon kadar degupan jantung: Intensif</item>
+        <item>Zon kadar degupan jantung: Aerobik</item>
+        <item>Zon kadar degupan jantung: Anaerobik</item>
+        <item>Zon kadar degupan jantung: VO₂ max</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Ringan</item>
+        <item>Intensif</item>
+        <item>Aerobik</item>
+        <item>Anaerobik</item>
+        <item>VO₂ maks</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Ketiak</item>
+        <item>Oral</item>
+        <item>Rektum</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Pergelangan tangan</item>
+        <item>Dahi</item>
+        <item>Di belakang telinga</item>
+        <item>Koklea</item>
+        <item>Leher</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Ketiak</item>
+        <item>Oral</item>
+        <item>Rektum</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Dada</item>
+        <item>Ketiak</item>
+        <item>Groin</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Tutup</item>
+        <item>Berhampiran</item>
+        <item>Jauh</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Ketik butang pada gegelang untuk memeriksa jika paparan menyala. Jika tidak, cas gegelang anda.\n\nCas peranti sebelum anda memasangkan %1$s atau %2$s.</item>
+        <item>Data jam tangan tidak dapat disegerakkan semasa anda bersenam. Tamatkan sesi dan cuba semula.</item>
+        <item>Jika gegelang dicas, tetapi telefon tidak dapat mengesan gegelang, cuba mulakan semula Bluetooth telefon.</item>
+        <item>Jika mula semula Bluetooth tidak menyelesaikan masalah, cuba but semula telefon.</item>
+        <item>Jika mula semula Bluetooth tidak menyelesaikan masalah, cuba but semula telefon.</item>
+        <item>Jika mula semula Bluetooth tidak menyelesaikan masalah, cuba but semula telefon.</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Adakah gegelang anda dicas?</item>
+        <item>Adakah band ini berpasangan dengan peranti lain?</item>
+        <item>Adakah band ini berpasangan dengan peranti lain?</item>
+        <item>Cuba but semula telefon anda</item>
+        <item>Adakah band ini berpasangan dengan peranti lain?</item>
+        <item>Adakah band ini berpasangan dengan peranti lain?</item>
+    </array>
+    <array name="month_list">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mac</item>
+        <item>Apr</item>
+        <item>Mei</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Ogos</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dis</item>
+    </array>
+    <array name="month_titles">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mac</item>
+        <item>Apr</item>
+        <item>Mei</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Ogs</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dis</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Tidak mencukupi</item>
+        <item>Normal</item>
+        <item>Bagus</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Sangat rendah</item>
+        <item>Rendah</item>
+        <item>Sederhana</item>
+        <item>Baik</item>
+        <item>Sangat baik</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mac</item>
+        <item>Apr</item>
+        <item>Mei</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Ogs</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dis</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s akan berhenti berfungsi jika anda tidak menggunakan dalam jangka masa yang lama. Goncang %2$s dan cuba lagi.</item>
+        <item>%s hayat bateri ialah 1 tahun. Jika anda menggunakan dalam jangka masa yang lebih lama, mungkin tiada kuasa yang berbaki.</item>
+        <item>Matikan Bluetooth pada peranti lain terlebih dahulu, kemudian berpasangan dengan telefon anda.</item>
+        <item>Jika %s dicas, telefon tidak dapat mengesan, cuba mulakan semula Bluetooth telefon.</item>
+        <item>Jika mula semula Bluetooth tidak menyelesaikan masalah, cuba but semula telefon.</item>
+        <item>Ketik data kasut larian dan masuk halaman aktiviti seterusnya untuk menyegerakkan data secara automatik</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Goncang %s</item>
+        <item>Adakah %s anda dicas?</item>
+        <item>Adakah %s berpasangan dengan telefon lain yang berdekatan?</item>
+        <item>Mula semula Bluetooth</item>
+        <item>Cuba but semula telefon anda</item>
+        <item>Bagaimanakah untuk menyegerakkan data anda?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Obesiti</item>
+        <item>Berat berlebihan</item>
+        <item>Set-tebal</item>
+        <item>Kurang\nsenaman</item>
+        <item>Seimbang</item>
+        <item>Seimbang\nberotot</item>
+        <item>Kurus</item>
+        <item>Seimbang\nkurus</item>
+        <item>Kurus\nberotot</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>Isnin</item>
+        <item>Selasa</item>
+        <item>Rabu</item>
+        <item>Khamis</item>
+        <item>Jumaat</item>
+        <item>Sabtu</item>
+        <item>Ahad</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Aktiviti</item>
+        <item>Berjalan Perlahan</item>
+        <item>Berjalan Kaki</item>
+        <item>Berjalan pantas</item>
+        <item>Berlari</item>
+        <item>Berdiri</item>
+        <item>Duduk</item>
+        <item>Aktiviti ringan</item>
+        <item>Tidak memakai</item>
+        <item>Mengecas…</item>
+        <item>Baring</item>
+    </array>
+    <array name="timeline_type">
+        <item>Aktiviti</item>
+        <item>Berjalan Perlahan</item>
+        <item>Berjalan Kaki</item>
+        <item>Berjalan pantas</item>
+        <item>Berlari</item>
+        <item>Berdiri</item>
+        <item>Duduk</item>
+        <item>Aktiviti ringan</item>
+        <item>Tidak memakai</item>
+        <item>Mengecas…</item>
+        <item>Baring</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Tidak terhad</item>
+        <item>Permulaan, 1</item>
+        <item>Pertengahan, 2</item>
+        <item>Maju, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normal</item>
+        <item>Tinggi</item>
+        <item>Sangat tinggi</item>
+    </array>
+    <array name="water_leval">
+        <item>Tidak mencukupi</item>
+        <item>Normal</item>
+        <item>Bagus</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_name">
+        <item>Ahd</item>
+        <item>Isn</item>
+        <item>Sel</item>
+        <item>Rab</item>
+        <item>Kha</item>
+        <item>Jum</item>
+        <item>Sab</item>
+    </array>
+    <array name="weeks">
+        <item>Isnin</item>
+        <item>Selasa</item>
+        <item>Rabu</item>
+        <item>Khamis</item>
+        <item>Jumaat</item>
+        <item>Sabtu</item>
+        <item>Ahad</item>
+    </array>
+    <array name="weeks_short">
+        <item>Isn</item>
+        <item>Sel</item>
+        <item>Rab</item>
+        <item>Kha</item>
+        <item>Jum</item>
+        <item>Sab</item>
+        <item>Ahd</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Kurang berat</item>
+        <item>Seimbang</item>
+        <item>Berat berlebihan</item>
+        <item>Obesiti</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Letakkan penimbang sehampir yang boleh dengan penghala untuk memastikan isyarat Wi-Fi yang kuat</item>
+        <item>· Sahkan sama ada kata laluan input untuk sambungan Wi-Fi betul.</item>
+        <item>· Sambungkan telefon mudah alih anda kepada penghala Wi-Fi sasaran, lalu cuba untuk membuka laman web untuk menyemak sama ada anda boleh mengakses Internet.</item>
+        <item>· Jika 2.4GHz dinyahdayakan, dayakan dan pilih ini. Penimbang tidak menyokong Wi-Fi 5GHz. \n· Jika dwijalur didayakan, nyahdayakan untuk mengelakkan kegagalan konfigurasi kerana rangkaian 5GHz.</item>
+        <item>· Jika penghala Wi-Fi disambung kepada Internet, isyarat Wi-Fi kuat, dan penghala berfungsi dengan 2.4GHz didayakan dan dwijalur dinyahdayakan, cuba memulakan semula penghala.</item>
+        <item>· Jika memulakan semula penghala tidak berkesan, cuba mulakan semula telefon.</item>
+        <item>· Jika memulakan semula penghala tidak berkesan, sila cuba memasang semula bateri.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Adakah penimbang diletakkan di tempat yang mempunyai isyarat Wi-Fi yang kuat?</item>
+        <item>2. Adakah kata laluan Wi-Fi tersebut betul?</item>
+        <item>3. Adakah penghala Wi-Fi disambungkan kepada Internet dengan betul?</item>
+        <item>4. Adakah Wi-Fi 2.4GHz dinyahdayakan pada penghala? Atau adakah Wi-Fi dwijalur didayakan?</item>
+        <item>5. Cuba mulakan semula penghala.</item>
+        <item>6. Cuba memulakan semula telefon.</item>
+        <item>7. Cuba mulakan semula peranti.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>Wi-Fi 2.4 GHz menunjukkan bahawa penghala wayarles berfungsi pada 2.4 GHz.\nWi-Fi 5 GHz menunjukkan bahawa penghala wayarles berfungsi pada 5 GHz.</item>
+        <item>Sediakan penghala anda mengikut langkah-langkah berikut:\n1. Masukkan alamat log masuk penghala anda dalam bar alamat pelayar anda dan log masuk ke latar belakang penghala wayarles. \n2. Cari butang tetapan pada penghala wayarles tersebut. \n3. Matikan butang dwijalur. \n4. Dayakan Wi-Fi 2.4 GHz.</item>
+        <item>Dua kaedah berikut boleh digunakan untuk menyemak jalur Wi-Fi:\n1. Dalam senarai Wi-Fi pada komputer anda, pilih [Wi-Fi] &amp;gt; [Sifat] &amp;gt; [Jalur Rangkaian]. \n2. Log masuk ke latar belakang penghala.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Apakah Wi-Fi 2.4 GHz dan Wi-Fi 5 GHz?</item>
+        <item>· Bagaimanakah saya mahu mendayakan Wi-Fi 2.4 GHz pada penghala saya?</item>
+        <item>· Bagaimanakah boleh saya menyemak jalur Wi-Fi?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Normal</item>
+        <item>Obesiti</item>
+        <item>Obesiti</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> paun</item>
+    </array>
+</resources>

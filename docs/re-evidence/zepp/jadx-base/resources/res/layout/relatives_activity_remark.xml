@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:textSize="15sp"
+        android:textColor="@color/s1"
+        android:textColorHint="@color/s2"
+        android:id="@+id/remark_name"
+        android:background="@drawable/relatives_edittext_bg_round"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/relatives_size_48dp"
+        android:layout_marginTop="@dimen/relatives_size_40dp"
+        android:hint="@string/relatives_hint_input_remark_name"
+        android:maxLength="20"
+        android:inputType="text"
+        android:paddingStart="@dimen/relatives_size_10dp"
+        android:paddingEnd="@dimen/relatives_size_10dp"
+        android:layout_marginStart="@dimen/relatives_common_item_padding"
+        android:layout_marginEnd="@dimen/relatives_common_item_padding"
+        android:layout_alignParentStart="true"/>
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@color/relatives_black60"
+        android:gravity="center"
+        android:id="@+id/finish_button"
+        android:background="@drawable/relatives_common_corner_rect"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/relatives_click_button_h"
+        android:layout_marginTop="@dimen/relatives_size_36dp"
+        android:layout_marginBottom="@dimen/relatives_size_24dp"
+        android:text="@string/relatives_person_info_finish"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/relatives_common_item_padding"
+        android:layout_marginEnd="@dimen/relatives_common_item_padding"/>
+</RelativeLayout>

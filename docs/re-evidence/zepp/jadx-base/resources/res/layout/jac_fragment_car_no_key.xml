@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/s36"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/size_15dp"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        app:cardCornerRadius="@dimen/car_image_round_rect_radius"
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintDimensionRatio="324:205"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/card_image_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/jac_card"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/jac_car_s_create_key"/>
+    </androidx.cardview.widget.CardView>
+    <com.huami.jac.ui.amazfit.view.CarItemView
+        android:id="@+id/createVKey"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_58dp"
+        android:layout_marginTop="@dimen/size_15dp"
+        app:carItemDivider="top"
+        app:itemTitle="@string/jac_car_s_create_key"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card"/>
+    <com.huami.jac.ui.amazfit.view.CarItemView
+        android:id="@+id/carHelp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_58dp"
+        app:carItemDivider="both"
+        app:itemTitle="@string/jac_car_s_help"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createVKey"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

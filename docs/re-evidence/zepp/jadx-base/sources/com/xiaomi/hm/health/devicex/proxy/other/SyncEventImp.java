@@ -1,0 +1,18 @@
+package com.xiaomi.hm.health.devicex.proxy.other;
+
+import com.huami.device.core.sync.api.dto.WorkStatusDto;
+import com.huami.devicex.injection.basic.SyncEventApi;
+import com.xiaomi.hm.health.bt.device.HMBaseDevice;
+import com.xiaomi.hm.health.homepage.manager.sync.DeviceEventListener;
+import kotlin.Metadata;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+/* JADX INFO: loaded from: classes21.dex */
+@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u001c\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0004\u0018\u00002\u00020\u0001B\u0007¢\u0006\u0004\b\b\u0010\tJ\u001a\u0010\u0007\u001a\u00020\u00062\b\u0010\u0003\u001a\u0004\u0018\u00010\u00022\u0006\u0010\u0005\u001a\u00020\u0004H\u0016¨\u0006\n"}, d2 = {"Lcom/xiaomi/hm/health/devicex/proxy/other/SyncEventImp;", "Lcom/huami/devicex/injection/basic/SyncEventApi;", "Lcom/xiaomi/hm/health/bt/device/HMBaseDevice;", "device", "Lcom/huami/device/core/sync/api/dto/WorkStatusDto;", "syncStatus", "", "onSyncEventOut", "<init>", "()V", "app_midongPlayRelease"}, k = 1, mv = {1, 5, 1})
+public final class SyncEventImp implements SyncEventApi {
+    @Override // com.huami.devicex.injection.basic.SyncEventApi
+    public void onSyncEventOut(@Nullable HMBaseDevice device, @NotNull WorkStatusDto syncStatus) {
+        DeviceEventListener.INSTANCE.getInstance().onSyncEventOut(device, syncStatus);
+    }
+}

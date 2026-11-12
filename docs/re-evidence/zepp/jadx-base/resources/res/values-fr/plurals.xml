@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="Ndays">
+        <item quantity="one">%d jour</item>
+        <item quantity="other">%d jours</item>
+    </plurals>
+    <plurals name="Nhours">
+        <item quantity="one">%d heure</item>
+        <item quantity="other">%d heures</item>
+    </plurals>
+    <plurals name="Nminutes">
+        <item quantity="one">1 minute</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="one">Dans le cadre de la mise à niveau de la marque, les informations relatives à votre compte doivent être confirmées par votre tuteur pour assurer la sécurité de vos données. Merci de confirmer dès que possible. En l&apos;absence de confirmation, votre compte sera bloqué dans %1$s jour.</item>
+        <item quantity="other">Dans le cadre de la mise à niveau de la marque, les informations relatives à votre compte doivent être confirmées par votre tuteur pour assurer la sécurité de vos données. Merci de confirmer dès que possible. En l&apos;absence de confirmation, votre compte sera bloqué dans %1$s jours.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="one">Le nombre maximum de saisies d&apos;identifiant de compte ou de mot de passe a été atteint. Veuillez réessayer dans %s minute</item>
+        <item quantity="other">Le nombre maximum de saisies d&apos;identifiant de compte ou de mot de passe a été atteint. Veuillez réessayer dans %s minutes</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="one">L&apos;identifiant de compte ou le mot de passe est incorrect. Il vous reste %s tentative</item>
+        <item quantity="other">L&apos;identifiant de compte ou le mot de passe est incorrect. Il vous reste %s tentatives</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="one">%d cours</item>
+        <item quantity="other">%d cours</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="one">Vibrer à nouveau %s min plus tard</item>
+        <item quantity="other">Vibrer à nouveau %s min plus tard</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="one">En avance sur %d%% d&apos;utilisateurs aujourd&apos;hui</item>
+        <item quantity="other">En avance sur %d%% des utilisateurs aujourd&apos;hui</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="one">Vous pouvez ajouter %1$d application au maximum à la liste des applications</item>
+        <item quantity="other">Vous pouvez ajouter %1$d applications maximum à la liste des applications</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="one">Vous pouvez ajouter %1$d application au maximum à la liste Plus</item>
+        <item quantity="other">Vous pouvez ajouter %1$d applications au maximum à la liste Plus</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="one">Comparé il y a %1$d jour</item>
+        <item quantity="other">Comparé il y a %1$d jours</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="one">Étalonné pour %d jour</item>
+        <item quantity="other">Étalonné pour %d jours</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="one">L&apos;étalonnage est nécessaire chaque%d jour pour le projet de recherche sur la mesure de la pression artérielle lancé par le Premier hôpital de l&apos;Université de Pékin</item>
+        <item quantity="other">L&apos;étalonnage est nécessaire tous les %d jours pour le projet de recherche sur la mesure de la pression artérielle lancé par le Premier hôpital de l&apos;Université de Pékin</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="one">Étalonner %d jour plus tard</item>
+        <item quantity="other">Étalonner %d jours plus tard</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="one">%d objectif atteint</item>
+        <item quantity="other">%d objectifs atteints</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="one">%d élément demande votre attention</item>
+        <item quantity="other">%d éléments demandent votre attention</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="one">%d élément n&apos;a pas atteint d&apos;objectif</item>
+        <item quantity="other">%d éléments n&apos;ont pas atteint d&apos;objectif</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="one">Félicitations ! \nAu cours du %1$ddernier jour, vous avez gagné</item>
+        <item quantity="other">Félicitations ! \nAu cours des %1$d derniers jours, vous avez gagné</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="one">score</item>
+        <item quantity="other">scores</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="one">Vous pouvez ajouter jusqu&apos;à %1$d contact favori et il sera automatiquement synchronisé sur votre montre</item>
+        <item quantity="other">Vous pouvez ajouter jusqu&apos;à %1$d contacts favoris et ils seront automatiquement synchronisés sur votre montre</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="one">%d cours</item>
+        <item quantity="other">%d cours</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="one">La course débute dans %d jour</item>
+        <item quantity="other">La course débute dans %d jours</item>
+    </plurals>
+    <plurals name="daily_interval">
+        <item quantity="one">%d jour</item>
+        <item quantity="other">%d jours</item>
+    </plurals>
+    <plurals name="days_after">
+        <item quantity="one">Dans %1$d jours</item>
+        <item quantity="other">Dans %1$d jours</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="one">%1$d jours auparavant</item>
+        <item quantity="other">%1$d jours auparavant</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="one">%d téléchargé</item>
+        <item quantity="other">%d téléchargés</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="zero">%1$d sec.</item>
+        <item quantity="one">%1$d sec.</item>
+        <item quantity="other">%1$d sec.</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="one">Intervalle par données : %1$s sec</item>
+        <item quantity="other">Intervalle par données : %1$s sec</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="one">%1$s sec</item>
+        <item quantity="other">%1$s sec</item>
+    </plurals>
+    <plurals name="endByCount">
+        <item quantity="one">%d fois</item>
+        <item quantity="other">%d fois</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="one">%d rappel</item>
+        <item quantity="other">%d rappels</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">Avancer de %d seconde</item>
+        <item quantity="other">Avancer de %d secondes</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">Revenir en arrière de %d seconde</item>
+        <item quantity="other">Revenir en arrière de %d secondes</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="one">%1$s lesson</item>
+        <item quantity="other">%1$s lessons</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="one">%1$s de la période menstruelle ; encore %2$s.</item>
+        <item quantity="other">%1$s de la période menstruelle ; encore %2$s.</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="one">Approximativement %1$s de la période menstruelle ; encore %2$s.</item>
+        <item quantity="other">Approximativement %1$s de la période menstruelle ; encore %2$s.</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="one">%1$s de la période menstruelle ; encore %2$s environ.</item>
+        <item quantity="other">%1$s de la période menstruelle ; encore %2$s environ.</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="one">%1$s spectateur</item>
+        <item quantity="other">%1$s spectateurs</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">Jour %1$d</item>
+        <item quantity="other">Jour %1$d</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="one">%1$dj</item>
+        <item quantity="other">%1$dj</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="one">Annuler (%1$d s)</item>
+        <item quantity="other">Annuler (%1$d s)</item>
+    </plurals>
+    <plurals name="fix_minute">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="one">Téléchargement en cours. Veuillez patienter pendant environ %s min</item>
+        <item quantity="other">Téléchargement en cours. Veuillez patienter pendant environ %s min</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="one">%d session d&apos;entraînement terminée</item>
+        <item quantity="other">%d sessions d&apos;entraînement terminées</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="one">%d fois/minute</item>
+        <item quantity="other">%d fois/minute</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="one">La page d&apos;accueil doit contenir au moins %1$d carte</item>
+        <item quantity="other">La page d&apos;accueil doit contenir au moins %1$d cartes</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="one">Fréquence cardiaque moyenne %1$d bpm</item>
+        <item quantity="other">Fréquence cardiaque moyenne %1$d bpm</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="one">battement/min</item>
+        <item quantity="other">battements/min</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="one">Il y a %d minute</item>
+        <item quantity="other">Il y a %d minutes</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="one">Session %d</item>
+        <item quantity="other">Sessions %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="one">Me rappeler %d seconde après l&apos;appel téléphonique</item>
+        <item quantity="other">Me rappeler %d secondes après l&apos;appel téléphonique</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="one">Vous pouvez ajouter %1$d réponse SMS maximum</item>
+        <item quantity="other">Vous pouvez ajouter %1$d réponses SMS maximum</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="one">Conserver au moins %1$d réponse SMS</item>
+        <item quantity="other">Conserver au moins %1$d réponses SMS</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="one">Saisir jusqu&apos;à %d caractère</item>
+        <item quantity="other">Saisir jusqu&apos;à %d caractères</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="one">%1$d enregistrement circuit</item>
+        <item quantity="other">%1$d enregistrements circuit</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="one">%d vue</item>
+        <item quantity="other">%d vues</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="one">%1$d mois</item>
+        <item quantity="other">%1$d mois</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="one">Environ %1$d minute par jour</item>
+        <item quantity="other">Environ %1$d minutes par jour</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="one">Dernière charge il y a %d j</item>
+        <item quantity="other">Dernière charge il y a %d j</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="one">Objectif atteint: %d</item>
+        <item quantity="other">Objectif atteint: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="one">%d pas</item>
+        <item quantity="other">%d pas</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="one">%d %s</item>
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="monthly_interval">
+        <item quantity="one">mois</item>
+        <item quantity="other">%1$d mois</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d nouvelle notification</item>
+        <item quantity="other">%d nouvelles notifications</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="one">%d&quot;</item>
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="one">%d s</item>
+        <item quantity="other">%d s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="one">Plus de %1$d an. Impossible d&apos;analyser %2$s</item>
+        <item quantity="other">Plus de %1$d ans. Impossible d&apos;analyser %2$s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="one">Moins de %1$dan. Impossible d&apos;analyser %2$s</item>
+        <item quantity="other">Moins de %1$dans. Impossible d&apos;analyser %2$s</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="one">%s pied</item>
+        <item quantity="other">%s pied</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="one">%s pouce</item>
+        <item quantity="other">%s pouces</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="one">%ds</item>
+        <item quantity="other">%ds</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="one"> entraînement</item>
+        <item quantity="other"> entraînements</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="one">%d participant</item>
+        <item quantity="other">%d participants</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="one">minute</item>
+        <item quantity="other">minutes</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="one">Vous pouvez ajouter %1$d réponse SMS maximum</item>
+        <item quantity="other">Vous pouvez ajouter %1$d réponses SMS maximum</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="one">Conserver au moins %1$d réponse SMS</item>
+        <item quantity="other">Conserver au moins %1$d réponses SMS</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="one">%1$d élément sélectionné</item>
+        <item quantity="other">%1$d éléments sélectionnés</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="one">Vous avez fait du vélo il y a %1$d jour</item>
+        <item quantity="other">Vous avez fait du vélo il y a %1$d jours</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="one"> heure</item>
+        <item quantity="other"> heures</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="one"> kcal</item>
+        <item quantity="other"> kcal</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="one">Vous avez couru il y a %1$d jour</item>
+        <item quantity="other">Vous avez couru il y a %1$d jours</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="one"> seconde</item>
+        <item quantity="other"> secondes</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="one">%1$d clip audio détecté aujourd&apos;hui</item>
+        <item quantity="other">%1$d clips audio détectés aujourd&apos;hui</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="one">pas</item>
+        <item quantity="other">pas</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="one">Vous avez couru il y a %1$d jour</item>
+        <item quantity="other">Vous avez marché il y a %1$d jours</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">%d jour</item>
+        <item quantity="other">%d jours</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">%d heure</item>
+        <item quantity="other">%d heures</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="one">%d pas</item>
+        <item quantity="other">%d pas</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="one">Qualité de la respiration du sommeil de %1$d. Nous vous recommandons de faire continuellement attention à votre respiration pendant votre sommeil. Si vous ne vous sentez pas bien, veuillez consulter un médecin</item>
+        <item quantity="other">Qualité de la respiration du sommeil de %1$d. Nous vous recommandons de faire continuellement attention à votre respiration pendant votre sommeil. Si vous ne vous sentez pas bien, veuillez consulter un médecin</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip_short">
+        <item quantity="one">Score de qualité de respiration durant le sommeil : %1$d. Veuillez faire très attention à l&apos;état de votre respiration durant votre sommeil. Si vous ne vous sentez pas bien, veuillez consulter un médecin</item>
+        <item quantity="other">Qualité de votre respiration durant votre sommeil : %1$d. Veuillez faire très attention à l&apos;état de votre respiration durant votre sommeil. Si vous ne vous sentez pas bien, veuillez consulter un médecin</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="one">Qualité de la respiration du sommeil de %1$d. Nous vous conseillons de consulter un médecin pour savoir si vous avez des problèmes de respiration pendant le sommeil</item>
+        <item quantity="other">Qualité de la respiration du sommeil de %1$d. Nous vous conseillons de consulter un médecin pour savoir si vous avez des problèmes de respiration pendant le sommeil</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip_short">
+        <item quantity="one">Score de qualité de respiration durant le sommeil : %1$d. Si le score est inférieur à 80 à plusieurs reprises, veuillez demander l&apos;avis d&apos;un médecin</item>
+        <item quantity="other">Score de qualité de respiration durant le sommeil : %1$d. Si le score est inférieur à 80 à plusieurs reprises, veuillez demander l&apos;avis d&apos;un médecin</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="one">Qualité de la respiration du sommeil de %1$d, continuez ainsi</item>
+        <item quantity="other">Qualité de la respiration du sommeil de %1$d, continuez ainsi</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip_short">
+        <item quantity="one">Score de qualité de respiration durant le sommeil : %1$d. Continuez comme ça</item>
+        <item quantity="other">Score de qualité de respiration durant le sommeil : %1$d. Continuez comme ça</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="one">L&apos;assurance de course expire dans %1$d jour, appuyez pour renouveler</item>
+        <item quantity="other">L&apos;assurance de course expire dans %1$d jours, appuyez pour renouveler</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="one">%d objet n&apos;a pas été synchronisé</item>
+        <item quantity="other">%d objets n&apos;ont pas été synchronisés</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="one">%d objet n&apos;a pas été synchronisé</item>
+        <item quantity="other">%d objets n&apos;ont pas été synchronisés</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="one">%1$d séance de cyclisme</item>
+        <item quantity="other">%1$d séances de cyclisme</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="one">%1$d séance d&apos;entraînement elliptique</item>
+        <item quantity="other">%1$d séances d&apos;entraînement elliptique</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="one">%1$d entraînement freestyle</item>
+        <item quantity="other">%1$d entraînements freestyle</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="one">%1$d séance de course</item>
+        <item quantity="other">%1$d séances de course</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="one">%1$d session de natation</item>
+        <item quantity="other">%1$d sessions de natation</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="one">Entraînement : %1$d séance</item>
+        <item quantity="other">Entraînement : %1$d séances</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="one">%1$d session de triathlon</item>
+        <item quantity="other">%1$d sessions de triathlon</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="one">%1$d séance de marche</item>
+        <item quantity="other">%1$d séances de marche</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="one">Exercice : %1$d séance</item>
+        <item quantity="other">Exercice : %1$d séances</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="one">Ajouter jusqu&apos;à %d évènement</item>
+        <item quantity="other">Ajouter jusqu&apos;à %d évènements</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="one">Record personnel : %d jour</item>
+        <item quantity="other">Record personnel : %d jours</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="one">En avance sur %d%% des utilisateurs</item>
+        <item quantity="other">En avance sur %d%% des utilisateurs</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="zero">Fois</item>
+        <item quantity="one">Fois</item>
+        <item quantity="other">Fois</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="one">Jour</item>
+        <item quantity="other">Jours</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="zero">Score</item>
+        <item quantity="one">Score</item>
+        <item quantity="other">Score</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="zero">‎%dfois</item>
+        <item quantity="one">‎%dtemps</item>
+        <item quantity="other">‎%dfois</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="one">Score de sommeil en hausse de %d par rapport au mois précédent.</item>
+        <item quantity="other">Score de sommeil en hausse de %d par rapport au mois précédent.</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="one">Le score de sommeil de ce mois-ci est de %d, continuez à faire du bon travail.</item>
+        <item quantity="other">Le score de sommeil de ce mois-ci est de %d, continuez à faire du bon travail.</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="one">Score de sommeil en hausse de %d par rapport à la semaine précédente.</item>
+        <item quantity="other">Score de sommeil en hausse de %d par rapport à la semaine précédente.</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="one">Le score de sommeil de cette semaine est de %d, continuez à faire du bon travail.</item>
+        <item quantity="other">Le score de sommeil de cette semaine est de %d, continuez à faire du bon travail.</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="one">%1$d extrait audio a été enregistré aujourd&apos;hui.</item>
+        <item quantity="other">%1$d extraits audio ont été enregistrés aujourd&apos;hui.</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="one">%1$d extrait</item>
+        <item quantity="other">%1$d extraits</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="one">Peut dire %d seconde de plus</item>
+        <item quantity="other">Peut dire %d secondes de plus</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="one">Activités terminées: %1$d session de %2$s</item>
+        <item quantity="other">Activités terminées: %1$d sessions de %2$s</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="one">pas</item>
+        <item quantity="other">pas</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="one">pas</item>
+        <item quantity="other">pas</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="one">Pas/jour</item>
+        <item quantity="other">Pas/jour</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; fois</item>
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; fois</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="one">Topped the list for&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; jour</item>
+        <item quantity="other">Topped the list for&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; jours</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="one">En tête de liste %1$d fois</item>
+        <item quantity="other">En tête de liste %1$d fois</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="one">En tête de liste depuis %1$d jour</item>
+        <item quantity="other">En tête de liste depuis %1$d jours</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="one">Associé à %1$d ami :</item>
+        <item quantity="other">Associé à %1$d amis :</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="one">Ran&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; fois</item>
+        <item quantity="other">Ran&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; fois</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="one">%1$d enregistrement de course non téléchargé</item>
+        <item quantity="other">%1$d enregistrements de course non téléchargés</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="one">%1$d participant</item>
+        <item quantity="other">%1$d participants</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="zero">‎%dheures</item>
+        <item quantity="one">‎%dheure</item>
+        <item quantity="other">‎%dheures</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="zero">‎%dminutes</item>
+        <item quantity="one">‎%dminute</item>
+        <item quantity="other">‎%dminutes</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="one">%1$d fois</item>
+        <item quantity="other">%1$d fois</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="one">Félicitations!\nLes dernier jour %1$d où vous avez perdu</item>
+        <item quantity="other">Félicitations!\nLes derniers jours %1$d où vous avez perdu</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="one">Il y a %1$d relevé de poids qui attend d&apos;être réclamé.</item>
+        <item quantity="other">Il y a %1$d relevés de poids qui attendent d&apos;être réclamés.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="one">%1$d programme au maximum peut être ajouté</item>
+        <item quantity="other">%1$d programmes au maximum peuvent être ajoutés</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="one">Impossible d&apos;analyser pour les personnes de plus de %d an</item>
+        <item quantity="other">Impossible d&apos;analyser pour les personnes de plus de %d ans</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="one">Impossible d&apos;analyser pour les personnes de moins de %d an</item>
+        <item quantity="other">Impossible d&apos;analyser pour les personnes de moins de %d ans</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="one">%d cours</item>
+        <item quantity="other">%d cours</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="one">Cours expire dans %d jour</item>
+        <item quantity="other">Cours expire dans %d jours</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="one">%d visionneur</item>
+        <item quantity="other">%d visionneurs</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="one">Pas total :%d</item>
+        <item quantity="other">Pas total :%d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="one">Nombre de fois pratiquée: %d</item>
+        <item quantity="other">Nombre de fois pratiquées: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="one">Démarre dans %d jour</item>
+        <item quantity="other">Débute dans %d jours</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="one">Entraîné pendant  %1$d  min</item>
+        <item quantity="other">Entraîné pendant  %1$d  min</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="one">Entraîné pendant  %1$d  s</item>
+        <item quantity="other">Entraîné pendant  %1$d  s</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="one">Jour %1$d du programme d&apos;entraînement: Vous devez compléter %3$s (%2$dmin)</item>
+        <item quantity="other">Jour %1$d du programme d&apos;entraînement: Vous devez compléter %3$s (%2$dmin)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="one"> %1$d  seconde</item>
+        <item quantity="other"> %1$d  secondes</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="one"> %1$d  fois</item>
+        <item quantity="other"> %1$d  fois</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="one">Mis en pause pendant %1$d  s</item>
+        <item quantity="other">Mis en pause pendant %1$d  s</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="one">  pas</item>
+        <item quantity="other">  pas</item>
+    </plurals>
+    <plurals name="user_info_Nhours">
+        <item quantity="one">%d heure</item>
+        <item quantity="other">%d heures</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="one">L&apos;âge indiqué étant inférieur à %1$d an, vous ne pouvez continuer à utiliser l&apos;application Zepp qu&apos;après avoir obtenu l&apos;autorisation et le consentement de votre tuteur.</item>
+        <item quantity="other">L&apos;âge indiqué étant inférieur à %1$d ans, vous ne pouvez continuer à utiliser l&apos;application Zepp qu&apos;après avoir obtenu l&apos;autorisation et le consentement de votre tuteur.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="one">En l&apos;absence de confirmation, votre compte sera bloqué dans %1$d jour.</item>
+        <item quantity="other">En l&apos;absence de confirmation, votre compte sera bloqué dans %1$d jour.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="one">Moins de %1$d</item>
+        <item quantity="other">Moins de %1$d</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="one">Afin de protéger la confidentialité des données des mineurs, si vous avez moins de %1$d an, nous avons besoin de l&apos;autorisation et du consentement de votre tuteur avant de vous fournir des services complets.</item>
+        <item quantity="other">Afin de protéger la confidentialité des données des mineurs, si vous avez moins de %1$d ans, nous avons besoin de l&apos;autorisation et du consentement de votre tuteur avant de vous fournir des services complets.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="one">Veuillez confirmer que vous n&apos;avez pas moins de %1$d an</item>
+        <item quantity="other">Veuillez confirmer que vous n&apos;avez pas moins de %1$d ans</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="one">%s pied</item>
+        <item quantity="other">%s pied</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="one">%s pouce</item>
+        <item quantity="other">%s pouces</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="week_plan_hint_last_good">
+        <item quantity="one">Excellent ! Vous vous êtes endormi(e) avec les mélodies %d fois au cours des 7 dernières nuits. Une bonne routine régulière contribue grandement à un sommeil de qualité.</item>
+        <item quantity="other">Excellent ! Vous vous êtes endormi(e) avec les mélodies %d fois au cours des 7 dernières nuits. Une bonne routine régulière contribue grandement à un sommeil de qualité.</item>
+    </plurals>
+    <plurals name="week_plan_hint_last_improve">
+        <item quantity="one">Les mélodies vous ont accompagné %d fois au cours des 7 dernières nuits. Une utilisation continue permet une amélioration encore plus nette.</item>
+        <item quantity="other">Les mélodies vous ont accompagné %d fois au cours des 7 dernières nuits. Une utilisation continue permet une amélioration encore plus nette.</item>
+    </plurals>
+    <plurals name="weekly_interval">
+        <item quantity="one">%d semaine</item>
+        <item quantity="other">%d semaines</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="one">%d séance</item>
+        <item quantity="other">%d séances</item>
+    </plurals>
+    <plurals name="yearly_interval">
+        <item quantity="one">année</item>
+        <item quantity="other">%1$d années</item>
+    </plurals>
+</resources>

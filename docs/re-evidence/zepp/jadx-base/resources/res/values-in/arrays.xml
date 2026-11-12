@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>Senin sampai Jumat</item>
+        <item>Sekali</item>
+        <item>Setiap Hari</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>Memandu latihan anda sesuai dengan tujuan-tujuan yang telah anda atur</item>
+        <item>Statistik dan pengaturan aktivitas yang menyeluruh</item>
+        <item>Dapat digunakan di kolam renang, berenang diperairan terbuka, dan aktivitas triatlon</item>
+        <item>Menyediakan Data Konsumsi Oksigen Maksimal (VO₂ max)</item>
+        <item>Efek Latihan (TE) membantu anda mengerti manfaat dari latihan kebugaran anda</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>One key to control all with “Classmate Xiao Ai” \n Make your home smart with voice control, and it follows what you say</item>
+        <item>Transportation card, access card, UnionPay card \n For traveling, working, and consuming, just swipe your watch</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>One key to open Alexa \n Intelligent voice, do what you say</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item />
+        <item>* Hanya untuk latihan lari, perlu dibuka pada pengaturan latihan</item>
+        <item />
+        <item>* Hanya untuk lari</item>
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item />
+        <item>* Saat ini hanya tersedia di wilayah yang telah dipilih.</item>
+        <item />
+        <item />
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Lengan atas harus terbuka, dengan lengan pakaian tergulung nyaman</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Anda harus bisa menyelipkan satu jari di bawah manset. Manset yang terlalu longgar atau terlalu ketat dapat mempengaruhi keakuratan pengukuran</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Pengukuran pertama</item>
+        <item>Pengukuran kedua</item>
+        <item>Pengukuran ketiga</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Rekam hasil pengukuran tekanan darah pertama</item>
+        <item>Rekam hasil pengukuran tekanan darah kedua</item>
+        <item>Rekam hasil pengukuran tekanan darah ketiga</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Rendah</item>
+        <item>Normal</item>
+        <item>Tinggi</item>
+        <item>Sangat tinggi</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normal</item>
+        <item>Tinggi</item>
+        <item>Sangat tinggi</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Sangat buruk</item>
+        <item>Buruk</item>
+        <item>Normal</item>
+        <item>Baik</item>
+        <item>Sangat baik</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Sangat rendah</item>
+        <item>Rendah</item>
+        <item>Normal</item>
+        <item>Meningkat</item>
+        <item>Tinggi</item>
+    </array>
+    <array name="bone_leval">
+        <item>Tidak mencukupi</item>
+        <item>Normal</item>
+        <item>Baik</item>
+    </array>
+    <array name="brm_leval">
+        <item>Tidak mencapai target</item>
+        <item>Target tercapai</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Rendah</item>
+        <item>Sedang</item>
+        <item>Tinggi</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Tekan tombol di jam, jika layar jam mati, isi daya jam.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Jika gelang terisi daya, tetapi telepon masih tdk dpt menemukan, mulai ulang Bluetooth telepon.</item>
+        <item>Jika mulai ulang Bluetooth tdk menyelesaikan masalah, coba mulai ulang telepon.</item>
+        <item>Tidak dapat sinkron data jam saat sedang olahraga. Akhiri sesi dan coba lagi.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Jam Anda terisi daya?</item>
+        <item>Jam ini dipasangkan dengan perangkat lain?</item>
+        <item>Coba mulai ulang Bluetooth</item>
+        <item>Coba mulai ulang telepon</item>
+        <item>Tidak dapat sinkron data saat olahraga</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Shenzhen</item>
+        <item>Foshan</item>
+        <item>Dongguan</item>
+        <item>Beijing</item>
+        <item>Nanjing</item>
+        <item>Suzhou</item>
+        <item>Changzhou</item>
+        <item>Jinan</item>
+        <item>Qingdao</item>
+        <item>Hangzhou</item>
+        <item>Ningbo</item>
+        <item>Zhengzhou</item>
+        <item>Kaifeng</item>
+        <item>Shanghai</item>
+        <item>Shijiazhuang</item>
+        <item>Baoding</item>
+        <item>Chengdu</item>
+        <item>Mianyang</item>
+        <item>Shenyang</item>
+        <item>Dalian</item>
+    </array>
+    <array name="common_level">
+        <item>Tidak mencukupi</item>
+        <item>Normal</item>
+        <item>Baik</item>
+    </array>
+    <array name="contact_ways">
+        <item>Email</item>
+        <item>Nomor ponsel</item>
+        <item>ID WeChat</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Belum ada pengalaman fitness</item>
+        <item>Memiliki pengalaman dasar fitness</item>
+        <item>Memiliki pengalaman fitnes dan bentuk tubuh ideal</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Dasar</item>
+        <item>Menengah</item>
+        <item>Tinggi</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Tidak ada ketidak normalan yang terdeteksi</item>
+        <item />
+        <item>Data kurang</item>
+        <item>Tidak ada ketidak normalan yang terdeteksi</item>
+        <item>Data kurang</item>
+        <item>Detak jantung tidak normal</item>
+        <item>Kualitas sinyal buruk</item>
+        <item>Tidak ada ketidak normalan yang terdeteksi</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Hanya untuk referensi. Konsultasi pada dokter jika anda memiliki keluhan.</item>
+        <item>Harap sesuaikan cara penggunaan dan coba lagi.</item>
+        <item>Harap sesuaikan cara penggunaan dan coba lagi.</item>
+        <item>Hanya untuk referensi. Konsultasi pada dokter jika anda memiliki keluhan.</item>
+        <item>Hanya untuk referensi. Konsultasi pada dokter jika anda memiliki keluhan.</item>
+        <item>Hanya untuk referensi. Konsultasi pada dokter jika anda memiliki keluhan.</item>
+        <item>Harap sesuaikan cara penggunaan dan coba lagi.</item>
+        <item />
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Untuk membakar lemak</item>
+        <item>Untuk membentuk tubuh</item>
+        <item>Untuk membentuk otot</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Pengurangan (Cutting)</item>
+        <item>Membentuk tubuh (Shaping)</item>
+        <item>Membentuk otot (Bulking)</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>SEN</item>
+        <item>SEL</item>
+        <item>RAB</item>
+        <item>KAM</item>
+        <item>JUM</item>
+        <item>SAB</item>
+        <item>Min</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Sen</item>
+        <item>Sel</item>
+        <item>Rab</item>
+        <item>Kam</item>
+        <item>Jum</item>
+        <item>Sab</item>
+        <item>Mgg</item>
+    </array>
+    <array name="hr_sport">
+        <item>Zona detak jantung: Ringan</item>
+        <item>Zona detak jantung: Intensif</item>
+        <item>Zona detak jantung: Aerobik</item>
+        <item>Zona detak jantung: Anaerobik</item>
+        <item>Zona detak jantung: VO₂ maks</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Ringan</item>
+        <item>Intensif</item>
+        <item>Aerobik</item>
+        <item>Anaerobik</item>
+        <item>VO₂ maks</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Ketiak</item>
+        <item>Mulut</item>
+        <item>Dubur</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Pergelangan tangan</item>
+        <item>Dahi</item>
+        <item>Belakang telinga</item>
+        <item>Koklea</item>
+        <item>Leher</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Ketiak</item>
+        <item>Mulut</item>
+        <item>Dubur</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Dada</item>
+        <item>Ketiak</item>
+        <item>Selangkangan</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Sangat dekat</item>
+        <item>Dekat</item>
+        <item>Jauh</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Ketuk tombol pada bang untuk memeriksa jika layar menyala. Jika tidak, isi daya band.\n\nIsi daya perangkat sebelum Anda memasangkan %1$s atau %2$s.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Jika gelang terisi daya, tetapi telepon masih tidak dapat menemukan, coba mulai ulang Bluetooth telepon.</item>
+        <item>Jika mulai ulang Bluetooth tak menyelesaikan masalah, coba mulai ulang telepon.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Gelang Anda terisi daya?</item>
+        <item>Gelang ini dipasangkan dengan perangkat lain?</item>
+        <item>@string/help_title_2</item>
+        <item>Coba mulai ulang telepon</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Mei</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Ags</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Des</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Tdk mencukupi</item>
+        <item>Normal</item>
+        <item>Baik</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>Peringatan siaga</item>
+        <item>Pengingat cuaca harian</item>
+        <item>Panggilan Masuk</item>
+        <item>Notifikasi baterai lemah</item>
+        <item>Notifikasi tujuan</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Sangat tidak baik</item>
+        <item>Buruk</item>
+        <item>Rata-rata</item>
+        <item>Baik</item>
+        <item>Bagus sekali</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>Pertama</item>
+        <item>Ketiga</item>
+        <item>Kedua</item>
+        <item>Keempat</item>
+        <item>Terakhir</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Mei</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Ags</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Des</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s akan berhenti bekerja jika sudah lama tidak digunakan. Goyangkan %2$s dan coba lagi.</item>
+        <item>Masa pakai baterai %s 1 tahun. Jika digunakan dalam waktu yang lama, ada kemungkinan baterai telah habis.</item>
+        <item>Matikan Bluetooth pada perangkat lain dulu, lalu pasangkan dengan telepon Anda.</item>
+        <item>Jika %s telah terisi daya, namun telepon tidak dapat mendeteksi, coba hidupkan ulang Bluetooth telepon.</item>
+        <item>Jika mulai ulang Bluetooth tak menyelesaikan masalah, coba mulai ulang telepon.</item>
+        <item>Ketuk data sepatu lari dan masuk ke halaman aktivitas untuk otomatis sinkron data</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Goyangkan %s</item>
+        <item>Apakah %s telah terisi daya?</item>
+        <item>Apakah %s dipasangkan dengan telepon lain di sekitar?</item>
+        <item>Ulangi Bluetooth</item>
+        <item>Coba mulai ulang telepon</item>
+        <item>Bagaimana sinkron data Anda?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Obesitas</item>
+        <item>Gemuk</item>
+        <item>Kekar</item>
+        <item>Kurang\nolahraga</item>
+        <item>Seimbang</item>
+        <item>Otot\nseimbang</item>
+        <item>Kurus</item>
+        <item>Kurus\nseimbang</item>
+        <item>Kurus\nberotot</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>SEN</item>
+        <item>SEL</item>
+        <item>RAB</item>
+        <item>KAM</item>
+        <item>JUM</item>
+        <item>SAB</item>
+        <item>Min</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Aktivitas</item>
+        <item>Jalan pelan</item>
+        <item>Jalan</item>
+        <item>Jalan cepat</item>
+        <item>Lari</item>
+        <item>Berdiri</item>
+        <item>Duduk</item>
+        <item>Aktivitas ringan</item>
+        <item>Tidak dipakai</item>
+        <item>Mengisi daya</item>
+        <item>Berbaring</item>
+    </array>
+    <array name="timeline_type">
+        <item>Aktivitas</item>
+        <item>Jalan pelan</item>
+        <item>Jalan</item>
+        <item>Jalan cepat</item>
+        <item>Lari</item>
+        <item>Berdiri</item>
+        <item>Duduk</item>
+        <item>Aktivitas ringan</item>
+        <item>Tidak dipakai</item>
+        <item>Mengisi daya…</item>
+        <item>Berbaring</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Tak terbatas</item>
+        <item>Dasar, 1</item>
+        <item>Menengah, 2</item>
+        <item>Tinggi, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normal</item>
+        <item>Tinggi</item>
+        <item>Sangat tinggi</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>Sangat Baik</item>
+        <item>Rata-Rata</item>
+        <item>Sangat Buruk</item>
+        <item>Baik</item>
+        <item>Diatas Rata-Rata</item>
+        <item>Dibawah Rata-Rata</item>
+        <item>Buruk</item>
+    </array>
+    <array name="water_leval">
+        <item>Tdk mencukupi</item>
+        <item>Normal</item>
+        <item>Baik</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>Selasa</item>
+        <item>Senin</item>
+        <item>Jumat</item>
+        <item>Kamis</item>
+        <item>Minggu</item>
+        <item>Rabu</item>
+        <item>Sabtu</item>
+    </array>
+    <array name="week_days">
+        <item>Minggu</item>
+        <item>Rabu</item>
+        <item>Jumat</item>
+        <item>Senin</item>
+        <item>Selasa</item>
+        <item>Kamis</item>
+        <item>Sabtu</item>
+    </array>
+    <array name="week_name">
+        <item>Min</item>
+        <item>Sen</item>
+        <item>Sel</item>
+        <item>Rab</item>
+        <item>Kam</item>
+        <item>Jum</item>
+        <item>Sab</item>
+    </array>
+    <array name="weeks">
+        <item>Senin</item>
+        <item>Selasa</item>
+        <item>Rabu</item>
+        <item>Kamis</item>
+        <item>Jumat</item>
+        <item>Sabtu</item>
+        <item>Minggu</item>
+    </array>
+    <array name="weeks_short">
+        <item>Sen</item>
+        <item>Sel</item>
+        <item>Rab</item>
+        <item>Kam</item>
+        <item>Jum</item>
+        <item>Sab</item>
+        <item>Min</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Kurus</item>
+        <item>Seimbang</item>
+        <item>Gemuk</item>
+        <item>Obesitas</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Letakkan timbangan sedekat mungkin ke router untuk memastikan sinyal Wi-Fi yang kuat.</item>
+        <item>· Pastikan apakah kata sandi yang dimasukkan untuk koneksi Wi-Fi sudah benar.</item>
+        <item>· Sambungkan ponsel Anda ke router Wi-Fi target, lalu coba buka halaman web untuk memeriksa apakah Anda dapat mengakses Internet.</item>
+        <item>· Apakah 2.4GHz dinonaktifkan, aktifkan dan pilihlah. Timbangan tidak mendukung Wi-Fi 5GHz. \n· Jika dual band diaktifkan, nonaktifkan untuk menghindari kesalahan konfigurasi karena jaringan 5GHz.</item>
+        <item>· Jika router Wi-Fi tersambung ke Internet, sinyal Wi-Fi kuat, dan router yang berfungsi dengan 2.4GHz diaktifkan serta dual band sudah dinonaktifkan, coba nyalakan ulang router.</item>
+        <item>· Jika menyalakan ulang router tidak berfungsi, coba nyalakan ulang ponsel.</item>
+        <item>· Jika menyalakan ulang router tidak berfungsi, coba pasang kembali baterai.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Apakah timbangan terletak di tempat dengan sinyal Wi-Fi yang kuat?</item>
+        <item>2. Apakah kata sandi Wi-Fi benar?</item>
+        <item>3. Apakah router Wi-Fi tersambung dengan benar ke Internet?</item>
+        <item>4. Apakah Wi-Fi 2.4GHz dinonaktifkan pada router? Atau apakah dual band Wi-Fi diaktifkan?</item>
+        <item>5. Coba nyalakan ulang router.</item>
+        <item>6. Coba nyalakan ulang ponsel.</item>
+        <item>7. Coba nyalakan ulang perangkat.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>Wi-Fi 2,4 GHz menunjukkan bahwa router nirkabel beroperasi pada frekuensi 2,4 GHz.\nWi-Fi 5 GHz menunjukkan bahwa router nirkabel beroperasi pada frekuensi 5 GHz.</item>
+        <item>Setel router Anda sesuai langkah-langkah berikut:\n1. Masukkan alamat login router pada bar alamat browser Anda lalu masuk ke latar belakang router nirkabel. \n2. Temukan tombol pengaturan router nirkabel. \n3. Matikan tombol dua frekuensi. \n4. Aktifkan Wi-Fi 2,4 GHz.</item>
+        <item>Kedua metode berikut dapat digunakan untuk mengecek frekuensi Wi-Fi:\n1. Dalam daftar Wi-Fi di komputer Anda, pilih [Wi-Fi] &amp;gt; [Properti] &amp;gt; [Frekuensi Jaringan]. \n2. Masuk ke latar belakang router.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Apa itu Wi-Fi 2,4 GHz dan Wi-Fi 5 GHz?</item>
+        <item>· Bagaimana cara mengaktifkan Wi-Fi 2,4 GHz di router saya?</item>
+        <item>· Bagaimana cara mengecek frekuensi Wi-Fi?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Normal</item>
+        <item>Gemuk</item>
+        <item>Obesitas</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> pon</item>
+    </array>
+</resources>

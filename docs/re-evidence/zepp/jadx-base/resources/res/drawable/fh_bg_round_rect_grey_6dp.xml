@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/fh_999999_15p"/>
+    <corners android:radius="@dimen/fh_btn_common_corner_radius"/>
+</shape>

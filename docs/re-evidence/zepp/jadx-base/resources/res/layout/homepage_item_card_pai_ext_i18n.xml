@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textColor="@color/s1"
+        android:id="@+id/pai_next_goal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Rainbow.TextAppearance.Body4"/>
+    <com.huami.module.homepage.cards.cardui.GradientLineView
+        android:id="@+id/pai_line"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pai_next_goal"/>
+    <com.huami.module.homepage.cards.cardui.I18nNumberView
+        android:textColor="@color/s2"
+        android:id="@+id/pai_zero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pai_line"
+        app:numberText="@string/homepage_item_card_pai_0"
+        style="@style/Rainbow.TextAppearance.Body4"/>
+    <com.huami.module.homepage.cards.cardui.I18nNumberView
+        android:textColor="@color/s2"
+        android:id="@+id/pai_100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pai_line"
+        app:numberText="@string/homepage_item_card_pai_100"
+        style="@style/Rainbow.TextAppearance.Body4"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

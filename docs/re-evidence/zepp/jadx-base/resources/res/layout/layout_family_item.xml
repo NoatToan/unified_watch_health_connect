@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:baseui="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/weight_user_picker_item_width"
+    android:layout_height="@dimen/weight_user_picker_item_width"
+    android:layout_marginTop="6dp">
+    <com.huami.lib.view.image.HMCircleImageView
+        android:id="@+id/user_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/setting_avatar_default"
+        baseui:civ_border_color="@color/avatar_border_color"
+        baseui:civ_border_width="@dimen/avatar_border_width"
+        baseui:civ_fill_color="@color/s3"
+        baseui:hm_civ_show_mask="true"/>
+    <com.huami.lib.view.image.HMCircleImageView
+        android:id="@+id/user_filter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@color/s3"
+        android:alpha="0.8"/>
+</RelativeLayout>

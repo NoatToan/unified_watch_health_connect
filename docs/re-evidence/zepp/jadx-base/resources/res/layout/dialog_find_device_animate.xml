@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/size_30dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/anim_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tip_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_20dp"
+        style="@style/DialogButtonStyle"/>
+    <TextView
+        android:textAppearance="@style/Rainbow.TextAppearance.Body4"
+        android:textColor="@color/s2"
+        android:layout_gravity="center"
+        android:id="@+id/cancel_tv"
+        android:background="@drawable/selector_dialog_button_neutral"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="@dimen/size_30dp"
+        style="@style/DialogButtonStyle"/>
+</LinearLayout>

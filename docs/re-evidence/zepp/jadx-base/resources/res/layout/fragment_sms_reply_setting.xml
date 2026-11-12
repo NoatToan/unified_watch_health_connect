@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/sms_reply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_checked="true"
+        app:ltv_divider_padding="all"
+        app:ltv_title="@string/phone_call_reply"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/sms_reply_manager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_title="@string/phone_call_reply_msg_management"/>
+</LinearLayout>

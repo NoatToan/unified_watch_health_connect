@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message BacklightTimeDayMessage
+{
+	// 背光统计信息
+	repeated uint32 lcdOnTimeByPress               = 1;  // 背光开启统计
+	repeated uint32 lcdOnTimeByEvent               = 2;  // 开启抬腕点亮背光统计
+}
+
+message BacklightTimeWeekMessage
+{
+	repeated BacklightTimeDayMessage lcdOnDayTime  = 1;
+}

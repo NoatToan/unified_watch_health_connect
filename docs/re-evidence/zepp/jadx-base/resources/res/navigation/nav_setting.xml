@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_setting"
+    app:startDestination="@+id/settingFragment2">
+    <fragment
+        android:label="SettingFragment"
+        android:name="com.huami.assistant.ui.v2.SettingFragment"
+        android:id="@+id/settingFragment2"/>
+</navigation>

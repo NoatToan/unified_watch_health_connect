@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/d2">
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_titlebar_search"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_weight="1"
+        android:paddingStart="12dp">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/d4"
+            android:layout_height="@dimen/d4"
+            android:src="@drawable/ic_search_20_2x"
+            app:tint="?attr/titleBarSearchIcon"/>
+        <com.huami.lib.rainbow.ClearEditText
+            android:ellipsize="end"
+            android:id="@+id/rainbow_search_text"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:maxLines="1"
+            android:lines="1"
+            android:drawableRight="@drawable/ic_close_20_2x"
+            android:inputType="text"
+            android:paddingStart="@dimen/d2"
+            android:paddingEnd="@dimen/d2"
+            app:drawableTint="?android:attr/textColorSecondary"
+            style="@style/Rainbow.TextAppearance.Body4"/>
+    </LinearLayout>
+    <TextView
+        android:textColor="?android:attr/textColorPrimary"
+        android:gravity="center"
+        android:id="@+id/rainbow_search_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:text="@android:string/cancel"
+        android:paddingStart="@dimen/d2"
+        android:paddingEnd="@dimen/d2"
+        style="@style/Rainbow.TextAppearance.Body4"/>
+</LinearLayout>

@@ -1,0 +1,96 @@
+package com.huami.ai.speech.simplify.register.state;
+
+import com.huami.ai.speech.api.engine.Engine;
+import com.huami.ai.speech.simplify.register.DeviceVoiceCallback;
+import com.huami.ai.speech.simplify.utils.AudioSave;
+import com.huami.bluetooth.profile.channel.module.voice.VoiceConfig;
+import com.huami.tools.log.HMLog;
+import java.io.IOException;
+import kotlin.Metadata;
+import kotlin.jvm.functions.Function0;
+import kotlin.jvm.internal.Lambda;
+import kotlinx.coroutines.DelicateCoroutinesApi;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.koin.core.Koin;
+import org.koin.core.component.KoinComponent;
+
+/* JADX INFO: loaded from: classes3.dex */
+@Metadata(bv = {1, 0, 3}, d1 = {"\u0000(\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u0012\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0006\b\u0007\u0018\u00002\u00020\u00012\u00020\u0002B\u000f\u0012\u0006\u0010\u000e\u001a\u00020\u000b¢\u0006\u0004\b\u000f\u0010\u0010J\u0010\u0010\u0006\u001a\u00020\u00052\u0006\u0010\u0004\u001a\u00020\u0003H\u0016J\u0010\u0010\t\u001a\u00020\u00052\u0006\u0010\b\u001a\u00020\u0007H\u0016J\b\u0010\n\u001a\u00020\u0005H\u0016R\u0016\u0010\u000e\u001a\u00020\u000b8\u0002@\u0002X\u0082\u0004¢\u0006\u0006\n\u0004\b\f\u0010\r¨\u0006\u0011"}, d2 = {"Lcom/huami/ai/speech/simplify/register/state/ListeningState;", "Lcom/huami/ai/speech/simplify/register/state/SpeechState;", "Lorg/koin/core/component/KoinComponent;", "Lcom/huami/bluetooth/profile/channel/module/voice/VoiceConfig;", "config", "", "startSession", "", "byteArray", "onAudioData", "onStopSession", "Lcom/huami/ai/speech/simplify/register/DeviceVoiceCallback;", "a", "Lcom/huami/ai/speech/simplify/register/DeviceVoiceCallback;", "voiceCallback", "<init>", "(Lcom/huami/ai/speech/simplify/register/DeviceVoiceCallback;)V", "speech-simplify_release"}, k = 1, mv = {1, 5, 1})
+@DelicateCoroutinesApi
+public final class ListeningState implements SpeechState, KoinComponent {
+
+    /* JADX INFO: renamed from: a, reason: from kotlin metadata */
+    @NotNull
+    private final DeviceVoiceCallback voiceCallback;
+
+    @Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0006\n\u0002\u0010\u000e\n\u0000\u0010\u0001\u001a\u0004\u0018\u00010\u0000H\n"}, d2 = {"", "<anonymous>"}, k = 3, mv = {1, 5, 1})
+    public static final class a extends Lambda implements Function0<String> {
+        public static final a a = new a();
+
+        public a() {
+            super(0);
+        }
+
+        @Override // kotlin.jvm.functions.Function0
+        @Nullable
+        public final String invoke() {
+            return "Listening state onStopSession";
+        }
+    }
+
+    @Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0006\n\u0002\u0010\u000e\n\u0000\u0010\u0001\u001a\u0004\u0018\u00010\u0000H\n"}, d2 = {"", "<anonymous>"}, k = 3, mv = {1, 5, 1})
+    public static final class b extends Lambda implements Function0<String> {
+        public static final b a = new b();
+
+        public b() {
+            super(0);
+        }
+
+        @Override // kotlin.jvm.functions.Function0
+        @Nullable
+        public final String invoke() {
+            return "Listening state. Do nothing!";
+        }
+    }
+
+    public ListeningState(@NotNull DeviceVoiceCallback deviceVoiceCallback) {
+        this.voiceCallback = deviceVoiceCallback;
+    }
+
+    @Override // org.koin.core.component.KoinComponent
+    @NotNull
+    public Koin getKoin() {
+        return KoinComponent.DefaultImpls.getKoin(this);
+    }
+
+    @Override // com.huami.ai.speech.simplify.register.state.SpeechState
+    public void onAudioData(@NotNull byte[] byteArray) throws IOException {
+        AudioSave opusAudioSave = this.voiceCallback.getOpusAudioSave();
+        if (opusAudioSave != null) {
+            opusAudioSave.saveAudio(byteArray);
+        }
+        byte[] bArrDecodeBytes = this.voiceCallback.decodeBytes(byteArray);
+        Engine engine = this.voiceCallback.getEngine();
+        if (engine != null) {
+            engine.putData(bArrDecodeBytes, bArrDecodeBytes.length, 0);
+        }
+        AudioSave pcmAudioSave = this.voiceCallback.getPcmAudioSave();
+        if (pcmAudioSave == null) {
+            return;
+        }
+        pcmAudioSave.saveAudio(bArrDecodeBytes);
+    }
+
+    @Override // com.huami.ai.speech.simplify.register.state.SpeechState
+    public void onStopSession() {
+        HMLog.info("speech", a.a);
+        this.voiceCallback.destroy();
+        this.voiceCallback.setState(new IdleState(this.voiceCallback));
+    }
+
+    @Override // com.huami.ai.speech.simplify.register.state.SpeechState
+    public void startSession(@NotNull VoiceConfig config) {
+        HMLog.info("speech", b.a);
+    }
+}

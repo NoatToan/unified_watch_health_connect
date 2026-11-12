@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>De bovenarm moet ontbloot zijn. Zorg dat de mouw comfortabel is opgerold</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>U moet één vinger onder de manchet kunnen steken. Manchetten die te los of te strak zitten beïnvloeden de nauwkeurigheid van de meting</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Eerste meting</item>
+        <item>Tweede meting</item>
+        <item>Derde meting</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Leg de eerste bloeddrukwaarde vast</item>
+        <item>Leg de tweede bloeddrukwaarde vast</item>
+        <item>Leg de derde bloeddrukwaarde vast</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Laag</item>
+        <item>Normaal</item>
+        <item>Hoog</item>
+        <item>Heel hoog</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normaal</item>
+        <item>Hoog</item>
+        <item>Heel hoog</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Erg slecht</item>
+        <item>Slecht</item>
+        <item>Normaal</item>
+        <item>Goed</item>
+        <item>Uitstekend</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Zeer laag</item>
+        <item>Laag</item>
+        <item>Normaal</item>
+        <item>Verhoogd</item>
+        <item>Hoog</item>
+    </array>
+    <array name="bone_leval">
+        <item>Onvoldoende</item>
+        <item>Normaal</item>
+        <item>Goed</item>
+    </array>
+    <array name="brm_leval">
+        <item>Doelen niet bereikt</item>
+        <item>Doel bereikt</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Laag</item>
+        <item>Gemiddeld</item>
+        <item>Hoog</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Druk op de knop op de smartwatch. Als het scherm van de smartwatch uitgeschakeld is, moet je de batterij van de smartwatch opladen.</item>
+        <item>Als het bandje opgeladen is, maar niet door de telefoon wordt gevonden, start je de Bluetooth van de telefoon opnieuw op.</item>
+        <item>Als het bandje opgeladen is, maar niet door de telefoon wordt gevonden, start je de Bluetooth van de telefoon opnieuw op.</item>
+        <item>Als het opnieuw opstarten van Bluetooth niet helpt, kunt je je telefoon opnieuw opstarten.</item>
+        <item>De gegevens van de smartwatch kunnen niet worden gesynchroniseerd terwijl je bezig bent met een training. Beëindig de sessie en probeer het opnieuw.</item>
+        <item>Als het bandje opgeladen is, maar niet door de telefoon wordt gevonden, start je de Bluetooth van de telefoon opnieuw op.</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Is je smartwatch opgeladen?</item>
+        <item>Is deze smartwatch gekoppeld met een ander apparaat?</item>
+        <item>Start Bluetooth opnieuw</item>
+        <item>Start je telefoon opnieuw op</item>
+        <item>Kan niet synchroniseren tijdens trainingen</item>
+        <item>Kan niet synchroniseren tijdens trainingen</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Shenzhen</item>
+        <item>Foshan</item>
+        <item>Dongguan</item>
+        <item>Beijing</item>
+        <item>Nanjing</item>
+        <item>Suzhou</item>
+        <item>Changzhou</item>
+        <item>Jinan</item>
+        <item>Qingdao</item>
+        <item>Hangzhou</item>
+        <item>Ningbo</item>
+        <item>Zhengzhou</item>
+        <item>Kaifeng</item>
+        <item>Shanghai</item>
+        <item>Shijiazhuang</item>
+        <item>Baoding</item>
+        <item>Chengdu</item>
+        <item>Mianyang</item>
+        <item>Shenyang</item>
+        <item>Dalian</item>
+    </array>
+    <array name="common_level">
+        <item>Onvoldoende</item>
+        <item>Normaal</item>
+        <item>Goed</item>
+    </array>
+    <array name="contact_ways">
+        <item>E-mail</item>
+        <item>Mobiel nummer</item>
+        <item>WeChat-ID</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Nog nooit fitnesstraining gevolgd</item>
+        <item>Basisfitnesstraining gevolgd</item>
+        <item>Veel fitnesstraining gevolgd, goed in vorm</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Basis</item>
+        <item>Gemiddeld</item>
+        <item>Gevorderd</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Onvoldoende gegevens</item>
+        <item>Abnormale hartslag</item>
+        <item>Geen afwijkingen gedetecteerd</item>
+        <item>Onvoldoende gegevens</item>
+        <item>Geen afwijkingen gedetecteerd</item>
+        <item />
+        <item>Geen afwijkingen gedetecteerd</item>
+        <item>Slechte signaalkwaliteit</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Pas de gebruiksmethode aan en probeer het opnieuw.</item>
+        <item>Alleen bedoeld ter referentie. Raadpleeg een arts als u zich niet goed voelt.</item>
+        <item>Alleen bedoeld ter referentie. Raadpleeg een arts als u zich niet goed voelt.</item>
+        <item>Pas de gebruiksmethode aan en probeer het opnieuw.</item>
+        <item>Alleen bedoeld ter referentie. Raadpleeg een arts als u zich niet goed voelt.</item>
+        <item />
+        <item>Alleen bedoeld ter referentie. Raadpleeg een arts als u zich niet goed voelt.</item>
+        <item>Pas de gebruiksmethode aan en probeer het opnieuw.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Doel is vetverbranding</item>
+        <item>Doel is een strakker lichaam krijgen</item>
+        <item>Doel is spiermassa kweken</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Cutten</item>
+        <item>Shapen</item>
+        <item>Bulken</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>Maandag</item>
+        <item>Dinsdag</item>
+        <item>Woensdag</item>
+        <item>Donderdag</item>
+        <item>Vrijdag</item>
+        <item>Zaterdag</item>
+        <item>Zondag</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Maa</item>
+        <item>Din</item>
+        <item>Woe</item>
+        <item>Don</item>
+        <item>Vrij</item>
+        <item>Zat</item>
+        <item>Zon</item>
+    </array>
+    <array name="hr_sport">
+        <item>Hartslagbereik: Licht</item>
+        <item>Hartslagbereik: Intensief</item>
+        <item>Hartslagbereik: Aerobic</item>
+        <item>Hartslagbereik: Anaërobe</item>
+        <item>Hartslagbereik: VO₂ max</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Licht</item>
+        <item>Intensief</item>
+        <item>Aerobics</item>
+        <item>Anaeroob</item>
+        <item>VO₂ max</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Oksel</item>
+        <item>Oraal</item>
+        <item>Rectum</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Pols</item>
+        <item>Voorhoofd</item>
+        <item>Achter het oor</item>
+        <item>Cochlea (slakkenhuis)</item>
+        <item>Nek</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Oksel</item>
+        <item>Oraal</item>
+        <item>Rectum</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Borst</item>
+        <item>Oksel</item>
+        <item>Liezen</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Sluiten</item>
+        <item>In de buurt</item>
+        <item>Ver</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Tik op de knop op het bandje om te controleren of het display oplicht. Als dat niet zo is, moet je het bandje opladen.\n\nLaad het apparaat op voordat je een %1$s of %2$s koppelt.</item>
+        <item>Als het bandje opgeladen is, maar niet door de telefoon wordt gevonden, start je de Bluetooth van de telefoon opnieuw op.</item>
+        <item>Als het bandje opgeladen is, maar niet door de telefoon wordt gevonden, start je de Bluetooth van de telefoon opnieuw op.</item>
+        <item>Als het opnieuw opstarten van Bluetooth niet helpt, kunt je je telefoon opnieuw opstarten.</item>
+        <item>Als het opnieuw opstarten van Bluetooth niet helpt, kunt je je telefoon opnieuw opstarten.</item>
+        <item>Als het opnieuw opstarten van Bluetooth niet helpt, kunt je je telefoon opnieuw opstarten.</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Is het bandje opgeladen?</item>
+        <item>Is dit bandje gekoppeld met een ander apparaat?</item>
+        <item>Is dit bandje gekoppeld met een ander apparaat?</item>
+        <item>Start je telefoon opnieuw op</item>
+        <item>Is dit bandje gekoppeld met een ander apparaat?</item>
+        <item>Is dit bandje gekoppeld met een ander apparaat?</item>
+    </array>
+    <array name="month_list">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mrt</item>
+        <item>Apr</item>
+        <item>Mei</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="month_titles">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Maa</item>
+        <item>Apr</item>
+        <item>Mei</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Onvoldoende</item>
+        <item>Normaal</item>
+        <item>Goed</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Erg slecht</item>
+        <item>Slecht</item>
+        <item>Gemiddeld</item>
+        <item>Goed</item>
+        <item>Erg goed</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Ma</item>
+        <item>Apr</item>
+        <item>Mei</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s stopt met werken als je het gedurende lange tijd niet gebruikt. Schud je %2$s en probeer het opnieuw.</item>
+        <item>De levensduur van de batterij van %s is 1 jaar. Als je het apparaat gedurende lange tijd hebt gebruikt, is de batterij misschien leeg.</item>
+        <item>Schakel eerst Bluetooth op het andere apparaat uit en maak dan de koppeling met je telefoon.</item>
+        <item>Als %s opgeladen is, maar niet door de telefoon wordt gevonden, start je de Bluetooth van de telefoon opnieuw op.</item>
+        <item>Als het opnieuw opstarten van Bluetooth niet helpt, kunt je je telefoon opnieuw opstarten.</item>
+        <item>Tik op de gegevens van de loopschoenen en open de volgende activiteitenpagina om de gegevens automatisch te synchroniseren</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Schud met de %s</item>
+        <item>Zijn je %s opgeladen?</item>
+        <item>Zijn de %s gekoppeld met een andere telefoon in de buurt?</item>
+        <item>Bluetooth opnieuw opstarten</item>
+        <item>Start je telefoon opnieuw op</item>
+        <item>Hoe synchroniseer je je gegevens?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Obees</item>
+        <item>Overgewicht</item>
+        <item>Sterk gebouwd</item>
+        <item>Sport\nte weinig</item>
+        <item>Gebalanceerd</item>
+        <item>Uitgebalanceerd\ngespierd</item>
+        <item>Mager</item>
+        <item>Gebalanceerd\nmager</item>
+        <item>Mager\ngespierd</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>Maandag</item>
+        <item>Dinsdag</item>
+        <item>Woensdag</item>
+        <item>Donderdag</item>
+        <item>Vrijdag</item>
+        <item>Zaterdag</item>
+        <item>Zondag</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Activiteit</item>
+        <item>Langzaam wandelen</item>
+        <item>Wandelen</item>
+        <item>Snel wandelen</item>
+        <item>Rennen</item>
+        <item>Staan</item>
+        <item>Zitten</item>
+        <item>Lichte activiteit</item>
+        <item>Niet om</item>
+        <item>Opladen…</item>
+        <item>Liggend</item>
+    </array>
+    <array name="timeline_type">
+        <item>Activiteit</item>
+        <item>Langzaam wandelen</item>
+        <item>Wandelen</item>
+        <item>Snel wandelen</item>
+        <item>Hardlopen</item>
+        <item>Staan</item>
+        <item>Zitten</item>
+        <item>Lichte activiteit</item>
+        <item>Niet om</item>
+        <item>Opladen…</item>
+        <item>Liggend</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Niet beperkt</item>
+        <item>Basis, 1</item>
+        <item>Gemiddeld, 2</item>
+        <item>Gevorderd, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normaal</item>
+        <item>Hoog</item>
+        <item>Zeer hoog</item>
+    </array>
+    <array name="water_leval">
+        <item>Onvoldoende</item>
+        <item>Normaal</item>
+        <item>Goed</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_name">
+        <item>Zon</item>
+        <item>Maa</item>
+        <item>Din</item>
+        <item>Woe</item>
+        <item>Don</item>
+        <item>Vrij</item>
+        <item>Zat</item>
+    </array>
+    <array name="weeks">
+        <item>Maandag</item>
+        <item>Dinsdag</item>
+        <item>Woensdag</item>
+        <item>Donderdag</item>
+        <item>Vrijdag</item>
+        <item>Zaterdag</item>
+        <item>Zondag</item>
+    </array>
+    <array name="weeks_short">
+        <item>Maa</item>
+        <item>Din</item>
+        <item>Woe</item>
+        <item>Don</item>
+        <item>Vrij</item>
+        <item>Zat</item>
+        <item>Zon</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Ondergewicht</item>
+        <item>Gebalanceerd</item>
+        <item>Overgewicht</item>
+        <item>Obees</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Plaats de weegschaal zo dicht mogelijk bij de router voor een sterk wifisignaal</item>
+        <item>· Controleer of het ingevoerde wachtwoord voor de wifiverbinding juist is.</item>
+        <item>· Verbind je telefoon met de beoogde wifirouter en probeer vervolgens een webpagina te openen om te controleren of je toegang hebt tot internet.</item>
+        <item>· Als 2,4 GHz is uitgeschakeld, schakel dit dan in en selecteer het. De weegschaal ondersteunt 5 GHz wifi niet. \n· Als dual-band is ingeschakeld, schakel dit dan uit om het mislukken van de configuratie vanwege het 5 GHz netwerk te voorkomen.</item>
+        <item>· Als de wifirouter een internetverbinding heeft, het wifisignaal sterk is en op de router 2,4 GHz is ingeschakeld en dual-band uitgeschakeld, start dan de router opnieuw op.</item>
+        <item>· Als het opnieuw opstarten van de router niet werkt, start de telefoon dan opnieuw op.</item>
+        <item>· Als het opnieuw opstarten van de router niet helpt, plaats dan de batterij opnieuw.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Staat de weegschaal op een locatie met een sterk wifisignaal?</item>
+        <item>2. Is het wifiwachtwoord juist?</item>
+        <item>3. Heeft de wifirouter verbinding met internet?</item>
+        <item>4. Is 2,4 GHz wifi op de router uitgeschakeld? Of is dual-band wifi ingeschakeld?</item>
+        <item>5. Start de router opnieuw op.</item>
+        <item>6. Start de telefoon opnieuw op.</item>
+        <item>7. Start het apparaat opnieuw op.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>2,4 GHz wifi geeft aan dat de draadloze router op 2,4 GHz werkt.\n5 GHz wifi geeft aan dat de draadloze router op 5 GHz werkt.</item>
+        <item>Volg de volgende stappen om je router in te stellen:\n1. Voer het IP-adres van je router in de adresbalk van je browser in en log in op de configuratiepagina van de draadloze router. \n2. Zoek de instelknop van de draadloze router. \n3. Schakel de dual-band-knop uit. \n4. Schakel de 2,4 GHz-frequentieband van je wifinetwerk in.</item>
+        <item>Je kunt de volgende twee methoden gebruiken om de wifi-frequentieband te controleren:\n1. In de wifilijst op de computer selecteer je [Wifi] &amp;gt; [Eigenschap] &amp;gt; [Netwerkband]. \n2. Log in op de configuratiepagina van de router.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Wat is wifi met een 2,4 GHz-frequentieband en wifi met een 5 GHz-frequentieband?</item>
+        <item>· Hoe kan ik de 2,4 GHz wifi op mijn router inschakelen?</item>
+        <item>· Hoe kan ik de wifi-frequentieband controleren?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Normaal</item>
+        <item>Overgewicht</item>
+        <item>Obees</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> lbs</item>
+    </array>
+</resources>

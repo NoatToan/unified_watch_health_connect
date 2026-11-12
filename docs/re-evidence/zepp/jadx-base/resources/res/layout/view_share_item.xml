@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="90dp">
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/icon"
+        style="@style/viewShareItemIconStyle"/>
+    <com.huami.lib.view.text.UnitTextView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/unit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:typeface="km"
+        style="@style/unitTextStyle"/>
+    <TextView
+        android:textColor="@color/s2"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        style="@style/Rainbow.TextAppearance.Body5"/>
+</LinearLayout>

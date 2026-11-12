@@ -1,0 +1,8 @@
+package com.scwang.smartrefresh.layout.listener;
+
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+
+/* JADX INFO: loaded from: classes18.dex */
+public interface OnLoadmoreListener {
+    void onLoadmore(RefreshLayout refreshLayout);
+}

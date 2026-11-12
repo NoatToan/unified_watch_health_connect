@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>Bir kez</item>
+        <item>Her gün</item>
+        <item>Pazartesiden Cumaya</item>
+    </array>
+    <array name="allday_reminder_minute">
+        <item>-1</item>
+        <item>-480</item>
+        <item>960</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>Hỗ trợ hồ bơi, bơi trong không gian nước mở và các hoạt động ba môn phối hợp</item>
+        <item>Cung cấp dữ liệu tiêu thụ oxy tối đa (VO₂ max)</item>
+        <item>Thống kê và cài đặt hoạt động toàn diện</item>
+        <item>Hướng dẫn việc tập luyện của bạn theo các mục tiêu bạn đặt ra</item>
+        <item>Hiệu quả Tập luyện (TE) giúp bạn hiểu được lợi ích của một bài tập về thể lực của bạn</item>
+    </array>
+    <array name="bind_guide_main_title_everest2">
+        <item>VO2maks verilerini sağlar\nkişisel egzersiz performansının doğru bir değerlendirmesi</item>
+        <item>Taşıma kartına ve giriş kontrol kartına elveda. \n Seyahat ederken, işe giderken ve ödeme yaparken sadece saatinizi kaydırabilirsiniz.</item>
+        <item>İstediğiniz zaman iki mod arasında geçiş yapın. \n Ultra uzun bekleme veya akıllı sistemi seçebilirsiniz.</item>
+        <item>70 saatlik sürekli GPS konumlandırma özelliği, \n açık hava egzersizleri sırasında endişelenecek bir şeyiniz yok demektir.</item>
+    </array>
+    <array name="bind_guide_main_title_everest2_oversea">
+        <item>VO2maks verilerini sağlar\nkişisel egzersiz performansının doğru bir değerlendirmesi</item>
+        <item>İstediğiniz zaman iki mod arasında geçiş yapın. \n Ultra uzun bekleme veya akıllı sistemi seçebilirsiniz.</item>
+        <item>70 saatlik sürekli GPS konumlandırma özelliği, \n açık hava egzersizleri sırasında endişelenecek bir şeyiniz yok demektir.</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>Tümünü “Classmate Xiao Ai” ile kontrol etmenin bir anahtarı \n Evinizi akıllı kumanda ile akıllı hale getirirseniz sizin söylediklerinizi takip eder</item>
+        <item>Taşıma kartı, giriş kartı, UnionPay kartı \n Seyahat etmek, çalışmak ve tüketmek için saatinizi sadece kaydırın</item>
+        <item>Telefonunuz olmadan 12 spor yapın \n Egzersiz yaparken kim daha fazla özgürlük istemez</item>
+        <item>Bluetoothl\'u telefonu destekler\n Cep telefonu kullanmadan arama yapma ve cevaplama</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>Alexa \n Akıllı sesini açmak için bir anahtar, söylediklerinizi yapar.</item>
+        <item>Telefonunuz olmadan 12 spor yapın \n Egzersiz yaparken kim daha fazla özgürlük istemez</item>
+        <item>Bluetoothl\'u telefonu destekler\n Cep telefonu kullanmadan arama yapma ve cevaplama</item>
+    </array>
+    <array name="bind_guide_main_title_xihu">
+        <item>eSIM kartları desteklenir. \n Cep telefonunuza bağlanmadan arama yapabilir ve çevrimiçi olabilirsiniz.</item>
+        <item>XiaoAI tek tıkla kontrol \n Tüm akıllı ev aletlerini sesinizle kontrol edin - sadece kelimeleri söyleyin.</item>
+        <item>Cep telefonunuzu kullanmadan on spor yapabilirsiniz. \n Bir yükle beraber spor yapmak istemezsiniz.</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item>* Yalnızca koşu için</item>
+        <item />
+        <item>* Yalnızca koşu egzersizi içindir, egzersiz ayarlarında açmanız gerekir</item>
+        <item />
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item>Yüzme havuzu, açık su yüzme ve triatlon aktivitelerini destekler</item>
+        <item>Maksimum oksijen tüketimi (VO₂ max) verisi sağlar</item>
+        <item>Kapsamlı aktivite istatistikleri ve ayarlar</item>
+        <item>Egzersizinizi belirlediğiniz hedeflere göre yönlendirin</item>
+        <item>Egzersiz Etkisi (TE) kondisyonunuzdaki bir egzersizin faydasını anlamanıza yardımcı olur</item>
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Üst kolunuz çıplak ve giysinizin kolu sıkı olmayacak şekilde yukarı kıvrılmış olmalıdır</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Kelepçenin altına bir parmağınızı geçirebilmelisiniz. Kelepçenin çok gevşek veya çok sıkı olması ölçümün doğruluğunu etkileyebilir</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>İlk ölçüm</item>
+        <item>İkinci ölçüm</item>
+        <item>Üçüncü ölçüm</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>İlk kan basıncı değerini kaydedin</item>
+        <item>İkinci kan basıncı değerini kaydedin</item>
+        <item>Üçüncü kan basıncı değerini kaydedin</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Düşük</item>
+        <item>Normal</item>
+        <item>Yüksek</item>
+        <item>Çok yüksek</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normal</item>
+        <item>Yüksek</item>
+        <item>Çok yüksek</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Çok zayıf</item>
+        <item>Zayıf</item>
+        <item>Normal</item>
+        <item>İyi</item>
+        <item>Mükemmel</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Çok düşük</item>
+        <item>Düşük</item>
+        <item>Normal</item>
+        <item>Arttı</item>
+        <item>Yüksek</item>
+    </array>
+    <array name="bone_leval">
+        <item>Yetersiz</item>
+        <item>Normal</item>
+        <item>İyi</item>
+    </array>
+    <array name="brm_leval">
+        <item>Hedeflere ulaşılmadı</item>
+        <item>Ulaşılan hedef</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Düşük</item>
+        <item>Orta</item>
+        <item>Yüksek</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Saat üzerindeki tuşa basın, saat ekranı kapalıysa saati şarj etmek için prize takın.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Bileklik şarj edildiği halde telefon bilekliği bulamıyorsa, telefonun Bluetooth\'unu açıp kapatmayı deneyin.</item>
+        <item>Bluetooth\'u yeniden başlatmak problemi çözmüyorsa, telefonunuzu yeniden başlatmayı deneyin.</item>
+        <item>Saat verileri egzersiz sırasında güncellenemiyor. Seansı sonlandırın ve tekrar deneyin.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Saatiniz şarj edildi mi?</item>
+        <item>Saat başka bir cihazla mı eşleştirildi?</item>
+        <item>Bluetooth\'u yeniden başlatmayı deneyin</item>
+        <item>Telefonunuzu yeniden başlatmayı deneyin</item>
+        <item>Egzersiz sırasında veri senkronize edilemiyor</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Shenzhen</item>
+        <item>Foshan</item>
+        <item>Dongguan</item>
+        <item>Pekin</item>
+        <item>Nanjing</item>
+        <item>Suzhou</item>
+        <item>Changzhou</item>
+        <item>Jinan</item>
+        <item>Qingdao</item>
+        <item>Hangzhou</item>
+        <item>Ningbo</item>
+        <item>Zhengzhou</item>
+        <item>Kaifeng</item>
+        <item>Şangay</item>
+        <item>Shijiazhuang</item>
+        <item>Baoding</item>
+        <item>Chengdu</item>
+        <item>Mianyang</item>
+        <item>Shenyang</item>
+        <item>Dalian</item>
+    </array>
+    <array name="common_level">
+        <item>Yetersiz</item>
+        <item>Normal</item>
+        <item>İyi</item>
+    </array>
+    <array name="component_list">
+        <item>com.huami.watch.companion.mitv.MiTvComponent</item>
+        <item>com.huami.watch.companion.sogoulocation.SogouLocCmp</item>
+    </array>
+    <array name="contact_ways">
+        <item>E-posta</item>
+        <item>Cep telefonu numarası</item>
+        <item>WeChat Kimliği</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Fitness\'a yeni başladım</item>
+        <item>Basit fitness deneyimim var</item>
+        <item>Fitness hakkında ileri derecede bilgiliyim ve iyi bir vücudum var</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Giriş</item>
+        <item>Orta</item>
+        <item>İleri</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Yetersiz veri</item>
+        <item>Anormal kalp atışı</item>
+        <item>Herhangi bir anormallik tespit edilmedi</item>
+        <item>Yetersiz veri</item>
+        <item>Herhangi bir anormallik tespit edilmedi</item>
+        <item />
+        <item>Herhangi bir anormallik tespit edilmedi</item>
+        <item>Zayıf sinyal kalitesi</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Lütfen kullanım yöntemini ayarlayın ve tekrar deneyin</item>
+        <item>Sadece referans için.Herhangi bir rahatsızlığınız varsa doktora danışın</item>
+        <item>Sadece referans için.Herhangi bir rahatsızlığınız varsa doktora danışın</item>
+        <item>Lütfen kullanım yöntemini ayarlayın ve tekrar deneyin</item>
+        <item>Sadece referans için.Herhangi bir rahatsızlığınız varsa doktora danışın</item>
+        <item />
+        <item>Sadece referans için.Herhangi bir rahatsızlığınız varsa doktora danışın</item>
+        <item>Lütfen kullanım yöntemini ayarlayın ve tekrar deneyin</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Yağ yakımını amaçlayan</item>
+        <item>Vücudu şekillendirmeyi amaçlayan</item>
+        <item>Kas inşasını amaçlayan</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Definisyon</item>
+        <item>Şekillendirme</item>
+        <item>Hacim</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>PZT</item>
+        <item>SAL</item>
+        <item>ÇRŞ</item>
+        <item>PRŞ</item>
+        <item>CUM</item>
+        <item>CMT</item>
+        <item>Paz</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Pzt</item>
+        <item>Sal</item>
+        <item>Çar</item>
+        <item>Per</item>
+        <item>Cum</item>
+        <item>Cmt</item>
+        <item>Paz</item>
+    </array>
+    <array name="hr_sport">
+        <item>Nabız bölgesi: Hafif</item>
+        <item>Nabız bölgesi: Yoğun</item>
+        <item>Nabız bölgesi: Aerobik</item>
+        <item>Nabız bölgesi: Anaerobik</item>
+        <item>Nabız bölgesi: VO₂ maks</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Hafif</item>
+        <item>Yoğun</item>
+        <item>Aerobik</item>
+        <item>Anaerobik</item>
+        <item>VO₂ maks</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Koltuk altı</item>
+        <item>Ağız</item>
+        <item>Rektum</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Bilek</item>
+        <item>Alın</item>
+        <item>Kulak arkası</item>
+        <item>Koklea</item>
+        <item>Boyun</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Koltuk altı</item>
+        <item>Ağız</item>
+        <item>Rektum</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Göğüs</item>
+        <item>Koltuk altı</item>
+        <item>Kasık</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Kapat</item>
+        <item>Yakın</item>
+        <item>Uzak</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Ekran ışıklarının yanıp yanmadığını kontrol etmek için bileklik tuşuna basın. Ekran ışıkları yanmıyorsa, bilekliğinizi şarj edin.\n\n%1$s veya %2$s eşleştirmeden önce, cihazınızı şarj edin.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Bileklik şarj edildiği halde telefon bilekliği bulamıyorsa, telefonun Bluetooth\'unu açıp kapatmayı deneyin.</item>
+        <item>Bluetooth\'u yeniden başlatmak problemi çözmüyorsa, telefonunuzu yeniden başlatmayı deneyin.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Bilekliğiniz şarj edildi mi?</item>
+        <item>Bu bileklik başka bir cihazla mı eşleştirildi?</item>
+        <item>@string/help_title_2</item>
+        <item>Telefonunuzu yeniden başlatmayı deneyin</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>Oca</item>
+        <item>Şub</item>
+        <item>Mar</item>
+        <item>Nis</item>
+        <item>May</item>
+        <item>Haz</item>
+        <item>Tem</item>
+        <item>Ağu</item>
+        <item>Eyl</item>
+        <item>Eki</item>
+        <item>Kas</item>
+        <item>Ara</item>
+    </array>
+    <array name="month_titles">
+        <item>Oca</item>
+        <item>Şub</item>
+        <item>Mar</item>
+        <item>Nis</item>
+        <item>May</item>
+        <item>Haz</item>
+        <item>Tem</item>
+        <item>Ağu</item>
+        <item>Eyl</item>
+        <item>Eki</item>
+        <item>Kas</item>
+        <item>Ara</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Yetersiz</item>
+        <item>Normal</item>
+        <item>İyi</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>Düşük batarya bildirimi</item>
+        <item>Gelen çağrı</item>
+        <item>Boşta uyarısı</item>
+        <item>Hedef bildirimleri</item>
+        <item>Günlük hava durumu hatırlatıcısı</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Çok zayıf</item>
+        <item>Zayıf</item>
+        <item>Ortalama</item>
+        <item>İyi</item>
+        <item>Çok iyi</item>
+    </array>
+    <array name="pin_time">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+        <item>150</item>
+        <item>180</item>
+        <item>210</item>
+        <item>240</item>
+        <item>270</item>
+        <item>300</item>
+        <item>330</item>
+        <item>360</item>
+        <item>390</item>
+        <item>420</item>
+        <item>450</item>
+        <item>480</item>
+    </array>
+    <array name="reminder_minute">
+        <item>-1</item>
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>İlk</item>
+        <item>İkinci</item>
+        <item>Üçüncü</item>
+        <item>Dördüncü</item>
+        <item>Son</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Oca</item>
+        <item>Şub</item>
+        <item>Mar</item>
+        <item>Nis</item>
+        <item>May</item>
+        <item>Haz</item>
+        <item>Tem</item>
+        <item>Ağu</item>
+        <item>Eyl</item>
+        <item>Eki</item>
+        <item>Kas</item>
+        <item>Ara</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s çipini uzun bir süre kullanmamanız durumunda çalışmayı durdurur. %2$s çipini sallayın ve tekrar deneyin.</item>
+        <item>%s pil ömrü 1 yıldır. Pili daha uzun bir süredir kullanıyorsanız, pil tükenmiş olabilir.</item>
+        <item>Öncelikle diğer cihazda Bluetooth\'u kapatın, ardından telefonunuzla eşleştirin.</item>
+        <item>%s şarj edildiği halde telefon tarafından bulunamıyorsa, telefonunuzun Bluetooth\'unu tekrar başlatmayı deneyin.</item>
+        <item>Bluetooth\'u yeniden başlatmak problemi çözmüyorsa, telefonunuzu yeniden başlatmayı deneyin.</item>
+        <item>Verileri otomatik olarak senkronize etmek için ayakkabı verileri seçeneğine dokununun ve bir sonraki etkinlik sayfasına girin</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>%s çipini sallayın</item>
+        <item>%s şarj edildi mi?</item>
+        <item>%s yakınlardaki başka bir telefonla mı eşleştirildi?</item>
+        <item>Bluetooth\'u yeniden başlatın</item>
+        <item>Telefonunuzu yeniden başlatmayı deneyin</item>
+        <item>Verileri nasıl eşitlerim?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Obez</item>
+        <item>Kilolu</item>
+        <item>Tıknaz</item>
+        <item>Egzersiz\neksikliği</item>
+        <item>Dengeli</item>
+        <item>Dengeli\nkaslı</item>
+        <item>Zayıf</item>
+        <item>Dengeli\nsıska</item>
+        <item>Zayıf\nkaslı</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>PZT</item>
+        <item>SAL</item>
+        <item>ÇRŞ</item>
+        <item>PRŞ</item>
+        <item>CUM</item>
+        <item>CMT</item>
+        <item>Paz</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Etkinlik</item>
+        <item>Yavaş yürüyüş</item>
+        <item>Yürüyüş</item>
+        <item>Hızlı yürüyüş</item>
+        <item>Koşu</item>
+        <item>Ayakta durma</item>
+        <item>Oturma</item>
+        <item>Hafif etkinlik</item>
+        <item>Takılı değil</item>
+        <item>Şarj ediliyor</item>
+        <item>Uzanma</item>
+    </array>
+    <array name="timeline_type">
+        <item>Etkinlik</item>
+        <item>Yavaş yürüyüş</item>
+        <item>Yürüyüş</item>
+        <item>Hızlı yürüyüş</item>
+        <item>Koşu</item>
+        <item>Ayakta</item>
+        <item>Oturma</item>
+        <item>Hafif etkinlik</item>
+        <item>Takılı değil</item>
+        <item>Şarj ediliyor…</item>
+        <item>Uzanma</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Limitsiz</item>
+        <item>Giriş, 1</item>
+        <item>Orta, 2</item>
+        <item>İleri, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normal</item>
+        <item>Yüksek</item>
+        <item>Çok yüksek</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>Çok kötü</item>
+        <item>Kötü</item>
+        <item>Ortalamanın altı</item>
+        <item>Ortalama</item>
+        <item>Ortalamanın üstü</item>
+        <item>İyi</item>
+        <item>Mükemmel</item>
+    </array>
+    <array name="water_leval">
+        <item>Yetersiz</item>
+        <item>Normal</item>
+        <item>İyi</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>Paz</item>
+        <item>Sal</item>
+        <item>Çar</item>
+        <item>Per</item>
+        <item>Cum</item>
+        <item>Cmt</item>
+        <item>Paz</item>
+    </array>
+    <array name="week_days">
+        <item>Pzt</item>
+        <item>Sal</item>
+        <item>Çrş</item>
+        <item>Prş</item>
+        <item>Cum</item>
+        <item>Cmt</item>
+        <item>Paz</item>
+    </array>
+    <array name="week_name">
+        <item>Paz</item>
+        <item>Pzt</item>
+        <item>Sal</item>
+        <item>Çrş</item>
+        <item>Prş</item>
+        <item>Cum</item>
+        <item>Cts</item>
+    </array>
+    <array name="weeks">
+        <item>Pazartesi</item>
+        <item>Salı</item>
+        <item>Çarşamba</item>
+        <item>Perşembe</item>
+        <item>Cuma</item>
+        <item>Cumartesi</item>
+        <item>Pazar</item>
+    </array>
+    <array name="weeks_short">
+        <item>Pzt</item>
+        <item>Sal</item>
+        <item>Çrş</item>
+        <item>Prş</item>
+        <item>Cum</item>
+        <item>Cts</item>
+        <item>Paz</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Zayıf</item>
+        <item>Normal</item>
+        <item>Kilolu</item>
+        <item>Obez</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Wi-Fi sinyalinin güçlü olması için tartıyı yönlendiriciye mümkün olduğunca yakın bir yere yerleştirin</item>
+        <item>· Wi-Fi bağlantısının giriş parolasının doğru olduğundan emin olun.</item>
+        <item>· Telefonunuzu hedef Wi-Fi yönlendiriciye bağlayın ve internet erişimini kontrol etmek için bir web sayfası açmayı deneyin.</item>
+        <item>· 2.4GHz devre dışı bırakıldıysa, etkinleştirip seçin. Tartı 5GHz Wi-Fi desteği sunmaz. \n· Çift bant etkinleştirilmişse, 5GHz ağ nedeniyle yapılandırma hatasını önlemek üzere devre dışı bırakın.</item>
+        <item>· Wi-Fi yönlendirici internete bağlıysa, Wi-Fi sinyali güçlüyse, yönlendirici 2.4GHz etkinleştirilmiş şekilde çalışıyorsa ve çift bant devre dışı bırakılmışsa, yönlendiriciyi yeniden başlatmayı deneyin.</item>
+        <item>· Yönlendiricinin yeniden başlatmak sorunu gidermezse telefonu yeniden başlatın.</item>
+        <item>· Yönlendiricinin yeniden başlatılması sorunu gidermezse, pilleri yeniden takmayı deneyin.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Tartı, Wi-Fi sinyalinin güçlü olduğu bir yere mi koyulmuş?</item>
+        <item>2. Wi-Fi parolası doğru mu?</item>
+        <item>3. Wi-Fi yönlendirici internete uygun şekilde bağlanmış mı?</item>
+        <item>4. Yönlendiricide 2.4GHz Wi-Fi devre dışı bırakılmış mı? Veya çift bant Wi-Fi etkinleştirilmiş mi?</item>
+        <item>5. Yönlendiriciyi yeniden çalıştırmayı deneyin.</item>
+        <item>6. Telefonu yeniden başlatmayı deneyin.</item>
+        <item>7. Cihazı yeniden başlatmayı deneyin.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>2.4 GHz Wi-Fi, kablosuz yönlendiricinin 2.4 GHz bandında çalıştığını gösterir.\n5 GHz Wi-Fi, kablosuz yönlendiricinin 5 GHz bandında çalıştığını gösterir.</item>
+        <item>Yönlendiricinizi aşağıdaki adımlara göre ayarlayın:\n1. Yönlendiricinizin giriş adresini tarayıcınızın adres çubuğuna girin ve kablosuz yönlendiricinizin yönetim paneline giriş yapın. \n2. Kablosuz yönlendiricinin ayar düğmesini bulun. \n3. Çift bant düğmesini kapatın. \n4. 2.4 GHz Wi-Fi\'ı etkinleştirin.</item>
+        <item>Aşağıdaki iki yöntem, Wi-Fi bandını kontrol etmek için kullanılabilir:\n1. Bilgisayarınızdaki Wi-Fi ağları listesinde [Wi-Fi] &amp;gt; [Özellikler] &amp;gt; [Ağ Grubu] seçimi yapın. \n2. Yönlendiricinin yönetim paneline giriş yapın.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· 2.4 GHz Wi-Fi ve 5 GHz Wi-Fi nedir?</item>
+        <item>· 2.4 GHz Wi-Fi\'ı yönlendiricimde nasıl etkinleştirebilirim?</item>
+        <item>· Wi-Fi bandını nasıl kontrol edebilirim?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Normal</item>
+        <item>Kilolu</item>
+        <item>Obez</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> lib</item>
+    </array>
+</resources>

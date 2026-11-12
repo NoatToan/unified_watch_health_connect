@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="Ndays">
+        <item quantity="one">1 วัน</item>
+        <item quantity="other">%1$d วัน</item>
+    </plurals>
+    <plurals name="Nhours">
+        <item quantity="one">1 ชั่วโมง</item>
+        <item quantity="other">%1$d ชั่วโมง</item>
+    </plurals>
+    <plurals name="Nminutes">
+        <item quantity="one">1 นาที</item>
+        <item quantity="other">%1$d นาที</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="other">เนื่องจากการอัปเกรดแบรนด์ ผู้ปกครองของคุณจะต้องยืนยันข้อมูลบัญชีเพื่อปกป้องความปลอดภัยของข้อมูลของคุณ โปรดยืนยันโดยเร็วที่สุด มิเช่นนั้น บัญชีของคุณจะถูกระงับภายใน %1$sวัน</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="other">ครบจำนวนสูงสุดของการป้อนรายการบัญชีหรือรหัสผ่านแล้ว โปรดลองอีกครั้งใน %s นาที</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="other">ชื่อบัญชีหรือรหัสผ่านไม่ถูกต้อง คุณลองได้อีก %s ครั้ง</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="other">%d หลักสูตร</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="other">สั่นอีกครั้งในอีก %s นาที</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="other">วันนี้เหนือกว่า %d%% ของผู้ใช้ทั้งหมด</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="other">สามารถเพิ่มได้สูงสุด %1$d แอปในรายการแอป</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="other">สามารถเพิ่มได้สูงสุด %1$d แอปในรายการเพิ่มเติม</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="other">เทียบกับ %1$d วันที่ผ่านมา</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="other">ปรับเทียบแล้ว %d วัน</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="other">จำเป็นต้องทำการปรับเทียบทุก %d วันสำหรับโครงการวิจัยการตรวจคัดกรองความดันโลหิตที่เปิดตัวโดย Peking University First Hospital</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="other">ปรับเทียบในอีก %d วัน</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="other">บรรลุแล้ว %d เป้าหมาย</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="other">%d รายการที่คุณต้องใส่ใจ</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="other">%d รายการไม่บรรลุเป้าหมาย</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="other">ยินดีด้วย!\nใน %1$d วันที่ผ่านมาคุณได้รับ</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="other">คะแนน</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="other">คุณสามารถเพิ่มรายชื่อติดต่อที่ใช้บ่อยได้สูงสุด %1$d รายชื่อและรายชื่อเหล่านี้จะซิงค์กับนาฬิกาโดยอัตโนมัติ</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="other">%d หลักสูตร</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="other">หลักสูตรจะเริ่มต้นใน %d วัน</item>
+    </plurals>
+    <plurals name="daily_interval">
+        <item quantity="one">วัน</item>
+        <item quantity="other">%1$d วัน</item>
+    </plurals>
+    <plurals name="days_after">
+        <item quantity="one">%1$d วันต่อมา</item>
+        <item quantity="other">%1$d วันต่อมา</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="one">%1$d วันที่ผ่านมา</item>
+        <item quantity="other">%1$d วันที่ผ่านมา</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="other">%d ดาวน์โหลด</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="zero">%1$d วินาที</item>
+        <item quantity="one">%1$d วินาที</item>
+        <item quantity="other">%1$d วินาที</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="other">ช่วงระยะห่างของข้อมูล: %1$s วินาที</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="other">%1$s วินาที</item>
+    </plurals>
+    <plurals name="endByCount">
+        <item quantity="one">; 1 ครั้ง</item>
+        <item quantity="other">; ทำซ้ำทั้งหมด %1$d ครั้ง</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="other">%d แจ้งเตือน</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">กรอไปข้างหน้า %d วินาที</item>
+        <item quantity="other">กรอไปข้างหน้า %d วินาที</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">กรอกลับ %d วินาที</item>
+        <item quantity="other">กรอกลับ %d วินาที</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="other">%1$s บทเรียน</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="other">%1$s ของรอบประจำเดือน เหลืออีก %2$s</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="other">ประมาณ %1$s ของรอบประจำเดือน เหลืออีก %2$s</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="other">%1$s ของรอบประจำเดือน เหลืออีกประมาณ %2$s</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="other">%1$s เรียกดู</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">วันที่ %1$d</item>
+        <item quantity="other">วันที่ %1$d</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="other">%1$dวัน</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="other">ยกเลิก (%1$ds)</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="other">กำลังดาวน์โหลด โปรดรอประมาณ %s นาที</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="other">ฝึกเสร็จแล้ว %d ครั้ง</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="other">%d ครั้ง/นาที</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="other">หน้าหลักต้องมีบัตรอย่างน้อย %1$d ใบ</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="other">อัตราการเต้นของหัวใจโดยเฉลี่ย %1$d ครั้งต่อนาที</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="other">ครั้ง/นาที</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="other">%d นาทีที่แล้ว</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="other">ครั้งที่ %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="other">เตือนฉันหลังจากที่มีสายเข้า %d วินาที</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="other">คุณสามารถเพิ่มการตอบกลับทาง SMS ได้สูงสุด %1$d รายการ</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="other">เก็บอย่างน้อย %1$d การตอบกลับทาง SMS</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="other">ป้อนได้มากสุด %d ตัวอักษร</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="other">%1$d บันทึกของรอบ</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="other">%d ยอดชม</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="other">%1$d เดือน</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="other">ประมาณ %1$d นาทีต่อวัน</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="other">ล่าสุด ชาร์จแล้ว %dd</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="other">บรรลุเป้าหมายแล้ว: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="other">%d ก้าว</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="monthly_interval">
+        <item quantity="one">เดือน</item>
+        <item quantity="other">%1$d เดือน</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">การแจ้งเตือนใหม่ %d รายการ</item>
+        <item quantity="other">การแจ้งเตือนใหม่ %d รายการ</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="other">%dวิ</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="other">อายุมากกว่า %1$d ปี ไม่สามารถวิเคราะห์ %2$s ได้</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="other">อายุน้อยกว่า %1$d ปี ไม่สามารถวิเคราะห์ %2$s ได้</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="other">%s ฟุต</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="other">%s นิ้ว</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="other">%dวิ</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="other">การออกกำลังกาย</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="other">ผู้เข้าร่วม %d คน</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="other">นาที</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="other">คุณสามารถเพิ่มการตอบกลับทาง SMS ได้สูงสุด %1$d รายการ</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="other">เก็บอย่างน้อย %1$d การตอบกลับทาง SMS</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="other">เลือกไว้ %1$d รายการ</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="other">คุณปั่นจักรยานเมื่อ %1$d วันที่ผ่านมา</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="other">ชั่วโมง</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="other">กิโลแคลอรี</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="other">คุณวิ่งเมื่อ %1$d วันที่ผ่านมา</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="other">วินาที</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="other">%1$d คลิปเสียงที่ตรวจพบในวันนี้</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="other">จำนวนก้าว</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="other">คุณเดินเมื่อ %1$d วันที่ผ่านมา</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">%d วัน</item>
+        <item quantity="other">%d วัน</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">%d ชั่วโมง</item>
+        <item quantity="other">%d ชั่วโมง</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="other">%d ก้าว</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="other">คุณภาพการหายใจขณะนอนหลับ %1$d เราขอแนะนำให้คุณใส่ใจเรื่องการหายใจขณะนอนหลับอย่างต่อเนื่อง หากคุณรู้สึกไม่สบาย โปรดปรึกษาแพทย์</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip_short">
+        <item quantity="other">คะแนนคุณภาพการหายใจขณะนอนหลับ: %1$d โปรดใส่ใจเรื่องสภาพการหายใจขณะหลับอย่างใกล้ชิด หากคุณรู้สึกไม่สบาย โปรดปรึกษาแพทย์</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="other">คุณภาพการหายใจขณะนอนหลับ %1$d เราขอแนะนำให้คุณปรึกษาแพทย์เพื่อระบุว่าคุณมีปัญหาด้านการหายใจขณะนอนหลับหรือไม่</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip_short">
+        <item quantity="other">คะแนนคุณภาพการหายใจขณะนอนหลับ: %1$d หากคะแนนต่ำกว่า 80 เป็นเวลาหลายครั้ง โปรดปรึกษาแพทย์</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="other">คุณภาพการหายใจขณะนอนหลับ %1$d โปรดรักษาไว้</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip_short">
+        <item quantity="other">คะแนนคุณภาพการหายใจขณะนอนหลับ: %1$d ทำให้ดีขึ้น</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="other">ประกันการวิ่งจะหมดอายุในอีก %1$d วัน แตะเพื่อต่ออายุ</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="other">อีก %d รายการยังไม่ได้ซิงค์</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="other">อีก %d รายการยังไม่ได้ซิงค์</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="other">ปั่นจักรยาน %1$d ครั้ง</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="other">เครื่องเดินวงรี(Elliptical) %1$d ครั้ง</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="other">%1$d ฝึกฟรีสไตล์</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="other">วิ่ง %1$d ครั้ง</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="other">ว่ายน้ำ %1$d ครั้ง</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="other">ฝึก: %1$d ครั้ง</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="other">ไตรกีฬา %1$d ครั้ง</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="other">เดิน %1$d ครั้ง</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="other">ออกกำลัง: %1$d ครั้ง</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="other">เพิ่มสูงสุด %d เหตุการณ์</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="other">สถิติดีที่สุด: %d วัน</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="other">อยู่เหนือกว่า %d%% ของผู้ใช้</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="zero">ครั้ง</item>
+        <item quantity="one">ครั้ง</item>
+        <item quantity="other">ครั้ง</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="other">วัน</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="zero">คะแนน</item>
+        <item quantity="one">คะแนน</item>
+        <item quantity="other">คะแนน</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="zero">%dเวลา</item>
+        <item quantity="one">%dเวลา</item>
+        <item quantity="other">%dเวลา</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="other">ได้คะแนนการนอนหลับเพิ่มขึ้น %d เมื่อเทียบกับเดือนที่ผ่านมา</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="other">คะแนนการนอนหลับของเดือนนี้คือ %d ทำให้ดีขึ้นต่อไปเรื่อยๆ</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="other">ได้คะแนนการนอนหลับเพิ่มขึ้น %d เมื่อเทียบกับสัปดาห์ที่ผ่านมา</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="other">คะแนนการนอนหลับของสัปดาห์นี้คือ %d ทำให้ดีขึ้นต่อไปเรื่อยๆ</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="other">%1$d คลิปเสียงได้รับการบันทึกในวันนี้</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="other">%1$d คลิป</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="other">พูดได้อีก %d วินาที</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="other">กิจกรรมเสร็จสิ้น: %1$d เซสชั่นของ %2$s</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="other">ก้าว</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="other">ก้าว</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="other">ก้าว/วัน</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; ครั้ง</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="other">กำหนดให้อยู่อันดับต้นของรายการเป็นเวลา&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; วัน</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="other">กำหนดให้อยู่อันดับต้นของรายการ %1$d ครั้ง</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="other">กำหนดให้อยู่อันดับต้นของรายการเป็นเวลา %1$d วัน</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="other">ตรงกับเพื่อน %1$d คน:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="other">วิ่ง&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; ครั้ง</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="other">ไม่ได้อัปโหลดบันทึกการวิ่ง %1$d รายการ</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="other">ผู้เข้าร่วม %1$d คน</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="zero">%d ชั่วโมง</item>
+        <item quantity="one">%dชั่วโมง</item>
+        <item quantity="other">%d ชั่วโมง</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="zero">%d นาที</item>
+        <item quantity="one">%dนาที</item>
+        <item quantity="other">%d นาที</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="other">%1$d ครั้ง</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="other">ยินดีด้วย!\nใน %1$d ที่ผ่านมา คุณได้ลดไป</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="other">มี %1$d บันทึกน้ำหนักรอให้อ้างสิทธิ์</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="other">สามารถเพิ่มได้สูงสุด &lt;numVal demoValue=15 var=%1$d type=x/&gt; กำหนดการ</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="other">ไม่สามารถวิเคราะห์ผู้ที่มีอายุมากกว่า %d ปี</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="other">ไม่สามารถวิเคราะห์ผู้ที่มีอายุต่ำกว่า %d ปี</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="other">%d หลักสูตร</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="other">หลักสูตรหมดอายุใน %d วัน</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="other">%d ผู้ชม</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="other">เซททั้งหมด: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="other">เวลาเรียนรู้: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="other">เริ่มในอีก %d วัน</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="other">ฝึกแล้ว  %1$d นาที</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="other">ฝึกแล้ว  %1$d วิ</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="other">วันที่ %1$d ของหลักสูตรการฝึก: คุณต้องสำเร็จ %3$s (%2$d นาที)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="other"> %1$d  วินาที</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="other"> %1$d  ครั้ง</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="other">พักชั่วคราว  %1$d วิ</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="other"> ก้าว</item>
+    </plurals>
+    <plurals name="user_info_Nhours">
+        <item quantity="one">1 ชั่วโมง</item>
+        <item quantity="other">%1$d ชั่วโมง</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="other">เนื่องจากอายุที่คุณป้อนต่ำกว่า %1$d คุณสามารถใช้ Zepp ต่อไปได้หลังจากที่เราได้รับอนุญาตและยินยอมจากผู้ปกครองของคุณแล้วเท่านั้น</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="other">มิเช่นนั้น บัญชีของคุณจะถูกระงับภายใน %1$d วัน</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="other">อายุต่ำกว่า %1$dปี</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="other">เพื่อปกป้องความเป็นส่วนตัวของข้อมูลผู้เยาว์ หากคุณอายุต่ำกว่า %1$dปี เราต้องการการอนุญาตและความยินยอมจากผู้ปกครองของคุณก่อนที่เราจะให้บริการที่สมบูรณ์แก่คุณได้</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="other">โปรดยืนยันว่าคุณมีอายุไม่ต่ำกว่า %1$dปี</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="other">%s ฟุต</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="other">%s นิ้ว</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="weekly_interval">
+        <item quantity="one">สัปดาห์</item>
+        <item quantity="other">%1$d สัปดาห์</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="other">%d นาที</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="other">%d รายการ</item>
+    </plurals>
+    <plurals name="yearly_interval">
+        <item quantity="one">ปี</item>
+        <item quantity="other">%1$d ปี</item>
+    </plurals>
+</resources>

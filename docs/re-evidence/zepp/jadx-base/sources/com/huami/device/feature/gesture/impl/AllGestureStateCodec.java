@@ -1,0 +1,70 @@
+package com.huami.device.feature.gesture.impl;
+
+import com.huami.bluetooth.profile.channel.module.base.Failure;
+import com.huami.bluetooth.profile.channel.module.base.ModuleResult;
+import com.huami.bluetooth.profile.channel.module.base.ResponseCodec;
+import com.huami.bluetooth.profile.channel.module.base.Success;
+import com.huami.bluetooth.profile.channel.module.base.Timeout;
+import com.huami.bluetooth.utils.BufByteDecoder;
+import com.huami.device.feature.gesture.api.GestureTypeFactory;
+import java.util.ArrayList;
+import java.util.List;
+import kotlin.Metadata;
+import kotlin.NotImplementedError;
+import kotlin.Result;
+import kotlin.ResultKt;
+import kotlin.jvm.internal.Intrinsics;
+import org.jetbrains.annotations.NotNull;
+
+/* JADX INFO: loaded from: classes6.dex */
+@Metadata(bv = {1, 0, 3}, d1 = {"\u0000 \n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010 \n\u0002\u0018\u0002\n\u0002\u0010\u0012\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0004\u0018\u00002\u0014\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00030\u0002\u0012\u0004\u0012\u00020\u00040\u0001B\u0007¢\u0006\u0004\b\n\u0010\u000bJ\u0016\u0010\u0006\u001a\u00020\u00042\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u00020\u00030\u0002H\u0016J\u0016\u0010\u0007\u001a\b\u0012\u0004\u0012\u00020\u00030\u00022\u0006\u0010\u0005\u001a\u00020\u0004H\u0016J\"\u0010\u0007\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00030\u00020\b2\f\u0010\t\u001a\b\u0012\u0004\u0012\u00020\u00040\bH\u0016¨\u0006\f"}, d2 = {"Lcom/huami/device/feature/gesture/impl/AllGestureStateCodec;", "Lcom/huami/bluetooth/profile/channel/module/base/ResponseCodec;", "", "Lcom/huami/device/feature/gesture/api/GestureTypeFactory$GestureState;", "", "value", "encode", "decode", "Lcom/huami/bluetooth/profile/channel/module/base/ModuleResult;", "originResponse", "<init>", "()V", "quick-card-api_release"}, k = 1, mv = {1, 5, 1})
+public final class AllGestureStateCodec implements ResponseCodec<List<? extends GestureTypeFactory.GestureState>, byte[]> {
+    @Override // com.huami.bluetooth.profile.channel.module.base.Codec
+    @NotNull
+    public List<GestureTypeFactory.GestureState> decode(@NotNull byte[] value) throws Exception {
+        BufByteDecoder bufByteDecoder = new BufByteDecoder(value, 0, 2, null);
+        bufByteDecoder.readByte();
+        int i = bufByteDecoder.readByte();
+        ArrayList arrayList = new ArrayList();
+        if (bufByteDecoder.remain() < i * 2) {
+            throw new Exception("数据不足");
+        }
+        for (int i2 = 0; i2 < i; i2++) {
+            arrayList.add(new GestureTypeFactory.GestureState(bufByteDecoder.readByte(), bufByteDecoder.readByte()));
+        }
+        return arrayList;
+    }
+
+    @Override // com.huami.bluetooth.profile.channel.module.base.Codec
+    @NotNull
+    public byte[] encode(@NotNull List<GestureTypeFactory.GestureState> value) {
+        throw new NotImplementedError("An operation is not implemented: 无需编码");
+    }
+
+    @Override // com.huami.bluetooth.profile.channel.module.base.ResponseCodec
+    @NotNull
+    public ModuleResult<List<? extends GestureTypeFactory.GestureState>> decode(@NotNull ModuleResult<byte[]> originResponse) {
+        Object objM3845constructorimpl;
+        if (originResponse instanceof Timeout) {
+            return new Timeout(null, 1, null);
+        }
+        if (originResponse instanceof Failure) {
+            return new Failure(((Failure) originResponse).getMsg(), 0, 2, null);
+        }
+        if (!(originResponse instanceof Success)) {
+            return ModuleResult.Companion.fail$default(ModuleResult.INSTANCE, "未知错误类型", 0, 2, null);
+        }
+        try {
+            Result.Companion companion = Result.Companion;
+            objM3845constructorimpl = Result.m3845constructorimpl(new Success(decode((byte[]) ((Success) originResponse).getData())));
+        } catch (Throwable th) {
+            Result.Companion companion2 = Result.Companion;
+            objM3845constructorimpl = Result.m3845constructorimpl(ResultKt.createFailure(th));
+        }
+        Throwable thM3848exceptionOrNullimpl = Result.m3848exceptionOrNullimpl(objM3845constructorimpl);
+        if (thM3848exceptionOrNullimpl != null) {
+            objM3845constructorimpl = new Failure(Intrinsics.stringPlus("解析卡数据失败：", thM3848exceptionOrNullimpl), 0, 2, null);
+        }
+        return (ModuleResult) objM3845constructorimpl;
+    }
+}

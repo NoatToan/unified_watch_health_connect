@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/s36"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/result_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/relatives_size_90dp"
+        layout="@layout/relatives_search_result_list_item"/>
+    <FrameLayout
+        android:id="@+id/empty_view"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:textColor="@color/relatives_color_959595"
+            android:layout_gravity="center"
+            android:background="@color/relatives_main_ui_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/relatives_label_search_result_empty"
+            android:drawablePadding="@dimen/relatives_size_20dp"
+            app:drawableTopCompat="@drawable/relatives_ic_search_user_empty"/>
+    </FrameLayout>
+</LinearLayout>

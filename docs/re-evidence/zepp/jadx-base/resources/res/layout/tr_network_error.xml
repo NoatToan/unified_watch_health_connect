@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:id="@+id/error_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.huami.widget.typeface.TypefaceTextView
+        android:textSize="14sp"
+        android:textColor="@color/s2"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/tv_error_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="47dp"
+        android:text="@string/tr_paging_first_load_error_tips"
+        android:fontFamily="lt"/>
+    <Button
+        android:textSize="12sp"
+        android:textColor="@color/tr_orange"
+        android:id="@+id/retry"
+        android:background="@drawable/tr_shape_corner_white_bg_orange_stroke"
+        android:layout_width="76dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="16.7dp"
+        android:text="@string/tr_refresh"
+        android:fontFamily="lt"
+        style="?android:attr/borderlessButtonStyle"/>
+</LinearLayout>

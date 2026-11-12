@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="@dimen/tr_font_size_subtitle"
+    android:textColor="@drawable/tr_selector_tag_font"
+    android:id="@+id/tv_tag_today_training"
+    android:background="@drawable/tr_selector_tag_bg"
+    android:padding="7dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginStart="6dp"
+    android:layout_marginEnd="6dp"
+    style="@style/TrainingTextSingleLineStyle"/>

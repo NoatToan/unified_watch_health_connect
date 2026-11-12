@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:textColor="@color/s2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:text="100"
+        android:layout_alignTop="@+id/pai_value_list"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentEnd="true"
+        style="@style/Rainbow.TextAppearance.Body5"/>
+    <View
+        android:background="@color/s38"
+        android:layout_width="match_parent"
+        android:layout_height="22.1dp"
+        android:layout_alignParentBottom="true"/>
+    <com.huami.pai.view.PAIDottedLineView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_alignTop="@+id/pai_value_list"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="35dp"/>
+    <com.huami.pai.view.PAIHorizontalRecyclerView
+        android:id="@+id/pai_value_list"
+        android:scrollbars="none"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:cacheColorHint="@android:color/transparent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:overScrollMode="never"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+</merge>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/wl_circle_pager_indicator_selected"/>
+    <size
+        android:height="9dp"
+        android:width="9dp"/>
+    <corners android:radius="@dimen/wl_image_round_rect_radius"/>
+</shape>

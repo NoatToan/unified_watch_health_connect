@@ -1,0 +1,1246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_titles">
+        <item>@string/only_once</item>
+        <item>@string/every_day</item>
+        <item>@string/monday_to_friday</item>
+        <item>@string/customize</item>
+    </array>
+    <array name="alarm_repeat_type">
+        <item>Once</item>
+        <item>Every day</item>
+        <item>Monday to Friday</item>
+    </array>
+    <array name="allday_reminder_minute">
+        <item>-1</item>
+        <item>-480</item>
+        <item>960</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="avatar_of_scale_res_id">
+        <item>@drawable/scale_avatar_0</item>
+        <item>@drawable/scale_avatar_1</item>
+        <item>@drawable/scale_avatar_2</item>
+        <item>@drawable/scale_avatar_3</item>
+        <item>@drawable/scale_avatar_4</item>
+        <item>@drawable/scale_avatar_5</item>
+        <item>@drawable/scale_avatar_6</item>
+        <item>@drawable/scale_avatar_7</item>
+        <item>@drawable/scale_avatar_8</item>
+    </array>
+    <array name="avoid_type">
+        <item>@string/state_close</item>
+        <item>@string/avoid_enable_smart</item>
+        <item>@string/avoid_enable_time</item>
+    </array>
+    <array name="avoid_type_sub">
+        <item />
+        <item>@string/avoid_enable_smart_sub</item>
+        <item>@string/avoid_enable_time_sub</item>
+    </array>
+    <array name="beat_section_colors">
+        <item>@color/hr_sec_warm_up</item>
+        <item>@color/hr_sec_lung_strength</item>
+        <item>@color/hr_sec_anaerobic_limit</item>
+    </array>
+    <array name="beat_section_colors_zepp">
+        <item>@color/hr_sec_warm_up</item>
+        <item>@color/hr_sec_lung_strength</item>
+        <item>@color/hr_sec_anaerobic_limit_zepp</item>
+    </array>
+    <array name="beat_section_percents">
+        <item>0.3</item>
+        <item>0.3</item>
+        <item>0.4</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>Supports swimming pool, open water swimming, and triathlon activities</item>
+        <item>Provides maximal oxygen consumption (VO₂ max) data</item>
+        <item>Comprehensive activity stats and settings</item>
+        <item>Guide your training according to the goals you set</item>
+        <item>Training Effect (TE) helps you understand the benefit of an exercise on your fitness</item>
+    </array>
+    <array name="bind_guide_main_title_everest2">
+        <item>Provide VO2max data\n accurate evalution of personal exercise performance</item>
+        <item>Say goodbye to your transportation card and access control card. \n You can just swipe your watch instead when traveling, going to work and making payment.</item>
+        <item>Switch between the two modes at will.\n Ultra-long standby and intelligent system are available for you to choose.</item>
+        <item>70 hours of continuous GPS locating ability.\n meaning you have nothing to worry about during outdoor exercises.</item>
+    </array>
+    <array name="bind_guide_main_title_everest2_oversea">
+        <item>Provide VO2max data\n accurate evalution of personal exercise performance</item>
+        <item>Switch between the two modes at will.\n Ultra-long standby and intelligent system are available for you to choose.</item>
+        <item>70 hours of continuous GPS locating ability.\n meaning you have nothing to worry about during outdoor exercises.</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>One key to control all with “Classmate Xiao Ai” \n Make your home smart with voice control, and it follows what you say</item>
+        <item>Transportation card, access card, UnionPay card \n For traveling, working, and consuming, just swipe your watch</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>One key to open Alexa \n Intelligent voice, do what you say</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_main_title_xihu">
+        <item>eSIM cards are supported. \n You can make calls and get online without connecting to you mobile.</item>
+        <item>XiaoAI one-tap control \n Control all intelligent household appliances with your voice -- just speak the words.</item>
+        <item>You can do the ten sports without taking along your mobile. \n You don\'t want to do sports with a burden.</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item>* For running only</item>
+        <item />
+        <item>* Only for running exercise, need to open in exercise settings</item>
+        <item />
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item>*Currently available in selected regions only.</item>
+        <item />
+        <item />
+        <item />
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>The upper arm should be bare, with your sleeve comfortably rolled up</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>You should be able to slip one finger under the cuff. Cuffs that are too loose or too tight may affect the accuracy of measurement</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>First measurement</item>
+        <item>Second measurement</item>
+        <item>Third measurement</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Record the first blood pressure reading</item>
+        <item>Record the second blood pressure reading</item>
+        <item>Record the third blood pressure reading</item>
+    </array>
+    <array name="blue_monkey_tips">
+        <item>@string/blue_monkey_help_tips_1</item>
+        <item>@string/blue_monkey_help_tips_2</item>
+        <item>@string/blue_monkey_help_tips_3</item>
+        <item>@string/blue_monkey_help_tips_4</item>
+    </array>
+    <array name="blue_monkey_titles">
+        <item>@string/blue_monkey_help_title_1</item>
+        <item>@string/blue_monkey_help_title_2</item>
+        <item>@string/blue_monkey_help_title_3</item>
+        <item>@string/blue_monkey_help_title_4</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Low</item>
+        <item>Normal</item>
+        <item>High</item>
+        <item>Very high</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normal</item>
+        <item>High</item>
+        <item>Very high</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Very poor</item>
+        <item>Poor</item>
+        <item>Normal</item>
+        <item>Good</item>
+        <item>Excellent</item>
+    </array>
+    <array name="body_status_array">
+        <item>@string/body_status_tired</item>
+        <item>@string/body_status_normal</item>
+        <item>@string/body_status_good</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Very low</item>
+        <item>Low</item>
+        <item>Normal</item>
+        <item>Increased</item>
+        <item>High</item>
+    </array>
+    <array name="bodyfat_measure_balance_level">
+        <item>@string/bodyfat_level_low</item>
+        <item>@string/bodyfat_level_little_low</item>
+        <item>@string/bodyfat_level_normal</item>
+        <item>@string/bodyfat_level_good</item>
+        <item>@string/bodyfat_level_perfect</item>
+    </array>
+    <array name="bone_leval">
+        <item>Insufficient</item>
+        <item>Normal</item>
+        <item>Good</item>
+    </array>
+    <array name="branch_integer_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </array>
+    <array name="branch_string_array">
+        <item>酉</item>
+        <item>戌</item>
+        <item>亥</item>
+        <item>子</item>
+        <item>丑</item>
+        <item>寅</item>
+        <item>卯</item>
+        <item>辰</item>
+        <item>巳</item>
+        <item>午</item>
+        <item>未</item>
+        <item>申</item>
+    </array>
+    <array name="brm_leval">
+        <item>Didn\'t reach goals</item>
+        <item>Reached goal</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Try to press the button on the watch, if the watch screen is off, plug it in to charge its battery.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>If the band is charged, but the phone can\'t see it, try restarting phone\'s Bluetooth.</item>
+        <item>If restarting Bluetooth doesn\'t solve the problem, try rebooting the phone.</item>
+        <item>Watch data can\'t be synced when you\'re doing exercise. End the session and try again.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Is your watch charged?</item>
+        <item>Is this watch paired with another device?</item>
+        <item>Try restarting Bluetooth</item>
+        <item>Try rebooting your phone</item>
+        <item>Can\'t sync data during workouts</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Shenzhen</item>
+        <item>Foshan</item>
+        <item>Dongguan</item>
+        <item>Beijing</item>
+        <item>Nanjing</item>
+        <item>Suzhou</item>
+        <item>Changzhou</item>
+        <item>Jinan</item>
+        <item>Qingdao</item>
+        <item>Hangzhou</item>
+        <item>Ningbo</item>
+        <item>Zhengzhou</item>
+        <item>Kaifeng</item>
+        <item>Shanghai</item>
+        <item>Shijiazhuang</item>
+        <item>Baoding</item>
+        <item>Chengdu</item>
+        <item>Mianyang</item>
+        <item>Shenyang</item>
+        <item>Dalian</item>
+    </array>
+    <array name="common_level">
+        <item>Insufficient</item>
+        <item>Normal</item>
+        <item>Good</item>
+    </array>
+    <array name="common_low_normal_high_level">
+        <item>@string/body_index_insufficient</item>
+        <item>@string/body_index_normal</item>
+        <item>@string/body_index_increased</item>
+    </array>
+    <array name="common_month_list">
+        <item>@string/common_month_jan</item>
+        <item>@string/common_month_feb</item>
+        <item>@string/common_month_mar</item>
+        <item>@string/common_month_apr</item>
+        <item>@string/common_month_may</item>
+        <item>@string/common_month_jun</item>
+        <item>@string/common_month_jul</item>
+        <item>@string/common_month_aug</item>
+        <item>@string/common_month_sep</item>
+        <item>@string/common_month_oct</item>
+        <item>@string/common_month_nov</item>
+        <item>@string/common_month_dec</item>
+    </array>
+    <array name="component_list">
+        <item>com.huami.watch.companion.mitv.MiTvComponent</item>
+        <item>com.huami.watch.companion.sogoulocation.SogouLocCmp</item>
+    </array>
+    <array name="contact_ways">
+        <item>Email</item>
+        <item>Mobile phone number</item>
+        <item>WeChat ID</item>
+    </array>
+    <array name="cycling_slope_change_colors">
+        <item>@color/cycling_slope_up_arc_fill</item>
+        <item>@color/cycling_slope_flat_arc_fill</item>
+        <item>@color/cycling_slope_down_arc_fill</item>
+    </array>
+    <array name="difficulty_content">
+        <item>New hand for fitness training</item>
+        <item>Had basic fitness experience</item>
+        <item>Had rich fitness experience and built a good shape</item>
+    </array>
+    <array name="difficulty_image">
+        <item>@drawable/banner_primary</item>
+        <item>@drawable/banner_intermediate</item>
+        <item>@drawable/banner_senior</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Elementary</item>
+        <item>Intermediate</item>
+        <item>Advanced</item>
+    </array>
+    <array name="ds_interest_dial_style">
+        <item>@string/dial_style_follow_dial</item>
+        <item>@string/dial_style_digital_dial</item>
+        <item>@string/dial_style_analog_dial</item>
+    </array>
+    <array name="ds_interest_enable">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/avoid_enable_smart</item>
+        <item>@string/avoid_enable_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="earbud_breath_train">
+        <item>@string/earbud_breath_sniff</item>
+        <item>@string/earbud_breath_hold</item>
+        <item>@string/earbud_breath_expiration</item>
+    </array>
+    <array name="earbud_breath_train_msg">
+        <item>@string/earbud_breath_sniff_msg</item>
+        <item />
+        <item>@string/earbud_breath_expiration_msg</item>
+    </array>
+    <array name="earbud_opers">
+        <item>@string/earbud_oper_disable</item>
+        <item>@string/earbud_oper_start_pause</item>
+        <item>@string/earbud_oper_side_listen</item>
+        <item>@string/earbud_oper_assistent</item>
+        <item>@string/earbud_oper_pre</item>
+        <item>@string/earbud_oper_next</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Insufficient data</item>
+        <item>Abnormal heartbeat</item>
+        <item>No abnormalities detected</item>
+        <item>Insufficient data</item>
+        <item>No abnormalities detected</item>
+        <item />
+        <item>No abnormalities detected</item>
+        <item>Poor signal quality</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Please adjust the usage method and try again.</item>
+        <item>For reference only. Consult a doctor if you have any discomfort.</item>
+        <item>For reference only. Consult a doctor if you have any discomfort.</item>
+        <item>Please adjust the usage method and try again.</item>
+        <item>For reference only. Consult a doctor if you have any discomfort.</item>
+        <item />
+        <item>For reference only. Consult a doctor if you have any discomfort.</item>
+        <item>Please adjust the usage method and try again.</item>
+    </array>
+    <array name="event_remind_periods">
+        <item>@string/event_remind_once</item>
+        <item>@string/event_remind_everyday</item>
+        <item>@string/event_remind_every_week</item>
+        <item>@string/event_remind_every_month</item>
+        <item>@string/event_remind_every_year</item>
+        <item>@string/event_remind_custom</item>
+    </array>
+    <array name="event_remind_periods_with_workday">
+        <item>@string/event_remind_once</item>
+        <item>@string/event_remind_everyday</item>
+        <item>@string/event_remind_every_week</item>
+        <item>@string/event_remind_every_month</item>
+        <item>@string/event_remind_every_year</item>
+        <item>@string/repeat_every_workday</item>
+        <item>@string/repeat_every_weekend</item>
+        <item>@string/event_remind_custom</item>
+    </array>
+    <array name="event_remind_weeks">
+        <item>@string/event_remind_every_monday</item>
+        <item>@string/event_remind_every_tuesday</item>
+        <item>@string/event_remind_every_wednesday</item>
+        <item>@string/event_remind_every_thursday</item>
+        <item>@string/event_remind_every_friday</item>
+        <item>@string/event_remind_every_saturday</item>
+        <item>@string/event_remind_every_sunday</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="exercise_type_images_x">
+        <item>@drawable/ic_sport_index_global</item>
+        <item>@drawable/ic_sport_index_run</item>
+        <item>@drawable/ic_sport_index_cycle</item>
+        <item>@drawable/ic_sport_index_walk</item>
+        <item>@drawable/ic_sport_index_outdoor</item>
+        <item>@drawable/ic_sport_index_ice_snow</item>
+        <item>@drawable/ic_sport_index_train</item>
+        <item>@drawable/ic_sport_index_swim</item>
+        <item>@drawable/ic_sport_index_indoor</item>
+        <item>@drawable/ic_sport_index_dance</item>
+        <item>@drawable/ic_sport_index_ball</item>
+        <item>@drawable/ic_sport_index_fight</item>
+        <item>@drawable/ic_sport_index_other</item>
+        <item>@drawable/ic_sport_index_aquatics</item>
+        <item>@drawable/ic_sport_index_leisure</item>
+        <item>@drawable/ic_sport_index_extreme</item>
+        <item>@drawable/ic_sport_index_chess_and_card</item>
+    </array>
+    <array name="exercise_type_titles">
+        <item>@string/sport_index_global</item>
+        <item>@string/sport_index_run</item>
+        <item>@string/sport_index_cycle</item>
+        <item>@string/sport_index_walk</item>
+        <item>@string/sport_index_outdoor</item>
+        <item>@string/sport_index_ice_snow</item>
+        <item>@string/sport_index_train</item>
+        <item>@string/sport_index_swim</item>
+        <item>@string/sport_index_indoor</item>
+        <item>@string/sport_index_dance</item>
+        <item>@string/sport_index_ball</item>
+        <item>@string/sport_index_fight</item>
+        <item>@string/sport_index_other</item>
+        <item>@string/sport_index_aquatics</item>
+        <item>@string/sport_index_leisure</item>
+        <item>@string/sport_index_extreme</item>
+        <item>@string/sport_index_chess_and_card</item>
+    </array>
+    <array name="exo_playback_speeds">
+        <item>0.25x</item>
+        <item>0.5x</item>
+        <item>0.75x</item>
+        <item>@string/exo_controls_playback_speed_normal</item>
+        <item>1.25x</item>
+        <item>1.5x</item>
+        <item>2x</item>
+    </array>
+    <array name="exo_speed_multiplied_by_100">
+        <item>25</item>
+        <item>50</item>
+        <item>75</item>
+        <item>100</item>
+        <item>125</item>
+        <item>150</item>
+        <item>200</item>
+    </array>
+    <array name="fast_slow_gradient_colors">
+        <item>@color/fast_slow_gradient_0</item>
+        <item>@color/fast_slow_gradient_1</item>
+        <item>@color/fast_slow_gradient_2</item>
+        <item>@color/fast_slow_gradient_3</item>
+    </array>
+    <array name="fast_slow_gradient_percents">
+        <item>0</item>
+        <item>0.33</item>
+        <item>0.67</item>
+        <item>1</item>
+    </array>
+    <array name="fat_change_curve_colors">
+        <item>#33ff6000</item>
+        <item>#00ff6000</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Aiming to burn fat</item>
+        <item>Aiming to shape body</item>
+        <item>Aiming to build muscles</item>
+    </array>
+    <array name="fitness_goal_image">
+        <item>@drawable/banner_fat_reduce</item>
+        <item>@drawable/banner_moulding_shape</item>
+        <item>@drawable/banner_add_muscle</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Cutting</item>
+        <item>Shaping</item>
+        <item>Bulking</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="headset_hr_broadcast_summary">
+        <item>@string/headset_hr_broadcast_type_auto_summary</item>
+        <item>@string/headset_hr_broadcast_type_open_summary</item>
+        <item />
+    </array>
+    <array name="headset_hr_broadcast_type">
+        <item>@string/headset_hr_broadcast_type_auto</item>
+        <item>@string/headset_hr_broadcast_type_open</item>
+        <item>@string/headset_hr_broadcast_type_close</item>
+    </array>
+    <array name="health_data_low_normal_high_level">
+        <item>@string/health_data_less</item>
+        <item>@string/health_data_normal</item>
+        <item>@string/health_data_more</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>MON</item>
+        <item>TUE</item>
+        <item>WED</item>
+        <item>THU</item>
+        <item>FRI</item>
+        <item>SAT</item>
+        <item>SUN</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Mon.</item>
+        <item>Tues.</item>
+        <item>Wed.</item>
+        <item>Thur.</item>
+        <item>Fri.</item>
+        <item>Sat.</item>
+        <item>Sun.</item>
+    </array>
+    <array name="hr_section_colors">
+        <item>@color/hr_tape_rest</item>
+        <item>@color/hr_tape_warm_up</item>
+        <item>@color/hr_tape_fat_burn</item>
+        <item>@color/hr_tape_lung_strength</item>
+        <item>@color/hr_tape_stamina_strength</item>
+        <item>@color/hr_tape_anaerobic_limit</item>
+    </array>
+    <array name="hr_sport">
+        <item>Heart rate zone: Light</item>
+        <item>Heart rate zone: Intensive</item>
+        <item>Heart rate zone: Aerobic</item>
+        <item>Heart rate zone: Anaerobic</item>
+        <item>Heart rate zone: VO₂ max</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Light</item>
+        <item>Intensive</item>
+        <item>Aerobic</item>
+        <item>Anaerobic</item>
+        <item>VO₂ max</item>
+    </array>
+    <array name="lab_gesnsor_lines_color">
+        <item>@color/lab_line_x</item>
+        <item>@color/lab_line_y</item>
+        <item>@color/lab_line_z</item>
+    </array>
+    <array name="lab_ppgesnsor_lines_color">
+        <item>@color/lab_line_ppg</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Armpit</item>
+        <item>Oral</item>
+        <item>Rectum</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Wrist</item>
+        <item>Forehead</item>
+        <item>Behind ear</item>
+        <item>Cochlea</item>
+        <item>Neck</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Armpit</item>
+        <item>Oral</item>
+        <item>Rectum</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Chest</item>
+        <item>Armpit</item>
+        <item>Groin</item>
+    </array>
+    <array name="length_unit_titles">
+        <item>@string/setting_length_metric</item>
+        <item>@string/setting_length_british</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Close</item>
+        <item>Near</item>
+        <item>Far</item>
+    </array>
+    <array name="lunar_first_of_month">
+        <item>春节</item>
+        <item>二月</item>
+        <item>三月</item>
+        <item>四月</item>
+        <item>五月</item>
+        <item>六月</item>
+        <item>七月</item>
+        <item>八月</item>
+        <item>九月</item>
+        <item>十月</item>
+        <item>冬月</item>
+        <item>腊月</item>
+    </array>
+    <array name="lunar_str">
+        <item>初一</item>
+        <item>初二</item>
+        <item>初三</item>
+        <item>初四</item>
+        <item>初五</item>
+        <item>初六</item>
+        <item>初七</item>
+        <item>初八</item>
+        <item>初九</item>
+        <item>初十</item>
+        <item>十一</item>
+        <item>十二</item>
+        <item>十三</item>
+        <item>十四</item>
+        <item>十五</item>
+        <item>十六</item>
+        <item>十七</item>
+        <item>十八</item>
+        <item>十九</item>
+        <item>二十</item>
+        <item>廿一</item>
+        <item>廿二</item>
+        <item>廿三</item>
+        <item>廿四</item>
+        <item>廿五</item>
+        <item>廿六</item>
+        <item>廿七</item>
+        <item>廿八</item>
+        <item>廿九</item>
+        <item>三十</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mi_ai_guide">
+        <item>今天天气怎么样</item>
+        <item>打开支付宝</item>
+        <item>设置个闹钟</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Tap the button on the band to check if the display lights up. If it doesn\'t, charge your band.\n\nCharge the device before you pair a %1$s or %2$s.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>If the band is charged, but the phone can\'t see it, try restarting phone\'s Bluetooth.</item>
+        <item>If restarting Bluetooth doesn\'t solve the problem, try rebooting phone.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Is your band charged?</item>
+        <item>Is this band paired with another device?</item>
+        <item>@string/help_title_2</item>
+        <item>Try rebooting your phone</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="mili_pro_display_items">
+        <item>Time</item>
+        <item>Steps</item>
+        <item>Distance</item>
+        <item>Calories</item>
+        <item>Heart rate</item>
+        <item>Battery</item>
+    </array>
+    <array name="month_list">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="month_string_array">
+        <item>JAN</item>
+        <item>FEB</item>
+        <item>MAR</item>
+        <item>APR</item>
+        <item>MAY</item>
+        <item>JUN</item>
+        <item>JUL</item>
+        <item>AUG</item>
+        <item>SEP</item>
+        <item>OCT</item>
+        <item>NOV</item>
+        <item>DEC</item>
+    </array>
+    <array name="month_titles">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="moving_ui_training_effect_color">
+        <item>@color/s15</item>
+        <item>@color/s20</item>
+        <item>@color/s33</item>
+        <item>@color/s30</item>
+        <item>@color/p3</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Insufficient</item>
+        <item>Normal</item>
+        <item>Good</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="noise_reduction_mode_list">
+        <item>@string/noise_reduction_mode_adaptive</item>
+        <item>@string/noise_reduction_mode_traffic</item>
+        <item>@string/noise_reduction_mode_sport</item>
+        <item>@string/noise_reduction_mode_indoor</item>
+    </array>
+    <array name="noise_reduction_mode_summary_list">
+        <item>@string/noise_reduction_mode_adaptive_summary</item>
+        <item>@string/noise_reduction_mode_traffic_summary</item>
+        <item>@string/noise_reduction_mode_sport_summary</item>
+        <item>@string/noise_reduction_mode_indoor_summary</item>
+    </array>
+    <array name="notification_test_items">
+        <item>Low battery notification</item>
+        <item>Incoming call</item>
+        <item>Idle alert</item>
+        <item>Goal notifications</item>
+        <item>Daily weather reminder</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Very poor</item>
+        <item>Poor</item>
+        <item>Average</item>
+        <item>Good</item>
+        <item>Very good</item>
+    </array>
+    <array name="pin_time">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+        <item>150</item>
+        <item>180</item>
+        <item>210</item>
+        <item>240</item>
+        <item>270</item>
+        <item>300</item>
+        <item>330</item>
+        <item>360</item>
+        <item>390</item>
+        <item>420</item>
+        <item>450</item>
+        <item>480</item>
+    </array>
+    <array name="recover_choose_items">
+        <item>@string/running_recover_now</item>
+        <item>@string/running_recover_savelast</item>
+        <item>@string/running_recover_notdo</item>
+    </array>
+    <array name="reminder_minute">
+        <item>-1</item>
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>The first</item>
+        <item>The second</item>
+        <item>The third</item>
+        <item>The fourth</item>
+        <item>The last</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_hr_types_desc">
+        <item>@string/setting_heartrate_detect_auto_desc</item>
+        <item>@string/setting_heartrate_detect_sleep_desc</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s will stop working if you don\'t use it for a long time. Shake %2$s and try again.</item>
+        <item>%s battery life is 1 year. If you\'ve been using it for a longer period, maybe there\'s no power left.</item>
+        <item>Turn off Bluetooth on the other device first, then pair with your phone.</item>
+        <item>If %s is charged, but the phone can\'t see it, try restarting phone\'s Bluetooth.</item>
+        <item>If restarting Bluetooth doesn\'t solve the problem, try rebooting phone.</item>
+        <item>Tap the running shoes data and enter the next activity page to sync data automatically</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Shake the %s</item>
+        <item>Are your %s charged?</item>
+        <item>Are the %s paired with another phone nearby?</item>
+        <item>Restart Bluetooth</item>
+        <item>Try rebooting your phone</item>
+        <item>How to sync your data?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Obese</item>
+        <item>Overweight</item>
+        <item>Thick-set</item>
+        <item>Lacks\nexercise</item>
+        <item>Balanced</item>
+        <item>Balanced\nmuscular</item>
+        <item>Skinny</item>
+        <item>Balanced\nskinny</item>
+        <item>Skinny\nmuscular</item>
+    </array>
+    <array name="sky_reminder_repeat_day">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </array>
+    <array name="sky_reminder_repeat_day_short">
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+        <item>S</item>
+        <item>S</item>
+    </array>
+    <array name="sleep_edit_array">
+        <item>@string/sleep_sleep_time</item>
+        <item>@string/sleep_wakeup_time</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>MON</item>
+        <item>TUE</item>
+        <item>WED</item>
+        <item>THU</item>
+        <item>FRI</item>
+        <item>SAT</item>
+        <item>SUN</item>
+    </array>
+    <array name="solar_festival">
+        <item>0101元旦</item>
+        <item>0214情人节</item>
+        <item>0308妇女节</item>
+        <item>0312植树节</item>
+        <item>0315消权日</item>
+        <item>0401愚人节</item>
+        <item>0422地球日</item>
+        <item>0501劳动节</item>
+        <item>0504青年节</item>
+        <item>0601儿童节</item>
+        <item>0701建党节</item>
+        <item>0801建军节</item>
+        <item>0910教师节</item>
+        <item>1001国庆节</item>
+        <item>1031万圣节</item>
+        <item>1111光棍节</item>
+        <item>1224平安夜</item>
+        <item>1225圣诞节</item>
+    </array>
+    <array name="solar_term">
+        <item>春分</item>
+        <item>清明</item>
+        <item>谷雨</item>
+        <item>立夏</item>
+        <item>小满</item>
+        <item>芒种</item>
+        <item>夏至</item>
+        <item>小暑</item>
+        <item>大暑</item>
+        <item>立秋</item>
+        <item>处暑</item>
+        <item>白露</item>
+        <item>秋分</item>
+        <item>寒露</item>
+        <item>霜降</item>
+        <item>立冬</item>
+        <item>小雪</item>
+        <item>大雪</item>
+        <item>冬至</item>
+        <item>小寒</item>
+        <item>大寒</item>
+        <item>立春</item>
+        <item>雨水</item>
+        <item>惊蛰</item>
+    </array>
+    <array name="special_festivals">
+        <item>母亲节</item>
+        <item>父亲节</item>
+        <item>感恩节</item>
+    </array>
+    <array name="sport_hr_section_colors">
+        <item>@color/hr_sec_warm_up</item>
+        <item>@color/hr_sec_fat_burn</item>
+        <item>@color/hr_sec_lung_strength</item>
+        <item>@color/hr_sec_stamina_strength</item>
+        <item>@color/hr_sec_anaerobic_limit</item>
+    </array>
+    <array name="sport_hr_section_colors_zepp">
+        <item>@color/hr_sec_warm_up</item>
+        <item>@color/hr_sec_fat_burn</item>
+        <item>@color/hr_sec_lung_strength</item>
+        <item>@color/hr_sec_stamina_strength</item>
+        <item>@color/hr_sec_anaerobic_limit_zepp</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Activity</item>
+        <item>Slow walking</item>
+        <item>Walking</item>
+        <item>Fast walking</item>
+        <item>Running</item>
+        <item>Stand</item>
+        <item>Sitting</item>
+        <item>Light activity</item>
+        <item>Put the device on</item>
+        <item>Charging…</item>
+        <item>Lying down</item>
+    </array>
+    <array name="support_features">
+        <item>NewSportHealthDataChannel</item>
+    </array>
+    <array name="td_hr_section_colors">
+        <item>@color/td_hr_tape_rest</item>
+        <item>@color/td_hr_tape_warm_up</item>
+        <item>@color/td_hr_tape_fat_burn</item>
+        <item>@color/td_hr_tape_lung_strength</item>
+        <item>@color/td_hr_tape_stamina_strength</item>
+        <item>@color/td_hr_tape_anaerobic_limit</item>
+    </array>
+    <array name="temperature_unit_titles">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="timeline_type">
+        <item>Activity</item>
+        <item>Slow walking</item>
+        <item>Walking</item>
+        <item>Fast walking</item>
+        <item>Running</item>
+        <item>Standing</item>
+        <item>Sitting</item>
+        <item>Light activity</item>
+        <item>Not wearing</item>
+        <item>Charging…</item>
+        <item>Lying down</item>
+    </array>
+    <array name="tr_hr_section_names">
+        <item>@string/hr_section_rest</item>
+        <item>@string/hr_section_warm_up</item>
+        <item>@string/hr_section_fat_burn</item>
+        <item>@string/hr_section_heart_lung_strengthen</item>
+        <item>@string/hr_section_stamina_strengthen</item>
+        <item>@string/hr_section_anaerobic_limit</item>
+    </array>
+    <array name="tradition_festival">
+        <item>除夕</item>
+        <item>0101春节</item>
+        <item>0115元宵</item>
+        <item>0505端午</item>
+        <item>0707七夕</item>
+        <item>0815中秋</item>
+        <item>0909重阳</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Not limited</item>
+        <item>Elementary, 1</item>
+        <item>Intermediate, 2</item>
+        <item>Advanced, 3</item>
+    </array>
+    <array name="trunk_integer_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </array>
+    <array name="trunk_string_array">
+        <item>辛</item>
+        <item>壬</item>
+        <item>癸</item>
+        <item>甲</item>
+        <item>乙</item>
+        <item>丙</item>
+        <item>丁</item>
+        <item>戊</item>
+        <item>己</item>
+        <item>庚</item>
+    </array>
+    <array name="unbind_device_description">
+        <item>@string/device_band</item>
+        <item>@string/device_weight</item>
+        <item>@string/device_shoe</item>
+        <item>@string/device_watch</item>
+        <item>@string/smart_module</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normal</item>
+        <item>High</item>
+        <item>Very high</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>@string/vo2_max_level_status_very_poor</item>
+        <item>@string/vo2_max_level_status_poor</item>
+        <item>@string/vo2_max_level_status_fair</item>
+        <item>@string/vo2_max_level_status_average</item>
+        <item>@string/vo2_max_level_status_good</item>
+        <item>@string/vo2_max_level_status_very_good</item>
+        <item>@string/vo2_max_level_status_excellent</item>
+    </array>
+    <array name="watch_setting_ges_screen_mode_array">
+        <item>@string/watch_setting_ges_screen_mode_off</item>
+        <item>@string/watch_setting_ges_screen_mode_on_time</item>
+        <item>@string/watch_setting_ges_screen_mode_on_all_day</item>
+        <item>@string/watch_setting_ges_screen_mode_on_smart</item>
+    </array>
+    <array name="water_leval">
+        <item>Insufficient</item>
+        <item>Normal</item>
+        <item>Good</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </array>
+    <array name="week_days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </array>
+    <array name="week_name">
+        <item>Sun</item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+    </array>
+    <array name="week_string_array">
+        <item>@string/fh_sunday</item>
+        <item>@string/fh_monday</item>
+        <item>@string/fh_tuesday</item>
+        <item>@string/fh_wednesday</item>
+        <item>@string/fh_thursday</item>
+        <item>@string/fh_friday</item>
+        <item>@string/fh_saturday</item>
+    </array>
+    <array name="weeks">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </array>
+    <array name="weeks_short">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Underweight</item>
+        <item>Balanced</item>
+        <item>Overweight</item>
+        <item>Obese</item>
+    </array>
+    <array name="weight_bfs_help_tips">
+        <item>Turn off Bluetooth on the other device first, then pair with your phone.</item>
+        <item>Step on the scale to check if it shows your weight. If it displays a battery icon, replace the batteries.</item>
+        <item>If there\'s no response when you step on the scale, check if the batteries are installed properly.</item>
+        <item>If the device is charged, but the phone can\'t see it, try restarting phone\'s Bluetooth.</item>
+        <item>If restarting Bluetooth doesn\'t solve the problem, try rebooting the phone.</item>
+    </array>
+    <array name="weight_bfs_help_title">
+        <item>Is this scale paired with another device?</item>
+        <item>Check the scale\'s battery</item>
+        <item>Are the batteries installed properly?</item>
+        <item>@string/help_title_2</item>
+        <item>Try rebooting your phone</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Place the scale as close as possible to the router to ensure a strong Wi-Fi signal</item>
+        <item>· Confirm whether the input password for the Wi-Fi connection is correct.</item>
+        <item>· Connect your phone to the target Wi-Fi router, and then try opening a web page to check whether you can access the Internet.</item>
+        <item>· If 2.4GHz is disabled, enable and select it. The scale does not support 5GHz Wi-Fi. \n· If dual band is enabled, disable it to avoid configuration failure because of the 5GHz network.</item>
+        <item>· If the Wi-Fi router is connected to the Internet, the Wi-Fi signal is strong, and the router is working with 2.4GHz enabled and dual band disabled, try restarting the router.</item>
+        <item>· If restarting the router does not work, try restarting the phone.</item>
+        <item>· If restarting the router does not work, try reinstalling the battery.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Is the scale located in a place with strong Wi-Fi signal?</item>
+        <item>2. Is the Wi-Fi password correct?</item>
+        <item>3. Is the Wi-Fi router properly connected to the Internet?</item>
+        <item>4. Is 2.4GHz Wi-Fi disabled on the router? Or is dual band Wi-Fi enabled?</item>
+        <item>5. Try restarting the router.</item>
+        <item>6. Try restarting the phone.</item>
+        <item>7. Try restarting the device.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>2.4 GHz Wi-Fi indicates that the wireless router operates at 2.4 GHz.\n5 GHz Wi-Fi indicates that the wireless router operates at 5 GHz.</item>
+        <item>Set up your router according to the following steps:\n1. Enter the login address of your router in the address bar of your browser and log in to the background of the wireless router. \n2. Find the setting button of the wireless router. \n3. Turn off the dual band button. \n4. Enable the 2.4 GHz Wi-Fi.</item>
+        <item>The following two methods can be used to check the Wi-Fi band:\n1. In the Wi-Fi list on your computer, select [Wi-Fi] &amp;gt; [Property] &amp;gt; [Network Band]. \n2. Log in to the router background.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· What are the 2.4 GHz Wi-Fi and 5 GHz Wi-Fi?</item>
+        <item>· How can I enable the 2.4 GHz Wi-Fi on my router?</item>
+        <item>· How can I check the Wi-Fi band?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Normal</item>
+        <item>Overweight</item>
+        <item>Obese</item>
+    </array>
+    <array name="weight_change_curve_colors">
+        <item>#3300c474</item>
+        <item>#0006b666</item>
+    </array>
+    <array name="weight_curve_shadow_colors">
+        <item>@color/s20</item>
+        <item>@color/trans</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> lbs</item>
+    </array>
+    <array name="weight_unit_titles">
+        <item>@string/setting_weight_metric</item>
+        <item>@string/setting_weight_british</item>
+        <item>@string/setting_weight_shijin</item>
+        <item>@string/setting_weight_stone</item>
+    </array>
+    <array name="world_clock_alphabet_navigation_table">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>H</item>
+        <item>I</item>
+        <item>J</item>
+        <item>K</item>
+        <item>L</item>
+        <item>M</item>
+        <item>N</item>
+        <item>O</item>
+        <item>P</item>
+        <item>Q</item>
+        <item>R</item>
+        <item>S</item>
+        <item>T</item>
+        <item>U</item>
+        <item>V</item>
+        <item>W</item>
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+        <item>#</item>
+    </array>
+    <array name="year_view_week_string_array">
+        <item>S</item>
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+        <item>S</item>
+    </array>
+</resources>

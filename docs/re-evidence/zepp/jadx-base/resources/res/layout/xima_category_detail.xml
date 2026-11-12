@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.watch.companion.ui.view.ActionbarLayout
+        android:id="@+id/actionbar_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/actionbar_detail">
+        <com.huami.watch.companion.ui.view.PagerSlidingTabStrip
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/actionbar"
+            app:pstsIndicatorColor="@color/pink"
+            app:pstsIndicatorWidth="22dp"
+            app:pstsTabTextColor="@color/btn_text_grey_red"/>
+        <View
+            android:id="@+id/line"
+            android:layout_below="@+id/indicator"
+            style="@style/Line"/>
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pager"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/line"/>
+        <TextView
+            android:textSize="@dimen/xima_detail_title_size"
+            android:textColor="@color/xima_graytext_color"
+            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:id="@+id/nodata"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/xima_nodata"
+            android:drawableTop="@drawable/ic_search_no_data"
+            android:drawablePadding="16dp"/>
+    </RelativeLayout>
+</RelativeLayout>

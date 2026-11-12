@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>De dilluns a divendres</item>
+        <item>Cada dia</item>
+        <item>Una vegada</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>Efecte d\'entrenament (TE) ajuda a entendre el benefici d\'un exercici sobre el teu condicionament físic</item>
+        <item>Proporciona dades de consum màxim d\'oxigen (VO₂ màx.)</item>
+        <item>Guia el teu entrenament segons els objectius que estableixis</item>
+        <item>Estadístiques i configuració complets de l\'activitat</item>
+        <item>Es pot fer servir a la piscina, nedant en aigües obertes i practicant triatló</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>One key to control all with “Classmate Xiao Ai” \n Make your home smart with voice control, and it follows what you say</item>
+        <item>Transportation card, access card, UnionPay card \n For traveling, working, and consuming, just swipe your watch</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>One key to open Alexa \n Intelligent voice, do what you say</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item />
+        <item>* Només per exercici de córrer, s\'ha d\'obrir a la configuració d\'exercici</item>
+        <item />
+        <item>* Només per córrer</item>
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item />
+        <item />
+        <item />
+        <item>*Actualment només disponible a les regions seleccionades.</item>
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>La part superior del braç ha d\'estar descoberta, amb la màniga còmodament arromangada</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Hauria de ser possible introduir un dit per sota del braçal. Els braçals que estan massa fluixos o massa cenyits poden afectar la precisió del mesurament</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Primer mesurament</item>
+        <item>Segon mesurament</item>
+        <item>Tercer mesurament</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Enregistrar la primera lectura de la pressió arterial</item>
+        <item>Enregistrar la segona lectura de la pressió arterial</item>
+        <item>Enregistrar la tercera lectura de la pressió arterial</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Baix</item>
+        <item>Normal</item>
+        <item>Alt</item>
+        <item>Molt alt</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normal</item>
+        <item>Alt</item>
+        <item>Molt alt</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Molt pobre</item>
+        <item>Pobre</item>
+        <item>Normal</item>
+        <item>Bona</item>
+        <item>Excel·lent</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Molt baix</item>
+        <item>Baix</item>
+        <item>Normal</item>
+        <item>Elevat</item>
+        <item>Alt</item>
+    </array>
+    <array name="bone_leval">
+        <item>Insuficient</item>
+        <item>Normal</item>
+        <item>Bona</item>
+    </array>
+    <array name="brm_leval">
+        <item>No s\'han assolit els objectius</item>
+        <item>Objectiu assolit</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Baix</item>
+        <item>Central</item>
+        <item>Alt</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Proveu a prémer el botó al rellotge, si la pantalla està apagada, enchufeu-la per carregar-la.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Si la polsera està carregada però el telèfon no pot trobar-la, proveu reiniciant el bluetooth.</item>
+        <item>Si reiniciant el bluetooth no es solventen els problemes, proveu reiniciant el telèfon.</item>
+        <item>Les dades del rellotge no poden ser sincronitzades mentres practiqueu exercici. Finalitzeu la sessió i proveu-ho de nou.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>El vostre rellotge està carregat?</item>
+        <item>Aquest rellotge està vinculat a un altre dispositiu?</item>
+        <item>Proveu reiniciant el bluetooh</item>
+        <item>Proveu reiniciant el telèfon</item>
+        <item>Les dades no es poden sincronitzar mentre s\'entrena</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Shenzhen</item>
+        <item>Foshan</item>
+        <item>Dongguan</item>
+        <item>Pequín</item>
+        <item>Nanjing</item>
+        <item>Suzhou</item>
+        <item>Changzhou</item>
+        <item>Jinan</item>
+        <item>Qingdao</item>
+        <item>Hangzhou</item>
+        <item>Ningbo</item>
+        <item>Zhengzhou</item>
+        <item>Kaifeng</item>
+        <item>Xangai</item>
+        <item>Shijiazhuang</item>
+        <item>Baoding</item>
+        <item>Chengdu</item>
+        <item>Mianyang</item>
+        <item>Shenyang</item>
+        <item>Dalian</item>
+    </array>
+    <array name="common_level">
+        <item>Insuficient</item>
+        <item>Normal</item>
+        <item>Bo</item>
+    </array>
+    <array name="contact_ways">
+        <item>Correu electrònic</item>
+        <item>Número de telèfon</item>
+        <item>ID de WeChat</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Principiant en el entrenament físic</item>
+        <item>Amb certa experiència en entrenaments físics</item>
+        <item>Amb força experiència en entrenaments i definició</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Fàcil</item>
+        <item>Mitg</item>
+        <item>Avançat</item>
+    </array>
+    <array name="ecg_afib">
+        <item>No s\'han detectat anomalies</item>
+        <item>Dades insuficients</item>
+        <item>Batecs anormals</item>
+        <item>Dades insuficients</item>
+        <item />
+        <item>No s\'han detectat anomalies</item>
+        <item>Qualitat de senyal pobra</item>
+        <item>No s\'han detectat anomalies</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item />
+        <item>Ajusta el mètode d\'ús i torna-ho a provar.</item>
+        <item>Ajusta el mètode d\'ús i torna-ho a provar.</item>
+        <item>Només com a referència. Consulta amb un metge si tens molèsties.</item>
+        <item>Només com a referència. Consulta amb un metge si tens molèsties.</item>
+        <item>Només com a referència. Consulta amb un metge si tens molèsties.</item>
+        <item>Només com a referència. Consulta amb un metge si tens molèsties.</item>
+        <item>Ajusta el mètode d\'ús i torna-ho a provar.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Amb l\'objectiu de cremar greix</item>
+        <item>Amb l\'objectiu de definir</item>
+        <item>Amb l\'objectiu de guanyar massa muscular</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Perdre pes</item>
+        <item>Definir</item>
+        <item>Volum</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>Dl.</item>
+        <item>Dt.</item>
+        <item>Dc.</item>
+        <item>Dj.</item>
+        <item>Dv.</item>
+        <item>Ds.</item>
+        <item>Dg</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Dl.</item>
+        <item>Dt.</item>
+        <item>Dc.</item>
+        <item>Dj.</item>
+        <item>Dv.</item>
+        <item>Ds.</item>
+        <item>Dg.</item>
+    </array>
+    <array name="hr_sport">
+        <item>Zona de freqüència cardíaca: Lleuger</item>
+        <item>Zona de freqüència cardíaca: Intensiva</item>
+        <item>Zona de freqüència cardíaca: Aeròbica</item>
+        <item>Zona de freqüència cardíaca: Anaeròbica</item>
+        <item>Zona de freqüència cardíaca: Màx. VO₂</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Lleugera</item>
+        <item>Intensiu</item>
+        <item>Aeròbic</item>
+        <item>Anaeròbic</item>
+        <item>Màxim VO₂</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Aixella</item>
+        <item>Boca</item>
+        <item>Recte</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Canell</item>
+        <item>Front</item>
+        <item>Postauricular</item>
+        <item>Còclea</item>
+        <item>Coll</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Aixella</item>
+        <item>Boca</item>
+        <item>Recte</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Pit</item>
+        <item>Aixella</item>
+        <item>Groin</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Molt a prop</item>
+        <item>A prop</item>
+        <item>Lluny</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Premeu el botó de la polsera per comprovar si la pantalla s\'il·lumina. Si no ho fa, carregueu la vostra polsera.\n\nCarregueu el dispositiu abans d\'emparellar un %1$s o %2$s.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Si la polsera està carregada, però el telèfon no pot trobar-la, reinicia el bluetooth.</item>
+        <item>Si reiniciant el bluetooth no es solventen els problemes, proveu reiniciant el telèfon.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>La teva polsera està carregada?</item>
+        <item>Està la polsera vinculada a un altre dispositiu?</item>
+        <item>@string/help_title_2</item>
+        <item>Intenteu reiniciar el telèfon</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>Gen</item>
+        <item>Febr</item>
+        <item>Mar</item>
+        <item>Abr</item>
+        <item>Maig</item>
+        <item>Juny</item>
+        <item>Jul</item>
+        <item>Ag</item>
+        <item>Set</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Des</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Insuficient</item>
+        <item>Normal</item>
+        <item>Bona</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>Recordatori diari de temps</item>
+        <item>Alerta d\'inactivitat</item>
+        <item>Trucada entrant</item>
+        <item>Notificacions d\'objectiu</item>
+        <item>Notificació de bateria baixa</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Molt pobre</item>
+        <item>Pobre</item>
+        <item>Mitjana</item>
+        <item>Bo</item>
+        <item>Molt bo</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>El segon</item>
+        <item>El tercer</item>
+        <item>El quart</item>
+        <item>L\'últim</item>
+        <item>El primer</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Gen</item>
+        <item>Febr</item>
+        <item>Març</item>
+        <item>Abr</item>
+        <item>Maig</item>
+        <item>Juny</item>
+        <item>Jul</item>
+        <item>Ag</item>
+        <item>Set</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Des</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>El/La %1$s deixarà de funcionar si no s\'utilitza en un llarg període. Sacsegeu el/la %2$s i proveu-ho de nou.</item>
+        <item>La durada de la bateria del/de la %s és d\'un any. Si l\'he utilitzat força, potser ja no quedi bateria.</item>
+        <item>Apagueu primer el Bluetooth a l\'altre dispositiu i després enllaceu amb el vostre telèfon.</item>
+        <item>Si el/la %s està carregat/da, però el mòbil no el/la detecta, proveu reiniciant el Bluetooth del mòbil.</item>
+        <item>Si reiniciant el bluetooth no es solventen els problemes, proveu reiniciant el telèfon.</item>
+        <item>Premeu les dades de les sabatilles esportives i introduïu la pàgina de la següent activitat per sincronitzar automàticament les dades</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Sacsegeu el/la %s</item>
+        <item>Està carregat/da el/la vostre/a %s?</item>
+        <item>Està enllaçat/da amb un altre mòbil proper el/la %s?</item>
+        <item>Reinici de Bluetooth</item>
+        <item>Intenteu reiniciar el telèfon</item>
+        <item>Com sincronitzar les teves dades?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Obès</item>
+        <item>Sobrepès</item>
+        <item>Rabassut</item>
+        <item>Manca d\'exercici</item>
+        <item>Equilibrat</item>
+        <item>Equilibri\nmuscular</item>
+        <item>Flac</item>
+        <item>Equilibrat\nflac</item>
+        <item>Flac\nmusculós</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>Dl.</item>
+        <item>Dt.</item>
+        <item>Dc.</item>
+        <item>Dj.</item>
+        <item>Dv.</item>
+        <item>Ds.</item>
+        <item>Dg</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Activitats</item>
+        <item>Caminada suau</item>
+        <item>Caminar</item>
+        <item>Caminada ràpida</item>
+        <item>Córrer</item>
+        <item>Dempeus</item>
+        <item>Seure</item>
+        <item>Activitat lleugera</item>
+        <item>No la porta posada</item>
+        <item>Carregant…</item>
+        <item>Estirat</item>
+    </array>
+    <array name="timeline_type">
+        <item>Activitat</item>
+        <item>Caminada suau</item>
+        <item>Caminada</item>
+        <item>Caminada ràpida</item>
+        <item>Corrent</item>
+        <item>Dempeus</item>
+        <item>Assegut</item>
+        <item>Activitat lleugera</item>
+        <item>No la porta posada</item>
+        <item>Carregant…</item>
+        <item>Estirat</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Sense límits</item>
+        <item>Fàcil, 1</item>
+        <item>Mitg, 2</item>
+        <item>Avançat, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normal</item>
+        <item>Alt</item>
+        <item>Molt alt</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>Per sota de la mitjana</item>
+        <item>Per sobre de la mitjana</item>
+        <item>Pobre</item>
+        <item>Mitjana</item>
+        <item>Molt pobre</item>
+        <item>Excel·lent</item>
+        <item>Bé</item>
+    </array>
+    <array name="water_leval">
+        <item>Insuficient</item>
+        <item>Normal</item>
+        <item>Bona</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>Dis</item>
+        <item>Dime</item>
+        <item>Div</item>
+        <item>Diu</item>
+        <item>Dima</item>
+        <item>Dij</item>
+        <item>Dil</item>
+    </array>
+    <array name="week_days">
+        <item>Dimecres</item>
+        <item>Dijous</item>
+        <item>Divendres</item>
+        <item>Dissabte</item>
+        <item>Dilluns</item>
+        <item>Dimarts</item>
+        <item>Diumenge</item>
+    </array>
+    <array name="week_name">
+        <item>Dg</item>
+        <item>Dl</item>
+        <item>Dt</item>
+        <item>Dc</item>
+        <item>Dj</item>
+        <item>Dv</item>
+        <item>Ds</item>
+    </array>
+    <array name="weeks">
+        <item>Dilluns</item>
+        <item>Dimarts</item>
+        <item>Dimecres</item>
+        <item>Dijous</item>
+        <item>Divendres</item>
+        <item>Dissabte</item>
+        <item>Diumenge</item>
+    </array>
+    <array name="weeks_short">
+        <item>Dl</item>
+        <item>Dt</item>
+        <item>Dc</item>
+        <item>Dj</item>
+        <item>Dv</item>
+        <item>Ds</item>
+        <item>Dg</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Infra-pes</item>
+        <item>Equilibrat</item>
+        <item>Sobrepès</item>
+        <item>Obès</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Apropeu la bàscula tant com pugueu a l\'encaminador per garantir un bon senyal de Wi-Fi.</item>
+        <item>· Comproveu que la contrasenya introduïda de la connexió Wi-Fi sigui correcta.</item>
+        <item>· Connecteu el telèfon a l\'encaminador Wi-Fi objectiu i mireu d\'obrir una pàgina web per mirar si teniu accés a Internet.</item>
+        <item>· Si la xarxa de 2,4 GHz està inhabilitada, habiliteu-la i seleccioneu-la. La bàscula no és compatible amb xarxes Wi-Fi de 5 GHz. \n· Si està habilitada la banda doble, inhabiliteu-la per tal d\'evitar errors de configuració a causa de la xarxa de 5 GHz.</item>
+        <item>· Si l\'encaminador Wi-Fi està connectat a Internet, el senyal de la Wi-Fi és bo i l\'encaminador funciona amb la xarxa de 2,4 GHz habilitada i la banda doble inhabilitada, proveu de reiniciar l\'encaminador.</item>
+        <item>· Si no solucioneu el problema en reiniciar l\'encaminador, proveu de reiniciar el telèfon.</item>
+        <item>· Si no solucioneu el problema en reiniciar l\'encaminador, proveu de tornar a instal·lar la bateria.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. La bàscula és a un lloc amb un bon senyal de Wi-Fi?</item>
+        <item>2. La contrasenya de la Wi-Fi és correcta?</item>
+        <item>3. L\'encaminador Wi-Fi està correctament connectat a Internet?</item>
+        <item>4. Està inhabilitada la Wi-Fi de 2,4 GHz a l\'encaminador? O bé està habilitada la Wi-Fi de banda doble?</item>
+        <item>5. Proveu de reiniciar l\'encaminador.</item>
+        <item>6. Proveu de reiniciar el telèfon.</item>
+        <item>7. Proveu de reiniciar el dispositiu.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>La Wi-Fi 2.4 GHz indica que l\'encaminador Wi-Fi treballa a 2.4 GHz.\nLa Wi-Fi 5 GHz indica que l\'encaminador Wi-Fi treballa a 5 GHz.</item>
+        <item>Configureu l\'encaminador seguint els passos següents:\n1. Introduïu l\'adreça d\'inici de sessió de l\'encaminador a la barra d\'adreces del navegador i inicieu la sessió al programari de l\'encaminador sense fil. \n2. Cerqueu el botó de configuració de l\'encaminador sense fil. \n3. Apagueu el botó de banda dual. \n4. Habiliteu la Wi-Fi 2.4 GHz.</item>
+        <item>Es poden seguir aquests dos mètodes per comprovar la banda de la Wi-Fi:\n1. A la llista de xarxes Wi-Fi de l\'ordinador, seleccioneu [Wi-Fi] &amp;gt; [Propietats] &amp;gt; [Banda de la xarxa]. \n2. Inicieu la sessió al programari de l\'encaminador.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Què són la Wi-Fi 2.4 GHz i la Wi-Fi 5 GHz?</item>
+        <item>· Com s\'habilita la Wi-Fi 2.4 GHz de l\'encaminador?</item>
+        <item>· Com es comprova la banda de la Wi-Fi?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Normal</item>
+        <item>Sobrepès</item>
+        <item>Obesitat</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> lliures</item>
+    </array>
+</resources>

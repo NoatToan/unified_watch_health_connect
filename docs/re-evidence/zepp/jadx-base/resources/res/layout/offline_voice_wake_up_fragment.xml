@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/s10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/layout_rainbow_toolbar"/>
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:background="@drawable/shape_corners_device_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_15dp"
+                android:layout_marginStart="@dimen/size_15dp"
+                android:layout_marginEnd="@dimen/size_15dp">
+                <com.huami.lib.rainbow.ListTile
+                    android:id="@+id/device_setting_response_after_turning_wrist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-4dp"
+                    app:ltv_title="@string/ds_5s_response_after_turning_wrist"/>
+                <com.huami.lib.rainbow.ListTile
+                    android:id="@+id/device_setting_response_after_bright_screen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-4dp"
+                    app:ltv_title="@string/ds_5s_response_after_bright_screen"/>
+                <com.huami.lib.rainbow.ListTile
+                    android:id="@+id/device_setting_response_during_bright_screen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-4dp"
+                    app:ltv_title="@string/ds_response_during_bright_screen"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <View
+                android:id="@+id/mask_view"
+                android:background="@color/mask_color_night_mode"
+                android:focusable="true"
+                android:visibility="gone"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </FrameLayout>
+    </LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:huami="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/s38"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/weather_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/container"
+        android:onClick="onClick"
+        huami:ltv_title="@string/setting_weather_city"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/weather_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/weather_city"
+        android:onClick="onClick"
+        huami:ltv_tips="@string/setting_weather_temp_c"
+        huami:ltv_title="@string/setting_weather_temp"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/weather_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/weather_temp"
+        android:onClick="onClick"
+        huami:ltv_checked="true"
+        huami:ltv_title="@string/setting_weather_alert"/>
+</RelativeLayout>

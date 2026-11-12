@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/bg_main"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="@dimen/draglist_section_div_size"
+        android:textColor="#80000000"
+        android:gravity="center_vertical"
+        android:id="@+id/section_div"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/section_div_height"
+        android:layout_marginStart="24dp"/>
+    <include layout="@layout/split_line_width_match_parent"/>
+</LinearLayout>

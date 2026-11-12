@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/wl_item_spacing">
+    <View
+        android:layout_gravity="bottom"
+        android:id="@+id/header_divider"
+        style="@style/HorizontalLine.Dim"/>
+</FrameLayout>

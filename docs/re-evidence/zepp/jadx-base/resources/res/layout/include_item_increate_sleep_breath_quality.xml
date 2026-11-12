@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.huami.widget.typeface.TypefaceTextView
+        android:textSize="@dimen/slp_size_14sp"
+        android:textStyle="bold"
+        android:textColor="@color/s1"
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/slp_size_15dp"/>
+    <com.huami.widget.typeface.TypefaceTextView
+        android:textSize="@dimen/slp_size_14sp"
+        android:textColor="@color/s2"
+        android:id="@+id/desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/increase_quality_fun4"/>
+</LinearLayout>

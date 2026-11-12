@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/s10"
+    android:fitsSystemWindows="false"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/layout_indicator"
+        android:background="@color/s36"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.huami.lib.rainbow.titlebar.RainbowTitleBar
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_45dp"
+            app:navigationIcon="@drawable/ic_arrow_back_20_2x"/>
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:layout_gravity="bottom|center_horizontal"
+            android:id="@+id/magic_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_45dp"/>
+    </FrameLayout>
+    <View
+        android:id="@+id/divider"
+        android:background="@color/s4"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_below="@+id/layout_indicator"/>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:background="@color/s10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/divider"/>
+</RelativeLayout>

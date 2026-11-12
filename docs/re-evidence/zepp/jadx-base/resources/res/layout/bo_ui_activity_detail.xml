@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/bo_ui_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.bloodoxygen.ui.view.BloodOxygenTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/bo_ui_spo2_name"/>
+    <include
+        android:id="@+id/ui_tab_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/bo_ui_tab_selector"/>
+    <FrameLayout
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

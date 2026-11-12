@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_music_sync"
+    app:startDestination="@+id/music_file_browser_fragment">
+    <fragment
+        android:name="com.huami.watch.musicupload.fragment.MusicFileBrowserFragment"
+        android:id="@+id/music_file_browser_fragment">
+        <action
+            android:id="@+id/to_upload_fragment"
+            app:destination="@+id/upload_fragment"/>
+    </fragment>
+    <fragment
+        android:name="com.huami.watch.musicupload.fragment.MusicUploadFragment"
+        android:id="@+id/upload_fragment"/>
+    <include app:graph="@navigation/nav_guide_connect"/>
+    <action
+        android:id="@+id/to_guide_fragment"
+        app:destination="@+id/nav_guide_connect"/>
+</navigation>

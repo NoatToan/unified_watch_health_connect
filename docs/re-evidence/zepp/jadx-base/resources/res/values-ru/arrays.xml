@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>Однократно</item>
+        <item>Ежедневно</item>
+        <item>Будни</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>Поддерживается плавание в бассейне, на открытой воде и триатлон</item>
+        <item>Предоставление данных МПК (VO₂ max)</item>
+        <item>Полные сведения об упражнениях и настройки тренировок</item>
+        <item>Советы в реальном времени для достижения целей тренировок</item>
+        <item>Сведения о тренировочном эффекте помогут вам понять каждое движение</item>
+    </array>
+    <array name="bind_guide_main_title_everest2">
+        <item>Предоставить данные VO2мак \n точная оценка личных способностей упражнений</item>
+        <item>Попрощайтесь с вашей транспортной картой и картой контроля доступа. \n Вы можете использовать часы, когда путешествуете, идете на работу и производите оплату.</item>
+        <item>Вы можете переключаться между двумя режимами по своему желанию. \n Вы можете выбрать сверхдлительный режим ожидания или интеллектуальный режим.</item>
+        <item>70 часов непрерывной GPS навигации, \n это означает, что вам не о чем беспокоиться во время упражнений на открытом воздухе.</item>
+    </array>
+    <array name="bind_guide_main_title_everest2_oversea">
+        <item>Предоставить данные VO2мак \n точная оценка личных способностей упражнений</item>
+        <item>Вы можете переключаться между двумя режимами по своему желанию. \n Вы можете выбрать сверхдлительный режим ожидания или интеллектуальный режим.</item>
+        <item>70 часов непрерывной GPS навигации, \n это означает, что вам не о чем беспокоиться во время упражнений на открытом воздухе.</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>Вызов голосового помощника в один клик \n голосовое управление умной мебелью</item>
+        <item>Проездная карта, карта доступа, платежная карта UnionPay \n незаменимый помощник в путешествиях, работе, покупках</item>
+        <item>12 спортивных режимов \n свобода в спорте</item>
+        <item>Поддержка звонков по Bluetooth \n для набора номера или ответа на звонок не требуется смартфон</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>One key to open Alexa\nProceed as you said with intelligent voice</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_main_title_xihu">
+        <item>eSIM-карты поддерживаются.  n Вы можете звонить и доступать в интернет, не подключаясь к вашему мобильному телефону.</item>
+        <item>Вызов голосового помощника в один клик \n голосовое управление умной мебелью</item>
+        <item>Вы можете заниматься десятью видами спорта, не беря с собой мобильный телефон.  n Вы хотите заниматься спортом свободно.</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item>* Только для бега</item>
+        <item />
+        <item>* Только для беговых упражнений, необходимо включить в настройках</item>
+        <item />
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item>*Currently available in selected regions only.</item>
+        <item />
+        <item />
+        <item />
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Плечо должно быть оголено, а рукав удобно закатан вверх</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Вы должны иметь возможность просунуть один палец под манжету. Слишком свободные или слишком тугие манжеты могут повлиять на точность измерения</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Первое измерение</item>
+        <item>Второе измерение</item>
+        <item>Третье измерение</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Запишите первое значение кровяного давления</item>
+        <item>Запишите второе значение кровяного давления</item>
+        <item>Запишите третье значение кровяного давления</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Низкий</item>
+        <item>Нормальный</item>
+        <item>Высокий</item>
+        <item>Очень высокий</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Нормальный</item>
+        <item>Высокий</item>
+        <item>Очень высокий</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Очень плохо</item>
+        <item>Плохой</item>
+        <item>Нормальный</item>
+        <item>Хороший</item>
+        <item>Отлично</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Очень низкий</item>
+        <item>Низкий</item>
+        <item>В пределах нормы</item>
+        <item>Выше среднего</item>
+        <item>Высокий</item>
+    </array>
+    <array name="bone_leval">
+        <item>Недостаточная</item>
+        <item>Нормальная</item>
+        <item>Хорошая</item>
+    </array>
+    <array name="brm_leval">
+        <item>Цель не достигнута</item>
+        <item>Цель достигнута</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Низк.</item>
+        <item>Средн.</item>
+        <item>Выс.</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Попробуйте нажать кнопку на часах, если экран не загорается, зарядите батарею.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Если браслет заряжен, но телефон не может обнаружить его, попробуйте перезапустить Bluetooth.</item>
+        <item>Если перезапуск Bluetooth не помогает, попытайтесь перезагрузить телефон.</item>
+        <item>Синхронизация данных невозможна во время тренировки. Завершите сеанс и повторите попытку.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Mi Watch заряжены?</item>
+        <item>Подключены ли Mi Watch к другому устройству?</item>
+        <item>Попробуйте перезапустить Bluetooth</item>
+        <item>Попробуйте перезагрузить телефон</item>
+        <item>Во время тренировки синхронизация невозможна</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Гуанчжоу</item>
+        <item>Шэньчжэнь</item>
+        <item>Фошань</item>
+        <item>Дунгуань</item>
+        <item>Пекин</item>
+        <item>Нанкин</item>
+        <item>Сучжоу</item>
+        <item>Чанчжоу</item>
+        <item>Цзинань</item>
+        <item>Циндао</item>
+        <item>Ханчжоу</item>
+        <item>Нинбо</item>
+        <item>Чжэнчжоу</item>
+        <item>Кайфэн</item>
+        <item>Шанхай</item>
+        <item>Шицзячжуан</item>
+        <item>Баодин</item>
+        <item>Чэнду</item>
+        <item>Мяньян</item>
+        <item>Шэньян</item>
+        <item>Далянь</item>
+    </array>
+    <array name="common_level">
+        <item>Недостаток</item>
+        <item>Норма</item>
+        <item>Хорошо</item>
+    </array>
+    <array name="contact_ways">
+        <item>Эл. почта</item>
+        <item>Номер мобильного телефона</item>
+        <item>WeChat ID</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Только начал тренироваться</item>
+        <item>Уже есть опыт тренировок</item>
+        <item>Постоянно тренируюсь, имею спортивное телосложение</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Начальный</item>
+        <item>Средний</item>
+        <item>Продвинутый</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Недостаточные данные</item>
+        <item>Аномальное биение сердца</item>
+        <item>Аномалии не обнаружены</item>
+        <item>Недостаточные данные</item>
+        <item>Аномалии не обнаружены</item>
+        <item />
+        <item>Аномалии не обнаружены</item>
+        <item>Плохое качество сигнала</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Измените метод использования и попробуйте снова.</item>
+        <item>Только для справки. Обратитесь к врачу, если у вас есть какой-либо дискомфорт.</item>
+        <item>Только для справки. Обратитесь к врачу, если у вас есть какой-либо дискомфорт.</item>
+        <item>Измените метод использования и попробуйте снова.</item>
+        <item>Только для справки. Обратитесь к врачу, если у вас есть какой-либо дискомфорт.</item>
+        <item />
+        <item>Только для справки. Обратитесь к врачу, если у вас есть какой-либо дискомфорт.</item>
+        <item>Измените метод использования и попробуйте снова.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>С целью сжечь вес</item>
+        <item>С целью придать форму телу</item>
+        <item>С целью нарастить мышцы</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Снижение веса</item>
+        <item>Придание формы</item>
+        <item>Увеличение веса</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>ПН</item>
+        <item>ВТ</item>
+        <item>СР</item>
+        <item>ЧТ</item>
+        <item>ПТ</item>
+        <item>СБ</item>
+        <item>ВС</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>ПН</item>
+        <item>Вт</item>
+        <item>Ср</item>
+        <item>Чт</item>
+        <item>Пт</item>
+        <item>СБ</item>
+        <item>ВС</item>
+    </array>
+    <array name="hr_sport">
+        <item>Зона пульса: Лёгкая</item>
+        <item>Зона пульса: Интенсивная</item>
+        <item>Зона пульса: Аэробная</item>
+        <item>Зона пульса: Анаэробная</item>
+        <item>Зона пульса: МПК</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Легкая</item>
+        <item>Интенсивная</item>
+        <item>Аэробный режим</item>
+        <item>Анаэробный режим</item>
+        <item>МПК</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Под мышкой</item>
+        <item>Во рту</item>
+        <item>Ректально</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>На запястье</item>
+        <item>На лбу</item>
+        <item>За ухом</item>
+        <item>В ухе</item>
+        <item>Шея</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Под мышкой</item>
+        <item>Во рту</item>
+        <item>Ректально</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>На груди</item>
+        <item>Под мышкой</item>
+        <item>В паховой складке</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Близко</item>
+        <item>Рядом</item>
+        <item>Далеко</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Нажмите кнопку на браслете, чтобы активировать дисплей. Если этого не происходит, попробуйте зарядить его.\n\nЗарядите устройство перед подключением %1$s или %2$s.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Если браслет заряжен, но телефон не может обнаружить его, попробуйте перезапустить Bluetooth.</item>
+        <item>Если перезапуск Bluetooth не решил проблему, попробуйте перезагрузить устройство.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Ваш браслет заряжен?</item>
+        <item>Подключен ли браслет к другому устройству?</item>
+        <item>@string/help_title_2</item>
+        <item>Перезагрузите устройство</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>Янв</item>
+        <item>Фев</item>
+        <item>Мар</item>
+        <item>Апр</item>
+        <item>Май</item>
+        <item>Июн</item>
+        <item>Июл</item>
+        <item>Авг</item>
+        <item>Сен</item>
+        <item>Окт</item>
+        <item>Ноя</item>
+        <item>Дек</item>
+    </array>
+    <array name="month_titles">
+        <item>Янв</item>
+        <item>Фев</item>
+        <item>Мар</item>
+        <item>Апр</item>
+        <item>Май</item>
+        <item>Июн</item>
+        <item>Июл</item>
+        <item>Авг</item>
+        <item>Сен</item>
+        <item>Окт</item>
+        <item>Ноя</item>
+        <item>Дек</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Недостаточная</item>
+        <item>В пределах нормы</item>
+        <item>Хорошая</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>Уведомление о низком заряде аккумулятора</item>
+        <item>Входящий вызов</item>
+        <item>Оповещение о бездействии</item>
+        <item>Уведомления о цели</item>
+        <item>Ежедневные уведомления о погоде</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Очень плохо</item>
+        <item>Плохо</item>
+        <item>Средне</item>
+        <item>Хорошо</item>
+        <item>Очень хорошо</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>Первый</item>
+        <item>Второй</item>
+        <item>Третий</item>
+        <item>Четвертый</item>
+        <item>Последний</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Янв</item>
+        <item>Фев</item>
+        <item>Мар</item>
+        <item>Апр</item>
+        <item>Май</item>
+        <item>Июн</item>
+        <item>Июл</item>
+        <item>Авг</item>
+        <item>Сен</item>
+        <item>Окт</item>
+        <item>Ноя</item>
+        <item>Дек</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s прекратит работать, если вы не используете его в течение длительного времени. Встряхните %2$s и попробуйте снова.</item>
+        <item>Батарея %s рассчитана на 1 год. Если вы носили кроссовки дольше, батарея могла разрядиться.</item>
+        <item>Сначала выключите Bluetooth на другом устройстве, затем привяжите к вашему телефону.</item>
+        <item>Если аккумулятор %s полностью заряжен, но телефон все равно не может обнаружить устройство, попробуйте перезапустить Bluetooth.</item>
+        <item>Если перезапуск Bluetooth не решил проблему, попробуйте перезагрузить устройство.</item>
+        <item>Нажмите на кнопку с данными кроссовок и перейдите на следующую страницу для автоматической синхронизации данных</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Встряхните %s</item>
+        <item>Батарея %s заряжена?</item>
+        <item>Устройство %s подключено к другим телефонам поблизости?</item>
+        <item>Перезапустить Bluetooth</item>
+        <item>Перезагрузите устройство</item>
+        <item>Как синхронизировать данные?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Ожирение</item>
+        <item>Избыточный вес</item>
+        <item>Плотное</item>
+        <item>Недост.\nфиз. нагрузки</item>
+        <item>Среднее</item>
+        <item>Мускулистое</item>
+        <item>Худощавое</item>
+        <item>Стройное</item>
+        <item>Атлетичное</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>ПН</item>
+        <item>ВТ</item>
+        <item>СР</item>
+        <item>ЧТ</item>
+        <item>ПТ</item>
+        <item>СБ</item>
+        <item>ВС</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Активность</item>
+        <item>Медленная ходьба</item>
+        <item>Ходьба</item>
+        <item>Быстрая ходьба</item>
+        <item>Бег</item>
+        <item>Стою</item>
+        <item>Сижу</item>
+        <item>Умеренная активность</item>
+        <item>Не носить</item>
+        <item>Заряжается</item>
+        <item>Лежа</item>
+    </array>
+    <array name="timeline_type">
+        <item>Активность</item>
+        <item>Медленная ходьба</item>
+        <item>Ходьба</item>
+        <item>Быстрая ходьба</item>
+        <item>Бег</item>
+        <item>Стоя</item>
+        <item>Сидя</item>
+        <item>Умеренная активность</item>
+        <item>Не носить</item>
+        <item>Заряжается…</item>
+        <item>Лежа</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Без ограничений</item>
+        <item>Начальный, 1</item>
+        <item>Средний, 2</item>
+        <item>Продвинутый, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>В пределах нормы</item>
+        <item>Высокий</item>
+        <item>Очень высокий</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>Новичок</item>
+        <item>Начинающий</item>
+        <item>Общий</item>
+        <item>Средний</item>
+        <item>Хороший</item>
+        <item>Отличный</item>
+        <item>Великолепный</item>
+    </array>
+    <array name="water_leval">
+        <item>Недостаточный</item>
+        <item>Нормальный</item>
+        <item>Хороший</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>Пн</item>
+        <item>Вт</item>
+        <item>Ср</item>
+        <item>Чт</item>
+        <item>Пт</item>
+        <item>Сб</item>
+        <item>Вс</item>
+    </array>
+    <array name="week_days">
+        <item>Понедельник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Пятница</item>
+        <item>Суббота</item>
+        <item>Воскресенье</item>
+    </array>
+    <array name="week_name">
+        <item>ВС</item>
+        <item>ПН</item>
+        <item>ВТ</item>
+        <item>СР</item>
+        <item>ЧТ</item>
+        <item>ПТ</item>
+        <item>СБ</item>
+    </array>
+    <array name="weeks">
+        <item>Понедельник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Пятница</item>
+        <item>Суббота</item>
+        <item>Воскресенье</item>
+    </array>
+    <array name="weeks_short">
+        <item>ПН</item>
+        <item>ВТ</item>
+        <item>СР</item>
+        <item>ЧТ</item>
+        <item>ПТ</item>
+        <item>СБ</item>
+        <item>ВС</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Недостаток веса</item>
+        <item>Средний</item>
+        <item>Избыточный вес</item>
+        <item>Ожирение</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Разместите весы как можно ближе к маршрутизатору, чтобы обеспечить сильный сигнал Wi-Fi.</item>
+        <item>· Убедитесь, что при подключении к сети Wi-Fi введен правильный пароль.</item>
+        <item>· Подключите телефон к нужному маршрутизатору Wi-Fi, а затем попробуйте открыть веб-страницу, чтобы проверить доступ в Интернет.</item>
+        <item>· Если диапазон 2,4 ГГц выключен, включите его и выберите для использования. Весы не поддерживают диапазон Wi-Fi 5 ГГц. \n· Если включен двухдиапазонный режим Wi-Fi, выключите его, чтобы избежать ошибки конфигурации из-за использования диапазона 5 ГГц.</item>
+        <item>· Если маршрутизатор Wi-Fi подключен к Интернету, на нем выбран диапазон 2,4 ГГц и выключен двухдиапазонный режим, а сигнал сети Wi-Fi достаточно сильный, попробуйте перезагрузить маршрутизатор.</item>
+        <item>· Если перезагрузка маршрутизатора не помогла, попробуйте перезагрузить телефон.</item>
+        <item>· Если перезагрузка маршрутизатора не помогла, попробуйте переустановить батарею.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Есть ли в месте расположения весов сильный сигнал Wi-Fi?</item>
+        <item>2. Введен ли правильный пароль сети Wi-Fi?</item>
+        <item>3. Правильно ли подключен маршрутизатор Wi-Fi к Интернету?</item>
+        <item>4. Выключен ли диапазон Wi-Fi 2,4 ГГц на маршрутизаторе? Включен ли двухдиапазонный режим Wi-Fi?</item>
+        <item>5. Попробуйте перезагрузить маршрутизатор.</item>
+        <item>6. Попробуйте перезагрузить телефон.</item>
+        <item>7. Попробуйте перезагрузить устройство.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>Диапазон Wi-Fi 2,4 ГГц означает, что беспроводной маршрутизатор работает на частоте 2,4 ГГц.\nДиапазон Wi-Fi 5 ГГц означает, что беспроводной маршрутизатор работает на частоте 5 ГГц.</item>
+        <item>Настройте маршрутизатор, выполнив следующие шаги.\n1. В адресной строке браузера введите адрес для входа в систему маршрутизатора и войдите в панель управления беспроводного маршрутизатора. \n2. Найдите кнопку настройки беспроводного маршрутизатора. \n3. Отключите двойной диапазон. \n4. Включите сеть Wi-Fi с частотой 2,4 ГГц.</item>
+        <item>Проверить диапазон сети Wi-Fi можно двумя указанными ниже способами.\n1. В списке сетей Wi-Fi на компьютере выберите [Сеть Wi-Fi] &amp;gt; [Свойства] &amp;gt; [Диапазон сети]. \n2. Войдите в панель управления маршрутизатора.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Что такое диапазоны Wi-Fi 2,4 ГГц и 5 ГГц?</item>
+        <item>· Как включить диапазон Wi-Fi 2,4 ГГц на моем маршрутизаторе?</item>
+        <item>· Как проверить диапазон Wi-Fi?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Норма</item>
+        <item>Избыточный вес</item>
+        <item>Ожирение</item>
+    </array>
+    <array name="weight_unit">
+        <item> кг</item>
+        <item> Цзинь</item>
+        <item> фунтов</item>
+    </array>
+</resources>

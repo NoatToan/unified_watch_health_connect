@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/eid_nav_graph"
+    app:startDestination="@+id/EidDetailFragment">
+    <fragment
+        android:label="EIDDetailFragment"
+        android:name="com.huami.eid.ui.fragment.EidDetailFragment"
+        android:id="@+id/EidDetailFragment">
+        <action
+            android:id="@+id/action_to_open"
+            app:destination="@+id/EIDOpenFragment"/>
+    </fragment>
+    <fragment
+        android:label="EidOpenFragment"
+        android:name="com.huami.eid.ui.fragment.EidOpenFragment"
+        android:id="@+id/EIDOpenFragment">
+        <action
+            android:id="@+id/action_to_detail"
+            app:destination="@+id/EidDetailFragment"
+            app:popUpTo="@+id/EidDetailFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+</navigation>

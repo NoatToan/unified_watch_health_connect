@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/root_view"
+    android:background="@color/s38"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/layout_weight_title_and_view"/>
+    <Button
+        android:textColor="@color/s1"
+        android:id="@+id/btn_skip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:minHeight="48dp"
+        android:text="@string/text_skip_measure"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/item_padding_horizontal"
+        android:layout_marginEnd="@dimen/item_padding_horizontal"
+        style="?attr/buttonStyleGray_48_flat"/>
+</RelativeLayout>

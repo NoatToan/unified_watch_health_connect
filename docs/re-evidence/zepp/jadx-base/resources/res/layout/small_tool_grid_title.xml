@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:tag="layout/small_tool_grid_title_0"
+    android:paddingTop="14dp"
+    android:paddingBottom="8dp"
+    android:focusable="false"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp">
+    <TextView
+        android:textAppearance="@style/Rainbow.TextAppearance.Title2"
+        android:textSize="18sp"
+        android:textColor="@color/s1"
+        android:id="@+id/small_tool_title"
+        android:tag="binding_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="viewStart"
+        app:layout_constraintBottom_toTopOf="@+id/small_tool_drag_sort_tip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"/>
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/s3"
+        android:id="@+id/small_tool_drag_sort_tip"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/small_tool_drag_sort_tip"
+        android:textAlignment="viewStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/small_tool_title"
+        app:layout_constraintStart_toStartOf="@+id/small_tool_title"
+        app:layout_constraintTop_toBottomOf="@+id/small_tool_title"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

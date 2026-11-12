@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="76dp"
+    android:layout_height="wrap_content">
+    <com.xiaomi.hm.health.view.ClockView
+        android:id="@+id/tool_clock_view"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textSize="@dimen/size_18sp"
+        android:textColor="@color/play_title_color"
+        android:ellipsize="end"
+        android:id="@+id/tool_clock_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:maxLines="1"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="@+id/tool_clock_view"
+        app:layout_constraintStart_toStartOf="@+id/tool_clock_view"
+        app:layout_constraintTop_toBottomOf="@+id/tool_clock_view"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textSize="@dimen/play_sub_title_size"
+        android:textColor="@color/play_sub_title_color"
+        android:ellipsize="end"
+        android:id="@+id/tool_clock_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="@+id/tool_clock_time"
+        app:layout_constraintStart_toStartOf="@+id/tool_clock_time"
+        app:layout_constraintTop_toBottomOf="@+id/tool_clock_time"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

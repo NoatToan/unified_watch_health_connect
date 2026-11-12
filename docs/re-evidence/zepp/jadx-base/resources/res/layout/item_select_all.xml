@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="64dp">
+    <FrameLayout
+        android:id="@+id/layout_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp">
+        <ImageView
+            android:id="@+id/iv_select"
+            android:visibility="gone"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_checked_20_p3_2x"
+            app:tint="@color/p3"/>
+        <ImageView
+            android:id="@+id/iv_un_select"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_check_20_s3_2x"
+            app:tint="@color/s3"/>
+    </FrameLayout>
+    <TextView
+        android:textSize="15sp"
+        android:textColor="@color/s1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/file_manager_select_all"
+        android:layout_marginStart="12dp"/>
+</LinearLayout>

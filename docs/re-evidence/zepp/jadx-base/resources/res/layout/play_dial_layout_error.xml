@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingTop="28dp"
+    android:paddingBottom="34dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/play_icon_skill_error"/>
+    <TextView
+        android:textSize="13sp"
+        android:textColor="#666666"
+        android:id="@+id/tv_tip"
+        android:paddingBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/play_skill_error_tip"/>
+    <TextView
+        android:textSize="13sp"
+        android:textColor="#ff5353"
+        android:id="@+id/tv_retry"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retry"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"/>
+</LinearLayout>

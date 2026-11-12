@@ -1,0 +1,45 @@
+syntax = "proto2";
+
+package com.huami.proto;
+message PHNExerciseInfoMessage {
+  optional  uint32    flag_recommended_exercise      = 1;    /* 当日是否有锻炼推荐，0: 无推荐，休息；1: 当日trimp推荐；2: 当日剩余trimp推荐 */
+  optional  uint32    hr_lower_zone1                 = 2;    /* zone1推荐的心率下限 */
+  optional  uint32    hr_upper_zone1                 = 3;    /* zone1推荐的心率上限 */
+  optional  uint32    hr_lower_zone2                 = 4;    /* zone2推荐的心率下限 */
+  optional  uint32    hr_upper_zone2                 = 5;    /* zone2推荐的心率上限 */
+  optional  uint32    hr_lower_zone3                 = 6;    /* zone3推荐的心率下限 */
+  optional  uint32    hr_upper_zone3                 = 7;    /* zone3推荐的心率上限 */
+  optional  uint32    duration_zone1                 = 8;    /* zone1推荐的锻炼分钟数 */
+  optional  uint32    duration_zone2                 = 9;    /* zone2推荐的锻炼分钟数 */
+  optional  uint32    duration_zone3                 = 10;   /* zone3推荐的锻炼分钟数 */
+}
+
+message PHNResultMessage {
+  required  string    version                                  = 1;    /* 版本号，当前是1.0 */
+  optional  int32     daily_trimp_scores                       = 2;    /* 当日实时trimp score */
+  optional  uint32    minutes_over_20m                         = 3;    /* 当时实时运动时间大于20min片段的总分钟数 */
+  repeated  int32     trimp_42_days                            = 4;    /* 前42天的trimp score，初始值为-1，设备关机的日期补-1 */
+  repeated  float     atl_42_days                              = 5;    /* 前42天的ATL，初始值为0，设备关机的日期补0 */
+  repeated  float     ctl_42_days                              = 6;    /* 前42天的CTL，初始值为0，设备关机的日期补0 */
+  repeated  float     tsb_42_days                              = 7;    /* 前42天的stress balance，初始值为0，设备关机的日期补0 */
+  optional  uint32    current_weekday                          = 8;    /* 当日为7天中的第几天，第一天为0 */
+  optional  uint32    flag_tsb_below_20_in_a_week              = 9;    /* 上周是否有tsb_below_20 */
+  optional  uint32    flag_tsb_below_20_in_10_days             = 10;   /* 前十天是否有tsb_below_20 */
+  optional  uint32    flag_tsb_below_20_ever                   = 11;   /* 以前是否有tsb_below_20 */
+  optional  uint32    flag_historical_trimp                    = 12;   /* 以前是否有trimp score */
+  optional  float     thelast_historical_trimp_ctl             = 13;   /* 历史上最近一次的CTL */
+  optional  float     thelast_trimp_ctl_last_week              = 14;   /* 上周最近一次的CTL */
+  optional  float     thelast_trimp_ctl_a_week_before_last_week    = 15;   /* 上上周最近一次的CTL */
+  optional  uint32    count_daily_exercise                     = 16;   /* 上周锻炼天数 */
+  optional  float     trimp_weekly_recommend                   = 17;   /* 本周trimp推荐均值 */
+  optional  float     trimp_daily_max                          = 18;   /* 当日trimp推荐最大值 */
+  optional  float     trimp_daily_recommended                  = 19;   /* 当日trimp推荐值 */
+  optional  float     trimp_week_completed                     = 20;   /* 本周已获得的trimp总值 */
+  optional  uint32    percent_completed_week_trimp             = 21;   /* 本周已完成trimp百分比，单位% */
+  optional  uint32    percent_completed_daily_trimp            = 22;   /* 当日已完成trimp百分比，单位% */
+  optional  PHNExerciseInfoMessage  exercise_recommended_info  = 23;   /* 见PHNExerciseInfoMessage注释 */
+  required  uint32    last_update_time                         = 24;   /* 更新时间,单位s */
+  required  int32     last_update_time_zone                    = 25;   /* 时区，十五分钟为一个单位，如东八区：+32 */
+  optional  uint32    rest_day                                 = 26;   /* 休息日，小端模式下低7bit分别代表周一到周日，如果是休息日置1 */
+  optional  uint32    plan_start_utc0_time                     = 27;   /* 计划开始的时间，UTC0时间 */
+}

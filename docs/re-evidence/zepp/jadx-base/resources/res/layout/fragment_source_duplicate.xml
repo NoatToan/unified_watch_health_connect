@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@color/grey_text"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:clickable="false"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/watch_face_source_repetition"/>
+    <include layout="@layout/split_line_width_match_parent"/>
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@drawable/selector_picker_text_color"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/watch_face_cover_bg"
+        android:background="@drawable/selector_dialog_item_pressed"
+        android:clickable="false"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/watch_face_cover_bg"/>
+    <include layout="@layout/split_line_width_match_parent"/>
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@drawable/selector_picker_text_color"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/watch_face_as_new_bg"
+        android:background="@drawable/selector_dialog_item_pressed"
+        android:clickable="false"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/watch_face_as_new"/>
+</LinearLayout>

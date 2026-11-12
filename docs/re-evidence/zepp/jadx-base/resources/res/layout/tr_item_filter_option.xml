@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textAppearance="@style/TextAppearance.MiFit.Title.Inverse"
+    android:gravity="center_vertical"
+    android:id="@+id/text"
+    android:background="?attr/trainingClickableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/tr_training_filter_option_item_height"
+    android:paddingStart="@dimen/common_item_padding"
+    android:paddingEnd="@dimen/common_item_padding"/>

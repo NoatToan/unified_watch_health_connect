@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/scale_measuring_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="18sp"
+        android:textColor="@color/weighting_title_text_color"
+        android:id="@+id/weighting_title_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/weighting_weight_title"
+        android:layout_centerHorizontal="true"/>
+    <com.xiaomi.hm.health.bodyfat.view.WeightingDynamicWeightView
+        android:id="@+id/weight_dynamic_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_below="@+id/weighting_title_id"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/weighting_small_weight_tip_text_color"
+        android:gravity="center"
+        android:id="@+id/small_weight_tips"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="94dp"
+        android:text="@string/small_thing_record_not_save"
+        android:layout_below="@+id/weight_dynamic_view"
+        android:layout_centerHorizontal="true"/>
+    <include layout="@layout/weighting_fat_measure_fail_op"/>
+</RelativeLayout>

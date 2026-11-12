@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dimen_detail_btn_size">10sp</dimen>
+    <dimen name="heart_percent_margin_start">12dp</dimen>
+    <dimen name="heart_percent_width">60dp</dimen>
+    <dimen name="heart_type_width">120dp</dimen>
+    <dimen name="setting_item_info_padding_end">49dp</dimen>
+    <dimen name="training_info_padding_end">10dp</dimen>
+    <dimen name="training_info_text_size">12sp</dimen>
+</resources>

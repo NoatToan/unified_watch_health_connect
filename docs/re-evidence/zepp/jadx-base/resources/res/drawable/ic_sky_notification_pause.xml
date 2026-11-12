@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="26dp"
+    android:width="26dp"
+    android:viewportWidth="26"
+    android:viewportHeight="26">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M13,13m-11.25,0a11.25,11.25 0,1 1,22.5 0a11.25,11.25 0,1 1,-22.5 0"
+        android:strokeColor="@color/sky_notification_secondary_color"
+        android:strokeWidth="1.5"
+        android:fillType="evenOdd"/>
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19.1322,12.7727L10.2953,18.2815C10.2361,18.317 10.1681,18.3252 10.106,18.3097C10.044,18.2942 9.9878,18.255 9.9523,18.1958C9.929,18.1569 9.9167,18.1125 9.9167,18.0671L9.9167,18.0671L9.9167,7.5995C9.9167,7.5305 9.9446,7.468 9.9899,7.4227C10.0351,7.3775 10.0976,7.3495 10.1667,7.3495C10.212,7.3495 10.2564,7.3618 10.2953,7.3851L10.2953,7.3851L19.0183,12.619C19.0775,12.6545 19.1167,12.7106 19.1322,12.7727L19.1322,12.7727Z"
+        android:strokeColor="@color/sky_notification_secondary_color"
+        android:strokeWidth="1.5"
+        android:fillType="evenOdd"/>
+</vector>

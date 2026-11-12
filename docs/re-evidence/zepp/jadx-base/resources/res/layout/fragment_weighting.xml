@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/root_view"
+    android:background="@drawable/scale_measuring_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/layout_weight_title_and_view"/>
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/weighting_small_weight_tip_text_color"
+        android:gravity="center"
+        android:id="@+id/small_weight_tips"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="94dp"
+        android:text="@string/small_thing_record_not_save"
+        android:layout_below="@+id/layout_weight"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

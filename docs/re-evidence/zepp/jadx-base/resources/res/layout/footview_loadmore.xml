@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="@dimen/xima_detail_intruduce_size"
+        android:textColor="@color/xima_graytext_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="9dp"
+        android:text="@string/xima_loading"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/loading"/>
+</RelativeLayout>

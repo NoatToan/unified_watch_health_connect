@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>Μία φορά</item>
+        <item>Καθημερινά</item>
+        <item>Δευτέρα έως Παρασκευή</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>Παρέχει δεδομένα μέγιστης κατανάλωσης οξυγόνου (VO₂ max)</item>
+        <item>Τα Αποτελέσματα Εκγύμνασης (Trainining Effect, TE) σάς βοηθούν να κατανοήσετε το όφελος για τη φυσική σας κατάσταση από κάποια άσκηση</item>
+        <item>Υποστηρίζει δραστηριότητες πισίνας, κολύμβησης ανοικτής θάλασσας και τριάθλου</item>
+        <item>Αναλυτικά στατιστικά στοιχεία δραστηριότητας και ρυθμίσεις</item>
+        <item>Κατευθύνετε την προπόνησή σας σύμφωνα με τους στόχους που έχετε θέσει</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>One key to control all with “Classmate Xiao Ai” \n Make your home smart with voice control, and it follows what you say</item>
+        <item>Transportation card, access card, UnionPay card \n For traveling, working, and consuming, just swipe your watch</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>One key to open Alexa \n Intelligent voice, do what you say</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item />
+        <item />
+        <item>* Μόνο για τρέξιμο</item>
+        <item>* Μόνο για το τρέξιμο, πρέπει να ανοίγεται στις ρυθμίσεις άσκησης</item>
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item />
+        <item>*Προς το παρόν διατίθεται μόνο σε επιλεγμένες περιοχές.</item>
+        <item />
+        <item />
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Ο άνω βραχίονας πρέπει να είναι γυμνός, με το μανίκι σας σηκωμένο χωρίς να σας πιέζει</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Θα πρέπει να μπορείτε να εισαγάγετε ένα δάχτυλο κάτω από τη μανσέτα. Οι μανσέτες που είναι πολύ χαλαρές ή πολύ σφιχτές μπορεί να επηρεάσουν την ακρίβεια της μέτρησης</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Πρώτη μέτρηση</item>
+        <item>Δεύτερη μέτρηση</item>
+        <item>Τρίτη μέτρηση</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Καταγραφή της πρώτης μέτρησης της αρτηριακής πίεσης</item>
+        <item>Καταγραφή της δεύτερης μέτρησης της αρτηριακής πίεσης</item>
+        <item>Καταγραφή της τρίτης μέτρησης της αρτηριακής πίεσης</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Χαμηλός</item>
+        <item>Κανονικός</item>
+        <item>Υψηλός</item>
+        <item>Πολύ υψηλός</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Κανονικός</item>
+        <item>Υψηλός</item>
+        <item>Πολύ υψηλός</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Πολύ κακή</item>
+        <item>Κακή</item>
+        <item>Κανονική</item>
+        <item>Καλή</item>
+        <item>Εξαιρετική</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Πολύ χαμηλό</item>
+        <item>Χαμηλό</item>
+        <item>Κανονικό</item>
+        <item>Αυξημένο</item>
+        <item>Υψηλό</item>
+    </array>
+    <array name="bone_leval">
+        <item>Ανεπαρκές</item>
+        <item>Κανονικό</item>
+        <item>Καλό</item>
+    </array>
+    <array name="brm_leval">
+        <item>Δεν επιτύχατε στόχους</item>
+        <item>Επίτευξη στόχου</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Χαμηλό</item>
+        <item>Μέτριο</item>
+        <item>Υψηλό</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Δοκιμάστε να πατήστε το κουμπί στο ρολόι, εάν η οθόνη του ρολογιού είναι σβηστή, συνδέστε το για να φορτίσετε την μπαταρία.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Εάν το band είναι φορτισμένο, αλλά το τηλέφωνο δεν το εντοπίζει, δοκιμάστε να επανεκκινήσετε το Bluetooth του τηλεφώνου.</item>
+        <item>Εάν το πρόβλημα δεν επιλυθεί με την επανεκκίνηση του Bluetooth, δοκιμάστε να επανεκκινήσετε το τηλέφωνο.</item>
+        <item>Αδυναμία συγχρονισμού δεδομένων ρολογιού κατά την διάρκεια σωματικής άσκησης. Τελειώστε πρώτα και δοκιμάστε ξανά.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Είναι φορτισμένο το ρολόι σας;</item>
+        <item>Έχει συζευχθεί αυτό το ρολόι με άλλη συσκευή;</item>
+        <item>Δοκιμάστε να επανεκκινήσετε το Bluetooth</item>
+        <item>Δοκιμάστε να επανεκκινήστε το τηλέφωνό σας</item>
+        <item>Αδυναμία συγχρονισμού δεδομένων κατά την διάρκεια σωματικής άσκησης</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Kουανγκτσόου</item>
+        <item>Σεντζέν</item>
+        <item>Φοσάν</item>
+        <item>Ντονγκουάν</item>
+        <item>Πεκίνο</item>
+        <item>Νανζίνγκ</item>
+        <item>Σουτσόου</item>
+        <item>Τζαντσόου</item>
+        <item>Τσινάν</item>
+        <item>Τσινγκτάο</item>
+        <item>Χαντσόου</item>
+        <item>Νινγκπό</item>
+        <item>Τσεντσόου</item>
+        <item>Καϊφένγκ</item>
+        <item>Σανγκάη</item>
+        <item>Σιτζιαζουάγκ</item>
+        <item>Μπαοτίνγκ</item>
+        <item>Τσενγκντού</item>
+        <item>Μιενγιάνγκ</item>
+        <item>Σενγιάνγκ</item>
+        <item>Νταλιάν</item>
+    </array>
+    <array name="common_level">
+        <item>Ανεπαρκής</item>
+        <item>Κανονική</item>
+        <item>Καλή</item>
+    </array>
+    <array name="contact_ways">
+        <item>Email</item>
+        <item>Αριθμός κινητού τηλεφώνου</item>
+        <item>Αναγνωριστικό WeChat</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Αρχάριος στην γυμναστική</item>
+        <item>Βασική εμπειρία στην γυμναστική</item>
+        <item>Πλούσια εμπειρία γυμναστικής και καλή φυσική κατάσταση</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Αρχάριο</item>
+        <item>Μέτριο</item>
+        <item>Προχωρημένο</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Μη φυσιολογικός καρδιακός παλμός</item>
+        <item>Δεν εντοπίστηκαν ανωμαλίες</item>
+        <item>Δεν εντοπίστηκαν ανωμαλίες</item>
+        <item>Ανεπαρκή δεδομένα</item>
+        <item>Δεν εντοπίστηκαν ανωμαλίες</item>
+        <item />
+        <item>Ανεπαρκή δεδομένα</item>
+        <item>Κακή ποιότητα σήματος</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Μόνο για αναφορά. Αν έχετε οποιαδήποτε δυσφορία, συμβουλευτείτε γιατρό.</item>
+        <item>Μόνο για αναφορά. Αν έχετε οποιαδήποτε δυσφορία, συμβουλευτείτε γιατρό.</item>
+        <item>Προσαρμόστε τη μέθοδο χρήσης και δοκιμάστε ξανά.</item>
+        <item>Προσαρμόστε τη μέθοδο χρήσης και δοκιμάστε ξανά.</item>
+        <item />
+        <item>Μόνο για αναφορά. Αν έχετε οποιαδήποτε δυσφορία, συμβουλευτείτε γιατρό.</item>
+        <item>Προσαρμόστε τη μέθοδο χρήσης και δοκιμάστε ξανά.</item>
+        <item>Μόνο για αναφορά. Αν έχετε οποιαδήποτε δυσφορία, συμβουλευτείτε γιατρό.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Με στόχο το κάψιμο λίπους</item>
+        <item>Με στόχο το σχηματισμό γράμμωσης</item>
+        <item>Με στόχο την απόκτηση μυών</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Αποκοπή</item>
+        <item>Σχηματισμός</item>
+        <item>Αύξηση όγκου</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>ΔΕΥ</item>
+        <item>ΤΡI</item>
+        <item>ΤΕΤ</item>
+        <item>ΠΕΜ</item>
+        <item>ΠΑΡ</item>
+        <item>ΣΑΒ</item>
+        <item>Κυρ</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Δευ</item>
+        <item>Τρ.</item>
+        <item>Τετ.</item>
+        <item>Πέμ.</item>
+        <item>Παρ.</item>
+        <item>Σάβ.</item>
+        <item>Κυρ.</item>
+    </array>
+    <array name="hr_sport">
+        <item>Ζώνη καρδιακού ρυθμού: Ελαφριά</item>
+        <item>Ζώνη καρδιακού ρυθμού: Εντατική</item>
+        <item>Ζώνη καρδιακού ρυθμού: Αερόβια</item>
+        <item>Ζώνη καρδιακού ρυθμού: Αναερόβια</item>
+        <item>Ζώνη καρδιακού ρυθμού: VO₂ μέγιστο</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Ελαφρύ</item>
+        <item>Εντατικό</item>
+        <item>Αερόβια</item>
+        <item>Αναερόβια</item>
+        <item>VO₂ μέγιστο</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Μασχάλη</item>
+        <item>Στόμα</item>
+        <item>Ορθό</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Καρπός</item>
+        <item>Μέτωπο</item>
+        <item>Πίσω από το αυτί</item>
+        <item>Κοχλίας</item>
+        <item>Λαιμός</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Μασχάλη</item>
+        <item>Στόμα</item>
+        <item>Ορθό</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Στήθος</item>
+        <item>Μασχάλη</item>
+        <item>Βουβωνική χώρα</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Κλείσιμο</item>
+        <item>Κοντά</item>
+        <item>Μακριά</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Αγγίξτε το κουμπί στο band για να ελέγξετε αν η οθόνη ανάβει. Εάν όχι, φορτίστε το band σας.\n\nΦορτίστε τη συσκευή πριν τη σύζευξη με %1$s ή με %2$s.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Εάν το band είναι φορτισμένο, αλλά το τηλέφωνο δεν το εντοπίζει, δοκιμάστε να επανεκκινήσετε το Bluetooth του τηλεφώνου.</item>
+        <item>Εάν το πρόβλημα δεν επιλυθεί με την επανεκκίνηση του Bluetooth, δοκιμάστε να επανεκκινήσετε το τηλέφωνο.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Είναι φορτισμένο το band σας;</item>
+        <item>Έχει συζευχθεί αυτό το band με άλλη συσκευή;</item>
+        <item>@string/help_title_2</item>
+        <item>Δοκιμάστε να επανεκκινήστε το τηλέφωνό σας</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>Ιαν</item>
+        <item>Φεβ</item>
+        <item>Μαρ</item>
+        <item>Απρ</item>
+        <item>Μαϊ</item>
+        <item>Ιουν</item>
+        <item>Ιουλ</item>
+        <item>Αυγ</item>
+        <item>Σεπ</item>
+        <item>Οκτ</item>
+        <item>Νοε</item>
+        <item>Δεκ</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Ανεπαρκείς</item>
+        <item>Κανονικό</item>
+        <item>Καλό</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>Ειδοποιήσεις στόχων</item>
+        <item>Ειδοποίηση χαμηλής μπαταρίας</item>
+        <item>Καθημερινή υπενθύμιση καιρού</item>
+        <item>Εισερχόμενη κλήση</item>
+        <item>Ειδοποίηση αδράνειας</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Πολύ κακό</item>
+        <item>Κακό</item>
+        <item>Μέτριο</item>
+        <item>Καλό</item>
+        <item>Πολύ καλό</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>Την τέταρτη</item>
+        <item>Την τρίτη</item>
+        <item>Την τελευταία</item>
+        <item>Την πρώτη</item>
+        <item>Τη δεύτερη</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Ιαν</item>
+        <item>Φεβ</item>
+        <item>Μαρ</item>
+        <item>Απρ</item>
+        <item>Μαϊ</item>
+        <item>Ιουν</item>
+        <item>Ιουλ</item>
+        <item>Αυγ</item>
+        <item>Σεπ</item>
+        <item>Οκτ</item>
+        <item>Νοε</item>
+        <item>Δεκ</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>Το %1$s θα σταματήσει να λειτουργεί αν δεν το χρησιμοποιείτε για μεγάλο χρονικό διάστημα. Κουνήστε το %2$s και προσπαθήστε ξανά.</item>
+        <item>Η διάρκεια ζωής της μπαταρίας του %s είναι 1 έτος. Εάν το έχετε χρησιμοποιήσει για μεγαλύτερη περίοδο, μπορεί να έχει ξεμείνει από μπαταρία.</item>
+        <item>Απενεργοποιήστε το Bluetooth στην άλλη συσκευή πρώτα και, στη συνέχεια, συζεύξτε με το τηλέφωνό σας.</item>
+        <item>Αν το %s είναι φορτισμένο, αλλά το τηλέφωνο δεν το αναγνωρίζει, δοκιμάστε να επανεκκινήσετε το Bluetooth του τηλεφώνου.</item>
+        <item>Εάν το πρόβλημα δεν επιλυθεί με την επανεκκίνηση του Bluetooth, δοκιμάστε να επανεκκινήσετε το τηλέφωνο.</item>
+        <item>Πατήστε στα δεδομένα αθλητικών παπουτσιών και εισέλθετε στην σελίδα επόμενης δραστηριότητας για αυτόματο συγχρονισμό δεδομένων</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Κουνήστε το %s</item>
+        <item>Είναι το %s σας φορτισμένο;</item>
+        <item>Είναι τα %s συζευγμένα με κάποιο άλλο τηλέφωνο πλησίον σας;</item>
+        <item>Επανεκκίνηση Bluetooth</item>
+        <item>Δοκιμάστε να επανεκκινήστε το τηλέφωνό σας</item>
+        <item>Πώς να συγχρονίσετε τα δεδομένα σας;</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Παχύσαρκο</item>
+        <item>Υπέρβαρο</item>
+        <item>Παχύ-σετ</item>
+        <item>Έλλειψη\nάσκησης</item>
+        <item>Ισορροπημένο</item>
+        <item>Ισορροπημένο\nμυώδες</item>
+        <item>Αδύνατο</item>
+        <item>Ισορροπημένο\nαδύνατο</item>
+        <item>Αδύνατο\nμυώδες</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>ΔΕΥ</item>
+        <item>ΤΡI</item>
+        <item>ΤΕΤ</item>
+        <item>ΠΕΜ</item>
+        <item>ΠΑΡ</item>
+        <item>ΣΑΒ</item>
+        <item>Κυρ</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Δραστηριότητα</item>
+        <item>Αργό περπάτημα</item>
+        <item>Περπάτημα</item>
+        <item>Γρήγορο περπάτημα</item>
+        <item>Τρέξιμο</item>
+        <item>Ορθοστασία</item>
+        <item>Κάθιση</item>
+        <item>Ελαφριά δραστηριότητα</item>
+        <item>Δεν φοράτε</item>
+        <item>Φόρτιση</item>
+        <item>Ξαπλωμένος</item>
+    </array>
+    <array name="timeline_type">
+        <item>Δραστηριότητα</item>
+        <item>Αργό περπάτημα</item>
+        <item>Περπάτημα</item>
+        <item>Γρήγορο περπάτημα</item>
+        <item>Τρέξιμο</item>
+        <item>Ορθοστασία</item>
+        <item>Κάθιση</item>
+        <item>Ελαφριά δραστηριότητα</item>
+        <item>Δεν φοράτε</item>
+        <item>Φόρτιση…</item>
+        <item>Ξαπλωμένος/η</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Χωρίς περιορισμό</item>
+        <item>Αρχάριο, 1</item>
+        <item>Μέτριο, 2</item>
+        <item>Προχωρημένο, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Κανονικό</item>
+        <item>Υψηλό</item>
+        <item>Πολύ υψηλό</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>Πολύ άσχημα</item>
+        <item>Άσχημα</item>
+        <item>Άνω του μέσου όρου</item>
+        <item>Κάτω του μέσου όρου</item>
+        <item>Μέσος όρος</item>
+        <item>Καλά</item>
+        <item>Εξαιρετικά</item>
+    </array>
+    <array name="water_leval">
+        <item>Ανεπαρκές</item>
+        <item>Κανονικό</item>
+        <item>Καλό</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>Τρι</item>
+        <item>Πεμ</item>
+        <item>Παρ</item>
+        <item>Σαβ</item>
+        <item>Δευ</item>
+        <item>Κυρ</item>
+        <item>Τετ</item>
+    </array>
+    <array name="week_days">
+        <item>Σάββατο</item>
+        <item>Δευτέρα</item>
+        <item>Πέμπτη</item>
+        <item>Κυριακή</item>
+        <item>Τρίτη</item>
+        <item>Παρασκευή</item>
+        <item>Τετάρτη</item>
+    </array>
+    <array name="week_name">
+        <item>Κυρ</item>
+        <item>Δευ</item>
+        <item>Τρι</item>
+        <item>Τετ</item>
+        <item>Πεμ</item>
+        <item>Παρ</item>
+        <item>Σαβ</item>
+    </array>
+    <array name="weeks">
+        <item>Δευτέρα</item>
+        <item>Τρίτη</item>
+        <item>Τετάρτη</item>
+        <item>Πέμπτη</item>
+        <item>Παρασκευή</item>
+        <item>Σάββατο</item>
+        <item>Κυριακή</item>
+    </array>
+    <array name="weeks_short">
+        <item>Δευ</item>
+        <item>Τρι</item>
+        <item>Τετ</item>
+        <item>Πεμ</item>
+        <item>Παρ</item>
+        <item>Σαβ</item>
+        <item>Κυρ</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Λιποβαρές</item>
+        <item>Ισορροπημένο</item>
+        <item>Υπέρβαρο</item>
+        <item>Παχύσαρκο</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Τοποθετήστε τη ζυγαριά όσο το δυνατόν πιο κοντά στον δρομολογητή, για να εξασφαλίσετε ισχυρό σήμα Wi-Fi</item>
+        <item>· Επιβεβαιώστε αν καταχωρήθηκε ο σωστός κωδικός πρόσβασης για τη σύνδεση Wi-Fi.</item>
+        <item>· Συνδέστε το τηλέφωνο στον δρομολογητή Wi-Fi προορισμού και, στη συνέχεια, δοκιμάστε να ανοίξετε μια ιστοσελίδα για να ελέγξετε την πρόσβαση στο Internet.</item>
+        <item>· Αν το 2.4GHz είναι απενεργοποιημένο, ενεργοποιήστε το και επιλέξτε το. Η ζυγαριά δεν υποστηρίζει 5GHz Wi-Fi. \n· Αν έχει ενεργοποιηθεί η διπλή ζώνη, απενεργοποιήστε την για να αποφύγετε την αποτυχία της διαμόρφωσης εξαιτίας του δικτύου 5GHz.</item>
+        <item>· Εάν ο δρομολογητής Wi-Fi είναι συνδεδεμένος στο Internet, το σήμα Wi-Fi είναι ισχυρό και ο δρομολογητής λειτουργεί με ενεργοποιημένα τα 2.4GHz και απενεργοποιημένη τη διπλή ζώνη, δοκιμάστε να επανεκκινήσετε τον δρομολογητή.</item>
+        <item>· Εάν η επανεκκίνηση του δρομολογητή δεν φέρει αποτέλεσμα, δοκιμάστε να επανεκκινήσετε το τηλέφωνο.</item>
+        <item>· Εάν η επανεκκίνηση του δρομολογητή δεν φέρει αποτέλεσμα, δοκιμάστε να τοποθετήσετε ξανά την μπαταρία.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Η ζυγαριά βρίσκεται σε μέρος με ισχυρό σήμα Wi-Fi;</item>
+        <item>2. Είναι σωστός ο κωδικός πρόσβασης Wi-Fi;</item>
+        <item>3. Ο δρομολογητής Wi-Fi είναι σωστά συνδεδεμένος στο Internet;</item>
+        <item>4. Το 2.4GHz Wi-Fi απενεργοποιήθηκε στον δρομολογητή; Ή έχει ενεργοποιηθεί το Wi-Fi διπλής ζώνης;</item>
+        <item>5. Δοκιμάστε να επανεκκινήσετε τον δρομολογητή.</item>
+        <item>6. Δοκιμάστε να επανεκκινήσετε το τηλέφωνο.</item>
+        <item>7. Δοκιμάστε να επανεκκινήσετε τη συσκευή.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>Η ένδειξη Wi-Fi 2,4 GHz υποδεικνύει ότι ο ασύρματος δρομολογητής λειτουργεί στα 2,4 GHz.\nΗ ένδειξη Wi-Fi 5 GHz υποδεικνύει ότι ο ασύρματος δρομολογητής λειτουργεί στα 5 GHz.</item>
+        <item>Ρυθμίστε τον δρομολογητή σύμφωνα με τα παρακάτω βήματα:\n1. Εισαγάγετε τη διεύθυνση σύνδεσης του δρομολογητή στη γραμμή διευθύνσεων του προγράμματος περιήγησης και συνδεθείτε στο παρασκήνιο του ασύρματου δρομολογητή. \n2. Βρείτε το κουμπί ρύθμισης του ασύρματου δρομολογητή. \n3. Απενεργοποιήστε το κουμπί διπλής ζώνης. \n4. Ενεργοποιήστε το Wi-Fi 2,4 GHz.</item>
+        <item>Μπορείτε να χρησιμοποιήσετε τις παρακάτω δύο μεθόδους για να ελέγξετε τη ζώνη Wi-Fi:\n1. Στη λίστα Wi-Fi στον υπολογιστή σας, επιλέξτε [Wi-Fi] &amp;gt; [Ιδιότητα] &amp;gt; [Ζώνη δικτύου]. \n2. Συνδεθείτε στο παρασκήνιο του δρομολογητή.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Τι είναι το Wi-Fi 2,4 GHz και το Wi-Fi 5 GHz?</item>
+        <item>· Πώς μπορώ να ενεργοποιήσω το Wi-Fi 2,4 GHz στον δρομολογητή μου?</item>
+        <item>· Πώς μπορώ να ελέγξω τη ζώνη Wi-Fi?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Κανονικός</item>
+        <item>Υπέρβαρος</item>
+        <item>Παχύσαρκος</item>
+    </array>
+    <array name="weight_unit">
+        <item> Kg</item>
+        <item> Jin</item>
+        <item> lbs</item>
+    </array>
+</resources>

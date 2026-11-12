@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="@dimen/size_12sp"
+    android:textColor="@color/cl_ff4c4c4c"
+    android:gravity="start"
+    android:id="@+id/world_city"
+    android:paddingTop="@dimen/size_15dp"
+    android:paddingBottom="@dimen/size_15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textDirection="locale"
+    android:paddingStart="@dimen/size_18dp"/>

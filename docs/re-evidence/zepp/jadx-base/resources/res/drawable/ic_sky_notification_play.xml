@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="26dp"
+    android:width="26dp"
+    android:viewportWidth="26"
+    android:viewportHeight="26">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M13,13m-11.25,0a11.25,11.25 0,1 1,22.5 0a11.25,11.25 0,1 1,-22.5 0"
+        android:strokeColor="@color/sky_notification_secondary_color"
+        android:strokeWidth="1.5"
+        android:fillType="evenOdd"/>
+    <path
+        android:fillColor="@color/sky_notification_secondary_color"
+        android:pathData="M10.4902,8.027C11.0425,8.027 11.4902,8.4747 11.4902,9.027L11.4902,17.027C11.4902,17.5793 11.0425,18.027 10.4902,18.027L9.4902,18.027C8.9379,18.027 8.4902,17.5793 8.4902,17.027L8.4902,9.027C8.4902,8.4747 8.9379,8.027 9.4902,8.027L10.4902,8.027ZM16.4902,8.027C17.0425,8.027 17.4902,8.4747 17.4902,9.027L17.4902,17.027C17.4902,17.5793 17.0425,18.027 16.4902,18.027L15.4902,18.027C14.9379,18.027 14.4902,17.5793 14.4902,17.027L14.4902,9.027C14.4902,8.4747 14.9379,8.027 15.4902,8.027L16.4902,8.027Z"
+        android:strokeColor="#00000000"
+        android:strokeWidth="1"
+        android:fillType="evenOdd"/>
+</vector>

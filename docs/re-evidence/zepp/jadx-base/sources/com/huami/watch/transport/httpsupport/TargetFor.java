@@ -1,0 +1,13 @@
+package com.huami.watch.transport.httpsupport;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/* JADX INFO: loaded from: classes6.dex */
+@Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.CONSTRUCTOR, ElementType.LOCAL_VARIABLE})
+@Retention(RetentionPolicy.SOURCE)
+public @interface TargetFor {
+    String value();
+}

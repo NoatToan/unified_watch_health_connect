@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/weChatEntryFragment">
+    <fragment
+        android:label="WeChatEntryFragment"
+        android:name="com.huami.third.wechat.ui.entry.WeChatEntryFragment"
+        android:id="@+id/weChatEntryFragment">
+        <action
+            android:id="@+id/action_weChatEntryFragment_to_weChatBindFragment"
+            app:destination="@+id/weChatBindFragment"/>
+        <action
+            android:id="@+id/action_weChatEntryFragment_to_weChatBindSuccessFragment"
+            app:destination="@+id/weChatBindSuccessFragment"/>
+        <action
+            android:id="@+id/action_weChatEntryFragment_to_weChatBindDevicesFragment"
+            app:destination="@+id/weChatBindDevicesFragment"/>
+    </fragment>
+    <fragment
+        android:label="WeChatBindFragment"
+        android:name="com.huami.third.wechat.ui.WeChatBindFragment"
+        android:id="@+id/weChatBindFragment"/>
+    <fragment
+        android:label="WeChatBindSuccessFragment"
+        android:name="com.huami.third.wechat.ui.bind.result.WeChatBindSuccessFragment"
+        android:id="@+id/weChatBindSuccessFragment">
+        <argument
+            android:name="bind_type"
+            android:defaultValue="step"
+            app:argType="string"/>
+        <argument
+            android:name="device_name"
+            android:defaultValue=""
+            app:argType="string"/>
+        <argument
+            android:name="wx_device_id"
+            app:argType="string"/>
+    </fragment>
+    <fragment
+        android:label="WeChatBindDevicesFragment"
+        android:name="com.huami.third.wechat.ui.bind.bind.WeChatBindDevicesFragment"
+        android:id="@+id/weChatBindDevicesFragment"/>
+</navigation>

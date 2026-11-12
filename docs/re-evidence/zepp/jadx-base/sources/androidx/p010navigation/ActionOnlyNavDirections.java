@@ -1,0 +1,39 @@
+package androidx.p010navigation;
+
+import android.os.Bundle;
+import androidx.annotation.NonNull;
+
+/* JADX INFO: loaded from: classes.dex */
+public final class ActionOnlyNavDirections implements NavDirections {
+    private final int mActionId;
+
+    public ActionOnlyNavDirections(int i) {
+        this.mActionId = i;
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        return obj != null && ActionOnlyNavDirections.class == obj.getClass() && getActionId() == ((ActionOnlyNavDirections) obj).getActionId();
+    }
+
+    @Override // androidx.p010navigation.NavDirections
+    public int getActionId() {
+        return this.mActionId;
+    }
+
+    @Override // androidx.p010navigation.NavDirections
+    @NonNull
+    public Bundle getArguments() {
+        return new Bundle();
+    }
+
+    public int hashCode() {
+        return 31 + getActionId();
+    }
+
+    public String toString() {
+        return "ActionOnlyNavDirections(actionId=" + getActionId() + ")";
+    }
+}

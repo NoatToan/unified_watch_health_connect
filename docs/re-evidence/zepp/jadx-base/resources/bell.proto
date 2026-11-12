@@ -1,0 +1,20 @@
+// A very simple protocol definition, consisting of only
+// one message.
+
+syntax = "proto2";
+import "use_time_slot.proto";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message BellEventMessage {
+    required uint32 use_count = 1;
+    required uint32 use_time = 2;
+	optional UseTimeSlotMessage slot=3;
+}
+
+message BellStatisticsMessage {
+    required uint32 version = 1;
+    optional BellEventMessage left = 2;
+    optional BellEventMessage right = 3;
+}
+

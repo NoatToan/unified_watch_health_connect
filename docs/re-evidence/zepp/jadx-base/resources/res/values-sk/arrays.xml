@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Rameno by nemalo byť ničím pokryté a rukáv by mal byť pohodlne vyhrnutý hore</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Mali by ste vedieť vopchať pod manžetu prst. Ak je manžeta upevnená príliš slabo alebo príliš silno, môže to ovplyvniť presnosť merania</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Prvé meranie</item>
+        <item>Druhé meranie</item>
+        <item>Tretie meranie</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Zaznamenať údaje prvého merania krvného tlaku</item>
+        <item>Zaznamenať údaje druhého merania krvného tlaku</item>
+        <item>Zaznamenať údaje tretieho merania krvného tlaku</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Nízky</item>
+        <item>Normálny</item>
+        <item>Vysoký</item>
+        <item>Veľmi vysoký</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normálny</item>
+        <item>Vysoký</item>
+        <item>Veľmi vysoký</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Veľmi slabá</item>
+        <item>Chudobný</item>
+        <item>Normálna</item>
+        <item>Dobrý</item>
+        <item>Vynikajúce</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Veľmi nízky</item>
+        <item>Nízky</item>
+        <item>Normálne</item>
+        <item>Zvýšený</item>
+        <item>Vysoký</item>
+    </array>
+    <array name="bone_leval">
+        <item>Nedostatočné</item>
+        <item>Normálne</item>
+        <item>Dobré</item>
+    </array>
+    <array name="brm_leval">
+        <item>Nedosiahli ste ciele</item>
+        <item>Dosiahli ste cieľ</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Veľmi nízka</item>
+        <item>Stredné</item>
+        <item>Vysoká</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Skúste stlačiť tlačidlo na hodinkách. Ak obrazovka hodiniek nesvieti, pripojte ich a nabite ich batériu.</item>
+        <item>Keď cvičíte, údaje z hodiniek sa nedajú synchronizovať. Ukončite cvičenie a skúste to znova.</item>
+        <item>Ak je náramok nabitý, ale telefón ho nevidí, skúste reštartovať Bluetooth v telefóne.</item>
+        <item>Ak sa reštartovaním rozhrania Bluetooth problém nevyrieši, skúste reštartovať telefón.</item>
+        <item>Keď cvičíte, údaje z hodiniek sa nedajú synchronizovať. Ukončite cvičenie a skúste to znova.</item>
+        <item>Keď cvičíte, údaje z hodiniek sa nedajú synchronizovať. Ukončite cvičenie a skúste to znova.</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Sú hodinky nabité?</item>
+        <item>Sú tieto hodinky spárované s iným zariadením?</item>
+        <item>Skúste reštartovať Bluetooth</item>
+        <item>Skúste reštartovať telefón</item>
+        <item>Počas tréningov nie je možné synchronizovať údaje</item>
+        <item>Počas tréningov nie je možné synchronizovať údaje</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Kanton</item>
+        <item>Šen-čen</item>
+        <item>Fo-šan</item>
+        <item>Tung-kuan</item>
+        <item>Peking</item>
+        <item>Nanking</item>
+        <item>Su-čou</item>
+        <item>Čchang-čou</item>
+        <item>Ťi-nan</item>
+        <item>Čching-tao</item>
+        <item>Chang-čou</item>
+        <item>Ning-po</item>
+        <item>Čeng-čou</item>
+        <item>Kchaj-feng</item>
+        <item>Šanghaj</item>
+        <item>Šijiazhuang</item>
+        <item>Pao-ting</item>
+        <item>Čcheng-tu</item>
+        <item>Mien-jang</item>
+        <item>Šen-jang</item>
+        <item>Ta-lien</item>
+    </array>
+    <array name="common_level">
+        <item>Nedostatočné</item>
+        <item>Normálne</item>
+        <item>Dobré</item>
+    </array>
+    <array name="contact_ways">
+        <item>E-mailová adresa</item>
+        <item>Číslo mobilného telefónu</item>
+        <item>WeChat ID</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Nováčik v oblasti kondičného tréningu</item>
+        <item>Mám základné skúsenosti s kondičným tréningom</item>
+        <item>Mám bohaté skúsenosti s kondičným tréningom a mám dobrú postavu</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Začiatočník</item>
+        <item>Stredne pokročilý</item>
+        <item>Pokročilý</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Nedostatok údajov</item>
+        <item>Abnormálna srdcová činnosť</item>
+        <item>Nezistili sa žiadne abnormality</item>
+        <item>Nedostatok údajov</item>
+        <item>Nezistili sa žiadne abnormality</item>
+        <item />
+        <item>Nezistili sa žiadne abnormality</item>
+        <item>Nízka kvalita signálu</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Upravte spôsob používania a skúste to znova.</item>
+        <item>Iba na referenciu. Ak pociťujete akékoľvek nepohodlie, poraďte sa s lekárom.</item>
+        <item>Iba na referenciu. Ak pociťujete akékoľvek nepohodlie, poraďte sa s lekárom.</item>
+        <item>Upravte spôsob používania a skúste to znova.</item>
+        <item>Iba na referenciu. Ak pociťujete akékoľvek nepohodlie, poraďte sa s lekárom.</item>
+        <item />
+        <item>Iba na referenciu. Ak pociťujete akékoľvek nepohodlie, poraďte sa s lekárom.</item>
+        <item>Upravte spôsob používania a skúste to znova.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Cieľom je spaľovanie tuku</item>
+        <item>Cieľom je tvarovanie tela</item>
+        <item>Budovanie svalovej hmoty</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Chudnutie</item>
+        <item>Tvarovanie</item>
+        <item>Zvyšovanie objemu</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>Pon</item>
+        <item>Uto</item>
+        <item>Str</item>
+        <item>Štv</item>
+        <item>Pia</item>
+        <item>Sob</item>
+        <item>Ned</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Po</item>
+        <item>Ut</item>
+        <item>St</item>
+        <item>Št</item>
+        <item>Pi</item>
+        <item>So</item>
+        <item>Ne</item>
+    </array>
+    <array name="hr_sport">
+        <item>Zóna srdcovej frekvencie: Nízka</item>
+        <item>Zóna srdcového tepu: Intenzívna</item>
+        <item>Zóna srdcovej frekvencie: Aeróbna</item>
+        <item>Zóna srdcovej frekvencie: Anaeróbna</item>
+        <item>Zóna srdcovej frekvencie: VO₂ max</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Ľahké</item>
+        <item>Intenzívne</item>
+        <item>Aeróbne cvičenie</item>
+        <item>Anaeróbne cvičenie</item>
+        <item>VO₂ max</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Podpazušie</item>
+        <item>Ústa</item>
+        <item>Konečník</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Zápästie</item>
+        <item>Čelo</item>
+        <item>Za uchom</item>
+        <item>Kochlea (slimák)</item>
+        <item>Krk</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Podpazušie</item>
+        <item>Ústa</item>
+        <item>Konečník</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Hrudník</item>
+        <item>Podpazušie</item>
+        <item>Slabiny</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Zatvoriť</item>
+        <item>Blízko</item>
+        <item>Ďaleko</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Klepnutím na tlačidlo na náramku skontrolujete, či sa displej rozsvieti. Ak sa nerozsvieti, náramok nabite.\n\nSkôr než spárujete %1$s alebo %2$s, zariadenie nabite.</item>
+        <item>Keď cvičíte, údaje z hodiniek sa nedajú synchronizovať. Ukončite cvičenie a skúste to znova.</item>
+        <item>Ak je náramok nabitý, ale telefón ho nevidí, skúste reštartovať Bluetooth v telefóne.</item>
+        <item>Ak sa reštartovaním rozhrania Bluetooth problém nevyrieši, skúste reštartovať telefón.</item>
+        <item>Ak sa reštartovaním rozhrania Bluetooth problém nevyrieši, skúste reštartovať telefón.</item>
+        <item>Ak sa reštartovaním rozhrania Bluetooth problém nevyrieši, skúste reštartovať telefón.</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Je náramok nabitý?</item>
+        <item>Je tento náramok spárovaný s iným zariadením?</item>
+        <item>Je tento náramok spárovaný s iným zariadením?</item>
+        <item>Skúste reštartovať telefón</item>
+        <item>Je tento náramok spárovaný s iným zariadením?</item>
+        <item>Je tento náramok spárovaný s iným zariadením?</item>
+    </array>
+    <array name="month_list">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Máj</item>
+        <item>Jún</item>
+        <item>Júl</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="month_titles">
+        <item>Január</item>
+        <item>Február</item>
+        <item>Marec</item>
+        <item>Apríl</item>
+        <item>Máj</item>
+        <item>Jún</item>
+        <item>Júl</item>
+        <item>August</item>
+        <item>September</item>
+        <item>Október</item>
+        <item>November</item>
+        <item>December</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Nedostatočné</item>
+        <item>Normálne</item>
+        <item>Dobré</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Veľmi slabá</item>
+        <item>Slabá</item>
+        <item>Priemer</item>
+        <item>Dobrá</item>
+        <item>Veľmi dobrá</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Máj</item>
+        <item>Jún</item>
+        <item>Júl</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>Ak obuv %1$s nebudete dlhší čas používať, prestane fungovať. Zatraste obuvou %2$s a skúste to znova.</item>
+        <item>Výdrž batérie pre %s je 1 rok. Ak ju používate dlhšie, možno je vybitá.</item>
+        <item>Najskôr vypnite Bluetooth na druhom zariadení a potom zariadenie spárujte s telefónom.</item>
+        <item>Ak je obuv %s nabitá, ale telefón ju nevidí, skúste reštartovať Bluetooth v telefóne.</item>
+        <item>Ak sa reštartovaním rozhrania Bluetooth problém nevyrieši, skúste reštartovať telefón.</item>
+        <item>Klepnite na údaje o bežeckej obuvi a prejdite na stránku ďalšej aktivity, aby sa údaje automaticky synchronizovali</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Zatraste obuvou %s</item>
+        <item>Je zariadenie %s nabité?</item>
+        <item>Je obuv %s spárovaná s iným telefónom v okolí?</item>
+        <item>Reštartujte Bluetooth</item>
+        <item>Skúste reštartovať telefón</item>
+        <item>Ako synchronizovať údaje?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Obezita</item>
+        <item>Nadváha</item>
+        <item>Robustný</item>
+        <item>Chýba\ncvičenie</item>
+        <item>Vyvážený</item>
+        <item>Vyvážený\nsvalnatý</item>
+        <item>Chudá</item>
+        <item>Vyvážene\nchudá</item>
+        <item>Chudý\nsval</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>Pon</item>
+        <item>Uto</item>
+        <item>Str</item>
+        <item>Štv</item>
+        <item>Pia</item>
+        <item>Sob</item>
+        <item>Ned</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Aktivita</item>
+        <item>Pomalá chôdza</item>
+        <item>Chôdza</item>
+        <item>Rýchla chôdza</item>
+        <item>Beh</item>
+        <item>Státie</item>
+        <item>Sedenie</item>
+        <item>Ľahká aktivita</item>
+        <item>Nenasadené</item>
+        <item>Nabíja sa…</item>
+        <item>Ležanie</item>
+    </array>
+    <array name="timeline_type">
+        <item>Aktivita</item>
+        <item>Pomalá chôdza</item>
+        <item>Chôdza</item>
+        <item>Rýchla chôdza</item>
+        <item>Beh</item>
+        <item>Státie</item>
+        <item>Sedenie</item>
+        <item>Ľahká aktivita</item>
+        <item>Nenasadené</item>
+        <item>Nabíja sa…</item>
+        <item>Ležanie</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Neobmedzené</item>
+        <item>Začiatočník, 1</item>
+        <item>Stredne pokročilý, 2</item>
+        <item>Pokročilý, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normálne</item>
+        <item>Vysoký</item>
+        <item>Veľmi vysoký</item>
+    </array>
+    <array name="water_leval">
+        <item>Nedostatočné</item>
+        <item>Normálne</item>
+        <item>Dobré</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_name">
+        <item>Ne</item>
+        <item>Po</item>
+        <item>Ut</item>
+        <item>St</item>
+        <item>Št</item>
+        <item>Pi</item>
+        <item>So</item>
+    </array>
+    <array name="weeks">
+        <item>Pondelok</item>
+        <item>Utorok</item>
+        <item>Streda</item>
+        <item>Štvrtok</item>
+        <item>Piatok</item>
+        <item>Sobota</item>
+        <item>Nedeľa</item>
+    </array>
+    <array name="weeks_short">
+        <item>Po</item>
+        <item>Ut</item>
+        <item>St</item>
+        <item>Št</item>
+        <item>Pi</item>
+        <item>So</item>
+        <item>Ne</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Chudý</item>
+        <item>Vyvážený</item>
+        <item>Nadváha</item>
+        <item>Obezita</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Umiestnite váhu čo najbližšie k smerovaču, aby mala silný signál Wi-Fi</item>
+        <item>· Skontrolujte, či je heslo pripojenia Wi-Fi správne zadané.</item>
+        <item>· Pripojte telefón k cieľovému smerovaču Wi-Fi a potom skúste otvoriť webovú stránku a skontrolovať, či máte prístup na internet.</item>
+        <item>· Ak je vypnuté 2,4 GHz pásmo, zapnite ho a potom ho vyberte. Váha nepodporuje 5 GHz pásmo Wi-Fi. \n· Ak je zapnuté dvojpásmové pripojenie, vypnite ho, aby nedošlo k zlyhaniu konfigurácie z dôvodu 5 GHz pásma.</item>
+        <item>· Ak je smerovač Wi-Fi pripojený na internet, signál Wi-Fi je silný a smerovač má zapnuté 2,4 GHz pásmo a vypnuté dvojpásmové pripojenie, skúste smerovač reštartovať.</item>
+        <item>· Ak reštartovanie smerovača nepomôže, skúste reštartovať telefón.</item>
+        <item>· Ak reštartovanie smerovača nepomôže, skúste vybrať a znova vložiť batériu.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Nachádza sa váha na mieste so silným signálom Wi-Fi?</item>
+        <item>2. Je heslo Wi-Fi siete správne?</item>
+        <item>3. Je smerovač Wi-Fi správne pripojený na internet?</item>
+        <item>4. Je na smerovači vypnuté 2,4 GHz pásmo Wi-Fi? Alebo je zapnuté dvojpásmové pripojenie Wi-Fi?</item>
+        <item>5. Skúste reštartovať smerovač.</item>
+        <item>6. Skúste reštartovať telefón.</item>
+        <item>7. Skúste reštartovať zariadenie.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>2,4 GHz Wi-Fi označuje, že bezdrôtový smerovač pracuje v 2,4 GHz pásme.\n5 GHz Wi-Fi označuje, že bezdrôtový smerovač pracuje v 5 GHz pásme.</item>
+        <item>Smerovač môžete nastaviť podľa nasledujúcich krokov:\n1. Na paneli s adresou prehliadača zadajte prihlasovaciu adresu smerovača a prihláste sa do rozhrania bezdrôtového smerovača. \n2. Nájdite tlačidlo nastavenia bezdrôtového smerovača. \n3. Vypnite možnosť dvojpásmového pripojenia. \n4. Zapnite 2,4 GHz pásmo Wi-Fi.</item>
+        <item>Na kontrolu pásma Wi-Fi je možné použiť tieto dva spôsoby:\n1. V zozname Wi-Fi sietí v počítači vyberte položky [Wi-Fi] &amp;gt; [Názov siete] &amp;gt; [Sieťové pásmo]. \n2. Prihláste sa do rozhrania smerovača.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Čo sú 2,4 GHz a 5 GHz pásma Wi-Fi?</item>
+        <item>· Ako môžem na smerovači zapnúť 2,4 GHz pásmo Wi-Fi?</item>
+        <item>· Ako môžem skontrolovať pásmo Wi-Fi?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Chudý</item>
+        <item>Normálny</item>
+        <item>Obezita</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> lbs</item>
+    </array>
+</resources>

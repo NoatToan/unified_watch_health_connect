@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="98dp"
+    android:layout_height="98dp">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_gravity="start|bottom"
+        android:id="@+id/thumbnail_img"
+        android:layout_width="90dp"
+        android:layout_height="90dp"/>
+    <View
+        android:layout_gravity="start|bottom"
+        android:id="@+id/selected_bg"
+        android:background="@drawable/dial_selected_bg"
+        android:visibility="gone"
+        android:layout_width="60dp"
+        android:layout_height="120dp"/>
+    <ImageView
+        android:layout_gravity="end|top"
+        android:id="@+id/delete_img"
+        android:visibility="gone"
+        android:layout_width="@dimen/size_24dp"
+        android:layout_height="@dimen/size_24dp"
+        android:src="@drawable/smart_alarm_delete"/>
+    <ImageView
+        android:layout_gravity="end|top"
+        android:id="@+id/selected_img"
+        android:visibility="gone"
+        android:layout_width="@dimen/size_24dp"
+        android:layout_height="@dimen/size_24dp"
+        android:src="@drawable/checkbox_checked_dial"/>
+</FrameLayout>

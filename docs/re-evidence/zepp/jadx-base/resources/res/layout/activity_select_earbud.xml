@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/s10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.rainbow.titlebar.RainbowTitleBar
+        android:id="@+id/rainbow_title_headset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationTint="@color/s1"
+        app:title="@string/bind_select_headset"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/device_list"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"/>
+</LinearLayout>

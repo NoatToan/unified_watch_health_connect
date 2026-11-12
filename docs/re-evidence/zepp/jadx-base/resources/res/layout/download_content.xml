@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:background="@color/xima_watchspace_bg_color"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/down_check"
+        android:background="@drawable/close"
+        android:focusable="false"
+        android:clickable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"/>
+    <TextView
+        android:textSize="@dimen/xima_detail_intruduce_size"
+        android:textColor="@color/xima_light_graytext_color"
+        android:id="@+id/content_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="11dp"
+        android:layout_toStartOf="@+id/down_check"/>
+    <TextView
+        android:textSize="@dimen/xima_detail_title_size"
+        android:textColor="@color/xima_category_title_color"
+        android:id="@+id/content_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@+id/content_size"
+        android:layout_alignParentStart="true"/>
+</RelativeLayout>

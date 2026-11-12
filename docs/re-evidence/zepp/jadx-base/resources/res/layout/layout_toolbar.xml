@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:background="@color/s10"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/actionBarSize"
+    app:layout_constraintTop_toTopOf="parent">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_gravity="start|center_vertical"
+        android:id="@+id/btn_back"
+        android:background="@null"
+        android:layout_width="@dimen/size_29dp"
+        android:layout_height="@dimen/size_27dp"
+        android:src="@drawable/arrow_back_black"
+        android:scaleType="center"
+        android:tint="@color/s1"
+        android:layout_marginStart="@dimen/size_10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/top_line"/>
+    <TextView
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/s1"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_24dp"
+        android:text="@string/ds_dnd"/>
+    <TextView
+        android:textSize="@dimen/size_15sp"
+        android:textColor="@color/p4"
+        android:layout_gravity="end|center_vertical"
+        android:id="@+id/confirm_btn"
+        android:padding="@dimen/size_4dp"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm"
+        android:layout_marginEnd="@dimen/size_10dp"/>
+</androidx.appcompat.widget.Toolbar>

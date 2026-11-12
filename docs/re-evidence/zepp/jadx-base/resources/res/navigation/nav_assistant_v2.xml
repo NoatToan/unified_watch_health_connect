@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_assistant_v2"
+    app:startDestination="@+id/mainFragment">
+    <fragment
+        android:label="MainFragment"
+        android:name="com.huami.assistant.ui.v2.MainFragment"
+        android:id="@+id/mainFragment">
+        <action
+            android:id="@+id/action_to_setting"
+            app:destination="@+id/settingFragment"/>
+        <action
+            android:id="@+id/action_to_add"
+            app:destination="@+id/addFragment"/>
+        <action
+            android:id="@+id/action_to_smartOption"
+            app:destination="@+id/smartOptionDialogFragment"/>
+    </fragment>
+    <fragment
+        android:label="SettingFragment"
+        android:name="com.huami.assistant.ui.v2.SettingFragment"
+        android:id="@+id/settingFragment"/>
+    <fragment
+        android:label="AddFragment"
+        android:name="com.huami.assistant.ui.v2.AddFragment"
+        android:id="@+id/addFragment"/>
+    <dialog
+        android:label="SmartOptionDialogFragment"
+        android:name="com.huami.assistant.ui.v2.SmartOptionDialogFragment"
+        android:id="@+id/smartOptionDialogFragment">
+        <action
+            android:id="@+id/action_to_ocrTipActivity"
+            app:destination="@+id/ocrTipActivity"/>
+    </dialog>
+    <activity
+        android:label="OcrTipActivity"
+        android:name="com.huami.assistant.ui.activity.OcrTipActivity"
+        android:id="@+id/ocrTipActivity">
+        <argument
+            android:name="action"
+            android:defaultValue="0"
+            app:argType="integer"/>
+    </activity>
+</navigation>

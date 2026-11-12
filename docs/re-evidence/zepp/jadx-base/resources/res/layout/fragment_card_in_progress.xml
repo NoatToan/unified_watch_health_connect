@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/xp_theme_black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/car_progress_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_24dp"
+        android:src="@drawable/xp_progress_devices"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/car_s_car_title"
+        app:layout_constraintBottom_toTopOf="@+id/car_progress_reminds"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35"
+        app:layout_constraintVertical_chainStyle="packed"/>
+    <TextView
+        android:textAppearance="@style/TextAppearance.MiFit.Title.Dim"
+        android:gravity="center"
+        android:id="@+id/car_progress_reminds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:text="@string/car_s_xiaopeng_tips_opening_remind"
+        android:lineSpacingExtra="@dimen/size_10dp"
+        app:layout_constraintBottom_toTopOf="@+id/car_progress_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/car_progress_iv"
+        app:layout_constraintVertical_chainStyle="packed"/>
+    <ProgressBar
+        android:id="@+id/car_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginTop="5dp"
+        android:max="100"
+        android:indeterminateOnly="false"
+        android:progressDrawable="@drawable/car_progress_bar"
+        android:layout_marginStart="46dp"
+        android:layout_marginEnd="46dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/car_progress_reminds"
+        app:layout_constraintVertical_chainStyle="packed"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

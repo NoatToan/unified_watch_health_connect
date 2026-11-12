@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/size_44dp"
+    android:layout_height="@dimen/size_44dp"
+    android:layout_marginTop="@dimen/size_20dp"
+    android:layout_marginEnd="@dimen/size_16dp">
+    <View
+        android:layout_gravity="center"
+        android:id="@+id/membership_color_checked_border"
+        android:background="@drawable/membership_shape_card_bg_checked"
+        android:visibility="gone"
+        android:layout_width="@dimen/size_44dp"
+        android:layout_height="@dimen/size_44dp"/>
+    <View
+        android:layout_gravity="center"
+        android:id="@+id/membership_card_color"
+        android:background="@drawable/membership_shape_card_bg_round"
+        android:layout_width="@dimen/size_36dp"
+        android:layout_height="@dimen/size_36dp"/>
+    <ImageView
+        android:layout_gravity="center"
+        android:id="@+id/membership_color_checked_icon"
+        android:visibility="gone"
+        android:layout_width="@dimen/size_20dp"
+        android:layout_height="@dimen/size_20dp"
+        android:src="@drawable/ic_all_done_20"
+        app:tint="@color/s38"/>
+</FrameLayout>

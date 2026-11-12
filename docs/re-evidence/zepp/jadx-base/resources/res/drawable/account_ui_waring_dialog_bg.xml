@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/s39"/>
+    <stroke
+        android:width="@dimen/account_ui_round_bg_stroke"
+        android:color="@color/s4"/>
+    <corners
+        android:topLeftRadius="@dimen/radius"
+        android:topRightRadius="@dimen/radius"/>
+    <padding
+        android:left="@dimen/account_ui_round_bg_stroke"
+        android:top="@dimen/account_ui_round_bg_stroke"
+        android:right="@dimen/account_ui_round_bg_stroke"
+        android:bottom="@dimen/account_ui_round_bg_stroke"/>
+</shape>

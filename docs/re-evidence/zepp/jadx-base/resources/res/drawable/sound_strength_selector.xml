@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_checked="true"
+        android:drawable="@drawable/device_setting_sound_strength_selected"/>
+    <item android:state_checked="false">
+        <shape android:shape="rectangle">
+            <size
+                android:height="33px"
+                android:width="45px"/>
+            <solid android:color="@color/transparent"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:height="33px"
+                android:width="45px"/>
+            <solid android:color="@color/transparent"/>
+        </shape>
+    </item>
+</selector>

@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>A felkarod legyen csupasz, az ingujjadat kényelmesen tűrd fel</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Egy ujjadnak be kell férnie a pánt alá. A túl szoros vagy túl laza pántok hatással lehetnek a mérés pontosságára</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Első mérés</item>
+        <item>Második mérés</item>
+        <item>Harmadik mérés</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Az első vérnyomásmérés eredményének rögzítése</item>
+        <item>A második vérnyomásmérés eredményének rögzítése</item>
+        <item>A harmadik vérnyomásmérés eredményének rögzítése</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Alacsony</item>
+        <item>Normál</item>
+        <item>Magas</item>
+        <item>Nagyon magas</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normál</item>
+        <item>Magas</item>
+        <item>Nagyon magas</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Nagyon rossz</item>
+        <item>Rossz</item>
+        <item>Közepes</item>
+        <item>Jó</item>
+        <item>Kiváló</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Nagyon alacsony</item>
+        <item>Alacsony</item>
+        <item>Normális</item>
+        <item>Növelve</item>
+        <item>Magas</item>
+    </array>
+    <array name="bone_leval">
+        <item>Elégtelen</item>
+        <item>Normális</item>
+        <item>Jó</item>
+    </array>
+    <array name="brm_leval">
+        <item>A célok nem lettek elérve</item>
+        <item>Cél elérve</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Alacsony</item>
+        <item>Elegendő</item>
+        <item>Magas</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Próbáld meg megnyomni az órán lévő gombot, ha az óra képernyője kikapcsolt állapotban van, csatlakoztasd a készüléket, hogy feltöltsd az akkumulátorát.</item>
+        <item>Ha az okoskarkötő fel van töltve, de a telefon nem látja, próbáld újraindítani a telefon Bluetooth funkcióját.</item>
+        <item>Ha az okoskarkötő fel van töltve, de a telefon nem látja, próbáld újraindítani a telefon Bluetooth funkcióját.</item>
+        <item>Ha a Bluetooth újraindítása nem oldja meg a problémát, próbáld meg újraindítani a telefont.</item>
+        <item>Az óra adatai nem szinkronizálhatók edzés közben. Fejezd be a munkamenetet, és próbálkozz újra.</item>
+        <item>Ha az okoskarkötő fel van töltve, de a telefon nem látja, próbáld újraindítani a telefon Bluetooth funkcióját.</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Fel van töltve az óra?</item>
+        <item>Az óra egy másik készülékkel van párosítva?</item>
+        <item>Próbáld meg újraindítani a Bluetooth funkciót</item>
+        <item>Próbáld meg újraindítani a telefont</item>
+        <item>Nem lehet szinkronizálni az adatokat edzés közben</item>
+        <item>Nem lehet szinkronizálni az adatokat edzés közben</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Kanton</item>
+        <item>Sencsen</item>
+        <item>Foshan</item>
+        <item>Tungkuan</item>
+        <item>Peking</item>
+        <item>Nanking</item>
+        <item>Szucsou</item>
+        <item>Csangcsou</item>
+        <item>Csinan</item>
+        <item>Csingtao</item>
+        <item>Hangcsou</item>
+        <item>Ningpo</item>
+        <item>Csengcsou</item>
+        <item>Kajfeng</item>
+        <item>Sanghaj</item>
+        <item>Sicsiacsuang</item>
+        <item>Paoting</item>
+        <item>Csengtu</item>
+        <item>Mienjang</item>
+        <item>Senjang</item>
+        <item>Talien</item>
+    </array>
+    <array name="common_level">
+        <item>Elégtelen</item>
+        <item>Normál</item>
+        <item>Jó</item>
+    </array>
+    <array name="contact_ways">
+        <item>E-mail</item>
+        <item>Mobiltelefonszám</item>
+        <item>WeChat-azonosító</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Kezdő a fitneszedzés terén</item>
+        <item>Van egy kis fitnesztapasztalata</item>
+        <item>Tapasztalt a fitnesz terén, jó alakja van</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Kezdő</item>
+        <item>Közepes</item>
+        <item>Haladó</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Nincs elég adat</item>
+        <item>Rendellenes pulzusszám</item>
+        <item>Nem észlelhető rendellenesség</item>
+        <item>Nincs elég adat</item>
+        <item>Nem észlelhető rendellenesség</item>
+        <item />
+        <item>Nem észlelhető rendellenesség</item>
+        <item>Gyenge jelminőség</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Kérjük, állítsa be a használati módszert, és próbálja újra.</item>
+        <item>Csak tájékoztatási célokat szolgál. Ha rosszul érzi magát, forduljon orvoshoz.</item>
+        <item>Csak tájékoztatási célokat szolgál. Ha rosszul érzi magát, forduljon orvoshoz.</item>
+        <item>Kérjük, állítsa be a használati módszert, és próbálja újra.</item>
+        <item>Csak tájékoztatási célokat szolgál. Ha rosszul érzi magát, forduljon orvoshoz.</item>
+        <item />
+        <item>Csak tájékoztatási célokat szolgál. Ha rosszul érzi magát, forduljon orvoshoz.</item>
+        <item>Kérjük, állítsa be a használati módszert, és próbálja újra.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>A cél a zsírégetés</item>
+        <item>A cél az alakformálás</item>
+        <item>A cél az izomépítés</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Csökkentés</item>
+        <item>Alakformálás</item>
+        <item>Tömegelés</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>hétfő</item>
+        <item>kedd</item>
+        <item>szerda</item>
+        <item>csütörtök</item>
+        <item>péntek</item>
+        <item>szombat</item>
+        <item>vasárnap</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>HÉT</item>
+        <item>Kedd</item>
+        <item>SZE</item>
+        <item>CSÜ</item>
+        <item>PÉN</item>
+        <item>SZO</item>
+        <item>VAS</item>
+    </array>
+    <array name="hr_sport">
+        <item>Pulzusszám-tartomány: Bemelegítés</item>
+        <item>Pulzusszám-tartomány: Intenzív</item>
+        <item>Pulzusszám-tartomány: Aerob</item>
+        <item>Pulzusszám-tartomány: Anaerob</item>
+        <item>Pulzusszám-tartomány: VO₂ max</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Könnyed</item>
+        <item>Intenzív</item>
+        <item>Aerob</item>
+        <item>Anaerob</item>
+        <item>Max. VO₂</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Hónalj</item>
+        <item>Szájon át</item>
+        <item>Végbél</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Csukló</item>
+        <item>Homlok</item>
+        <item>A fül mögött</item>
+        <item>Belső fül</item>
+        <item>Nyak</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Hónalj</item>
+        <item>Szájon át</item>
+        <item>Végbél</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Mellkas</item>
+        <item>Hónalj</item>
+        <item>Ágyék</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Bezárás</item>
+        <item>Közeli</item>
+        <item>Távoli</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Érintsd meg az okoskarkötő gombját, hogy ellenőrizd, világít-e a kijelző. Ha nem, töltsd fel az okoskarkötőt.\n\nA(z) %1$s vagy %2$s párosítása előtt töltsd fel az eszközt.</item>
+        <item>Ha az okoskarkötő fel van töltve, de a telefon nem látja, próbáld újraindítani a telefon Bluetooth funkcióját.</item>
+        <item>Ha az okoskarkötő fel van töltve, de a telefon nem látja, próbáld újraindítani a telefon Bluetooth funkcióját.</item>
+        <item>Ha a Bluetooth újraindítása nem oldja meg a problémát, próbáld meg újraindítani a telefont.</item>
+        <item>Ha a Bluetooth újraindítása nem oldja meg a problémát, próbáld meg újraindítani a telefont.</item>
+        <item>Ha a Bluetooth újraindítása nem oldja meg a problémát, próbáld meg újraindítani a telefont.</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Fel van töltve az okoskarkötő?</item>
+        <item>Az okoskarkötő egy másik készülékkel van párosítva?</item>
+        <item>Az okoskarkötő egy másik készülékkel van párosítva?</item>
+        <item>Próbáld meg újraindítani a telefont</item>
+        <item>Az okoskarkötő egy másik készülékkel van párosítva?</item>
+        <item>Az okoskarkötő egy másik készülékkel van párosítva?</item>
+    </array>
+    <array name="month_list">
+        <item>január</item>
+        <item>február</item>
+        <item>március</item>
+        <item>április</item>
+        <item>május</item>
+        <item>június</item>
+        <item>július</item>
+        <item>augusztus</item>
+        <item>szeptember</item>
+        <item>október</item>
+        <item>november</item>
+        <item>december</item>
+    </array>
+    <array name="month_titles">
+        <item>Jan.</item>
+        <item>Feb.</item>
+        <item>Már.</item>
+        <item>Ápr.</item>
+        <item>Máj.</item>
+        <item>Jún.</item>
+        <item>Júl.</item>
+        <item>Aug.</item>
+        <item>Szep.</item>
+        <item>Okt.</item>
+        <item>Nov.</item>
+        <item>Dec.</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Elégtelen</item>
+        <item>Normális</item>
+        <item>Jó</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Nagyon rossz</item>
+        <item>Rossz</item>
+        <item>Átlagos</item>
+        <item>Jó</item>
+        <item>Nagyon jó</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Jan</item>
+        <item>Febr</item>
+        <item>Márc</item>
+        <item>Ápr</item>
+        <item>Máj</item>
+        <item>Jún</item>
+        <item>Júl</item>
+        <item>Aug</item>
+        <item>Szept</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>A(z) %1$s nem fog működni, ha hosszabb ideig nem használod. Rázd meg a(z) %2$s eszközt, és próbálkozz újra.</item>
+        <item>A(z) %s elemének élettartama 1 év. Ha már hosszabb ideje használod, lehet, hogy már lemerült.</item>
+        <item>Először kapcsold ki a Bluetooth funkciót a másik készüléken, majd párosítsd a telefonnal.</item>
+        <item>Ha a(z) %s fel van töltve, de a telefon nem látja, próbáld újraindítani a telefon Bluetooth funkcióját.</item>
+        <item>Ha a Bluetooth újraindítása nem oldja meg a problémát, próbáld meg újraindítani a telefont.</item>
+        <item>Érintsd meg a futócipő adatait, és lépj a következő tevékenységi oldalra az adatok automatikus szinkronizálásához</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Rázd meg a következőt: %s</item>
+        <item>A(z) %s fel van töltve?</item>
+        <item>A(z) %s párosítva van egy közelben lévő másik telefonnal?</item>
+        <item>Bluetooth újraindítása</item>
+        <item>Próbáld meg újraindítani a telefont</item>
+        <item>Hogyan kell szinkronizálni az adatokat?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Elhízott</item>
+        <item>Túlsúlyos</item>
+        <item>Zömök</item>
+        <item>Edzéshiányos</item>
+        <item>Kiegyensúlyozott</item>
+        <item>Kiegyensúlyozottan\nizmos</item>
+        <item>Vékony</item>
+        <item>Kiegyensúlyozottan\nsovány</item>
+        <item>Sovány\nizmos</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>hétfő</item>
+        <item>kedd</item>
+        <item>szerda</item>
+        <item>csütörtök</item>
+        <item>péntek</item>
+        <item>szombat</item>
+        <item>vasárnap</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Aktivitás</item>
+        <item>Lassú gyaloglás</item>
+        <item>Séta</item>
+        <item>Gyors gyaloglás</item>
+        <item>Futás</item>
+        <item>Állás</item>
+        <item>Ülés</item>
+        <item>Könnyed tevékenység</item>
+        <item>Helyezze fel az eszközt</item>
+        <item>Töltés…</item>
+        <item>Fekvés</item>
+    </array>
+    <array name="timeline_type">
+        <item>Aktivitás</item>
+        <item>Lassú séta</item>
+        <item>Séta</item>
+        <item>Gyors séta</item>
+        <item>Futás</item>
+        <item>Álló helyzet</item>
+        <item>Ülés</item>
+        <item>Könnyed aktivitás</item>
+        <item>Nem viselt</item>
+        <item>Töltés…</item>
+        <item>Fekvés</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Nincs korlátozva</item>
+        <item>Kezdő, 1</item>
+        <item>Kezdő, 2</item>
+        <item>Haladó, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normális</item>
+        <item>Magas</item>
+        <item>Nagyon magas</item>
+    </array>
+    <array name="water_leval">
+        <item>Elégtelen</item>
+        <item>Normális</item>
+        <item>Jó</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_name">
+        <item>vasárnap</item>
+        <item>hétfő</item>
+        <item>kedd</item>
+        <item>szerda</item>
+        <item>csütörtök</item>
+        <item>péntek</item>
+        <item>szombat</item>
+    </array>
+    <array name="weeks">
+        <item>hétfő</item>
+        <item>kedd</item>
+        <item>szerda</item>
+        <item>csütörtök</item>
+        <item>péntek</item>
+        <item>szombat</item>
+        <item>vasárnap</item>
+    </array>
+    <array name="weeks_short">
+        <item>hétfő</item>
+        <item>kedd</item>
+        <item>szerda</item>
+        <item>csütörtök</item>
+        <item>péntek</item>
+        <item>szombat</item>
+        <item>vasárnap</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Sovány</item>
+        <item>Kiegyensúlyozott</item>
+        <item>Túlsúlyos</item>
+        <item>Elhízott</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Helyezd a mérleget a lehető legközelebb a routerhez, hogy erős Wi-Fi-jelet kapjon</item>
+        <item>· Ellenőrizd, hogy a Wi-Fi-kapcsolathoz beírt jelszó helyes-e.</item>
+        <item>· Csatlakoztasd a telefont a megcélzott Wi-Fi-routerhez, majd próbálj meg megnyitni egy weboldalt, hogy ellenőrizd, hozzáférsz-e az internethez.</item>
+        <item>· Ha a 2,4 GHz ki van kapcsolva, kapcsold be, és válaszd ki. A mérleg nem támogatja az 5 GHz Wi-Fi-t. \n· Ha a kettős sáv engedélyezve van, tiltsd le, hogy elkerüld az 5 GHz-es hálózat miatti konfigurációs hibát.</item>
+        <item>· Ha a Wi-Fi-router csatlakozik az internethez, a Wi-Fi-jel erős, és a router 2,4 GHz-et használ, és a kettős sáv ki van kapcsolva, próbáld meg újraindítani a routert.</item>
+        <item>· Ha a router újraindítása nem segít, próbáld meg újraindítani a telefont.</item>
+        <item>· Ha a router újraindítása nem segít, próbáld meg újra behelyezni az elemet.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. A mérleg olyan helyen található, ahol erős Wi-Fi-jel van?</item>
+        <item>2. Helyes a Wi-Fi-jelszó?</item>
+        <item>3. A Wi-Fi-router megfelelően csatlakozik az internethez?</item>
+        <item>4. Ki van kapcsolva a 2,4 GHz Wi-Fi a routeren? Vagy be van kapcsolva a kétsávos Wi-Fi?</item>
+        <item>5. Próbáld meg újraindítani a routert.</item>
+        <item>6. Próbáld meg újraindítani a telefont.</item>
+        <item>7. Próbáld meg újraindítani az eszközt.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>A 2,4 GHz-es Wi-Fi azt jelzi, hogy a vezeték nélküli router 2,4 GHz-en működik.\nAz 5 GHz-es Wi-Fi azt jelzi, hogy a vezeték nélküli router 5 GHz-en működik.</item>
+        <item>Állítsd be a routert a következő lépések szerint:\n1. Írd be a router bejelentkezési címét a böngésző címsorába, és jelentkezz be a vezeték nélküli router háttérrendszerébe. \n2. Keresd meg a vezeték nélküli router beállítási gombját. \n3. Kapcsold ki a kétsávos gombot. \n4. Kapcsold be a 2,4 GHz Wi-Fi-t.</item>
+        <item>A következő két módszerrel ellenőrizheted a Wi-Fi-sávot:\n1. A számítógép Wi-Fi listájában válaszd a [Wi-Fi] &amp;gt; [Tulajdonságok] &amp;gt; [Hálózati sáv] menüpontot. \n2. Jelentkezz be a router hátterrendszerébe.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Mi az a 2,4 GHz Wi-Fi és az 5 GHz Wi-Fi?</item>
+        <item>· Hogyan kapcsolhatom be a 2,4 GHz Wi-Fi-t a routeremen?</item>
+        <item>· Hogyan ellenőrizhetem a Wi-Fi-sávot?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Normál</item>
+        <item>Túlsúlyos</item>
+        <item>Elhízott</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> font</item>
+    </array>
+</resources>

@@ -1,0 +1,26 @@
+package com.bumptech.glide.load.engine.bitmap_recycle;
+
+/* JADX INFO: loaded from: classes2.dex */
+public final class ByteArrayAdapter implements a<byte[]> {
+    private static final String a = "ByteArrayPool";
+
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.a
+    public int getElementSizeInBytes() {
+        return 1;
+    }
+
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.a
+    public String getTag() {
+        return a;
+    }
+
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.a
+    public int getArrayLength(byte[] bArr) {
+        return bArr.length;
+    }
+
+    @Override // com.bumptech.glide.load.engine.bitmap_recycle.a
+    public byte[] newArray(int i) {
+        return new byte[i];
+    }
+}

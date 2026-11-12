@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:background="#f2f2f2"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        style="@style/activitySportHrBroadcastDividerStyle"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/enable_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:itemSwitch="true"
+        app:ltv_subtitle="@string/sport_heart_boradcast_subtitle"
+        app:ltv_title="@string/sport_heart_boradcast_title"/>
+</LinearLayout>

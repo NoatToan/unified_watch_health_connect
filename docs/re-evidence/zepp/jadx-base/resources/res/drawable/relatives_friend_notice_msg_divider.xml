@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/s4"/>
+    <item
+        android:drawable="@color/relatives_friend_notice_msg_divider_color"
+        android:left="@dimen/relatives_size_16dp"
+        android:right="@dimen/relatives_size_16dp"/>
+</layer-list>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_gravity="center"
+        android:id="@+id/sport_ad_image"
+        android:layout_width="300dp"
+        android:layout_height="360dp"
+        android:scaleType="fitCenter"/>
+    <ImageButton
+        android:layout_gravity="bottom|center_horizontal"
+        android:id="@+id/sport_ad_close"
+        android:background="@drawable/ic_close_36"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="8dp"/>
+</LinearLayout>

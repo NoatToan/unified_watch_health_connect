@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="access_door_search_count_tip">
+        <item quantity="one">%1$d osuma löytyi.</item>
+        <item quantity="other">%1$d osumaa löytyi.</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="one">Brändipäivityksen vuoksi huoltajasi on vahvistettava tilitietosi, jotta tietoturvasi voidaan varmistaa. Vahvista mahdollisimman pian. Muussa tapauksessa tilisi jäädytetään %1$späivän kuluttua.</item>
+        <item quantity="other">Brändipäivityksen vuoksi huoltajasi on vahvistettava tilitietosi, jotta tietoturvasi voidaan varmistaa. Vahvista mahdollisimman pian. Muussa tapauksessa tilisi jäädytetään %1$späivän kuluttua.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="one">Tilin tai salasanan syöttöjen enimmäismäärä on saavutettu. Kokeile uudestaan %s minuutin kuluttua</item>
+        <item quantity="other">Tilin tai salasanan syöttöjen enimmäismäärä on saavutettu. Kokeile uudestaan %s minuutin kuluttua</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="one">Tilin nimi tai salasana on väärä. Sinulla on %s yritys jäljellä</item>
+        <item quantity="other">Tilin nimi tai salasana on väärä. Sinulla on %s yritystä jäljellä</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="one">%d kurssi</item>
+        <item quantity="other">%d kurssia</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="one">Uusi värinä %s min myöhemmin</item>
+        <item quantity="other">Uusi värinä %s min myöhemmin</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="one">Parempi kuin %d %% käyttäjistä tänään</item>
+        <item quantity="other">Parempi kuin %d %% käyttäjistä tänään</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="one">Sovellusluetteloon voidaan lisätä enintään %d sovellus</item>
+        <item quantity="other">Sovellusluetteloon voidaan lisätä enintään %d sovellusta</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="one">Lisää-luetteloon voidaan lisätä enintään %d sovellus</item>
+        <item quantity="other">Lisää-luetteloon voidaan lisätä enintään %d sovellusta</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="one">Verrattuna %1$d pv sitten</item>
+        <item quantity="other">Verrattuna %1$d pv sitten</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="one">Kalibroitu %d päivälle</item>
+        <item quantity="other">Kalibroitu %d päivälle</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="one">Kalibrointi vaaditaan %d päivän välein Pekingin yliopiston ensimmäisen sairaalan verenpaineen seurannan tutkimusprojektia varten</item>
+        <item quantity="other">Kalibrointi vaaditaan %d päivän välein Pekingin yliopiston ensimmäisen sairaalan verenpaineen seurannan tutkimusprojektia varten</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="one">Kalibroi %d päivä myöhemmin</item>
+        <item quantity="other">Kalibroi %d päivää myöhemmin</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="one">%d tavoite saavutettu</item>
+        <item quantity="other">%d tavoitetta saavutettu</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="one">%d kohde vaatii huomiotasi</item>
+        <item quantity="other">%d kohdetta vaatii huomiotasi</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="one">%d kohde ei saavuttanut tavoitetta</item>
+        <item quantity="other">%d kohdetta ei saavuttanut tavoitetta</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="one">Onnittelut!\nLihoit edellisten %1$d päivän aikana</item>
+        <item quantity="other">Onnittelut!\nLihoit edellisen %1$d päivän aikana</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="one"> piste</item>
+        <item quantity="other"> pistettä</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="one">Voit lisätä enintään %1$d suosituimman yhteystiedon, joka synkronoidaan kelloosi automaattisesti</item>
+        <item quantity="other">Voit lisätä enintään %1$d suosituinta yhteystietoa, jotka synkronoidaan kelloosi automaattisesti</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="one">%d kurssi</item>
+        <item quantity="other">%d kurssia</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="one">Kurssi alkaa %d päivän kuluttua</item>
+        <item quantity="other">Kurssi alkaa %d päivän kuluttua</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="one">%d lataus</item>
+        <item quantity="other">%d latausta</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="one">%1$d s.</item>
+        <item quantity="other">%1$d s.</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="one">Tietojen väli: %1$s s</item>
+        <item quantity="other">Tietojen väli: %1$s s</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="one">%1$s s</item>
+        <item quantity="other">%1$s s</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="one">%d muistutus</item>
+        <item quantity="other">%d muistutusta</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">Siirry eteenpäin %d sekunti</item>
+        <item quantity="other">Siirry eteenpäin %d sekuntia</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">Siirry taaksepäin %d sekunti</item>
+        <item quantity="other">Siirry taaksepäin %d sekuntia</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="one">%1$s oppitunti</item>
+        <item quantity="other">%1$s oppituntia</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="one">Kuukautiskierron %1$s, %2$s jäljellä.</item>
+        <item quantity="other">Kuukautiskierron %1$s, %2$s jäljellä.</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="one">Kuukautiskierron noin %1$s, %2$s jäljellä.</item>
+        <item quantity="other">Kuukautiskierron noin %1$s, %2$s jäljellä.</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="one">Kuukautiskierron %1$s, noin %2$s jäljellä.</item>
+        <item quantity="other">Kuukautiskierron %1$s, noin %2$s jäljellä.</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="one">%1$s katsoja</item>
+        <item quantity="other">%1$s katsojaa</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">Päivä %1$d</item>
+        <item quantity="other">Päivä %1$d</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="one">%1$d pv</item>
+        <item quantity="other">%1$d pv</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="one">Peruuta (%1$d s)</item>
+        <item quantity="other">Peruuta (%1$d s)</item>
+    </plurals>
+    <plurals name="fix_hour">
+        <item quantity="one">%1$d tunti</item>
+        <item quantity="other">%1$d tuntia</item>
+    </plurals>
+    <plurals name="fix_minute">
+        <item quantity="one">%1$d minuutti</item>
+        <item quantity="other">%1$d minuuttia</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="one">Ladataan. Odota noin %s min</item>
+        <item quantity="other">Ladataan. Odota noin %s min</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="one">%d harjoituskerta suoritettu loppuun</item>
+        <item quantity="other">%d harjoituskertaa suoritettu loppuun</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="one">%d kerta/minuutti</item>
+        <item quantity="other">%d kertaa/minuutti</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="one">Aloitussivulla on oltava vähintään %1$d kortti</item>
+        <item quantity="other">Aloitussivulla on oltava vähintään %1$d korttia</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="one">Keskimääräinen syke %1$d bpm</item>
+        <item quantity="other">Keskimääräinen syke %1$d bpm</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="one">kerta/min</item>
+        <item quantity="other">kertaa/min</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="one">%d minuutti sitten</item>
+        <item quantity="other">%d minuuttia sitten</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="one">Harjoituskerta %d</item>
+        <item quantity="other">Harjoituskerta %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="one">Muistuta %d sekunti puhelun saapumisen jälkeen</item>
+        <item quantity="other">Muistuta %d sekuntia puhelun saapumisen jälkeen</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="one">Voit lisätä enintään %1$d tekstiviestivastauksen</item>
+        <item quantity="other">Voit lisätä enintään %1$d tekstiviestivastausta</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="one">Säilytä vähintään %1$d tekstiviestivastaus</item>
+        <item quantity="other">Säilytä vähintään %1$d tekstiviestivastausta</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="one">Syötä enintään %d merkki</item>
+        <item quantity="other">Syötä enintään %d merkkiä</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="one">%1$d kierrostietue</item>
+        <item quantity="other">%1$d kierrostietuetta</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="one">%d katselukerta</item>
+        <item quantity="other">%d katselukertaa</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="one">%1$d kuukausi</item>
+        <item quantity="other">%1$d kuukautta</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="one">Noin %1$d minuutti päivässä</item>
+        <item quantity="other">Noin %1$d minuuttia päivässä</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="one">Ladattu viimeksi %d pv sitten</item>
+        <item quantity="other">Ladattu viimeksi %d pv sitten</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="one">Saavutettu tavoite: %d</item>
+        <item quantity="other">Saavutettu tavoite: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="one">%d askel</item>
+        <item quantity="other">%d askelta</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="one">%d %s</item>
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d uusi ilmoitus</item>
+        <item quantity="other">%d uutta ilmoitusta</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="one">%d&quot;</item>
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="one">%d s</item>
+        <item quantity="other">%d s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="one">Yli %1$d-vuotias. Ei voida analysoida %2$s</item>
+        <item quantity="other">Yli %1$d-vuotias. Ei voida analysoida %2$s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="one">Alle %1$d-vuotias. Ei voida analysoida %2$s</item>
+        <item quantity="other">Alle %1$d-vuotias. Ei voida analysoida %2$s</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="one">%s ft</item>
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="one">%s tuuma</item>
+        <item quantity="other">%s tuumaa</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="one">%ds</item>
+        <item quantity="other">%ds</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="one">harjoitus</item>
+        <item quantity="other">harjoitusta</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="one">%d osallistuja</item>
+        <item quantity="other">%d osallistujaa</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="one">minuutti</item>
+        <item quantity="other">minuuttia</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="one">Voit lisätä enintään %1$d tekstiviestivastauksen</item>
+        <item quantity="other">Voit lisätä enintään %1$d tekstiviestivastausta</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="one">Voit säilyttää vähintään %1$d tekstiviestivastauksen</item>
+        <item quantity="other">Voit säilyttää vähintään %1$d tekstiviestivastausta</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="one">”Valittu %1$d kohde”</item>
+        <item quantity="other">”Valittu %1$d kohdetta”</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="one">Pyöräilit %1$d päivä sitten</item>
+        <item quantity="other">Pyöräilit %1$d päivää sitten</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="one">tunti</item>
+        <item quantity="other">tuntia</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="one"> kcal</item>
+        <item quantity="other"> kcal</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="one">Juoksit %1$d päivä sitten</item>
+        <item quantity="other">Juoksit %1$d päivää sitten</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="one">sekunti</item>
+        <item quantity="other">sekuntia</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="one">%1$d äänileike tunnistettu tänään</item>
+        <item quantity="other">%1$d äänileikettä tunnistettu tänään</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="one">Askel</item>
+        <item quantity="other">Askeleet</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="one">Kävelit %1$d päivä sitten</item>
+        <item quantity="other">Kävelit %1$d päivää sitten</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">%d päivä</item>
+        <item quantity="other">%d päivää</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">%d tunti</item>
+        <item quantity="other">%d tuntia</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="one">%d askel</item>
+        <item quantity="other">%d askelta</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="one">Unenaikaisen hengityksen laatu on %1$d. Suosittelemme, että kiinnität jatkuvasti huomiota unenaikaiseen hengittämiseesi. Jos voit huonosti, ota yhteyttä lääkäriin</item>
+        <item quantity="other">Unenaikaisen hengityksen laatu on %1$d. Suosittelemme, että kiinnität jatkuvasti huomiota unenaikaiseen hengittämiseesi. Jos voit huonosti, ota yhteyttä lääkäriin</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="one">Unenaikaisen hengityksen laatu on %1$d. Suosittelemme ottamaan yhteyttä lääkäriin selvittääksesi, onko sinulla unenaikaisia hengitysongelmia</item>
+        <item quantity="other">Unenaikaisen hengityksen laatu on %1$d. Suosittelemme ottamaan yhteyttä lääkäriin selvittääksesi, onko sinulla unenaikaisia hengitysongelmia</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="one">Unenaikaisen hengityksen laatu on %1$d, jatka samaan malliin</item>
+        <item quantity="other">Unenaikaisen hengityksen laatu on %1$d, jatka samaan malliin</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="one">Juoksu vakuutus päättyy %1$d päivän kuluttua, napauta uusiaksesi</item>
+        <item quantity="other">Juoksu vakuutus päättyy %1$d päivän kuluttua, napauta uusiaksesi</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="one">%d kohde ei ole synkronoitu</item>
+        <item quantity="other">%d kohdetta ei ole synkronoitu</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="one">%d kohde ei ole synkronoitu</item>
+        <item quantity="other">%d kohdetta ei ole synkronoitu</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="one">%1$d pyöräilysessio</item>
+        <item quantity="other">%1$d pyöräilysessiota</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="one">%1$d elliptinen harjoitusistunto</item>
+        <item quantity="other">%1$d elliptistä harjoitusistuntoa</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="one">Ilmainen harjoittelu %1$d kerran</item>
+        <item quantity="other">Ilmainen harjoittelu %1$d kertaa</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="one">%1$d juoksusessio</item>
+        <item quantity="other">%1$d juoksusessiota</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="one">%1$d uintisessio</item>
+        <item quantity="other">%1$d uintisessiota</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="one">Harjoittelu: %1$d harjoittelukerta</item>
+        <item quantity="other">Harjoittelu: %1$d harjoittelukertaa</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="one">%1$d triathlonsessio</item>
+        <item quantity="other">%1$d triathlonsessiota</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="one">%1$d kävelysessio</item>
+        <item quantity="other">%1$d kävelysessiota</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="one">Harjoittelu: %1$d harjoittelukerta</item>
+        <item quantity="other">Harjoittelu: %1$d harjoituskertaa</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="one">Lisää enintään %d tapahtuma</item>
+        <item quantity="other">Lisää enintään %d tapahtumaa</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="one">Henkilökohtainen ennätys: %d päivä</item>
+        <item quantity="other">Henkilökohtainen ennätys: %d päivää</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="one">Parempi kuin %d %% käyttäjistä</item>
+        <item quantity="other">Parempi kuin %d %% käyttäjistä</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="one">kerta</item>
+        <item quantity="other">kertaa</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="one">päivä</item>
+        <item quantity="other">päivää</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="one">piste</item>
+        <item quantity="other">pistettä</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="one">%d kerta</item>
+        <item quantity="other">%d kertaa</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="one">Uniarvosana on noussut %d pisteen edellisestä kuusta</item>
+        <item quantity="other">Uniarvosana on noussut %d pistettä edellisestä kuusta</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="one">Tämän kuukauden uniarvosana on %d, jatka samaan malliin.</item>
+        <item quantity="other">Tämän kuukauden uniarvosana on %d, jatka samaan malliin.</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="one">Uniarvosana on noussut %d pisteen edellisestä viikosta</item>
+        <item quantity="other">Uniarvosana on noussut %d pistettä edellisestä viikosta</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="one">Tämän viikon uniarvosana on %d, jatka samaan malliin.</item>
+        <item quantity="other">Tämän viikon uniarvosana on %d, jatka samaan malliin.</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="one">%1$d äänileike on tallennettu tänään.</item>
+        <item quantity="other">%1$d äänileikettä on tallennettu tänään.</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="one">%1$d leike</item>
+        <item quantity="other">%1$d leikettä</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="one">Puheaikaa vielä %d sekunti</item>
+        <item quantity="other">Puheaikaa vielä %d sekuntia</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="one">Suoritetut aktiviteetit: %1$d %2$s sessio</item>
+        <item quantity="other">Suoritetut aktiviteetit: %1$d %2$s sessiota</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="one">askel</item>
+        <item quantity="other">askelta</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="one">Askel</item>
+        <item quantity="other">Askelta</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="one">Askel/päivä</item>
+        <item quantity="other">Askelta/päivä</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; kerran</item>
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; kertaa</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="one">Listan kärjessä&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; päivän</item>
+        <item quantity="other">Listan kärjessä&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; päivää</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="one">Listan kärjessä %1$d kerran</item>
+        <item quantity="other">Listan kärjessä %1$d kertaa</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="one">Listan kärjessä %1$d päivän</item>
+        <item quantity="other">Listan kärjessä %1$d päivää</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="one">Osuma %1$d ystävän kanssa:</item>
+        <item quantity="other">Osuma %1$d ystävän kanssa:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="one">Juostu&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; kerran</item>
+        <item quantity="other">Juostu&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; kertaa</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="one">%1$d juoksutietuetta ei ladattu palvelimeen</item>
+        <item quantity="other">%1$d juoksutietuetta ei ladattu palvelimeen</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="one">%1$d osallistuja</item>
+        <item quantity="other">%1$d osallistujaa</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="one">%dtunti</item>
+        <item quantity="other">%dtuntia</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="one">%dminuutti</item>
+        <item quantity="other">%dminuuttia</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="one">%1$d kerta</item>
+        <item quantity="other">%1$d kertaa</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="one">Onnittelut!\nLaihduit edellisen %1$d päivän aikana</item>
+        <item quantity="other">Onnittelut!\nLaihduit edellisen %1$d päivän aikana</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="one">%1$d painotietuetta ei ole merkitty kenellekään.</item>
+        <item quantity="other">%1$d painotietuetta ei ole merkitty kenellekään.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="one">Enintään %1$d aikataulu voidaan lisätä</item>
+        <item quantity="other">Enintään %1$d aikataulua voidaan lisätä</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="one">Ei voida analysoida yli %d-vuotiaille</item>
+        <item quantity="other">Ei voida analysoida yli %d-vuotiaille</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="one">Ei voida analysoida alle %d-vuotiaille</item>
+        <item quantity="other">Ei voida analysoida alle %d-vuotiaille</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="one">%d kurssi</item>
+        <item quantity="other">%d kurssia</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="one">Kurssi vanhenee %d päivän kuluttua</item>
+        <item quantity="other">Kurssi vanhenee %d päivän kuluttua</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="one">%d katsoja</item>
+        <item quantity="other">%d katsojaa</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="one">Sarjoja yhteensä: %d</item>
+        <item quantity="other">Sarjoja yhteensä: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="one">Oppimiskertoja: %d</item>
+        <item quantity="other">Oppimiskertoja: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="one">Alkaa %d päivän kuluttua</item>
+        <item quantity="other">Alkaa %d päivän kuluttua</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="one">Harjoittelua  %1$d  min</item>
+        <item quantity="other">Harjoittelua  %1$d  min</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="one">Harjoittelua  %1$d  s</item>
+        <item quantity="other">Harjoittelua  %1$d  s</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="one">Harjoituskurssin päivä %1$d: Sinun on suoritettava%3$s (%2$d min)</item>
+        <item quantity="other">Harjoituskurssin päivä %1$d: Sinun on suoritettava%3$s (%2$d min)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="one"> %1$d  sekunti</item>
+        <item quantity="other"> %1$d  sekuntia</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="one"> %1$d  kerran</item>
+        <item quantity="other"> %1$d  kertaa</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="one">Taukoa  %1$d  s</item>
+        <item quantity="other">Taukoa  %1$d  s</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="one"> askel</item>
+        <item quantity="other"> askelta</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="one">Koska antamasi ikä on alle %1$d, voit jatkaa Zepp-palvelun käyttöä vasta kun olemme saaneet huoltajasi valtuutuksen ja suostumuksen.</item>
+        <item quantity="other">Koska antamasi ikä on alle %1$d, voit jatkaa Zepp-palvelun käyttöä vasta kun olemme saaneet huoltajasi valtuutuksen ja suostumuksen.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="one">Muussa tapauksessa tilisi jäädytetään %1$d päivän kuluttua.</item>
+        <item quantity="other">Muussa tapauksessa tilisi jäädytetään %1$d päivän kuluttua.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="one">Alle %1$dvuoden ikäinen</item>
+        <item quantity="other">Alle %1$dvuoden ikäinen</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="one">Jos olet alle %1$dvuoden ikäinen, tarvitsemme alaikäisten tietojen suojaamiseksi huoltajasi luvan ja suostumuksen ennen kuin tarjoamme sinulle täydelliset palvelut.</item>
+        <item quantity="other">Jos olet alle %1$dvuoden ikäinen, tarvitsemme alaikäisten tietojen suojaamiseksi huoltajasi luvan ja suostumuksen ennen kuin tarjoamme sinulle täydelliset palvelut.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="one">Vahvista, että et ole alle %1$dvuoden ikäinen</item>
+        <item quantity="other">Vahvista, että et ole alle %1$dvuoden ikäinen</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="one">%s ft</item>
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="one">%s tuuma</item>
+        <item quantity="other">%s tuumaa</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="one">%d min.</item>
+        <item quantity="other">%d min.</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="one">%d kerta</item>
+        <item quantity="other">%d kertaa</item>
+    </plurals>
+</resources>

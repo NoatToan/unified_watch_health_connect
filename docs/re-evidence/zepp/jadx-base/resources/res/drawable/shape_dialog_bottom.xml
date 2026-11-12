@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetLeft="@dimen/rainbow_dialog_bottom_inset"
+    android:insetRight="@dimen/rainbow_dialog_bottom_inset"
+    android:insetBottom="@dimen/rainbow_dialog_bottom_inset">
+    <shape android:shape="rectangle">
+        <corners android:radius="@dimen/rainbow_corner_radius"/>
+        <solid android:color="?attr/dialogBackground"/>
+    </shape>
+</inset>

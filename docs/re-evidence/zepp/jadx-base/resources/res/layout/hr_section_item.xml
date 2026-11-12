@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="75dp">
+    <TextView
+        android:textSize="9sp"
+        android:textColor="@color/hr_black40"
+        android:id="@+id/hr_section_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:textSize="11sp"
+        android:textColor="@color/hr_black40"
+        android:id="@+id/hr_section_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="4dp"/>
+</LinearLayout>

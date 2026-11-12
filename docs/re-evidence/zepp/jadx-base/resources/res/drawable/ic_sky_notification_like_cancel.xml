@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="26dp"
+    android:width="26dp"
+    android:viewportWidth="26"
+    android:viewportHeight="26">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19.1731,13.6767L12.9959,19.9259L6.819,13.6767C5.2941,12.2139 5.1779,9.7731 6.5564,8.1651C7.9349,6.557 10.3095,6.3635 11.9181,7.7282L12.9959,8.5455L14.0739,7.7268C15.6825,6.3554 18.0628,6.5464 19.4439,8.1579C20.8249,9.7693 20.7049,12.2157 19.1731,13.6767Z"
+        android:strokeColor="@color/sky_notification_secondary_color"
+        android:strokeWidth="1.5"
+        android:strokeLineJoin="round"
+        android:fillType="evenOdd"/>
+</vector>

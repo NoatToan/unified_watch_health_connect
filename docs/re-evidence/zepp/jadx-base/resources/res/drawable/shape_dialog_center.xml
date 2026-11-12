@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetLeft="@dimen/rainbow_dialog_center_inset"
+    android:insetRight="@dimen/rainbow_dialog_center_inset">
+    <shape android:shape="rectangle">
+        <solid android:color="#ed7612"/>
+    </shape>
+</inset>

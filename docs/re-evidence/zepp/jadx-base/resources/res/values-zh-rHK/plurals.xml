@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="Ndays">
+        <item quantity="one">1 天</item>
+        <item quantity="other">%1$d 天</item>
+    </plurals>
+    <plurals name="Nhours">
+        <item quantity="one">1 小時</item>
+        <item quantity="other">%1$d 小時</item>
+    </plurals>
+    <plurals name="Nminutes">
+        <item quantity="one">1 分鐘</item>
+        <item quantity="other">%1$d 分鐘</item>
+    </plurals>
+    <plurals name="access_door_search_count_tip">
+        <item quantity="zero">為你找到 %1$d 條結果</item>
+        <item quantity="one">為你找到 %1$d 條結果</item>
+        <item quantity="other">為你找到 %1$d 條結果</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="other">因品牌升級，為了保護您的數據安全，您的帳號資訊需要監護人確認。請儘快完成。否則將會在 %1$s天後遭凍結而無法使用。</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="other">帳號或密碼錯誤次數已達上限，請於 %s 分鐘後重試</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="other">帳號或密碼錯誤，剩餘 %s 次機會</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="other">%d節課</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="other">%s 分鐘後再次震動</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="other">今天超過了%d%%的使用者</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="other">應用程式列表最多只能添加 %1$d 個應用程式</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="other">更多列表最多只能添加 %1$d 個應用程式</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="other">比%1$d天前</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="other">已校準 %d 天</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="other">需要每 %d 天校準一次，用於北京大學第一醫院發起的血壓篩查研究項目</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="other">距離下次校準還有 %d 天</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="other">%d 項健康指標</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="other">%d 項需關注指標</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="other">%d 項未達指標</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="other">恭喜你\n經過 %1$d 天增重</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="other">分</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="other">最多可為你的手錶添加 %1$d 位常用聯絡人，常用聯絡人將自動同步至手錶</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="other">%d節課程</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="other">課程將於%d天後開始</item>
+    </plurals>
+    <plurals name="daily_interval">
+        <item quantity="one">天</item>
+        <item quantity="other">%1$d天</item>
+    </plurals>
+    <plurals name="days_after">
+        <item quantity="one">%1$d天后</item>
+        <item quantity="other">%1$d天后</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="one">%1$d天前</item>
+        <item quantity="other">%1$d天前</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="other">%d次下載</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="zero">%1$d 秒</item>
+        <item quantity="one">%1$d 秒</item>
+        <item quantity="other">%1$d 秒</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="other">數據間隔: %1$s秒</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="other">%1$s 秒</item>
+    </plurals>
+    <plurals name="endByCount">
+        <item quantity="one">；1次</item>
+        <item quantity="other">；共重複%1$d次</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="other">%d個待提醒</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">快轉 %d 秒</item>
+        <item quantity="other">快轉 %d 秒</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">倒帶 %d 秒</item>
+        <item quantity="other">倒帶 %d 秒</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="other">%1$d大卡</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="other">%1$dkcal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="other">%1$s節課</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="other">月經期%1$s，還有 %2$s</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="other">推測月經期%1$s，還有 %2$s</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="other">月經期%1$s，推測還有 %2$s</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="other">%1$s人學習</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="other">第%1$d天</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="other">%1$d天</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="other">取消 (%1$ds)</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="other">下載中，還需約 %s 分鐘</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="other">已完成%d次訓練</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="other">%d 次/分</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="other">主頁面至少保留 %1$d 張卡片</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="other">平均心率 %1$d 次/分</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="other">次/分</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="other">%d 分鐘前</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="other">第%d次</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="other">來電%d秒後提醒我</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="other">最多可添加 %1$d 條回覆短訊</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="other">至少保留 %1$d 條短訊回覆</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="other">最多輸入%d個字</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="other">%1$d 筆記錄</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="other">%d 次學習</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="other">%1$d 個月</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="other">約每天 %1$d 分鐘</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="other">距上次充電已%d天</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="other">達標 %d 天</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="other">%d 步</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="monthly_interval">
+        <item quantity="one">月</item>
+        <item quantity="other">%1$d月</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d 個新通知</item>
+        <item quantity="other">%d 個新通知</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="other">%d秒</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="other">年齡小於 %1$d 歲，無法分析 %2$s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="other">年齡小於 %1$d 歲，無法分析 %2$s</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="other">%s英尺</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="other">%s英寸</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="other">%d秒</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="other">項運動</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="other">%d 人參加</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="other">分鐘</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="other">最多可添加%1$d條回覆短訊</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="other">至少保留%1$d條短訊回覆</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="other">選中了 %1$d 項</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="other">上次騎行距離今天已有 %1$d 天</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="other">小時</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="other">千卡</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="other">上次跑步距離今天已有 %1$d 天</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="other">秒</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="other">今日有 %1$d 段監測音訊</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="other">步</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="other">上次健走距離今天已有 %1$d 天</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="other">%d 天</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="other">%d 小時</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="other">%d 步</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="other">獲得睡眠呼吸質素 %1$d 分，建議持續關注睡眠呼吸情況，如果身體出現不適，建議諮詢醫療機構</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip_short">
+        <item quantity="other">睡眠呼吸質素 %1$d 分，建議持續關注睡眠呼吸情況，如果身體出現不適，建議諮詢醫療機構</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="other">獲得睡眠呼吸質素 %1$d 分，建議諮詢醫療機構是否存在睡眠呼吸問題</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip_short">
+        <item quantity="other">睡眠呼吸質素 %1$d 分，若連續得分低於 80 分，建議向醫療機構諮詢</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="other">獲得睡眠呼吸質素 %1$d 分，繼續保持</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip_short">
+        <item quantity="other">睡眠呼吸質素 %1$d 分，繼續保持</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="other">跑步險剩餘時間不足%1$d天, 點選續保</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="other">你有%d條資料未同步</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="other">你有%d條資料未同步</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="other">騎行 %1$d次</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="other">橢圓機 %1$d次</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="other">自由訓練 %1$d次</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="other">跑步 %1$d次</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="other">游泳 %1$d次</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="other">訓練 %1$d次</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="other">鐵人三項 %1$d次</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="other">健走%1$d次</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="other">鍛煉 %1$d次</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="other">最多添加 %d 條日程</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="other">個人最高記錄%d天</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="other">超過%d%%的使用者</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="zero">次</item>
+        <item quantity="one">次</item>
+        <item quantity="other">次</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="other">天</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="zero">分</item>
+        <item quantity="one">分</item>
+        <item quantity="other">分</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="zero">%d次</item>
+        <item quantity="one">%d次</item>
+        <item quantity="other">%d次</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="other">睡眠得分比上月提升 %d 分</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="other">本月的睡眠得分達到了 %d 分，請繼續保持。</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="other">睡眠得分比上週提升 %d 分</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="other">本週的睡眠得分達到了 %d 分，請繼續保持。</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="other">今天有 %1$d 段監測音訊</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="other">%1$d 段</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="other">還可以說 %d 秒</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="other">你已完成第%1$d次%2$s</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="other">步</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="other">步</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="other">步/天</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; 次</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="other">稱霸 &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; 天</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="other">%1$d 次稱霸</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="other">稱霸 %1$d 天</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="other">%1$d 位好友匹配:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="other">已跑 &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; 次</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="other">有 %1$d 筆未上載的跑步記錄</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="other">%1$d 人跑過</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="zero">%d小時</item>
+        <item quantity="one">%d小時</item>
+        <item quantity="other">%d小時</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="zero">%d分鐘</item>
+        <item quantity="one">%d分鐘</item>
+        <item quantity="other">%d分鐘</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="other">%1$d 次</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="other">恭喜你\n經過 %1$d 天減重</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="other">有 %1$d 條數據等待認領</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="other">最多只能添加 &lt;numVal demoValue=15 var=%1$d type=x/&gt; 條待辦事項</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="other">年齡大於%d歲無法分析</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="other">年齡小於%d歲無法分析</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="other">%d千卡</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="other">%d節課</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="other">%d天學習有效期</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="other">%d人學習</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="other">共%d組</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="other">已學習%d次</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="other">%d天後開始</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="other">已訓練 %1$d 分鐘</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="other">已訓練 %1$d 秒</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="other">訓練課程第%1$d天，%2$d分鐘的 %3$s等你去完成</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="other"> %1$d 秒</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="other"> %1$d 次</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="other">休息 %1$d 秒</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="other"> 步</item>
+    </plurals>
+    <plurals name="user_info_Nhours">
+        <item quantity="one">1 小時</item>
+        <item quantity="other">%1$d 小時</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="other">您填寫的年齡小於 %1$d 週歲，需要監護人授權同意後才能使用 Zepp。</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="other">否則，將會在 %1$d 天後凍結您的帳號。</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="other">小於 %1$d週歲</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="other">為了保護未成年人的數據私隱，如果您的年齡小於 %1$d週歲，我們需要您的監護人授權同意後，才能為您提供完整的服務。</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="other">確認您的年齡不小於 %1$d週歲</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="other">%s英尺</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="other">%s英寸</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="other">%d大卡</item>
+    </plurals>
+    <plurals name="week_plan_hint_last_improve">
+        <item quantity="other">過去七天內音律伴隨您入睡 %d 次，連續收聽將使改善效果更明顯</item>
+    </plurals>
+    <plurals name="weekly_interval">
+        <item quantity="one">週</item>
+        <item quantity="other">%1$d週</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="other">%d 大卡</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="other">%d 分鐘</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="other">%d次</item>
+    </plurals>
+    <plurals name="wl_set_scheduled_switch_notification_msg_2">
+        <item quantity="other">一張卡最多支援 %1$d 次定時</item>
+    </plurals>
+    <plurals name="yearly_interval">
+        <item quantity="one">年</item>
+        <item quantity="other">%1$d年</item>
+    </plurals>
+</resources>

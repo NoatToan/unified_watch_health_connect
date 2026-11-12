@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/s36"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="17sp"
+        android:textColor="@color/s1"
+        android:gravity="center"
+        android:id="@+id/bind_intro_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="43dp"
+        android:text="@string/intro_sync_setting"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/restore_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:overScrollMode="never"
+        app:layout_constraintTop_toBottomOf="@+id/bind_intro_title_tv"/>
+    <Button
+        android:gravity="center"
+        android:id="@+id/choose_restore_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sync_training"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/choose_restore_not_tv"
+        style="?attr/buttonStyleGray_48_flat"/>
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@color/s1"
+        android:gravity="center"
+        android:id="@+id/choose_restore_not_tv"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/intro_not_sync"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

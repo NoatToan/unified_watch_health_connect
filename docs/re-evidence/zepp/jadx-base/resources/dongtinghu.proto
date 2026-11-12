@@ -1,0 +1,88 @@
+syntax = "proto2";
+
+import "silence_mode.proto";
+import "statis_base.proto";
+import "nfc.proto";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message DongTingHuEventMessage {
+    //洞庭湖用以下打点信息
+    //菜单页面
+    required uint32 statusPage = 1; //状态点击次数
+    required uint32 HeartratePage = 2; //心率点击次数
+    required uint32 PAIPage = 3; //PAI点击次数
+    required uint32 sportPage = 4; //运动点击次数
+    required uint32 AlipayPage = 5; //支付宝点击次数
+    required uint32 NFCcardPage = 6; //卡包点击次数
+    required uint32 weatherPage = 7; //天气点击次数
+    required uint32 ClockPage = 8; //闹钟点击次数
+    required uint32 ClockstartPage = 9; //闹钟开启次数   
+    required uint32 ClockclosePage = 10; //闹钟关闭次数
+    required uint32 StopwatchPage = 11; //秒表点击次数
+    required uint32 CountdownPage = 12; //倒计时点击次数
+    required uint32 CompassPage = 13; //指南针点击次数
+    required uint32 MusicPage = 14; //音乐点击次数
+    required uint32 WorldclockPage = 15; //世界时钟点击次数 //没加
+    required uint32 SettingPage = 16; //设置点击次数 
+
+    //控制中心
+    required uint32 SilencePage = 17; //勿扰点击次数
+    required uint32 SilenceSwitchPage = 18; //勿扰开启方式设置项次数
+    required uint32 LockstartPage = 19; //锁屏开启次数
+    required uint32 LockclosePage = 20; //锁屏关闭次数
+    required uint32 BacklightPage = 21;//亮度点击次数
+    required uint32 CtrlmusicPage = 22; //控制中心-音乐点击次数
+
+    //运动
+    required uint32 BeforeSportGpsPressPage = 23; //运动前GPS定位中跳过次数
+    required uint32 waitGpsLocationNum= 24; //运动前等待GPS定位成功次数
+    required uint32 SportGpsSuccessTime = 25; //运动GPS定位成功时长    
+    required uint32 skipGpsLocationNum= 26; //运动中GPS定位成功次数
+    required uint32 SportBreakLinkNum = 27;//运动中手机断连次数   //获取运动中手机断连次数没加状态获取端口，事件处理，消息提醒
+    required uint32 SportReLinkNum = 28;//运动中手机恢复链接次数  //获取运动中手机回复链接次数没加状态获取端口，事件处理，消息提醒
+
+    //通知提醒
+    required uint32 NoticeNum = 29;//通知列表展示次数
+    required uint32 AppRemindNum = 30;//APP通知提醒展示次数
+    required uint32 CallRemindNum = 31;//来电提醒次数
+    required uint32 SportRemindNum = 32;//久坐提醒次数
+    required uint32 DisconnectNum = 33;//连接断开展示次数    
+    required uint32 EventRemindNum = 34;//事件提醒展示次数  
+    required uint32 RemindLaterNum = 35;//闹钟提醒-稍后提醒次数
+    required uint32 RemindCloseNum = 36;//闹钟提醒-关闭次数    
+
+    //表盘
+    required uint32 dialId = 37;//表盘使用情况统计
+    required uint32 settingWatchfacePage = 38;//表盘列表展示次数
+    required uint32 EditDialNum = 39;//可编辑表盘自定义次数   //没加
+
+     //负屏
+    required uint32 NegativeNum= 40;//进入负屏展示次数
+    required uint32 NegativeMusicTime=41;//负屏-音乐展示时长   
+    required uint32 NegativeAliPayBarcodeTime=42;//负屏-支付宝条码展示时长   
+    required uint32 NegativeAliPayQrcodeTime=43;//负屏-支付宝二维码展示时长  
+    required uint32 NegativeNfcCardTime = 44;//负屏-卡包展示时长 
+    required uint32 NegativeStateTime = 45;//负屏-状态展示时长      
+    required uint32 NegativePaiTime = 46;//负屏-Pai展示时长           
+    required uint32 NegativeWeatherNum = 47;//负屏-天气展示次数  
+    required uint32 NegativeHeartrateTime = 48;//负屏-心率展示时长  
+
+    //基础
+    required uint32 KeyPressCloseBacklightNum = 49;//物理按键关闭背光次数   //没加
+    required uint32 FindPhoneSuccessNum = 50;//查找手机成功次数
+    required uint32 FindPhoneFailNum = 51;//查找手机失败次数
+    required uint32 SettingCloseNum = 52;//设置-关机次数
+    required uint32 SettingRestoreFactoryNum = 53;//设置-恢复出厂次数
+    required uint32 LongkeyRestoreFactoryNum = 54;//长按恢复出厂次数
+};
+
+message DongTingHuStatisticsMessage {
+    required StatisBaseMessage base = 1; //通用统计信息
+    required SilenceMode silenceMode = 2; //勿扰模式
+    required uint32 backlightLevel = 3; //背光亮度
+
+    optional DongTingHuEventMessage event = 4; //打点事件
+    optional NfcMessage nfc = 5;
+};
+

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
+    <TextView
+        android:textSize="16sp"
+        android:textColor="@color/s1"
+        android:id="@+id/ratioTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"/>
+    <com.huami.sleep.view.UnitTextView
+        android:textSize="16sp"
+        android:textColor="@color/s1"
+        android:id="@+id/dayTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="15dp"
+        app:typeface="lt_bold"
+        app:unitColor="@color/s3"
+        app:unitSize="14sp"/>
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="5dp"
+        android:progressDrawable="@drawable/slp_progress_bg"
+        android:layout_below="@+id/ratioTv"
+        android:layout_centerVertical="true"
+        style="?android:attr/progressBarStyleHorizontal"/>
+</RelativeLayout>

@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="access_door_search_count_tip">
+        <item quantity="one">Er is %1$d treffer gevonden.</item>
+        <item quantity="other">Er zijn %1$d treffers gevonden.</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="one">Vanwege een merkverbetering moet de accountinformatie door uw ouder of voogd worden bevestigd om uw gegevens te beveiligen. Bevestig deze zo snel mogelijk. Uw account wordt anders over %1$sdag bevroren.</item>
+        <item quantity="other">Vanwege een merkverbetering moet de accountinformatie door uw ouder of voogd worden bevestigd om uw gegevens te beveiligen. Bevestig deze zo snel mogelijk. Uw account wordt anders over %1$sdagen bevroren.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="one">Het maximale aantal pogingen voor account of wachtwoord is bereikt. Probeer het opnieuw over %s minuut</item>
+        <item quantity="other">Het maximale aantal pogingen voor account of wachtwoord is bereikt. Probeer het opnieuw over %s minuten</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="one">De accountnaam of het wachtwoord is onjuist. U hebt nog %s poging</item>
+        <item quantity="other">De accountnaam of het wachtwoord is onjuist. U hebt nog %s pogingen</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="one">%d cursus</item>
+        <item quantity="other">%d cursussen</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="one">Opnieuw vibreren over %s min.</item>
+        <item quantity="other">Opnieuw vibreren over %s min.</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="one">Beter dan %d%% van de gebruikers vandaag</item>
+        <item quantity="other">Beter dan %d%% van de gebruikers vandaag</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="one">Er kan maximaal %d app aan de lijst Apps worden toegevoegd</item>
+        <item quantity="other">Er kunnen maximaal %d apps aan de lijst Apps worden toegevoegd</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="one">Er kan maximaal %d app aan de lijst Meer worden toegevoegd</item>
+        <item quantity="other">Er kunnen maximaal %d apps aan de lijst Meer worden toegevoegd</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="one">Vergeken met %1$dd geleden</item>
+        <item quantity="other">Vergeken met %1$dd geleden</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="one">%d dag geleden gekalibreerd</item>
+        <item quantity="other">%d dagen geleden gekalibreerd</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="one">De kalibratie moet om de %d dag worden uitgevoerd voor het onderzoeksproject in verband met bloeddrukcontrole georganiseerd door Peking University First Hospital</item>
+        <item quantity="other">De kalibratie moet om de %d dagen worden uitgevoerd voor het onderzoeksproject in verband met bloeddrukcontrole georganiseerd door Peking University First Hospital</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="one">Over %d dag opnieuw kalibreren</item>
+        <item quantity="other">Over %d dagen opnieuw kalibreren</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="one">%d doel bereikt</item>
+        <item quantity="other">%d doelen bereikt</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="one">%d item heeft uw aandacht nodig</item>
+        <item quantity="other">%d items hebben uw aandacht nodig</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="one">%d item heeft zijn doelen niet bereikt</item>
+        <item quantity="other">%d items hebben hun doelen niet bereikt</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="one">Gefeliciteerd!\nUw gewichtstoename in de afgelopen %1$ddag is</item>
+        <item quantity="other">Gefeliciteerd!\nUw gewichtstoename in de afgelopen %1$ddagen is</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="one"> score</item>
+        <item quantity="other"> scores</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="one">Je kunt maximaal %1$d belangrijke contactpersoon toevoegen en deze wordt automatisch gesynchroniseerd met je smartwatch</item>
+        <item quantity="other">Je kunt maximaal %1$d belangrijke contactpersonen toevoegen en deze worden automatisch gesynchroniseerd met je smartwatch</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="one">%d cursus</item>
+        <item quantity="other">%d cursussen</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="one">De cursus begint over %d dag</item>
+        <item quantity="other">De cursus begint over %d dagen</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="one">%d download</item>
+        <item quantity="other">%d downloads</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="one">%1$d sec.</item>
+        <item quantity="other">%1$d sec.</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="one">Gegevensinterval: %1$s sec.</item>
+        <item quantity="other">Gegevensinterval: %1$s sec.</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="one">%1$s sec.</item>
+        <item quantity="other">%1$s sec.</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="one">%d herinnering</item>
+        <item quantity="other">%d herinneringen</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">%d seconde vooruitspoelen</item>
+        <item quantity="other">%d seconden vooruitspoelen</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">%d seconde terugspoelen</item>
+        <item quantity="other">%d seconden terugspoelen</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="one">%1$s les</item>
+        <item quantity="other">%1$s lessen</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="one">%1$s van de menstruatieperiode, %2$s over.</item>
+        <item quantity="other">%1$s van de menstruatieperiode, %2$s over.</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="one">Ongeveer %1$s van de menstruatieperiode is %2$s over.</item>
+        <item quantity="other">Ongeveer %1$s van de menstruatieperiode is %2$s over.</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="one">%1$s van de menstruatieperiode, ongeveer %2$s over.</item>
+        <item quantity="other">%1$s van de menstruatieperiode, ongeveer %2$s over.</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="one">%1$s kijker</item>
+        <item quantity="other">%1$s kijkers</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">Dag %1$d</item>
+        <item quantity="other">Dag %1$d</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="one">%1$dd</item>
+        <item quantity="other">%1$dd</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="one">Annuleren (%1$ds)</item>
+        <item quantity="other">Annuleren (%1$ds)</item>
+    </plurals>
+    <plurals name="fix_hour">
+        <item quantity="one">%1$d uur</item>
+        <item quantity="other">%1$d uur</item>
+    </plurals>
+    <plurals name="fix_minute">
+        <item quantity="one">%1$d minuut</item>
+        <item quantity="other">%1$d minuten</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="one">Bezig met downloaden. Wacht ongeveer %s min.</item>
+        <item quantity="other">Bezig met downloaden. Wacht ongeveer %s min.</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="one">%d trainingsessie voltooid</item>
+        <item quantity="other">%d trainingsessies voltooid</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="one">%d keer/minuut</item>
+        <item quantity="other">%d keer/minuut</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="one">De startpagina moet ten minste %1$d kaart bevatten</item>
+        <item quantity="other">De startpagina moet ten minste %1$d kaarten bevatten</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="one">Gemiddelde hartslag %1$d spm</item>
+        <item quantity="other">Gemiddelde hartslag %1$d spm</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="one">keer/min</item>
+        <item quantity="other">keer/min</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="one">%d minuut geleden</item>
+        <item quantity="other">%d minuten geleden</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="one">Sessie %d</item>
+        <item quantity="other">Sessie %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="one">Herinner me %d seconde nadat het telefoongesprek binnenkomt</item>
+        <item quantity="other">Herinner me %d seconden nadat het telefoongesprek binnenkomt</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="one">Je kunt maximaal %1$d sms-antwoord toevoegen</item>
+        <item quantity="other">Je kunt maximaal %1$d sms-antwoorden toevoegen</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="one">Bewaar minimaal %1$d sms-antwoord</item>
+        <item quantity="other">Bewaar minimaal %1$d sms-antwoorden</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="one">Voer %d teken in</item>
+        <item quantity="other">Voer tot %d tekens in</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="one">%1$d ronderecord</item>
+        <item quantity="other">%1$d ronderecords</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="one">%d weergave</item>
+        <item quantity="other">%d weergaven</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="one">%1$d maand</item>
+        <item quantity="other">%1$d maanden</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="one">Ongeveer %1$d minuut per dag</item>
+        <item quantity="other">Ongeveer %1$d minuten per dag</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="one">%d dag geleden voor het laatst opgeladen</item>
+        <item quantity="other">%d dagen geleden voor het laatst opgeladen</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="one">Doel bereikt: %d</item>
+        <item quantity="other">Doel bereikt: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="one">%d stap</item>
+        <item quantity="other">%d stappen</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="one">%d %s</item>
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d nieuwe melding</item>
+        <item quantity="other">%d nieuwe meldingen</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="one">%d&quot;</item>
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="one">%d s</item>
+        <item quantity="other">%d s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="one">Ouder dan %1$d jaar. Kan %2$sniet analyseren</item>
+        <item quantity="other">Ouder dan %1$d jaar. Kan %2$sniet analyseren</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="one">Jonger dan %1$djaar. Kan %2$sniet analyseren</item>
+        <item quantity="other">Jonger dan %1$djaar. Kan %2$sniet analyseren</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="one">%s ft</item>
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="one">%s inch</item>
+        <item quantity="other">%s inch</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="one">%ds</item>
+        <item quantity="other">%ds</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="one">training</item>
+        <item quantity="other">trainingen</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="one">%d deelnemer</item>
+        <item quantity="other">%d deelnemers</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="one">minuut</item>
+        <item quantity="other">minuten</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="one">U kunt maximaal %1$d sms-antwoord toevoegen</item>
+        <item quantity="other">U kunt maximaal %1$d sms-antwoorden toevoegen</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="one">U kunt minstens %1$d sms-antwoord behouden</item>
+        <item quantity="other">U kunt minstens %1$d sms-antwoorden behouden</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="one">&quot;%1$d item geselecteerd&quot;</item>
+        <item quantity="other">&quot;%1$d items geselecteerd&quot;</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="one">U hebt %1$d dag geleden gefietst</item>
+        <item quantity="other">U hebt %1$d dagen geleden gefietst</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="one">uur</item>
+        <item quantity="other">uur</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="one">kcal</item>
+        <item quantity="other">kcal</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="one">U hebt %1$d dag geleden hardgelopen</item>
+        <item quantity="other">U hebt %1$d dagen geleden hardgelopen</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="one">seconde</item>
+        <item quantity="other">seconden</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="one">%1$d geluidsfragment gedetecteerd vandaag</item>
+        <item quantity="other">%1$d geluidsfragmenten gedetecteerd vandaag</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="one">Stap</item>
+        <item quantity="other">Stappen</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="one">U hebt %1$d dag geleden gewandeld</item>
+        <item quantity="other">U hebt %1$d dagen geleden gewandeld</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">%dd</item>
+        <item quantity="other">%dd</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">%d uur</item>
+        <item quantity="other">%d uur</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="one">%d stap</item>
+        <item quantity="other">%d stappen</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="one">Kwaliteit van ademhaling tijdens slaap is %1$d. We raden u aan uw slaapademhaling continu in de gaten te houden. Zoek medische hulp als u zich niet goed voelt</item>
+        <item quantity="other">Kwaliteit van ademhaling tijdens slaap is %1$d. We raden u aan uw slaapademhaling continu in de gaten te houden. Zoek medische hulp als u zich niet goed voelt</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="one">Kwaliteit van ademhaling tijdens slaap is %1$d. We raden u aan een medisch specialist te raadplegen om te bepalen of u problemen hebt met de ademhaling tijdens het slapen</item>
+        <item quantity="other">Kwaliteit van ademhaling tijdens slaap is %1$d. We raden u aan een medisch specialist te raadplegen om te bepalen of u problemen hebt met de ademhaling tijdens het slapen</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="one">Kwaliteit van ademhaling tijdens slaap is %1$d, houd dit vol</item>
+        <item quantity="other">Kwaliteit van ademhaling tijdens slaap is %1$d, houd dit vol</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="one">Hardloop verzekering vervalt over %1$d dag, tik om te vernieuwen</item>
+        <item quantity="other">Hardloop verzekering vervalt over %1$d dagen, tik om te vernieuwen</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="one">%d item is niet gesynchroniseerd</item>
+        <item quantity="other">%d items zijn niet gesynchroniseerd</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="one">%d item is niet gesynchroniseerd</item>
+        <item quantity="other">%d items zijn niet gesynchroniseerd</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="one">%1$d fietssessie</item>
+        <item quantity="other">%1$d fietssessies</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="one">%1$d elliptische trainingssessie</item>
+        <item quantity="other">%1$d elliptische trainingssessies</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="one">Gratis training %1$d keer</item>
+        <item quantity="other">Gratis training %1$d keer</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="one">%1$d hardloopsessie</item>
+        <item quantity="other">%1$d hardloopsessies</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="one">%1$d zwemsessie</item>
+        <item quantity="other">%1$d zwemsessies</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="one">Training: %1$d sessie</item>
+        <item quantity="other">Training: %1$d sessies</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="one">%1$d triatlon sessie</item>
+        <item quantity="other">%1$d triatlon sessies</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="one">%1$d wandelsessie</item>
+        <item quantity="other">%1$d wandelsessies</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="one">Training: %1$d sessie</item>
+        <item quantity="other">Training: %1$d sessies</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="one">Voeg maximaal %d gebeurtenis toe</item>
+        <item quantity="other">Voeg maximaal %d gebeurtenissen toe</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="one">Persoonlijk record: %d dag</item>
+        <item quantity="other">Persoonlijk record: %d dagen</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="one">Beter dan %d%% van de gebruikers</item>
+        <item quantity="other">Beter dan %d%% van de gebruikers</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="one">keer</item>
+        <item quantity="other">keer</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="one">dag</item>
+        <item quantity="other">dagen</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="one">punt</item>
+        <item quantity="other">punten</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="one">%dkeer</item>
+        <item quantity="other">%dkeer</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="one">Uw slaapscore is %d hoger dan vorige maand</item>
+        <item quantity="other">Uw slaapscore is %d hoger dan vorige maand</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="one">De slaapscore voor deze maand is %d, ga zo door.</item>
+        <item quantity="other">De slaapscore voor deze maand is %d, ga zo door.</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="one">Uw slaapscore is %d hoger dan vorige week</item>
+        <item quantity="other">Uw slaapscore is %d hoger dan vorige week</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="one">De slaapscore voor deze week is %d, ga zo door.</item>
+        <item quantity="other">De slaapscore voor deze week is %d, ga zo door.</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="one">Er wordt vandaag %1$d audiofragment opgenomen.</item>
+        <item quantity="other">Er worden vandaag %1$d audiofragmenten opgenomen.</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="one">%1$d fragment</item>
+        <item quantity="other">%1$d fragmenten</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="one">Kan nog %d seconde praten</item>
+        <item quantity="other">Kan nog %d seconden praten</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="one">Voltooide activiteiten: %1$d sessie %2$s</item>
+        <item quantity="other">Voltooide activiteiten: %1$d sessies %2$s</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="one">stap</item>
+        <item quantity="other">stappen</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="one">Stap</item>
+        <item quantity="other">Stappen</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="one">Stap/dag</item>
+        <item quantity="other">Stappen/dag</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; keer</item>
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; keer</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; dag bovenaan de lijst gestaan</item>
+        <item quantity="other">T&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; dagen bovenaan de lijst gestaan</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="one">%1$d keer bovenaan in de lijst</item>
+        <item quantity="other">%1$d keer bovenaan in de lijst</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="one">%1$d dag bovenaan in de lijst</item>
+        <item quantity="other">%1$d dagen bovenaan in de lijst</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="one">Gematcht met %1$d vriend:</item>
+        <item quantity="other">Gematcht met %1$d vrienden:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; keer uitgevoerd</item>
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; keer uitgevoerd</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="one">%1$d hardlooprecord niet geüpload</item>
+        <item quantity="other">%1$d hardlooprecords niet geüpload</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="one">%1$d deelnemer</item>
+        <item quantity="other">%1$d deelnemers</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="one">%d uur</item>
+        <item quantity="other">%d uur</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="one">%d minuut</item>
+        <item quantity="other">%d minuten</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="one">%1$d keer</item>
+        <item quantity="other">%1$d keer</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="one">Gefeliciteerd!\nUw gewichtsverlies in de afgelopen %1$ddag is</item>
+        <item quantity="other">Gefeliciteerd!\nUw gewichtsverlies in de afgelopen %1$ddagen is</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="one">Er is %1$d gewichtsregistratie die nog niet is opgeëist.</item>
+        <item quantity="other">Er zijn %1$d gewichtsregistraties die nog niet zijn opgeëist.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="one">Er kan maximaal %1$d agenda worden toegevoegd</item>
+        <item quantity="other">Er kunnen maximaal %1$d agenda&apos;s worden toegevoegd</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="one">Kan mensen ouder dan %d jaar niet analyseren</item>
+        <item quantity="other">Kan mensen ouder dan %d jaar niet analyseren</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="one">Kan mensen jonger dan %d jaar niet analyseren</item>
+        <item quantity="other">Kan mensen jonger dan %d jaar niet analyseren</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="one">%d cursus</item>
+        <item quantity="other">%d cursussen</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="one">Cursus vervalt over %d dag</item>
+        <item quantity="other">Cursus vervalt over %d dagen</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="one">%d kijker</item>
+        <item quantity="other">%d kijkers</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="one">Totaal aantal reeksen: %d</item>
+        <item quantity="other">Totaal aantal reeksen: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="one">Aantal keer geleerd: %d</item>
+        <item quantity="other">Aantal keer geleerd: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="one">Begint over %d dag</item>
+        <item quantity="other">Begint over %d dagen</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="one">Getraind gedurende  %1$d  min.</item>
+        <item quantity="other">Getraind gedurende  %1$d  min.</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="one">Getraind gedurende  %1$d  sec.</item>
+        <item quantity="other">Getraind gedurende  %1$d  sec.</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="one">Dag %1$d van de trainingscursus: Je moet er %3$s voltooien (%2$d min.)</item>
+        <item quantity="other">Dag %1$d van de trainingscursus: Je moet er %3$s voltooien (%2$d min.)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="one"> %1$d  seconde</item>
+        <item quantity="other"> %1$d  seconden</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="one"> %1$d  keer</item>
+        <item quantity="other"> %1$d  keer</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="one">Gepauzeerd gedurende  %1$d  sec.</item>
+        <item quantity="other">Gepauzeerd gedurende  %1$d  sec.</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="one">  stap</item>
+        <item quantity="other">  stappen</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="one">Omdat de ingevoerde leeftijd hieronder %1$d is, kunt u Zepp alleen blijven gebruiken nadat we de autorisatie en toestemming van uw voogd hebben gekregen.</item>
+        <item quantity="other">Omdat de ingevoerde leeftijd hieronder %1$d is, kunt u Zepp alleen blijven gebruiken nadat we de autorisatie en toestemming van uw voogd hebben gekregen.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="one">Uw account wordt anders over %1$d dag bevroren.</item>
+        <item quantity="other">Uw account wordt anders over %1$d dagen bevroren.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="one">Jonger dan %1$d</item>
+        <item quantity="other">Jonger dan %1$d</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="one">Om de privacy van de gegevens van minderjarigen te beschermen, hebben we de autorisatie en toestemming van uw voogd nodig als u jonger bent dan %1$d, voordat we u volledige diensten kunnen leveren.</item>
+        <item quantity="other">Om de privacy van de gegevens van minderjarigen te beschermen, hebben we de autorisatie en toestemming van uw voogd nodig als u jonger bent dan %1$d, voordat we u volledige diensten kunnen leveren.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="one">Bevestig dat u ouder bent dan %1$d</item>
+        <item quantity="other">Bevestig dat u ouder bent dan %1$d</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="one">%s ft</item>
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="one">%s inch</item>
+        <item quantity="other">%s inch</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="one">%d min</item>
+        <item quantity="other">%d min</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="one">%d sessie</item>
+        <item quantity="other">%d sessies</item>
+    </plurals>
+</resources>

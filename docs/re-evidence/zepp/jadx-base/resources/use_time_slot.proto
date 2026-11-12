@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message UseTimeSlotUnitMessage {
+    required uint32 time = 1; //UTC0 时间
+	required uint32 mode = 2;
+	required uint32 battery = 3;
+
+};
+
+message UseTimeSlotMessage {
+    repeated UseTimeSlotUnitMessage slot = 1;
+};

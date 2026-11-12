@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/s10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.rainbow.titlebar.RainbowTitleBar
+        android:id="@+id/activity_edit_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menuText="@string/save"
+        app:menuTint="@color/p4"
+        app:title="@string/segment_edit_detail"/>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@drawable/shape_rect_white_corner_6"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d3"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+            <include layout="@layout/item_strength_edit_title"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_strength_training"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"/>
+            </RelativeLayout>
+            <TextView
+                android:textColor="@color/s41"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/tv_edit_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/strength_training_add"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_add_20"
+                android:drawableTint="@color/s41"
+                style="@style/Rainbow.TextAppearance.Body4"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/has_bmi_ll"
+    android:visibility="visible"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.huami.widget.typeface.TypefaceTextView
+        android:textSize="14sp"
+        android:textColor="@color/s1"
+        android:id="@+id/body_ideal_weight_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/ideal_body_weight"
+        android:fontFamily="lt-bold"
+        android:layout_marginStart="20dp"/>
+    <com.huami.lib.view.text.UnitTextView
+        android:textSize="14sp"
+        android:textColor="@color/s1"
+        android:id="@+id/params_ideal_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/body_ideal_weight_title_tv"
+        app:typeface="lt_bold"
+        app:unit="@string/unit_kg"
+        app:unitColor="@color/s1"
+        app:unitSize="14sp"/>
+    <com.huami.view.weightfigure.WeightFigureView
+        android:layout_gravity="center"
+        android:id="@+id/weight_figure_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/params_ideal_weight"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="13dp"
+        app:type="unmoveable"/>
+</RelativeLayout>

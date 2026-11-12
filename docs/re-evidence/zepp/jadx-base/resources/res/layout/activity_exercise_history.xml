@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <View style="@style/VerticalDivider"/>
+    <RelativeLayout
+        android:background="@color/s38"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:background="@color/s38"
+            android:layout_height="66dp"
+            android:layout_centerHorizontal="true"
+            style="@style/QueryConditionLayoutStyle">
+            <LinearLayout
+                android:id="@+id/query_by_week"
+                style="@style/ExerciseHistoryBottomSection">
+                <ImageView style="@style/ExerciseHistoryBottomQueryConditionIcon"/>
+                <TextView
+                    android:text="@string/radio_week"
+                    style="@style/ExerciseHistoryBottomQueryConditionText"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/query_by_month"
+                style="@style/ExerciseHistoryBottomSection">
+                <ImageView style="@style/ExerciseHistoryBottomQueryConditionIcon"/>
+                <TextView
+                    android:text="@string/radio_month"
+                    style="@style/ExerciseHistoryBottomQueryConditionText"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/query_by_year"
+                style="@style/ExerciseHistoryBottomSection">
+                <ImageView style="@style/ExerciseHistoryBottomQueryConditionIcon"/>
+                <TextView
+                    android:text="@string/radio_year"
+                    style="@style/ExerciseHistoryBottomQueryConditionText"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/query_by_all"
+                style="@style/ExerciseHistoryBottomSection">
+                <ImageView style="@style/ExerciseHistoryBottomQueryConditionIcon"/>
+                <TextView
+                    android:text="@string/query_all"
+                    style="@style/ExerciseHistoryBottomQueryConditionText"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

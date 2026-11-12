@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_pressed="true"
+        android:height="55dp"
+        android:width="315dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/applet_setting_dialog_gray_press"/>
+            <corners
+                android:topLeftRadius="0dp"
+                android:topRightRadius="0dp"
+                android:bottomLeftRadius="6dp"
+                android:bottomRightRadius="6dp"/>
+        </shape>
+    </item>
+    <item
+        android:height="55dp"
+        android:width="315dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/applet_setting_dialog_gray"/>
+            <corners
+                android:topLeftRadius="0dp"
+                android:topRightRadius="0dp"
+                android:bottomLeftRadius="6dp"
+                android:bottomRightRadius="6dp"/>
+        </shape>
+    </item>
+</selector>

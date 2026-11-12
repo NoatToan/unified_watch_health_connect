@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/shoes_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"/>
+    <FrameLayout
+        android:background="@drawable/bind_bottom_btn"
+        android:layout_width="match_parent"
+        android:layout_height="92dp"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/cancel_tv"
+            android:layout_marginBottom="0dp"
+            android:text="@string/cancel"
+            style="@style/BottomTextStyle"/>
+    </FrameLayout>
+</RelativeLayout>

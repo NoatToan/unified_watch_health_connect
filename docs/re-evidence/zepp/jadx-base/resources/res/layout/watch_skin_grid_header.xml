@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:paddingRight="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="38dp"
+    android:paddingStart="15dp">
+    <TextView
+        android:textSize="17sp"
+        android:textColor="@color/s1"
+        android:gravity="center_vertical"
+        android:layout_gravity="start|center_vertical"
+        android:id="@+id/skin_tv_head"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="全新表盘"/>
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/s2"
+        android:gravity="end|center_vertical"
+        android:layout_gravity="end"
+        android:id="@+id/skin_tv_head_more"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/watch_skin_more"/>
+</FrameLayout>

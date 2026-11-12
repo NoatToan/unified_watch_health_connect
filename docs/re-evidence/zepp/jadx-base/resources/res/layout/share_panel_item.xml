@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/share_item_rl"
+    android:layout_width="@dimen/share_dialog_long_width"
+    android:layout_height="@dimen/share_dialog_long_width">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_gravity="center"
+        android:id="@+id/share_panel_icon"
+        android:layout_width="@dimen/share_panel_item_icon_size"
+        android:layout_height="@dimen/share_panel_item_icon_size"/>
+</FrameLayout>

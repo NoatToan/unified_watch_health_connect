@@ -1,0 +1,23 @@
+syntax = "proto2";
+
+option java_package = "com.xiaomi.hm.health.bt.proto";
+
+message StatisBaseMessage {
+    required uint32 upTime = 1; //系统启动时间，单位秒
+    required uint32 ppgTime = 2; //PPG打开时间，单位毫秒
+    required uint32 vibTime = 3; //马达震动时间，单位毫秒
+    required uint32 lcdTime = 4; //LCD亮屏时间，单位毫秒
+    required uint32 flashTime = 5; //Flash操作时间，单位毫秒
+    required uint32 connTime = 6; //蓝牙连接时间，单位毫秒
+    required uint32 runTime = 7; //MCU运行时间，单位毫秒
+    required uint32 algTime = 8; //算法运行时间，单位毫秒
+    required uint32 rebootCount = 9; //重启次数
+    required uint32 disconnectCount = 10; //蓝牙断开次数
+    required uint32 keyCount = 11; //按键次数lcdIdleTime
+    required uint32 liftWristCount = 12; //抬腕次数
+    required uint32 appNotifyCount = 13; //应用通知次数
+    required uint32 phoneCount = 14; //来电通知次数
+    required uint32 sedCount = 15; //久坐次数
+    required uint32 alarmsCount = 16; //闹钟个数   
+};
+

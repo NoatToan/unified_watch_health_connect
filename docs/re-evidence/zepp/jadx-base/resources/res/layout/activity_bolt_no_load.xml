@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/s10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/s10"
+        android:layout_width="match_parent"
+        android:layout_height="301dp">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:src="@drawable/img_binding_bolt_search"/>
+        <TextView
+            android:textSize="12sp"
+            android:textColor="@color/s2"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/bolt_no_load_test_tips"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"/>
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/item_no_load_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_checked="true"
+        app:ltv_title="@string/bolt_setting_no_Load_test"/>
+</LinearLayout>

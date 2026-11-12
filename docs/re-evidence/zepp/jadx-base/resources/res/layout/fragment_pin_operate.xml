@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="14sp"
+        android:textColor="#de000000"
+        android:gravity="center_vertical"
+        android:id="@+id/cancel_pin"
+        android:text="@string/cancel_pin"
+        android:paddingStart="40dp"
+        style="@style/ItemStyle"/>
+    <View style="@style/DividerWithMargin"/>
+    <TextView
+        android:textSize="14sp"
+        android:textColor="#de000000"
+        android:gravity="center_vertical"
+        android:id="@+id/change_pin_time"
+        android:text="@string/change_pin_time"
+        android:paddingStart="40dp"
+        style="@style/ItemStyle"/>
+</LinearLayout>

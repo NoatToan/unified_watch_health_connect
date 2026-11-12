@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/setting"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/applet_title_bar"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_default"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv_error_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="204dp"
+            android:src="@drawable/applet_common_network_error"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:textSize="14sp"
+            android:textColor="#ff666666"
+            android:id="@+id/tv_error_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:text="@string/applet_net_error"
+            app:layout_constraintEnd_toEndOf="@+id/iv_error_image"
+            app:layout_constraintStart_toStartOf="@+id/iv_error_image"
+            app:layout_constraintTop_toBottomOf="@+id/iv_error_image"/>
+        <Button
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:id="@+id/btn_opt"
+            android:background="@drawable/applet_setting_refresh"
+            android:layout_width="100dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/applet_refresh"
+            android:onClick="refreshPage"
+            app:layout_constraintEnd_toEndOf="@+id/tv_error_tip"
+            app:layout_constraintStart_toStartOf="@+id/tv_error_tip"
+            app:layout_constraintTop_toBottomOf="@+id/tv_error_tip"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

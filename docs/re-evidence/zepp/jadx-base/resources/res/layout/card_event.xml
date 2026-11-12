@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.daimajia.swipe.SwipeLayout xmlns:swipe="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/swipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        swipe:leftEdgeSwipeOffset="0dp"
+        swipe:rightEdgeSwipeOffset="0dp">
+        <include layout="@layout/card_item_swipe"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/card_item_time"/>
+            <include layout="@layout/card_item_title"/>
+            <View style="@style/DividerWithMargin"/>
+            <TextView
+                android:textSize="12sp"
+                android:textColor="#80000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="6dp"
+                android:text="@string/schedule_title"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+            <com.huami.assistant.ui.widget.ExpandTextView
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#e6000000"
+                android:ellipsize="end"
+                android:id="@+id/card_reminder_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:lineSpacingExtra="6sp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/card_reminder_desc_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+                <TextView
+                    android:textSize="12sp"
+                    android:textColor="#80000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:text="@string/desc"/>
+                <com.huami.assistant.ui.widget.ExpandTextView
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#e6000000"
+                    android:ellipsize="end"
+                    android:id="@+id/card_reminder_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="6sp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.daimajia.swipe.SwipeLayout>
+    <include layout="@layout/card_item_divider"/>
+</LinearLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="16sp"
+    android:textColor="@color/s46"
+    android:gravity="center"
+    android:id="@+id/item_reminder_time"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_45dp"
+    android:paddingStart="@dimen/size_20dp"
+    android:paddingEnd="@dimen/size_20dp"/>

@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="access_door_search_count_tip">
+        <item quantity="other">%1$d hasil dijumpai.</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="other">Disebabkan naik taraf jenama, maklumat akaun mestilah disahkan oleh penjaga anda untuk melindungi keselamatan data anda. Sila sahkan secepat mungkin. Jika tidak, akaun anda akan dibekukan dalam masa %1$shari.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="other">Bilangan maksimum akaun atau masukan kata laluan telah dicapai. Sila cuba semula dalam %s minit</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="other">Nama akaun atau kata laluan tidak betul. Anda mempunyai baki %s percubaan semula</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="other">%d haluan</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="other">Getar semula %s min kemudian</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="other">Di hadapan %d%% pengguna hari ini</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="other">Maksimum %d aplikasi boleh ditambahkan pada Senarai Aplikasi</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="other">Maksimum %d aplikasi boleh ditambahkan pada Lebih Banyak Senarai</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="other">Berbanding dengan %1$dh lalu</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="other">Ditentukur untuk%d hari</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="other">Penentukuran diperlukan untuk setiap%d hari bagi projek kajian penyaringan tekanan darah yang dilaksanakan oleh Hospital Universiti Pertama Peking</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="other">Tentukur %d hari kemudian</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="other">Telah mencapai %d matlamat</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="other">%d item memerlukan perhatian anda</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="other">%d item tidak mencapai matlamat</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="other">Tahniah!\nDalam %1$d hari yang lalu, berat badan anda telah naik sebanyak</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="other"> skor</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="other">Anda boleh menambah sehingga %1$d kenalan teratas dan mereka akan disegerakkan secara automatik kepada jam tangan anda</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="other">%d haluan</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="other">Haluan bermula dalam %d hari</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="other">%d muat turun</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="other">%1$d saat</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="other">Data selang: %1$s saat</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="other">%1$s saat</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="other">%d peringatan</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="other">%1$s pembelajaran</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="other">%1$s tempoh haid, %2$s berbaki.</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="other">Lebih kurang %1$s tempoh haid, %2$s berbaki.</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="other">%1$s tempoh haid, lebih kurang %2$s berbaki.</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="other">%1$s penonton</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">Hari %1$d</item>
+        <item quantity="other">Hari %1$d</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="other">%1$dh</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="other">Padamkan (%1$ds)</item>
+    </plurals>
+    <plurals name="fix_hour">
+        <item quantity="other">%1$d jam</item>
+    </plurals>
+    <plurals name="fix_minute">
+        <item quantity="other">%1$d minit</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="other">Memuat turun. Sila tunggu kira-kira %s min</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="other">Menamatkan %d sesi latihan</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="other">%d kali/minit</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="other">Laman utama mesti mempunyai sekurang-kurangnya%1$d kad</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="other">Purata kadar denyut jantung %1$d bpm</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="other">kali/min</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="other">%d minit lalu</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="other">Sesi %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="other">Ingatkan saya %d saat selepas panggilan masuk</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="other">Anda boleh menambah paling banyak %1$d balasan SMS</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="other">Simpan sekurang-kurangnya %1$d balasan SMS</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="other">Masukkan sehingga %d aksara</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="other">%1$d rekod lap</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="other">%d tontonan</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="other">%1$d bulan</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="other">Kira-kira %1$d minit sehari</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="other">Kali terakhir dicas %dh yang lalu</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="other">Telah mencapai matlamat: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="other">%d langkah</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="other">%ds</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="other">Umur melebihi %1$d tahun. Tidak boleh dianalisa %2$s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="other">Umur kurang dari %1$dtahun. Tidak boleh dianalisa %2$s</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="other">%s kaki</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="other">%s inci</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="other">%ds</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="other">senaman</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="other">%d peserta</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="other">minit</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="other">Anda boleh menambah paling banyak %1$d balasan SMS</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="other">Anda boleh menyimpan sekurang-kurangnya %1$d balasan SMS</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="other">&quot;Telah memilih %1$d item&quot;</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="other">Anda berbasikal %1$d hari yang lepas</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="other">jam</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="other">kcal</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="other">Anda berlari %1$d hari yang lepas</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="other">saat</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="other">%1$d klip audio dikesan hari ini</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="other">Langkah</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="other">Anda berjalan kaki %1$d hari yang lepas</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="other">%dh</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="other">%d jam</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="other">%d langkah</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="other">Kualiti pernafasan tidur ialah %1$d. Kami cadangkan agar anda memberi perhatian yang berterusan kepada pernafasan tidur anda. Jika anda berasa tidak sihat, sila dapatkan nasihat pakar perubatan</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="other">Kualiti pernafasan tidur ialah %1$d. Kami cadangkan agar anda mendapatkan nasihat daripada pakar perubatan untuk menentukan sama ada anda mempunyai isu pernafasan tidur</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="other">Kualiti pernafasan tidur ialah %1$d, teruskan</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="other">Insurans larian akan tamat dalam tempoh %1$d hari, klik untuk perbaharui</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="other">%d item masih belum disegerakkan</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="other">%d item masih belum disegerakkan</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="other">%1$d sesi berbasikal</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="other">%1$d sesi jurulatih elips</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="other">Senaman bebas %1$d kali</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="other">%1$d sesi berlari</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="other">%1$d sesi berenang</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="other">Latihan: %1$d sesi</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="other">%1$d sesi triathlon</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="other">%1$d sesi berjalan</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="other">Senaman: %1$d sesi</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="other">Tambah sehingga %d acara</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="other">Rekod peribadi: %d hari</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="other">Di hadapan %d%% pengguna</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="other">Kali</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="other">Hari</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="other">mata</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="other">%dkali</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="other">Skor tidur meningkat sebanyak %d berbanding bulan lepas</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="other">Skor tidur bulan ini ialah %d, teruskan usaha baik anda.</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="other">Skor tidur meningkat sebanyak %d berbanding minggu lepas</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="other">Skor tidur minggu ini ialah %d, teruskan usaha baik anda.</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="other">%1$d klip audio direkodkan pada hari ini.</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="other">%1$d klip</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="other">Boleh dikatakan lebih%d saat</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="other">Aktiviti yang dilengkapkan: %1$d sesi %2$s</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="other">langkah</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="other">Langkah</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="other">Langkah/hari</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; kali</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="other">Mendahului senarai selama&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; hari</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="other">Teratas dalam senarai sebanyak %1$d kali</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="other">Teratas dalam senarai selama %1$d hari</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="other">Sepadankan %1$d dengan rakan:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="other">Lari sebanyak&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; kali</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="other">%1$d rekod larian tidak dimuat naik</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="other">%1$d peserta</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="other">%djam</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="other">%dminit</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="other">%1$d kali</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="other">Tahniah!\nDalam %1$d hari yang lalu, berat badan anda telah turun sebanyak</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="other">Terdapat %1$d rekod berat badan yang perlu dituntut.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="other">Maksimum sebanyak %1$d jadual boleh ditambahkan</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="other">Tidak dapat menganalisis bagi mereka yang berumur lebih daripada %d tahun</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="other">Tidak dapat menganalisis bagi mereka yang berumur kurang daripada %d tahun</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="other">%d haluan</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="other">Haluan tamat tempoh dalam %d hari</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="other">%d penonton</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="other">Jumlah set: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="other">Masa belajar: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="other">Bermula dalam %d hari</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="other">Berlatih untuk  %1$d min</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="other">Berlatih selama  %1$d s</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="other">Hari %1$d haluan latihan: Anda perlu melengkapkan%3$s (%2$d min)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="other"> %1$d  saat</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="other"> %1$d  kali</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="other">Dijedakan selama  %1$d s</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="other"> langkah</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="other">Oleh sebab umur yang anda masukkan adalah bawah%1$d, anda hanya boleh terus menggunakan Zepp selepas kami mendapatkan kebenaran dan persetujuan daripada penjaga anda.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="other">Jika tidak, akaun anda akan dibekukan dalam masa %1$d hari.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="other">Bawah umur %1$d</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="other">Bagi melindungi privasi data pengguna minor, jika anda berumur bawah %1$d, kami memerlukan kebenaran dan persetujuan daripada penjaga anda sebelum kami memberikan perkhidmatan yang lengkap kepada anda.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="other">Sila sahkan anda bukan berumur bawah %1$d</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="other">%s kaki</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="other">%s inci</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="other">%d min</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="other">%d sesi</item>
+    </plurals>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="14sp"
+    android:gravity="center"
+    android:id="@+id/repeat_content"
+    android:background="@drawable/sky_shape_repeat_select"
+    android:layout_width="36dp"
+    android:layout_height="36dp"/>

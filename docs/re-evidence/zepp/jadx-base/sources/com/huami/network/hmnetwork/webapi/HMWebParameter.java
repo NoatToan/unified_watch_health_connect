@@ -1,0 +1,50 @@
+package com.huami.network.hmnetwork.webapi;
+
+/* JADX INFO: loaded from: classes6.dex */
+public class HMWebParameter {
+    public static final String HEADER_APPNAME = "appname";
+    public static final String HEADER_APPTOKEN = "apptoken";
+    public static final String HEADER_APP_PLATFORM = "appplatform";
+    public static final String HEADER_CV = "cv";
+    public static final String HEADER_HM_PRIVACY_CEIP = "hm-privacy-ceip";
+    public static final String HEADER_HM_PRIVACY_DIAGNOSTICS = "hm-privacy-diagnostics";
+    public static final String HEADER_SECURITY = "security";
+    public static final String HEADER_V = "v";
+    public static final String HEADER_X_REQUEST_ID = "X-Request-Id";
+    public static final String PARAM_ACCESS_TOKEN = "access_token";
+    public static final String PARAM_ADCODE = "adcode";
+    public static final String PARAM_COMMON_DEVICE_ID = "deviceid";
+    public static final String PARAM_COUNTRY = "user_country";
+    public static final String PARAM_DELIVERY_TYPE = "delivery_type";
+    public static final String PARAM_DELIVERY_TYPE_VALUE = "-ad";
+    public static final String PARAM_IMEI = "imei";
+    public static final String PARAM_LANGUAGE = "Language";
+    public static final String PARAM_NET_TYPE = "NetType";
+    public static final String PARAM_PARTNER_EXPIRES_IN = "expires_in";
+    public static final String PARAM_PARTNER_NICK_NAME = "nick_name";
+    public static final String PARAM_PARTNER_THIRD_APP_UID = "third_app_uid";
+    public static final String PARAM_PARTNER_THIRD_APP_UID_QQ = "third_userid";
+    public static final String PARAM_REGION = "user_region";
+    public static final String PARAM_SYS_CHANNEL = "channel";
+    public static final String PARAM_SYS_CITY = "city";
+    public static final String PARAM_SYS_COUNTRY = "country";
+    public static final String PARAM_SYS_DEVICE = "device";
+    public static final String PARAM_SYS_DEVICE_TYPE = "device_type";
+    public static final String PARAM_SYS_LANGUAGE = "lang";
+    public static final String PARAM_SYS_PROVINCE = "province";
+    public static final String PARAM_SYS_USER_ID = "userid";
+    public static final String PARAM_SYS_USER_ID_UPPER = "userId";
+    public static final String PARAM_SYS_USER_SECURITY = "security";
+    public static final String PARAM_THIRD_APP_ID = "third_appid";
+    public static final String PARAM_THIRD_PARTY_ID = "thirdPartyId";
+    public static final String PARAM_TYPES = "types";
+    public static final String a = "v";
+    public static final String b = "appid";
+    public static final String c = "callid";
+    public static final String d = "cv";
+    public static final String e = "refresh_token";
+    public static final String f = "country";
+    public static final String g = "timezone";
+    public static final String h = "channel";
+    public static final String i = "lang";
+}

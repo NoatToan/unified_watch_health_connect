@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:id="@+id/afppgLoadingLinear"
+        android:background="@color/s38"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ProgressBar
+            android:id="@+id/afppgLoadingImg"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateOnly="true"
+            android:indeterminateDrawable="@anim/afppg_round_loading"
+            android:indeterminateDuration="500"
+            android:indeterminateBehavior="repeat"
+            style="@android:style/Widget.ProgressBar.Small"/>
+        <TextView
+            android:textColor="@color/s2"
+            android:id="@+id/afppgTextDesc"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/afppg_loading"
+            android:layout_marginStart="4dp"
+            style="@style/Rainbow.TextAppearance.Body4"/>
+    </LinearLayout>
+    <View
+        android:background="@drawable/bg_bottom_round_s38_6dp"
+        android:layout_width="match_parent"
+        android:layout_height="14dp"
+        app:layout_constraintTop_toBottomOf="@+id/afppgLoadingLinear"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

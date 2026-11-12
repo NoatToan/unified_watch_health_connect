@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="access_door_search_count_tip">
+        <item quantity="one">S-a găsit %1$d rezultat.</item>
+        <item quantity="few">S-au găsit %1$d rezultate.</item>
+        <item quantity="other">S-au găsit %1$d de rezultate.</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="one">Ca urmare a actualizării mărcii, informațiile contului trebuie confirmate de tutorele dvs. pentru a vă proteja securitatea datelor. Confirmați cât mai curând posibil. În caz contrar, contul dvs. va fi blocat în %1$szi.</item>
+        <item quantity="few">Ca urmare a actualizării mărcii, informațiile contului trebuie confirmate de tutorele dvs. pentru a vă proteja securitatea datelor. Confirmați cât mai curând posibil. În caz contrar, contul dvs. va fi blocat în %1$szile.</item>
+        <item quantity="other">Ca urmare a actualizării mărcii, informațiile contului trebuie confirmate de tutorele dvs. pentru a vă proteja securitatea datelor. Confirmați cât mai curând posibil. În caz contrar, contul dvs. va fi blocat în %1$sde zile.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="one">Numărul maxim de intrări în cont sau de introduceri ale parolei a fost atinsă. Încercați din nou în %s minut</item>
+        <item quantity="few">Numărul maxim de intrări în cont sau de introduceri ale parolei a fost atinsă. Încercați din nou în %s minute</item>
+        <item quantity="other">Numărul maxim de intrări în cont sau de introduceri ale parolei a fost atinsă. Încercați din nou în %s de minute</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="one">Numele contului sau parola este incorect(ă). Mai aveți %s reîncercare</item>
+        <item quantity="few">Numele contului sau parola este incorect(ă). Mai aveți %s reîncercări</item>
+        <item quantity="other">Numele contului sau parola este incorect(ă). Mai aveți %s de reîncercări</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="one">%d curs</item>
+        <item quantity="few">%d cursuri</item>
+        <item quantity="other">%d de cursuri</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="one">Vibrează din nou peste %s min</item>
+        <item quantity="few">Vibrează din nou peste %s min</item>
+        <item quantity="other">Vibrează din nou peste %s de min</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="one">Înaintea a %d%% dintre utilizatori astăzi</item>
+        <item quantity="few">Înaintea a %d%% dintre utilizatori astăzi</item>
+        <item quantity="other">Înaintea a %d%% dintre utilizatori astăzi</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="one">Se poate adăuga cel mult %d aplicație la lista de aplicații</item>
+        <item quantity="few">Se pot adăuga cel mult %d aplicații la lista de aplicații</item>
+        <item quantity="other">Se pot adăuga cel mult %d de aplicații la lista de aplicații</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="one">Maximum %d aplicație poate fi adăugată la lista Mai multe</item>
+        <item quantity="few">Maximum %d aplicații pot fi adăugate la lista Mai multe</item>
+        <item quantity="other">Maximum %d de aplicații pot fi adăugate la lista Mai multe</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="one">În comparaţie cu %1$d zi în urmă</item>
+        <item quantity="few">În comparaţie cu %1$d zile în urmă</item>
+        <item quantity="other">În comparaţie cu %1$d zile în urmă</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="one">Calibrat pentru %d zi</item>
+        <item quantity="few">Calibrat pentru %d zile</item>
+        <item quantity="other">Calibrat pentru %d de zile</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="one">Calibrarea este necesară la fiecare %d zi pentru proiectul de cercetare privind screeningul tensiunii arteriale lansat de către Universitatea din Peking First Hospital</item>
+        <item quantity="few">Calibrarea este necesară la fiecare %d zile pentru proiectul de cercetare privind screeningul tensiunii arteriale lansat de către Universitatea din Peking First Hospital</item>
+        <item quantity="other">Calibrarea este necesară la fiecare %d de zile pentru proiectul de cercetare privind screeningul tensiunii arteriale lansat de către Universitatea din Peking First Hospital</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="one">Calibrați peste %d zi</item>
+        <item quantity="few">Calibrați peste %d zile</item>
+        <item quantity="other">Calibrați peste %d de zile</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="one">%d obiectiv atins</item>
+        <item quantity="few">%d obiective atinse</item>
+        <item quantity="other">%d de obiective atinse</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="one">%d element necesită atenția dumneavoastră</item>
+        <item quantity="few">%d elemente necesită atenția dumneavoastră</item>
+        <item quantity="other">%d elemente necesită atenția dumneavoastră</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="one">%d element nu a atins obiectivul</item>
+        <item quantity="few">%d elemente nu au atins obiectivul</item>
+        <item quantity="other">%d elemente nu au atins obiectivul</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="one">Felicitări!\nÎn ultima %1$d zi ați pus</item>
+        <item quantity="few">Felicitări!\nÎn ultimele %1$d zile ați pus</item>
+        <item quantity="other">Felicitări!\nÎn ultimele %1$d de zile ați pus</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="one"> scor</item>
+        <item quantity="few"> scoruri</item>
+        <item quantity="other"> de scoruri</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="one">Puteți adăuga până la %1$d persoană de contact principală și aceasta este sincronizată automat cu ceasul dvs.</item>
+        <item quantity="few">Puteți adăuga până la %1$d persoane de contact principale și acestea sunt sincronizate automat cu ceasul dvs.</item>
+        <item quantity="other">Puteți adăuga până la %1$d de persoane de contact principale și acestea sunt sincronizate automat cu ceasul dvs.</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="one">%d curs</item>
+        <item quantity="few">%d cursuri</item>
+        <item quantity="other">%d de cursuri</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="one">Cursul începe în %d zi</item>
+        <item quantity="few">Cursul începe în %d zile</item>
+        <item quantity="other">Cursul începe în %d de zile</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="one">%d descărcare</item>
+        <item quantity="few">%d descărcări</item>
+        <item quantity="other">%d de descărcări</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="one">%1$d sec.</item>
+        <item quantity="few">%1$d sec.</item>
+        <item quantity="other">%1$d de sec.</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="one">Data intervalului: %1$s sec</item>
+        <item quantity="few">Data intervalului: %1$s sec</item>
+        <item quantity="other">Data intervalului: %1$s de sec</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="one">%1$s sec</item>
+        <item quantity="few">%1$s sec</item>
+        <item quantity="other">%1$s de sec</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="one">%d memento</item>
+        <item quantity="few">%d mementouri</item>
+        <item quantity="other">%d de mementouri</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">Derulează rapid înainte cu %d secundă</item>
+        <item quantity="few">Derulează rapid înainte cu %d secunde</item>
+        <item quantity="other">Derulează rapid înainte cu %d de secunde</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">Derulează înapoi cu %d secundă</item>
+        <item quantity="few">Derulează înapoi cu %d secunde</item>
+        <item quantity="other">Derulează înapoi cu %d de secunde</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="few">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="few">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="one">%1$s lecție</item>
+        <item quantity="few">%1$s lecții</item>
+        <item quantity="other">%1$s lecții</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="one">%1$s din perioadă menstruală, au rămas %2$s.</item>
+        <item quantity="few">%1$s din perioadă menstruală, au rămas %2$s.</item>
+        <item quantity="other">%1$s din perioadă menstruală, au rămas %2$s.</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="one">Aproximativ %1$s din perioadă menstruală, au rămas %2$s.</item>
+        <item quantity="few">Aproximativ %1$s din perioadă menstruală, au rămas %2$s.</item>
+        <item quantity="other">Aproximativ %1$s din perioadă menstruală, au rămas %2$s.</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="one">%1$s din perioadă menstruală, au mai rămas circa %2$s.</item>
+        <item quantity="few">%1$s din perioadă menstruală, au mai rămas circa %2$s.</item>
+        <item quantity="other">%1$s din perioadă menstruală, au mai rămas circa %2$s.</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="one">%1$s vizualizare</item>
+        <item quantity="few">%1$s vizualizări</item>
+        <item quantity="other">%1$s vizualizări</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">Ziua %1$d</item>
+        <item quantity="few">Ziua %1$d</item>
+        <item quantity="other">Ziua %1$d</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="one">%1$dz</item>
+        <item quantity="few">%1$dz</item>
+        <item quantity="other">%1$dz</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="one">Anulare (%1$ds)</item>
+        <item quantity="few">Anulare (%1$ds)</item>
+        <item quantity="other">Anulare (%1$ds)</item>
+    </plurals>
+    <plurals name="fix_hour">
+        <item quantity="one">%1$d ore</item>
+        <item quantity="few">%1$d ore</item>
+        <item quantity="other">%1$d ore</item>
+    </plurals>
+    <plurals name="fix_minute">
+        <item quantity="one">%1$d minutes</item>
+        <item quantity="few">%1$d minutes</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="one">Se descarcă. Așteptați %s min</item>
+        <item quantity="few">Se descarcă. Așteptați %s min</item>
+        <item quantity="other">Se descarcă. Așteptați %s min</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="one">Ați finalizat %d sesiune de antrenament</item>
+        <item quantity="few">Ați finalizat %d sesiuni de antrenament</item>
+        <item quantity="other">Ați finalizat %d de sesiuni de antrenament</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="one">%d dată/minut</item>
+        <item quantity="few">%d ori/minut</item>
+        <item quantity="other">%d de ori/minut</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="one">Pagina de pornire trebuie să conțină cel puțin %1$d card</item>
+        <item quantity="few">Pagina de pornire trebuie să conțină cel puțin %1$d carduri</item>
+        <item quantity="other">Pagina de pornire trebuie să conțină cel puțin %1$d de carduri</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="one">Ritm cardiac mediu %1$d bpm</item>
+        <item quantity="few">Ritm cardiac mediu %1$d bpm</item>
+        <item quantity="other">Ritm cardiac mediu %1$d bpm</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="one">dată/min</item>
+        <item quantity="few">ori/min</item>
+        <item quantity="other">de ori/min</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="one">acum %d minut</item>
+        <item quantity="few">acum %d minute</item>
+        <item quantity="other">acum %d de minute</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="one">Sesiunea %d</item>
+        <item quantity="few">Sesiunea %d</item>
+        <item quantity="other">Sesiunea %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="one">Amintește-mi la %d secundă după ce a intrat un apel telefonic</item>
+        <item quantity="few">Amintește-mi la %d secunde după ce a intrat un apel telefonic</item>
+        <item quantity="other">Amintește-mi la %d de secunde după ce a intrat un apel telefonic</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="one">Puteți adăuga cel mult %1$d răspuns prin SMS</item>
+        <item quantity="few">Puteți adăuga cel mult %1$d răspunsuri prin SMS</item>
+        <item quantity="other">Puteți adăuga cel mult %1$d de răspunsuri prin SMS</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="one">Păstrați cel puțin %1$d răspuns SMS</item>
+        <item quantity="few">Păstrați cel puțin %1$d răspunsuri SMS</item>
+        <item quantity="other">Păstrați cel puțin %1$d de răspunsuri SMS</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="one">Introduceţi până la %d caracter</item>
+        <item quantity="few">Introduceţi până la %d caractere</item>
+        <item quantity="other">Introduceţi până la %d caractere</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="one">%1$d înregistrare tur</item>
+        <item quantity="few">%1$d înregistrări tur</item>
+        <item quantity="other">%1$d de înregistrări tur</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="one">%d vizualizare</item>
+        <item quantity="few">%d vizualizări</item>
+        <item quantity="other">%d de vizualizări</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="one">%1$d lună</item>
+        <item quantity="few">%1$d luni</item>
+        <item quantity="other">%1$d de luni</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="one">Circa %1$d min/zi</item>
+        <item quantity="few">Circa %1$d min/zi</item>
+        <item quantity="other">Circa %1$d min/zi</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="one">Încărcat ultima dată acum %d z</item>
+        <item quantity="few">Încărcat ultima dată acum %d z</item>
+        <item quantity="other">Încărcat ultima dată acum %d z</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="one">Obiectiv atins: %d</item>
+        <item quantity="few">Obiective atinse: %d</item>
+        <item quantity="other">Obiective atinse: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="one">%d pas</item>
+        <item quantity="few">%d pași</item>
+        <item quantity="other">%d de pași</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="one">%d %s</item>
+        <item quantity="few">%d %s</item>
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d notificare nouă</item>
+        <item quantity="few">%d notificări noi</item>
+        <item quantity="other">%d de notificări noi</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="one">%d&quot;</item>
+        <item quantity="few">%d&quot;</item>
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="one">%ds</item>
+        <item quantity="few">%ds</item>
+        <item quantity="other">%ds</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="one">Peste vârsta de %1$d an. Nu se poate analiza %2$s</item>
+        <item quantity="few">Peste vârsta de %1$d ani. Nu se pot analiza %2$s</item>
+        <item quantity="other">Peste vârsta de %1$d de ani. Nu se pot analiza %2$s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="one">Sub vârsta de %1$d \nan. Nu se poate analiza %2$s</item>
+        <item quantity="few">Sub vârsta de %1$d ani. Nu se pot analiza %2$s</item>
+        <item quantity="other">Sub vârsta de %1$d \nde ani. Nu se pot analiza %2$s</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="one">%s ft</item>
+        <item quantity="few">%s ft</item>
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="one">%s inch</item>
+        <item quantity="few">%s inchi</item>
+        <item quantity="other">%s de inchi</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="one">%ds</item>
+        <item quantity="few">%ds</item>
+        <item quantity="other">%ds</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="one">antrenament</item>
+        <item quantity="few">antrenamente</item>
+        <item quantity="other">de antrenamente</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="one">%d participant</item>
+        <item quantity="few">%d participanți</item>
+        <item quantity="other">%d de participanți</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="one">minut</item>
+        <item quantity="few">minute</item>
+        <item quantity="other">minute</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="one">Puteți adăuga cel mult %1$d răspuns prin SMS</item>
+        <item quantity="other">Puteți adăuga cel mult %1$d de răspunsuri prin SMS</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="one">Puteți păstra cel puțin %1$d răspuns prin SMS</item>
+        <item quantity="other">Puteți păstra cel puțin %1$d de răspunsuri prin SMS</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="one">„%1$d element selectat”</item>
+        <item quantity="few">„%1$d elemente selectate”</item>
+        <item quantity="other">„%1$d de elemente selectate”</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="one">Ați mers cu bicicleta acum %1$d zi</item>
+        <item quantity="few">Ați mers cu bicicleta acum %1$d zile</item>
+        <item quantity="other">Ați mers cu bicicleta acum %1$d de zile</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="one">oră</item>
+        <item quantity="few">ore</item>
+        <item quantity="other">de ore</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="one">kcal</item>
+        <item quantity="few">kcal</item>
+        <item quantity="other">kcal</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="one">Ați alergat acum %1$d zi</item>
+        <item quantity="few">Ați alergat acum %1$d zile</item>
+        <item quantity="other">Ați alergat acum %1$d de zile</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="one">secundă</item>
+        <item quantity="few">secunde</item>
+        <item quantity="other">de secunde</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="one">%1$d clip audio detectat astăzi</item>
+        <item quantity="few">%1$d clipuri audio detectate astăzi</item>
+        <item quantity="other">%1$d de clipuri audio detectate astăzi</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="one">Pas</item>
+        <item quantity="few">Pași</item>
+        <item quantity="other">Pași</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="one">Ați mers pe jos acum %1$d zi</item>
+        <item quantity="few">Ați mers pe jos acum %1$d zile</item>
+        <item quantity="other">Ați mers pe jos acum %1$d de zile</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">%dz</item>
+        <item quantity="few">%dz</item>
+        <item quantity="other">%dz</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">%d oră</item>
+        <item quantity="few">%d ore</item>
+        <item quantity="other">%d (de) ore</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="one">%d pas</item>
+        <item quantity="few">%d pași</item>
+        <item quantity="other">%d pași</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="one">Calitatea respirației în somn este %1$d. Vă recomandăm să acordați atenție continuă respirației în timpul somnului. Dacă nu vă simțiți bine, adresați-vă medicului</item>
+        <item quantity="few">Calitatea respirației în somn este %1$d. Vă recomandăm să acordați atenție continuă respirației în timpul somnului. Dacă nu vă simțiți bine, adresați-vă medicului</item>
+        <item quantity="other">Calitatea respirației în somn este %1$d. Vă recomandăm să acordați atenție continuă respirației în timpul somnului. Dacă nu vă simțiți bine, adresați-vă medicului</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="one">Calitatea respirației în somn este %1$d. Vă recomandăm să solicitați sfatul medicului pentru a determina dacă aveți probleme de respirație în somn</item>
+        <item quantity="few">Calitatea respirației în somn este %1$d. Vă recomandăm să solicitați sfatul medicului pentru a determina dacă aveți probleme de respirație în somn</item>
+        <item quantity="other">Calitatea respirației în somn este %1$d. Vă recomandăm să solicitați sfatul medicului pentru a determina dacă aveți probleme de respirație în somn</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="one">Calitatea respirației în somn este %1$d, țineți-o tot așa</item>
+        <item quantity="few">Calitatea respirației în somn este %1$d, țineți-o tot așa</item>
+        <item quantity="other">Calitatea respirației în somn este %1$d, țineți-o tot așa</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="one">Asigurarea de alergat va expira în %1$d zi, atingeți pentru a reînoi</item>
+        <item quantity="few">Asigurarea de alergat va expira în %1$d zile, atingeți pentru a reînoi</item>
+        <item quantity="other">Asigurarea de alergat va expira în %1$d zile, atingeți pentru a reînoi</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="one">%d element nu a fost sincronizat</item>
+        <item quantity="few">%d elemente nu a fost sincronizat</item>
+        <item quantity="other">%d elemente nu a fost sincronizat</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="one">%d element nu a fost sincronizat</item>
+        <item quantity="few">%d elemente nu a fost sincronizat</item>
+        <item quantity="other">%d elemente nu a fost sincronizat</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="one">%1$d sesiune de ciclism</item>
+        <item quantity="few">%1$d sesiuni de ciclism</item>
+        <item quantity="other">%1$d sesiuni de ciclism</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="one">%1$d sesiune de instructor eliptic</item>
+        <item quantity="few">%1$d sesiuni de instructor eliptic</item>
+        <item quantity="other">%1$d sesiuni de instructor eliptic</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="one">Antrenament gratuit %1$d dată</item>
+        <item quantity="few">Antrenament gratuit de %1$d ori</item>
+        <item quantity="other">Antrenament gratuit de %1$d de ori</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="one">%1$d sesiune de alergat</item>
+        <item quantity="few">%1$d sesiuni de alergat</item>
+        <item quantity="other">%1$d sesiuni de alergat</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="one">%1$d sesiune de înotat</item>
+        <item quantity="few">%1$d sesiuni de înotat</item>
+        <item quantity="other">%1$d sesiuni de înotat</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="one">Antrenament: %1$d sesiune</item>
+        <item quantity="few">Antrenament: %1$d sesiuni</item>
+        <item quantity="other">Antrenament: %1$d de sesiuni</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="one">%1$d sesiune triatlon</item>
+        <item quantity="few">%1$d sesiuni triatlon</item>
+        <item quantity="other">%1$d sesiuni triatlon</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="one">%1$d sesiune de mers</item>
+        <item quantity="few">%1$d sesiuni de mers</item>
+        <item quantity="other">%1$d sesiuni de mers</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="one">Antrenament: %1$d sesiune</item>
+        <item quantity="few">Antrenament: %1$d sesiuni</item>
+        <item quantity="other">Antrenament: %1$d de sesiuni</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="one">Adăugă până la %d de evenimente</item>
+        <item quantity="few">Adăugați până la %d evenimente</item>
+        <item quantity="other">Adăugați până la %d de evenimente</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="one">Record personal: %d zi</item>
+        <item quantity="few">Record personal: %d zile</item>
+        <item quantity="other">Record personal: %d de zile</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="one">Înaintea a %d%% dintre utilizatori</item>
+        <item quantity="few">Înaintea a %d%% dintre utilizatori</item>
+        <item quantity="other">Înaintea a %d%% dintre utilizatori</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="one">dată</item>
+        <item quantity="few">ori</item>
+        <item quantity="other">de ori</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="one">zi</item>
+        <item quantity="few">zile</item>
+        <item quantity="other">de zile</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="one">punct</item>
+        <item quantity="few">puncte</item>
+        <item quantity="other">puncte</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="one">%d dată</item>
+        <item quantity="few">%d ori</item>
+        <item quantity="other">%d de ori</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="one">Scorul somnului a crescut cu %d în comparație cu luna anterioară</item>
+        <item quantity="few">Scorul somnului a crescut cu %d în comparație cu luna anterioară</item>
+        <item quantity="other">Scorul somnului a crescut cu %d în comparație cu luna anterioară</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="one">Scorul de somn din această lună este %d, continuați să faceți o treabă bună.</item>
+        <item quantity="few">Scorul de somn din această lună este %d, continuați să faceți o treabă bună.</item>
+        <item quantity="other">Scorul de somn din această lună este %d, continuați să faceți o treabă bună.</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="one">Scorul somnului a crescut cu %d în comparație cu săptămâna anterioară</item>
+        <item quantity="few">Scorul somnului a crescut cu %d în comparație cu săptămâna anterioară</item>
+        <item quantity="other">Scorul somnului a crescut cu %d în comparație cu săptămâna anterioară</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="one">Scorul de somn din această săptămână este %d, continuați să faceți o treabă bună.</item>
+        <item quantity="few">Scorul de somn din această săptămână este %d, continuați să faceți o treabă bună.</item>
+        <item quantity="other">Scorul de somn din această săptămână este %d, continuați să faceți o treabă bună.</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="one">%1$d clip audio s-a înregistrat astăzi.</item>
+        <item quantity="few">%1$d clipuri audio s-au înregistrat astăzi.</item>
+        <item quantity="other">%1$d de clipuri audio s-au înregistrat astăzi.</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="one">%1$d clip</item>
+        <item quantity="few">%1$d clipuri</item>
+        <item quantity="other">%1$d de clipuri</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="one">Poate vorbi timp de încă %d s</item>
+        <item quantity="few">Poate vorbi timp de încă %d s</item>
+        <item quantity="other">Poate vorbi timp de încă %d s</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="one">Activitati finalizate: %1$d sesiunea din %2$s</item>
+        <item quantity="few">Activitati finalizate: %1$d sesiuni din %2$s</item>
+        <item quantity="other">Activitati finalizate: %1$d sesiuni din %2$s</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="one">pas</item>
+        <item quantity="few">pași</item>
+        <item quantity="other">pași</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="one">Pas</item>
+        <item quantity="few">Pași</item>
+        <item quantity="other">Pași</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="one">Pas/zi</item>
+        <item quantity="few">Pași/zi</item>
+        <item quantity="other">Pași/zi</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; dată</item>
+        <item quantity="few">de &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; ori</item>
+        <item quantity="other">de &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; de ori</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="one">A fost în topul listei timp de&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; zi</item>
+        <item quantity="few">A fost în topul listei timp de &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; zile</item>
+        <item quantity="other">A fost în topul listei timp de &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; de zile</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="one">În capul listei %1$d dată</item>
+        <item quantity="few">În capul listei de %1$d ori</item>
+        <item quantity="other">În capul listei de %1$d de ori</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="one">În capul listei timp de %1$d zi</item>
+        <item quantity="few">În capul listei timp de %1$d zile</item>
+        <item quantity="other">În capul listei timp de %1$d de zile</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="one">S-a potrivit cu %1$d prieten:</item>
+        <item quantity="few">S-au potrivit cu %1$d prieteni:</item>
+        <item quantity="other">S-au potrivit cu %1$d de prieteni:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="one">A alergat de &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; dată</item>
+        <item quantity="few">A alergat de &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; ori</item>
+        <item quantity="other">A alergat de &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; de ori</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="one">%1$d înregistrare de alergare nu s-a încărcat</item>
+        <item quantity="few">%1$d înregistrări de alergare nu s-a încărcat</item>
+        <item quantity="other">%1$d de înregistrări de alergare nu s-au încărcat</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="one">%1$d participant</item>
+        <item quantity="few">%1$d participanți</item>
+        <item quantity="other">%1$d de participanți</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="one">%doră</item>
+        <item quantity="few">%dore</item>
+        <item quantity="other">%dde ore</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="one">%dminut</item>
+        <item quantity="few">%dminute</item>
+        <item quantity="other">%dde minute</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="one">%1$d dată</item>
+        <item quantity="few">%1$d ori</item>
+        <item quantity="other">%1$d de ori</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="one">Felicitări!\nÎn ultima %1$d zi ați pierdut</item>
+        <item quantity="few">Felicitări!\nÎn ultimele %1$d zile ați pierdut</item>
+        <item quantity="other">Felicitări!\nÎn ultimele %1$d de zile ați pierdut</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="one">Există %1$d înregistrare de greutate care așteaptă să fie revendicată.</item>
+        <item quantity="few">Există %1$d înregistrări de greutate care așteaptă să fie revendicate.</item>
+        <item quantity="other">Există %1$d de înregistrări de greutate care așteaptă să fie revendicate.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="one">Poate fi adăugat maximum %1$d program</item>
+        <item quantity="few">Pot fi adăugate maximum %1$d programe</item>
+        <item quantity="other">Pot fi adăugate maximum %1$d de programe</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="one">Nu se poate analiza pentru persoanele mai în vârsta de %d an</item>
+        <item quantity="few">Nu se poate analiza pentru persoanele mai în vârsta de %d ani</item>
+        <item quantity="other">Nu se poate analiza pentru persoanele mai în vârsta de %d ani</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="one">Nu se poate analiza pentru persoanele cu vârsta sub %d an</item>
+        <item quantity="few">Nu se poate analiza pentru persoanele cu vârsta sub %d ani</item>
+        <item quantity="other">Nu se poate analiza pentru persoanele cu vârsta sub %d ani</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="few">%d kcal</item>
+        <item quantity="other">%d de kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="one">%d curs</item>
+        <item quantity="few">%d cursuri</item>
+        <item quantity="other">%d de cursuri</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="one">Cursul expiră în %d zi</item>
+        <item quantity="few">Cursul expiră în %d zile</item>
+        <item quantity="other">Cursul expiră în %d de zile</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="one">%d privitor</item>
+        <item quantity="few">%d privitori</item>
+        <item quantity="other">%d de privitori</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="one">Total seturi: %d</item>
+        <item quantity="few">Total seturi: %d</item>
+        <item quantity="other">Total seturi: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="one">Număr de înscrieri: %d</item>
+        <item quantity="few">Număr de înscrieri: %d</item>
+        <item quantity="other">Număr de înscrieri: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="one">Începe în %d zi</item>
+        <item quantity="few">Începe în %d zile</item>
+        <item quantity="other">Începe în %d de zile</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="one">V-ați antrenat  %1$d min</item>
+        <item quantity="few">V-ați antrenat  %1$d min</item>
+        <item quantity="other">V-ați antrenat  %1$d min</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="one">V-ați antrenat  %1$d s</item>
+        <item quantity="few">V-ați antrenat  %1$d s</item>
+        <item quantity="other">V-ați antrenat  %1$d s</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="one">Ziua %1$d a cursului de antrenament: Trebuie să finalizați%3$s (%2$d min)</item>
+        <item quantity="few">Ziua %1$d a cursului de antrenament: Trebuie să finalizați%3$s (%2$d min)</item>
+        <item quantity="other">Ziua %1$d a cursului de antrenament: Trebuie să finalizați%3$s (%2$d min)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="one"> %1$d  secundă</item>
+        <item quantity="few"> %1$d  secunde</item>
+        <item quantity="other"> %1$d  de secunde</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="one"> %1$d  dată</item>
+        <item quantity="few"> %1$d  ori</item>
+        <item quantity="other"> %1$d  de ori</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="one">Ați făcut o pauză de  %1$d s</item>
+        <item quantity="few">Ați făcut o pauză de  %1$d s</item>
+        <item quantity="other">Ați făcut o pauză de  %1$d s</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="one"> pas</item>
+        <item quantity="few"> pași</item>
+        <item quantity="other"> pași</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="one">Pentru că vârsta introdusă este sub %1$d an, puteți continua să utilizați Zepp numai după ce vom obține autorizația și consimțământul tutorelui dvs.</item>
+        <item quantity="few">Pentru că vârsta introdusă este sub %1$d ani, puteți continua să utilizați Zepp numai după ce vom obține autorizația și consimțământul tutorelui dvs.</item>
+        <item quantity="other">Pentru că vârsta introdusă este sub %1$d de ani, puteți continua să utilizați Zepp numai după ce vom obține autorizația și consimțământul tutorelui dvs.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="one">În caz contrar, contul dvs. va fi blocat în %1$d zi.</item>
+        <item quantity="few">În caz contrar, contul dvs. va fi blocat în %1$d zile.</item>
+        <item quantity="other">În caz contrar, contul dvs. va fi blocat în %1$d de zile.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="one">Sub %1$dan</item>
+        <item quantity="few">Sub %1$dani</item>
+        <item quantity="other">Sub %1$dde ani</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="one">Pentru a proteja confidențialitatea datelor persoanelor minore, dacă aveți sub %1$dan, sunt necesare autorizarea și consimțământul tutorelui dvs. înainte de vă oferi servicii complete.</item>
+        <item quantity="few">Pentru a proteja confidențialitatea datelor persoanelor minore, dacă aveți sub %1$dani, sunt necesare autorizarea și consimțământul tutorelui dvs. înainte de vă oferi servicii complete.</item>
+        <item quantity="other">Pentru a proteja confidențialitatea datelor persoanelor minore, dacă aveți sub %1$dde ani, sunt necesare autorizarea și consimțământul tutorelui dvs. înainte de vă oferi servicii complete.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="one">Confirmați că nu aveți sub %1$dan</item>
+        <item quantity="few">Confirmați că nu aveți sub %1$dani</item>
+        <item quantity="other">Confirmați că nu aveți sub %1$dde ani</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="one">%s ft</item>
+        <item quantity="few">%s ft</item>
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="one">%s inch</item>
+        <item quantity="few">%s inchi</item>
+        <item quantity="other">%s de inchi</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="few">%d kcal</item>
+        <item quantity="other">%d de kcal</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="few">%d kcal</item>
+        <item quantity="other">%d de kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="one">%d min</item>
+        <item quantity="few">%d min</item>
+        <item quantity="other">%d min</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="one">%d sesiune</item>
+        <item quantity="few">%d sesiuni</item>
+        <item quantity="other">%d de sesiuni</item>
+    </plurals>
+</resources>

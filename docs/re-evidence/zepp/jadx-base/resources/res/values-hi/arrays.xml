@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>अपर आर्म खाली होनी चाहिए और आपकी स्लीव आसानी से ऊपर की ओर मुड़नी चाहिए</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>आपको कफ के नीचे एक ऊंगली डालने में योग्य होना चाहिए। बहुत ज़्यादा ढीले या बहुत ज़्यादा कसे कफ से मापन की सटीकता प्रभावित हो सकती है</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>पहला मापन</item>
+        <item>दूसरा मापन</item>
+        <item>तीसरा मापन</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>ब्लड प्रेशर की पहली रीडिंग रिकॉर्ड करें</item>
+        <item>ब्लड प्रेशर की दूसरी रीडिंग रिकॉर्ड करें</item>
+        <item>ब्लड प्रेशर की तीसरी रीडिंग रिकॉर्ड करें</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>कम</item>
+        <item>सामान्य</item>
+        <item>उच्च</item>
+        <item>बहुत ही ज्यादा</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>सामान्य</item>
+        <item>उच्च</item>
+        <item>बहुत ही ज्यादा</item>
+    </array>
+    <array name="body_score_leval">
+        <item>बहुत खराब</item>
+        <item>ख़राब</item>
+        <item>सामान्य</item>
+        <item>अच्छा</item>
+        <item>उत्कृष्ट</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>बहुत कम</item>
+        <item>कम</item>
+        <item>सामान्य</item>
+        <item>बढ़ा हुआ</item>
+        <item>उच्च</item>
+    </array>
+    <array name="bone_leval">
+        <item>अपर्याप्त</item>
+        <item>सामान्य</item>
+        <item>अच्छा</item>
+    </array>
+    <array name="brm_leval">
+        <item>लक्ष्य पर नहीं पहुंचा</item>
+        <item>लक्ष्य पर पहुंच गया</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>बहुत कम</item>
+        <item>संतोषजनक</item>
+        <item>उच्च</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>वॉच पर मौजूद बटन दबाकर देखें, अगर वॉच की स्क्रीन बंद है, तो इसकी बैटरी चार्ज करने के लिए इसे प्लग में लगाएं।</item>
+        <item>जब आप कसरत कर रहे हैं, तो वॉच डेटा सिंक नहीं किया जा सकता। सत्र बंद करें और फिर से कोशिश करें।</item>
+        <item>अगर बैंड चार्ज है, लेकिन फ़ोन उसे नहीं देख सकता, तो फ़ोन के ब्लूटूथ को रीस्टार्ट करके देखें।</item>
+        <item>अगर ब्लूटूथ को रीस्टार्ट करने से समस्या का समाधान नहीं होता है, तो फ़ोन को रीबूट करके देखें।</item>
+        <item>जब आप कसरत कर रहे हैं, तो वॉच डेटा सिंक नहीं किया जा सकता। सत्र बंद करें और फिर से कोशिश करें।</item>
+        <item>जब आप कसरत कर रहे हैं, तो वॉच डेटा सिंक नहीं किया जा सकता। सत्र बंद करें और फिर से कोशिश करें।</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>क्या आपकी वॉच चार्ज की हुई है?</item>
+        <item>क्या इस वॉच को अन्य डिवाइस के साथ पेयर किया गया है?</item>
+        <item>ब्लूटूथ रीस्टार्ट करके देखें</item>
+        <item>अपना फ़ोन रीबूट करके देखें</item>
+        <item>वर्कआउट के दौरान डेटा सिंक नहीं कर सकता</item>
+        <item>ब्लूटूथ रीस्टार्ट करके देखें</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>गुआंगज़ौ</item>
+        <item>शेनझेन</item>
+        <item>फोशन</item>
+        <item>डोंग्गूआन</item>
+        <item>बीजिंग</item>
+        <item>नानजिंग</item>
+        <item>सुझोउ</item>
+        <item>चांगझोउ</item>
+        <item>जीनान</item>
+        <item>चिंगदाओ</item>
+        <item>हैंगझोउ</item>
+        <item>निंग्बो</item>
+        <item>झेंगझोऊ</item>
+        <item>कैफ़ेन्ग</item>
+        <item>शंघाई</item>
+        <item>शिजियाझुआंग</item>
+        <item>बाओडिंग</item>
+        <item>चेंगडु</item>
+        <item>मियांयांग</item>
+        <item>शेनयांग</item>
+        <item>डेलियन</item>
+    </array>
+    <array name="common_level">
+        <item>अपर्याप्त</item>
+        <item>सामान्य</item>
+        <item>अच्छा</item>
+    </array>
+    <array name="contact_ways">
+        <item>ईमेल</item>
+        <item>मोबाइल फोन नंबर</item>
+        <item>WeChat ID</item>
+    </array>
+    <array name="difficulty_content">
+        <item>फिटनेस प्रशिक्षण के लिए नया हैंड</item>
+        <item>क्या मूलभूत फिटनेस अनुभव था</item>
+        <item>क्या अधिक फिटनेस अनुभव था और अच्छी शेप बनाई</item>
+    </array>
+    <array name="difficulty_title">
+        <item>प्रारंभिक</item>
+        <item>माध्यमिक</item>
+        <item>एडवांस्ड</item>
+    </array>
+    <array name="ecg_afib">
+        <item>अपर्याप्त डेटा</item>
+        <item>असामान्य हृदय दर</item>
+        <item>कोई असामान्यता नहीं मिली</item>
+        <item>अपर्याप्त डेटा</item>
+        <item>कोई असामान्यता नहीं मिली</item>
+        <item />
+        <item>कोई असामान्यता नहीं मिली</item>
+        <item>सिग्नल की खराब क्वालिटी</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>कृपया इस्तेमाल की विधि को एडजस्ट करें और फिर कोशिश करें।</item>
+        <item>केवल संदर्भ के लिए। अगर आपको कोई दिक्कत हो, तो किसी डॉक्टर से परामर्श लें।</item>
+        <item>केवल संदर्भ के लिए। अगर आपको कोई दिक्कत हो, तो किसी डॉक्टर से परामर्श लें।</item>
+        <item>कृपया इस्तेमाल की विधि को एडजस्ट करें और फिर कोशिश करें।</item>
+        <item>केवल संदर्भ के लिए। अगर आपको कोई दिक्कत हो, तो किसी डॉक्टर से परामर्श लें।</item>
+        <item />
+        <item>केवल संदर्भ के लिए। अगर आपको कोई दिक्कत हो, तो किसी डॉक्टर से परामर्श लें।</item>
+        <item>कृपया इस्तेमाल की विधि को एडजस्ट करें और फिर कोशिश करें।</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>वसा बर्न करना उद्देश्य है</item>
+        <item>शरीर को सही आकार में लाना उद्देश्य है</item>
+        <item>मसल्स बनाना उद्देश्य है</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>कट हो रहा है</item>
+        <item>शेपिंग</item>
+        <item>बल्किंग</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>सोमवार</item>
+        <item>मंगलवार</item>
+        <item>बुधवार</item>
+        <item>गुरुवार</item>
+        <item>शुक्रवार</item>
+        <item>शनिवार</item>
+        <item>रविवार</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>सोम</item>
+        <item>मंगल</item>
+        <item>बुध</item>
+        <item>गुरु</item>
+        <item>शुक्र</item>
+        <item>शनि</item>
+        <item>रवि</item>
+    </array>
+    <array name="hr_sport">
+        <item>हृदय गति क्षेत्र: हल्का</item>
+        <item>हृदय गति क्षेत्र: गहन</item>
+        <item>हृदय गति क्षेत्र: ऐरोबिक</item>
+        <item>हृदय गति क्षेत्र: ऐनेरोबिक</item>
+        <item>हृदय गति क्षेत्र: VO₂ अधिकतम</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>हल्का</item>
+        <item>गहन</item>
+        <item>एरोबिक</item>
+        <item>एनेरोबिक</item>
+        <item>VO₂ अधिकतम</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>कांख</item>
+        <item>मौखिक</item>
+        <item>गुदा</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>कलाई</item>
+        <item>माथा</item>
+        <item>कान के पीछे</item>
+        <item>अंदरूनी कान</item>
+        <item>गर्दन</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>कांख</item>
+        <item>मौखिक</item>
+        <item>गुदा</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>छाती</item>
+        <item>कांख</item>
+        <item>उरुसंधि (जांघों का जोड़)</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>बंद करें</item>
+        <item>पास</item>
+        <item>दूर</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>बैंड के बटन को यह जांचने के लिए टैप करें कि डिस्प्ले लाइट जल रही है या नहीं। अगर ऐसा नहीं होता है, तो अपना बैंड चार्ज करें।\n\n%1$s या %2$s पेयर करने से पहले डिवाइस चार्ज करें।</item>
+        <item>जब आप कसरत कर रहे हैं, तो वॉच डेटा सिंक नहीं किया जा सकता। सत्र बंद करें और फिर से कोशिश करें।</item>
+        <item>अगर बैंड चार्ज है, लेकिन फ़ोन उसे नहीं देख सकता, तो फ़ोन के ब्लूटूथ को रीस्टार्ट करके देखें।</item>
+        <item>अगर ब्लूटूथ को रीस्टार्ट करने से समस्या का समाधान नहीं होता है, तो फ़ोन को रीबूट करके देखें।</item>
+        <item>अगर ब्लूटूथ को रीस्टार्ट करने से समस्या का समाधान नहीं होता है, तो फ़ोन को रीबूट करके देखें।</item>
+        <item>अगर ब्लूटूथ को रीस्टार्ट करने से समस्या का समाधान नहीं होता है, तो फ़ोन को रीबूट करके देखें।</item>
+    </array>
+    <array name="mili_help_title">
+        <item>क्या आपका बैंड चार्ज है?</item>
+        <item>क्या इस बैंड को अन्य डिवाइस के साथ पेयर किया गया है?</item>
+        <item>क्या इस बैंड को अन्य डिवाइस के साथ पेयर किया गया है?</item>
+        <item>अपना फ़ोन रीबूट करके देखें</item>
+        <item>क्या इस बैंड को अन्य डिवाइस के साथ पेयर किया गया है?</item>
+        <item>क्या इस बैंड को अन्य डिवाइस के साथ पेयर किया गया है?</item>
+    </array>
+    <array name="month_list">
+        <item>जनवरी</item>
+        <item>फरवरी</item>
+        <item>मार्च</item>
+        <item>अप्रैल</item>
+        <item>मई</item>
+        <item>जून</item>
+        <item>जुलाई</item>
+        <item>अगस्त</item>
+        <item>सितंबर</item>
+        <item>अक्टूबर</item>
+        <item>नवंबर</item>
+        <item>दिसंबर</item>
+    </array>
+    <array name="month_titles">
+        <item>जन</item>
+        <item>फ़र</item>
+        <item>मार्च</item>
+        <item>अप्रैल</item>
+        <item>मई</item>
+        <item>जून</item>
+        <item>जुल</item>
+        <item>अग</item>
+        <item>सितं</item>
+        <item>अक्टू</item>
+        <item>नवं</item>
+        <item>दिसं</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>अपर्याप्त</item>
+        <item>सामान्य</item>
+        <item>अच्छा</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>बहुत खराब</item>
+        <item>खराब</item>
+        <item>औसत</item>
+        <item>अच्छा</item>
+        <item>बहुत अच्छा</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>जन</item>
+        <item>फ़र</item>
+        <item>मार्च</item>
+        <item>अप्रैल</item>
+        <item>मई</item>
+        <item>जून</item>
+        <item>जुल</item>
+        <item>अग</item>
+        <item>सितं</item>
+        <item>अक्टू</item>
+        <item>नवं</item>
+        <item>दिसं</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s कार्य करना बंद कर देगा अगर आप लंबे समय तक इसका उपयोग नहीं करते हैं। %2$s को हिलाएं और दोबारा प्रयास करें।</item>
+        <item>%s बैटरी लाइफ़ 1 साल है। अगर आप इसका उपयोग लंबे समय से कर रहें हैं, तो हो सकता है पॉवर न बची हो।</item>
+        <item>पहले अन्य डिवाइस पर ब्लूटूथ बंद करें, फिर अपने फ़ोन से पेयर करें।</item>
+        <item>अगर %s चार्ज है, लेकिन फ़ोन उसे नहीं देख सकता, तो फ़ोन के ब्लूटूथ को रीस्टार्ट करके देखें।</item>
+        <item>अगर ब्लूटूथ को रीस्टार्ट करने से समस्या का समाधान नहीं होता है, तो फ़ोन को रीबूट करके देखें।</item>
+        <item>रनिंग शूज डेटा टैप करें और डेटा को स्वचालित रूप से सिंक करने के लिए अगला गतिविधि पृष्ठ दर्ज करें</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>%s हिलाएं</item>
+        <item>क्या आपका %s चार्ज है?</item>
+        <item>क्या अन्य फ़ोन के साथ पेयर किया गया %s आस-पास है?</item>
+        <item>ब्लूटूथ रीस्टार्ट करें</item>
+        <item>अपना फ़ोन रीबूट करके देखें</item>
+        <item>अपना डेटा कैसे सिंक करें?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>मोटापा</item>
+        <item>अधिक वज़न</item>
+        <item>गठीला</item>
+        <item>व्यायाम का\nअभाव</item>
+        <item>संतुलित</item>
+        <item>संतुलित\nमांसल</item>
+        <item>पतला</item>
+        <item>संतुलित\nपतला</item>
+        <item>पतला\nमांसल</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>सोमवार</item>
+        <item>मंगलवार</item>
+        <item>बुधवार</item>
+        <item>गुरुवार</item>
+        <item>शुक्रवार</item>
+        <item>शनिवार</item>
+        <item>रविवार</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>गतिविधि</item>
+        <item>धीरे चलना</item>
+        <item>चलना</item>
+        <item>तेज़ चलना</item>
+        <item>दौड़ना</item>
+        <item>खड़े हो</item>
+        <item>बैठे</item>
+        <item>हल्की गतिविधि</item>
+        <item>नहीं पहनना</item>
+        <item>चार्ज हो रहा है…</item>
+        <item>लेटना</item>
+    </array>
+    <array name="timeline_type">
+        <item>गतिविधि</item>
+        <item>धीरे चलना</item>
+        <item>चलना</item>
+        <item>तेज़ चलना</item>
+        <item>दौड़ना</item>
+        <item>खड़ा होना</item>
+        <item>बैठना</item>
+        <item>हल्की गतिविधि</item>
+        <item>नहीं पहनना</item>
+        <item>चार्ज हो रहा है…</item>
+        <item>लेटना</item>
+    </array>
+    <array name="train_difficulity">
+        <item>सीमित नहीं</item>
+        <item>प्रारंभिक, 1</item>
+        <item>माध्यमिक, 2</item>
+        <item>एडवांस्ड, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>सामान्य</item>
+        <item>उच्च</item>
+        <item>बहुत ज़्यादा</item>
+    </array>
+    <array name="water_leval">
+        <item>अपर्याप्त</item>
+        <item>सामान्य</item>
+        <item>अच्छा</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_name">
+        <item>रवि</item>
+        <item>सोम</item>
+        <item>मंगल</item>
+        <item>बुध</item>
+        <item>गुरु</item>
+        <item>शुक्र</item>
+        <item>शनि</item>
+    </array>
+    <array name="weeks">
+        <item>सोमवार</item>
+        <item>मंगलवार</item>
+        <item>बुधवार</item>
+        <item>गुरूवार</item>
+        <item>शुक्रवार</item>
+        <item>शनिवार</item>
+        <item>रविवार</item>
+    </array>
+    <array name="weeks_short">
+        <item>सोम</item>
+        <item>मंगल</item>
+        <item>बुध</item>
+        <item>गुरु</item>
+        <item>शुक्र</item>
+        <item>शनि</item>
+        <item>रवि</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>कम वज़न</item>
+        <item>संतुलित</item>
+        <item>अधिक वज़न</item>
+        <item>मोटापा</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· अच्छा Wi-Fi सिग्नल सुनिश्चित करने के लिए पैमाने को राउटर के जितना ज़्यादा संभव हो उतना पास ले जाएं</item>
+        <item>· पुष्टि करें कि क्या Wi-Fi कनेक्शन का इनपुट पासवर्ड सही है।</item>
+        <item>· अपने फोन को लक्षित Wi-Fi राउटर से कनेक्ट करें, और फिर यह जांचने के लिए कोई वेब पेज खोलकर देखें कि आप इंटरनेट एक्सेस कर सकते हैं या नहीं।</item>
+        <item>· अगर 2.4GHz अक्षम हो, तो सक्षम करके उसका चयन करें। स्केल 5GHz Wi-Fi को सपोर्ट नहीं करता। \n· अगर डुअल बैंड सक्षम हो, तो 5GHz नेटवर्क के कारण होने वाली कॉन्फ़िगरेशन विफलता से बचने के लिए उसे अक्षम कर दें।</item>
+        <item>· अगर Wi-Fi राउटर, इंटरनेट से कनेक्ट है, Wi-Fi सिग्नल बढ़िया है, और राउटर, 2.4GHz के साथ सक्षम है और डुअल बैंड अक्षम है, तो राउटर रीस्टार्ट करके देखें।</item>
+        <item>· अगर राउटर को रीस्टार्ट करना काम नहीं करे, तो फ़ोन को रीस्टार्ट करने का प्रयास करें।</item>
+        <item>· अगर राउटर रीस्टार्ट करने से काम नहीं बनता, तो बैटरी दोबारा लगाकर देखें।</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. क्या स्केल मज़बूत Wi-Fi सिग्नल के साथ जगह पर मौजूद है?</item>
+        <item>2. क्या Wi-Fi पासवर्ड सही है?</item>
+        <item>3. क्या Wi-Fi राउटर को इंटरनेट से सही तरीके से कनेक्ट किया गया है?</item>
+        <item>4. क्या राउटर पर 2.4GHz Wi-Fi अक्षम किया गया है? या डुअल बैंड Wi-Fi सक्षम है?</item>
+        <item>5. राउटर रीस्टार्ट करके देखें।</item>
+        <item>6. फ़ोन रीस्टार्ट करके देखें।</item>
+        <item>7. डिवाइस रीस्टार्ट करके देखें।</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>2.4 GHz Wi-Fi संकेत देता है कि वायरलेस राउटर, 2.4 GHz पर ऑपरेट कर रहा है।\n5 GHz Wi-Fi संकेत देता है कि वायरलेस राउटर, 5 GHz पर ऑपरेट कर रहा है।</item>
+        <item>निम्नलिखित चरणों के अनुसार अपने राउटर का सेट अप करें:\n1. अपने ब्राउज़र के एड्रेस बार में राउटर का लॉगिन एड्रेस लिखें और वायरलेस राउटर के पृष्ठभूमि में लॉग इन करें। \n2. वायरलेस राउटर का सेटिंग बटन ढूंढें। \n3. डुअल बैंड बटन को बंद कर दें। \n4. 2.4 GHz Wi-Fi सक्षम करें।</item>
+        <item>निम्नलिखित दो विधियां Wi-Fi बैंड जांचने के लिए इस्तेमाल की जा सकती हैं:\n1. अपने कंप्यूटर पर Wi-Fi सूची में, [Wi-Fi] &amp;gt; [प्रॉपर्टी] &amp;gt; [नेटवर्क बैंड] का चयन करें। \n2. राउटर पृष्ठभूमि में लॉग इन करें।</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· 2.4 GHz Wi-Fi और 5 GHz Wi-Fi क्या हैं?</item>
+        <item>· मैं अपने राउटर पर 2.4 GHz Wi-Fi को कैसे सक्षम करूं?</item>
+        <item>· मैं Wi-Fi बैंड कैसे जांच सकता हूँ?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>सामान्य</item>
+        <item>अधिक वज़न</item>
+        <item>मोटापा</item>
+    </array>
+    <array name="weight_unit">
+        <item> किग्रा</item>
+        <item> जिन</item>
+        <item>  lbs</item>
+    </array>
+</resources>

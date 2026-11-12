@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#ffffff"
+    android:layout_width="match_parent"
+    android:layout_height="42.3dp">
+    <ImageView
+        android:layout_gravity="start|center_vertical"
+        android:id="@+id/backImage"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/wl_watch_bank_app_bar_back"
+        android:scaleType="centerInside"
+        android:layout_centerVertical="true"
+        android:contentDescription="Back"
+        android:layout_marginStart="11dp"/>
+    <TextView
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#ff000000"
+        android:id="@+id/titleInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

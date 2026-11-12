@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@drawable/selector_picker_text_color"
+        android:gravity="start|center_vertical"
+        android:id="@+id/type_none"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/encode_type_none"
+        android:layout_marginStart="36dp"/>
+    <include layout="@layout/split_line_width_match_parent"/>
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@drawable/selector_picker_text_color"
+        android:gravity="start|center_vertical"
+        android:id="@+id/type_mschapv2"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/MSCHAPII"
+        android:layout_marginStart="36dp"/>
+    <include layout="@layout/split_line_width_match_parent"/>
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@drawable/selector_picker_text_color"
+        android:gravity="start|center_vertical"
+        android:id="@+id/type_gtc"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/GTC"
+        android:layout_marginStart="36dp"/>
+</LinearLayout>

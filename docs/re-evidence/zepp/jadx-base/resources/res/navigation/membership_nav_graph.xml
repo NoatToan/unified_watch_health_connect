@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/membership_nav_graph"
+    app:startDestination="@+id/membershipHomeFragment">
+    <fragment
+        android:label="membership_fragment_home"
+        android:name="com.huami.member_card.fragment.MembershipHomeFragment"
+        android:id="@+id/membershipHomeFragment">
+        <action
+            android:id="@+id/action_membershipHomeFragment_to_membershipEditInfoFragment"
+            app:destination="@+id/membershipEditInfoFragment"/>
+    </fragment>
+    <fragment
+        android:label="membership_fragment_edit_info"
+        android:name="com.huami.member_card.fragment.MembershipEditInfoFragment"
+        android:id="@+id/membershipEditInfoFragment"/>
+</navigation>

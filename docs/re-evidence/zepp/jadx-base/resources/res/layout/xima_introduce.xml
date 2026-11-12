@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp">
+    <com.huami.watch.companion.ui.view.ActionbarLayout
+        android:id="@+id/actionbar_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/actionbar_detail">
+        <TextView
+            android:textSize="@dimen/xima_detail_title_size"
+            android:textColor="@color/xima_category_title_color"
+            android:id="@+id/detail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/xima_introduce"
+            android:layout_marginStart="16dp"/>
+        <TextView
+            android:textSize="@dimen/xima_detail_title_size"
+            android:textColor="@color/xima_graytext_color"
+            android:id="@+id/detail_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/detail_title"
+            android:lineSpacingExtra="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
+    </RelativeLayout>&gt; 
+</RelativeLayout>

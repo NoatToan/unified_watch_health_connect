@@ -1,0 +1,45 @@
+package com.tencent.open.b;
+
+import android.content.Context;
+import android.os.Build;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import com.tencent.open.log.SLog;
+import java.lang.reflect.Method;
+
+/* JADX INFO: loaded from: classes18.dex */
+public class b extends WebView {
+    public b(Context context) {
+        super(context);
+        a();
+    }
+
+    public void a() {
+        if (Build.VERSION.SDK_INT >= 11) {
+            removeJavascriptInterface("searchBoxJavaBridge_");
+            removeJavascriptInterface("accessibility");
+            removeJavascriptInterface("accessibilityTraversal");
+            SLog.i("OpenWebView", "removeJSInterface");
+        }
+    }
+
+    @Override // android.webkit.WebView, android.view.ViewGroup, android.view.View
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        WebSettings settings = getSettings();
+        if (settings == null) {
+            return;
+        }
+        try {
+            Method method = settings.getClass().getMethod("removeJavascriptInterface", String.class);
+            if (method != null) {
+                method.invoke(this, "searchBoxJavaBridge_");
+                method.invoke(this, "accessibility");
+                method.invoke(this, "accessibilityTraversal");
+                SLog.i("OpenWebView", "remove js interface");
+            }
+        } catch (Exception e) {
+            SLog.e("OpenWebView", "remove js interface.e:" + e.toString());
+        }
+    }
+}

@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>Một lần</item>
+        <item>Mỗi ngày</item>
+        <item>Thứ Hai đến Thứ Sáu</item>
+    </array>
+    <array name="allday_reminder_minute">
+        <item>-1</item>
+        <item>-480</item>
+        <item>960</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>Hỗ trợ hồ bơi, bơi trong không gian nước mở và các hoạt động ba môn phối hợp</item>
+        <item>Cung cấp dữ liệu tiêu thụ oxy tối đa (VO₂ max)</item>
+        <item>Thống kê và cài đặt hoạt động toàn diện</item>
+        <item>Hướng dẫn việc tập luyện của bạn theo các mục tiêu bạn đặt ra</item>
+        <item>Hiệu quả Tập luyện (TE) giúp bạn hiểu được lợi ích của một bài tập về thể lực của bạn</item>
+    </array>
+    <array name="bind_guide_main_title_everest2">
+        <item>Cung cấp dữ liệu VO2max \n đánh giá chính xác hiệu suất của việc tập luyện cá nhân</item>
+        <item>Nói lời tạm biệt với thẻ giao thông của bạn và thẻ kiểm soát truy cập. \n Thay vào đó, bạn chỉ cần vuốt đồng hồ khi đi du lịch, đi làm và thanh toán.</item>
+        <item>Chuyển đổi giữa hai chế độ tùy ý.\n Chế độ chờ cực dài và hệ thống thông minh có sẵn để bạn lựa chọn.</item>
+        <item>70 giờ khả năng định vị GPS liên tục, \n có nghĩa là bạn không có gì phải lo lắng khi tập luyện ngoài trời.</item>
+    </array>
+    <array name="bind_guide_main_title_everest2_oversea">
+        <item>Cung cấp dữ liệu VO2max \n đánh giá chính xác hiệu suất của việc tập luyện cá nhân</item>
+        <item>Chuyển đổi giữa hai chế độ tùy ý.\n Chế độ chờ cực dài và hệ thống thông minh có sẵn để bạn lựa chọn.</item>
+        <item>70 giờ khả năng định vị GPS liên tục, \n có nghĩa là bạn không có gì phải lo lắng khi tập luyện ngoài trời.</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>Một chìa khóa để kiểm soát tất cả với “Classmate Xiao Ai” \n Làm cho ngôi nhà của bạn trở lên thông minh với điều khiển bằng giọng nói và nó tuân theo những gì bạn nói</item>
+        <item>Thẻ vận chuyển, thẻ truy cập, thẻ UnionPay\n Để đi du lịch, làm việc và tiêu dùng, chỉ cần vuốt đồng hồ của bạn</item>
+        <item>Chơi 12 môn thể thao mà không cần điện thoại của bạn \n Ai mà không muốn tự do hơn khi tập luyện</item>
+        <item>Hỗ trợ điện thoại Bluetooth\n Thực hiện và trả lời các cuộc gọi mà không cần sử dụng điện thoại di động</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>Một chìa khóa để mở Alexa \n Giọng nói thông minh, làm những gì bạn nói</item>
+        <item>Chơi 12 môn thể thao mà không cần điện thoại của bạn \n Ai mà không muốn tự do hơn khi tập luyện</item>
+        <item>Hỗ trợ điện thoại Bluetooth \n Thực hiện và trả lời các cuộc gọi mà không cần sử dụng điện thoại di động</item>
+    </array>
+    <array name="bind_guide_main_title_xihu">
+        <item>Thẻ eSIM đang được hỗ trợ. \n Bạn có thể thực hiện cuộc gọi và kết nối trực tuyến mà không cần kết nối với điện thoại di động.</item>
+        <item>Điều khiển một chạm của XiaoAI \n Điều khiển tất cả các thiết bị gia dụng thông minh bằng giọng nói của bạn-chỉ cần nói các từ.</item>
+        <item>Bạn có thể thực hiện mười môn thể thao mà không cần mang theo điện thoại di động của bạn. \n Bạn không muốn chơi thể thao với một gánh nặng.</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item>* Chỉ dành cho chạy</item>
+        <item />
+        <item>* Chỉ dành cho bài tập chạy, cần phải mở trong cài đặt bài tập</item>
+        <item />
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item>* Hiện chỉ có sẵn trong các khu vực được lựa chọn.</item>
+        <item />
+        <item />
+        <item />
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Phần trên cánh tay phải để trần, xắn gọn ống tay áo một cách thoải mái</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Bạn nên đảm bảo có thể luồn một ngón tay vào dưới vòng bít. Vòng bít quá lỏng hoặc quá chặt có thể ảnh hưởng đến độ chính xác của phép đo</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Phép đo đầu tiên</item>
+        <item>Lần đo thứ hai</item>
+        <item>Lần đo thứ ba</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Ghi lại kết quả đo huyết áp lần đầu tiên</item>
+        <item>Ghi lại kết quả đo huyết áp lần thứ hai</item>
+        <item>Ghi lại kết quả đo huyết áp lần thứ ba</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Thấp</item>
+        <item>Tiêu chuẩn</item>
+        <item>Cao</item>
+        <item>Rất cao</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Tiêu chuẩn</item>
+        <item>Cao</item>
+        <item>Rất cao</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Rất xấu</item>
+        <item>Xấu</item>
+        <item>Bình thường</item>
+        <item>Tốt</item>
+        <item>Tuyệt vời</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Rất thấp</item>
+        <item>Thấp</item>
+        <item>Tiêu chuẩn</item>
+        <item>Hơi cao</item>
+        <item>Cao</item>
+    </array>
+    <array name="bone_leval">
+        <item>Không đủ</item>
+        <item>Bình thường</item>
+        <item>Tốt</item>
+    </array>
+    <array name="brm_leval">
+        <item>Bạn chưa đạt được mục tiêu</item>
+        <item>Đã đạt được mục tiêu</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Thấp</item>
+        <item>Vừa</item>
+        <item>Cao</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Thử bấm bút trên đồng hồ, nếu màn hình đã tắt, cắm vào bộ sạc để sạc pin.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Nếu vòng đeo tay đã sạc, nhưng điện thoại vẫn không thể tìm thấy, hãy thử khởi động lại Bluetooth của điện thoại.</item>
+        <item>Nếu khởi động Bluetooth không giải quyết được vấn đề, hãy thử khởi động lại điện thoại.</item>
+        <item>Dữ liệu đồng hồ không thể đồng bộ khi bạn luyện tập. Kết thúc luyện tập và thử lại.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Đồng hồ của bạn đã được sạc?</item>
+        <item>Đồng hồ này đã được ghép nối với thiết bị khác?</item>
+        <item>Thử khởi động lại Bluetooth</item>
+        <item>Thử khởi động điện thoại</item>
+        <item>Không thể đồng bộ dữ liệu khi tập luyện</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Thẩm Quyến</item>
+        <item>Phật Sơn</item>
+        <item>Đông Quản</item>
+        <item>Bắc Kinh</item>
+        <item>Nam Kinh</item>
+        <item>Tô Châu</item>
+        <item>Thường Châu</item>
+        <item>Tế Nam</item>
+        <item>Thanh Đảo</item>
+        <item>Hàng Châu</item>
+        <item>Ninh Ba</item>
+        <item>Trịnh Châu</item>
+        <item>Khai Phong</item>
+        <item>Thượng Hải</item>
+        <item>Thạch Gia Trang</item>
+        <item>Bảo Định</item>
+        <item>Thành Đô</item>
+        <item>Miên Dương</item>
+        <item>Thẩm Dương</item>
+        <item>Đại Liên</item>
+    </array>
+    <array name="common_level">
+        <item>Thiếu</item>
+        <item>Bình thường</item>
+        <item>Tốt</item>
+    </array>
+    <array name="component_list">
+        <item>com.huami.watch.companion.mitv.MiTvComponent</item>
+        <item>com.huami.watch.companion.sogoulocation.SogouLocCmp</item>
+    </array>
+    <array name="contact_ways">
+        <item>Email</item>
+        <item>Số điện thoại di động</item>
+        <item>ID WeChat</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Chưa từng luyện tập qua</item>
+        <item>Đã có kinh nghiệm luyện tập cơ bản</item>
+        <item>Đã có kinh nghiệm luyện tập và đã có được thân hình đẹp</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Sơ cấp</item>
+        <item>Trung cấp</item>
+        <item>Cao cấp</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Dữ liệu không đầy đủ</item>
+        <item>Nhịp tim bất thường</item>
+        <item>Không phát hiện bất thường</item>
+        <item>Dữ liệu không đầy đủ</item>
+        <item>Không phát hiện bất thường</item>
+        <item />
+        <item>Không phát hiện bất thường</item>
+        <item>Chất lượng tín hiệu kém</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Vui lòng điều chỉnh phương pháp sử dụng và thử lại lần nữa.</item>
+        <item>Chỉ mang tính tham khảo. Tham khảo ý kiến bác sĩ nếu bạn có bất kỳ sự khó chịu nào.</item>
+        <item>Chỉ mang tính tham khảo. Tham khảo ý kiến bác sĩ nếu bạn có bất kỳ sự khó chịu nào.</item>
+        <item>Vui lòng điều chỉnh phương pháp sử dụng và thử lại lần nữa.</item>
+        <item>Chỉ mang tính tham khảo. Tham khảo ý kiến bác sĩ nếu bạn có bất kỳ sự khó chịu nào.</item>
+        <item />
+        <item>Chỉ mang tính tham khảo. Tham khảo ý kiến bác sĩ nếu bạn có bất kỳ sự khó chịu nào.</item>
+        <item>Vui lòng điều chỉnh phương pháp sử dụng và thử lại lần nữa.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Mục tiêu đốt chất béo</item>
+        <item>Mục tiêu thân hình thon gọn</item>
+        <item>Mục tiêu tạo cơ bắp</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Giảm cân</item>
+        <item>Thân hình thon gọn</item>
+        <item>Tăng cơ bắp</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>THỨ HAI</item>
+        <item>THỨ BA</item>
+        <item>THỨ TƯ</item>
+        <item>THỨ NĂM</item>
+        <item>THỨ SÁU</item>
+        <item>THỨ BẢY</item>
+        <item>Cn</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Th 2</item>
+        <item>Th 3</item>
+        <item>Th 4</item>
+        <item>Th 5</item>
+        <item>Th 6</item>
+        <item>Th 7</item>
+        <item>CN</item>
+    </array>
+    <array name="hr_sport">
+        <item>Phạm vi nhịp tim: Vận động nhẹ</item>
+        <item>Phạm vi nhịp tim: Tăng cường</item>
+        <item>Phạm vi nhịp tim: Aerobic</item>
+        <item>Phạm vi nhịp tim: Anaerobic</item>
+        <item>Phạm vi nhịp tim: Tối đa VO2</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Vận động nhẹ</item>
+        <item>Tăng cường</item>
+        <item>Tăng cường tim phổi</item>
+        <item>Tăng cường sức chịu đựng</item>
+        <item>VO₂ max</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Nách</item>
+        <item>Miệng</item>
+        <item>Trực tràng</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Cổ tay</item>
+        <item>Trán</item>
+        <item>Sau tai</item>
+        <item>Ốc tai</item>
+        <item>Cổ</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Nách</item>
+        <item>Miệng</item>
+        <item>Trực tràng</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Ngực</item>
+        <item>Nách</item>
+        <item>Háng</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Đóng</item>
+        <item>Gần</item>
+        <item>Xa</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Chạm vào phím trên vòng đeo tay để kiểm tra xem màn hình có sáng không. Nếu không, hãy sạc pin cho vòng đeo tay\n\n.Sạc thiết bị trước khi bạn ghép nối %1$s hoặc %2$s.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Nếu vòng đeo tay đã sạc, nhưng điện thoại vẫn không thể tìm thấy, hãy thử khởi động lại Bluetooth của điện thoại.</item>
+        <item>Nếu khởi động Bluetooth không giải quyết được vấn đề, hãy thử khởi động lại điện thoại.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Vòng đeo tay của bạn đã được sạc?</item>
+        <item>Vòng đeo tay này đã được ghép nối với thiết bị khác?</item>
+        <item>@string/help_title_2</item>
+        <item>Thử khởi động lại điện thoại</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>Thg 1</item>
+        <item>Thg 2</item>
+        <item>Thg 3</item>
+        <item>Thg 4</item>
+        <item>Thg 5</item>
+        <item>Thg 6</item>
+        <item>Thg 7</item>
+        <item>Thg 8</item>
+        <item>Thg 9</item>
+        <item>Thg 10</item>
+        <item>Thg 11</item>
+        <item>Thg 12</item>
+    </array>
+    <array name="month_titles">
+        <item>Tháng 1</item>
+        <item>Tháng 2</item>
+        <item>Tháng 3</item>
+        <item>Tháng 4</item>
+        <item>Tháng 5</item>
+        <item>Tháng 6</item>
+        <item>Tháng 7</item>
+        <item>Tháng 8</item>
+        <item>Tháng 9</item>
+        <item>Tháng 10</item>
+        <item>Tháng 11</item>
+        <item>Tháng 12</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Thiếu</item>
+        <item>Tiêu chuẩn</item>
+        <item>Tốt</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>Thông báo pin yếu</item>
+        <item>Cuộc gọi đến</item>
+        <item>Cảnh báo không hoạt động</item>
+        <item>Thông báo mục tiêu</item>
+        <item>Nhắc nhở thời tiết hàng ngày</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Rất kém</item>
+        <item>Kém</item>
+        <item>Trung bình</item>
+        <item>Tốt</item>
+        <item>Rất tốt</item>
+    </array>
+    <array name="pin_time">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+        <item>150</item>
+        <item>180</item>
+        <item>210</item>
+        <item>240</item>
+        <item>270</item>
+        <item>300</item>
+        <item>330</item>
+        <item>360</item>
+        <item>390</item>
+        <item>420</item>
+        <item>450</item>
+        <item>480</item>
+    </array>
+    <array name="reminder_minute">
+        <item>-1</item>
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>Người đầu tiên</item>
+        <item>Thư hai</item>
+        <item>Thứ ba</item>
+        <item>Thứ tư</item>
+        <item>Cuối cùng</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Thg 1</item>
+        <item>Thg 2</item>
+        <item>Thg 3</item>
+        <item>Thg 4</item>
+        <item>Thg 5</item>
+        <item>Thg 6</item>
+        <item>Thg 7</item>
+        <item>Thg 8</item>
+        <item>Thg 9</item>
+        <item>Thg 10</item>
+        <item>Thg 11</item>
+        <item>Thg 12</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s sẽ dừng làm việc nếu bạn không sử dụng trong một thời gian dài. Lắc %2$s và thử lại.</item>
+        <item>Tuổi thọ pin của %s là 1 năm. Nếu bạn sử dụng lâu hơn, có thể sẽ hết pin.</item>
+        <item>Tắt Bluetooth trên thiết bị khác trước, sau đó ghép nối với điện thoại hiện tại.</item>
+        <item>Nếu %s đã sạc, nhưng điện thoại không thể nhìn thấy, hãy thử khởi động lại Bluetooth điện thoại.</item>
+        <item>Nếu khởi động Bluetooth không giải quyết được vấn đề, hãy thử khởi động lại điện thoại của bạn.</item>
+        <item>Chạm dữ liệu giày chạy bộ và vào trang hoạt động kế tiếp để đồng bộ dữ liệu tự động</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Lắc %s</item>
+        <item>Bạn đã sạc %s?</item>
+        <item>%s được ghép nối với điện thoại khác lân cận?</item>
+        <item>Khởi động lại Bluetooth</item>
+        <item>Thử khởi động lại điện thoại</item>
+        <item>Làm thế nào để đồng bộ dữ liệu của bạn?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Béo phì</item>
+        <item>Thừa cân</item>
+        <item>Khỏe khoắn-hơi mập</item>
+        <item>Thiếu\nvận động</item>
+        <item>Tiêu chuẩn</item>
+        <item>Cơ bắp\ntiêu chuẩn</item>
+        <item>Cơ bắp hơi gầy</item>
+        <item>Loại cơ bắp\nhơi ốm</item>
+        <item>Loại cơ bắp\nđẹp</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>THỨ HAI</item>
+        <item>THỨ BA</item>
+        <item>THỨ TƯ</item>
+        <item>THỨ NĂM</item>
+        <item>THỨ SÁU</item>
+        <item>THỨ BẢY</item>
+        <item>Cn</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Hoạt động</item>
+        <item>Đi chậm</item>
+        <item>Đi bộ</item>
+        <item>Đi nhanh</item>
+        <item>Chạy bộ</item>
+        <item>Đứng</item>
+        <item>Ngồi</item>
+        <item>Hoạt động nhẹ</item>
+        <item>Chưa đeo</item>
+        <item>Đang sạc</item>
+        <item>Nằm xuống</item>
+    </array>
+    <array name="timeline_type">
+        <item>Hoạt động</item>
+        <item>Đi chậm</item>
+        <item>Đi bộ</item>
+        <item>Đi nhanh</item>
+        <item>Chạy</item>
+        <item>Đứng</item>
+        <item>Ngồi</item>
+        <item>Hoạt động nhẹ</item>
+        <item>Chưa đeo</item>
+        <item>Đang sạc…</item>
+        <item>Nằm xuống</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Không giới hạn</item>
+        <item>Sơ cấp, 1</item>
+        <item>Trung cấp, 2</item>
+        <item>Cao cấp, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Tiêu chuẩn</item>
+        <item>Cao</item>
+        <item>Rất cao</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>Rất kém</item>
+        <item>Kém</item>
+        <item>Dưới trung bình</item>
+        <item>Trung bình</item>
+        <item>Trên trung bình</item>
+        <item>Tốt</item>
+        <item>Hoàn hảo</item>
+    </array>
+    <array name="water_leval">
+        <item>Không đủ</item>
+        <item>Tiêu chuẩn</item>
+        <item>Tốt</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>Th.Hai</item>
+        <item>Th.Ba</item>
+        <item>Th.Tư</item>
+        <item>Th.Năm</item>
+        <item>Th.Sáu</item>
+        <item>Th.Bảy</item>
+        <item>C.Nhật</item>
+    </array>
+    <array name="week_days">
+        <item>Thứ Hai</item>
+        <item>Thứ Ba</item>
+        <item>Thứ Tư</item>
+        <item>Thứ Năm</item>
+        <item>Thứ Sáu</item>
+        <item>Thứ Bảy</item>
+        <item>Chủ Nhật</item>
+    </array>
+    <array name="week_name">
+        <item>Cn</item>
+        <item>Th 2</item>
+        <item>Th 3</item>
+        <item>Th 4</item>
+        <item>Th 5</item>
+        <item>Th 6</item>
+        <item>Th 7</item>
+    </array>
+    <array name="weeks">
+        <item>Thứ hai</item>
+        <item>Thứ ba</item>
+        <item>Thứ tư</item>
+        <item>Thứ năm</item>
+        <item>Thứ sáu</item>
+        <item>Thứ bảy</item>
+        <item>Chủ nhật</item>
+    </array>
+    <array name="weeks_short">
+        <item>Th 2</item>
+        <item>Th 3</item>
+        <item>Th 4</item>
+        <item>Th 5</item>
+        <item>Th 6</item>
+        <item>Th 7</item>
+        <item>Cn</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Ốm</item>
+        <item>Tiêu chuẩn</item>
+        <item>Thừa cân</item>
+        <item>Béo phì</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Đặt cân càng gần bộ định tuyến càng tốt để đảm bảo tín hiệu Wi-Fi mạnh</item>
+        <item>· Xác nhận đã nhập mật khẩu kết nối Wi-Fi chính xác.</item>
+        <item>· Kết nối điện thoại của bạn với bộ định tuyến Wi-Fi mục tiêu, sau đó thử mở một trang web để kiểm tra xem bạn có thể truy cập Internet hay không.</item>
+        <item>· Nếu đã tắt 2.4GHz, bật và chọn mạng này. Cân không hỗ trợ Wi-Fi 5GHz. \n· Nếu đã bật băng tần kép, hãy tắt chức năng này để tránh lỗi cấu hình do mạng 5GHz.</item>
+        <item>· Nếu bộ định tuyến Wi-Fi đã kết nối Internet, tín hiệu Wi-Fi mạnh và bộ định tuyến đang hoạt động với mạng 2.4GHz bật và băng tần kép tắt, hãy thử khởi động lại bộ định tuyến.</item>
+        <item>· Nếu khởi động lại bộ định tuyến không có hiệu quả, hãy thử khởi động lại điện thoại.</item>
+        <item>· Nếu khởi động lại bộ định tuyến không có hiệu quả, hãy thử lắp lại pin.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Cân có được đặt ở nơi có tín hiệu Wi-Fi mạnh không?</item>
+        <item>2. Mật khẩu Wi-Fi có đúng không?</item>
+        <item>3. Bộ định tuyến Wi-Fi có được kết nối với Internet đúng cách không?</item>
+        <item>4. Wi-Fi 2.4GHz có bị tắt trên bộ định tuyến không? Hoặc Wi-Fi băng tần kép có được bật không?</item>
+        <item>5. Thử khởi động lại bộ định tuyến.</item>
+        <item>6. Thử khởi động lại điện thoại.</item>
+        <item>7. Thử khởi động lại thiết bị.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>Wi-Fi 2.4 GHz cho biết bộ định tuyến không dây hoạt động ở 2.4 GHz.\nWi-Fi 5 GHz cho biết bộ định tuyến không dây hoạt động ở 5 GHz.</item>
+        <item>Thiết lập bộ định tuyến của bạn theo các bước sau đây:\n1. Nhập địa chỉ đăng nhập của bộ định tuyến vào thanh địa chỉ của trình duyệt và đăng nhập vào nền của bộ định tuyến không dây. \n2. Tìm nút cài đặt của bộ định tuyến không dây. \n3. Tắt nút băng tần kép. \n4. Bật Wi-Fi 2.4 GHz.</item>
+        <item>Có thể sử dụng hai cách sau để kiểm tra băng tần Wi-Fi:\n1. Trong danh sách Wi-Fi trên máy tính, chọn [Wi-Fi] &amp;gt; [Thuộc tính] &amp;gt; [Băng tần mạng]. \n2. Đăng nhập vào nền bộ định tuyến.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Wi-Fi 2.4 GHz và Wi-Fi 5 GHz là gì?</item>
+        <item>· Tôi có thể bật Wi-Fi 2.4 GHz trên bộ định tuyến bằng cách nào?</item>
+        <item>· Tôi có thể kiểm tra băng tần Wi-Fi bằng cách nào?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Bình thường</item>
+        <item>Thừa cân</item>
+        <item>Béo phì</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> lbs</item>
+    </array>
+</resources>

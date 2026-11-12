@@ -1,0 +1,7 @@
+package com.huami.wallet.lib.entity;
+
+/* JADX INFO: loaded from: classes13.dex */
+public class Agreement {
+    public String name;
+    public String url;
+}

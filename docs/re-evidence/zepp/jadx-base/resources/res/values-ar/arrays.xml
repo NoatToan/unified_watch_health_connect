@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>سبق</item>
+        <item>كل يوم</item>
+        <item>من الإثنين إلى الجمعة</item>
+    </array>
+    <array name="allday_reminder_minute">
+        <item>-1</item>
+        <item>-480</item>
+        <item>960</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>يدعم حمام السباحة، السباحة المفتوحة وأنشطة الترياتلون</item>
+        <item>يوفر الحد الأقصى من بيانات استهلاك الأوكسجين(VO₂max)</item>
+        <item>احصائيات النشاط الشامل والإعدادات</item>
+        <item>توجيه التدريب بك وفقا للأهداف التي حددتها</item>
+        <item>يساعدك تأثير التدريب (TE) على فهم فائدة التمرين على لياقتك</item>
+    </array>
+    <array name="bind_guide_main_title_everest2">
+        <item>توفير بيانات VO2max nتقييم دقيق لأداء التمرينات الشخصية</item>
+        <item>لا استخدام بطاقة النقل وبطاقة الوصول. \n يمكنك فقط سحب ساعتك بدلاً من ذلك عند السفر والذهاب إلى العمل وإجراء الدفع.</item>
+        <item>قم بالتبديل بين وضعي الإرادة. \n يتوفر نظام الانتظار الطويل ونظام ذكي لتختار.</item>
+        <item>70 ساعة من فعالية GPS المستمرة،\n لا قلق الأشياء في رياضة الخارج</item>
+    </array>
+    <array name="bind_guide_main_title_everest2_oversea">
+        <item>توفير بيانات VO2max nتقييم دقيق لأداء التمرينات الشخصية</item>
+        <item>قم بالتبديل بين وضعي الإرادة. \n يتوفر نظام الانتظار الطويل ونظام ذكي لتختار.</item>
+        <item>70 ساعة من فعالية GPS المستمرة،\n لا قلق الأشياء في رياضة الخارج</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>مفتاح واحد للتحكم في كل شيء مع Classmate Xiao Ai \n اجعل منزلك ذكيًا من خلال التحكم الصوت وهو يتبع ما تقوله </item>
+        <item>بطاقة النقل، بطاقة الوصول، بطاقة UnionPay \n للسفر والعمل والاستهلاك ، ما عليك سوى تمرير ساعتك</item>
+        <item>العب 12 رياضة بدون هاتفك n الذي لا يريد المزيد من الحرية أثناء التمرين</item>
+        <item>دعم هاتف بلوتوثn إجراء المكالمات والرد عليها دون استخدام هاتف</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>مفتاح واحد لفتح Alexa \n صوت ذكي، افعل ما تقوله</item>
+        <item>العب 12 رياضة بدون هاتفك n الذي لا يريد المزيد من الحرية أثناء التمرين</item>
+        <item>دعم هاتف بلوتوث n إجراء المكالمات والرد عليها دون استخدام هاتف</item>
+    </array>
+    <array name="bind_guide_main_title_xihu">
+        <item>بطاقات eSIM مدعومة. n يمكنك إجراء المكالمات والاتصال بالإنترنت دون الاتصال بك على الهاتف المحمول.</item>
+        <item>تحكم XiaoAI بضغطة واحدة n تحكم في جميع الأجهزة المنزلية الذكية بصوتك - فقط قل الكلمات.</item>
+        <item>يمكنك القيام بالرياضات العشرة دون استخدام هاتفك. n لا تريد ممارسة الرياضة مع عبء.</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item>* ليجري فقط</item>
+        <item />
+        <item>* تحتاج إلى فتح في إعدادات التمرين لممارسة الجري فقط</item>
+        <item />
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item>* متوفر حاليًا في مناطق محددة فقط.</item>
+        <item />
+        <item />
+        <item />
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>يجب أن يكون الجزء العلوي من الذراع مكشوفًا، مع طي كمك بشكل مريح لأعلى</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>ينبغي لك أن تكون قادرًا على تمرير إصبع واحد تحت السوار. قد يؤثر السوار الفضفاض جدًا أو الضيق جدًا في دقة القياس</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>القياس الأول</item>
+        <item>القياس الثاني</item>
+        <item>القياس الثالث</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>تسجيل القراءة الأولى لضغط الدم</item>
+        <item>تسجيل القراءة الثانية لضغط الدم</item>
+        <item>تسجيل القراءة الثالثة لضغط الدم</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>منخفض</item>
+        <item>طبيعي</item>
+        <item>مرتفع</item>
+        <item>مرتفع جداً</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>طبيعي</item>
+        <item>مرتفع</item>
+        <item>مرتفع جداً</item>
+    </array>
+    <array name="body_score_leval">
+        <item>سيئ للغاية</item>
+        <item>سيئ</item>
+        <item>طبيعي</item>
+        <item>جيد</item>
+        <item>ممتاز</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>منخفض جداً</item>
+        <item>منخفض</item>
+        <item>طبيعي</item>
+        <item>زاد</item>
+        <item>مرتفع</item>
+    </array>
+    <array name="bone_leval">
+        <item>غير كافي</item>
+        <item>طبيعي</item>
+        <item>جيد</item>
+    </array>
+    <array name="brm_leval">
+        <item>لم تصل إلى الأهداف</item>
+        <item>تم الوصول إلى الهدف</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>منخفض</item>
+        <item>متوسط</item>
+        <item>عالي</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>حاول الضغط على الزر الموجود فوق الساعة، إذا كانت شاشة الساعة في حالة إيقاف، قم بتوصيلها لشحن بطاريتها.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>إذا تم شحن السوار الذكي، ولا يزال الهاتف غير قادر على العثور عليه، حاول إعادة تشغيل بلوتوث الهاتف.</item>
+        <item>إن لم تحل \"إعادة تشغيل البلوتوث\" المشكلة، حاول إعادة تشغيل الهاتف.</item>
+        <item>لا يمكن مزامنة بيانات الساعة اثناء التمارين. قم بإنهاء الدورة ثم حاول مرة أخرى.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>هل تم شحن الساعة الخاصة بك؟</item>
+        <item>هل تم إقران هذه الساعة بجهاز آخر؟</item>
+        <item>حاول إعادة تشغيل البلوتوث</item>
+        <item>حاول إعادة تشغيل الهاتف الخاص بك</item>
+        <item>لا يمكن مزامنة البيانات أثناء التدريبات</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>غوانجو</item>
+        <item>شنتشن</item>
+        <item>فوشان</item>
+        <item>دونغقوان</item>
+        <item>بكين</item>
+        <item>نانجينغ</item>
+        <item>سوتشو</item>
+        <item>تشانغتشو</item>
+        <item>جينان</item>
+        <item>تشينغداو</item>
+        <item>هانغتشو</item>
+        <item>نينغبو</item>
+        <item>تشنغتشو</item>
+        <item>كايفنغ</item>
+        <item>شانغهاي</item>
+        <item>شيجياتشوانغ</item>
+        <item>باودينغ</item>
+        <item>تشنغدو</item>
+        <item>ميان</item>
+        <item>شنيانغ</item>
+        <item>داليان</item>
+    </array>
+    <array name="common_level">
+        <item>غير كافي</item>
+        <item>طبيعي</item>
+        <item>جيد</item>
+    </array>
+    <array name="component_list">
+        <item>com.huami.watch.companion.mitv.MiTvComponent</item>
+        <item>com.huami.watch.companion.sogoulocation.SogouLocCmp</item>
+    </array>
+    <array name="contact_ways">
+        <item>البريد الإلكتروني</item>
+        <item>رقم الهاتف المحمول</item>
+        <item>مُعرّف WeChat</item>
+    </array>
+    <array name="difficulty_content">
+        <item>جديد على تدريب اللياقة البدنية</item>
+        <item>لدي تجربة في اللياقة البدنية</item>
+        <item>لدي تجربة غنية في اللياقة البدنية وبنيت جسما جيدا</item>
+    </array>
+    <array name="difficulty_title">
+        <item>مبتدأ</item>
+        <item>متوسط</item>
+        <item>متقدم</item>
+    </array>
+    <array name="ecg_afib">
+        <item>البيانات غير كافية</item>
+        <item>نبضات غير طبيعية</item>
+        <item>لم يتم اكتشاف أي تشوهات</item>
+        <item>البيانات غير كافية</item>
+        <item>لم يتم اكتشاف أي تشوهات</item>
+        <item />
+        <item>لم يتم اكتشاف أي تشوهات</item>
+        <item>ضعف جودة الإشارة</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>يرجى ضبط طريقة الاستخدام والمحاولة مرة أخرى.</item>
+        <item>إذا كان لديك أي إزعاج استشر الطبيب للاشارة فقط.</item>
+        <item>إذا كان لديك أي إزعاج استشر الطبيب للاشارة فقط.</item>
+        <item>يرجى ضبط طريقة الاستخدام والمحاولة مرة أخرى.</item>
+        <item>إذا كان لديك أي إزعاج استشر الطبيب للاشارة فقط.</item>
+        <item />
+        <item>إذا كان لديك أي إزعاج استشر الطبيب للاشارة فقط.</item>
+        <item>يرجى ضبط طريقة الاستخدام والمحاولة مرة أخرى.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>٠٠:٠٠</item>
+        <item>٠٦:٠٠</item>
+        <item>١٢:٠٠</item>
+        <item>١٨:٠٠</item>
+        <item>٢٣:٥٩</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>يهدف إلى حرق الدهون</item>
+        <item>يهدف إلى تشكيل الجسم</item>
+        <item>يهدف إلى بناء العضلات</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>التخفيض</item>
+        <item>التشكيل</item>
+        <item>التكتل</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>الاثنين</item>
+        <item>الثلاثاء</item>
+        <item>الاربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+        <item>السبت</item>
+        <item>الأحد</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>الاثنين</item>
+        <item>الثلاثاء</item>
+        <item>الأربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+        <item>السبت</item>
+        <item>الأحد</item>
+    </array>
+    <array name="hr_sport">
+        <item>منطقة معدل ضربات القلب: الضوء</item>
+        <item>منطقة معدل ضربات القلب: لاهوائية</item>
+        <item>منطقة معدل ضربات القلب: تمارين تنفسية</item>
+        <item>المنطقة معدل ضربات القلب: لاهوائية</item>
+        <item>منطقة معدل ضربات القلب: ماكس VO₂</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>خفيف</item>
+        <item>مكثفة</item>
+        <item>تمارين تنفسية</item>
+        <item>تمارين لاهوائية</item>
+        <item>ماكس VO₂</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>الإبط</item>
+        <item>شفهي</item>
+        <item>المستقيم</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>المعصم</item>
+        <item>الجبهة</item>
+        <item>خلف الأذن</item>
+        <item>قوقعة الأذن</item>
+        <item>العنق</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>الإبط</item>
+        <item>شفهي</item>
+        <item>المستقيم</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>الصدر</item>
+        <item>الإبط</item>
+        <item>المنطقة الأربية</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>إغلاق</item>
+        <item>قريب</item>
+        <item>بعيد</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>اضغط على الزر الموجود بالسوار الذكي لمعرفة ما إذا كانت الشاشة ستضيء. إذا لم تضيء قم بشحن السوار.\n\n قم بشحن الجهاز قبل إقران %1$s أو %2$s.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>إذا تم شحن السوار الذكي، ولا يزال الهاتف غير قادر على العثور عليه، حاول إعادة تشغيل بلوتوث الهاتف.</item>
+        <item>ان لم تحل \"إعادة تشغيل البلوتوث\" المشكلة، حاول إعادة تشغيل الهاتف.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>هل تم شحن السوار الذكي الخاص بك؟</item>
+        <item>هل تم إقران هذا السوار الذكي بجهاز آخر؟</item>
+        <item>@string/help_title_2</item>
+        <item>حاول إعادة تشغيل الهاتف الخاص بك</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>يناير</item>
+        <item>فبراير</item>
+        <item>مارس</item>
+        <item>أبريل</item>
+        <item>مايو</item>
+        <item>يونيو</item>
+        <item>يوليو</item>
+        <item>أغسطس</item>
+        <item>سبتمبر</item>
+        <item>أكتوبر</item>
+        <item>نوفمبر</item>
+        <item>ديسمبر</item>
+    </array>
+    <array name="month_titles">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>غير كافي</item>
+        <item>طبيعي</item>
+        <item>جيد</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>إشعار انخفاض كمية الكهرباء</item>
+        <item>مكالمة واردة</item>
+        <item>تنبيه الخمول</item>
+        <item>إشعارات الهدف</item>
+        <item>تذكير الطقس اليومي</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>ضعيف جدا</item>
+        <item>ضعيف</item>
+        <item>متوسط</item>
+        <item>جيد</item>
+        <item>جيد جدا</item>
+    </array>
+    <array name="pin_time">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+        <item>150</item>
+        <item>180</item>
+        <item>210</item>
+        <item>240</item>
+        <item>270</item>
+        <item>300</item>
+        <item>330</item>
+        <item>360</item>
+        <item>390</item>
+        <item>420</item>
+        <item>450</item>
+        <item>480</item>
+    </array>
+    <array name="reminder_minute">
+        <item>-1</item>
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>الأول</item>
+        <item>الثاني</item>
+        <item>الثالث</item>
+        <item>الرابع</item>
+        <item>الاخير</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>يناير</item>
+        <item>فبراير</item>
+        <item>مارس</item>
+        <item>أبريل</item>
+        <item>مايو</item>
+        <item>يونيو</item>
+        <item>يوليو</item>
+        <item>أغسطس</item>
+        <item>سبتمبر</item>
+        <item>أكتوبر</item>
+        <item>نوفمبر</item>
+        <item>ديسمبر</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>سيتوقف %1$s عن العمل إن لم تستخدمه لفترة طويلة. قم بهز %2$s ثم حاول مجدداً.</item>
+        <item>عمر بطارية %s سنة كاملة. إذا قمت باستخدامه لفترة طويلة، ربما لم تبقى فيه طاقة.</item>
+        <item>قم بإيقاف تشغيل البلوتوث على الجهاز الآخر أولاً، ثم قم بالإقران مع هاتفك.</item>
+        <item>إذا تم شحن %s، ولكن لا يزال هاتفك لا يراه، حاول إعادة تشغيل بلوتوث الهاتف.</item>
+        <item>ان لم تحل \"إعادة تشغيل البلوتوث\" المشكلة، حاول إعادة تشغيل الهاتف.</item>
+        <item>انقر فوق بيانات حذاء الركض وادخل صفحة النشاط التالية لمزامنة البيانات تلقائياً</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>قم بهز %s</item>
+        <item>هل تم شحن %s؟</item>
+        <item>هل تم اقران %s مع هاتف اخر قريب؟</item>
+        <item>قم بإعادة تشغيل البلوتوث</item>
+        <item>حاول إعادة تشغيل الهاتف الخاص بك</item>
+        <item>كيفية مزامنة بياناتك؟</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>سمنة</item>
+        <item>وزن زائد</item>
+        <item>مجموعة سميكة</item>
+        <item>تفتقر\nإلى تمارين</item>
+        <item>متوازن</item>
+        <item>عضلات\nمتوازنة</item>
+        <item>نحيف</item>
+        <item>نحافة\nمتوازنة</item>
+        <item>نحيف\nالعضلات</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>الاثنين</item>
+        <item>الثلاثاء</item>
+        <item>الاربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+        <item>السبت</item>
+        <item>الأحد</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>النشاط</item>
+        <item>مشي بطيء</item>
+        <item>مشي</item>
+        <item>مشي سريع</item>
+        <item>ركض</item>
+        <item>وقوف</item>
+        <item>جلوس</item>
+        <item>نشاط خفيف</item>
+        <item>لم ترتدي</item>
+        <item>جارٍ الشحن</item>
+        <item>استلقاء</item>
+    </array>
+    <array name="timeline_type">
+        <item>النشاط</item>
+        <item>مشي بطيء</item>
+        <item>مشي</item>
+        <item>مشي سريع</item>
+        <item>ركض</item>
+        <item>واقف</item>
+        <item>جالساً</item>
+        <item>نشاط خفيف</item>
+        <item>لم ترتدي</item>
+        <item>جارٍ الشحن…</item>
+        <item>استلقاء</item>
+    </array>
+    <array name="train_difficulity">
+        <item>غير محدود</item>
+        <item>مبتدأ، ١</item>
+        <item>متوسط، ٢</item>
+        <item>متقدم، ٣</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>طبيعي</item>
+        <item>مرتفع</item>
+        <item>مرتفع جداً</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>منخفضة جدا</item>
+        <item>منخفضة</item>
+        <item>أقل من المتوسط</item>
+        <item>معدل</item>
+        <item>فوق المتوسط</item>
+        <item>حسن</item>
+        <item>ممتاز</item>
+    </array>
+    <array name="water_leval">
+        <item>غير كافي</item>
+        <item>طبيعي</item>
+        <item>جيد</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </array>
+    <array name="week_days">
+        <item>الإثنين</item>
+        <item>الثلاثاء</item>
+        <item>الأربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+        <item>السبت</item>
+        <item>الأحد</item>
+    </array>
+    <array name="week_name">
+        <item>الأحد</item>
+        <item>الإثنين</item>
+        <item>الثلاثاء</item>
+        <item>الأربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+        <item>السبت</item>
+    </array>
+    <array name="weeks">
+        <item>الإثنين</item>
+        <item>الثلاثاء</item>
+        <item>الأربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+        <item>السبت</item>
+        <item>الأحد</item>
+    </array>
+    <array name="weeks_short">
+        <item>الإثنين</item>
+        <item>الثلاثاء</item>
+        <item>الأربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+        <item>السبت</item>
+        <item>الأحد</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>غير طبيعي</item>
+        <item>متوازن</item>
+        <item>وزن زائد</item>
+        <item>سمنة</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>‏· ضع المقياس قريبًا قدر الإمكان من جهاز التوجيه للتأكد من وجود إشارة Wi-Fi قوية.</item>
+        <item>‏· تأكد من أن كلمة المرور التي تم إدخالها للاتصال بشبكة Wi-Fi صحيحة.</item>
+        <item>‏· أوصل الهاتف المحمول بجهاز توجيه شبكة Wi-Fi المستهدف، ومن ثما حاول الدخول على صفحة ويب للتحقق مما إذا كنت تستطيع الدخول إلى الإنترنت.</item>
+        <item>‏· إذا كان وضع 2.4 جيجا هرتز معطلاً، قم بتشغيله وتحديده. المقياس لا يدعم شبكة Wi-Fi التي تعمل بسرعة 5 جيجا هرتز. \n‏· إذا تم تمكين النطاق المزدوج، قم بتعطيله لتجنب فشل التكوين بسبب الشبكة التي تعمل بسرعة 5 جيجا هرتز.</item>
+        <item>‏· في حالة اتصال جهاز توجيه Wi-Fi بالإنترنت ووجود إشارة Wi-Fi قوية وسرعة جهاز التوجيه 2.4 جيجا هرتز ممكنة والنطاق المزدوج معطل، فحاول إعادة تشغيل جهاز التوجيه.</item>
+        <item>‏· إذا لم تفلح إعادة تشغيل جهاز التوجيه، فجرب إعادة تشغيل الهاتف.</item>
+        <item>‏· إذا لم تفلح إعادة تشغيل جهاز التوجيه، فجرب إعادة تثبيت البطارية.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>‏1. هل المقياس موجود في مكان به إشارة شبكة Wi-Fi قوية؟</item>
+        <item>‏2. هل كلمة مرور شبكة Wi-Fi صحيحة؟</item>
+        <item>‏3. هل جهاز توجيه Wi-Fi متصل بالإنترنت بشكل صحيح؟</item>
+        <item>‏4. هل وضع Wi-Fi الذي يعمل بسرعة 2.4 جيجا هرتز مُعطل على جهاز التوجيه؟ أو هل شبكة Wi-Fi مزدوجة النطاق قيد التشغيل؟</item>
+        <item>‏5. حاول إعادة تشغيل جهاز التوجيه.</item>
+        <item>‏6. حاول إعادة تشغيل الهاتف المحمول.</item>
+        <item>‏7. حاول إعادة تشغيل الجهاز.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>‏2.4 GHz Wi-Fi يشير إلى أن الموّجه اللاسلكي يعمل بسرعة 2.4 جيجاهرتز.\n‏5 GHz Wi-Fi يشير إلى أن الموّجه اللاسلكي يعمل بسرعة 5 جيجاهرتز.</item>
+        <item>قم بإعداد الموجّه الخاص بك وفقًا للخطوات التالية:\n‏1. أدخل عنوان تسجيل الدخول للموجّه الخاص بك في شريط العنوان بالمستعرض الخاص بك وقم بتسجيل الدخول إلى خلفية الموجّه اللاسلكي. \n‏2. ابحث عن زر الإعداد الخاص بالموجّه اللاسلكي. \n‏3. قم بإيقاف تشغيل زر النطاق المزدوج. \n‏4. قم بتمكين 2.4 GHz Wi-Fi.</item>
+        <item>يمكن استخدام الطريقتين التاليتين للتحقق من نطاق Wi-Fi:\n‏1. في قائمة Wi-Fi على جهاز الكمبيوتر الخاص بك، حدد [Wi-Fi]&amp;gt; [خاصية]&amp;gt; [نطاق الشبكة]. \n‏2. قم بتسجيل الدخول إلى خلفية الموجّه.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>‏· ماذا تعني شبكة 2.4 GHz Wi-Fi وشبكة 5 GHz Wi-Fi؟</item>
+        <item>‏· كيف يمكنني تشغيل شبكة 2.4 GHz Wi-Fi على الموجّه الخاص بي؟</item>
+        <item>‏· كيف يمكنني التحقق من نطاق Wi-Fi؟</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>طبيعي</item>
+        <item>وزن زائد</item>
+        <item>سمنة</item>
+    </array>
+    <array name="weight_unit">
+        <item> كغ</item>
+        <item> Jin</item>
+        <item> رطل</item>
+    </array>
+</resources>

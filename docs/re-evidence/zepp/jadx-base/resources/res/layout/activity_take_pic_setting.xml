@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/s10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.rainbow.titlebar.RainbowTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_arrow_back_20_2x"
+        app:title="@string/title_take_pic"/>
+    <TextView
+        android:textSize="15sp"
+        android:textColor="@color/s2"
+        android:gravity="center"
+        android:id="@+id/tv_bluetooth_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/title_bar"
+        android:layout_centerHorizontal="true"/>
+    <ImageView
+        android:id="@+id/iv_bluetooth_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+    <Button
+        android:textColor="@color/s1"
+        android:id="@+id/btn_bluetooth_operation"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        style="@style/unbindDevicesStyle"/>
+</RelativeLayout>

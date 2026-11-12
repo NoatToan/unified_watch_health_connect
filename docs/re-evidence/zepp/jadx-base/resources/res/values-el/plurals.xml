@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="Ndays">
+        <item quantity="one">1 ημέρα</item>
+        <item quantity="other">%1$d ημέρες</item>
+    </plurals>
+    <plurals name="Nhours">
+        <item quantity="one">1 ώρα</item>
+        <item quantity="other">%1$d ώρες</item>
+    </plurals>
+    <plurals name="Nminutes">
+        <item quantity="one">1 λεπτό</item>
+        <item quantity="other">%1$d λεπτά</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="one">Λόγω αναβάθμισης της επωνυμίας, για την προστασία της ασφάλειας των δεδομένων σας, οι πληροφορίες λογαριασμού πρέπει να επιβεβαιωθούν από τον κηδεμόνα σας. Επιβεβαιώστε το συντομότερο δυνατό. Διαφορετικά, ο λογαριασμός σας θα παγώσει σε %1$sημέρα.</item>
+        <item quantity="other">Λόγω αναβάθμισης της επωνυμίας, για την προστασία της ασφάλειας των δεδομένων σας, οι πληροφορίες λογαριασμού πρέπει να επιβεβαιωθούν από τον κηδεμόνα σας. Επιβεβαιώστε το συντομότερο δυνατό. Διαφορετικά, ο λογαριασμός σας θα παγώσει σε %1$sημέρες.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="one">Συμπληρώθηκε ο μέγιστος αριθμός εισαγωγών λογαριασμού ή κωδικού πρόσβασης. Προσπαθήστε ξανά σε %s λεπτό</item>
+        <item quantity="other">Συμπληρώθηκε ο μέγιστος αριθμός εισαγωγών λογαριασμού ή κωδικού πρόσβασης. Προσπαθήστε ξανά σε %s λεπτά</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="one">Το όνομα λογαριασμού ή ο κωδικός πρόσβασης είναι λάθος. Σας απομένει %s προσπάθεια ακόμα</item>
+        <item quantity="other">Το όνομα λογαριασμού ή ο κωδικός πρόσβασης είναι λάθος. Σας απομένουν %s προσπάθειες ακόμα</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="one">%d μάθημα</item>
+        <item quantity="other">%d μαθήματα</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="one">Δόνηση ξανά %s λεπ. αργότερα</item>
+        <item quantity="other">Δόνηση ξανά %s λεπ. αργότερα</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="one">Βρίσκεστε μπροστά από %d%% χρήστες σήμερα</item>
+        <item quantity="other">Βρίσκεστε μπροστά από %d%% χρήστες σήμερα</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="one">Μπορείτε να προσθέσετε έως %1$d εφαρμογή στη λίστα Εφαρμογές</item>
+        <item quantity="other">Μπορείτε να προσθέσετε έως %1$d εφαρμογές στη λίστα Εφαρμογές</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="one">Μπορείτε να προσθέσετε έως %1$d εφαρμογή στη λίστα Περισσότερα</item>
+        <item quantity="other">Μπορείτε να προσθέσετε έως %1$d εφαρμογές στη λίστα Περισσότερα</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="one">Σε σύγκριση με %1$dημ πριν</item>
+        <item quantity="other">Σε σύγκριση με %1$dημ πριν</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="one">Βαθμονόμηση για %d ημέρα</item>
+        <item quantity="other">Βαθμονόμηση για %d ημέρες</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="one">Απαιτείται βαθμονόμηση κάθε %d ημέρα για το ερευνητικό πρόγραμμα προσυμπτωματικού ελέγχου της αρτηριακής πίεσης που ξεκίνησε το Peking University First Hospital</item>
+        <item quantity="other">Απαιτείται βαθμονόμηση κάθε %d ημέρες για το ερευνητικό πρόγραμμα προσυμπτωματικού ελέγχου της αρτηριακής πίεσης που ξεκίνησε το Peking University First Hospital</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="one">Βαθμονόμηση %d ημέρα αργότερα</item>
+        <item quantity="other">Βαθμονόμηση %d ημέρες αργότερα</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="one">Επιτεύχθηκαν %d στόχοι</item>
+        <item quantity="other">Επιτεύχθηκαν %d στόχοι</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="one">%d αντικείμενο απαιτεί την προσοχή σας</item>
+        <item quantity="other">%d αντικείμενα απαιτούν την προσοχή σας</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="one">Δεν επιτεύχθηκαν οι στόχοι %d αντικειμένου</item>
+        <item quantity="other">Δεν επιτεύχθηκαν οι στόχοι %d αντικειμένων</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="one">Συγχαρητήρια!\nΤην τελευταία %1$d ημέρα πήρατε</item>
+        <item quantity="other">Συγχαρητήρια!\nΤις τελευταίες %1$d ημέρες πήρατε</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="one">βαθμολογία</item>
+        <item quantity="other">βαθμολογίες</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="one">Μπορείτε να προσθέσετε έως και %1$d κορυφαία επαφή, η οποία θα συγχρονιστεί αυτόματα στο ρολόι σας</item>
+        <item quantity="other">Μπορείτε να προσθέσετε έως και %1$d κορυφαίες επαφές, οι οποίες θα συγχρονιστούν αυτόματα στο ρολόι σας</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="one">%d μάθημα</item>
+        <item quantity="other">%d μαθήματα</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="one">Το μάθημα ξεκινάει σε %d ημέρα</item>
+        <item quantity="other">Το μάθημα ξεκινάει σε %d ημέρες</item>
+    </plurals>
+    <plurals name="daily_interval">
+        <item quantity="one">ημέρα</item>
+        <item quantity="other">%1$d ημέρες</item>
+    </plurals>
+    <plurals name="days_after">
+        <item quantity="one">%1$d ημέρες αργότερα</item>
+        <item quantity="other">%1$d ημέρες αργότερα</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="one">%1$d ημέρες πριν</item>
+        <item quantity="other">%1$d ημέρες πριν</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="one">%d λήψη</item>
+        <item quantity="other">%d λήψεις</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="zero">%1$d δευτ.</item>
+        <item quantity="one">%1$d δευτ.</item>
+        <item quantity="other">%1$d δευτ.</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="one">Διάστημα δεδομένων: %1$s δευτ.</item>
+        <item quantity="other">Διάστημα δεδομένων: %1$s δευτ.</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="one">%1$s δευτ.</item>
+        <item quantity="other">%1$s δευτ.</item>
+    </plurals>
+    <plurals name="endByCount">
+        <item quantity="one">; 1 φορά</item>
+        <item quantity="other">; πλήρης επανάληψη %1$d φορές</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="one">Υπενθύμιση %d</item>
+        <item quantity="other">Υπενθυμίσεις %d</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">Γρήγορη προώθηση κατά %d δευτερόλεπτο</item>
+        <item quantity="other">Γρήγορη προώθηση κατά %d δευτερόλεπτα</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">Μετάβαση προς τα πίσω κατά %d δευτερόλεπτο</item>
+        <item quantity="other">Μετάβαση προς τα πίσω κατά %d δευτερόλεπτα</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="one">%1$s μάθημα</item>
+        <item quantity="other">%1$s μαθήματα</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="one">%1$s της έμμηνης περιόδου, %2$s ακόμη.</item>
+        <item quantity="other">%1$s της έμμηνης περιόδου, %2$s ακόμη.</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="one">Περίπου %1$s της έμμηνης περιόδου, %2$s ακόμη.</item>
+        <item quantity="other">Περίπου %1$s της έμμηνης περιόδου, %2$s ακόμη.</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="one">%1$s της έμμηνης περιόδου, περίπου %2$s ακόμη.</item>
+        <item quantity="other">%1$s της έμμηνης περιόδου, περίπου %2$s ακόμη.</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="one">%1$s viewer</item>
+        <item quantity="other">%1$s viewers</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">Ημέρα %1$d</item>
+        <item quantity="other">Ημέρα %1$d</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="one">%1$dημ</item>
+        <item quantity="other">%1$dημ</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="one">Ακύρωση (%1$dδευτ.)</item>
+        <item quantity="other">Ακύρωση (%1$dδευτ.)</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="one">Λήψη. Περιμένετε περίπου %s λεπ.</item>
+        <item quantity="other">Λήψη. Περιμένετε περίπου %s λεπ.</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="one">Τελειώσατε %d συνεδρία άσκησης</item>
+        <item quantity="other">Τελειώσατε %d συνεδρίες άσκησης</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="one">%d φορά/λεπτό</item>
+        <item quantity="other">%d φορές/λεπτό</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="one">Η Αρχική σελίδα πρέπει να περιέχει τουλάχιστον %1$d κάρτα</item>
+        <item quantity="other">Η Αρχική σελίδα πρέπει να περιέχει τουλάχιστον %1$d κάρτες</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="one">Μέσος καρδιακός ρυθμός %1$d bpm</item>
+        <item quantity="other">Μέσος καρδιακός ρυθμός %1$d bpm</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="one">φορά/λεπτό</item>
+        <item quantity="other">φορές/λεπτό</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="one">Πριν από %d λεπτό</item>
+        <item quantity="other">Πριν από %d λεπτά</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="one">Συνεδρία %d</item>
+        <item quantity="other">Συνεδρία %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="one">Υπενθύμιση %d δευτερόλεπτο μετά τη λήψη κλήσης</item>
+        <item quantity="other">Υπενθύμιση %d δευτερόλεπτα μετά τη λήψη κλήσης</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="one">Μπορείτε να προσθέσετε έως και %1$d απάντηση SMS</item>
+        <item quantity="other">Μπορείτε να προσθέσετε έως και %1$d απαντήσεις SMS</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="one">Διατήρηση τουλάχιστον %1$d απάντησης SMS</item>
+        <item quantity="other">Διατήρηση τουλάχιστον %1$d απαντήσεων SMS</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="one">Εισαγάγετε μέχρι και %d χαρακτήρα</item>
+        <item quantity="other">Εισαγάγετε μέχρι και %d χαρακτήρες</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="one">%1$d εγγραφή γύρου</item>
+        <item quantity="other">%1$d εγγραφές γύρου</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="one">%d προβολή</item>
+        <item quantity="other">%d προβολές</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="one">%1$d μήνας</item>
+        <item quantity="other">%1$d μήνες</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="one">Περίπου %1$d λεπτό ανά ημέρα</item>
+        <item quantity="other">Περίπου %1$d λεπτά ανά ημέρα</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="one">Τελευταία φόρτιση πριν %d μέρα</item>
+        <item quantity="other">Τελευταία φόρτιση πριν %d μέρες</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="one">Επιτεύχθηκε στόχος: %d</item>
+        <item quantity="other">Επιτεύχθηκε στόχος: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="one">%d βήμα</item>
+        <item quantity="other">%d βήματα</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="one">%d %s</item>
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="monthly_interval">
+        <item quantity="one">μήνας</item>
+        <item quantity="other">%1$d μήνες</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d νέα ειδοποίηση</item>
+        <item quantity="other">%d νέες ειδοποιήσεις</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="one">%d&quot;</item>
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="one">%dδ</item>
+        <item quantity="other">%dδ</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="one">Άνω του %1$d έτους. Δεν είναι δυνατή η ανάλυση %2$s</item>
+        <item quantity="other">Άνω των %1$d ετών. Δεν είναι δυνατή η ανάλυση %2$s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="one">Κάτω του %1$d έτους. Δεν είναι δυνατή η ανάλυση %2$s</item>
+        <item quantity="other">Κάτω των %1$d ετών. Δεν είναι δυνατή η ανάλυση %2$s</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="one">%s ft</item>
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="one">%s ίντσα</item>
+        <item quantity="other">%s ίντσες</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="one">%dδ</item>
+        <item quantity="other">%dδ</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="one">προπόνηση</item>
+        <item quantity="other">προπονήσεις</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="one">%d συμμετέχων</item>
+        <item quantity="other">%d συμμετέχοντες</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="one">λεπτό</item>
+        <item quantity="other">λεπτά</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="one">Μπορείτε να προσθέσετε έως και %1$d απάντηση SMS</item>
+        <item quantity="other">Μπορείτε να προσθέσετε έως και %1$d απαντήσεις SMS</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="one">Διατήρηση τουλάχιστον %1$d απάντησης SMS</item>
+        <item quantity="other">Διατήρηση τουλάχιστον %1$d απαντήσεων SMS</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="one">Επιλέχθηκε %1$d αντικείμενο</item>
+        <item quantity="other">Επιλέχθηκαν %1$d αντικείμενα</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="one">Κάνατε ποδήλατο πριν από %1$d ημέρα</item>
+        <item quantity="other">Κάνατε ποδήλατο πριν από %1$d ημέρες</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="one">ώρα</item>
+        <item quantity="other">ώρες</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="one">kcal</item>
+        <item quantity="other">kcal</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="one">Τρέξατε πριν από %1$d ημέρα</item>
+        <item quantity="other">Τρέξατε πριν από %1$d ημέρες</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="one">δευτερόλεπτο</item>
+        <item quantity="other">δευτερόλεπτα</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="one">Εντοπίστηκε %1$d απόσπασμα ήχου σήμερα</item>
+        <item quantity="other">Εντοπίστηκαν %1$d αποσπάσματα ήχου σήμερα</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="one">Βήμα</item>
+        <item quantity="other">Βήματα</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="one">Περπατήσατε πριν από %1$d ημέρα</item>
+        <item quantity="other">Περπατήσατε πριν από %1$d ημέρες</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">%d ημέρα</item>
+        <item quantity="other">%d ημέρες</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">%d ώρα</item>
+        <item quantity="other">%d ώρες</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="one">%d βήμα</item>
+        <item quantity="other">%d βήματα</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="one">Ποιότητα αναπνοής κατά τον ύπνο %1$d. Σας συνιστούμε να προσέχετε συνεχώς την αναπνοή σας κατά τον ύπνο. Εάν δεν αισθάνεστε καλά, συμβουλευτείτε έναν γιατρό</item>
+        <item quantity="other">Ποιότητα αναπνοής κατά τον ύπνο %1$d. Σας συνιστούμε να προσέχετε συνεχώς την αναπνοή σας κατά τον ύπνο. Εάν δεν αισθάνεστε καλά, συμβουλευτείτε έναν γιατρό</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip_short">
+        <item quantity="one">Βαθμολογία ποιότητας αναπνοής κατά τον ύπνο: %1$d. Να προσέχετε πολύ την κατάσταση της αναπνοής σας κατά τον ύπνο. Εάν δεν αισθάνεστε καλά, συμβουλευτείτε έναν γιατρό</item>
+        <item quantity="other">Βαθμολογία ποιότητας αναπνοής κατά τον ύπνο: %1$d. Να προσέχετε πολύ την κατάσταση της αναπνοής σας κατά τον ύπνο. Εάν δεν αισθάνεστε καλά, συμβουλευτείτε έναν γιατρό</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="one">Ποιότητα αναπνοής κατά τον ύπνο %1$d. Σας συνιστούμε να συμβουλευτείτε έναν γιατρό για να δείτε αν έχετε προβλήματα με την αναπνοή σας κατά τον ύπνο</item>
+        <item quantity="other">Ποιότητα αναπνοής κατά τον ύπνο %1$d. Σας συνιστούμε να συμβουλευτείτε έναν γιατρό για να δείτε αν έχετε προβλήματα με την αναπνοή σας κατά τον ύπνο</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip_short">
+        <item quantity="one">Βαθμολογία ποιότητας αναπνοής κατά τον ύπνο: %1$d. Εάν η βαθμολογία είναι κάτω από 80 αρκετές φορές, αναζητήστε ιατρική συμβουλή</item>
+        <item quantity="other">Βαθμολογία ποιότητας αναπνοής κατά τον ύπνο: %1$d. Εάν η βαθμολογία είναι κάτω από 80 αρκετές φορές, αναζητήστε ιατρική συμβουλή</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="one">Ποιότητα αναπνοής κατά τον ύπνο %1$d, Συνεχίστε έτσι</item>
+        <item quantity="other">Ποιότητα αναπνοής κατά τον ύπνο %1$d, Συνεχίστε έτσι</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip_short">
+        <item quantity="one">Βαθμολογία ποιότητας αναπνοής κατά τον ύπνο: %1$d. Συνεχίστε έτσι</item>
+        <item quantity="other">Βαθμολογία ποιότητας αναπνοής κατά τον ύπνο: %1$d. Συνεχίστε έτσι</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="one">Η Ασφάλεια Τρεξίματος λήγει σε %1$d ημέρα, πατήστε για ανανέωση</item>
+        <item quantity="other">Η Ασφάλεια Τρεξίματος λήγει σε %1$d ημέρες, πατήστε για ανανέωση</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="one">%d αντικείμενο δεν συγχρονίστηκε</item>
+        <item quantity="other">%d αντικείμενα δεν συγχρονίστηκαν</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="one">%d αντικείμενο δεν συγχρονίστηκε</item>
+        <item quantity="other">%d αντικείμενα δεν συγχρονίστηκαν</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="one">%1$d συνεδρία ποδηλασίας</item>
+        <item quantity="other">%1$d συνεδρίες ποδηλασίας</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="one">%1$d συνεδρία με ελλειπτική άσκηση</item>
+        <item quantity="other">%1$d συνεδρίες με ελλειπτική άσκηση</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="one">%1$d ελεύθερη προπόνηση</item>
+        <item quantity="other">%1$d ελεύθερες προπονήσεις</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="one">%1$d συνεδρία τρεξίματος</item>
+        <item quantity="other">%1$d συνεδρίες τρεξίματος</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="one">%1$d συνεδρία κολύμβησης</item>
+        <item quantity="other">%1$d συνεδρίες κολύμβησης</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="one">Προπόνηση: %1$d Συνεδρία</item>
+        <item quantity="other">Προπόνηση: %1$d Συνεδρίες</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="one">%1$d συνεδρία τριάθλου</item>
+        <item quantity="other">%1$d συνεδρίες τριάθλου</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="one">%1$d συνεδρία περπατήματος</item>
+        <item quantity="other">%1$d συνεδρίες περπατήματος</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="one">Άσκηση: %1$d συνεδρίες</item>
+        <item quantity="other">Άσκηση: %1$d συνεδρίες</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="one">Προσθήκη έως και %d συμβάντος</item>
+        <item quantity="other">Προσθήκη έως και %d συμβάντων</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="one">Καλύτερη προσωπική επίδοση: %d ημέρα</item>
+        <item quantity="other">Καλύτερη προσωπική επίδοση: %d ημέρες</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="one">Βρίσκεστε μπροστά από %d%% χρήστες</item>
+        <item quantity="other">Βρίσκεστε μπροστά από %d%% χρήστες</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="zero">Φορά</item>
+        <item quantity="one">Φορά</item>
+        <item quantity="other">Φορές</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="one">ημέρα</item>
+        <item quantity="other">Ημέρες</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="zero">Βαθμολογία</item>
+        <item quantity="one">Βαθμολογία</item>
+        <item quantity="other">Βαθμολογίες</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="zero">%dφορές</item>
+        <item quantity="one">%dφορά</item>
+        <item quantity="other">%dφορές</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="one">Η βαθμολογία ύπνου ανέβηκε κατά %d σε σύγκριση με τον προηγούμενο μήνα.</item>
+        <item quantity="other">Η βαθμολογία ύπνου ανέβηκε κατά %d σε σύγκριση με τον προηγούμενο μήνα.</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="one">Η βαθμολογία ύπνου αυτού του μήνα είναι %d. Συνεχίστε την εξαιρετική δουλειά.</item>
+        <item quantity="other">Η βαθμολογία ύπνου αυτού του μήνα είναι %d. Συνεχίστε την εξαιρετική δουλειά.</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="one">Η βαθμολογία ύπνου ανέβηκε κατά %d σε σύγκριση με την προηγούμενη εβδομάδα.</item>
+        <item quantity="other">Η βαθμολογία ύπνου ανέβηκε κατά %d σε σύγκριση με την προηγούμενη εβδομάδα.</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="one">Η βαθμολογία ύπνου αυτής της εβδομάδας είναι %d. Συνεχίστε την εξαιρετική δουλειά.</item>
+        <item quantity="other">Η βαθμολογία ύπνου αυτής της εβδομάδας είναι %d. Συνεχίστε την εξαιρετική δουλειά.</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="one">Σήμερα εγγράψατε %1$d απόσπασμα ήχου.</item>
+        <item quantity="other">Σήμερα εγγράψατε %1$d αποσπάσματα ήχου.</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="one">%1$d απόσπασμα</item>
+        <item quantity="other">%1$d αποσπάσματα</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="one">Μπορεί να ειπωθεί ως %d ακόμα δευτερόλεπτο</item>
+        <item quantity="other">Μπορεί να ειπωθεί ως %d ακόμα δευτερόλεπτα</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="one">Ολοκληρωμένες δραστηριότητες: %1$d συνεδρία από %2$s</item>
+        <item quantity="other">Ολοκληρωμένες δραστηριότητες: %1$d συνεδρίες από %2$s</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="one">βήμα</item>
+        <item quantity="other">βήματα</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="one">Βήμα</item>
+        <item quantity="other">Βήματα</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="one">Βήμα/ημέρα</item>
+        <item quantity="other">Βήματα/ημέρα</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; φορά</item>
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; φορές</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="one">Στην κορυφή της λίστας για&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; ημέρα</item>
+        <item quantity="other">Στην κορυφή της λίστας για&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; ημέρες</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="one">Στην κορυφή της λίστας %1$d φορά</item>
+        <item quantity="other">Στην κορυφή της λίστας %1$d φορές</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="one">Στην κορυφή της λίστας για %1$d ημέρα</item>
+        <item quantity="other">Στην κορυφή της λίστας για %1$d ημέρες</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="one">Αντιστοίχιση με %1$d φίλο:</item>
+        <item quantity="other">Αντιστοίχιση με %1$d φίλους:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="one">Έτρεξε&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; φορά</item>
+        <item quantity="other">Έτρεξε&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; φορές</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="one">%1$d εγγραφή τρεξίματος δεν έχει αποσταλεί</item>
+        <item quantity="other">%1$d εγγραφές τρεξίματος δεν έχουν αποσταλεί</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="one">%1$d συμμετέχων</item>
+        <item quantity="other">%1$d συμμετέχοντες</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="zero">%dώρες</item>
+        <item quantity="one">%dώρα</item>
+        <item quantity="other">%dώρες</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="zero">%dλεπτά</item>
+        <item quantity="one">%dλεπτό</item>
+        <item quantity="other">%dλεπτά</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="one">%1$d φορά</item>
+        <item quantity="other">%1$d φορές</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="one">Συγχαρητήρια!\nΤην τελευταία %1$d ημέρα χάσατε</item>
+        <item quantity="other">Συγχαρητήρια!\nΤις τελευταίες %1$d ημέρες χάσατε</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="one">Υπάρχει %1$d αρχείο βάρους για αναφορά.</item>
+        <item quantity="other">Υπάρχουν %1$d αρχεία βάρους για αναφορά.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="one">Μπορείτε να προσθέσετε έως &lt;numVal demoValue=1 var=%1$d type=o/&gt; χρονοδιάγραμμα</item>
+        <item quantity="other">Μπορείτε να προσθέσετε έως &lt;numVal demoValue=12 var=%1$d type=x/&gt; χρονοδιαγράμματα</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="one">Αδυναμία ανάλυσης για άτομα πάνω από %d έτους</item>
+        <item quantity="other">Αδυναμία ανάλυσης για άτομα πάνω από %d ετών</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="one">Αδυναμία ανάλυσης για άτομα νεότερα από %d έτους</item>
+        <item quantity="other">Αδυναμία ανάλυσης για άτομα νεότερα από %d ετών</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="one">%d μάθημα</item>
+        <item quantity="other">%d μαθήματα</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="one">Λήξη μαθήματος σε %d μέρα</item>
+        <item quantity="other">Λήξη μαθήματος σε %d μέρες</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="one">%d θεατής</item>
+        <item quantity="other">%d θεατές</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="one">Σύνολο σετ: %d</item>
+        <item quantity="other">Σύνολο σετ: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="one">Χρόνοι προπόνησης: %d</item>
+        <item quantity="other">Χρόνοι προπόνησης: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="one">Έναρξη σε %d ημέρα</item>
+        <item quantity="other">Έναρξη σε %d ημέρες</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="one">Προπονηθήκατε για  %1$d λ</item>
+        <item quantity="other">Προπονηθήκατε για  %1$d λεπ</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="one">Προπονηθήκατε για  %1$d δ</item>
+        <item quantity="other">Προπονηθήκατε για  %1$d δ</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="one">Ημέρα %1$d του προγράμματος προπόνησης: Πρέπει να ολοκληρώσετε %3$s (%2$d λεπτά)</item>
+        <item quantity="other">Ημέρα %1$d του προγράμματος προπόνησης: Πρέπει να ολοκληρώσετε %3$s (%2$d λεπτά)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="one"> %1$d  δευτερόλεπτο</item>
+        <item quantity="other"> %1$d  δευτερόλεπτα</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="one"> %1$d  φορά</item>
+        <item quantity="other"> %1$d  φορές</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="one">Έγινε παύση για %1$d δ</item>
+        <item quantity="other">Έγινε παύση για %1$d δ</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="one"> βήμα</item>
+        <item quantity="other"> βήματα</item>
+    </plurals>
+    <plurals name="user_info_Nhours">
+        <item quantity="one">1 ώρα</item>
+        <item quantity="other">%1$d ώρες</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="one">Επειδή η ηλικία που καταχωρήσατε είναι κάτω του %1$d έτους, θα πρέπει να λάβουμε την εξουσιοδότηση και τη συναίνεση του κηδεμόνα σας προτού μπορέσετε να συνεχίσετε να χρησιμοποιείτε το Zepp.</item>
+        <item quantity="other">Επειδή η ηλικία που καταχωρήσατε είναι κάτω των %1$d ετών, θα πρέπει να λάβουμε την εξουσιοδότηση και τη συναίνεση του κηδεμόνα σας προτού μπορέσετε να συνεχίσετε να χρησιμοποιείτε το Zepp.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="one">Διαφορετικά, ο λογαριασμός σας θα παγώσει σε %1$d ημέρα.</item>
+        <item quantity="other">Διαφορετικά, ο λογαριασμός σας θα παγώσει σε %1$d ημέρες.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="one">Κάτω του %1$dέτους</item>
+        <item quantity="other">Κάτω των %1$dετών</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="one">Προκειμένου να προστατευθεί το απόρρητο των δεδομένων των ανηλίκων, αν είστε κάτω του %1$dέτους, απαιτούμε την εξουσιοδότηση και συγκατάθεση του κηδεμόνα σας προτού σας παράσχουμε πλήρεις υπηρεσίες.</item>
+        <item quantity="other">Προκειμένου να προστατευθεί το απόρρητο των δεδομένων των ανηλίκων, αν είστε κάτω των %1$dετών, απαιτούμε την εξουσιοδότηση και συγκατάθεση του κηδεμόνα σας προτού σας παράσχουμε πλήρεις υπηρεσίες.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="one">Επιβεβαιώστε ότι δεν είστε κάτω του %1$dέτους</item>
+        <item quantity="other">Επιβεβαιώστε ότι δεν είστε κάτω των %1$dετών</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="one">%s ft</item>
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="one">%s ίντσα</item>
+        <item quantity="other">%s ίντσες</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="weekly_interval">
+        <item quantity="one">εβδομάδα</item>
+        <item quantity="other">%1$d εβδομάδες</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="one">%d λεπτό</item>
+        <item quantity="other">%d λεπτά</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="one">%d περίοδος λειτουργίας</item>
+        <item quantity="other">%d περίοδος λειτουργίας</item>
+    </plurals>
+    <plurals name="yearly_interval">
+        <item quantity="one">έτος</item>
+        <item quantity="other">%1$d έτη</item>
+    </plurals>
+</resources>

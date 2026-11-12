@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>Один раз</item>
+        <item>З понеділка по п\'ятницю</item>
+        <item>Щодня</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>Надає дані про максимальне споживання кисню (макс. VO₂)</item>
+        <item>Ефект тренування (ЕТ) допомагає зрозуміти переваги вправи для вашої фізичної форми</item>
+        <item>Надає можливість плавати в плавальному басейні, у відкритій воді та займатися тріатлоном</item>
+        <item>Керуйте своїм тренуванням відповідно до поставлених вами цілей</item>
+        <item>Комплексна статистика активності та її настройки</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>One key to control all with “Classmate Xiao Ai” \n Make your home smart with voice control, and it follows what you say</item>
+        <item>Transportation card, access card, UnionPay card \n For traveling, working, and consuming, just swipe your watch</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>One key to open Alexa \n Intelligent voice, do what you say</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item />
+        <item>* Тільки для бігових вправ, потрібно відкрити настройки вправи</item>
+        <item />
+        <item>* Тільки для бігу</item>
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item />
+        <item>*Наразі доступно лише в обраних регіонах.</item>
+        <item />
+        <item />
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Плече має бути оголеним. Рукав одягу слід закотити так, щоб не відчувався дискомфорт</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Манжету слід надягнути так, щоб між нею та рукою проходив один палець. Якщо занадто затягнути або розслабити манжету, вимірювання можуть виявитися неточними</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Перше вимірювання</item>
+        <item>Друге вимірювання</item>
+        <item>Третє вимірювання</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Запишіть перший показник артеріального тиску</item>
+        <item>Запишіть другий показник артеріального тиску</item>
+        <item>Запишіть третій показник артеріального тиску</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Низький</item>
+        <item>Нормальний</item>
+        <item>Високий</item>
+        <item>Дуже високий</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Нормальний</item>
+        <item>Високий</item>
+        <item>Дуже високий</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Дуже погана</item>
+        <item>Погана</item>
+        <item>Нормальна</item>
+        <item>Чудовий</item>
+        <item>Відмінна</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Дуже низький</item>
+        <item>Низький</item>
+        <item>Нормальний</item>
+        <item>Збільшився</item>
+        <item>Високий</item>
+    </array>
+    <array name="bone_leval">
+        <item>Недостатній</item>
+        <item>Нормальний</item>
+        <item>Чудовий</item>
+    </array>
+    <array name="brm_leval">
+        <item>Мета не досягнута</item>
+        <item>Мета досягнута</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Низьк.</item>
+        <item>Середн.</item>
+        <item>Вис.</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Спробуйте натиснути кнопку на годиннику, якщо екран залишається вимкненим, зарядіть батарею.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Якщо браслет заряджений, але телефон все ще не може його знайти, спробуйте перезапустити Bluetooth на телефоні.</item>
+        <item>Якщо перезапуск Bluetooth не допомагає, спробуйте перезавантажити телефон.</item>
+        <item>Дані годинника неможливо синхронізувати під час тренування. Завершіть сеанс та повторіть спробу.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Ваш годинник заряджений?</item>
+        <item>Годинник прив\'язано до іншого пристрою?</item>
+        <item>Спробуйте перезапустити Bluetooth</item>
+        <item>Спробуйте перезавантажити ваш телефон</item>
+        <item>Неможливо синхронізувати дані під час тренування</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Гуанчжоу</item>
+        <item>Шеньчжень</item>
+        <item>Фошань</item>
+        <item>Дунгуань</item>
+        <item>Пекін</item>
+        <item>Нанкін</item>
+        <item>Сучжоу</item>
+        <item>Чанчжоу</item>
+        <item>Цзінань</item>
+        <item>Циндао</item>
+        <item>Ханчжоу</item>
+        <item>Нінбо</item>
+        <item>Чженчжоу</item>
+        <item>Кайфен</item>
+        <item>Шанхай</item>
+        <item>Шицзячжуан</item>
+        <item>Баодін</item>
+        <item>Ченду</item>
+        <item>Маньян</item>
+        <item>Шеньян</item>
+        <item>Далянь</item>
+    </array>
+    <array name="common_level">
+        <item>Недостатній</item>
+        <item>Середній</item>
+        <item>Норма</item>
+    </array>
+    <array name="contact_ways">
+        <item>Ел.адреса</item>
+        <item>Номер телефону</item>
+        <item>WeChat ID</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Тільки почав тренуватися</item>
+        <item>Вже є досвід тренувань</item>
+        <item>Постійно тренуюся, маю спортивну статуру</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Початковий</item>
+        <item>Середній</item>
+        <item>Просунутий</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Аномалій не виявлено</item>
+        <item>Погана якість сигналу</item>
+        <item>Аномалій не виявлено</item>
+        <item>Аномальне серцебиття</item>
+        <item />
+        <item>Недостатньо даних</item>
+        <item>Аномалій не виявлено</item>
+        <item>Недостатньо даних</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Відрегулюйте спосіб використання та повторіть спробу.</item>
+        <item>Лише для довідки. Якщо у вас виникли будь-які відчуття дискомфорту, зверніться до лікаря.</item>
+        <item>Лише для довідки. Якщо у вас виникли будь-які відчуття дискомфорту, зверніться до лікаря.</item>
+        <item>Лише для довідки. Якщо у вас виникли будь-які відчуття дискомфорту, зверніться до лікаря.</item>
+        <item>Відрегулюйте спосіб використання та повторіть спробу.</item>
+        <item />
+        <item>Лише для довідки. Якщо у вас виникли будь-які відчуття дискомфорту, зверніться до лікаря.</item>
+        <item>Відрегулюйте спосіб використання та повторіть спробу.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>З метою зниження ваги</item>
+        <item>З метою надання форми тілу</item>
+        <item>З метою наростити м\'язи</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Зниження ваги</item>
+        <item>Надання форми</item>
+        <item>Збільшення ваги</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>ПН</item>
+        <item>ВТ</item>
+        <item>СР</item>
+        <item>ЧТ</item>
+        <item>ПТ</item>
+        <item>СБ</item>
+        <item>Нд</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>ПН</item>
+        <item>ВТ</item>
+        <item>СР</item>
+        <item>ЧТ</item>
+        <item>ПТ</item>
+        <item>Сб</item>
+        <item>НД</item>
+    </array>
+    <array name="hr_sport">
+        <item>Зона пульсу: Терапевтична зона</item>
+        <item>Зона пульсу: Інтенсивна зона</item>
+        <item>Зона пульсу: Аеробна зона</item>
+        <item>Зона пульсу: Анаеробна зона</item>
+        <item>Зона пульсу: Зона VO₂</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Терапевтична зона</item>
+        <item>Інтенсивна</item>
+        <item>Аеробна зона</item>
+        <item>Анаеробна зона</item>
+        <item>Зона максимального споживання кисню</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Пахва</item>
+        <item>Оральне</item>
+        <item>Ректальне</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Зап’ясток</item>
+        <item>На чолі</item>
+        <item>За вухом</item>
+        <item>У вусі</item>
+        <item>Шия</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Пахва</item>
+        <item>Оральне</item>
+        <item>Ректальне</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Груди</item>
+        <item>Пахва</item>
+        <item>У паху</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Закрити</item>
+        <item>Поруч</item>
+        <item>Далеко</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Натисніть кнопку на браслеті, щоб активувати екран. Якщо цього не відбувається, спробуйте зарядити його.\n\nЗарядіть пристрій перед підключенням %1$s або %2$s.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Якщо браслет заряджений, але телефон все ще не може його знайти, спробуйте перезапустити Bluetooth на телефоні.</item>
+        <item>Якщо перезапуск Bluetooth не вирішує проблеми, спробуйте перезавантажити телефон.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Ваш браслет заряджений?</item>
+        <item>Браслет прив\'язано до іншого пристрою?</item>
+        <item>@string/help_title_2</item>
+        <item>Спробуйте перезавантажити ваш телефон</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>Січ</item>
+        <item>Лют</item>
+        <item>Бер</item>
+        <item>Квіт</item>
+        <item>Трав</item>
+        <item>Черв</item>
+        <item>Лип</item>
+        <item>Серп</item>
+        <item>Вер</item>
+        <item>Жовт</item>
+        <item>Лист</item>
+        <item>Груд</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Недостатній</item>
+        <item>Нормальний</item>
+        <item>Нормальний</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>Цільові сповіщення</item>
+        <item>Вхідний дзвінок</item>
+        <item>Попередження про простій</item>
+        <item>Щоденне нагадування про погоду</item>
+        <item>Сповіщення про низький заряд акумулятора</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Дуже погано</item>
+        <item>Погано</item>
+        <item>Середнє</item>
+        <item>Добре</item>
+        <item>Дуже добре</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>Перший</item>
+        <item>Четвертий</item>
+        <item>Останній</item>
+        <item>Другий</item>
+        <item>Третій</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Січ</item>
+        <item>Лют</item>
+        <item>Бер</item>
+        <item>Квіт</item>
+        <item>Травень</item>
+        <item>Черв</item>
+        <item>Лип</item>
+        <item>Серп</item>
+        <item>Вер</item>
+        <item>Жовт</item>
+        <item>Лист</item>
+        <item>Груд</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s припинить роботу, якщо ви не будете використовувати його протягом тривалого часу. Струсіть %2$s та повторіть спробу.</item>
+        <item>Термін роботи батареї %s приблизно 1 рік. Якщо ви використовуваєте його більше зазначего часу, можливо, закінчився термін її придатності.</item>
+        <item>Спочатку вимкніть Bluetooth на іншому пристрої, а потім прив\'яжіть до вашого телефону.</item>
+        <item>Якщо %s заряджений, але телефон все ще не може їх знайти, спробуйте перезапустити Bluetooth на телефоні.</item>
+        <item>Якщо перезапуск Bluetooth не вирішує проблеми, спробуйте перезавантажити телефон.</item>
+        <item>Натисніть на кнопку з даними кросівок та перейдіть на наступну сторінку, щоб автоматично синхронізувати дані</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Струсіть %s</item>
+        <item>Чи ваш %s заряджено?</item>
+        <item>Чи було %s прив\'язано до іншого пристрою неподалік?</item>
+        <item>Перезапустити Bluetooth</item>
+        <item>Спробуйте перезавантажити ваш телефон</item>
+        <item>Як синхронізувати ваші дані?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Ожиріння</item>
+        <item>Надмірна вага</item>
+        <item>Цупке</item>
+        <item>Без\nтренування</item>
+        <item>Збалансований</item>
+        <item>Збалансована\nм\'язова маса</item>
+        <item>Худий</item>
+        <item>Збалансовано\nхудорлявий</item>
+        <item>М\'язовий\nхудорлявий</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>ПН</item>
+        <item>ВТ</item>
+        <item>СР</item>
+        <item>ЧТ</item>
+        <item>ПТ</item>
+        <item>СБ</item>
+        <item>Нд</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Активність</item>
+        <item>Повільна ходьба</item>
+        <item>Ходьба</item>
+        <item>Швидка ходьба</item>
+        <item>Біг</item>
+        <item>Стояти</item>
+        <item>Сидіння</item>
+        <item>Легка активність</item>
+        <item>Не носити</item>
+        <item>Зарядження</item>
+        <item>Лежачи</item>
+    </array>
+    <array name="timeline_type">
+        <item>Активність</item>
+        <item>Повільна ходьба</item>
+        <item>Ходьба</item>
+        <item>Швидка ходьба</item>
+        <item>Біг</item>
+        <item>Стоячи</item>
+        <item>Сидячи</item>
+        <item>Легка активність</item>
+        <item>Не носити</item>
+        <item>Зарядження…</item>
+        <item>Лежачи</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Без обмежень</item>
+        <item>Початковий, 1</item>
+        <item>Середній, 2</item>
+        <item>Просунутий, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Нормальний</item>
+        <item>Високий</item>
+        <item>Дуже високий</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>Дуже погано</item>
+        <item>Посередньо</item>
+        <item>Відмінно</item>
+        <item>Нижче середнього</item>
+        <item>Погано</item>
+        <item>Добрий</item>
+        <item>Вище середнього</item>
+    </array>
+    <array name="water_leval">
+        <item>Недостатній</item>
+        <item>Нормальний</item>
+        <item>Чудовий</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>Вт</item>
+        <item>Нд</item>
+        <item>Пн</item>
+        <item>Сб</item>
+        <item>Ср</item>
+        <item>Чт</item>
+        <item>Пт</item>
+    </array>
+    <array name="week_days">
+        <item>Середа</item>
+        <item>Понеділок</item>
+        <item>Четвер</item>
+        <item>Вівторок</item>
+        <item>Неділя</item>
+        <item>П\'ятниця</item>
+        <item>Субота</item>
+    </array>
+    <array name="week_name">
+        <item>Нд</item>
+        <item>Пн</item>
+        <item>Вт</item>
+        <item>Ср</item>
+        <item>Чт</item>
+        <item>Пт</item>
+        <item>Сб</item>
+    </array>
+    <array name="weeks">
+        <item>Понеділок</item>
+        <item>Вівторок</item>
+        <item>Середа</item>
+        <item>Четвер</item>
+        <item>П\'ятниця</item>
+        <item>Субота</item>
+        <item>Неділя</item>
+    </array>
+    <array name="weeks_short">
+        <item>Пн</item>
+        <item>Вт</item>
+        <item>Ср</item>
+        <item>Чт</item>
+        <item>Пт</item>
+        <item>Сб</item>
+        <item>Нд</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Недостатня вага</item>
+        <item>Збалансований</item>
+        <item>Надмірна вага</item>
+        <item>Ожиріння</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Розмістіть ваги якомога ближче до маршрутизатора, щоб забезпечити сильний сигнал Wi-Fi.</item>
+        <item>· Переконайтеся, що при підключенні до мережі Wi-Fi введено правильний пароль.</item>
+        <item>· Підключіть телефон до потрібного маршрутизатора Wi-Fi, а потім спробуйте відкрити веб-сторінку, щоб перевірити доступ до Інтернету.</item>
+        <item>· Якщо вимкнуто діапазон 2,4 ГГц, увімкніть його та виберіть для використання. Ваги не підтримують діапазон Wi-Fi 5 ГГц. \n· Якщо ввімкнуто дводіапазонний режим Wi-Fi, вимкніть його, щоб уникнути помилки конфігурації через використання діапазону 5 ГГц.</item>
+        <item>· Якщо маршрутизатор Wi-Fi підключено до Інтернету, на ньому вибрано діапазон 2,4 ГГц і вимкнуто дводіапазонний режим, а сигнал Wi-Fi сильний, спробуйте перезавантажити маршрутизатор.</item>
+        <item>· Якщо перезавантаження маршрутизатора не допомагає, спробуйте перезавантажити телефон.</item>
+        <item>· Якщо перезавантаження маршрутизатора не допомагає, спробуйте перевстановити акумулятор.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Чи є в місці розташування ваг сильний сигнал Wi-Fi?</item>
+        <item>2. Чи введено правильний пароль мережі Wi-Fi?</item>
+        <item>3. Чи правильно підключено маршрутизатор Wi-Fi до Інтернету?</item>
+        <item>4. Чи вимкнуто на маршрутизаторі діапазон Wi-Fi 2,4 ГГц? Чи ввімкнуто дводіапазонний режим Wi-Fi?</item>
+        <item>5. Спробуйте перезавантажити маршрутизатор.</item>
+        <item>6. Спробуйте перезавантажити телефон.</item>
+        <item>7. Спробуйте перезавантажити пристрій.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>Діапазон Wi-Fi 2,4 ГГц вказує, що безпровідний маршрутизатор працює на частоті 2,4 ГГц.\nДіапазон Wi-Fi 5 ГГц вказує, що безпровідний маршрутизатор працює на частоті 5 ГГц.</item>
+        <item>Налаштуйте маршрутизатор, виконавши нижчезазначені кроки.\n1. У рядку адреси браузера введіть адресу для входу в систему маршрутизатора й увійдіть до панелі керування безпровідного маршрутизатора. \n2. Знайдіть кнопку налаштування безпровідного маршрутизатора. \n3. Вимкніть подвійний діапазон. \n4. Увімкніть мережу Wi-Fi із частотою 2,4 ГГц.</item>
+        <item>Перевірити діапазон мережі Wi-Fi можна двома нижченаведеними способами.\n1. У списку мереж Wi-Fi на комп’ютері виберіть [Мережа Wi-Fi] &amp;gt; [Властивості] &amp;gt; [Діапазон мережі]. \n2. Увійдіть до панелі керування маршрутизатора.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Що таке діапазони Wi-Fi 2,4 ГГц та 5 ГГц?</item>
+        <item>· Як увімкнути діапазон Wi-Fi 2,4 ГГц на моєму маршрутизаторі?</item>
+        <item>· Як перевірити діапазон Wi-Fi?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Нормальна вага</item>
+        <item>Надмірна вага</item>
+        <item>Ожиріння</item>
+    </array>
+    <array name="weight_unit">
+        <item> кг</item>
+        <item> дзінь</item>
+        <item> фунтів</item>
+    </array>
+</resources>

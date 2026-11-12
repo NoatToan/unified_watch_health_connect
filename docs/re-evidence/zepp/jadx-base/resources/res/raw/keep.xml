@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Zepp Health. All Rights Reserved.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:shrinkMode="safe"
+    tools:keep="
+    @layout/account_ui_mutex_login,
+    @xml/network_security_config,
+    @color/account_ui_cl_ff6000,
+    @string/account_minor_authorization_info*,
+    @string/account_ui_account_age_check_content_by_upgrade
+    " />

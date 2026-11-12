@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/s10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/watch_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="92dp"
+        android:overScrollMode="never"/>
+    <View
+        android:id="@+id/amazfit_container"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+    <TextView
+        android:layout_gravity="center"
+        android:id="@+id/cancel_tv"
+        android:background="@color/s38"
+        android:layout_width="match_parent"
+        android:layout_height="92dp"
+        android:text="@string/cancel"
+        style="@style/BottomTextStyle"/>
+</RelativeLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.watch.companion.ui.view.ActionbarLayout
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.huami.watch.companion.ui.view.SettingItemView
+            android:id="@+id/sport_sort"
+            app:title="@string/widget_sport_order"
+            style="@style/SettingItemStyle"/>
+        <com.huami.watch.companion.ui.view.SettingItemView
+            android:id="@+id/interval_training"
+            app:title="@string/interval_training"
+            style="@style/SettingItemStyle"/>
+    </LinearLayout>
+</LinearLayout>

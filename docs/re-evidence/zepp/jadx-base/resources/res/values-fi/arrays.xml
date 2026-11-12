@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Olkavarren hihan on oltava käärittynä ylös ilman, että se puristaa</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Yhden sormen pitäisi mahtua mansetin alle. Liian tiukka tai löysä mansetti voi vaikuttaa mittauksen tarkkuuteen</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Ensimmäinen mittaus</item>
+        <item>Toinen mittaus</item>
+        <item>Kolmas mittaus</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Tallenna ensimmäinen verenpainelukema</item>
+        <item>Tallenna toinen verenpainelukema</item>
+        <item>Tallenna kolmas verenpainelukema</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Matala</item>
+        <item>Normaali</item>
+        <item>Korkea</item>
+        <item>Erittäin korkea</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normaali</item>
+        <item>Korkea</item>
+        <item>Erittäin korkea</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Erittäin huono</item>
+        <item>Huono</item>
+        <item>Normaali</item>
+        <item>Hyvä</item>
+        <item>Erinomainen</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Erittäin matala</item>
+        <item>Matala</item>
+        <item>Normaali</item>
+        <item>Suurentunut</item>
+        <item>Korkea</item>
+    </array>
+    <array name="bone_leval">
+        <item>Riittämätön</item>
+        <item>Normaali</item>
+        <item>Hyvä</item>
+    </array>
+    <array name="brm_leval">
+        <item>Tavoitteita ei saavutettu</item>
+        <item>Tavoite saavutettu</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Hyvin alhainen</item>
+        <item>Kohtuullinen</item>
+        <item>Korkea</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Kokeile painaa kellon painiketta. Jos näyttö on pois päältä, kytke kello lataukseen.</item>
+        <item>Jos ranneke on ladattu, mutta puhelin ei havaitse sitä, kokeile käynnistää puhelimen Bluetooth uudelleen.</item>
+        <item>Jos ranneke on ladattu, mutta puhelin ei havaitse sitä, kokeile käynnistää puhelimen Bluetooth uudelleen.</item>
+        <item>Jos Bluetoothin uudelleenkäynnistys ei ratkaise ongelmaa, kokeile käynnistää puhelin uudelleen.</item>
+        <item>Kellon tietoja ei voi synkronoida, kun harjoitus on käynnissä. Lopeta harjoittelu ja yritä uudelleen.</item>
+        <item>Jos ranneke on ladattu, mutta puhelin ei havaitse sitä, kokeile käynnistää puhelimen Bluetooth uudelleen.</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Onko kello ladattu?</item>
+        <item>Onko tämä kello pariliitetty toiseen laitteeseen?</item>
+        <item>Kokeile käynnistää Bluetooth uudelleen</item>
+        <item>Kokeile käynnistää puhelimesi uudelleen</item>
+        <item>Tietoja ei voi synkronoida harjoituksen aikana</item>
+        <item>Tietoja ei voi synkronoida harjoituksen aikana</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Shenzhen</item>
+        <item>Foshan</item>
+        <item>Dongguan</item>
+        <item>Peking</item>
+        <item>Nanjing</item>
+        <item>Suzhou</item>
+        <item>Changzhou</item>
+        <item>Jinan</item>
+        <item>Qingdao</item>
+        <item>Hangzhou</item>
+        <item>Ningbo</item>
+        <item>Zhengzhou</item>
+        <item>Kaifeng</item>
+        <item>Shanghai</item>
+        <item>Shijiazhuang</item>
+        <item>Baoding</item>
+        <item>Chengdu</item>
+        <item>Mianyang</item>
+        <item>Shenyang</item>
+        <item>Dalian</item>
+    </array>
+    <array name="common_level">
+        <item>Riittämätön</item>
+        <item>Normaali</item>
+        <item>Hyvä</item>
+    </array>
+    <array name="contact_ways">
+        <item>Sähköposti</item>
+        <item>Matkapuhelinnumero</item>
+        <item>WeChat-tunnus</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Ei fitness-harjoittelukokemusta</item>
+        <item>Hieman fitness-harjoittelukokemusta</item>
+        <item>Monipuolisesti fitness-harjoittelukokemusta ja hyvä kunto</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Helppo</item>
+        <item>Keskitaso</item>
+        <item>Edistynyt</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Ei tarpeeksi tietoja</item>
+        <item>Epänormaali sydämenlyönti</item>
+        <item>Ei havaittuja poikkeavuuksia</item>
+        <item>Ei tarpeeksi tietoja</item>
+        <item>Ei havaittuja poikkeavuuksia</item>
+        <item />
+        <item>Ei havaittuja poikkeavuuksia</item>
+        <item>Huono signaalin laatu</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Säädä käyttötapaa ja yritä uudelleen.</item>
+        <item>Vain viitteellinen. Ota yhteyttä lääkäriin, jos olosi on epämukava.</item>
+        <item>Vain viitteellinen. Ota yhteyttä lääkäriin, jos olosi on epämukava.</item>
+        <item>Säädä käyttötapaa ja yritä uudelleen.</item>
+        <item>Vain viitteellinen. Ota yhteyttä lääkäriin, jos olosi on epämukava.</item>
+        <item />
+        <item>Vain viitteellinen. Ota yhteyttä lääkäriin, jos olosi on epämukava.</item>
+        <item>Säädä käyttötapaa ja yritä uudelleen.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00.00</item>
+        <item>06.00</item>
+        <item>12.00</item>
+        <item>18.00</item>
+        <item>23.59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Tavoitteena rasvanpoltto</item>
+        <item>Tavoitteena kehon kiinteytys</item>
+        <item>Tavoitteena lihaksien kasvatus</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Laihdutus</item>
+        <item>Kiinteytys</item>
+        <item>Massan saanti</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>Maanantai</item>
+        <item>Tiistai</item>
+        <item>Keskiviikko</item>
+        <item>Torstai</item>
+        <item>Perjantai</item>
+        <item>Lauantai</item>
+        <item>Sunnuntai</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Ma</item>
+        <item>Ti</item>
+        <item>Ke</item>
+        <item>To</item>
+        <item>Pe</item>
+        <item>La</item>
+        <item>Su</item>
+    </array>
+    <array name="hr_sport">
+        <item>Sykealue: Kevyt</item>
+        <item>Sykealue: Intensiivinen</item>
+        <item>Sykealue: Aerobinen</item>
+        <item>Sykealue: Anaerobinen</item>
+        <item>Sykealue: VO₂ maksimi</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Kevyt</item>
+        <item>Raskas</item>
+        <item>Aerobinen</item>
+        <item>Anaerobinen</item>
+        <item>VO₂ maks.</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Kainalo</item>
+        <item>Suu</item>
+        <item>Peräsuoli</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Ranne</item>
+        <item>Otsa</item>
+        <item>Korvantaus</item>
+        <item>Sisäkorva</item>
+        <item>Kaula</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Kainalo</item>
+        <item>Suu</item>
+        <item>Peräsuoli</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Rinta</item>
+        <item>Kainalo</item>
+        <item>Nivunen</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Sulje</item>
+        <item>Lähellä</item>
+        <item>Kaukana</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Napauta rannekkeen painiketta ja tarkista, syttyykö näyttöön valo. Jos niin ei käy, lataa ranneke.\n\nLataa laite ennen kuin %1$s tai %2$s pariliitetään.</item>
+        <item>Jos ranneke on ladattu, mutta puhelin ei havaitse sitä, kokeile käynnistää puhelimen Bluetooth uudelleen.</item>
+        <item>Jos ranneke on ladattu, mutta puhelin ei havaitse sitä, kokeile käynnistää puhelimen Bluetooth uudelleen.</item>
+        <item>Jos Bluetoothin uudelleenkäynnistys ei ratkaise ongelmaa, kokeile käynnistää puhelin uudelleen.</item>
+        <item>Jos Bluetoothin uudelleenkäynnistys ei ratkaise ongelmaa, kokeile käynnistää puhelin uudelleen.</item>
+        <item>Jos Bluetoothin uudelleenkäynnistys ei ratkaise ongelmaa, kokeile käynnistää puhelin uudelleen.</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Onko ranneke ladattu?</item>
+        <item>Onko tämä ranneke pariliitetty toiseen laitteeseen?</item>
+        <item>Onko ranneke ladattu?</item>
+        <item>Kokeile käynnistää puhelimesi uudelleen</item>
+        <item>Onko ranneke ladattu?</item>
+        <item>Onko ranneke ladattu?</item>
+    </array>
+    <array name="month_list">
+        <item>Tammi</item>
+        <item>Helmi</item>
+        <item>Maalis</item>
+        <item>Huhti</item>
+        <item>Touko</item>
+        <item>Kesä</item>
+        <item>Heinä</item>
+        <item>Elo</item>
+        <item>Syys</item>
+        <item>Loka</item>
+        <item>Marras</item>
+        <item>Joulu</item>
+    </array>
+    <array name="month_titles">
+        <item>Tammikuu</item>
+        <item>Helmikuu</item>
+        <item>Maaliskuu</item>
+        <item>Huhtikuu</item>
+        <item>Toukokuu</item>
+        <item>Kesäkuu</item>
+        <item>Heinäkuu</item>
+        <item>Elokuu</item>
+        <item>Syyskuu</item>
+        <item>Lokakuu</item>
+        <item>Marraskuu</item>
+        <item>Joulukuu</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Riittämätön</item>
+        <item>Normaali</item>
+        <item>Hyvä</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Erittäin huono</item>
+        <item>Huono</item>
+        <item>Keskiverto</item>
+        <item>Hyvä</item>
+        <item>Erittäin hyvä</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Tammi</item>
+        <item>Helmi</item>
+        <item>Maalis</item>
+        <item>Huhti</item>
+        <item>Touko</item>
+        <item>Kesä</item>
+        <item>Heinä</item>
+        <item>Elo</item>
+        <item>Syys</item>
+        <item>Loka</item>
+        <item>Marras</item>
+        <item>Joulu</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s ei enää toimi, jos sitä ei käytetä pitkään aikaan. Ravista tuotetta %2$s ja yritä uudelleen.</item>
+        <item>Laitteen %s akun varaus kestää yhden vuoden. Jos olet käyttänyt sitä pidempään, virta voi olla kulunut loppuun.</item>
+        <item>Kytke ensin Bluetooth pois päältä muista laitteista, ja pariliitä sitten puhelimesi kanssa.</item>
+        <item>Jos %s on ladattu, mutta puhelin ei havaitse sitä, kokeile käynnistää puhelimen Bluetooth uudelleen.</item>
+        <item>Jos Bluetoothin uudelleenkäynnistys ei ratkaise ongelmaa, kokeile käynnistää puhelin uudelleen.</item>
+        <item>Napauta juoksukenkien tietoja ja siirry seuraavalle aktiviteettisivulle tietojen automaattista synkronointia varten</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Ravista laitetta %s</item>
+        <item>Onko %s ladattu?</item>
+        <item>Onko %s pariliitetty toiseen lähellä olevaan puhelimeen?</item>
+        <item>Käynnistä Bluetooth uudelleen</item>
+        <item>Kokeile käynnistää puhelimesi uudelleen</item>
+        <item>Miten tiedot synkronoidaan?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Liikalihava</item>
+        <item>Ylipaino</item>
+        <item>Vanttera</item>
+        <item>Uupuu\nliikuntaa</item>
+        <item>Tasapainoinen</item>
+        <item>Tasapainoinen\nlihaksikas</item>
+        <item>Laiha</item>
+        <item>Tasapainoinen\nlaiha</item>
+        <item>Laiha\nlihaksikas</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>Maanantai</item>
+        <item>Tiistai</item>
+        <item>Keskiviikko</item>
+        <item>Torstai</item>
+        <item>Perjantai</item>
+        <item>Lauantai</item>
+        <item>Sunnuntai</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Aktiviteetti</item>
+        <item>Hidas kävely</item>
+        <item>Kävely</item>
+        <item>Nopea kävely</item>
+        <item>Juoksu</item>
+        <item>Seisominen</item>
+        <item>Istuminen</item>
+        <item>Kevyt aktiivisuus</item>
+        <item>Ei käytössä</item>
+        <item>Ladataan…</item>
+        <item>Makuulla</item>
+    </array>
+    <array name="timeline_type">
+        <item>Aktiviteetti</item>
+        <item>Hidas kävely</item>
+        <item>Kävely</item>
+        <item>Nopea kävely</item>
+        <item>Juoksu</item>
+        <item>Seisominen</item>
+        <item>Istuminen</item>
+        <item>Kevyt aktiivisuus</item>
+        <item>Ei käytössä</item>
+        <item>Ladataan…</item>
+        <item>Makuulla</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Ei rajoitettu</item>
+        <item>Helppo, 1</item>
+        <item>Keskitaso, 2</item>
+        <item>Edistynyt, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normaali</item>
+        <item>Korkea</item>
+        <item>Erittäin korkea</item>
+    </array>
+    <array name="water_leval">
+        <item>Riittämätön</item>
+        <item>Normaali</item>
+        <item>Hyvä</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_name">
+        <item>Su</item>
+        <item>Ma</item>
+        <item>Ti</item>
+        <item>Ke</item>
+        <item>To</item>
+        <item>Pe</item>
+        <item>La</item>
+    </array>
+    <array name="weeks">
+        <item>Maanantai</item>
+        <item>Tiistai</item>
+        <item>Keskiviikko</item>
+        <item>Torstai</item>
+        <item>Perjantai</item>
+        <item>Lauantai</item>
+        <item>Sunnuntai</item>
+    </array>
+    <array name="weeks_short">
+        <item>Ma</item>
+        <item>Ti</item>
+        <item>Ke</item>
+        <item>To</item>
+        <item>Pe</item>
+        <item>La</item>
+        <item>Su</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Alipainoinen</item>
+        <item>Tasapainoinen</item>
+        <item>Ylipaino</item>
+        <item>Liikalihava</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Sijoita vaaka mahdollisimman lähelle reititintä varmistaaksesi voimakkaan Wi-Fi-signaalin</item>
+        <item>· Vahvista, onko Wi-Fi-yhteyden syötetty salasana oikein.</item>
+        <item>· Yhdistä matkapuhelimesi Wi-Fi-kohdereitittimeen ja yritä avata verkkosivu tarkistaaksesi, oletko yhteydessä Internetiin.</item>
+        <item>· Jos 2,4 GHz:n taajuus on poistettu käytöstä, ota se käyttöön ja valitse se. Vaaka ei tue 5 GHz:n Wi-Fi-taajuutta. \n· Jos kaksikaistainen yhteys on käytössä, poista se käytöstä välttääksesi 5 GHz:n verkon aiheuttaman määritysvirheen.</item>
+        <item>· Jos Wi-Fi-reititin on yhdistetty Internetiin, Wi-Fi-signaali on voimakas ja reitittimen 2,4 GHz:n taajuuskaista on käytössä ja kaksikaistainen Wi-Fi poistettu käytöstä, kokeile käynnistää reititin uudelleen.</item>
+        <item>· Jos reitittimen uudelleenkäynnistys ei toimi, kokeile käynnistää puhelin uudelleen.</item>
+        <item>· Jos reitittimen uudelleenkäynnistys ei toimi, kokeile asettaa akku uudelleen.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Onko vaaka paikassa, jossa on voimakas Wi-Fi-signaali?</item>
+        <item>2. Onko Wi-Fi-salasana oikein?</item>
+        <item>3. Onko Wi-Fi-reititin yhdistetty Internetiin oikein?</item>
+        <item>4. Onko reitittimen 2,4 GHz:n taajuus poistettu käytöstä? Tai onko kaksikaistainen Wi-Fi käytössä?</item>
+        <item>5. Kokeile käynnistää reititin uudelleen.</item>
+        <item>6. Kokeile käynnistää puhelin uudelleen.</item>
+        <item>7. Kokeile käynnistää laite uudelleen.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>2,4 GHz:n Wi-Fi tarkoittaa, että langaton reititin toimii 2,4 GHz:n taajuudella.\n5 GHz:n Wi-Fi tarkoittaa, että langaton reititin toimii 5 GHz:n taajuudella.</item>
+        <item>Määritä reititin seuraavien ohjeiden mukaisesti:\n1. Kirjoita reitittimen kirjautumisosoite selaimen osoitepalkkiin ja kirjaudu langattoman reitittimen käyttöliittymään. \n2. Etsi langattoman reitittimen Asetukset-painike. \n3. Poista Kaksikaistainen-kohdan valinta. \n4. Ota 2,4 GHz:n Wi-Fi käyttöön.</item>
+        <item>Voit tarkistaa Wi-Fi-taajuuskaistan seuraavilla menetelmillä:\n1. Valitse tietokoneesi Wi-Fi-luettelosta [WLAN] &amp;gt; [Ominaisuudet] &amp;gt; [Verkkokaista]. \n2. Kirjaudu reitittimen käyttöliittymään.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Mitä 2,4 GHz:n Wi-Fi ja 5 GHz:n Wi-Fi ovat?</item>
+        <item>· Miten otan reitittimeni 2,4 GHz:n Wi-Fi-yhteyden käyttöön?</item>
+        <item>· Miten tarkistan Wi-Fi-taajuuskaistan?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Normaali</item>
+        <item>Ylipaino</item>
+        <item>Liikalihava</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> lbs</item>
+    </array>
+</resources>

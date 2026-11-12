@@ -1,0 +1,963 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="Ndays">
+        <item quantity="one">1 день</item>
+        <item quantity="other">%1$d дн.</item>
+    </plurals>
+    <plurals name="Nhours">
+        <item quantity="one">1 година</item>
+        <item quantity="other">%1$d год</item>
+    </plurals>
+    <plurals name="Nminutes">
+        <item quantity="one">1 хвилина</item>
+        <item quantity="other">%1$d хв</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="one">У зв’язку з оновленням бренду інформацію облікового запису має бути підтверджено вашим опікуном, щоб захистити ваші дані. Зробіть це якомога швидке. В іншому разі ваш обліковий запис буде заморожено через %1$sдень.</item>
+        <item quantity="few">У зв’язку з оновленням бренду інформацію облікового запису має бути підтверджено вашим опікуном, щоб захистити ваші дані. Зробіть це якомога швидке. В іншому разі ваш обліковий запис буде заморожено через %1$sдні.</item>
+        <item quantity="many">У зв’язку з оновленням бренду інформацію облікового запису має бути підтверджено вашим опікуном, щоб захистити ваші дані. Зробіть це якомога швидке. В іншому разі ваш обліковий запис буде заморожено через %1$sднів.</item>
+        <item quantity="other">У зв’язку з оновленням бренду інформацію облікового запису має бути підтверджено вашим опікуном, щоб захистити ваші дані. Зробіть це якомога швидке. В іншому разі ваш обліковий запис буде заморожено через %1$sднів.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="one">Ви вичерпали спроби ввести ім&apos;я облікового запису або пароль. Спробуйте ще через %s хвилину</item>
+        <item quantity="few">Ви вичерпали спроби ввести ім&apos;я облікового запису або пароль. Спробуйте ще через %s хвилини</item>
+        <item quantity="many">Ви вичерпали спроби ввести ім&apos;я облікового запису або пароль. Спробуйте ще через %s хвилин</item>
+        <item quantity="other">Ви вичерпали спроби ввести ім&apos;я облікового запису або пароль. Спробуйте ще через %s хвилин</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="one">Неправильне ім&apos;я облікового запису або пароль. Залишилась %s спроба</item>
+        <item quantity="few">Неправильне ім&apos;я облікового запису або пароль. Залишилося %s спроби</item>
+        <item quantity="many">Неправильне ім&apos;я облікового запису або пароль. Залишилося %s спроб</item>
+        <item quantity="other">Неправильне ім&apos;я облікового запису або пароль. Залишилося %s спроб</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="one">%d курс</item>
+        <item quantity="few">%d курса</item>
+        <item quantity="many">%d курсів</item>
+        <item quantity="other">%d курсів</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="one">Повторне вібрування за %s хв.</item>
+        <item quantity="few">Повторне вібрування за %s хв.</item>
+        <item quantity="many">Повторне вібрування за %s хв.</item>
+        <item quantity="other">Повторне вібрування за %s хв.</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="one">Сьогодні ви обійшли %d%% користувачів</item>
+        <item quantity="few">Сьогодні ви обійшли %d%% користувачів</item>
+        <item quantity="many">Сьогодні ви обійшли %d%% користувачів</item>
+        <item quantity="other">Сьогодні ви обійшли %d%% користувачів</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="one">До списку програм можна додати не більше %1$d програми</item>
+        <item quantity="few">До списку програм можна додати не більше %1$d програм</item>
+        <item quantity="many">До списку програм можна додати не більше %1$d програм</item>
+        <item quantity="other">До списку програм можна додати не більше %1$d програм</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="one">До списку &quot;Більше&quot; можна додати не більше %1$d програми</item>
+        <item quantity="few">До списку &quot;Більше&quot; можна додати не більше %1$d програм</item>
+        <item quantity="many">До списку &quot;Більше&quot; можна додати не більше %1$d програм</item>
+        <item quantity="other">До списку &quot;Більше&quot; можна додати не більше %1$d програм</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="one">У порівнянні з %1$d днем тому</item>
+        <item quantity="few">У порівнянні з %1$d днями тому</item>
+        <item quantity="many">У порівнянні з %1$d днями тому</item>
+        <item quantity="other">У порівнянні з %1$d днями тому</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="one">Відкалібровано на %d день</item>
+        <item quantity="few">Відкалібровано на %d дні</item>
+        <item quantity="many">Відкалібровано на %d днів</item>
+        <item quantity="other">Відкалібровано %d днів тому</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="one">Для дослідницького проекту з вимірювання артеріального тиску, започаткованого Першою лікарнею Пекінського університету, потрібне калібрування кожен %d день</item>
+        <item quantity="few">Для дослідницького проекту з вимірювання артеріального тиску, започаткованого Першою лікарнею Пекінського університету, потрібне калібрування кожні %d дня</item>
+        <item quantity="many">Для дослідницького проекту з вимірювання артеріального тиску, започаткованого Першою лікарнею Пекінського університету, потрібне калібрування кожні %d днів</item>
+        <item quantity="other">Для дослідницького проекту з вимірювання артеріального тиску, започаткованого Першою лікарнею Пекінського університету, потрібне калібрування кожні %d днів</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="one">Відкалібрувати за %d день</item>
+        <item quantity="few">Відкалібрувати за %d дні</item>
+        <item quantity="many">Відкалібрувати за %d днів</item>
+        <item quantity="other">Відкалібрувати за %d днів</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="one">Досягнута %d мета</item>
+        <item quantity="few">Досягнуто %d мети</item>
+        <item quantity="many">Досягнуто %d цілей</item>
+        <item quantity="other">Досягнуто %d цілей</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="one">%d об&apos;єкту необхідна ваша увага</item>
+        <item quantity="few">%d об&apos;єктам необхідна ваша увага</item>
+        <item quantity="many">%d об&apos;єктам необхідна ваша увага</item>
+        <item quantity="other">%d об&apos;єктам необхідна ваша увага</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="one">%d об&apos;єкт не досяг мети</item>
+        <item quantity="few">%d об&apos;єкта не досягли мети</item>
+        <item quantity="many">%d об&apos;єктів не досягли мети</item>
+        <item quantity="other">%d об&apos;єктів не досягли мети</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="one">Вітаємо!\nЗа останні %1$d день ви набрали</item>
+        <item quantity="few">Вітаємо!\nЗа останні %1$d дня ви набрали</item>
+        <item quantity="many">Вітаємо!\nЗа останні %1$d днів ви набрали</item>
+        <item quantity="other">Вітаємо!\nЗа останні %1$d дня ви набрали</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="one">бал</item>
+        <item quantity="few">бали</item>
+        <item quantity="many">балів</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="one">Можна додати не більше %1$d головного контакта. Вони автоматично синхронізуються з годинником</item>
+        <item quantity="few">Можна додати не більше %1$d головних контактів. Вони автоматично синхронізуються з годинником</item>
+        <item quantity="many">Можна додати не більше %1$d головних контактів. Вони автоматично синхронізуються з годинником</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="one">%d курс</item>
+        <item quantity="few">%d курса</item>
+        <item quantity="many">%d курсів</item>
+        <item quantity="other">%d курсів</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="one">Курс починається через %d день</item>
+        <item quantity="few">Курс починається через %d дні</item>
+        <item quantity="many">Курс починається через %d днів</item>
+        <item quantity="other">Курс починається через %d днів</item>
+    </plurals>
+    <plurals name="daily_interval">
+        <item quantity="one">день</item>
+        <item quantity="other">%1$d дн.</item>
+    </plurals>
+    <plurals name="days_after">
+        <item quantity="one">за %1$d дн.</item>
+        <item quantity="other">за %1$d дн.</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="one">%1$d дн. тому</item>
+        <item quantity="other">%1$d дн. тому</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="one">Завантажень: %d</item>
+        <item quantity="few">Завантажень: %d</item>
+        <item quantity="many">Завантажень: %d</item>
+        <item quantity="other">Завантажень: %d</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="one">%1$d с</item>
+        <item quantity="few">%1$d с</item>
+        <item quantity="many">%1$d с</item>
+        <item quantity="other">%1$d с</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="one">Інтервал визначення даних: %1$s с</item>
+        <item quantity="few">Інтервал визначення даних: %1$s с</item>
+        <item quantity="many">Інтервал визначення даних: %1$s с</item>
+        <item quantity="other">Інтервал визначення даних: %1$s с</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="one">%1$s с</item>
+        <item quantity="few">%1$s с</item>
+        <item quantity="many">%1$s с</item>
+        <item quantity="other">%1$s с</item>
+    </plurals>
+    <plurals name="endByCount">
+        <item quantity="one">; 1 раз</item>
+        <item quantity="other">; повністю повторювати %1$d раз.</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="one">%d нагадування</item>
+        <item quantity="few">%d нагадування</item>
+        <item quantity="many">%d нагадувань</item>
+        <item quantity="other">%d нагадувань</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">Перемотати вперед на %d секунду</item>
+        <item quantity="few">Перемотати вперед на %d секунди</item>
+        <item quantity="many">Перемотати вперед на %d секунд</item>
+        <item quantity="other">Перемотати вперед на %d секунди</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">Перемотати назад на %d секунду</item>
+        <item quantity="few">Перемотати назад на %d секунди</item>
+        <item quantity="many">Перемотати назад на %d секунд</item>
+        <item quantity="other">Перемотати назад на %d секунди</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="one">%1$d ккал</item>
+        <item quantity="few">%1$d ккал</item>
+        <item quantity="many">%1$d ккал</item>
+        <item quantity="other">%1$d ккал</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="one">%1$d ккал</item>
+        <item quantity="few">%1$d ккал</item>
+        <item quantity="many">%1$d ккал</item>
+        <item quantity="other">%1$d ккал</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="one">%1$s урок</item>
+        <item quantity="few">%1$s уроки</item>
+        <item quantity="many">%1$s уроків</item>
+        <item quantity="other">%1$s уроків</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="one">%1$s менструального циклу. Залишилось: %2$s.</item>
+        <item quantity="few">%1$s менструального циклу. Залишилось: %2$s.</item>
+        <item quantity="many">%1$s менструального циклу. Залишилось: %2$s.</item>
+        <item quantity="other">%1$s менструального циклу. Залишилось: %2$s.</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="one">Приблизно %1$s менструального циклу. Залишилось: %2$s.</item>
+        <item quantity="few">Приблизно %1$s менструального циклу. Залишилось: %2$s.</item>
+        <item quantity="many">Приблизно %1$s менструального циклу. Залишилось: %2$s.</item>
+        <item quantity="other">Приблизно %1$s менструального циклу. Залишилось: %2$s.</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="one">%1$s менструального циклу. Залишилось: приблизно %2$s.</item>
+        <item quantity="few">%1$s менструального циклу. Залишилось: приблизно %2$s.</item>
+        <item quantity="many">%1$s менструального циклу. Залишилось: приблизно %2$s.</item>
+        <item quantity="other">%1$s менструального циклу. Залишилось: приблизно %2$s.</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="one">%1$s глядач</item>
+        <item quantity="few">%1$s глядача</item>
+        <item quantity="many">%1$s глядачів</item>
+        <item quantity="other">%1$s глядачів</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">День %1$d</item>
+        <item quantity="few">День %1$d</item>
+        <item quantity="many">День %1$d</item>
+        <item quantity="other">День %1$d</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="one">%1$d дн</item>
+        <item quantity="few">%1$d дн</item>
+        <item quantity="many">%1$d дн</item>
+        <item quantity="other">%1$d дн</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="one">Скасувати (%1$dс)</item>
+        <item quantity="few">Скасувати (%1$dс)</item>
+        <item quantity="many">Скасувати (%1$dс)</item>
+        <item quantity="other">Скасувати (%1$dс)</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="one">Іде завантаження. Зачекайте приблизно %s хв.</item>
+        <item quantity="few">Іде завантаження. Зачекайте приблизно %s хв.</item>
+        <item quantity="many">Іде завантаження. Зачекайте приблизно %s хв.</item>
+        <item quantity="other">Іде завантаження. Зачекайте приблизно %s хв.</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="one">Завершено %d тренування</item>
+        <item quantity="few">Завершено %d тренування</item>
+        <item quantity="many">Завершено %d тренувань</item>
+        <item quantity="other">Завершено %d тренувань</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="one">%d раз/хв.</item>
+        <item quantity="few">%d рази/хв.</item>
+        <item quantity="many">%d разів/хв.</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="one">На головній сторінці має бути принаймні %1$d картка</item>
+        <item quantity="few">На головній сторінці має бути принаймні %1$d картки</item>
+        <item quantity="many">На головній сторінці має бути принаймні %1$d карток</item>
+        <item quantity="other">На головній сторінці має бути принаймні %1$d карток</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="one">Середня частота серцебиття %1$d уд./хв.</item>
+        <item quantity="few">Середня частота серцебиття %1$d уд./хв.</item>
+        <item quantity="many">Середня частота серцебиття %1$d уд./хв.</item>
+        <item quantity="other">Середня частота серцебиття %1$d уд./хв.</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="one">раз./хв.</item>
+        <item quantity="few">рази/хв.</item>
+        <item quantity="many">разів/хв.</item>
+        <item quantity="other">разів/хв.</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="one">%d хвилину тому</item>
+        <item quantity="few">%d хвилини тому</item>
+        <item quantity="many">%d хвилин тому</item>
+        <item quantity="other">%d хвилин тому</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="one">Сеанс %d</item>
+        <item quantity="few">Сеанс %d</item>
+        <item quantity="many">Сеанс %d</item>
+        <item quantity="other">Сеанс %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="one">Нагадати за %d секунду після вхідного дзвінка</item>
+        <item quantity="few">Нагадати за %d секунди після вхідного дзвінка</item>
+        <item quantity="many">Нагадати за %d секунд після вхідного дзвінка</item>
+        <item quantity="other">Нагадати за %d секунд після вхідного дзвінка</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="one">Можна додати не більше %1$d відповіді на SMS</item>
+        <item quantity="few">Можна додати не більше %1$d відповідей на SMS</item>
+        <item quantity="many">Можна додати не більше %1$d відповідей на SMS</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="one">Збережіть принаймні %1$d відповідь у SMS</item>
+        <item quantity="few">Збережіть принаймні %1$d відповіді у SMS</item>
+        <item quantity="many">Збережіть принаймні %1$d відповідей у SMS</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="one">Введіть до %d символа</item>
+        <item quantity="few">Введіть до %d символів</item>
+        <item quantity="many">Введіть до %d символів</item>
+        <item quantity="other">Введіть до %d символів</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="one">%1$d запис кіл</item>
+        <item quantity="few">%1$d записи кіл</item>
+        <item quantity="many">%1$d записів кіл</item>
+        <item quantity="other">%1$d записів кіл</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="one">%d перегляд</item>
+        <item quantity="few">%d перегляда</item>
+        <item quantity="many">%d переглядів</item>
+        <item quantity="other">%d переглядів</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="one">%1$d місяць</item>
+        <item quantity="few">%1$d місяці</item>
+        <item quantity="many">%1$d місяців</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="one">Близько %1$d хвилини на день</item>
+        <item quantity="few">Близько %1$d хвилин на день</item>
+        <item quantity="many">Близько %1$d хвилин на день</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="one">Останнє зарядження: %d дн тому</item>
+        <item quantity="few">Останнє зарядження: %d дн тому</item>
+        <item quantity="many">Останнє зарядження: %d дн тому</item>
+        <item quantity="other">Останнє зарядження: %d дн тому</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="one">Мета досягнута: %d</item>
+        <item quantity="few">Мета досягнута: %d</item>
+        <item quantity="many">Мета досягнута: %d</item>
+        <item quantity="other">Мета досягнута: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="one">Кроків: %d</item>
+        <item quantity="few">Кроків: %d</item>
+        <item quantity="many">Кроків: %d</item>
+        <item quantity="other">Кроків: %d</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="one">%d %s</item>
+        <item quantity="few">%d %s</item>
+        <item quantity="many">%d %s</item>
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="monthly_interval">
+        <item quantity="one">місяць</item>
+        <item quantity="other">%1$d міс.</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d нове сповіщення</item>
+        <item quantity="few">%d нові сповіщення</item>
+        <item quantity="many">%d нових сповіщень</item>
+        <item quantity="other">%d нового сповіщення</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="one">%d&quot;</item>
+        <item quantity="few">%d&quot;</item>
+        <item quantity="many">%d&quot;</item>
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="one">%dсек</item>
+        <item quantity="few">%dсек</item>
+        <item quantity="many">%dсек</item>
+        <item quantity="other">%dсек</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="one">Старше %1$d року. Не вдалося проаналізувати %2$s</item>
+        <item quantity="few">Старше %1$d років. Не вдалося проаналізувати %2$s</item>
+        <item quantity="many">Старше %1$d років. Не вдалося проаналізувати %2$s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="one">Молодше %1$d року. Не вдалося проаналізувати %2$s</item>
+        <item quantity="few">Молодше %1$d років. Не вдалося проаналізувати %2$s</item>
+        <item quantity="many">Молодше %1$d років. Не вдалося проаналізувати %2$s</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="one">%s фт</item>
+        <item quantity="few">%s фт</item>
+        <item quantity="many">%s фт</item>
+        <item quantity="other">%s фт</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="one">Дюймів: %s</item>
+        <item quantity="few">Дюймів: %s</item>
+        <item quantity="many">Дюймів: %s</item>
+        <item quantity="other">Дюймів: %s</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="one">%d сек</item>
+        <item quantity="few">%d сек</item>
+        <item quantity="many">%d сек</item>
+        <item quantity="other">%d сек</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="one">тренування</item>
+        <item quantity="few">тренування</item>
+        <item quantity="many">тренувань</item>
+        <item quantity="other">тренувань</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="one">%d учасник</item>
+        <item quantity="few">%d учасника</item>
+        <item quantity="many">%d учасників</item>
+        <item quantity="other">%d учасників</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="one">хвилина</item>
+        <item quantity="few">хвилини</item>
+        <item quantity="many">хвилин</item>
+        <item quantity="other">хвилин</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="one">Можна додати не більше %1$d відповіді на SMS</item>
+        <item quantity="few">Можна додати не більше %1$d відповідей на SMS</item>
+        <item quantity="many">Можна додати не більше %1$d відповідей на SMS</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="one">Збережіть принаймні %1$d відповідь у SMS</item>
+        <item quantity="few">Збережіть принаймні %1$d відповіді у SMS</item>
+        <item quantity="many">Збережіть принаймні %1$d відповідей у SMS</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="one">Вибрано %1$d об&apos;єкт</item>
+        <item quantity="few">Вибрано %1$d об&apos;єкта</item>
+        <item quantity="many">Вибрано %1$d об&apos;єктів</item>
+        <item quantity="other">Вибрано %1$d об&apos;єктів</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="one">Ви їздили на велосипеді %1$d день тому</item>
+        <item quantity="few">Ви їздили на велосипеді %1$d дні тому</item>
+        <item quantity="many">Ви їздили на велосипеді %1$d днів тому</item>
+        <item quantity="other">Ви їздили на велосипеді %1$d днів тому</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="one">година</item>
+        <item quantity="few">години</item>
+        <item quantity="many">годин</item>
+        <item quantity="other">годин</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="one">ккал</item>
+        <item quantity="few">ккал</item>
+        <item quantity="many">ккал</item>
+        <item quantity="other">ккал</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="one">Ви бігали %1$d день тому</item>
+        <item quantity="few">Ви бігали %1$d дні тому</item>
+        <item quantity="many">Ви бігали %1$d днів тому</item>
+        <item quantity="other">Ви бігали %1$d днів тому</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="one">секунда</item>
+        <item quantity="few">секунди</item>
+        <item quantity="many">секунд</item>
+        <item quantity="other">секунд</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="one">%1$d аудіокліп виявлено сьогодні</item>
+        <item quantity="few">%1$d аудіокліпа виявлено сьогодні</item>
+        <item quantity="many">%1$d аудіокліпів виявлено сьогодні</item>
+        <item quantity="other">%1$d аудіокліпів виявлено сьогодні</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="one">Крок</item>
+        <item quantity="few">Кроки</item>
+        <item quantity="many">Кроків</item>
+        <item quantity="other">Кроків</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="one">Ви ходили пішки %1$d день тому</item>
+        <item quantity="few">Ви ходили пішки %1$d дні тому</item>
+        <item quantity="many">Ви ходили пішки %1$d днів тому</item>
+        <item quantity="other">Ви ходили пішки %1$d днів тому</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">%d день</item>
+        <item quantity="other">%d дн.</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">%d година</item>
+        <item quantity="other">%d год</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="one">Кроків: %d</item>
+        <item quantity="few">Кроків: %d</item>
+        <item quantity="many">Кроків: %d</item>
+        <item quantity="other">Кроків: %d</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="one">Показник якості дихання під час сну: %1$d. Рекомендуємо завжди уважно ставитися до дихання під час сну. У разі поганого самопочуття зверніться до лікаря</item>
+        <item quantity="few">Показник якості дихання під час сну: %1$d. Рекомендуємо завжди уважно ставитися до дихання під час сну. У разі поганого самопочуття зверніться до лікаря</item>
+        <item quantity="many">Показник якості дихання під час сну: %1$d. Рекомендуємо завжди уважно ставитися до дихання під час сну. У разі поганого самопочуття зверніться до лікаря</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip_short">
+        <item quantity="one">Оцінка якості дихання під час сну: %1$d. Приділяйте особливу увагу диханню під час сну. У разі поганого самопочуття зверніться до лікаря</item>
+        <item quantity="few">Оцінка якості дихання під час сну: %1$d. Приділяйте особливу увагу диханню під час сну. У разі поганого самопочуття зверніться до лікаря</item>
+        <item quantity="many">Оцінка якості дихання під час сну: %1$d. Приділяйте особливу увагу диханню під час сну. У разі поганого самопочуття зверніться до лікаря</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="one">Показник якості дихання під час сну: %1$d. Щоб визначити, чи є у вас проблеми з диханням під час сну, рекомендуємо звернутися по медичну консультацію</item>
+        <item quantity="few">Показник якості дихання під час сну: %1$d. Щоб визначити, чи є у вас проблеми з диханням під час сну, рекомендуємо звернутися по медичну консультацію</item>
+        <item quantity="many">Показник якості дихання під час сну: %1$d. Щоб визначити, чи є у вас проблеми з диханням під час сну, рекомендуємо звернутися по медичну консультацію</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip_short">
+        <item quantity="one">Оцінка якості дихання під час сну: %1$d. Якщо ця оцінка опускається ниже 80 декілька разів, зверніться до лікаря за консультацією</item>
+        <item quantity="few">Оцінка якості дихання під час сну: %1$d. Якщо ця оцінка опускається ниже 80 декілька разів, зверніться до лікаря за консультацією</item>
+        <item quantity="many">Оцінка якості дихання під час сну: %1$d. Якщо ця оцінка опускається ниже 80 декілька разів, зверніться до лікаря за консультацією</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="one">Показник якості дихання під час сну: %1$d. Так тримати</item>
+        <item quantity="few">Показник якості дихання під час сну: %1$d. Так тримати</item>
+        <item quantity="many">Показник якості дихання під час сну: %1$d. Так тримати</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip_short">
+        <item quantity="one">Оцінка якості дихання під час сну: %1$d. Так тримати</item>
+        <item quantity="few">Оцінка якості дихання під час сну: %1$d. Так тримати</item>
+        <item quantity="many">Оцінка якості дихання під час сну: %1$d. Так тримати</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="one">Ваша страховка закінчується через %1$d день, натисніть для оновлення</item>
+        <item quantity="few">Ваша страховка закінчується через %1$d дні, натисніть для оновлення</item>
+        <item quantity="many">Ваша страховка закінчується через %1$d днів, натисніть для оновлення</item>
+        <item quantity="other">Ваша страховка закінчується через %1$d днів, натисніть для оновлення</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="one">%d об&apos;єкт не було синхронізовано</item>
+        <item quantity="few">%d об&apos;єкта не були синхронізовані</item>
+        <item quantity="many">%d об&apos;єктів не були синхронізовані</item>
+        <item quantity="other">%d об&apos;єктів не були синхронізовані</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="one">%d об&apos;єкт не було синхронізовано</item>
+        <item quantity="few">%d об&apos;єкта не були синхронізовані</item>
+        <item quantity="many">%d об&apos;єктів не були синхронізовані</item>
+        <item quantity="other">%d об&apos;єктів не були синхронізовані</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="one">%1$d тренування на велосипеді</item>
+        <item quantity="few">%1$d тренування на велосипеді</item>
+        <item quantity="many">%1$d тренувань на велосипеді</item>
+        <item quantity="other">%1$d тренувань на велосипеді</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="one">%1$d тренування на еліптичному тренажері</item>
+        <item quantity="few">%1$d тренування на еліптичному тренажері</item>
+        <item quantity="many">%1$d тренувань на еліптичному тренажері</item>
+        <item quantity="other">%1$d тренувань на еліптичному тренажері</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="one">%1$d тренування у вільному стилі</item>
+        <item quantity="few">%1$d тренування у вільному стилі</item>
+        <item quantity="many">%1$d тренувань у вільному стилі</item>
+        <item quantity="other">%1$d тренувань у вільному стилі</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="one">%1$d бігове тренування</item>
+        <item quantity="few">%1$d бігових тренування</item>
+        <item quantity="many">%1$d бігових тренувань</item>
+        <item quantity="other">%1$d бігових тренувань</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="one">%1$d тренування плавання</item>
+        <item quantity="few">%1$d тренування плавання</item>
+        <item quantity="many">%1$d тренувань плавання</item>
+        <item quantity="other">%1$d тренувань плавання</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="one">Трунування: %1$d сеанс</item>
+        <item quantity="few">Трунування: %1$d сеанси</item>
+        <item quantity="many">Трунування: %1$d сеансів</item>
+        <item quantity="other">Трунування: %1$d сеансів</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="one">%1$d тренування тріатлону</item>
+        <item quantity="few">%1$d тренування тріатлону</item>
+        <item quantity="many">%1$d тренувань тріатлону</item>
+        <item quantity="other">%1$d тренувань тріатлону</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="one">%1$d тренування ходьби</item>
+        <item quantity="few">%1$d тренування ходьби</item>
+        <item quantity="many">%1$d тренувань ходьби</item>
+        <item quantity="other">%1$d тренувань ходьби</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="one">Вправи: %1$d сеанс</item>
+        <item quantity="few">Вправи: %1$d сеанси</item>
+        <item quantity="many">Вправи: %1$d сеансів</item>
+        <item quantity="other">Вправи: %1$d сеансів</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="one">Додайте до %d події</item>
+        <item quantity="few">Додайте до %d подій</item>
+        <item quantity="many">Додайте до %d подій</item>
+        <item quantity="other">Додайте до %d подій</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="one">Особистий рекорд: %d день</item>
+        <item quantity="few">Особистий рекорд: %d дні</item>
+        <item quantity="many">Особистий рекорд: %d днів</item>
+        <item quantity="other">Особистий рекорд: %d днів</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="one">Ви обійшли %d%% користувачів</item>
+        <item quantity="few">Ви обійшли %d%% користувачів</item>
+        <item quantity="many">Ви обійшли %d%% користувачів</item>
+        <item quantity="other">Ви обійшли %d%% користувачів</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="zero">Рази</item>
+        <item quantity="one">Раз</item>
+        <item quantity="few">Рази</item>
+        <item quantity="many">Разів</item>
+        <item quantity="other">Рази</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="one">день</item>
+        <item quantity="few">дні</item>
+        <item quantity="many">днів</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="zero">Оцінка</item>
+        <item quantity="one">Оцінка</item>
+        <item quantity="few">Оцінка</item>
+        <item quantity="many">Оцінка</item>
+        <item quantity="other">Оцінка</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="zero">%dразів</item>
+        <item quantity="one">%dраз</item>
+        <item quantity="other">%dразів</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="one">Показник сну вище на %d порівняно з попереднім місяцем.</item>
+        <item quantity="few">Показник сну вище на %d порівняно з попереднім місяцем.</item>
+        <item quantity="many">Показник сну вище на %d порівняно з попереднім місяцем.</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="one">Показник сну цього місяця складає %d, так тримати!</item>
+        <item quantity="few">Показник сну цього місяця складає %d, так тримати!</item>
+        <item quantity="many">Показник сну цього місяця складає %d, так тримати!</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="one">Показник сну вище на %d порівняно з попереднім тижнем.</item>
+        <item quantity="few">Показник сну вище на %d порівняно з попереднім тижнем.</item>
+        <item quantity="many">Показник сну вище на %d порівняно з попереднім тижнем.</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="one">Показник сну цього тижня складає %d, так тримати!</item>
+        <item quantity="few">Показник сну цього тижня складає %d, так тримати!</item>
+        <item quantity="many">Показник сну цього тижня складає %d, так тримати!</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="one">Сьогодні записано таку кількість аудіокліпів: %1$d</item>
+        <item quantity="few">Сьогодні записано таку кількість аудіокліпів: %1$d</item>
+        <item quantity="many">Сьогодні записано таку кількість аудіокліпів: %1$d</item>
+        <item quantity="other">Сьогодні записано таку кількість аудіокліпів: %1$d</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="one">Кліпів: %1$d</item>
+        <item quantity="few">Кліпів: %1$d</item>
+        <item quantity="many">Кліпів: %1$d</item>
+        <item quantity="other">Кліпів: %1$d</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="one">Може говорити ще %d секунду</item>
+        <item quantity="few">Може говорити ще %d секунди</item>
+        <item quantity="many">Може говорити ще %d секунд</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="one">Виконані активності: %2$s - %1$d сесія</item>
+        <item quantity="few">Виконані активності: %2$s - %1$d сесії</item>
+        <item quantity="many">Виконані активності: %2$s - %1$d сесій</item>
+        <item quantity="other">Виконані активності: %2$s - %1$d сесій</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="one">крок</item>
+        <item quantity="few">кроки</item>
+        <item quantity="many">кроків</item>
+        <item quantity="other">кроків</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="one">Крок</item>
+        <item quantity="few">Кроки</item>
+        <item quantity="many">Кроки</item>
+        <item quantity="other">Кроки</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="one">Крок/день</item>
+        <item quantity="few">Кроки/день</item>
+        <item quantity="many">Кроків/день</item>
+        <item quantity="other">Кроку/день</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; раз</item>
+        <item quantity="few">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; рази</item>
+        <item quantity="many">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; разів</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="one">Нагорі списку протягом &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; дня</item>
+        <item quantity="few">Нагорі списку протягом &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; днів</item>
+        <item quantity="many">Нагорі списку протягом &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; днів</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="one">На верхівці списку %1$d раз</item>
+        <item quantity="few">На верхівці списку протягом %1$d рази</item>
+        <item quantity="many">На верхівці списку протягом %1$d разів</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="one">На верхівці списку протягом %1$d дня</item>
+        <item quantity="few">На верхівці списку протягом %1$d днів</item>
+        <item quantity="many">На верхівці списку протягом %1$d днів</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="one">Співпадіння з %1$d другом:</item>
+        <item quantity="few">Співпадіння з %1$d друзями:</item>
+        <item quantity="many">Співпадіння з %1$d друзями:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="one">Бігав &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; раз</item>
+        <item quantity="few">Бігав &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; рази</item>
+        <item quantity="many">Бігав &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; разів</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="one">%1$d запис бігу не завантажено</item>
+        <item quantity="few">%1$d записи бігу не завантажено</item>
+        <item quantity="many">%1$d записів бігу не завантажено</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="one">%1$d учасник</item>
+        <item quantity="few">%1$d учасники</item>
+        <item quantity="many">%1$d учасників</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="zero">%dгодин</item>
+        <item quantity="one">%dгодина</item>
+        <item quantity="other">%dгодин</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="zero">%dхвилин</item>
+        <item quantity="one">%dхвилина</item>
+        <item quantity="other">%dхвилин</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="one">Кількість разів: %1$d</item>
+        <item quantity="few">Кількість разів: %1$d</item>
+        <item quantity="many">Кількість разів: %1$d</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="one">Вітаємо!\nЗа останні %1$d дн. ви схуднули на</item>
+        <item quantity="few">Вітаємо!\nЗа останні %1$d дн. ви схуднули на</item>
+        <item quantity="many">Вітаємо!\nЗа останні %1$d дн. ви схуднули на</item>
+        <item quantity="other">Congratulations! \n In %1$d days,</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="one">Необхідно присвоїти %1$d запис про вагу.</item>
+        <item quantity="few">Необхідно присвоїти %1$d записи про вагу.</item>
+        <item quantity="many">Необхідно присвоїти %1$d записів про вагу.</item>
+        <item quantity="other">Необхідно присвоїти %1$d записи про вагу.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="one">Можна додати не більше %1$d розкладу</item>
+        <item quantity="few">Можна додати не більше %1$d розкладів</item>
+        <item quantity="many">Можна додати не більше %1$d розкладів</item>
+        <item quantity="other">Можна додати не більше %1$d розкладів</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="one">Аналіз для людей старше %d року недоступний</item>
+        <item quantity="few">Аналіз для людей старше %d років недоступний</item>
+        <item quantity="many">Аналіз для людей старше %d років недоступний</item>
+        <item quantity="other">Аналіз для людей старше %d років недоступний</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="one">Аналіз для людей молодше %d року недоступний</item>
+        <item quantity="few">Аналіз для людей молодше %d років недоступний</item>
+        <item quantity="many">Аналіз для людей молодше %d років недоступний</item>
+        <item quantity="other">Аналіз для людей молодше %d років недоступний</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="one">%d ккал</item>
+        <item quantity="few">%d ккал</item>
+        <item quantity="many">%d ккал</item>
+        <item quantity="other">%d ккал</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="one">%d курс</item>
+        <item quantity="few">%d курсів</item>
+        <item quantity="many">%d курсів</item>
+        <item quantity="other">%d курси</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="one">Курс закінчується за %d день</item>
+        <item quantity="few">Курс закінчується за %d дні</item>
+        <item quantity="many">Курс закінчується за %d днів</item>
+        <item quantity="other">Курс закінчується за %d днів</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="one">%d перегляд</item>
+        <item quantity="few">%d переглядів</item>
+        <item quantity="many">%d переглядів</item>
+        <item quantity="other">%d перегляди</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="one">Всього завдань:%d</item>
+        <item quantity="few">Всього завдань:%d</item>
+        <item quantity="many">Всього завдань:%d</item>
+        <item quantity="other">Всього завдань:%d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="one">Пройдено раз: %d</item>
+        <item quantity="few">Пройдено раз: %d</item>
+        <item quantity="many">Пройдено раз: %d</item>
+        <item quantity="other">Пройдено раз: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="one">Починається через %d день</item>
+        <item quantity="few">Починається через %d дні</item>
+        <item quantity="many">Починається через %d днів</item>
+        <item quantity="other">Починається через %d днів</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="one">Тренувалися  %1$d  хв</item>
+        <item quantity="few">Тренувалися  %1$d  хв</item>
+        <item quantity="many">Тренувалися  %1$d  хв</item>
+        <item quantity="other">Тренувалися  %1$d  хв</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="one">Тренувалися  %1$d  сек</item>
+        <item quantity="few">Тренувалися  %1$d  сек</item>
+        <item quantity="many">Тренувалися  %1$d  сек</item>
+        <item quantity="other">Тренувалися  %1$d  сек</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="one">День %1$d програми тренувань: необхідно виконати %3$s (протягом %2$d хв)</item>
+        <item quantity="few">День %1$d програми тренувань: необхідно виконати %3$s (протягом %2$d хв)</item>
+        <item quantity="many">День %1$d програми тренувань: необхідно виконати %3$s (протягом %2$d хв)</item>
+        <item quantity="other">День %1$d програми тренувань: необхідно виконати %3$s (протягом %2$d хв)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="one"> %1$d  секунда</item>
+        <item quantity="few"> %1$d  секунди</item>
+        <item quantity="many"> %1$d  секунд</item>
+        <item quantity="other"> %1$d  секунд</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="one"> %1$d  раз</item>
+        <item quantity="few"> %1$d  рази</item>
+        <item quantity="many"> %1$d  разів</item>
+        <item quantity="other"> %1$d  разів</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="one">Зупинка на  %1$d  сек</item>
+        <item quantity="few">Зупинка на  %1$d  сек</item>
+        <item quantity="many">Зупинка на  %1$d  сек</item>
+        <item quantity="other">Зупинка на  %1$d  сек</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="one"> крок</item>
+        <item quantity="few"> кроків</item>
+        <item quantity="many"> кроків</item>
+        <item quantity="other"> кроки</item>
+    </plurals>
+    <plurals name="user_info_Nhours">
+        <item quantity="one">1 година</item>
+        <item quantity="other">%1$d год</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="one">Оскільки ви вказали вік менше ніж %1$d рік, користуватися програмою Zepp далі можна буде лише після того, як ми отримаємо авторизацію та згоду вашого опікуна.</item>
+        <item quantity="few">Оскільки ви вказали вік менше ніж %1$d роки, користуватися програмою Zepp далі можна буде лише після того, як ми отримаємо авторизацію та згоду вашого опікуна.</item>
+        <item quantity="many">Оскільки ви вказали вік менше ніж %1$d років, користуватися програмою Zepp далі можна буде лише після того, як ми отримаємо авторизацію та згоду вашого опікуна.</item>
+        <item quantity="other">Оскільки ви вказали вік менше ніж %1$d років, користуватися програмою Zepp далі можна буде лише після того, як ми отримаємо авторизацію та згоду вашого опікуна.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="one">В іншому разі ваш обліковий запис буде заморожено через %1$d день.</item>
+        <item quantity="few">В іншому разі ваш обліковий запис буде заморожено через %1$d дні.</item>
+        <item quantity="many">В іншому разі ваш обліковий запис буде заморожено через %1$d днів.</item>
+        <item quantity="other">В іншому разі ваш обліковий запис буде заморожено через %1$d днів.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="one">Віком до %1$d</item>
+        <item quantity="few">Віком до %1$d</item>
+        <item quantity="many">Віком до %1$d</item>
+        <item quantity="other">Віком до %1$d</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="one">Щоб захистити конфіденційність даних неповнолітніх, якщо вам ще не виповнився %1$dрік, ми вимагаємо дозволу та згоди вашого опікуна, перш ніж надавати вам послуги в повному обсязі.</item>
+        <item quantity="few">Щоб захистити конфіденційність даних неповнолітніх, якщо вам ще не виповнилося %1$dроки, ми вимагаємо дозволу та згоди вашого опікуна, перш ніж надавати вам послуги в повному обсязі.</item>
+        <item quantity="many">Щоб захистити конфіденційність даних неповнолітніх, якщо вам ще не виповнилося %1$dроків, ми вимагаємо дозволу та згоди вашого опікуна, перш ніж надавати вам послуги в повному обсязі.</item>
+        <item quantity="other">Щоб захистити конфіденційність даних неповнолітніх, якщо вам ще не виповнилося %1$dроків, ми вимагаємо дозволу та згоди вашого опікуна, перш ніж надавати вам послуги в повному обсязі.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="one">Підтвердьте, що вам не менше %1$dроку</item>
+        <item quantity="few">Підтвердьте, що вам не менше %1$dроків</item>
+        <item quantity="many">Підтвердьте, що вам не менше %1$dроків</item>
+        <item quantity="other">Підтвердьте, що вам не менше %1$dроків</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="one">%s фт</item>
+        <item quantity="few">%s фт</item>
+        <item quantity="many">%s фт</item>
+        <item quantity="other">%s фт</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="one">Дюймів: %s</item>
+        <item quantity="few">Дюймів: %s</item>
+        <item quantity="many">Дюймів: %s</item>
+        <item quantity="other">Дюймів: %s</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="one">%d ккал</item>
+        <item quantity="few">%d ккал</item>
+        <item quantity="many">%d ккал</item>
+        <item quantity="other">%d ккал</item>
+    </plurals>
+    <plurals name="weekly_interval">
+        <item quantity="one">тиждень</item>
+        <item quantity="other">%1$d тиж.</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="one">%d ккал</item>
+        <item quantity="few">%d ккал</item>
+        <item quantity="many">%d ккал</item>
+        <item quantity="other">%d ккал</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="one">%d хвилина</item>
+        <item quantity="few">%d хвилини</item>
+        <item quantity="many">%d хвилин</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="one">%d сесія</item>
+        <item quantity="few">%d сесії</item>
+        <item quantity="many">%d сесій</item>
+        <item quantity="other">%d сесій</item>
+    </plurals>
+    <plurals name="yearly_interval">
+        <item quantity="one">рік</item>
+        <item quantity="other">%1$d р.</item>
+    </plurals>
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/s10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.rainbow.titlebar.RainbowTitleBar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back_20_2x"
+        app:title="@string/ds_device_morning_greeting"
+        style="@style/Rainbow.TextAppearance.Title3"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/morning_greeting_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/size_64dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:ltv_checked="true"
+        app:ltv_title="@string/ds_device_morning_greeting"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/greeting_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/size_64dp"
+        app:layout_constraintTop_toBottomOf="@+id/morning_greeting_switch"
+        app:ltv_checked="true"
+        app:ltv_title="@string/morning_greeting_content_setting"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/content_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_15dp"
+        app:layout_constraintTop_toBottomOf="@+id/greeting_content"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

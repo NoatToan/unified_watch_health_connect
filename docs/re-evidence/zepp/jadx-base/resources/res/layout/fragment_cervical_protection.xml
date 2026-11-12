@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/headset_settings_cervical_protection_switch"
+        android:background="@drawable/shape_rect_white_corner_6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15.1dp"
+        android:minHeight="@dimen/size_64dp"
+        android:layout_marginStart="@dimen/size_15dp"
+        android:layout_marginEnd="@dimen/size_15dp"
+        app:ltv_checked="false"
+        app:ltv_title="@string/settings_item_cervical_protection"/>
+    <TextView
+        android:textSize="@dimen/size_16sp"
+        android:textColor="@color/s1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_24dp"
+        android:text="@string/headset_cervical_protection_how_title"
+        android:paddingStart="@dimen/size_24dp"
+        android:paddingEnd="@dimen/size_26dp"/>
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@color/s2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_11dp"
+        android:text="@string/headset_cervical_protection_how_content"
+        android:paddingStart="@dimen/size_24dp"
+        android:paddingEnd="@dimen/size_26dp"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>Svaki dan</item>
+        <item>Od ponedeljka do petka</item>
+        <item>Jednom</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>Efekat treninga (TE) vam pomaže da razumete uticaj vežbe na vašu kondiciju</item>
+        <item>Pruža maksimalne podatke o potrošnji kiseonika (VO₂ maks)</item>
+        <item>Sveobuhvatni statistički podaci i podešavanja aktivnosti</item>
+        <item>Podržava aktivnosti u bazenu, plivanju na otvorenom moru i triatlonu</item>
+        <item>Trenirajte u skladu sa ciljevima koje ste postavili</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>One key to control all with “Classmate Xiao Ai” \n Make your home smart with voice control, and it follows what you say</item>
+        <item>Transportation card, access card, UnionPay card \n For traveling, working, and consuming, just swipe your watch</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>One key to open Alexa \n Intelligent voice, do what you say</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item>* Samo za trčanje</item>
+        <item />
+        <item>* Samo za vežbu trčanja, potrebno je otvoriti u podešavanjima za vežbe</item>
+        <item />
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item />
+        <item />
+        <item />
+        <item />
+        <item>*Trenutno dostupno samo u određenim regionima.</item>
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Nadlaktica treba da bude otkrivena, a rukav udobno podvijen</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Trebalo bi da možete da zavučete jedan prst ispod manžetne. Suviše opuštene ili suviše stegnute manžetne mogu da utiču na preciznost merenja</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Prvo merenje</item>
+        <item>Drugo merenje</item>
+        <item>Treće merenje</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Zabeležite rezultat prvog merenja krvnog pritiska</item>
+        <item>Zabeležite rezultat drugog merenja krvnog pritiska</item>
+        <item>Zabeležite rezultat trećeg merenja krvnog pritiska</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Ниcкo</item>
+        <item>Нормално</item>
+        <item>Високо</item>
+        <item>Врло високо</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Нормално</item>
+        <item>Високо</item>
+        <item>Врло високо</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Врло лоше</item>
+        <item>Лоше</item>
+        <item>Нормалнo</item>
+        <item>Добро</item>
+        <item>Одлично</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Врло ниско</item>
+        <item>Ниcкo</item>
+        <item>Нормално</item>
+        <item>Увећано</item>
+        <item>Високо</item>
+    </array>
+    <array name="bone_leval">
+        <item>Недовољан</item>
+        <item>Нормалан</item>
+        <item>Добар</item>
+    </array>
+    <array name="brm_leval">
+        <item>Нису остварени циљеви</item>
+        <item>Циљ је постигнут</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Nisko</item>
+        <item>Srednja</item>
+        <item>Visoko</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Покушајте да притисните тастер на сату. Ако је екран сата искључен, прикључите га на пуњење.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Ако је наруквица напуњена, али телефон не може да је види, покушајте да рестартујете Bluetooth.</item>
+        <item>Ако рестарт Bluetooth-а не решава проблем, покушајте да рестартујете телефон.</item>
+        <item>Подаци сата се не могу синхронизовати током вежбања. Завршите сесију у покушајте опет.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Да ли је сат напуњен?</item>
+        <item>Да ли је сат упарен с другим уређајем?</item>
+        <item>Покушајте да рестартујете Bluetooth</item>
+        <item>Покушајте да рестартујете телефон</item>
+        <item>Не могу се синхронизовати подаци током вежбања</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Гуангџоу</item>
+        <item>Шенџен</item>
+        <item>Фошан</item>
+        <item>Дунгуан</item>
+        <item>Пекинг</item>
+        <item>Нанкинг</item>
+        <item>Суџоу</item>
+        <item>Чангџоу</item>
+        <item>Ђинан</item>
+        <item>Ћингдао</item>
+        <item>Хангџоу</item>
+        <item>Нингбо</item>
+        <item>Џенгџоу</item>
+        <item>Кајфенг</item>
+        <item>Шангај</item>
+        <item>Шиђаџуанг</item>
+        <item>Баодинг</item>
+        <item>Ченгду</item>
+        <item>Мјенјанг</item>
+        <item>Шенјанг</item>
+        <item>Даљен</item>
+    </array>
+    <array name="common_level">
+        <item>Недовољно</item>
+        <item>Нормално</item>
+        <item>Добро</item>
+    </array>
+    <array name="contact_ways">
+        <item>Имејл</item>
+        <item>Број телефона</item>
+        <item>WeChat ID</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Нова помоћ за фитнес тренинг</item>
+        <item>Са основним фитнес искуством</item>
+        <item>Са богатим фитнес искуством и у доброј форми</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Основно</item>
+        <item>Средње</item>
+        <item>Напредно</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Abnormalni otkucaji srca</item>
+        <item>Nema otkrivenih abnormalnosti</item>
+        <item>Nedovoljno podataka</item>
+        <item>Nedovoljno podataka</item>
+        <item>Nema otkrivenih abnormalnosti</item>
+        <item />
+        <item>Nema otkrivenih abnormalnosti</item>
+        <item>Loš kvalitet signala</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Samo za referencu. Konsultujte se sa lekarom ako osetite neku nelagodnost.</item>
+        <item>Samo za referencu. Konsultujte se sa lekarom ako osetite neku nelagodnost.</item>
+        <item>Samo za referencu. Konsultujte se sa lekarom ako osetite neku nelagodnost.</item>
+        <item>Prilagodite metod korišćenja i pokušajte ponovo.</item>
+        <item>Prilagodite metod korišćenja i pokušajte ponovo.</item>
+        <item>Prilagodite metod korišćenja i pokušajte ponovo.</item>
+        <item />
+        <item>Samo za referencu. Konsultujte se sa lekarom ako osetite neku nelagodnost.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Сагоревање масноћа</item>
+        <item>Обликовање тела</item>
+        <item>Изградња мишића</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Резање</item>
+        <item>Обликовање</item>
+        <item>Нагомилавање</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>Пoн</item>
+        <item>Уто</item>
+        <item>Срe</item>
+        <item>Чeт</item>
+        <item>Пeт</item>
+        <item>Сyб</item>
+        <item>Нeд</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Пoн</item>
+        <item>Uto.</item>
+        <item>Sre.</item>
+        <item>Čet.</item>
+        <item>Pet.</item>
+        <item>Сyб</item>
+        <item>Нeд</item>
+    </array>
+    <array name="hr_sport">
+        <item>Зона пулса: лаган</item>
+        <item>Зона пулса: интензиван</item>
+        <item>Зона пулса: аеробан</item>
+        <item>Зона пулса: анаеробан</item>
+        <item>Зона пулса: VO₂ max</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Лагано</item>
+        <item>Интензивно</item>
+        <item>Аеробно</item>
+        <item>Анаеробно</item>
+        <item>VO₂ max</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Pazuh</item>
+        <item>Usta</item>
+        <item>Rektum</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Ručni zglob</item>
+        <item>Čelo</item>
+        <item>Iza uveta</item>
+        <item>Puž (uvo)</item>
+        <item>Врат</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Pazuh</item>
+        <item>Usta</item>
+        <item>Rektum</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Prsa</item>
+        <item>Pazuh</item>
+        <item>Prepone</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Близу</item>
+        <item>Поред</item>
+        <item>Далеко</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Додирните дугме на наруквици и проверите да ли екран светли. Ако не светли, напуните наруквицу.\n\nНапуните уређај пре упаривања са %1$s или %2$s.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Ако је наруквица напуњена, али телефон не може да је види, покушајте да рестартујете Bluetooth.</item>
+        <item>Ако рестарт Bluetooth-а не решава проблем, покушајте да рестартујете телефон.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Да ли је наруквица напуњена?</item>
+        <item>Да ли је наруквица упарена с другим уређајем?</item>
+        <item>@string/help_title_2</item>
+        <item>Покушајте да рестартујете телефон</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>Јан</item>
+        <item>Феб</item>
+        <item>Мар</item>
+        <item>Апр</item>
+        <item>Мај</item>
+        <item>Јун</item>
+        <item>Јул</item>
+        <item>Авг</item>
+        <item>Сеп</item>
+        <item>Окт</item>
+        <item>Нов</item>
+        <item>Дец</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Недовољно</item>
+        <item>Нормално</item>
+        <item>Добро</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>Dnevni podsetnik za vreme</item>
+        <item>Obaveštenje o slaboj bateriji</item>
+        <item>Obaveštenja o cilju</item>
+        <item>Upozorenje u mirovanju</item>
+        <item>Dolazni poziv</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Врло лоше</item>
+        <item>Лоше</item>
+        <item>Просечно</item>
+        <item>Добро</item>
+        <item>Врло добро</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>Poslednji</item>
+        <item>Treći</item>
+        <item>Četvrti</item>
+        <item>Prvi</item>
+        <item>Drugi</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Јан</item>
+        <item>Феб</item>
+        <item>Март</item>
+        <item>Апр</item>
+        <item>Мај</item>
+        <item>Јун</item>
+        <item>Јул</item>
+        <item>Авг</item>
+        <item>Сеп</item>
+        <item>Окт</item>
+        <item>Нов</item>
+        <item>Дец</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s неће више радити када га дуго не користите. Протресите %2$s и покушајте опет.</item>
+        <item>Батерија у %s траје годину дана. Ако га дуго нисте користили, можда је остао без батерије.</item>
+        <item>Прво искључите Bluetooth на другом уређају, а затим упарите са телефоном.</item>
+        <item>Ако је %s напуњен, али телефон не може да га види, покушајте да рестартујете Bluetooth телефона.</item>
+        <item>Ако рестарт Bluetooth-а не решава проблем, покушајте да рестартујете телефон.</item>
+        <item>Додирните на податке о патикама и уђите у следећу страницу о активностима ради аутоматске синхр. података</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Протресите %s</item>
+        <item>Да ли је %s напуњен?</item>
+        <item>Да ли је %s упарен с другим уређајем у близини?</item>
+        <item>Рестартуј Bluetooth</item>
+        <item>Покушајте да рестартујете телефон</item>
+        <item>Како синхронизовати податке?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Гојазност</item>
+        <item>Прекомерна тежина</item>
+        <item>Здепасто</item>
+        <item>Недостаје\nвежбање</item>
+        <item>Балансирано</item>
+        <item>Балансирано\nмишићаво</item>
+        <item>Мршаво</item>
+        <item>Балансирано\nмршаво</item>
+        <item>Мршаво\nмишићаво</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>Пoн</item>
+        <item>Уто</item>
+        <item>Срe</item>
+        <item>Чeт</item>
+        <item>Пeт</item>
+        <item>Сyб</item>
+        <item>Нeд</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Активност</item>
+        <item>Споро ходање</item>
+        <item>Ходање</item>
+        <item>Брзо ходање</item>
+        <item>Run</item>
+        <item>Стојање</item>
+        <item>Sit</item>
+        <item>Лагана активност</item>
+        <item>Ставите уређај</item>
+        <item>Пуњење…</item>
+        <item>Лежање</item>
+    </array>
+    <array name="timeline_type">
+        <item>Активност</item>
+        <item>Споро ходање</item>
+        <item>Ходање</item>
+        <item>Брзо ходање</item>
+        <item>Трчање</item>
+        <item>Стајање</item>
+        <item>Седење</item>
+        <item>Лагана активност</item>
+        <item>Не носите</item>
+        <item>Пуњење…</item>
+        <item>Лежање</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Без ограничења</item>
+        <item>Основно, 1</item>
+        <item>Средње, 2</item>
+        <item>Напредно, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Нормалан</item>
+        <item>Висок</item>
+        <item>Врло висок</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>Loše</item>
+        <item>Dobro</item>
+        <item>Odlično</item>
+        <item>Prosečno</item>
+        <item>Ispod proseka</item>
+        <item>Iznad proseka</item>
+        <item>Veoma loše</item>
+    </array>
+    <array name="water_leval">
+        <item>Недовољан</item>
+        <item>Нормалан</item>
+        <item>Добар</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>Sub</item>
+        <item>Uto</item>
+        <item>Sre</item>
+        <item>Ned</item>
+        <item>Pon</item>
+        <item>Pet</item>
+        <item>Čet</item>
+    </array>
+    <array name="week_days">
+        <item>Nedelja</item>
+        <item>Sreda</item>
+        <item>Subota</item>
+        <item>Četvrtak</item>
+        <item>Ponedeljak</item>
+        <item>Utorak</item>
+        <item>Petak</item>
+    </array>
+    <array name="week_name">
+        <item>U</item>
+        <item>P</item>
+        <item>U</item>
+        <item>S</item>
+        <item>Č</item>
+        <item>P</item>
+        <item>S</item>
+    </array>
+    <array name="weeks">
+        <item>Понедељак</item>
+        <item>Уторак</item>
+        <item>Среда</item>
+        <item>Четвртак</item>
+        <item>Петак</item>
+        <item>Субота</item>
+        <item>Недеља</item>
+    </array>
+    <array name="weeks_short">
+        <item>P</item>
+        <item>U</item>
+        <item>S</item>
+        <item>Č</item>
+        <item>P</item>
+        <item>S</item>
+        <item>U</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Премала тежина</item>
+        <item>Балансирано</item>
+        <item>Прекомерна тежина</item>
+        <item>Гојазност</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Postavite vagu što je bliže moguće ruteru kako biste obezbedili jak signal Wi-Fi</item>
+        <item>· Potvrdite da li je ispravna ulazna lozinka za vezu Wi-Fi.</item>
+        <item>· Povežite vaš telefon na ciljni ruter Wi-Fi, a zatim pokušajte da otvorite neku veb stranicu da biste proverili možete li da pristupite Internetu.</item>
+        <item>· Ako je 2.4GHz onemogućena, omogućite je i odaberite. Vaga ne podržava Wi-Fi na 5GHz. \n· Ako je dual band omogućen, onemogućite ga da biste izbegli grešku konfiguracije zbog mreže 5GHz.</item>
+        <item>· Ako je ruter Wi-Fi povezan na Internet, signal Wi-Fi jak, i ruter radi s omogućenom frekvencijom 2.4GHz i onemogućenim dual bandom, pokušajte da ponovo pokrenete ruter.</item>
+        <item>· Ako ponovno pokretanje rutera ne radi, pokušajte ponovo da pokrenete telefon.</item>
+        <item>· Ako ponovno pokretanje rutera ne radi, pokušajte ponovo da instalirate bateriju.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Da li se vaga nalazi na mestu s jakim signalom Wi-Fi?</item>
+        <item>2. Da li je lozinka za Wi-Fi ispravna?</item>
+        <item>3. Da li je ruter Wi-Fi ispravno povezan na Internet?</item>
+        <item>4. Da li je Wi-Fi na 2.4GHz onemogućen na ruteru? Da li je omogućen dual band Wi-Fi?</item>
+        <item>5. Pokušajte da ponovo pokrenete ruter.</item>
+        <item>6. Pokušajte da ponovo pokrenete telefon.</item>
+        <item>7. Pokušajte da ponovo pokrenete uređaj.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>2.4 GHz Wi-Fi pokazuje da bežični ruter radi na frekvenciji 2.4 GHz.\n5 GHz Wi-Fi pokazuje da bežični ruter radi na frekvenciji 5 GHz.</item>
+        <item>Podesite vaš ruter prateći sledeće korake:\n1. Unesite adresu za prijavljivanje vašeg rutera u traku adresa pretraživača i prijavite se na pozadinu bežičnog rutera. \n2. Pronađite dugme za podešavanje bežičnog rutera. \n3. Isključite dugme za dual band. \n4. Omogućite mrežu Wi-Fi frekvencije 2.4 GHz.</item>
+        <item>Sledeće dve metode mogu da se koriste da se proveri frekvencija Wi-Fi:\n1. Na listi Wi-Fi vašeg kompjutera izaberite [Wi-Fi] &amp;gt; [Svojstvo] &amp;gt; [Frekvencija mreže]. \n2. Prijavite se na pozadinu rutera.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Šta su 2.4 GHz Wi-Fi i 5 GHz Wi-Fi?</item>
+        <item>· Kako mogu da omogućim 2.4 GHz Wi-Fi na mom ruteru?</item>
+        <item>· Kako mogu da proverim opseg mreže Wi-Fi?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Нормално</item>
+        <item>Прекомерна тежина</item>
+        <item>Гојазност</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> ђин</item>
+        <item> lbs</item>
+    </array>
+</resources>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/blood_pressure_s38"
+    android:paddingBottom="@dimen/size_12"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RadioGroup
+        android:orientation="horizontal"
+        android:id="@+id/tab_group"
+        android:background="@drawable/blood_pressure_shape_tab_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <RadioButton
+            android:id="@+id/tab_day"
+            android:background="@drawable/selector_blood_pressure_btn_bg"
+            android:checked="true"
+            android:text="@string/hm_common_chart_day"
+            android:layout_weight="1"
+            style="@style/blood_pressure_date_select"/>
+        <RadioButton
+            android:id="@+id/tab_week"
+            android:background="@drawable/selector_blood_pressure_btn_bg"
+            android:text="@string/hm_common_chart_week"
+            android:layout_weight="1"
+            style="@style/blood_pressure_date_select"/>
+        <RadioButton
+            android:id="@+id/tab_month"
+            android:background="@drawable/selector_blood_pressure_btn_bg"
+            android:text="@string/hm_common_chart_month"
+            android:layout_weight="1"
+            style="@style/blood_pressure_date_select"/>
+        <RadioButton
+            android:id="@+id/tab_year"
+            android:background="@drawable/selector_blood_pressure_btn_bg"
+            android:text="@string/hm_common_chart_year"
+            android:layout_weight="1"
+            style="@style/blood_pressure_date_select"/>
+    </RadioGroup>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,6 @@
+package org.apache.commons.fileupload;
+
+/* JADX INFO: loaded from: classes23.dex */
+public interface UploadContext extends RequestContext {
+    long contentLength();
+}

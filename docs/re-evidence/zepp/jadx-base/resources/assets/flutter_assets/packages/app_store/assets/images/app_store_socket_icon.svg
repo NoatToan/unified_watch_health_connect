@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Slice</title>
+    <g id="2021-10-应用商店-黑色模式" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.9">
+        <g id="开发者模式-Popup" transform="translate(-170.000000, -158.000000)" stroke="#191919" stroke-width="1.75">
+            <g id="Group-18" transform="translate(155.000000, 90.000000)">
+                <g id="body-4_s1" transform="translate(0.000000, 54.000000)">
+                    <g id="ic_more_20_s1-copy" transform="translate(15.000000, 14.000000)">
+                        <g id="Group" transform="translate(10.000000, 9.750000) rotate(-45.000000) translate(-10.000000, -9.750000) translate(7.000000, 0.000000)">
+                            <polygon id="Polygon" points="3 7 5.59807621 8.5 5.59807621 11.5 3 13 0.401923789 11.5 0.401923789 8.5"></polygon>
+                            <line x1="3" y1="7.5" x2="3" y2="4" id="Line-2" stroke-linejoin="bevel"></line>
+                            <line x1="3" y1="15.5" x2="3" y2="13.5" id="Line-2-Copy" stroke-linejoin="bevel"></line>
+                            <circle id="Oval" stroke-linejoin="bevel" cx="3" cy="2" r="2"></circle>
+                            <circle id="Oval-Copy" stroke-linejoin="bevel" cx="3" cy="17.5" r="2"></circle>
+                        </g>
+                        <polyline id="Path" stroke-linejoin="bevel" points="8.54 17.5 2.54 17.5 2.54 4.5"></polyline>
+                        <polyline id="Path-Copy" stroke-linejoin="bevel" transform="translate(14.460000, 9.000000) scale(-1, -1) translate(-14.460000, -9.000000) " points="17.46 15.5 11.46 15.5 11.46 2.5"></polyline>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,23 @@
+package com.sina.weibo.sdk.a;
+
+/* JADX INFO: loaded from: classes18.dex */
+public final class b {
+    private com.sina.weibo.sdk.a.a J;
+
+    public static class a {
+        private static b K = new b(0);
+    }
+
+    public /* synthetic */ b(byte b) {
+        this();
+    }
+
+    public final void a(c cVar) {
+        this.J.a(cVar);
+    }
+
+    private b() {
+        this.J = null;
+        this.J = new com.sina.weibo.sdk.a.a();
+    }
+}

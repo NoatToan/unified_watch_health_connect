@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.rainbow.titlebar.RainbowTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/set_sleep_goal"/>
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="59dp"
+        android:layout_marginEnd="59dp">
+        <com.huami.widget.wheelview.WheelView
+            android:id="@+id/picker_goal_sleep_hour"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/wheel_hight_large"
+            android:layout_weight="1"/>
+        <com.huami.widget.wheelview.WheelView
+            android:id="@+id/picker_goal_sleep_min"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/wheel_hight_large"
+            android:layout_weight="1"
+            android:layout_marginStart="19dp"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/tv_confirm"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_32dp"
+        android:text="@string/confirm"
+        android:layout_marginStart="@dimen/size_15dp"
+        android:layout_marginEnd="@dimen/size_15dp"
+        style="@style/Rainbow.Widget.Button.48"/>
+</LinearLayout>

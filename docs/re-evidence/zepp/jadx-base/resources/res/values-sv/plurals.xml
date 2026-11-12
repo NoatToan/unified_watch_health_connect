@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="access_door_search_count_tip">
+        <item quantity="one">%1$d hittades.</item>
+        <item quantity="other">%1$d hittades.</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="one">På grund av uppgradering av varumärket måste kontoinformationen bekräftas av din vårdnadshavare för att skydda din datasäkerhet. Bekräfta snarast möjligt. Annars kommer ditt konto att frysas om %1$sdag.</item>
+        <item quantity="other">På grund av uppgradering av varumärket måste kontoinformationen bekräftas av din vårdnadshavare för att skydda din datasäkerhet. Bekräfta snarast möjligt. Annars kommer ditt konto att frysas om %1$sdagar.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="one">Det maximala antalet konto- eller lösenordsangivelser har uppnåtts. Försök igen om %s minut</item>
+        <item quantity="other">Det maximala antalet konto- eller lösenordsangivelser har uppnåtts. Försök igen om %s minuter</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="one">Kontonamnet eller lösenordet är fel. Du har %s försök kvar</item>
+        <item quantity="other">Kontonamnet eller lösenordet är fel. Du har %s försök kvar</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="one">%d kurs</item>
+        <item quantity="other">%d kurser</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="one">Vibrera igen om %s minut</item>
+        <item quantity="other">Vibrera igen om %s minuter</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="one">Före %d %% av användarna idag</item>
+        <item quantity="other">Före %d %% av användarna idag</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="one">Högst %d app kan läggas till i applistan</item>
+        <item quantity="other">Högst %d appar kan läggas till i applistan</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="one">Högst %d app kan läggas till i listan Mer</item>
+        <item quantity="other">Högst %d appar kan läggas till i listan Mer</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="one">Jämfört med %1$dd sedan</item>
+        <item quantity="other">Jämfört med %1$dd sedan</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="one">Kalibrerad för %d dag</item>
+        <item quantity="other">Kalibrerad för %d dagar</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="one">Kalibrering måste göras efter högst %d dag för undersökningen av blodtrycksmätning som görs av Peking University First Hospital</item>
+        <item quantity="other">Kalibrering måste göras efter högst %d dagar för undersökningen av blodtrycksmätning som görs av Peking University First Hospital</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="one">Kalibrera om %d dag</item>
+        <item quantity="other">Kalibrera om %d dagar</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="one">Nådde %d mål</item>
+        <item quantity="other">Nådde %d mål</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="one">%d objekt behöver din uppmärksamhet</item>
+        <item quantity="other">%d objekt behöver din uppmärksamhet</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="one">%d objekt nådde inte mål</item>
+        <item quantity="other">%d objekt nådde inte mål</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="one">Grattis!\nUnder den senaste %1$d dagen la du på dig</item>
+        <item quantity="other">Grattis!\nUnder de senaste %1$d dagarna la du på dig</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="one"> poäng</item>
+        <item quantity="other"> poäng</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="one">Du kan lägga till upp till %1$d kontakt som används ofta och de synkroniseras automatiskt till klockan</item>
+        <item quantity="other">Du kan lägga till upp till %1$d kontakter som används ofta och de synkroniseras automatiskt till klockan</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="one">%d kurs</item>
+        <item quantity="other">%d kurser</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="one">Kursen börjar om %d dag</item>
+        <item quantity="other">Kursen börjar om %d dagar</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="one">%d nedladdning</item>
+        <item quantity="other">%d nedladdningar</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="one">%1$d sek.</item>
+        <item quantity="other">%1$d sek.</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="one">Dataintervall: %1$s sekund</item>
+        <item quantity="other">Dataintervall: %1$s sekunder</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="one">%1$s sekund</item>
+        <item quantity="other">%1$s sekunder</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="one">%d påminnelse</item>
+        <item quantity="other">%d påminnelser</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">Spola framåt %d sekund</item>
+        <item quantity="other">Spola framåt %d sekunder</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">Spola tillbaka %d sekund</item>
+        <item quantity="other">Spola tillbaka %d sekunder</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="one">%1$d kcal</item>
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="one">%1$s lektion</item>
+        <item quantity="other">%1$s lektioner</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="one">%1$s av menstruationscykeln, %2$s kvar.</item>
+        <item quantity="other">%1$s av menstruationscykeln, %2$s kvar.</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="one">Cirka %1$s av menstruationscykeln, %2$s kvar.</item>
+        <item quantity="other">Cirka %1$s av menstruationscykeln, %2$s kvar.</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="one">%1$s av menstruationscykeln, cirka %2$s kvar.</item>
+        <item quantity="other">%1$s av menstruationscykeln, cirka %2$s kvar.</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="one">%1$s tittare</item>
+        <item quantity="other">%1$s tittare</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">Dag %1$d</item>
+        <item quantity="other">Dagar %1$d</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="one">%1$d d</item>
+        <item quantity="other">%1$d d</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="one">Avbryt (%1$ds)</item>
+        <item quantity="other">Avbryt (%1$ds)</item>
+    </plurals>
+    <plurals name="fix_hour">
+        <item quantity="one">%1$d timme</item>
+        <item quantity="other">%1$d timmar</item>
+    </plurals>
+    <plurals name="fix_minute">
+        <item quantity="one">%1$d minut</item>
+        <item quantity="other">%1$d minuter</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="one">Laddar ner. Vänta ungefär %s minut</item>
+        <item quantity="other">Laddar ner. Vänta ungefär %s minuter</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="one">Slutförde %d träningssession</item>
+        <item quantity="other">Slutförde %d träningssessioner</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="one">%d gånger/minut</item>
+        <item quantity="other">%d gånger/minut</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="one">Startsidan måste innehålla minst %1$d kort</item>
+        <item quantity="other">Startsidan måste innehålla minst %1$d kort</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="one">Genomsnittlig puls %1$d bpm</item>
+        <item quantity="other">Genomsnittlig puls %1$d bpm</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="one">gång per minut</item>
+        <item quantity="other">gånger per minut</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="one">%d minut sedan</item>
+        <item quantity="other">%d minuter sedan</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="one">Session %d</item>
+        <item quantity="other">Session %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="one">Påminn mig %d sekund efter telefonsamtalets början</item>
+        <item quantity="other">Påminn mig %d sekunder efter telefonsamtalets början</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="one">Du kan lägga till högst %1$d SMS-svar</item>
+        <item quantity="other">Du kan lägga till högst %1$d SMS-svar</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="one">Behåll minst %1$d SMS-svar</item>
+        <item quantity="other">Behåll minst %1$d SMS-svar</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="one">Enter up to %d character</item>
+        <item quantity="other">Ange upp till %d Karaktärer</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="one">%1$d varvpost</item>
+        <item quantity="other">%1$d varvposter</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="one">%d visning</item>
+        <item quantity="other">%d visningar</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="one">%1$d månad</item>
+        <item quantity="other">%1$d månader</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="one">Kring %1$d minuter om dagen</item>
+        <item quantity="other">Kring %1$d minuter om dagen</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="one">Laddades senast för %dd sedan</item>
+        <item quantity="other">Laddades senast för %dd sedan</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="one">Nådde mål: %d</item>
+        <item quantity="other">Nådde mål: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="one">%d steg</item>
+        <item quantity="other">%d steg</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="one">%d %s</item>
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d ny avisering</item>
+        <item quantity="other">%d nya aviseringar</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="one">%d&quot;</item>
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="one">%ds</item>
+        <item quantity="other">%ds</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="one">Över %1$d år. Det går inte att analysera %2$s</item>
+        <item quantity="other">Över %1$d år. Det går inte att analysera %2$s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="one">Under %1$d år. Det går inte att analysera %2$s</item>
+        <item quantity="other">Under %1$d år. Det går inte att analysera %2$s</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="one">%s ft</item>
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="one">%s tum</item>
+        <item quantity="other">%s tum</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="one">%ds</item>
+        <item quantity="other">%ds</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="one">träning</item>
+        <item quantity="other">träningar</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="one">%d deltagare</item>
+        <item quantity="other">%d deltagare</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="one">minut</item>
+        <item quantity="other">minuter</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="one">Du kan endast l채gga till %1$d SMS-svar</item>
+        <item quantity="other">Du kan l채gga till som mest %1$d SMS-svar</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="one">Spara 책tminstone %1$d SMS-svar</item>
+        <item quantity="other">Spara 책tminstone %1$d SMS-svar</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="one">&quot;Valde %1$d objekt&quot;</item>
+        <item quantity="other">&quot;Valde %1$d objekt&quot;</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="one">Du cyklade för %1$d dag sedan</item>
+        <item quantity="other">Du cyklade för %1$d dagar sedan</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="one">timme</item>
+        <item quantity="other">timmar</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="one">kcal</item>
+        <item quantity="other">kcal</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="one">Du sprang för %1$d dag sedan</item>
+        <item quantity="other">Du sprang för %1$d dagar sedan</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="one">sekund</item>
+        <item quantity="other">sekunder</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="one">%1$d ljudklipp upptäcktes idag</item>
+        <item quantity="other">%1$d ljudklipp upptäcktes idag</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="one">steg</item>
+        <item quantity="other">steg</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="one">Du gick för %1$d dag sedan</item>
+        <item quantity="other">Du gick för %1$d dagar sedan</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">%d dagar</item>
+        <item quantity="other">%d dagar</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">%d timme</item>
+        <item quantity="other">%d timme</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="one">%d steg</item>
+        <item quantity="other">%d steg</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="one">Kvalitet på andning under sömn är %1$d. Vi rekommenderar att du regelbundet kontrollerar din andning under sömn. Om du inte mår bra ska du söka läkarhjälp</item>
+        <item quantity="other">Kvalitet på andning under sömn är %1$d. Vi rekommenderar att du regelbundet kontrollerar din andning under sömn. Om du inte mår bra ska du söka läkarhjälp</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="one">Kvalitet på andning under sömn är %1$d. Vi rekommenderar att du söker läkarhjälp för att avgöra om du har problem med andning under sömn</item>
+        <item quantity="other">Kvalitet på andning under sömn är %1$d. Vi rekommenderar att du söker läkarhjälp för att avgöra om du har problem med andning under sömn</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="one">Kvalitet på andning under sömn är %1$d, fortsätt så</item>
+        <item quantity="other">Kvalitet på andning under sömn är %1$d, fortsätt så</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="one">Kör försäkring upphör i %1$d dag, knacka för att förnya</item>
+        <item quantity="other">Kör försäkring upphör i %1$d dag, knacka för att förnya</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="one">%d objekt har inte synkroniserats</item>
+        <item quantity="other">%d objekt har inte synkroniserats</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="one">%d objekt har inte synkroniserats</item>
+        <item quantity="other">%d objekt har inte synkroniserats</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="one">%1$d cycling session</item>
+        <item quantity="other">%1$d Cykla Session</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="one">%1$d elliptical trainer session</item>
+        <item quantity="other">%1$d elliptiska träningssessioner</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="one">Fri träning %1$d gång</item>
+        <item quantity="other">Fri träning %1$d gånger</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="one">%1$d running session</item>
+        <item quantity="other">%1$d Kör Session</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="one">%1$d swimming session</item>
+        <item quantity="other">%1$d simning sessioner</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="one">Träning: %1$d session</item>
+        <item quantity="other">Träning: %1$d sessioner</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="one">%1$d triathlon session</item>
+        <item quantity="other">%1$d triathlon sessioner</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="one">%1$d Gå Session</item>
+        <item quantity="other">%1$d Gå Session</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="one">Träning: %1$d session</item>
+        <item quantity="other">Träning: %1$d sessioner</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="one">Lägg till högst %d händelse</item>
+        <item quantity="other">Lägg till högst %d händelser</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="one">Personbästa: %d dag</item>
+        <item quantity="other">Personbästa: %d dagar</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="one">Före %d %% av användarna</item>
+        <item quantity="other">Före %d %% av användarna</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="one">gång</item>
+        <item quantity="other">gånger</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="one">dag</item>
+        <item quantity="other">dagar</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="one">poäng</item>
+        <item quantity="other">poäng</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="one">%d gång</item>
+        <item quantity="other">%d gånger</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="one">Sömnpoängen steg med %d jämfört med föregående månad</item>
+        <item quantity="other">Sömnpoängen steg med %d jämfört med föregående månad</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="one">Månadens sömnpoäng är %d, fortsätt så.</item>
+        <item quantity="other">Månadens sömnpoäng är %d, fortsätt så.</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="one">Sömnpoängen steg med %d jämfört med föregående vecka</item>
+        <item quantity="other">Sömnpoängen steg med %d jämfört med föregående vecka</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="one">Veckans sömnpoäng är %d, fortsätt så.</item>
+        <item quantity="other">Veckans sömnpoäng är %d, fortsätt så.</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="one">%1$d ljudklipp spelas in idag.</item>
+        <item quantity="other">%1$d ljudklipp spelas in idag.</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="one">%1$d klipp</item>
+        <item quantity="other">%1$d klipp</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="one">Säg runt %d sekunder till</item>
+        <item quantity="other">Säg runt %d sekunder till</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="one">Completed activities: %1$d session of %2$s</item>
+        <item quantity="other">Completed activities: %1$d sessions of %2$s</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="one">steg</item>
+        <item quantity="other">steg</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="one">steg</item>
+        <item quantity="other">steg</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="one">Steg/dag</item>
+        <item quantity="other">Steg/dag</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; gång</item>
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; gånger</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="one">Toppade listan&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; dag</item>
+        <item quantity="other">Toppade listan&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; dagar</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="one">Toppade listan för %1$d gånger</item>
+        <item quantity="other">Toppade listan för %1$d gånger</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="one">Toppade listan i %1$d dagar</item>
+        <item quantity="other">Toppade listan i %1$d dagar</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="one">Matchades med %1$d vänner:</item>
+        <item quantity="other">Matchades med %1$d vänner:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="one">Kördes&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; gång</item>
+        <item quantity="other">Kördes&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; gånger</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="one">%1$d löpningsposter har inte laddats upp</item>
+        <item quantity="other">%1$d löpningsposter har inte laddats upp</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="one">%1$d deltagare</item>
+        <item quantity="other">%1$d deltagare</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="one">%d timme</item>
+        <item quantity="other">%d timmar</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="one">%d minut</item>
+        <item quantity="other">%d minuter</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="one">%1$d gång</item>
+        <item quantity="other">%1$d gånger</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="one">Grattis!\nUnder den senaste %1$d dagen tappade du</item>
+        <item quantity="other">Grattis!\nUnder de senaste %1$d dagarna tappade du</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="one">Det finns %1$d viktpost som väntar på att bli hämtade.</item>
+        <item quantity="other">Det finns %1$d viktposter som väntar på att bli hämtade.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="one">Högst %1$d schema kan läggas till</item>
+        <item quantity="other">Högst %1$d scheman kan läggas till</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="one">Kan inte analysera för personer äldre än %d år gammal</item>
+        <item quantity="other">Kan inte analysera för personer äldre än %d år gammal</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="one">Kan inte analysera för personer yngre än %d år gamla</item>
+        <item quantity="other">Kan inte analysera för personer yngre än %d år gamla</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="one">%d kurs</item>
+        <item quantity="other">%d kurser</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="one">Kursen förfaller om %d dag</item>
+        <item quantity="other">Kursen förfaller om %d dagar</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="one">%d tittare</item>
+        <item quantity="other">%d tittare</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="one">Totala set: %d</item>
+        <item quantity="other">Totala set: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="one">Antal gånger träning har lärts: %d</item>
+        <item quantity="other">Antal gånger träning har lärts: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="one">Börjar om %d dag</item>
+        <item quantity="other">Börjar om %d dagar</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="one">Tränat i  %1$d min</item>
+        <item quantity="other">Tränat i  %1$d min</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="one">Tränat i  %1$d s</item>
+        <item quantity="other">Tränat i  %1$d s</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="one">Dag %1$d av träningskursen: Du måste slutföra %3$s (%2$d min)</item>
+        <item quantity="other">Dag %1$d av träningskursen: Du måste slutföra %3$s (%2$d min)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="one"> %1$d  sekund</item>
+        <item quantity="other"> %1$d  sekunder</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="one"> %1$d  gång</item>
+        <item quantity="other"> %1$d  gånger</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="one">Pausat i  %1$d s</item>
+        <item quantity="other">Pausat i  %1$d s</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="one"> steg</item>
+        <item quantity="other"> steg</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="one">Eftersom åldern du angav är under %1$d kan du bara fortsätta att använda Zepp efter att vi har fått din vårdnadshavares godkännande och samtycke.</item>
+        <item quantity="other">Eftersom åldern du angav är under %1$d kan du bara fortsätta att använda Zepp efter att vi har fått din vårdnadshavares godkännande och samtycke.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="one">Annars kommer ditt konto att frysas om %1$d dag.</item>
+        <item quantity="other">Annars kommer ditt konto att frysas om %1$d dagar.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="one">Yngre än %1$d</item>
+        <item quantity="other">Yngre än %1$d</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="one">För att skydda integriteten för minderårigas data och om du är yngre än %1$dmåste vi få godkännande och samtycke från din vårdnadshavare innan vi kan tillhandahålla dig de fullständiga tjänsterna.</item>
+        <item quantity="other">För att skydda integriteten för minderårigas data och om du är yngre än %1$dmåste vi få godkännande och samtycke från din vårdnadshavare innan vi kan tillhandahålla dig de fullständiga tjänsterna.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="one">Bekräfta att du inte är yngre än %1$d</item>
+        <item quantity="other">Bekräfta att du inte är yngre än %1$d</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="one">%s ft</item>
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="one">%s tum</item>
+        <item quantity="other">%s tum</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="one">%d minut</item>
+        <item quantity="other">%d minuter</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="one">%d session</item>
+        <item quantity="other">%d sessioner</item>
+    </plurals>
+</resources>

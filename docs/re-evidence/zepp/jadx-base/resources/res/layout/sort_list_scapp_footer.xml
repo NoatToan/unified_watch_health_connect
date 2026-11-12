@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="189dp">
+    <View
+        android:id="@+id/invisible_item_divider"
+        android:background="@color/black20"
+        android:layout_width="match_parent"
+        android:layout_height="0.33dp"/>
+    <RelativeLayout
+        android:id="@+id/invisible_item_area"
+        android:layout_width="match_parent"
+        android:layout_height="189dp">
+        <ImageView
+            android:id="@+id/invisible_item_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/img_invisible"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:textSize="12sp"
+            android:textColor="@color/black20"
+            android:id="@+id/footer_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="70dp"
+            android:layout_below="@+id/invisible_item_img"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+</LinearLayout>

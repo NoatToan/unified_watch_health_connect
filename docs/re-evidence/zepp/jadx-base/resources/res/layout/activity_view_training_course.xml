@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.hm.health.training.ui.widget.StickHeaderLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/pale_grey"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/layout_image_header"/>
+    <com.xiaomi.hm.health.training.ui.widget.StickHeaderChildScrollView
+        android:id="@+id/nsv_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.xiaomi.hm.health.calendar.ExpandableCalendar
+                android:orientation="vertical"
+                android:id="@+id/ecl_calendar"
+                android:background="@color/white100"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <include layout="@layout/view_space"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/ll_training_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <View style="@style/VerticalDivider"/>
+        </LinearLayout>
+    </com.xiaomi.hm.health.training.ui.widget.StickHeaderChildScrollView>
+    <TextView
+        android:textSize="15sp"
+        android:textColor="@color/white100"
+        android:gravity="center"
+        android:id="@+id/tx_join"
+        android:background="@color/orange100"
+        android:padding="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/join_training"/>
+</com.xiaomi.hm.health.training.ui.widget.StickHeaderLayout>

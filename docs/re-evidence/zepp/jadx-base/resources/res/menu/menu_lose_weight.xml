@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_modify_goal"
+        android:title="@string/lose_weight_modify_plan"/>
+    <item
+        android:id="@+id/menu_modify_sport"
+        android:title="@string/lose_weight_modify_sport"/>
+    <item
+        android:id="@+id/menu_modify_time"
+        android:title="@string/lose_weight_modify_time"/>
+</menu>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.watch.companion.ui.view.ActionbarLayout
+        android:id="@+id/actionbar_noti_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <fragment
+            android:tag="NotiShooter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            class="com.huami.watch.companion.notification.shooter.NotifiShooterListFragment"/>
+        <include layout="@layout/split_line_width_match_parent"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>פעם אחת</item>
+        <item>כל יום</item>
+        <item>ראשון עד חמישי</item>
+    </array>
+    <array name="allday_reminder_minute">
+        <item>-1</item>
+        <item>-480</item>
+        <item>960</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>תומך בבריכת שחייה, שחייה בים הפתוח ופעילויות תריאתלון</item>
+        <item>מספק נתונים על צריכת חמצן מרבית (VO2 מרבי)</item>
+        <item>הגדרות וסטטיסטיקות מקיפות לגבי פעילות</item>
+        <item>מנחה את האימונים שלך בהתאם ליעדים שהגדרת</item>
+        <item>השפעת אימון (TE) עוזרת לך להבין את יתרון הפעילות הגופנית על הכושר הגופני שלך</item>
+    </array>
+    <array name="bind_guide_main_title_everest2">
+        <item>אספקת נתונים על VO2 מרבי\n הערכה מדויקת של ביצועי אימונים אישיים</item>
+        <item>תגיד להתראות לכרטיס הנסיעוות ולכרטיס בקרת הגישה שלך. \n תוכל פשוט לבצע פעולת החלקה בטלפון בעת נסיעה, כניסה לעבודה וביצוע תשלום.</item>
+        <item>החלף בין שני המצבים כרצונך.\n תוכל לבחור בין מצב המתנה ארוכה במיוחד ומערכת חכמה.</item>
+        <item>70 שעות של יכולת מתמשכת לאיתור GPS,‏\n כלומר אין לך ממה לדאוג במהלך אימונים בחוץ.</item>
+    </array>
+    <array name="bind_guide_main_title_everest2_oversea">
+        <item>אספקת נתונים על VO2 מרבי\n הערכה מדויקת של ביצועי אימונים אישיים</item>
+        <item>החלף בין שני המצבים כרצונך.\n תוכל לבחור בין מצב המתנה ארוכה במיוחד ומערכת חכמה.</item>
+        <item>70 שעות של יכולת מתמשכת לאיתור GPS,‏\n כלומר אין לך ממה לדאוג במהלך אימונים בחוץ</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>מקש אחד לשליטה בהכל עם Classmate Xiao Ai‏ \n הפוך את הבית שלך לחכם באמצעות בקרה קולית שתבצע את מה שאתה אומר </item>
+        <item>כרטיס נסיעות, כרטיס גישה, כרטיס UnionPay‏ \n לנסיעות, עבודה וצריכה, פשוט החלק בפני השעון</item>
+        <item>עסוק ב-12 סוגי ספורט ללא הטלפון \n מי לא היה רוצה יותר חופש בזמן פעילות גופנית</item>
+        <item>תמיכה בטלפון Bluetooth‏\n ביצוע ומענה על שיחות ללא שימוש בטלפון נייד</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>מקש אחד להפעלת Alexa‏ \n שירות קולי חכם שמבצע את מה שאתה אומר</item>
+        <item>עסוק ב-12 סוגי ספורט ללא הטלפון \n מי לא היה רוצה יותר חופש בזמן פעילות גופנית</item>
+        <item>תמיכה בטלפון Bluetooth‏\n ביצוע ומענה על שיחות ללא שימוש בטלפון נייד</item>
+    </array>
+    <array name="bind_guide_main_title_xihu">
+        <item>כרטיסי eSIM נתמכים. \n באפשרותך לבצע שיחות ולעבור למצב מקוון ללא חיבור המכשיר הנייד.</item>
+        <item>XiaoAI - שליטה בהקשה אחת \n שלוט בכל ההתקנים הביתיים החכמים באמצעות הקול - פשוט אמור את המילים.</item>
+        <item>באפשרותך לבצע עשר פעילויות ספורט ללא הצורך לשאת איתך את המכשיר הנייד. \n אתה הרי רוצה לעסוק בפעילות גופנית ללא כל נטל.</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item>* לריצה בלבד</item>
+        <item />
+        <item>* לתרגילי ריצה בלבד, יש לפתוח בהגדרות פעילות גופנית</item>
+        <item />
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item>* זמין כרגע באזורים נבחרים בלבד.</item>
+        <item />
+        <item />
+        <item />
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>החלק העליון של הזרוע צריך להיות חשוף, כשהשרוול של חולצתך מקופל בנוחות</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>אתה אמור להיות מסוגל להחליק אצבע מתחת מתחת לשרוול המדידה. שרוולי מדידה רופפים מדי או הדוקים מדי עלולים להשפיע על דיוק המדידה</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>מדידה ראשונה</item>
+        <item>מדידה שנייה</item>
+        <item>מדידה שלישית</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>תעד את תוצאת לחץ הדם הראשונה</item>
+        <item>תעד את תוצאת לחץ הדם השנייה</item>
+        <item>תעד את תוצאת לחץ הדם השלישית</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>נמוך</item>
+        <item>רגיל</item>
+        <item>גבוה</item>
+        <item>גבוה מאוד</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>רגיל</item>
+        <item>גבוה</item>
+        <item>גבוה מאוד</item>
+    </array>
+    <array name="body_score_leval">
+        <item>נמוך מאוד</item>
+        <item>נמוך</item>
+        <item>רגיל</item>
+        <item>טוב</item>
+        <item>מצוין</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>נמוכה מאוד</item>
+        <item>נמוכה</item>
+        <item>רגילה</item>
+        <item>מעל הרמה הרגילה</item>
+        <item>גבוהה</item>
+    </array>
+    <array name="bone_leval">
+        <item>בלתי מספקת</item>
+        <item>רגילה</item>
+        <item>טובה</item>
+    </array>
+    <array name="brm_leval">
+        <item>היעדים לא הושגו</item>
+        <item>היעד הושג</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>נמוך</item>
+        <item>בינוני</item>
+        <item>גבוה</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>נסה ללחוץ על הכפתור שעל גבי השעון, במידה ומסך השעון כבוי, חבר אותו למטען על מנת לטעון את הסוללה שלו.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>במידה והצמיד טעון, אך הטלפון לא מצליח לזהות אותו, נסה לאתחל את ה-Bluetooth של הטלפון.</item>
+        <item>במידה והפעלה מחדש של Bluetooth אינה פותרת את הבעיה, נסה לאתחל את המכשיר.</item>
+        <item>לא ניתן לסנכרן את נתוני השעון במהלך פעילות גופנית. סיים את הפעילות ונסה שוב.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>האם השעון שלך טעון?</item>
+        <item>האם שעון זה מצומד למכשיר אחר?</item>
+        <item>נסה להפעיל מחדש את Bluetooth</item>
+        <item>נסה לאתחל את הטלפון שלך</item>
+        <item>לא ניתן לסנכרן נתונים במהלך אימונים</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>גואנגז\'ו</item>
+        <item>שנז\'ן</item>
+        <item>פושאן</item>
+        <item>דונגגואן</item>
+        <item>בייג\'ינג</item>
+        <item>נאנג\'ינג</item>
+        <item>סוז\'ואו</item>
+        <item>צ\'אנגז\'ואו</item>
+        <item>ג\'ינאן</item>
+        <item>צ\'ינגדאו</item>
+        <item>האנגז\'ואו</item>
+        <item>נינגבו</item>
+        <item>ז\'אנגז\'ואו</item>
+        <item>קייפנג</item>
+        <item>שנגחאי</item>
+        <item>שיג\'יז\'ואנג</item>
+        <item>באודינג</item>
+        <item>צ\'נגדו</item>
+        <item>מיאניאנג</item>
+        <item>שניאנג</item>
+        <item>דאליין</item>
+    </array>
+    <array name="common_level">
+        <item>בלתי מספיק</item>
+        <item>רגיל</item>
+        <item>טוב</item>
+    </array>
+    <array name="component_list">
+        <item>com.huami.watch.companion.mitv.MiTvComponent</item>
+        <item>com.huami.watch.companion.sogoulocation.SogouLocCmp</item>
+    </array>
+    <array name="contact_ways">
+        <item>דוא\"ל</item>
+        <item>מספר טלפון נייד</item>
+        <item>מזהה WeChat</item>
+    </array>
+    <array name="difficulty_content">
+        <item>חדש בתחום אימוני הכושר</item>
+        <item>בעל נסיון בסיסי באימוני כושר</item>
+        <item>בעל נסיון עשיר וכושר גופני טוב</item>
+    </array>
+    <array name="difficulty_title">
+        <item>בסיסי</item>
+        <item>בינוני</item>
+        <item>מתקדם</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>מכוון לשריפת שומן</item>
+        <item>מכוון לעיצוב הגוף</item>
+        <item>מכוון לבניית שרירים</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>חיתוך</item>
+        <item>עיצוב</item>
+        <item>ניפוח</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>ב</item>
+        <item>ג</item>
+        <item>ד</item>
+        <item>ה</item>
+        <item>ו</item>
+        <item>ש</item>
+        <item>ראשון</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>שני</item>
+        <item>שלישי</item>
+        <item>רביעי</item>
+        <item>חמישי</item>
+        <item>שישי</item>
+        <item>שבת</item>
+        <item>ראשון</item>
+    </array>
+    <array name="hr_sport">
+        <item>אזור קצב הלב: קל</item>
+        <item>אזור קצב הלב: אינטנסיבי</item>
+        <item>אזור קצב הלב: אירובי</item>
+        <item>אזור קצב הלב: אנאירובי</item>
+        <item>אזור קצב הלב: VO₂ מקס</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>קל</item>
+        <item>אינטנסיבי</item>
+        <item>אירובי</item>
+        <item>אנאירובי</item>
+        <item>VO₂ מקס</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>בית השחי</item>
+        <item>פה</item>
+        <item>פי הטבעת</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>פרק כף היד</item>
+        <item>מצח</item>
+        <item>מאחורי האוזן</item>
+        <item>אוזן פנימית</item>
+        <item>צוואר</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>בית השחי</item>
+        <item>פה</item>
+        <item>פי הטבעת</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>חזה</item>
+        <item>בית השחי</item>
+        <item>מפשעה</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>סגירה</item>
+        <item>קרוב</item>
+        <item>רחוק</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>לחץ על הלחצן על גבי הצמיד על מנת לבדוק אם הצג מאיר. אם הוא איננו מאיר, טען את הצמיד.\n\n טען את המכשיר לפני שתצמד אותו עם %1$s או %2$s.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>במידה והצמיד טעון, אך הטלפון לא מצליח לזהות אותו, נסה לאתחל את Bluetooth הטלפון.</item>
+        <item>במידה והפעלה מחדש של Bluetooth אינה פותרת את הבעיה, נסה לאתחל את המכשיר.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>האם הצמיד שלך טעון?</item>
+        <item>האם צמיד זה מצומד למכשיר אחר?</item>
+        <item>@string/help_title_2</item>
+        <item>נסה לאתחל את הטלפון שלך</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>ינו</item>
+        <item>פבר</item>
+        <item>מרץ</item>
+        <item>אפר</item>
+        <item>מאי</item>
+        <item>יונ</item>
+        <item>יול</item>
+        <item>אוג</item>
+        <item>ספט</item>
+        <item>אוק</item>
+        <item>נוב</item>
+        <item>דצמ</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>בלתי מספקת</item>
+        <item>רגילה</item>
+        <item>טובה</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>התראה על סוללה חלשה</item>
+        <item>שיחה נכנסת</item>
+        <item>התראת חוסר פעילות</item>
+        <item>התראות יעד</item>
+        <item>תזכורת למזג אוויר יומי</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>נמוך מאוד</item>
+        <item>דל</item>
+        <item>ממוצע</item>
+        <item>טוב</item>
+        <item>טוב מאוד</item>
+    </array>
+    <array name="reminder_minute">
+        <item>-1</item>
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>The first</item>
+        <item>The second</item>
+        <item>The third</item>
+        <item>The fourth</item>
+        <item>The last</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>ינו</item>
+        <item>פבר</item>
+        <item>מרץ</item>
+        <item>אפר</item>
+        <item>מאי</item>
+        <item>יונ</item>
+        <item>יול</item>
+        <item>אוג</item>
+        <item>ספט</item>
+        <item>אוק</item>
+        <item>נוב</item>
+        <item>דצמ</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s יפסיק לעבוד במידה ולא תשתמש בו למשך תקופה ארוכה. נער את ה-%2$s ונסה שוב.</item>
+        <item>חיי הסוללה של סוללת ה-%s הינם שנה 1. במידה והשתמשת בו למשך תקופה ארוכה יותר, יתכן כי הסוללה התרוקנה.</item>
+        <item>ראשית, כבה את ה Bluetooth במכשיר האחר, ואז צמד אותו עם הטלפון שלך.</item>
+        <item>במידה ו-%s טעון, אך הטלפון לא מצליח לזהות אותו, נסה לאתחל את Bluetooth הטלפון.</item>
+        <item>במידה והפעלה מחדש של Bluetooth אינה פותרת את הבעיה, נסה לאתחל את המכשיר.</item>
+        <item>לחץ על נתוני נעלי הריצה והיכנס לעמוד הפעילות הבא על מנת לסנכרן נתונים באופן אוטומטי</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>נער את ה-%s</item>
+        <item>האם שלך %s הוטען?</item>
+        <item>האם %s זה מצומד למכשיר אחר בקרבת מקום?</item>
+        <item>הפעל מחדש את Bluetooth</item>
+        <item>נסה לאתחל את הטלפון שלך</item>
+        <item>כיצד לסנכרן את הנתונים שלך?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>שמן</item>
+        <item>משקל עודף</item>
+        <item>חסון</item>
+        <item>חוסר\nבפעילות גופנית</item>
+        <item>מאוזן</item>
+        <item>שרירי\nמאוזן</item>
+        <item>רזון</item>
+        <item>רזון\nמאוזן</item>
+        <item>רזון\nשרירי</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>ב</item>
+        <item>ג</item>
+        <item>ד</item>
+        <item>ה</item>
+        <item>ו</item>
+        <item>ש</item>
+        <item>ראשון</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>פעילות</item>
+        <item>הליכה איטית</item>
+        <item>הליכה</item>
+        <item>הליכה מהירה</item>
+        <item>ריצה</item>
+        <item>עמוד</item>
+        <item>ישיבה</item>
+        <item>פעילות קלה</item>
+        <item>פעילות שאינה מעייפת</item>
+        <item>טוען</item>
+        <item>שכיבה</item>
+    </array>
+    <array name="timeline_type">
+        <item>פעילות</item>
+        <item>הליכה איטית</item>
+        <item>הליכה</item>
+        <item>הליכה מהירה</item>
+        <item>ריצה</item>
+        <item>עמידה</item>
+        <item>ישיבה</item>
+        <item>פעילות קלה</item>
+        <item>פעילות שאינה מעייפת</item>
+        <item>טוען…</item>
+        <item>שכיבה</item>
+    </array>
+    <array name="train_difficulity">
+        <item>ללא הגבלה</item>
+        <item>בסיסי, 1</item>
+        <item>בינוני, 2</item>
+        <item>מתקדם, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>רגילה</item>
+        <item>גבוהה</item>
+        <item>גבוהה מאוד</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>חלש מאוד</item>
+        <item>חלש</item>
+        <item>מתחת לממוצע</item>
+        <item>ממוצע</item>
+        <item>מעל ממוצע</item>
+        <item>טוב</item>
+        <item>מצוין</item>
+    </array>
+    <array name="water_leval">
+        <item>בלתי מספקת</item>
+        <item>רגילה</item>
+        <item>טובה</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>שני</item>
+        <item>של\'</item>
+        <item>רב\'</item>
+        <item>חמ\'</item>
+        <item>שי\'</item>
+        <item>שבת</item>
+        <item>רא\'</item>
+    </array>
+    <array name="week_days">
+        <item>שני</item>
+        <item>שלישי</item>
+        <item>רביעי</item>
+        <item>חמישי</item>
+        <item>שישי</item>
+        <item>שבת</item>
+        <item>ראשון</item>
+    </array>
+    <array name="week_name">
+        <item>ראשון</item>
+        <item>שני</item>
+        <item>שלישי</item>
+        <item>רביעי</item>
+        <item>חמישי</item>
+        <item>שישי</item>
+        <item>שבת</item>
+    </array>
+    <array name="weeks">
+        <item>שני</item>
+        <item>שלישי</item>
+        <item>רביעי</item>
+        <item>חמישי</item>
+        <item>שישי</item>
+        <item>שבת</item>
+        <item>ראשון</item>
+    </array>
+    <array name="weeks_short">
+        <item>שני</item>
+        <item>שלישי</item>
+        <item>רביעי</item>
+        <item>חמישי</item>
+        <item>שישי</item>
+        <item>שבת</item>
+        <item>ראשון</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>תת-משקל</item>
+        <item>מאוזן</item>
+        <item>משקל עודף</item>
+        <item>שמן</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>‏· מקם את המשקל קרוב ככל האפשר לנתב כדי להבטיח אות Wi-Fi חזק.</item>
+        <item>‏· ודא שהוזנה הסיסמה הנכונה עבור חיבור ה-Wi-Fi.</item>
+        <item>‏· חבר את הטלפון הנייד לנתב ה-Wi-Fi של היעד, ולאחר מכן נסה לפתוח דף אינטרנט כדי לבדוק אם ניתן לגשת לאינטרנט.</item>
+        <item>‏· אם 2.4GHz מושבת, הפעל אותו ובחר ואתו. המשקל לא תומך ב-5GHz Wi-Fi. \n‏· אם תדר כפול מופעל, השבת אותו כדי למנוע כשל בתצורה עקב רשת 5GHz.</item>
+        <item>‏· אם נתב ה-Wi-Fi מחובר לאינטרנט, אות ה-Wi-Fi חזק ו-2.4GHz מופעל בנתב ותדר כפול מושבת, נסה להפעיל מחדש את הנתב.</item>
+        <item>‏· אם הפעלה מחדש של הנתב לא עובדת, נסה להפעיל מחדש את הטלפון.</item>
+        <item>‏· אם הפעלה מחדש של הנתב לא עובדת, נסה להתקין מחדש את הסוללה.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>‏1. האם המשקל נמצא במקום בעל אות Wi-Fi חזק?</item>
+        <item>‏2. האם סיסמת ה-Wi-Fi נכונה?</item>
+        <item>‏3. האם נתב ה-Wi-Fi מחובר כהלכה לאינטרנט?</item>
+        <item>‏4. האם 2.4GHz Wi-Fi מושבת בנתב? או האם Wi-Fi בתדר כפול מופעל?</item>
+        <item>‏5. נסה להפעיל מחדש את הנתב.</item>
+        <item>‏6. נסה להפעיל מחדש את הטלפון.</item>
+        <item>‏7. נסה להפעיל מחדש את ההתקן.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>‏· מהם Wi-Fi 2.4 GHzו-Wi-Fi 5 GHz?</item>
+        <item>‏· כיצד אני יכול להפעיל Wi-Fi 2.4 GHz בנתב שלי?</item>
+        <item>‏· כיצד אני יכול לבדוק את תדר ה-Wi-Fi?</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>‏Wi-Fi 2.4 GHz מציין שהנתב האלחוטי פועל בתדר 2.4 GHz.\n‏Wi-Fi 5 GHz מציין שהנתב האלחוטי פועל בתדר 5 GHz.</item>
+        <item>הגדר את הנתב בהתאם לשלבים הבאים:\n‏1. הזן את כתובת הכניסה של הנתב בסרגל הכתובת של הדפדפן והיכנס לרקע של הנתב האלחוטי. \n‏2. מצא את לחצן ההגדרה של הנתב האלחוטי. \n‏3. כבה את לחצן התדר הכפול. \n‏4. הפעל את Wi-Fi 2.4 GHz.</item>
+        <item>ניתן להשתמש בשתי השיטות הבאות כדי לבדוק את תדר ה-Wi-Fi:\n‏1. ברשימת ה-Wi-Fi במחשב, לבר [Wi-Fi] &amp;gt; [תכונה] &amp;gt; [תדר רשת]. \n‏2. היכנס לרקע של הנתב.</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>רגיל</item>
+        <item>משקל עודף</item>
+        <item>שמן</item>
+    </array>
+    <array name="weight_unit">
+        <item> ק\"ג</item>
+        <item> ג\'ין</item>
+        <item> ליברות</item>
+    </array>
+</resources>

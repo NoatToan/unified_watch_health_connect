@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>한 번만</item>
+        <item>매일</item>
+        <item>월요일 - 금요일</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>실내/실외 수영, 트라이애슬론 운동 지원</item>
+        <item>최대 산소 섭취량 (VO₂ max) 데이터 제공</item>
+        <item>종합적인 활동 통계 및 설정</item>
+        <item>설정하신 목표에 따라 트레이닝을 가이드해드립니다.</item>
+        <item>트레이닝 효과 (TE)는 더 효율적인 운동을 할 수 있도록 도와줍니다.</item>
+    </array>
+    <array name="bind_guide_main_title_everest2">
+        <item>최대산소섭취량(VO2max)데이터 제공 \n정확한 개인 운동 능력 평가</item>
+        <item>교통카드 및 출입카드\n 여행, 출근 및 결제 할 때 워치만으로 다 할 수 있습니다.</item>
+        <item>\n초장대 대기 및 스마트 시스템 두 모드 사이를 자유롭게 전환하고 선택할 수 있습니다.</item>
+        <item>70 시간 연속 GPS 위치 측정 기능\n 실외 운동도 걱정 없게 해 드릴 수 있습니다.</item>
+    </array>
+    <array name="bind_guide_main_title_everest2_oversea">
+        <item>최대산소섭취량(VO2max)데이터 제공 \n정확한 개인 운동 능력 평가</item>
+        <item>\n초장대 대기 및 스마트 시스템 두 모드 사이를 자유롭게 전환하고 선택할 수 있습니다.</item>
+        <item>70 시간 연속 GPS 위치 측정 기능\n 실외 운동도 걱정 없게 해 드릴 수 있습니다.</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>One key to control all with “Classmate Xiao Ai” \n Make your home smart with voice control, and it follows what you say</item>
+        <item>Transportation card, access card, UnionPay card \n For traveling, working, and consuming, just swipe your watch</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>One key to open Alexa \n Intelligent voice, do what you say</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_main_title_xihu">
+        <item>eSIM 카드 지원 \n 휴대폰을 연결하지 않고도 전화를 걸고 인터넷에 접속할 수 있다.</item>
+        <item>\"Xiaoai\"을 사용하여 모든 것을 제어하고 음성 컨트롤로 집안을 똑똑하게 만듭니다.</item>
+        <item>휴대폰 없이도 10개의 운동을 할 수 있다. \n 더 자유롭고 부담 없이 운동할 수 있다.</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item>* 달리기 운동에만 적용</item>
+        <item />
+        <item>* 달리기 운동에만 적용되며 운동 설정에서 실행하셔야 합니다.</item>
+        <item />
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item>*Currently available in selected regions only.</item>
+        <item />
+        <item />
+        <item />
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>상완이 노출되도록 소매를 편안하게 말아 올려야 합니다</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>커프 아래에 손가락 한 개가 들어갈 수 있어야 합니다. 커프가 너무 느슨하거나 너무 조이면 측정 정확도에 영향을 미칠 수 있습니다</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>첫 번째 측정</item>
+        <item>두 번째 측정</item>
+        <item>세 번째 측정</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>첫 번째 혈압 측정값을 기록합니다</item>
+        <item>두 번째 혈압 측정값을 기록합니다</item>
+        <item>세 번째 혈압 측정값을 기록합니다</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>낮음</item>
+        <item>표준</item>
+        <item>높음</item>
+        <item>아주 높음</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>표준</item>
+        <item>높음</item>
+        <item>아주 높음</item>
+    </array>
+    <array name="body_score_leval">
+        <item>아주 안좋음</item>
+        <item>안좋음</item>
+        <item>표준</item>
+        <item>좋음</item>
+        <item>훌륭함</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>아주 낮음</item>
+        <item>낮음</item>
+        <item>표준</item>
+        <item>비교적 높음</item>
+        <item>높음</item>
+    </array>
+    <array name="bone_leval">
+        <item>부족함</item>
+        <item>표준</item>
+        <item>좋음</item>
+    </array>
+    <array name="brm_leval">
+        <item>목표에 도달하지 못함</item>
+        <item>목표 달성됨</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>낮음</item>
+        <item>중간</item>
+        <item>높음</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>시계의 버튼을 눌러보십시오. 만약 시계 화면이 꺼져있다면 배터리를 충전해주십시오.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>만약 밴드가 충전되어있고 휴대전화에서 확인할 수 없다면 블루투스를 재시작해보십시오.</item>
+        <item>블루투스를 재시작하셨는데도 문제가 해결되지 않으셨다면 휴대전화를 재시작해보십시오.</item>
+        <item>운동을 진행 중일 때 시계 데이터를 동기화할 수 없습니다. 세션을 완료하시고 다시 시도하십시오.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>시계가 충전되어 있습니까?</item>
+        <item>시계가 다른 기기와 연결되어 있습니까?</item>
+        <item>블루투스를 재시작 해보십시오</item>
+        <item>휴대전화를 재시작 해보십시오.</item>
+        <item>운동하는 동안 데이터를 동기화할 수 없음</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Shenzhen</item>
+        <item>Foshan</item>
+        <item>Dongguan</item>
+        <item>Beijing</item>
+        <item>Nanjing</item>
+        <item>Suzhou</item>
+        <item>Changzhou</item>
+        <item>Jinan</item>
+        <item>Qingdao</item>
+        <item>Hangzhou</item>
+        <item>Ningbo</item>
+        <item>Zhengzhou</item>
+        <item>Kaifeng</item>
+        <item>Shanghai</item>
+        <item>Shijiazhuang</item>
+        <item>Baoding</item>
+        <item>Chengdu</item>
+        <item>Mianyang</item>
+        <item>Shenyang</item>
+        <item>Dalian</item>
+    </array>
+    <array name="common_level">
+        <item>부족</item>
+        <item>표준</item>
+        <item>양호</item>
+    </array>
+    <array name="contact_ways">
+        <item>이메일</item>
+        <item>휴대전화 번호</item>
+        <item>WeChat ID</item>
+    </array>
+    <array name="difficulty_content">
+        <item>피트니스 트레이닝을 접해보지 않음</item>
+        <item>피트니스 경험이 있음</item>
+        <item>풍부한 피트니스 경험이 있음</item>
+    </array>
+    <array name="difficulty_title">
+        <item>초급</item>
+        <item>중급</item>
+        <item>고급</item>
+    </array>
+    <array name="ecg_afib">
+        <item>데이터 부족</item>
+        <item>비정상 심장박동</item>
+        <item>이상 발견되지 않았음</item>
+        <item>데이터 부족</item>
+        <item>이상 발견되지 않았음</item>
+        <item />
+        <item>이상 발견되지 않았음</item>
+        <item>신호 품질이 좋지 않음</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>사용 방법을 조정하고 다시 시도하세요.</item>
+        <item>참조용으로만 사용할 수 있습니다. 불편함이 있으면 의사에게 문의하세요.</item>
+        <item>참조용으로만 사용할 수 있습니다. 불편함이 있으면 의사에게 문의하세요.</item>
+        <item>사용 방법을 조정하고 다시 시도하세요.</item>
+        <item>참조용으로만 사용할 수 있습니다. 불편함이 있으면 의사에게 문의하세요.</item>
+        <item />
+        <item>참조용으로만 사용할 수 있습니다. 불편함이 있으면 의사에게 문의하세요.</item>
+        <item>사용 방법을 조정하고 다시 시도하세요.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>지방소모 목표</item>
+        <item>날씬한 체형 목표</item>
+        <item>근육질 목표</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>커팅</item>
+        <item>셰이핑</item>
+        <item>벌크업</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+        <item>일</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+        <item>일</item>
+    </array>
+    <array name="hr_sport">
+        <item>운동 중 심박 영역: 워밍업</item>
+        <item>운동 중 심박 영역: 집중훈련</item>
+        <item>운동 중 심박 영역: 중강도훈련</item>
+        <item>운동 중 심박 영역: 고강도훈련</item>
+        <item>운동 중 심박 영역: 최고강도훈련</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>워밍업</item>
+        <item>집중훈련</item>
+        <item>중강도훈련</item>
+        <item>고강도훈련</item>
+        <item>최고강도훈련</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>겨드랑이 아래</item>
+        <item>구강</item>
+        <item>직장</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>손목</item>
+        <item>이마</item>
+        <item>귓등</item>
+        <item>달팽이관</item>
+        <item>목</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>겨드랑이 아래</item>
+        <item>구강</item>
+        <item>직장</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>가슴</item>
+        <item>겨드랑이 아래</item>
+        <item>서혜부</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>가깝게</item>
+        <item>근처</item>
+        <item>멀리</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>버튼을 탭하시고 디스플레이가 밝혀지는지 확인하십시오. 그렇지 않는 경우, 밴드를 충전하십시오.\n\n%1$s 또는 %2$s를 연결하시기 전 기기를 충전하십시오.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>만약 밴드가 충전되어 있고 전화에서 확인할 수 없다면 블루투스를 재시작해보십시오.</item>
+        <item>블루투스를 재시작하셨는데도 문제가 해결되지 않으셨다면 휴대전화를 재시작해보십시오.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>밴드가 충전되어 있습니까?</item>
+        <item>밴드가 다른 기기와 연결되어 있습니까?</item>
+        <item>@string/help_title_2</item>
+        <item>전화를 재시작해보십시오.</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>1월</item>
+        <item>2월</item>
+        <item>3월</item>
+        <item>4월</item>
+        <item>5 월</item>
+        <item>6월</item>
+        <item>7월</item>
+        <item>8월</item>
+        <item>9월</item>
+        <item>10월</item>
+        <item>11월</item>
+        <item>12월</item>
+    </array>
+    <array name="month_titles">
+        <item>1월</item>
+        <item>2월</item>
+        <item>3월</item>
+        <item>4월</item>
+        <item>5월</item>
+        <item>6월</item>
+        <item>7월</item>
+        <item>8월</item>
+        <item>9월</item>
+        <item>10월</item>
+        <item>11월</item>
+        <item>12월</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>부족함</item>
+        <item>표준</item>
+        <item>좋음</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>배터리 부족 알림</item>
+        <item>수신 통화</item>
+        <item>오래 앉음 경고</item>
+        <item>목표 알림</item>
+        <item>일일 날씨 알림</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>매우 나쁨</item>
+        <item>나쁨</item>
+        <item>평균</item>
+        <item>좋음</item>
+        <item>매우 좋음</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>첫번째</item>
+        <item>두번째</item>
+        <item>세 번째</item>
+        <item>네 번째</item>
+        <item>마지막</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>1월</item>
+        <item>2월</item>
+        <item>3월</item>
+        <item>4월</item>
+        <item>5 월</item>
+        <item>6월</item>
+        <item>7월</item>
+        <item>8월</item>
+        <item>9월</item>
+        <item>10월</item>
+        <item>11월</item>
+        <item>12월</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>오랫동안 미사용 시 %1$s이 중지될 것입니다. %2$s을 흔드시고 다시 시도하십시오.</item>
+        <item>%s의 배터리 수명은 1년입니다. 오랫동안 사용하셨다면 전원이 소진되었을 수 있습니다.</item>
+        <item>먼저 다른 기기의 블루투스를 끄시고 귀하의 휴대전화로 연결하십시오.</item>
+        <item>%s이 충전되었으나 휴대전화에서 확인할 수 없으시다면 휴대전화의 블루투스를 재시작하시고 시도해 보십시오.</item>
+        <item>블루투스를 재시작하셨는데도 문제가 해결되지 않으셨다면 휴대전화를 재시작해보십시오.</item>
+        <item>런닝화 데이터를 탭한 후 다음 활성화 페이지로 이동하시면 데이터가 자동으로 동기화됩니다.</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>%s 흔들기</item>
+        <item>%s을 충전하셨습니까?</item>
+        <item>근처 다른 휴대전화와 %s이 연결되어있습니까?</item>
+        <item>블루투스 재시작</item>
+        <item>전화를 재시작해보십시오.</item>
+        <item>어떻게 데이터를 동기화 합니까?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>비만형</item>
+        <item>과체중형</item>
+        <item>비만 근육형</item>
+        <item>운동\n부족형</item>
+        <item>균형잡힌 체형</item>
+        <item>균형잡힌\n근육형</item>
+        <item>마른체형</item>
+        <item>균형잡힌\n마른체형</item>
+        <item>마른\n근육형</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+        <item>일</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>활동</item>
+        <item>느리게 걷기</item>
+        <item>걷기</item>
+        <item>빠르게 걷기</item>
+        <item>달리기</item>
+        <item>기립</item>
+        <item>앉기</item>
+        <item>가벼운 활동</item>
+        <item>미착용</item>
+        <item>충전 중...</item>
+        <item>누워있음</item>
+    </array>
+    <array name="timeline_type">
+        <item>활동</item>
+        <item>느리게 걷기</item>
+        <item>걷기</item>
+        <item>빠르게 걷기</item>
+        <item>달리기</item>
+        <item>서있음</item>
+        <item>앉아있음</item>
+        <item>가벼운 활동</item>
+        <item>미착용</item>
+        <item>충전 중...</item>
+        <item>누워있음</item>
+    </array>
+    <array name="train_difficulity">
+        <item>제한 없음</item>
+        <item>초급 1</item>
+        <item>중급 2</item>
+        <item>고급 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>표준</item>
+        <item>높음</item>
+        <item>아주 높음</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>비기너</item>
+        <item>초심자</item>
+        <item>보통</item>
+        <item>중간</item>
+        <item>좋음</item>
+        <item>훌륭함</item>
+        <item>출중함</item>
+    </array>
+    <array name="water_leval">
+        <item>부족함</item>
+        <item>표준</item>
+        <item>좋음</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+        <item>일</item>
+    </array>
+    <array name="week_days">
+        <item>월요일</item>
+        <item>화요일</item>
+        <item>수요일</item>
+        <item>목요일</item>
+        <item>금요일</item>
+        <item>토요일</item>
+        <item>일요일</item>
+    </array>
+    <array name="week_name">
+        <item>일</item>
+        <item>월</item>
+        <item>화요일</item>
+        <item>수</item>
+        <item>목요일</item>
+        <item>금</item>
+        <item>토</item>
+    </array>
+    <array name="weeks">
+        <item>월요일</item>
+        <item>화요일</item>
+        <item>수요일</item>
+        <item>목요일</item>
+        <item>금요일</item>
+        <item>토요일</item>
+        <item>일요일</item>
+    </array>
+    <array name="weeks_short">
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+        <item>일</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>저체중</item>
+        <item>표준형</item>
+        <item>과체중형</item>
+        <item>비만형</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· 강한 Wi-Fi 신호를 수신할 수 있도록 측정기를 공유기에 최대한 가깝게 배치합니다.</item>
+        <item>· Wi-Fi 연결을 위해 입력한 암호가 올바른지 확인합니다.</item>
+        <item>· 휴대폰을 대상 Wi-Fi 공유기에 연결한 다음 웹페이지를 열어 인터넷에 액세스할 수 있는지 확인합니다.</item>
+        <item>· 2.4GHz가 종료된 경우 실행하고 선택합니다. 해당 측정기는 5G Wi-Fi를 지원하지 않습니다. \n· 이중 대역이 실행된 경우 5GHz 네트워크로 인한 구성 오류를 방지하기 위해 종료합니다.</item>
+        <item>· Wi-Fi 공유기가 인터넷에 연결되어 있고 Wi-Fi 신호가 강하며 공유기가 2.4GHz 실행 및 이중 밴드 종료 상태에서 작동하는 경우, 공유기를 다시 시작합니다.</item>
+        <item>· 공유기를 다시 시작해도 작동하지 않으면 휴대폰을 다시 시작합니다.</item>
+        <item>· 공유기를 다시 시작해도 작동하지 않으면 배터리를 다시 설치합니다.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Wi-Fi 신호가 강한 곳에 측정기가 있습니까?</item>
+        <item>2. 올바른 Wi-Fi 암호입니까?</item>
+        <item>3. Wi-Fi 공유기가 인터넷에 제대로 연결되어 있습니까?</item>
+        <item>4. 공유기에서 2.4GHz Wi-Fi가 종료되어 있습니까? 그렇지 않으면 이중 대역 Wi-Fi가 실행되어 있습니까?</item>
+        <item>5. 공유기를 다시 시작합니다.</item>
+        <item>6. 휴대폰을 다시 시작합니다.</item>
+        <item>7. 장치를 다시 시작합니다.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>2.4GHz Wi-Fi는 무선 라우터가 2.4 GHz에서 작동함을 나타냅니다.\n5GHz Wi-Fi는 무선 라우터가 5GHz에서 작동함을 나타냅니다..</item>
+        <item>다음 단계에 따라 라우터를 설정하세요.\n1. 브라우저의 주소 표시줄에 라우터의 로그인 주소를 입력하고 무선 라우터의 백그라운드에 로그인합니다. \n2. 무선 라우터의 설정 버튼을 찾습니다. \n3. 듀얼 밴드 버튼을 끕니다. \n4. 2.4GHz Wi-Fi를 사용 설정합니다.</item>
+        <item>다음의 두 가지 방법을 통해 Wi-Fi 대역을 확인할 수 있습니다.\n1. 컴퓨터의 Wi-Fi 목록에서 [Wi-Fi] &amp;gt; [속성] &amp;gt; [네트워크 대역]을 선택합니다. \n2. 라우터 백그라운드에 로그인합니다.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· 2.4GHz Wi-Fi 및 5GHz Wi-Fi는 무엇인가요?</item>
+        <item>· 라우터에서 2.4GHz Wi-Fi를 활성화하려면 어떻게 해야 하나요?</item>
+        <item>· Wi-Fi 대역을 확인하려면 어떻게 해야 하나요?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>표준</item>
+        <item>과체중</item>
+        <item>비만</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> 근</item>
+        <item> lbs</item>
+    </array>
+</resources>

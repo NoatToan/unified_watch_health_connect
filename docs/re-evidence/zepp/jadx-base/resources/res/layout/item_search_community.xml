@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_50dp">
+    <TextView
+        android:textSize="@dimen/size_15sp"
+        android:textColor="@color/s2"
+        android:id="@+id/tv_community_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14.5dp"
+        android:layout_marginBottom="14.5dp"
+        android:text="中关村购物中心"/>
+    <View
+        android:id="@+id/search_view"
+        android:background="@color/s4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

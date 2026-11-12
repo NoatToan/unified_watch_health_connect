@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+    <domain-config>
+        <domain includeSubdomains="true">huami.com
+        </domain>
+        <pin-set expiration="2023-04-01">
+            <pin digest="SHA-256">FgAXrdcGmr5uZ/gXcpc8g03rMiL3xya/YFH7ZxbosD8=
+            </pin>
+            <pin digest="SHA-256">8Rw90Ej3Ttt8RRkrg+WYDS9n7IS03bk5bjP/UXPtaY8=
+            </pin>
+            <pin digest="SHA-256">Ko8tivDrEjiY90yGasP6ZpBU4jwXvHqVvQI0GS3GNdA=
+            </pin>
+        </pin-set>
+        <trustkit-config
+            disableDefaultReportUri="true"
+            enforcePinning="true"/>
+    </domain-config>
+</network-security-config>

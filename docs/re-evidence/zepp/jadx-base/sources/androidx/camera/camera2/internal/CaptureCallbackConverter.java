@@ -1,0 +1,36 @@
+package androidx.camera.camera2.internal;
+
+import android.hardware.camera2.CameraCaptureSession;
+import androidx.camera.core.impl.CameraCaptureCallback;
+import androidx.camera.core.impl.CameraCaptureCallbacks;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+/* JADX INFO: loaded from: classes.dex */
+final class CaptureCallbackConverter {
+    private CaptureCallbackConverter() {
+    }
+
+    public static CameraCaptureSession.CaptureCallback toCaptureCallback(CameraCaptureCallback cameraCaptureCallback) {
+        if (cameraCaptureCallback == null) {
+            return null;
+        }
+        ArrayList arrayList = new ArrayList();
+        toCaptureCallback(cameraCaptureCallback, arrayList);
+        return arrayList.size() == 1 ? (CameraCaptureSession.CaptureCallback) arrayList.get(0) : Camera2CaptureCallbacks.createComboCallback(arrayList);
+    }
+
+    public static void toCaptureCallback(CameraCaptureCallback cameraCaptureCallback, List<CameraCaptureSession.CaptureCallback> captureCallbackList) {
+        if (cameraCaptureCallback instanceof CameraCaptureCallbacks.ComboCameraCaptureCallback) {
+            Iterator<CameraCaptureCallback> it2 = ((CameraCaptureCallbacks.ComboCameraCaptureCallback) cameraCaptureCallback).getCallbacks().iterator();
+            while (it2.hasNext()) {
+                toCaptureCallback(it2.next(), captureCallbackList);
+            }
+        } else if (cameraCaptureCallback instanceof CaptureCallbackContainer) {
+            captureCallbackList.add(((CaptureCallbackContainer) cameraCaptureCallback).getCaptureCallback());
+        } else {
+            captureCallbackList.add(new CaptureCallbackAdapter(cameraCaptureCallback));
+        }
+    }
+}

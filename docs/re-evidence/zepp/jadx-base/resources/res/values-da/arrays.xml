@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>Overarmen skal være bar og ærmet rullet op</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Du skal kunne stikke en finger ind under manchetten. Nøjagtigheden af målingen kan påvirkes, hvis manchetten sidder for løst eller for stramt</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Første måling</item>
+        <item>Anden måling</item>
+        <item>Tredje måling</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Registrer den første blodtryksmåling</item>
+        <item>Registrer den anden blodtryksmåling</item>
+        <item>Registrer den tredje blodtryksmåling</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Lav</item>
+        <item>Normal</item>
+        <item>Høj</item>
+        <item>Høj</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normal</item>
+        <item>Høj</item>
+        <item>Høj</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Meget dårlig</item>
+        <item>Dårlig</item>
+        <item>Normal</item>
+        <item>God</item>
+        <item>Fortræffelig</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Meget lav</item>
+        <item>Lav</item>
+        <item>Normal</item>
+        <item>Forøget</item>
+        <item>Høj</item>
+    </array>
+    <array name="bone_leval">
+        <item>Utilstrækkelig</item>
+        <item>Normal</item>
+        <item>Godt</item>
+    </array>
+    <array name="brm_leval">
+        <item>Mål ikke nået</item>
+        <item>Mål nået</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Lav</item>
+        <item>Rimelig</item>
+        <item>Høj</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Prøv at trykke på knappen på uret. Hvis urskærmen er slukket, skal du tilslutte det for at oplade batteriet.</item>
+        <item>Urdata synkroniseres ikke, når du motionerer. Afslut sessionen, og prøv igen.</item>
+        <item>Hvis armbåndet er opladet, men telefonen kan ikke finde det, kan du prøve at genstarte Bluetooth på telefonen.</item>
+        <item>Hvis problemet ikke løses ved at genstarte Bluetooth, kan du prøve at genstarte telefonen.</item>
+        <item>Urdata synkroniseres ikke, når du motionerer. Afslut sessionen, og prøv igen.</item>
+        <item>Urdata synkroniseres ikke, når du motionerer. Afslut sessionen, og prøv igen.</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Er dit ur opladet?</item>
+        <item>Er dette ur parret med en anden enhed?</item>
+        <item>Prøv at genstarte Bluetooth</item>
+        <item>Prøv at genstarte din telefon</item>
+        <item>Data kan ikke synkroniseres under træning</item>
+        <item>Prøv at genstarte Bluetooth</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Shenzhen</item>
+        <item>Foshan</item>
+        <item>Dongguan</item>
+        <item>Beijing</item>
+        <item>Nanjing</item>
+        <item>Suzhou</item>
+        <item>Changzhou</item>
+        <item>Jinan</item>
+        <item>Qingdao</item>
+        <item>Hangzhou</item>
+        <item>Ningbo</item>
+        <item>Zhengzhou</item>
+        <item>Kaifeng</item>
+        <item>Shanghai</item>
+        <item>Shijiazhuang</item>
+        <item>Baoding</item>
+        <item>Chengdu</item>
+        <item>Mianyang</item>
+        <item>Shenyang</item>
+        <item>Dalian</item>
+    </array>
+    <array name="common_level">
+        <item>Insufficient</item>
+        <item>Normal</item>
+        <item>Good</item>
+    </array>
+    <array name="contact_ways">
+        <item>E-mail</item>
+        <item>Mobiltelefonnummer</item>
+        <item>WeChat-id</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Nybegynder inden for fitnesstræning</item>
+        <item>Har grundlæggende erfaring med fitness</item>
+        <item>Har stor erfaring med fitness og har opnået god kropsform</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Grundlæggende</item>
+        <item>Middel</item>
+        <item>Avanceret</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Utilstrækkelige data</item>
+        <item>Unormal puls</item>
+        <item>Ingen uregelmæssigheder registreret</item>
+        <item>Utilstrækkelige data</item>
+        <item>Ingen uregelmæssigheder registreret</item>
+        <item />
+        <item>Ingen uregelmæssigheder registreret</item>
+        <item>Dårlig signalkvalitet</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Justér brugsmetoden, og prøv igen.</item>
+        <item>Kun til reference. Søg læge, hvis du oplever ubehag.</item>
+        <item>Kun til reference. Søg læge, hvis du oplever ubehag.</item>
+        <item>Justér brugsmetoden, og prøv igen.</item>
+        <item>Kun til reference. Søg læge, hvis du oplever ubehag.</item>
+        <item />
+        <item>Kun til reference. Søg læge, hvis du oplever ubehag.</item>
+        <item>Justér brugsmetoden, og prøv igen.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Jeg vil forbrænde fedt</item>
+        <item>Jeg vil forme kroppen</item>
+        <item>Jeg vil opbygge muskler</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Skæring</item>
+        <item>Kropsformning</item>
+        <item>Større muskelmasse</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>Mandag</item>
+        <item>Tirsdag</item>
+        <item>Onsdag</item>
+        <item>Torsdag</item>
+        <item>Fredag</item>
+        <item>Lørdag</item>
+        <item>Søndag</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Man.</item>
+        <item>Tir.</item>
+        <item>Ons.</item>
+        <item>Tor.</item>
+        <item>Fre.</item>
+        <item>Lør.</item>
+        <item>Søn.</item>
+    </array>
+    <array name="hr_sport">
+        <item>Pulszone: Let</item>
+        <item>Pulszone: Intensiv</item>
+        <item>Pulszone: Aerob</item>
+        <item>Pulszone: Anaerob</item>
+        <item>Pulszone: VO₂-maks.</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Let</item>
+        <item>Intensiv</item>
+        <item>Aerob</item>
+        <item>Anaerob</item>
+        <item>VO₂-maks.</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Armhulen</item>
+        <item>Oralt</item>
+        <item>Rektum</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Håndleddet</item>
+        <item>Panden</item>
+        <item>Bag øret</item>
+        <item>Øresneglen</item>
+        <item>Halsen</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Armhulen</item>
+        <item>Oralt</item>
+        <item>Rektum</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Brystet</item>
+        <item>Armhulen</item>
+        <item>Lysken</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Luk</item>
+        <item>Nær</item>
+        <item>Langt væk</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Tryk på knappen på armbåndet for at kontrollere, om skærmen lyser. Hvis den ikke gør, skal du oplade dit armbånd.\n\nOplad enheden, inden du danner par med en %1$s eller %2$s.</item>
+        <item>Urdata synkroniseres ikke, når du motionerer. Afslut sessionen, og prøv igen.</item>
+        <item>Hvis armbåndet er opladet, men telefonen kan ikke finde det, kan du prøve at genstarte Bluetooth på telefonen.</item>
+        <item>Hvis problemet ikke løses ved at genstarte Bluetooth, kan du prøve at genstarte telefonen.</item>
+        <item>Hvis problemet ikke løses ved at genstarte Bluetooth, kan du prøve at genstarte telefonen.</item>
+        <item>Hvis problemet ikke løses ved at genstarte Bluetooth, kan du prøve at genstarte telefonen.</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Er dit armbånd opladet?</item>
+        <item>Er dette armbånd parret med en anden enhed?</item>
+        <item>Er dit armbånd opladet?</item>
+        <item>Prøv at genstarte din telefon</item>
+        <item>Er dit armbånd opladet?</item>
+        <item>Er dit armbånd opladet?</item>
+    </array>
+    <array name="month_list">
+        <item>Jan.</item>
+        <item>Feb.</item>
+        <item>Mar.</item>
+        <item>Apr.</item>
+        <item>Maj</item>
+        <item>Jun.</item>
+        <item>Jul.</item>
+        <item>Aug.</item>
+        <item>Sep.</item>
+        <item>Okt.</item>
+        <item>Nov.</item>
+        <item>Dec.</item>
+    </array>
+    <array name="month_titles">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Maj</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Utilstrækkelig</item>
+        <item>Normal</item>
+        <item>Godt</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Meget dårlig</item>
+        <item>Dårlig</item>
+        <item>Normal</item>
+        <item>God</item>
+        <item>Meget god</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Maj</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Okt</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s stopper med at fungere, hvis du ikke bruger den i længere tid. Ryst %2$s, og prøv igen.</item>
+        <item>Batterilevetiden for %s er 1 år. Hvis du har brugt det i en længere periode, er der muligvis ikke mere batteristrøm tilbage.</item>
+        <item>Slå Bluetooth fra på den anden enhed først, og dan derefter par med din telefon.</item>
+        <item>Hvis %s er opladet, men telefonen kan ikke finde det, kan du prøve at genstarte Bluetooth på telefonen.</item>
+        <item>Hvis problemet ikke løses ved at genstarte Bluetooth, kan du prøve at genstarte telefonen.</item>
+        <item>Tryk på løbeskodata, og åbn næste aktivitetsside for at synkronisere data automatisk</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Ryst %s</item>
+        <item>Er dit %s opladet?</item>
+        <item>Er %s parret med en anden telefon i nærheden?</item>
+        <item>Genstart Bluetooth</item>
+        <item>Prøv at genstarte din telefon</item>
+        <item>Hvordan synkroniseres dine data?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Kraftigt overvægtig</item>
+        <item>Overvægtig</item>
+        <item>Tykkelse indstillet</item>
+        <item>Mangler\nmotion</item>
+        <item>Balanceret</item>
+        <item>Balanceret\nmuskuløs</item>
+        <item>Mager</item>
+        <item>Balanceret\nmager</item>
+        <item>Mager\nmuskuløs</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>Mandag</item>
+        <item>Tirsdag</item>
+        <item>Onsdag</item>
+        <item>Torsdag</item>
+        <item>Fredag</item>
+        <item>Lørdag</item>
+        <item>Søndag</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Aktivitet</item>
+        <item>Langsom gang kl.</item>
+        <item>Gang</item>
+        <item>Hurtig gang kl.</item>
+        <item>Løb</item>
+        <item>Stående</item>
+        <item>Siddende</item>
+        <item>Let aktivitet</item>
+        <item>Bruges ikke</item>
+        <item>Oplader …</item>
+        <item>Liggende</item>
+    </array>
+    <array name="timeline_type">
+        <item>Aktivitet</item>
+        <item>Gå langsomt</item>
+        <item>Gang</item>
+        <item>Gå hurtigt</item>
+        <item>Løb</item>
+        <item>Stående</item>
+        <item>Siddende</item>
+        <item>Let aktivitet</item>
+        <item>Bruges ikke</item>
+        <item>Oplader …</item>
+        <item>Liggende</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Ikke begrænset</item>
+        <item>Grundlæggende, 1</item>
+        <item>Middel, 2</item>
+        <item>Avanceret, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normal</item>
+        <item>Høj</item>
+        <item>Meget høj</item>
+    </array>
+    <array name="water_leval">
+        <item>Utilstrækkelig</item>
+        <item>Normal</item>
+        <item>Godt</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_name">
+        <item>Søn.</item>
+        <item>Man.</item>
+        <item>Tirs.</item>
+        <item>Ons.</item>
+        <item>Tor.</item>
+        <item>Fre.</item>
+        <item>Lør.</item>
+    </array>
+    <array name="weeks">
+        <item>Mandag</item>
+        <item>Tirsdag</item>
+        <item>Onsdag</item>
+        <item>Torsdag</item>
+        <item>Fredag</item>
+        <item>Lørdag</item>
+        <item>Søndag</item>
+    </array>
+    <array name="weeks_short">
+        <item>Man.</item>
+        <item>Tirs.</item>
+        <item>Ons.</item>
+        <item>Tor.</item>
+        <item>Fre.</item>
+        <item>Lør.</item>
+        <item>Søn.</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Undervægtig</item>
+        <item>Normal</item>
+        <item>Overvægtig</item>
+        <item>Kraftigt overvægtig I</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Anbring vægten så tæt som muligt på routeren for at sikre, at der er stærkt Wi-Fi-signal</item>
+        <item>· Bekræft, om adgangskoden til Wi-Fi-forbindelsen er korrekt.</item>
+        <item>· Slut din telefon til Wi-Fi-målrouteren, og prøv at åbne en webside for at kontrollere, om du kan få adgang til internettet.</item>
+        <item>· Hvis 2,4 GHz er deaktiveret, skal du aktivere og vælge det. Vægten understøtter ikke Wi-Fi på 5 GHz. \n· Hvis dualband er aktiveret, skal du deaktivere det for at undgå konfigurationsfejl på grund af netværket på 5 GHz.</item>
+        <item>· Hvis Wi-Fi-routeren er sluttet til internettet, er Wi-Fi-signalet stærkt, og routeren fungerer med 2,4 GHz aktiveret og dualband deaktiveret. Prøv at genstarte routeren.</item>
+        <item>· Hvis problemet ikke løses ved at genstarte routeren, kan du prøve at genstarte telefonen.</item>
+        <item>· Hvis problemet ikke løses ved at genstarte routeren, kan du prøve at geninstallere batteriet.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. Er vægten et sted med stærkt Wi-Fi-signal?</item>
+        <item>2. Er adgangskoden til Wi-Fi korrekt?</item>
+        <item>3. Er Wi-Fi-routeren sluttet korrekt til internettet?</item>
+        <item>4. Er Wi-Fi på 2,4 GHz deaktiveret på routeren? Eller er Wi-Fi med dualband aktiveret?</item>
+        <item>5. Prøv at genstarte routeren.</item>
+        <item>6. Prøv at genstarte telefonen.</item>
+        <item>7. Prøv at genstarte enheden.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>Wi-Fi på 2,4 GHz angiver, at den trådløse router fungerer ved 2,4 GHz.\nWi-Fi på 5 GHz angiver, at den trådløse router fungerer ved 5 GHz.</item>
+        <item>Konfigurer din router i henhold til følgende trin:\n1. Indtast loginadressen for din router i adresselinjen i din browser, og log ind på den trådløse routers baggrund. \n2. Find indstillingsknappen på den trådløse router. \n3. Slå dualband-knappen fra. \n4. Aktivér Wi-Fi på 2,4 GHz.</item>
+        <item>Følgende to metoder kan bruges til at kontrollere Wi-Fi-båndet:\n1. På listen over Wi-Fi-netværk på din computer skal du vælge [Wi-Fi] &amp;gt; [Egenskab] &amp;gt; [Netværksbånd]. \n2. Log in på routerens baggrund.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Hvad er Wi-Fi på 2,4 GHz og Wi-Fi på 5 GHz?</item>
+        <item>· Hvordan kan jeg aktivere Wi-Fi på 2,4 GHz på min router?</item>
+        <item>· Hvordan kan jeg kontrollere Wi-Fi-båndet?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Normal</item>
+        <item>Overvægt</item>
+        <item>Kraftigt overvægtig I</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> pund</item>
+    </array>
+</resources>

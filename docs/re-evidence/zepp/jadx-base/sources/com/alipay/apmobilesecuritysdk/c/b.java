@@ -1,0 +1,5 @@
+package com.alipay.apmobilesecuritysdk.c;
+
+/* JADX INFO: loaded from: classes2.dex */
+public final class b {
+}

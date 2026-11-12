@@ -1,0 +1,106 @@
+[
+  {
+    "title": "United States",
+    "target": "https://upload-cdn.huami.com/tposts/8225",
+    "language": "US",
+    "version": "20170815000000",
+    "sort": "5",
+    "createTime": 1502726403
+  },
+  {
+    "title": "香港地區",
+    "target": "https://upload-cdn.huami.com/tposts/8226",
+    "language": "HK",
+    "version": "20170815000000",
+    "sort": "2",
+    "createTime": 1502726401
+  },
+  {
+    "title": "台灣地區",
+    "target": "https://upload-cdn.huami.com/tposts/8227",
+    "language": "TW",
+    "version": "20170815000000",
+    "sort": "3",
+    "createTime": 1502726402
+  },
+  {
+    "title": "Republik Indonesia",
+    "target": "https://upload-cdn.huami.com/tposts/8228",
+    "language": "ID",
+    "version": "20171017144824",
+    "sort": "7",
+    "createTime": 1508222904
+  },
+  {
+    "title": "Российская Федерация",
+    "target": "https://upload-cdn.huami.com/tposts/8229",
+    "language": "RU",
+    "version": "20171017144943",
+    "sort": "6",
+    "createTime": 1508222983
+  },
+  {
+    "title": "دولة الإمارات العربية المتحدة‎‎",
+    "target": "https://upload-cdn.huami.com/tposts/8230",
+    "language": "AE",
+    "version": "20171017145023",
+    "sort": "9",
+    "createTime": 1508223023
+  },
+  {
+    "title": "大陆地区",
+    "target": "https://upload-cdn.huami.com/tposts/8231",
+    "language": "CN",
+    "version": "20171017145113",
+    "sort": "1",
+    "createTime": 1508223073
+  },
+  {
+    "title": "Cộng hòa Xã hội chủ nghĩa Việt Nam",
+    "target": "https://upload-cdn.huami.com/tposts/8232",
+    "language": "VN",
+    "version": "20181018202120",
+    "sort": "0",
+    "createTime": 1539865280
+  },
+  {
+    "title": "日本国",
+    "target": "https://upload-cdn.huami.com/tposts/8233",
+    "language": "JP",
+    "version": "20181101162931",
+    "sort": "0",
+    "createTime": 1541060971
+  },
+  {
+    "title": "ราชอาณาจักรไทย",
+    "target": "https://upload-cdn.huami.com/tposts/8234",
+    "language": "TH",
+    "version": "20181101163012",
+    "sort": "0",
+    "createTime": 1541061012
+  },
+  {
+    "title": "Украïна",
+    "target": "https://upload-cdn.huami.com/tposts/8235",
+    "language": "UA",
+    "version": "20181101165533",
+    "sort": "0",
+    "createTime": 1541062533
+  },
+  {
+    "title": "Türkiye Cumhuriyeti",
+    "target": "https://upload-cdn.huami.com/tposts/8236",
+    "language": "TR",
+    "version": "20181101165917",
+    "sort": "0",
+    "createTime": 1541062757
+  },
+  {
+    "title": "대한민국",
+    "target": "https://upload-cdn.huami.com/tposts/8237",
+    "language": "KR",
+    "version": "20190603190315",
+    "sort": "0",
+    "createTime": 1559559795
+  }
+]

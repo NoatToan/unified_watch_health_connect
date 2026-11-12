@@ -1,0 +1,27 @@
+package androidx.camera.core.internal;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+/* JADX INFO: loaded from: classes.dex */
+public final /* synthetic */ class b {
+    @NonNull
+    public static Class a(TargetConfig _this) {
+        return (Class) _this.retrieveOption(TargetConfig.OPTION_TARGET_CLASS);
+    }
+
+    @Nullable
+    public static Class b(@Nullable TargetConfig _this, Class cls) {
+        return (Class) _this.retrieveOption(TargetConfig.OPTION_TARGET_CLASS, cls);
+    }
+
+    @NonNull
+    public static String c(TargetConfig _this) {
+        return (String) _this.retrieveOption(TargetConfig.OPTION_TARGET_NAME);
+    }
+
+    @Nullable
+    public static String d(@Nullable TargetConfig _this, String str) {
+        return (String) _this.retrieveOption(TargetConfig.OPTION_TARGET_NAME, str);
+    }
+}

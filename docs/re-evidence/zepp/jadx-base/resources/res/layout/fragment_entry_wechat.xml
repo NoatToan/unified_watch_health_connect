@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.rainbow.titlebar.RainbowTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/entry_fragment_title"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/item_steps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/d2"
+        app:ltv_leading="@drawable/ic_steps_24"
+        app:ltv_leadingBackground="@color/s30"
+        app:ltv_leadingTint="@android:color/white"
+        app:ltv_subtitle="@string/sub_title_steps"
+        app:ltv_title="@string/title_steps"
+        style="@style/entry_item_style"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/item_device_sports_bind"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_leading="@drawable/ic_run_24"
+        app:ltv_leadingBackground="@color/p3"
+        app:ltv_leadingTint="@android:color/white"
+        app:ltv_subtitle="@string/sub_title_device_sports_bind"
+        app:ltv_title="@string/title_device_sports_bind"
+        style="@style/entry_item_style"/>
+</LinearLayout>

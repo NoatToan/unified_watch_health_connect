@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.hm.health.watermarkcamera.ui.widget.OptimizeGridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:scrollbarStyle="outsideOverlay"
+    android:gravity="center"
+    android:id="@+id/picker_grid"
+    android:scrollbars="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:listSelector="@drawable/picker_item_selector"
+    android:drawSelectorOnTop="true"
+    android:horizontalSpacing="4dp"
+    android:verticalSpacing="4dp"
+    android:stretchMode="columnWidth"
+    android:columnWidth="@dimen/itemSize"
+    android:numColumns="auto_fit"
+    android:choiceMode="multipleChoiceModal"/>

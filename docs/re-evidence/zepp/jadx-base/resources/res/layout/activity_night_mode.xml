@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/night_mode_iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_divider_padding="all"
+        app:ltv_subtitle="@string/night_mode_tips"
+        app:ltv_title="@string/night_mode"
+        app:ltv_trailing="@drawable/ic_arrow_forward_20_2x"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/start_time_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_divider_padding="all"
+        app:ltv_title="@string/long_sit_alert_start"
+        app:ltv_trailing="@drawable/ic_arrow_forward_20_2x"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/end_time_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_title="@string/long_sit_alert_stop"
+        app:ltv_trailing="@drawable/ic_arrow_forward_20_2x"/>
+</LinearLayout>

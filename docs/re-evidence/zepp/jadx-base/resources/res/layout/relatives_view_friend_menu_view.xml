@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/more_button"
+    android:padding="@dimen/relatives_size_10dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/icon"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/relatives_btn_more"/>
+    <ImageView
+        android:id="@+id/menu_new_flag"
+        android:background="@null"
+        android:clickable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/relatives_new_dot_icon"
+        android:layout_alignTop="@+id/icon"
+        android:layout_alignEnd="@+id/icon"/>
+</RelativeLayout>

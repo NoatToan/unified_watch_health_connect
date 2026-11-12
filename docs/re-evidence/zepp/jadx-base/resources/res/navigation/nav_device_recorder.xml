@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_device_record"
+    app:startDestination="@+id/record_list_fragment">
+    <fragment
+        android:name="com.huami.devicerecorder.RecorderFileListFragment"
+        android:id="@+id/record_list_fragment">
+        <action
+            android:id="@+id/to_sync_fragment"
+            app:destination="@+id/sync_fragment"/>
+    </fragment>
+    <fragment
+        android:name="com.huami.devicerecorder.RecorderSyncFragment"
+        android:id="@+id/sync_fragment"/>
+    <include app:graph="@navigation/nav_guide_connect"/>
+    <action
+        android:id="@+id/to_guide_fragment"
+        app:destination="@+id/nav_guide_connect"/>
+</navigation>

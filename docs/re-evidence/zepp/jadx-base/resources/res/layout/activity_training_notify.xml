@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:huami="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/training_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        huami:ltv_checked="true"
+        huami:ltv_divider_color="@color/s4"
+        huami:ltv_title="@string/training_notify"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/miband_training_notify"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        huami:ltv_checked="true"
+        huami:ltv_divider_color="@color/s4"
+        huami:ltv_subtitle="@string/miband_will_notify_training"
+        huami:ltv_title="@string/miban_notify_training"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/training_notify_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        huami:ltv_title="@string/training_notify_time"
+        huami:ltv_trailing="@drawable/ic_arrow_forward_20_2x"/>
+</LinearLayout>

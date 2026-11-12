@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="alarm_repeat_type">
+        <item>Una volta</item>
+        <item>Ogni giorno</item>
+        <item>Dal lunedì al venerdì</item>
+    </array>
+    <array name="amazfit_wear_type">
+        <item>@string/wear_wrist</item>
+        <item>@string/wear_neck</item>
+    </array>
+    <array name="bind_guide_main_title">
+        <item>Supporta le attività di piscina, nuoto libero e triathlon</item>
+        <item>Fornisce i dati di massimo consumo di ossigeno (max VO₂)</item>
+        <item>Impostazioni e statistiche complete sulle attività</item>
+        <item>Guida il tuo allenamento in base agli obiettivi da te impostati</item>
+        <item>Effetto Allenamento (EA) ti aiuta a capire i benefici di un esercizio sulla tua forma fisica</item>
+    </array>
+    <array name="bind_guide_main_title_everest2">
+        <item>Fornire i dati di VO2max \n Valutazione accurata delle prestazioni di esercizio personale</item>
+        <item>Dì addio alla carta di trasporto e alla carta di controllo degli accessi. \n Puoi semplicemente scorrere l\'orologio durante il viaggio, andare al lavoro ed effettuare il pagamento.</item>
+        <item>Passa tra le due modalità a tuo piacimento. \n Sono disponibili una modalità standby ultra-lunga e un sistema intelligente.</item>
+        <item>70 ore di localizzazione GPS continua, \n significa che non hai nulla di cui preoccuparti durante gli esercizi all\'aperto.</item>
+    </array>
+    <array name="bind_guide_main_title_everest2_oversea">
+        <item>Fornire i dati di VO2max \n Valutazione accurata delle prestazioni di esercizio personale</item>
+        <item>Passa tra le due modalità a tuo piacimento. \n Sono disponibili una modalità standby ultra-lunga e un sistema intelligente.</item>
+        <item>70 ore di localizzazione GPS continua, \n significa che non hai nulla di cui preoccuparti durante gli esercizi all\'aperto.</item>
+    </array>
+    <array name="bind_guide_main_title_qogir">
+        <item>Una chiave per controllare tutto con “Classmate Xiao Ai” \n Rendi la tua casa intelligente con il controllo vocale e segue ciò che dici</item>
+        <item>Carta di trasporto, carta di accesso, carta UnionPay \n Per viaggiare, lavorare e consumare, basta scorrere l\'orologio</item>
+        <item>Gioca 12 sport senza il tuo telefono \n Chi non vuole più libertà durante l\'esercizio</item>
+        <item>Supporta il telefono Bluetooth \n Effettuare e rispondere alle chiamate senza utilizzare un telefono cellulare</item>
+    </array>
+    <array name="bind_guide_main_title_qogir_oversea">
+        <item>One key to open Alexa\nProceed as you said with intelligent voice</item>
+        <item>Play 12 sports without your phone \n Who does not want more freedom while exercising</item>
+        <item>Support Bluetooth phone\n Making and answering calls without using a mobile phone</item>
+    </array>
+    <array name="bind_guide_main_title_xihu">
+        <item>Le carte eSIM sono supportate. \n Puoi effettuare chiamate e andare online senza connettersi al tuo cellulare.</item>
+        <item>Una chiave per controllare tutto con \"Classmate Xiao Ai\" \n Rendi la tua casa intelligente con il controllo vocale e segue ciò che dici</item>
+        <item>Puoi fare i dieci sport senza aver bisogno di portare con te il tuo cellulare. \n Non vuoi fare sport con peso</item>
+    </array>
+    <array name="bind_guide_support_title">
+        <item />
+        <item>* Solo per la corsa</item>
+        <item />
+        <item>* Solo per l\'esercizio corsa, devi aprirlo in impostazioni esercizio</item>
+        <item />
+    </array>
+    <array name="bind_guide_support_title_qogir_oversea">
+        <item>*Currently available in selected regions only.</item>
+        <item />
+        <item />
+        <item />
+        <item />
+    </array>
+    <array name="blood_pressure_guide_summary">
+        <item>La parte superiore del braccio deve essere scoperta, con la manica arrotolata</item>
+        <item>@string/blood_pressure_guide_summary_two</item>
+        <item>Dovresti riuscire a infilare un dito sotto il manicotto. Manicotti troppo larghi o troppo stretti possono influenzare l\'accuratezza della misurazione</item>
+    </array>
+    <array name="blood_pressure_measure_title">
+        <item>Prima misurazione</item>
+        <item>Seconda misurazione</item>
+        <item>Terza misurazione</item>
+    </array>
+    <array name="blood_pressure_result_input_title">
+        <item>Registra i valori della prima misurazione della pressione sanguigna</item>
+        <item>Registra i valori della seconda misurazione della pressione sanguigna</item>
+        <item>Registra i valori della terza misurazione della pressione sanguigna</item>
+    </array>
+    <array name="bmi_for_adualt">
+        <item>Basso</item>
+        <item>Normale</item>
+        <item>Alto</item>
+        <item>Molto alto</item>
+    </array>
+    <array name="bmi_for_child">
+        <item>Normale</item>
+        <item>Alto</item>
+        <item>Molto alto</item>
+    </array>
+    <array name="body_score_leval">
+        <item>Molto scarso</item>
+        <item>Scarso</item>
+        <item>Normale</item>
+        <item>Buono</item>
+        <item>Eccellente</item>
+    </array>
+    <array name="bodyfat_content_leval">
+        <item>Molto basso</item>
+        <item>Basso</item>
+        <item>Normale</item>
+        <item>Aumentato</item>
+        <item>Alto</item>
+    </array>
+    <array name="bone_leval">
+        <item>Insufficiente</item>
+        <item>Normale</item>
+        <item>Buono</item>
+    </array>
+    <array name="brm_leval">
+        <item>Obiettivi non raggiunti</item>
+        <item>Obiettivo raggiunto</item>
+    </array>
+    <array name="buzzer_vibrate_strength_arrays">
+        <item>Basso</item>
+        <item>Medio</item>
+        <item>Alto</item>
+    </array>
+    <array name="chaohu_help_tips">
+        <item>Prova a premere il tasto sull\'orologio, se lo schermo dell\'orologio è spento, collegalo per ricaricare la batteria.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Se il bracciale è carico ma il telefono non riesce ad individuarlo, prova a riavviare il Bluetooth del telefono.</item>
+        <item>Se riavviando il Bluetooth il problema persiste, prova a riavviare il telefono.</item>
+        <item>Impossibile sincronizzare i dati dell\'orologio durante l\'allenamento. Termina la sessione e riprova.</item>
+        <item>@string/watch_music_running_tips</item>
+    </array>
+    <array name="chaohu_help_title">
+        <item>Il tuo orologio è carico?</item>
+        <item>L\'orologio è associato ad un altro dispositivo?</item>
+        <item>Prova riavviando il Bluetooth</item>
+        <item>Prova a riavviare il telefono</item>
+        <item>Impossibile sincronizzare i dati durante gli allenamenti</item>
+        <item>@string/watch_music_running_title</item>
+    </array>
+    <array name="chaohu_setting_run_types">
+        <item>@string/chaohu_setting_run_outdoor</item>
+        <item>@string/chaohu_setting_run_indoor</item>
+        <item>@string/chaohu_setting_run_ride</item>
+        <item>@string/chaohu_setting_run_walk</item>
+    </array>
+    <array name="colors">
+        <item>@string/blue</item>
+        <item>@string/orange</item>
+        <item>@string/green</item>
+        <item>@string/red</item>
+    </array>
+    <array name="common_cities">
+        <item>Guangzhou</item>
+        <item>Shenzhen</item>
+        <item>Foshan</item>
+        <item>Dongguan</item>
+        <item>Pechino</item>
+        <item>Nanchino</item>
+        <item>Suzhou</item>
+        <item>Changzhou</item>
+        <item>Jinan</item>
+        <item>Qingdao</item>
+        <item>Hangzhou</item>
+        <item>Ningbo</item>
+        <item>Zhengzhou</item>
+        <item>Kaifeng</item>
+        <item>Shanghai</item>
+        <item>Shijiazhuang</item>
+        <item>Baoding</item>
+        <item>Chengdu</item>
+        <item>Mianyang</item>
+        <item>Shenyang</item>
+        <item>Dalian</item>
+    </array>
+    <array name="common_level">
+        <item>Insufficiente</item>
+        <item>Normale</item>
+        <item>Buono</item>
+    </array>
+    <array name="contact_ways">
+        <item>Email</item>
+        <item>Numero di telefono cellulare</item>
+        <item>ID WeChat</item>
+    </array>
+    <array name="difficulty_content">
+        <item>Nuovi aiuti per l\'allenamento fitness</item>
+        <item>Sono un principiante</item>
+        <item>Ho molta esperienza e una buona forma fisica</item>
+    </array>
+    <array name="difficulty_title">
+        <item>Elementare</item>
+        <item>Intermedio</item>
+        <item>Avanzato</item>
+    </array>
+    <array name="ecg_afib">
+        <item>Dati insufficienti</item>
+        <item>Battito cardiaco anormale</item>
+        <item>Nessuna anomalia rilevata</item>
+        <item>Dati insufficienti</item>
+        <item>Nessuna anomalia rilevata</item>
+        <item />
+        <item>Nessuna anomalia rilevata</item>
+        <item>Scarsa qualità del segnale</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>Modifica il metodo di utilizzo e riprova.</item>
+        <item>Solo per riferimento. Consultare un medico in caso di disagio.</item>
+        <item>Solo per riferimento. Consultare un medico in caso di disagio.</item>
+        <item>Modifica il metodo di utilizzo e riprova.</item>
+        <item>Solo per riferimento. Consultare un medico in caso di disagio.</item>
+        <item />
+        <item>Solo per riferimento. Consultare un medico in caso di disagio.</item>
+        <item>Modifica il metodo di utilizzo e riprova.</item>
+    </array>
+    <array name="exercise_day_chart_x">
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>23:59</item>
+    </array>
+    <array name="fitness_goal_content">
+        <item>Obiettivo: Bruciare Grassi</item>
+        <item>Obiettivo: Forma Fisica</item>
+        <item>Obiettivo: Aumento Muscolatura</item>
+    </array>
+    <array name="fitness_goal_title">
+        <item>Definizione</item>
+        <item>Rifinitura</item>
+        <item>Massa</item>
+    </array>
+    <array name="ges_screen_type">
+        <item>@string/ges_screen_type_all_day</item>
+        <item>@string/ges_screen_type_time</item>
+        <item>@string/ges_screen_type_close</item>
+    </array>
+    <array name="heart_rate_weeks">
+        <item>LUN</item>
+        <item>MAR</item>
+        <item>MER</item>
+        <item>GIO</item>
+        <item>VEN</item>
+        <item>SAB</item>
+        <item>Dom</item>
+    </array>
+    <array name="heart_rate_weeks_abbr">
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Mer</item>
+        <item>Gio</item>
+        <item>Ven</item>
+        <item>Sab</item>
+        <item>Dom</item>
+    </array>
+    <array name="hr_sport">
+        <item>Zona di frequenza cardiaca: Leggera</item>
+        <item>Zona di frequenza cardiaca: Intensiva</item>
+        <item>Zona di frequenza cardiaca: Aerobica</item>
+        <item>Zona di frequenza cardiaca: Anaerobica</item>
+        <item>Zona di frequenza cardiaca: VO₂ max</item>
+    </array>
+    <array name="hr_sport_new">
+        <item>Leggero</item>
+        <item>Intensivo</item>
+        <item>Aerobico</item>
+        <item>Anaerobico</item>
+        <item>VO₂ max</item>
+    </array>
+    <array name="lab_temperature_elec_item">
+        <item>Ascella</item>
+        <item>Orale</item>
+        <item>Retto</item>
+    </array>
+    <array name="lab_temperature_infrared_item">
+        <item>Polso</item>
+        <item>Fronte</item>
+        <item>Dietro l\'orecchio</item>
+        <item>Coclea</item>
+        <item>Collo</item>
+    </array>
+    <array name="lab_temperature_mercury_item">
+        <item>Ascella</item>
+        <item>Orale</item>
+        <item>Retto</item>
+    </array>
+    <array name="lab_temperature_patch_item">
+        <item>Torace</item>
+        <item>Ascella</item>
+        <item>Inguine</item>
+    </array>
+    <array name="lock_screen_type">
+        <item>Vicino</item>
+        <item>Molto vicino</item>
+        <item>Lontano</item>
+    </array>
+    <array name="member_add_weight_items">
+        <item>@string/bodyfat_member_add_weight_item_auto</item>
+        <item>@string/bodyfat_member_add_weight_item_manual</item>
+    </array>
+    <array name="mili_help_tips">
+        <item>Tocca il pulsante sul bracciale per controllare che il display si illumini. In caso contrario, ricarica il bracciale.\n\nRicarica il dispositivo prima di abbinare %1$s o %2$s.</item>
+        <item>@string/band_watch_item_2</item>
+        <item>Se il bracciale è carico ma il telefono non riesce ad individuarlo, prova a riavviare il Bluetooth del telefono.</item>
+        <item>Se riattivando il Bluetooth il problema non si risolve, prova a riavviare il tuo telefono.</item>
+        <item>@string/helper_sport_running</item>
+        <item>@string/helper_music_running</item>
+    </array>
+    <array name="mili_help_title">
+        <item>Il tuo bracciale è carico?</item>
+        <item>Questo bracciale è associato ad un altro dispositivo?</item>
+        <item>@string/help_title_2</item>
+        <item>Prova riavviando il tuo telefono</item>
+        <item>@string/unable_sync_in_sport</item>
+        <item>@string/unable_sync_in_music</item>
+    </array>
+    <array name="month_list">
+        <item>Gennaio</item>
+        <item>Febbraio</item>
+        <item>Marzo</item>
+        <item>Aprile</item>
+        <item>Maggio</item>
+        <item>Giugno</item>
+        <item>Luglio</item>
+        <item>Agosto</item>
+        <item>Settembre</item>
+        <item>Ottobre</item>
+        <item>Novembre</item>
+        <item>Dicembre</item>
+    </array>
+    <array name="month_titles">
+        <item>Sau</item>
+        <item>Vas</item>
+        <item>Kov</item>
+        <item>Bal</item>
+        <item>Geg</item>
+        <item>Brž</item>
+        <item>Lie</item>
+        <item>Rgp</item>
+        <item>Rgs</item>
+        <item>Spa</item>
+        <item>Lpk</item>
+        <item>Grd</item>
+    </array>
+    <array name="muscle_content_leval">
+        <item>Insufficiente</item>
+        <item>Normale</item>
+        <item>Buono</item>
+    </array>
+    <array name="night_mode_array">
+        <item>@string/close</item>
+        <item>@string/night_mode_open_after_sunset</item>
+        <item>@string/night_mode_open_time</item>
+    </array>
+    <array name="notification_test_items">
+        <item>Avviso batteria scarica</item>
+        <item>Chiamata in arrivo</item>
+        <item>Avviso di sedentarietà</item>
+        <item>Notifiche obiettivi</item>
+        <item>Promemoria meteo giornaliero</item>
+    </array>
+    <array name="one_foot_score_levels">
+        <item>Molto scarso</item>
+        <item>Scarso</item>
+        <item>Medio</item>
+        <item>Buono</item>
+        <item>Ottimo</item>
+    </array>
+    <array name="repeat_by_nth">
+        <item>Il primo</item>
+        <item>Il secondo</item>
+        <item>Il terzo</item>
+        <item>La quarta</item>
+        <item>L\'ultimo</item>
+    </array>
+    <array name="ring_types">
+        <item>@string/ring_type_default</item>
+        <item>@string/ring_type_incall</item>
+    </array>
+    <array name="running_months">
+        <item>Gen</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Mag</item>
+        <item>Giu</item>
+        <item>Lug</item>
+        <item>Ago</item>
+        <item>Set</item>
+        <item>Ott</item>
+        <item>Nov</item>
+        <item>Dic</item>
+    </array>
+    <array name="setting_hr_types">
+        <item>@string/setting_heartrate_detect_auto</item>
+        <item>@string/setting_heartrate_detect_sleep</item>
+        <item>@string/close</item>
+    </array>
+    <array name="setting_weather_temp_unit_array">
+        <item>@string/setting_weather_temp_c</item>
+        <item>@string/setting_weather_temp_f</item>
+    </array>
+    <array name="shoes_help_tips">
+        <item>%1$s smetterà di funzionare se non lo usi per molto tempo. Agita %2$s e riprova.</item>
+        <item>%s ha una batteria della durata di 1 anno. Se lo hai usato per un periodo più lungo, forse si è scaricata.</item>
+        <item>Disattiva prima il Bluetooth sull\'altro dispositivo, quindi associa con il tuo telefono.</item>
+        <item>Se %s è carico ma il telefono non riesce a rilevarlo, prova a riavviare il Bluetooth del telefono.</item>
+        <item>Se riattivando il Bluetooth il problema non si risolve, prova a riavviare il tuo telefono.</item>
+        <item>Tocca i dati delle scarpe da corsa ed entra nella pagina dell\'attività successiva per sincronizzare i dati automaticamente</item>
+    </array>
+    <array name="shoes_help_title">
+        <item>Scuoti il %s</item>
+        <item>I tuoi %s sono carichi?</item>
+        <item>%s sono associati con altri telefoni nelle vicinanze?</item>
+        <item>Riavvia il Bluetooth</item>
+        <item>Prova riavviando il tuo telefono</item>
+        <item>Come sincronizzare i tuoi dati?</item>
+    </array>
+    <array name="show_body_shape_array">
+        <item>Obeso</item>
+        <item>Sovrappeso</item>
+        <item>Robusto</item>
+        <item>Mancanza di\nesercizio</item>
+        <item>Bilanciato</item>
+        <item>Bilanciato\nmuscoloso</item>
+        <item>Molto magro</item>
+        <item>Bilanciato\nmagro</item>
+        <item>Magro\nmuscoloso</item>
+    </array>
+    <array name="sky_reminder_repeat_day">
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Mer</item>
+        <item>Gio</item>
+        <item>Ven</item>
+        <item>Sab</item>
+        <item>Dom</item>
+    </array>
+    <array name="sky_reminder_repeat_day_short">
+        <item>L</item>
+        <item>M</item>
+        <item>M</item>
+        <item>G</item>
+        <item>V</item>
+        <item>S</item>
+        <item>D</item>
+    </array>
+    <array name="sleep_weeks">
+        <item>LUN</item>
+        <item>MAR</item>
+        <item>MER</item>
+        <item>GIO</item>
+        <item>VEN</item>
+        <item>SAB</item>
+        <item>Dom</item>
+    </array>
+    <array name="step_timeline_type">
+        <item>Attività</item>
+        <item>Camminata lenta</item>
+        <item>Camminata</item>
+        <item>Camminata veloce</item>
+        <item>Corsa</item>
+        <item>Fermo</item>
+        <item>Seduti</item>
+        <item>Attività leggera</item>
+        <item>Non indossato</item>
+        <item>In carica</item>
+        <item>Disteso</item>
+    </array>
+    <array name="timeline_type">
+        <item>Attività</item>
+        <item>Camminata lenta</item>
+        <item>Camminata</item>
+        <item>Camminata veloce</item>
+        <item>Corsa</item>
+        <item>In piedi</item>
+        <item>Seduto</item>
+        <item>Attività leggera</item>
+        <item>Non indossato</item>
+        <item>In carica…</item>
+        <item>Disteso</item>
+    </array>
+    <array name="train_difficulity">
+        <item>Non limitato</item>
+        <item>Elementare, 1</item>
+        <item>Intermedio, 2</item>
+        <item>Avanzato, 3</item>
+    </array>
+    <array name="visceral_fat_leval">
+        <item>Normale</item>
+        <item>Alto</item>
+        <item>Molto alto</item>
+    </array>
+    <array name="vo2_max_level_status">
+        <item>Molto scarsa</item>
+        <item>Scarsa</item>
+        <item>Sotto la media</item>
+        <item>Media</item>
+        <item>Sopra la media</item>
+        <item>Buona</item>
+        <item>Eccellente</item>
+    </array>
+    <array name="water_leval">
+        <item>Insufficiente</item>
+        <item>Normale</item>
+        <item>Buono</item>
+    </array>
+    <array name="wear_type">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+    </array>
+    <array name="wear_type_body">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/body</item>
+    </array>
+    <array name="wear_type_chest">
+        <item>@string/left_hand</item>
+        <item>@string/right_hand</item>
+        <item>@string/chest</item>
+    </array>
+    <array name="week_day_min_short">
+        <item>Lunedì</item>
+        <item>Martedì</item>
+        <item>Mercoledì</item>
+        <item>Giovedì</item>
+        <item>Venerdì</item>
+        <item>Sabato</item>
+        <item>Domenica</item>
+    </array>
+    <array name="week_days">
+        <item>Lunedì</item>
+        <item>Martedì</item>
+        <item>Mercoledì</item>
+        <item>Giovedì</item>
+        <item>Venerdì</item>
+        <item>Sabato</item>
+        <item>Domenica</item>
+    </array>
+    <array name="week_name">
+        <item>Dom</item>
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Mer</item>
+        <item>Gio</item>
+        <item>Ven</item>
+        <item>Sab</item>
+    </array>
+    <array name="weeks">
+        <item>Lunedì</item>
+        <item>Martedì</item>
+        <item>Mercoledì</item>
+        <item>Giovedì</item>
+        <item>Venerdì</item>
+        <item>Sabato</item>
+        <item>Domenica</item>
+    </array>
+    <array name="weeks_short">
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Mer</item>
+        <item>Gio</item>
+        <item>Ven</item>
+        <item>Sab</item>
+        <item>Dom</item>
+    </array>
+    <array name="weight3_body_figures">
+        <item>Sottopeso</item>
+        <item>Bilanciato</item>
+        <item>Sovrappeso</item>
+        <item>Obeso</item>
+    </array>
+    <array name="weight_bfs_wifi_help_tips">
+        <item>· Posiziona la bilancia il più vicino possibile al router per assicurare un segnale Wi-Fi forte</item>
+        <item>· Conferma se la password di input per la connessione al Wi-Fi è corretta.</item>
+        <item>· Connetti il tuo telefono al router Wi-Fi di destinazione, quindi prova ad aprire una pagina Web per verificare che tu riesca ad accedere a Internet.</item>
+        <item>· Se la rete a 2,4 GHz è disabilitata, abilitala e selezionala. La bilancia non supporta il Wi-Fi a 5 GHz. \n· Se il dual band è abilitato, disabilitalo per evitare dei problemi di configurazione a causa della rete a 5 GHz.</item>
+        <item>· Se il router Wi-Fi è connesso a Internet, il segnale è forte e il router funziona a 2,4 GHz e il dual band è disabilitato, prova a riavviare il router.</item>
+        <item>· Se riavviando il router la situazione non cambia, prova a riavviare il telefono.</item>
+        <item>· Se riavviando il router la situazione non cambia, prova a reinstallare la batteria.</item>
+    </array>
+    <array name="weight_bfs_wifi_help_title">
+        <item>1. La bilancia si trova in un luogo con un segnale Wi-Fi forte?</item>
+        <item>2. La password del Wi-Fi è corretta?</item>
+        <item>3. Il router del Wi-Fi è connesso correttamente a Internet?</item>
+        <item>4. Il Wi-Fi a 2,4 GHz è disabilitato sul router? Oppure il Wi-Fi dual band è abilitato?</item>
+        <item>5. Prova a riavviare il router.</item>
+        <item>6. Prova a riavviare il telefono.</item>
+        <item>7. Prova a riavviare il dispositivo.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_tips">
+        <item>Il Wi-Fi a 2,4 GHz indica che il router wireless funziona a 2,4 GHz.\nIl Wi-Fi a 5 GHz indica che il router wireless funziona a 5 GHz.</item>
+        <item>Imposta il router in base ai seguenti passaggi:\n1. Inserisci l\'indirizzo di accesso del router nella barra degli indirizzi del browser e accedi in background al router wireless. \n2. Trova il pulsante delle impostazioni del router wireless. \n3. Disattiva il pulsante dual band. \n4. Abilita il Wi-Fi a 2,4 GHz.</item>
+        <item>I due metodi seguenti possono essere utilizzati per controllare la banda Wi-Fi:\n1. Nell\'elenco Wi-Fi sul computer, seleziona [Wi-Fi]&amp;gt; [Proprietà]&amp;gt; [Banda di rete]. \n2. Accedi al background del router.</item>
+    </array>
+    <array name="weight_bfs_wifi_set_help_title">
+        <item>· Che cosa sono il Wi-Fi a 2,4 GHz e il Wi-Fi a 5 GHz?</item>
+        <item>· Come si abilita il Wi-Fi a 2,4 GHz sul router?</item>
+        <item>· Come si controlla la banda del Wi-Fi?</item>
+    </array>
+    <array name="weight_body_figures_for_child">
+        <item>Normale</item>
+        <item>Sovrappeso</item>
+        <item>Obeso</item>
+    </array>
+    <array name="weight_unit">
+        <item> kg</item>
+        <item> Jin</item>
+        <item> lib</item>
+    </array>
+</resources>

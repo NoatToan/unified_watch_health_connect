@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@color/s10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/web_status_iv"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_network_error_64"
+            app:tint="@color/s3"/>
+        <TextView
+            android:textSize="12sp"
+            android:textColor="@color/s3"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/web_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="30dp"
+            android:text="@string/bridge_web_loading"/>
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,54 @@
+package com.xiaomi.hm.health;
+
+/* JADX INFO: loaded from: classes19.dex */
+public final class BuildConfig {
+    public static final String APPLICATION_ID = "com.huami.watch.hmwatchmanager";
+    public static final String BUILDER_NUMBER = "202206301654";
+    public static final String BUILD_BRANCH = "midong/6.10.0";
+    public static final String BUILD_DATE = "2022-06-30 17:11:59.227";
+    public static final String BUILD_LAST_COMMIT = "37de3761d7";
+    public static final String BUILD_TYPE = "release";
+    public static final boolean DEBUG = false;
+    public static final String FIREBASE_ENABLED_BRANCH = "midong/beta";
+    public static final String FLAVOR = "midongPlay";
+    public static final String FLAVOR_channel = "play";
+    public static final String FLAVOR_production = "midong";
+    public static final boolean FORCE_MEDICAL_COLLECT_DEVICE = false;
+    public static final boolean FORCE_MEDICAL_DEVICE = false;
+    public static final boolean Mi_AI_PRODUCTION_ENV = true;
+    public static final String RELIVE_CLIENT_ID = "jdYvrdL6PM";
+    public static final String RELIVE_THIRD_NAME = "20200723";
+    public static final boolean SPEECH_VOICE_SAVE = false;
+    public static final boolean SUPPORT_AlexaBetaId = false;
+    public static final boolean SUPPORT_BIND_ANDES = false;
+    public static final boolean SUPPORT_BIND_BARI = false;
+    public static final boolean SUPPORT_BIND_BERLIN = false;
+    public static final boolean SUPPORT_BIND_BLED = false;
+    public static final boolean SUPPORT_BIND_Cannes = false;
+    public static final boolean SUPPORT_BIND_FLORENCE = false;
+    public static final boolean SUPPORT_BIND_LEIDEN = false;
+    public static final boolean SUPPORT_BIND_LILLE = false;
+    public static final boolean SUPPORT_BIND_LULLABY = false;
+    public static final boolean SUPPORT_BIND_MI_SERIES = false;
+    public static final boolean SUPPORT_BIND_PROVENCE = true;
+    public static final boolean SUPPORT_BIND_VIENNA = false;
+    public static final boolean SUPPORT_BIND_WAST = false;
+    public static final boolean SUPPORT_CHECK_MUSICLIST = false;
+    public static final boolean SUPPORT_CHOPIN_BEHAVIOR_TAG = false;
+    public static final boolean SUPPORT_CHOPIN_SET_TEST_TIME = false;
+    public static final boolean SUPPORT_CLOUD_FW_UPGRADE = true;
+    public static final boolean SUPPORT_DEBUG = false;
+    public static final boolean SUPPORT_ECG_EXPORT_RAW_DATA = false;
+    public static final boolean SUPPORT_HR_ALERT_TEST_RANGE = false;
+    public static final boolean SUPPORT_MILI_SLEEP_HR = false;
+    public static final boolean SUPPORT_NEW_AUTH = true;
+    public static final boolean SUPPORT_NEW_BIND_API = true;
+    public static final boolean SUPPORT_NFC_DELETE_BUS_CARD = false;
+    public static final boolean SUPPORT_PHN_CARD = false;
+    public static final boolean SUPPORT_SHOW_BUILDER_NUMBER = false;
+    public static final boolean SUPPORT_SNORING_IMPROVE = false;
+    public static final boolean SUPPORT_WRIST_TEMPERATURE = false;
+    public static final int VERSION_CODE = 100770;
+    public static final String VERSION_NAME = "6.10.1-play";
+    public static final String appExpiredDate = "2099-12-31 23:59:59";
+}

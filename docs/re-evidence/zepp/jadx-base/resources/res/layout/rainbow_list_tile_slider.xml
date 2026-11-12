@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_brightness_min"
+        app:tint="?attr/colorAccent"/>
+    <com.google.android.material.slider.Slider
+        android:id="@+id/rainbow_tile_slide"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:haloColor="@android:color/transparent"
+        app:labelBehavior="gone"
+        app:thumbColor="@color/s5"
+        app:thumbElevation="6dp"
+        app:trackColorActive="@color/p3"
+        app:trackColorInactive="@color/s10"
+        app:trackHeight="2dp"/>
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_brightness_max"
+        app:tint="?attr/colorAccent"/>
+</LinearLayout>

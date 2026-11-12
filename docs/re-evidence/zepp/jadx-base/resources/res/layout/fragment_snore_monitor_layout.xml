@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/activity_snore_monitor_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:id="@+id/status_mask"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+    <FrameLayout
+        android:id="@+id/mainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/status_mask"/>
+    <ImageView
+        android:id="@+id/meteorOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/snore_meteor_one_icon"/>
+    <ImageView
+        android:id="@+id/meteorTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/snore_meteor_two_icon"/>
+    <ImageView
+        android:id="@+id/meteorThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/snore_meteor_three_icon"/>
+</RelativeLayout>

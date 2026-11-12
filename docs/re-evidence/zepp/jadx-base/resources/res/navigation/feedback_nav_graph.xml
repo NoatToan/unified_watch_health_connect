@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/issueFragment">
+    <fragment
+        android:label="IssueFragment"
+        android:name="com.huami.feedback.zepp.ui.issue.IssueFragment"
+        android:id="@+id/issueFragment">
+        <argument
+            android:name="description"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="images"
+            android:defaultValue="@null"
+            app:argType="android.net.Uri[]"
+            app:nullable="true"/>
+        <action
+            android:id="@+id/action_issueFragment_to_feedbackEditFragment"
+            app:destination="@+id/feedbackEditFragment"/>
+    </fragment>
+    <fragment
+        android:label="FeedbackEditFragment"
+        android:name="com.huami.feedback.zepp.ui.edit.FeedbackEditFragment"
+        android:id="@+id/feedbackEditFragment">
+        <action
+            android:id="@+id/action_feedbackEditFragment_to_imageFragment"
+            app:destination="@+id/imageFragment"/>
+    </fragment>
+    <fragment
+        android:label="ImageFragment"
+        android:name="com.huami.feedback.zepp.ui.image.ImageFragment"
+        android:id="@+id/imageFragment"/>
+</navigation>

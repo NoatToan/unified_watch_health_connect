@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@drawable/selector_item_background"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="19dp"
+    android:paddingEnd="19dp">
+    <ImageView
+        android:id="@+id/categories_recycleview_item_ig"
+        android:layout_width="@dimen/xima_category_image_size"
+        android:layout_height="@dimen/xima_category_image_size"/>
+    <TextView
+        android:textSize="@dimen/xima_category_title_size"
+        android:textColor="@color/xima_category_title_color"
+        android:id="@+id/categories_recycleview_item_tx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="9dp"/>
+</LinearLayout>

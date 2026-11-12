@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/enable_broadcast"
+        android:paddingLeft="@dimen/size_15dp"
+        android:paddingRight="@dimen/size_15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_subtitle="@string/enable_id_broadcast_query_msg"
+        app:ltv_title="@string/enable_broadcast"/>
+</FrameLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-files-path
+        name="download"
+        path="Download"/>
+    <external-cache-path
+        name="share"
+        path="share"/>
+    <external-path
+        name="files_root"
+        path="Android/data/com.xiaomi.hm.health/files/Millelet/"/>
+    <external-path
+        name="external_storage_root"
+        path="."/>
+    <external-files-path
+        name="apk_file"
+        path="mi_file/"/>
+    <root-path
+        name="root-path"
+        path=""/>
+</paths>

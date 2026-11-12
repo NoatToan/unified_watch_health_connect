@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="Ndays">
+        <item quantity="one">1日</item>
+        <item quantity="other">%1$d日</item>
+    </plurals>
+    <plurals name="Nhours">
+        <item quantity="one">1時間</item>
+        <item quantity="other">%1$d時間</item>
+    </plurals>
+    <plurals name="Nminutes">
+        <item quantity="one">1分間</item>
+        <item quantity="other">%1$d分間</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="other">ブランドのアップグレードに伴い、データセキュリティを確保するために、アカウント情報には保護者の確認が必要です。お早めにご確認ください。確認されない場合、ご利用のアカウントは%1$s日後に凍結されます。</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="other">アカウントまたはパスワードの最大入力回数に達しました。%s 分後に再試行してください</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="other">アカウント名またはパスワードが正しくありません。再試行回数はあと %s 回です</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="other">%dコース</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="other">%s 分後に再度バイブします</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="other">今日は%d%%のユーザーを超えています</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="other">最大 %1$d 個のアプリをアプリ リストに追加できます</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="other">最大 %1$d 個のアプリをその他リストに追加できます</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="other">%1$d日前との比較</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="other">%d 日間調整</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="other">北京大学第一医院が開始した血圧スクリーニング調査プロジェクトでは、%d 日ごとの調整が必要になります</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="other">%d 日後に調整</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="other">%d項目で基準値をクリアしました</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="other">%d項目で注意が必要です</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="other">%d項目が基準値未満です</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="other">おめでとうございます!\nこの %1$d 日間で増えた体重:</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="other">点</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="other">よく使う連絡先を最大 %1$d 件追加でき、これらの連絡先は自動的にスマートウォッチに同期されます</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="other">%dコース</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="other">コースは%d日後に開始します</item>
+    </plurals>
+    <plurals name="daily_interval">
+        <item quantity="one">日</item>
+        <item quantity="other">%1$d日</item>
+    </plurals>
+    <plurals name="days_after">
+        <item quantity="one">%1$d日後</item>
+        <item quantity="other">%1$d日後</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="one">%1$d日前</item>
+        <item quantity="other">%1$d日前</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="other">%d回ダウンロード</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="zero">%1$d 秒</item>
+        <item quantity="one">%1$d 秒</item>
+        <item quantity="other">%1$d 秒</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="other">データ間隔: %1$s 秒</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="other">%1$s 秒</item>
+    </plurals>
+    <plurals name="endByCount">
+        <item quantity="one">; 1回</item>
+        <item quantity="other">; %1$d回完全に繰り返す</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="other">%d件のリマインダー</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">%d 秒早送り</item>
+        <item quantity="other">%d 秒早送り</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">%d 秒巻き戻し</item>
+        <item quantity="other">%d 秒巻き戻し</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="other">%1$d kcal</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="other">%1$sレッスン</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="other">生理%1$s、残り%2$s</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="other">予測では生理%1$s、残り%2$s</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="other">生理%1$s、予測では残り%2$sです</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="other">%1$s 人の視聴者</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">%1$d日目</item>
+        <item quantity="other">%1$d日目</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="other">%1$d日</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="other">キャンセル (%1$d秒)</item>
+    </plurals>
+    <plurals name="fix_hour">
+        <item quantity="one">%1$d 時間</item>
+        <item quantity="other">%1$d 時間</item>
+    </plurals>
+    <plurals name="fix_minute">
+        <item quantity="one">%1$d 分</item>
+        <item quantity="other">%1$d 分</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="other">ダウンロードしています。約 %s 分間お待ちください</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="other">%d回のトレーニングセッションを終了しました</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="other">%d 回/分</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="other">ホーム ページには少なくとも %1$d 個のカードを含める必要があります</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="other">平均心拍数 %1$d bpm</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="other">回/分</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="other">%d 分前</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="other">セッション %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="other">電話がかかってくると%d秒後にリマインドします</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="other">最大 %1$d 件の SMS の返信を追加できます</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="other">SMS の返信を最低 %1$d 件保持</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="other">最大%d文字まで入力可能</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="other">%1$d 件のラップ記録</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="other">%d回再生</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="other">%1$d か月</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="other">1 日約 %1$d 分</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="other">前回は%d日前に充電</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="other">目標達成：%d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="other">%d歩</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="monthly_interval">
+        <item quantity="one">月</item>
+        <item quantity="other">%1$dヶ月</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d 件の新しい通知</item>
+        <item quantity="other">%d 件の新しい通知</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="other">%d秒</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="other">%1$d歳以上 %2$sを分析できません</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="other">%1$d歳未満 %2$sを分析できません</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="other">%sインチ</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="other">%d秒</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="other">回の運動</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="other">%d人参加</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="other">分</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="other">最大 %1$d 件の SMS の返信を追加できます</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="other">SMS の返信を最低 %1$d 件保持</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="other">%1$d個を選択済み</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="other">%1$d 日前にサイクリングを行いました</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="other">時間</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="other">kcal</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="other">%1$d 日前にランニングを行いました</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="other">秒</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="other">今日、%1$d 個のオーディオ クリップが検出されました</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="other">歩数</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="other">%1$d 日前にウォーキングを行いました</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="other">%d 日</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="other">%d 時間</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="other">%d歩</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="other">睡眠時呼吸の質は %1$d です。睡眠時呼吸に継続的に注意を払うことをお勧めします。体調が優れない場合は、医師にご相談ください</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip_short">
+        <item quantity="other">睡眠時呼吸の質スコア: %1$d。睡眠時呼吸の状態によく注意を払ってください。体調が優れない場合は、医師にご相談ください</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="other">睡眠時呼吸の質は %1$d です。睡眠時呼吸の問題があるかどうかを判断するため、医師に相談することをお勧めします</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip_short">
+        <item quantity="other">睡眠時呼吸の質スコア: %1$d。スコアが何度も 80 を下回る場合、医師にご相談ください</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="other">睡眠時呼吸の質は %1$d です。その調子で続けましょう</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip_short">
+        <item quantity="other">睡眠時呼吸の質スコア: %1$d。その調子で続けましょう</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="other">ランニング保険はあと%1$d日で有効期限が切れます。更新するにはタップしてください。</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="other">%d個のアイテムが同期されていません</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="other">%d項目同期されていません</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="other">サイクリング %1$d回</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="other">エリプティカルトレーナー %1$d回</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="other">%1$d回のフリースタイルトレーニング</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="other">ランニング %1$d回</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="other">水泳 %1$d回</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="other">トレーニング: %1$d回</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="other">トライアスロン %1$d回</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="other">ウォーキング %1$d回</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="other">エクササイズ: %1$d回</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="other">最大 %d 件の予定を追加できます</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="other">自己ベスト: %d日間</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="other">%d%%のユーザーを超えています</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="zero">回</item>
+        <item quantity="one">回</item>
+        <item quantity="other">回</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="other">日</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="zero">スコア</item>
+        <item quantity="one">スコア</item>
+        <item quantity="other">スコア</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="zero">%d回</item>
+        <item quantity="one">%d回</item>
+        <item quantity="other">%d回</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="other">睡眠スコアは先月と比べて%d上がりました。</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="other">今月の睡眠スコアは%dです。この調子で続けましょう。</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="other">睡眠スコアは先週と比べて%d上がりました。</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="other">今週の睡眠スコアは%dです。この調子で続けましょう。</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="other">%1$d個のオーディオクリップが本日記録されます。</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="other">%1$d個のクリップ</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="other">あと %d 秒話せます</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="other">完了したアクティビティ：%2$s%1$d回</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="other">歩</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="other">歩</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="other">歩/日</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; 回</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; 日間リストのトップ</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="other">リストで %1$d 回トップ</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="other">リストで %1$d 日間トップ</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="other">%1$d 人の友達と一致:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; 回ランニング</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="other">%1$d 件のランニング記録がアップロードされていません</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="other">参加者 %1$d 人</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="zero">%d時間</item>
+        <item quantity="one">%d時間</item>
+        <item quantity="other">%d時間</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="zero">%d分間</item>
+        <item quantity="one">%d分間</item>
+        <item quantity="other">%d分間</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="other">%1$d 回</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="other">おめでとうございます!\nこの %1$d 日間で減った体重:</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="other">要求されるのを待機している体重レコードが %1$d 件あります。</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="other">最大 %1$d 件のスケジュールを追加できます</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="other">%d歳を超える人は分析できません</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="other">%d歳未満の人は分析できません</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="other">%dコース</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="other">コースの有効期限は%d日です</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="other">%d人の視聴者</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="other">合計セット：%d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="other">学習回数：%d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="other">%d日後に開始</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="other"> %1$d 分トレーニングしました</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="other"> %1$d 秒トレーニングしました</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="other">トレーニングコース%1$d日目：%3$sを完了する必要があります（%2$d分）</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="other"> %1$d 秒</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="other"> %1$d 回</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="other"> %1$d 秒休み</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="other"> 歩</item>
+    </plurals>
+    <plurals name="user_info_Nhours">
+        <item quantity="one">1時間</item>
+        <item quantity="other">%1$d時間</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="other">入力された年齢が %1$d 歳未満であるため、保護者からの認証と同意を得て初めて、Zeppの利用を継続することができます。</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="other">確認されない場合、アカウントは %1$d 日後に凍結されます。</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="other">%1$d歳未満</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="other">未成年者の個人情報を保護するため、ユーザーが%1$d歳未満である場合、当社は完全なサービスを提供する前に、保護者の承認と同意を必要とします。</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="other">ユーザーが%1$d歳未満ではないことを確認してください</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="other">%s ft</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="other">%sインチ</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="weekly_interval">
+        <item quantity="one">週間</item>
+        <item quantity="other">%1$d週間</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="other">%d 分</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="other">%d回</item>
+    </plurals>
+    <plurals name="yearly_interval">
+        <item quantity="one">年</item>
+        <item quantity="other">%1$d年</item>
+    </plurals>
+</resources>

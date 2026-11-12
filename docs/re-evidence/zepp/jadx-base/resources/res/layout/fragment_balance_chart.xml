@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/scale_detail_bg_end_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:gravity="center"
+        android:id="@+id/chart_container"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="10dp"
+            android:src="@drawable/ic_triangle"
+            android:layout_centerHorizontal="true"
+            app:tint="@color/p3"/>
+        <com.xiaomi.hm.health.bodyfat.view.WeightUserQuickPicker
+            android:id="@+id/user_picker"
+            android:background="@color/s38"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/weight_user_picker_content_height"
+            android:layout_marginTop="10dp"/>
+    </RelativeLayout>
+    <View
+        android:background="@color/s4"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider"/>
+</LinearLayout>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:paddingStart="@dimen/size_20dp"
+    android:paddingEnd="@dimen/size_16dp">
+    <TextView
+        android:textColor="@color/s1"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        style="?attr/textAppearanceBody3"/>
+    <CheckBox
+        android:id="@+id/dialog_checkbox"
+        android:background="@null"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/rainbow_abc_btn_check_material"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        app:buttonTint="@color/rainbow_tint_multichoice"/>
+    <View
+        android:id="@+id/dialog_divider"
+        android:background="@color/divider"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

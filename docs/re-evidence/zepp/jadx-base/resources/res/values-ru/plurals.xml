@@ -1,0 +1,998 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="Ndays">
+        <item quantity="one">%1$d день</item>
+        <item quantity="few">%1$d Дня</item>
+        <item quantity="many">%1$d Дней</item>
+        <item quantity="other">%1$d Дня</item>
+    </plurals>
+    <plurals name="Nhours">
+        <item quantity="one">%1$d час</item>
+        <item quantity="few">%1$d Часа</item>
+        <item quantity="many">%1$d Часов</item>
+        <item quantity="other">%1$d час</item>
+    </plurals>
+    <plurals name="Nminutes">
+        <item quantity="one">%1$d минута</item>
+        <item quantity="few">%1$d Минуты</item>
+        <item quantity="many">%1$d Минут</item>
+        <item quantity="other">%1$d Минуты</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="one">Из-за обновления бренда, для защиты безопасности ваших данных, опекун должен подтвердить данные вашей учетной записи. Сделайте это как можно скорее. В противном случае ваша учетная запись будет заморожена через %1$sдень.</item>
+        <item quantity="few">Из-за обновления бренда, для защиты безопасности ваших данных, опекун должен подтвердить данные вашей учетной записи. Сделайте это как можно скорее. В противном случае ваша учетная запись будет заморожена через %1$sдня.</item>
+        <item quantity="many">Из-за обновления бренда, для защиты безопасности ваших данных, опекун должен подтвердить данные вашей учетной записи. Сделайте это как можно скорее. В противном случае ваша учетная запись будет заморожена через %1$sдней.</item>
+        <item quantity="other">Из-за обновления бренда, для защиты безопасности ваших данных, опекун должен подтвердить данные вашей учетной записи. Сделайте это как можно скорее. В противном случае ваша учетная запись будет заморожена через %1$sдней.</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="one">Достигнуто максимальное количество попыток ввода имени учетной записи или пароля. Повторите попытку через %s минуту</item>
+        <item quantity="few">Достигнуто максимальное количество попыток ввода имени учетной записи или пароля. Повторите попытку через %s минуты</item>
+        <item quantity="many">Достигнуто максимальное количество попыток ввода имени учетной записи или пароля. Повторите попытку через %s минут</item>
+        <item quantity="other">Достигнуто максимальное количество попыток ввода имени учетной записи или пароля. Повторите попытку через %s минут</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="one">Имя учетной записи или пароль неверны. У вас осталась %s попытка</item>
+        <item quantity="few">Имя учетной записи или пароль неверны. У вас осталось %s попытки</item>
+        <item quantity="many">Имя учетной записи или пароль неверны. У вас осталось %s попыток</item>
+        <item quantity="other">Имя учетной записи или пароль неверны. У вас осталось %s попыток</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="one">%d курс</item>
+        <item quantity="few">%d курса</item>
+        <item quantity="many">%d курсов</item>
+        <item quantity="other">%d курсов</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="one">Вибрировать снова через %s минуту</item>
+        <item quantity="few">Вибрировать снова через %s минуты</item>
+        <item quantity="many">Вибрировать снова через%s минут</item>
+        <item quantity="other">Вибрировать снова через%s минут</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="one">Сегодня вы обошли %d%% пользователей</item>
+        <item quantity="few">Сегодня вы обошли %d%% пользователей</item>
+        <item quantity="many">Сегодня вы обошли %d%% пользователей</item>
+        <item quantity="other">Сегодня вы обошли %d%% пользователей</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="one">В список приложений можно добавить не более %1$d приложения</item>
+        <item quantity="few">В список приложений можно добавить не более %1$d приложений</item>
+        <item quantity="many">В список приложений можно добавить не более %1$d приложений</item>
+        <item quantity="other">В список приложений можно добавить не более %1$d приложений</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="one">В список &quot;Дополнительно &quot;можно добавить не более %1$d приложения</item>
+        <item quantity="few">В список &quot;Дополнительно &quot;можно добавить не более %1$d приложений</item>
+        <item quantity="many">В список &quot;Дополнительно &quot;можно добавить не более %1$d приложений</item>
+        <item quantity="other">В список &quot;Дополнительно &quot;можно добавить не более %1$d приложений</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="one">По сравнению с %1$d дн. назад</item>
+        <item quantity="few">По сравнению с %1$d дн. назад</item>
+        <item quantity="many">По сравнению с %1$d дн. назад</item>
+        <item quantity="other">По сравнению с %1$d дн. назад</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="one">Откалибровано на %d день</item>
+        <item quantity="few">Откалибровано на %d дня</item>
+        <item quantity="many">Откалибровано на %d дней</item>
+        <item quantity="other">Откалибровано %d дней назад</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="one">Для исследовательского проекта по измерению артериального давления, запущенного Первой больницей Пекинского университета, требуется выполнять калибровку каждый %d день</item>
+        <item quantity="few">Для исследовательского проекта по измерению артериального давления, запущенного Первой больницей Пекинского университета, требуется выполнять калибровку каждые %d дня</item>
+        <item quantity="many">Для исследовательского проекта по измерению артериального давления, запущенного Первой больницей Пекинского университета, требуется выполнять калибровку каждые %d дней</item>
+        <item quantity="other">Для исследовательского проекта по измерению артериального давления, запущенного Первой больницей Пекинского университета, требуется выполнять калибровку каждые %d дней</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="one">Выполнить калибровку через %d день</item>
+        <item quantity="few">Выполнить калибровку через %d дня</item>
+        <item quantity="many">Выполнить калибровку через %d дней</item>
+        <item quantity="other">Выполнить калибровку через %d дней</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="one">Достигнута %d цель</item>
+        <item quantity="few">Достигнуто %d цели</item>
+        <item quantity="many">Достигнуто %d целей</item>
+        <item quantity="other">Достигнуто %d цели</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="one">%d элемент нуждается в вашем внимании</item>
+        <item quantity="few">%d элемента нуждаются в вашем внимании</item>
+        <item quantity="many">%d элементов нуждаются в вашем внимании</item>
+        <item quantity="other">%d элемента нуждаются в вашем внимании</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="one">%d элемент не достиг цели</item>
+        <item quantity="few">%d элемента не достигли цели</item>
+        <item quantity="many">%d элементов не достигли цели</item>
+        <item quantity="other">%d элемента не достигли цели</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="one">Поздравляем!\nЗа последние %1$d дн. вы набрали</item>
+        <item quantity="few">Поздравляем!\nЗа последние %1$d дн. вы набрали</item>
+        <item quantity="many">Поздравляем!\nЗа последние %1$d дн. вы набрали</item>
+        <item quantity="other">Поздравляем!\nЗа последние %1$d дн. вы набрали</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="one">балл</item>
+        <item quantity="few">балла</item>
+        <item quantity="many">баллов</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="one">Можно добавить не более следующего количества главных контактов: %1$d. Они автоматически синхронизируются с часами</item>
+        <item quantity="few">Можно добавить не более следующего количества главных контактов: %1$d. Они автоматически синхронизируются с часами</item>
+        <item quantity="many">Можно добавить не более следующего количества главных контактов: %1$d. Они автоматически синхронизируются с часами</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="one">%d курс</item>
+        <item quantity="few">%d курса</item>
+        <item quantity="many">%d курсов</item>
+        <item quantity="other">%d курсов</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="one">Курс начнется через %d день</item>
+        <item quantity="few">Курс начнется через %d дня</item>
+        <item quantity="many">Курс начнется через %d дней</item>
+        <item quantity="other">Курс начнется через %d дня</item>
+    </plurals>
+    <plurals name="daily_interval">
+        <item quantity="one">%1$d День</item>
+        <item quantity="few">%1$d Дня</item>
+        <item quantity="many">%1$d Дней</item>
+        <item quantity="other">%1$d день</item>
+    </plurals>
+    <plurals name="days_after">
+        <item quantity="one">%1$d после дня</item>
+        <item quantity="few">%1$d после дней</item>
+        <item quantity="many">%1$d после дней</item>
+        <item quantity="other">%1$d после дня</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="one">%1$d за день</item>
+        <item quantity="few">%1$d за день</item>
+        <item quantity="many">%1$d За дни</item>
+        <item quantity="other">%1$d за день</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="one">%d загрузка</item>
+        <item quantity="few">%d загрузки</item>
+        <item quantity="many">%d загрузок</item>
+        <item quantity="other">%d загрузки</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="zero">%1$d с</item>
+        <item quantity="one">%1$d с</item>
+        <item quantity="few">%1$d с</item>
+        <item quantity="many">%1$d с</item>
+        <item quantity="other">%1$d с</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="one">Интервал данных: %1$s секунда</item>
+        <item quantity="few">Интервал данных: %1$s секунды</item>
+        <item quantity="many">Интервал данных: %1$s секунд</item>
+        <item quantity="other">Интервал данных: %1$s секунд</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="one">%1$s секунда</item>
+        <item quantity="few">%1$s секунды</item>
+        <item quantity="many">%1$s секунд</item>
+        <item quantity="other">%1$s секунд</item>
+    </plurals>
+    <plurals name="endByCount">
+        <item quantity="one">; %1$d раз</item>
+        <item quantity="few">; %1$d раза</item>
+        <item quantity="many">; %1$d раз</item>
+        <item quantity="other">; повторять %1$d раз</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="one">%d напоминание</item>
+        <item quantity="few">%d напоминания</item>
+        <item quantity="many">%d напоминаний</item>
+        <item quantity="other">%d напоминаний</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">Перемотать на %d секунду вперед</item>
+        <item quantity="few">Перемотать на %d секунды вперед</item>
+        <item quantity="many">Перемотать на %d секунд вперед</item>
+        <item quantity="other">Перемотать на %d секунды вперед</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">Перемотать на %d секунду назад</item>
+        <item quantity="few">Перемотать на %d секунды назад</item>
+        <item quantity="many">Перемотать на %d секунд назад</item>
+        <item quantity="other">Перемотать на %d секунды назад</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="one">%1$d ккал</item>
+        <item quantity="few">%1$d ккал</item>
+        <item quantity="many">%1$d ккал</item>
+        <item quantity="other">%1$d ккал</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="one">%1$d ккал</item>
+        <item quantity="few">%1$d ккал</item>
+        <item quantity="many">%1$d ккал</item>
+        <item quantity="other">%1$d ккал</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="one">%1$s урок</item>
+        <item quantity="few">%1$s урока</item>
+        <item quantity="many">%1$s уроков</item>
+        <item quantity="other">%1$s уроков</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="one">%1$s менструального цикла. Осталось: %2$s.</item>
+        <item quantity="few">%1$s менструального цикла. Осталось: %2$s.</item>
+        <item quantity="many">%1$s менструального цикла. Осталось: %2$s.</item>
+        <item quantity="other">%1$s менструального цикла. Осталось: %2$s.</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="one">Примерно %1$s менструального цикла. Осталось: %2$s.</item>
+        <item quantity="few">Примерно %1$s менструального цикла. Осталось: %2$s.</item>
+        <item quantity="many">Примерно %1$s менструального цикла. Осталось: %2$s.</item>
+        <item quantity="other">Примерно %1$s менструального цикла. Осталось: %2$s.</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="one">%1$s менструального цикла. Осталось: примерно %2$s.</item>
+        <item quantity="few">%1$s менструального цикла. Осталось: примерно %2$s.</item>
+        <item quantity="many">%1$s менструального цикла. Осталось: примерно %2$s.</item>
+        <item quantity="other">%1$s менструального цикла. Осталось: примерно %2$s.</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="one">%1$s просмотр</item>
+        <item quantity="few">%1$s просмотра</item>
+        <item quantity="many">%1$s просмотров</item>
+        <item quantity="other">%1$s просмотров</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">День %1$d</item>
+        <item quantity="few">День %1$d</item>
+        <item quantity="many">День %1$d</item>
+        <item quantity="other">День %1$d</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="one">%1$d д</item>
+        <item quantity="few">%1$d д</item>
+        <item quantity="many">%1$d д</item>
+        <item quantity="other">%1$d д</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="one">Отмена (%1$dс)</item>
+        <item quantity="few">Отмена (%1$dс)</item>
+        <item quantity="many">Отмена (%1$dс)</item>
+        <item quantity="other">Отмена (%1$dс)</item>
+    </plurals>
+    <plurals name="fix_hour">
+        <item quantity="one">%1$dчасов</item>
+        <item quantity="other">%1$dчасов</item>
+    </plurals>
+    <plurals name="fix_minute">
+        <item quantity="one">%1$dминут</item>
+        <item quantity="other">%1$dминут</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="one">Загрузка. Подождите примерно %s минуту</item>
+        <item quantity="few">Загрузка. Подождите примерно %s минуты</item>
+        <item quantity="many">Загрузка. Подождите примерно %s минут</item>
+        <item quantity="other">Загрузка. Подождите примерно %s минут</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="one">Закончена %d тренировка</item>
+        <item quantity="few">Закончено %d тренировки</item>
+        <item quantity="many">Закончено %d тренировок</item>
+        <item quantity="other">Закончено %d тренировки</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="one">%d раз/мин.</item>
+        <item quantity="few">%d раза/мин.</item>
+        <item quantity="many">%d раз/мин.</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="one">На главной странице должно быть не менее %1$d карточки</item>
+        <item quantity="few">На главной странице должно быть не менее %1$d карточек</item>
+        <item quantity="many">На главной странице должно быть не менее %1$d карточек</item>
+        <item quantity="other">На главной странице должно быть не менее %1$d карточек</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="one">Средняя частота сердцебиения %1$d уд/мин</item>
+        <item quantity="few">Средняя частота сердцебиения %1$d уд/мин</item>
+        <item quantity="many">Средняя частота сердцебиения %1$d уд/мин</item>
+        <item quantity="other">Средняя частота сердцебиения %1$d уд/мин</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="one">раз/мин</item>
+        <item quantity="few">раза/мин</item>
+        <item quantity="many">раз/мин</item>
+        <item quantity="other">раз/мин</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="one">%d минуту назад</item>
+        <item quantity="few">%d минуты назад</item>
+        <item quantity="many">%d минут назад</item>
+        <item quantity="other">%d минут назад</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="one">Сессия %d</item>
+        <item quantity="few">Сеанс %d</item>
+        <item quantity="many">Сессия %d</item>
+        <item quantity="other">Сеанс %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="one">Напомнить через %d секунду после звонка</item>
+        <item quantity="few">Напомнить через %d секунды после звонка</item>
+        <item quantity="many">Напомнить через %d секунд после звонка</item>
+        <item quantity="other">Напомнить через %d секунд после звонка</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="one">Вы можете добавить не более %1$d ответа на SMS</item>
+        <item quantity="few">Вы можете добавить не более %1$d ответов на SMS</item>
+        <item quantity="many">Вы можете добавить не более %1$d ответов на SMS</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="one">Сохраните минимум %1$d ответ в СМС-сообщении</item>
+        <item quantity="few">Сохраните минимум %1$d ответа в СМС-сообщении</item>
+        <item quantity="many">Сохраните минимум %1$d ответов в СМС-сообщении</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="one">Можно ввести до %d символа</item>
+        <item quantity="few">Можно ввести до %d символов</item>
+        <item quantity="many">Можно ввести до %d символов</item>
+        <item quantity="other">Можно ввести до %d символа</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="one">%1$d запись кругов</item>
+        <item quantity="few">%1$d записи кругов</item>
+        <item quantity="many">%1$d записей кругов</item>
+        <item quantity="other">%1$d записей кругов</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="one">%d просмотр</item>
+        <item quantity="few">%d просмотра</item>
+        <item quantity="many">%d просмотров</item>
+        <item quantity="other">%d просмотров</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="one">%1$d месяц</item>
+        <item quantity="few">%1$d месяца</item>
+        <item quantity="many">%1$d месяцев</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="one">Около %1$d минуты в день</item>
+        <item quantity="few">Около %1$d минут в день</item>
+        <item quantity="many">Около %1$d минут в день</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="one">Последняя зарядка: %d дн. назад</item>
+        <item quantity="few">Последняя зарядка: %d дн. назад</item>
+        <item quantity="many">Последняя зарядка: %d дн. назад</item>
+        <item quantity="other">Последняя зарядка: %d дн. назад</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="one">Цель достигнута: %d</item>
+        <item quantity="few">Цель достигнута: %d</item>
+        <item quantity="many">Цель достигнута: %d</item>
+        <item quantity="other">Цель достигнута: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="one">%d шаг</item>
+        <item quantity="few">%d шага</item>
+        <item quantity="many">%d шагов</item>
+        <item quantity="other">%d шагов</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="one">%d %s</item>
+        <item quantity="few">%d %s</item>
+        <item quantity="many">%d %s</item>
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="monthly_interval">
+        <item quantity="one">%1$d Месяц</item>
+        <item quantity="few">%1$d Месяца</item>
+        <item quantity="many">%1$d Месяцев</item>
+        <item quantity="other">%1$d месяц</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d новое уведомление</item>
+        <item quantity="few">%d новых уведомления</item>
+        <item quantity="many">%d новых уведомлений</item>
+        <item quantity="other">%d нового уведомления</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="one">%d&quot;</item>
+        <item quantity="few">%d&quot;</item>
+        <item quantity="many">%d&quot;</item>
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="one">%d с</item>
+        <item quantity="few">%d с</item>
+        <item quantity="many">%d с</item>
+        <item quantity="other">%d с</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="one">Старше %1$d года. Не удалось проанализировать %2$s</item>
+        <item quantity="few">Старше %1$d лет. Не удалось проанализировать %2$s</item>
+        <item quantity="many">Старше %1$d лет. Не удалось проанализировать %2$s</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="one">Моложе %1$d года. Не удалось проанализировать %2$s</item>
+        <item quantity="few">Моложе %1$d лет. Не удалось проанализировать %2$s</item>
+        <item quantity="many">Моложе %1$d лет. Не удалось проанализировать %2$s</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="one">%s фут</item>
+        <item quantity="few">%s фута</item>
+        <item quantity="many">%s футов</item>
+        <item quantity="other">%s футов</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="one">%s дюйм</item>
+        <item quantity="few">%s дюйма</item>
+        <item quantity="many">%s дюймов</item>
+        <item quantity="other">%s дюйма</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="one">%d с</item>
+        <item quantity="few">%d с</item>
+        <item quantity="many">%d с</item>
+        <item quantity="other">%d с</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="one">тренировка</item>
+        <item quantity="few">тренировки</item>
+        <item quantity="many">тренировок</item>
+        <item quantity="other">тренировок</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="one">%d участник</item>
+        <item quantity="few">%d участника</item>
+        <item quantity="many">%d участников</item>
+        <item quantity="other">%d участника</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="one">минута</item>
+        <item quantity="few">минуты</item>
+        <item quantity="many">минут</item>
+        <item quantity="other">минут</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="one">Вы можете добавить не более %1$d ответа на SMS</item>
+        <item quantity="few">Вы можете добавить не более %1$d ответов на SMS</item>
+        <item quantity="many">Вы можете добавить не более %1$d ответов на SMS</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="one">Сохраните минимум %1$d ответ в СМС-сообщении</item>
+        <item quantity="few">Сохраните минимум %1$d ответа в СМС-сообщении</item>
+        <item quantity="many">Сохраните минимум %1$d ответов в СМС-сообщении</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="one">Выбран %1$d объект</item>
+        <item quantity="few">Выбрано %1$d объекта</item>
+        <item quantity="many">Выбрано %1$d объектов</item>
+        <item quantity="other">Выбрано %1$d объекта</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="one">Вы ездили на велосипеде %1$d день назад</item>
+        <item quantity="few">Вы ездили на велосипеде %1$d дня назад</item>
+        <item quantity="many">Вы ездили на велосипеде %1$d дней назад</item>
+        <item quantity="other">Вы ездили на велосипеде %1$d дней назад</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="one">час</item>
+        <item quantity="few">часа</item>
+        <item quantity="many">часов</item>
+        <item quantity="other">часов</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="one">ккал</item>
+        <item quantity="few">ккал</item>
+        <item quantity="many">ккал</item>
+        <item quantity="other">ккал</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="one">Вы бегали %1$d день назад</item>
+        <item quantity="few">Вы бегали %1$d дня назад</item>
+        <item quantity="many">Вы бегали %1$d дней назад</item>
+        <item quantity="other">Вы бегали %1$d дней назад</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="one">секунда</item>
+        <item quantity="few">секунды</item>
+        <item quantity="many">секунд</item>
+        <item quantity="other">секунд</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="one">%1$d аудиоклип обнаружен сегодня</item>
+        <item quantity="few">%1$d аудиоклипа обнаружено сегодня</item>
+        <item quantity="many">%1$d аудиоклипов обнаружено сегодня</item>
+        <item quantity="other">%1$d аудиоклипов обнаружено сегодня</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="one">Шаг</item>
+        <item quantity="few">Шага</item>
+        <item quantity="many">Шагов</item>
+        <item quantity="other">Шагов</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="one">Вы ходили пешком %1$d день назад</item>
+        <item quantity="few">Вы ходили пешком %1$d дня назад</item>
+        <item quantity="many">Вы ходили пешком %1$d дней назад</item>
+        <item quantity="other">Вы ходили пешком %1$d дней назад</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">%d день</item>
+        <item quantity="few">%d дня</item>
+        <item quantity="many">%d дней</item>
+        <item quantity="other">%d дня</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">%d час</item>
+        <item quantity="few">%d часа</item>
+        <item quantity="many">%d часов</item>
+        <item quantity="other">%d часа</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="one">%d шаг</item>
+        <item quantity="few">%d шага</item>
+        <item quantity="many">%d шагов</item>
+        <item quantity="other">%d шагов</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="one">Показатель качества дыхания во время сна: %1$d. Рекомендуется всегда внимательно относиться к дыханию во время сна. Если вам плохо, обратитесь за медицинской рекомендацией</item>
+        <item quantity="few">Показатель качества дыхания во время сна: %1$d. Рекомендуется всегда внимательно относиться к дыханию во время сна. Если вам плохо, обратитесь за медицинской рекомендацией</item>
+        <item quantity="many">Показатель качества дыхания во время сна: %1$d. Рекомендуется всегда внимательно относиться к дыханию во время сна. Если вам плохо, обратитесь за медицинской рекомендацией</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip_short">
+        <item quantity="one">Оценка качества дыхания во сне: %1$d. Уделяйте особое внимание дыханию во время сна. Если вам плохо, обратитесь за медицинской консультацией</item>
+        <item quantity="few">Оценка качества дыхания во сне: %1$d. Уделяйте особое внимание дыханию во время сна. Если вам плохо, обратитесь за медицинской консультацией</item>
+        <item quantity="many">Оценка качества дыхания во сне: %1$d. Уделяйте особое внимание дыханию во время сна. Если вам плохо, обратитесь за медицинской консультацией</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="one">Показатель качества дыхания во время сна: %1$d. Чтобы определить, есть ли у вас проблемы с дыханием во время сна, рекомендуем обратиться за медицинской консультацией</item>
+        <item quantity="few">Показатель качества дыхания во время сна: %1$d. Чтобы определить, есть ли у вас проблемы с дыханием во время сна, рекомендуем обратиться за медицинской консультацией</item>
+        <item quantity="many">Показатель качества дыхания во время сна: %1$d. Чтобы определить, есть ли у вас проблемы с дыханием во время сна, рекомендуем обратиться за медицинской консультацией</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip_short">
+        <item quantity="one">Оценка качества дыхания во сне: %1$d. Если эта оценка опускается ниже 80 несколько раз, обратитесь к врачу за консультацией</item>
+        <item quantity="few">Оценка качества дыхания во сне: %1$d. Если эта оценка опускается ниже 80 несколько раз, обратитесь к врачу за консультацией</item>
+        <item quantity="many">Оценка качества дыхания во сне: %1$d. Если эта оценка опускается ниже 80 несколько раз, обратитесь к врачу за консультацией</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="one">Показатель качества дыхания во время сна: %1$d. Так держать</item>
+        <item quantity="few">Показатель качества дыхания во время сна: %1$d. Так держать</item>
+        <item quantity="many">Показатель качества дыхания во время сна: %1$d. Так держать</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip_short">
+        <item quantity="one">Оценка качества дыхания во сне: %1$d. Так держать</item>
+        <item quantity="few">Оценка качества дыхания во сне: %1$d. Так держать</item>
+        <item quantity="many">Оценка качества дыхания во сне: %1$d. Так держать</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="one">Беговая страховка истекает через %1$d дн., нажмите чтобы обновить</item>
+        <item quantity="few">Беговая страховка истекает через %1$d дн., нажмите чтобы обновить</item>
+        <item quantity="many">Беговая страховка истекает через %1$d дн., нажмите чтобы обновить</item>
+        <item quantity="other">Беговая страховка истекает через %1$d дн., нажмите чтобы обновить</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="one">%d элемент не был синхронизирован</item>
+        <item quantity="few">%d элемента не были синхронизированы</item>
+        <item quantity="many">%d элементов не были синхронизированы</item>
+        <item quantity="other">%d элемента не было синхронизировано</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="one">%d элемент не был синхронизирован</item>
+        <item quantity="few">%d элемента не были синхронизированы</item>
+        <item quantity="many">%d элементов не были синхронизированы</item>
+        <item quantity="other">%d элемента не было синхронизировано</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="one">%1$d велопрогулка</item>
+        <item quantity="few">%1$d велопрогулки</item>
+        <item quantity="many">%1$d велопрогулок</item>
+        <item quantity="other">%1$d велопрогулки</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="one">%1$d тренировка на эллиптическом тренажере</item>
+        <item quantity="few">%1$d тренировки на эллиптическом тренажере</item>
+        <item quantity="many">%1$d тренировок на эллиптическом тренажере</item>
+        <item quantity="other">%1$d тренировки на эллиптическом тренажере</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="one">%1$d тренировка в вольном стиле</item>
+        <item quantity="few">%1$d тренировки в вольном стиле</item>
+        <item quantity="many">%1$d тренировок в вольном стиле</item>
+        <item quantity="other">%1$d тренировок в вольном стиле</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="one">%1$d пробежка</item>
+        <item quantity="few">%1$d пробежки</item>
+        <item quantity="many">%1$d пробежек</item>
+        <item quantity="other">%1$d пробежки</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="one">%1$d сессия плавания</item>
+        <item quantity="few">%1$d сессии плавания</item>
+        <item quantity="many">%1$d сессий плавания</item>
+        <item quantity="other">%1$d сессий плавания</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="one">Тренировки: %1$d сессия</item>
+        <item quantity="few">Тренировки: %1$d сессии</item>
+        <item quantity="many">Тренировки: %1$d сессий</item>
+        <item quantity="other">Тренировки: %1$d сессии</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="one">%1$d сессия троеборья</item>
+        <item quantity="few">%1$d сессии троеборья</item>
+        <item quantity="many">%1$d сессий троеборья</item>
+        <item quantity="other">%1$d сессий троеборья</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="one">%1$d сессия ходьбы</item>
+        <item quantity="few">%1$d сессии ходьбы</item>
+        <item quantity="many">%1$d сессий ходьбы</item>
+        <item quantity="other">%1$d сессии ходьбы</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="one">Упражнения: %1$d сессия</item>
+        <item quantity="few">Упражнения: %1$d сессии</item>
+        <item quantity="many">Упражнения: %1$d сессий</item>
+        <item quantity="other">Упражнения: %1$d сессии</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="one">Добавьте до %d события</item>
+        <item quantity="few">Добавьте до %d событий</item>
+        <item quantity="many">Добавьте до %d событий</item>
+        <item quantity="other">Добавьте до %d событий</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="one">Личный рекорд: %d день</item>
+        <item quantity="few">Личный рекорд: %d дня</item>
+        <item quantity="many">Личный рекорд: %d дней</item>
+        <item quantity="other">Личный рекорд: %d дня</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="one">Вы обошли %d%% пользователей</item>
+        <item quantity="few">Вы обошли %d%% пользователей</item>
+        <item quantity="many">Вы обошли %d%% пользователей</item>
+        <item quantity="other">Вы обошли %d%% пользователей</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="zero">Количество раз</item>
+        <item quantity="one">Количество раз</item>
+        <item quantity="few">Количество раз</item>
+        <item quantity="many">Количество раз</item>
+        <item quantity="other">Количество раз</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="one">день</item>
+        <item quantity="few">дня</item>
+        <item quantity="many">дней</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="zero">Баллы</item>
+        <item quantity="one">Баллы</item>
+        <item quantity="few">Баллы</item>
+        <item quantity="many">Баллы</item>
+        <item quantity="other">Баллы</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="zero">‎%dраз</item>
+        <item quantity="one">‎%dвремя</item>
+        <item quantity="other">‎%dраз</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="one">Оценка сна выше на %d по сравнению с прошлым месяцем.</item>
+        <item quantity="few">Оценка сна выше на %d по сравнению с прошлым месяцем.</item>
+        <item quantity="many">Оценка сна выше на %d по сравнению с прошлым месяцем.</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="one">Оценка сна за этот месяц равна %d, продолжайте в том же духе.</item>
+        <item quantity="few">Оценка сна за этот месяц равна %d, продолжайте в том же духе.</item>
+        <item quantity="many">Оценка сна за этот месяц равна %d, продолжайте в том же духе.</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="one">Оценка сна выше на %d по сравнению с прошлой неделей.</item>
+        <item quantity="few">Оценка сна выше на %d по сравнению с прошлой неделей.</item>
+        <item quantity="many">Оценка сна выше на %d по сравнению с прошлой неделей.</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="one">Оценка сна за эту неделю равна %d, продолжайте в том же духе.</item>
+        <item quantity="few">Оценка сна за эту неделю равна %d, продолжайте в том же духе.</item>
+        <item quantity="many">Оценка сна за эту неделю равна %d, продолжайте в том же духе.</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="one">Сегодня записано следующее количество аудиоклипов: %1$d.</item>
+        <item quantity="few">Сегодня записано следующее количество аудиоклипов: %1$d.</item>
+        <item quantity="many">Сегодня записано следующее количество аудиоклипов: %1$d.</item>
+        <item quantity="other">Сегодня записано следующее количество аудиоклипов: %1$d.</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="one">Клипов: %1$d</item>
+        <item quantity="few">Клипов: %1$d</item>
+        <item quantity="many">Клипов: %1$d</item>
+        <item quantity="other">Клипов: %1$d</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="one">Может говорить еще %d секунду</item>
+        <item quantity="few">Может говорить еще %d секунды</item>
+        <item quantity="many">Может говорить еще %d секунд</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="one">Завершенные активности: %2$s - %1$d сессия</item>
+        <item quantity="few">Завершенные активности: %2$s - %1$d сессии</item>
+        <item quantity="many">Завершенные активности: %2$s - %1$d сессий</item>
+        <item quantity="other">Завершенные активности: %2$s - %1$d сессий</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="one">шаг</item>
+        <item quantity="few">шага</item>
+        <item quantity="many">шагов</item>
+        <item quantity="other">шагов</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="one">Шаг</item>
+        <item quantity="few">Шагов</item>
+        <item quantity="many">Шагов</item>
+        <item quantity="other">Шагов</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="one">Шагов в день</item>
+        <item quantity="few">Шагов в день</item>
+        <item quantity="many">Шагов в день</item>
+        <item quantity="other">Шагов в день</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; раз</item>
+        <item quantity="few">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; раза</item>
+        <item quantity="many">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; раз</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="one">На первом месте в списке в течение &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; дня</item>
+        <item quantity="few">На первом месте в списке в течение &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; дней</item>
+        <item quantity="many">На первом месте в списке в течение &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; дней</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="one">Лидировал в списке %1$d раз</item>
+        <item quantity="few">Лидировал в списке %1$d раза</item>
+        <item quantity="many">Лидировал в списке %1$d раз</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="one">Лидировал в списке %1$d день</item>
+        <item quantity="few">Лидировал в списке %1$d дня</item>
+        <item quantity="many">Лидировал в списке %1$d дней</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="one">Совпадение с %1$d другом:</item>
+        <item quantity="few">Совпадение с %1$d друзьями:</item>
+        <item quantity="many">Совпадение с %1$d друзьями:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="one">Бегал &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; раз</item>
+        <item quantity="few">Бегал &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; раза</item>
+        <item quantity="many">Бегал &lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; раз</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="one">%1$d запись бега не отправлена</item>
+        <item quantity="few">%1$d записи бега не отправлены</item>
+        <item quantity="many">%1$d записей бега не отправлены</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="one">%1$d участник</item>
+        <item quantity="few">%1$d участника</item>
+        <item quantity="many">%1$d участников</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="zero">‎%dчасов</item>
+        <item quantity="one">‎%dчасов</item>
+        <item quantity="other">‎%dчасов</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="zero">‎%dминут</item>
+        <item quantity="one">‎%dминут</item>
+        <item quantity="other">‎%dминут</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="one">Количество раз: %1$d</item>
+        <item quantity="few">Количество раз: %1$d</item>
+        <item quantity="many">Количество раз: %1$d</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="one">Поздравляем!\nЗа последние %1$d дн. вы похудели на</item>
+        <item quantity="few">Поздравляем!\nЗа последние %1$d дн. вы похудели на</item>
+        <item quantity="many">Поздравляем!\nЗа последние %1$d дн. вы похудели на</item>
+        <item quantity="other">Поздравляем! \n За %1$d дн.</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="one">Записей о весе, ожидающих затребования: %1$d.</item>
+        <item quantity="few">Записей о весе, ожидающих затребования: %1$d.</item>
+        <item quantity="many">Записей о весе, ожидающих затребования: %1$d.</item>
+        <item quantity="other">Записей о весе, ожидающих затребования: %1$d.</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="one">Можно добавить не больше %1$d расписания</item>
+        <item quantity="few">Можно добавить не больше %1$d расписаний</item>
+        <item quantity="many">Можно добавить не больше %1$d расписаний</item>
+        <item quantity="other">Можно добавить не больше %1$d расписаний</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="one">Анализ для людей старше %d года недоступен</item>
+        <item quantity="few">Анализ для людей старше %d лет недоступен</item>
+        <item quantity="many">Анализ для людей старше %d лет недоступен</item>
+        <item quantity="other">Анализ для людей старше %d лет недоступен</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="one">Анализ для людей моложе %d года недоступен</item>
+        <item quantity="few">Анализ для людей моложе %d лет недоступен</item>
+        <item quantity="many">Анализ для людей моложе %d лет недоступен</item>
+        <item quantity="other">Анализ для людей моложе %d лет недоступен</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="one">%d ккал</item>
+        <item quantity="few">%d ккал</item>
+        <item quantity="many">%d ккал</item>
+        <item quantity="other">%d ккал</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="one">%d курс</item>
+        <item quantity="few">%d курса</item>
+        <item quantity="many">%d курсов</item>
+        <item quantity="other">%d курсов</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="one">Курс заканчивается через %d день</item>
+        <item quantity="few">Курс заканчивается через %d дня</item>
+        <item quantity="many">Курс заканчивается через %d дней</item>
+        <item quantity="other">Курс заканчивается через %d дней</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="one">%d зритель</item>
+        <item quantity="few">%d зрителя</item>
+        <item quantity="many">%d зрителей</item>
+        <item quantity="other">%d зрителей</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="one">Всего подходов: %d</item>
+        <item quantity="few">Всего подходов: %d</item>
+        <item quantity="many">Всего подходов: %d</item>
+        <item quantity="other">Всего подходов: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="one">Курс пройден: %d раз</item>
+        <item quantity="few">Курс пройден: %d раза</item>
+        <item quantity="many">Курс пройден: %d раз</item>
+        <item quantity="other">Курс пройден: %d раз</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="one">Начинается через %d день</item>
+        <item quantity="few">Начинается через %d дня</item>
+        <item quantity="many">Начинается через %d дней</item>
+        <item quantity="other">Начинается через %d дней</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="one">Тренировка  %1$d  мин</item>
+        <item quantity="few">Тренировка  %1$d  мин</item>
+        <item quantity="many">Тренировка  %1$d  мин</item>
+        <item quantity="other">Тренировка  %1$d  мин</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="one">Тренировка  %1$d  с</item>
+        <item quantity="few">Тренировка  %1$d  с</item>
+        <item quantity="many">Тренировка  %1$d  с</item>
+        <item quantity="other">Тренировка  %1$d  с</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="one">День %1$d программы тренировок: необходимо выполнить %3$s (в течение %2$d мин)</item>
+        <item quantity="few">День %1$d программы тренировок: необходимо выполнить %3$s (в течение %2$d мин)</item>
+        <item quantity="many">День %1$d программы тренировок: необходимо выполнить %3$s (в течение %2$d мин)</item>
+        <item quantity="other">День %1$d программы тренировок: необходимо выполнить %3$s (в течение %2$d мин)</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="one"> %1$d  секунда</item>
+        <item quantity="few"> %1$d  секунды</item>
+        <item quantity="many"> %1$d  секунд</item>
+        <item quantity="other"> %1$d  секунды</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="one"> %1$d  раз</item>
+        <item quantity="few"> %1$d  раза</item>
+        <item quantity="many"> %1$d  раз</item>
+        <item quantity="other"> %1$d  раз</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="one">Приостановлено на  %1$d  с</item>
+        <item quantity="few">Приостановлено на  %1$d  с</item>
+        <item quantity="many">Приостановлено на  %1$d  с</item>
+        <item quantity="other">Приостановлено на  %1$d  с</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="one"> шаг</item>
+        <item quantity="few"> шага</item>
+        <item quantity="many"> шагов</item>
+        <item quantity="other"> шагов</item>
+    </plurals>
+    <plurals name="user_info_Nhours">
+        <item quantity="one">%1$d час</item>
+        <item quantity="few">%1$d Часа</item>
+        <item quantity="many">%1$d Часов</item>
+        <item quantity="other">%1$d час</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="one">Поскольку указанный вами возраст ниже %1$d года, вы можете продолжить использовать приложение Zepp после того, как мы получим подтверждение и согласие от вашего опекуна.</item>
+        <item quantity="few">Поскольку указанный вами возраст ниже %1$d лет, вы можете продолжить использовать приложение Zepp после того, как мы получим подтверждение и согласие от вашего опекуна.</item>
+        <item quantity="many">Поскольку указанный вами возраст ниже %1$d лет, вы можете продолжить использовать приложение Zepp после того, как мы получим подтверждение и согласие от вашего опекуна.</item>
+        <item quantity="other">Поскольку указанный вами возраст ниже %1$d лет, вы можете продолжить использовать приложение Zepp после того, как мы получим подтверждение и согласие от вашего опекуна.</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="one">В противном случае ваша учетная запись будет заморожена через %1$d день.</item>
+        <item quantity="few">В противном случае ваша учетная запись будет заморожена через %1$d дня.</item>
+        <item quantity="many">В противном случае ваша учетная запись будет заморожена через %1$d дней.</item>
+        <item quantity="other">В противном случае ваша учетная запись будет заморожена через %1$d дней.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="one">Младше %1$d</item>
+        <item quantity="few">Младше %1$d</item>
+        <item quantity="many">Младше %1$d</item>
+        <item quantity="other">Младше %1$d</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="one">Для защиты данных несовершеннолетних, если вам еще нет %1$d, нам требуется подтверждение и согласие вашего опекуна перед предоставлением вам услуг.</item>
+        <item quantity="few">Для защиты данных несовершеннолетних, если вам еще нет %1$d, нам требуется подтверждение и согласие вашего опекуна перед предоставлением вам услуг.</item>
+        <item quantity="many">Для защиты данных несовершеннолетних, если вам еще нет %1$d, нам требуется подтверждение и согласие вашего опекуна перед предоставлением вам услуг.</item>
+        <item quantity="other">Для защиты данных несовершеннолетних, если вам еще нет %1$d, нам требуется подтверждение и согласие вашего опекуна перед предоставлением вам услуг.</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="one">Подтвердите, что вам уже исполнилось %1$d</item>
+        <item quantity="few">Подтвердите, что вам уже исполнилось %1$d</item>
+        <item quantity="many">Подтвердите, что вам уже исполнилось %1$d</item>
+        <item quantity="other">Подтвердите, что вам уже исполнилось %1$d</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="one">%s фут</item>
+        <item quantity="few">%s фута</item>
+        <item quantity="many">%s футов</item>
+        <item quantity="other">%s футов</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="one">%s дюйм</item>
+        <item quantity="few">%s дюйма</item>
+        <item quantity="many">%s дюймов</item>
+        <item quantity="other">%s дюйма</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="one">%d ккал</item>
+        <item quantity="few">%d ккал</item>
+        <item quantity="many">%d ккал</item>
+        <item quantity="other">%d ккал</item>
+    </plurals>
+    <plurals name="weekly_interval">
+        <item quantity="one">%1$d Неделя</item>
+        <item quantity="few">%1$d Недели</item>
+        <item quantity="many">%1$d Недель</item>
+        <item quantity="other">%1$d неделя</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="one">%d ккал</item>
+        <item quantity="few">%d ккал</item>
+        <item quantity="many">%d ккал</item>
+        <item quantity="other">%d ккал</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="one">%d сессия</item>
+        <item quantity="few">%d сессии</item>
+        <item quantity="many">%d сессий</item>
+        <item quantity="other">%d сессии</item>
+    </plurals>
+    <plurals name="yearly_interval">
+        <item quantity="one">%1$d Год</item>
+        <item quantity="few">%1$d Года</item>
+        <item quantity="many">%1$d лет</item>
+        <item quantity="other">%1$d год</item>
+    </plurals>
+</resources>

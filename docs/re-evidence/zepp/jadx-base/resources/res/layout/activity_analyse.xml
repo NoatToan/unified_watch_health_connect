@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:huami="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/sleep_analyse_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        huami:ltv_checked="false"
+        huami:ltv_subtitle="@string/ai_analysis_slp_tips"
+        huami:ltv_title="@string/ai_analysis_slp"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/body_analyse_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        huami:ltv_checked="false"
+        huami:ltv_subtitle="@string/ai_analysis_body_type_tips"
+        huami:ltv_title="@string/ai_analysis_body_type"/>
+</LinearLayout>

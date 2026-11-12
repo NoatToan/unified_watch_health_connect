@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="@dimen/slp_size_13sp"
+    android:textColor="@color/s1"
+    android:gravity="center"
+    android:id="@+id/titleTv"
+    android:background="@drawable/slp_make_tag_bg"
+    android:paddingLeft="17dp"
+    android:paddingRight="17dp"
+    android:layout_width="wrap_content"
+    android:layout_height="32dp"
+    android:minWidth="60dp"
+    android:layout_marginEnd="15dp"/>

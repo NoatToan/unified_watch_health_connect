@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="50.4dp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/iv_item_day_select"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:src="@drawable/pai_select_day"
+        android:layout_below="@+id/item_pai_date"
+        android:layout_centerInParent="true"
+        app:tint="@color/s1"/>
+    <TextView
+        android:textColor="@color/s2"
+        android:gravity="center"
+        android:id="@+id/item_pai_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_pai_values"
+        style="@style/Rainbow.TextAppearance.Body5"/>
+    <View
+        android:background="@drawable/bg_pai_empty"
+        android:layout_width="8dp"
+        android:layout_height="90dp"
+        android:layout_alignTop="@+id/item_pai_values"
+        android:layout_alignBottom="@+id/item_pai_values"
+        android:layout_centerHorizontal="true"/>
+    <LinearLayout
+        android:gravity="bottom|center_horizontal"
+        android:orientation="vertical"
+        android:id="@+id/item_pai_values"
+        android:layout_width="32dp"
+        android:layout_height="90dp"
+        android:weightSum="1"
+        android:layout_centerHorizontal="true"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp">
+        <View
+            android:id="@+id/item_pai_value"
+            android:background="@drawable/bg_pai_low"
+            android:layout_width="8dp"
+            android:layout_height="0dp"
+            android:layout_weight="0"/>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <WebView
+        android:id="@+id/webview"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <ProgressBar
+        android:id="@+id/web_progress"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:max="105"
+        android:progress="5"
+        android:progressTint="#282e39"
+        android:progressTintMode="src_in"
+        android:progressBackgroundTint="@android:color/transparent"
+        android:progressBackgroundTintMode="src_in"
+        style="?android:attr/progressBarStyleHorizontal"/>
+    <com.huami.thirdparty.support.widget.LoadingView
+        android:layout_gravity="center"
+        android:id="@+id/loading"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:color="#a5a5a5"
+        app:loading_view_size="20dp"/>
+</FrameLayout>

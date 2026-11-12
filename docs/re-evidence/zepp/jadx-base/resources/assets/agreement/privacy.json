@@ -1,0 +1,154 @@
+[
+  {
+    "title": "大陆地区",
+    "target": "https://upload-cdn.huami.com/tposts/8174",
+    "language": "CN",
+    "version": "20180604154844",
+    "sort": "1",
+    "createTime": 1528098550
+  },
+  {
+    "title": "香港地區",
+    "target": "https://upload-cdn.huami.com/tposts/8175",
+    "language": "HK",
+    "version": "20180604154846",
+    "sort": "0",
+    "createTime": 1528098555
+  },
+  {
+    "title": "Reino de España",
+    "target": "https://upload-cdn.huami.com/tposts/8176",
+    "language": "ES",
+    "version": "20180604154939",
+    "sort": "0",
+    "createTime": 1528098590
+  },
+  {
+    "title": "Российская Федерация",
+    "target": "https://upload-cdn.huami.com/tposts/8177",
+    "language": "RU",
+    "version": "20171017115016",
+    "sort": "0",
+    "createTime": 1508212216
+  },
+  {
+    "title": "Republic of India",
+    "target": "https://upload-cdn.huami.com/tposts/8178",
+    "language": "IN",
+    "version": "20190125181218",
+    "sort": "0",
+    "createTime": 1548411138
+  },
+  {
+    "title": "מְדִינַת יִשְׂרָאֵל",
+    "target": "https://upload-cdn.huami.com/tposts/8180",
+    "language": "IL",
+    "version": "20190708164140",
+    "sort": "0",
+    "createTime": 1562575299
+  },
+  {
+    "title": "دولة الإمارات العربية المتحدة‎‎",
+    "target": "https://upload-cdn.huami.com/tposts/8181",
+    "language": "AE",
+    "version": "20171017113834",
+    "sort": "9",
+    "createTime": 1508211514
+  },
+  {
+    "title": "Rzeczpospolita Polska",
+    "target": "https://upload-cdn.huami.com/tposts/8182",
+    "language": "PL",
+    "version": "20180604154937",
+    "sort": "8",
+    "createTime": 1528098586
+  },
+  {
+    "title": "République française",
+    "target": "https://upload-cdn.huami.com/tposts/8183",
+    "language": "FR",
+    "version": "20180604154940",
+    "sort": "11",
+    "createTime": 1528098595
+  },
+  {
+    "title": "Repubblica Italiana",
+    "target": "https://upload-cdn.huami.com/tposts/8184",
+    "language": "IT",
+    "version": "20180604154941",
+    "sort": "12",
+    "createTime": 1528098599
+  },
+  {
+    "title": "日本国",
+    "target": "https://upload-cdn.huami.com/tposts/8186",
+    "language": "JP",
+    "version": "20180807144302",
+    "sort": "0",
+    "createTime": 1533624182
+  },
+  {
+    "title": "Cộng hòa Xã hội chủ nghĩa Việt Nam",
+    "target": "https://upload-cdn.huami.com/tposts/8187",
+    "language": "VN",
+    "version": "20181018164909",
+    "sort": "0",
+    "createTime": 1539852548
+  },
+  {
+    "title": "Türkiye Cumhuriyeti",
+    "target": "https://upload-cdn.huami.com/tposts/8188",
+    "language": "TR",
+    "version": "20181101170309",
+    "sort": "0",
+    "createTime": 1541062989
+  },
+  {
+    "title": "Bundesrepublik Deutschland",
+    "target": "https://upload-cdn.huami.com/tposts/8189",
+    "language": "DE",
+    "version": "20180604154842",
+    "sort": "0",
+    "createTime": 1528098540
+  },
+  {
+    "title": "台灣地區",
+    "target": "https://upload-cdn.huami.com/tposts/8190",
+    "language": "TW",
+    "version": "20180604154847",
+    "sort": "0",
+    "createTime": 1528098559
+  },
+  {
+    "title": "United States",
+    "target": "https://upload-cdn.huami.com/tposts/8191",
+    "language": "US",
+    "version": "20180604154848",
+    "sort": "0",
+    "createTime": 1528098572
+  },
+  {
+    "title": "대한민국",
+    "target": "https://upload-cdn.huami.com/tposts/8179",
+    "language": "KR",
+    "version": "20190603084012",
+    "sort": "0",
+    "createTime": 1559522412
+  },
+  {
+    "title": "República Federativa do Brasil",
+    "target": "https://upload-cdn.huami.com/tposts/8185",
+    "language": "BR",
+    "version": "20190603085619",
+    "sort": "0",
+    "createTime": 1559523379
+  },
+  {
+    "title": "United Kingdom",
+    "target": "https://upload-cdn.huami.com/tposts/8192",
+    "language": "GB",
+    "version": "20190518202621",
+    "sort": "0",
+    "createTime": 1558182381
+  }
+]

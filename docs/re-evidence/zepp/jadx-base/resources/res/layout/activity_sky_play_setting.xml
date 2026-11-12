@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.rainbow.titlebar.RainbowTitleBar
+        android:id="@+id/title_bar"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:statusBarMode="dark"
+        app:title="@string/sky_setting_play"
+        app:titleTextColor="@color/s46"
+        style="@style/Rainbow.TextAppearance.Title3"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/play_stop_setting"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_divider_color="@color/sky_divider_color"
+        app:ltv_divider_padding="start"
+        app:ltv_subtitle="@string/sky_setting_play_stop_tip"
+        app:ltv_title="@string/sky_play_tip_3"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/play_time_setting"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_divider_color="@color/sky_divider_color"
+        app:ltv_divider_padding="start"
+        app:ltv_title="@string/sky_setting_play_time"/>
+</LinearLayout>

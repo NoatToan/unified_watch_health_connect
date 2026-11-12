@@ -1,0 +1,101 @@
+package com.huami.watchfacesstore.di;
+
+import com.huami.sky.lib.constant.WebConstant;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+/* JADX INFO: loaded from: classes17.dex */
+@Metadata(bv = {1, 0, 3}, d1 = {"\u0000 \n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\u0010\u000e\n\u0002\b\b\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0002\b\f\b\u0086\b\u0018\u00002\u00020\u0001B\u001f\u0012\u0006\u0010\u0006\u001a\u00020\u0002\u0012\u0006\u0010\u0007\u001a\u00020\u0002\u0012\u0006\u0010\b\u001a\u00020\u0002¢\u0006\u0004\b\u0018\u0010\u0019J\t\u0010\u0003\u001a\u00020\u0002HÆ\u0003J\t\u0010\u0004\u001a\u00020\u0002HÆ\u0003J\t\u0010\u0005\u001a\u00020\u0002HÆ\u0003J'\u0010\t\u001a\u00020\u00002\b\b\u0002\u0010\u0006\u001a\u00020\u00022\b\b\u0002\u0010\u0007\u001a\u00020\u00022\b\b\u0002\u0010\b\u001a\u00020\u0002HÆ\u0001J\t\u0010\n\u001a\u00020\u0002HÖ\u0001J\t\u0010\f\u001a\u00020\u000bHÖ\u0001J\u0013\u0010\u000f\u001a\u00020\u000e2\b\u0010\r\u001a\u0004\u0018\u00010\u0001HÖ\u0003R\u0019\u0010\u0006\u001a\u00020\u00028\u0006@\u0006¢\u0006\f\n\u0004\b\u0010\u0010\u0011\u001a\u0004\b\u0012\u0010\u0013R\u0019\u0010\u0007\u001a\u00020\u00028\u0006@\u0006¢\u0006\f\n\u0004\b\u0014\u0010\u0011\u001a\u0004\b\u0015\u0010\u0013R\u0019\u0010\b\u001a\u00020\u00028\u0006@\u0006¢\u0006\f\n\u0004\b\u0016\u0010\u0011\u001a\u0004\b\u0017\u0010\u0013¨\u0006\u001a"}, d2 = {"Lcom/huami/watchfacesstore/di/WFUserInfo;", "", "", "component1", "component2", "component3", "userId", WebConstant.QueryParam.USER_REGION, WebConstant.QueryParam.USER_COUNTRY, "copy", "toString", "", "hashCode", "other", "", "equals", "a", "Ljava/lang/String;", "getUserId", "()Ljava/lang/String;", "b", "getUserRegion", "c", "getUserCountry", "<init>", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", "lib_release"}, k = 1, mv = {1, 5, 1})
+public final /* data */ class WFUserInfo {
+
+    /* JADX INFO: renamed from: a, reason: from kotlin metadata and from toString */
+    @NotNull
+    private final String userId;
+
+    /* JADX INFO: renamed from: b, reason: from kotlin metadata and from toString */
+    @NotNull
+    private final String userRegion;
+
+    /* JADX INFO: renamed from: c, reason: from kotlin metadata and from toString */
+    @NotNull
+    private final String userCountry;
+
+    public WFUserInfo(@NotNull String str, @NotNull String str2, @NotNull String str3) {
+        this.userId = str;
+        this.userRegion = str2;
+        this.userCountry = str3;
+    }
+
+    public static /* synthetic */ WFUserInfo copy$default(WFUserInfo wFUserInfo, String str, String str2, String str3, int i, Object obj) {
+        if ((i & 1) != 0) {
+            str = wFUserInfo.userId;
+        }
+        if ((i & 2) != 0) {
+            str2 = wFUserInfo.userRegion;
+        }
+        if ((i & 4) != 0) {
+            str3 = wFUserInfo.userCountry;
+        }
+        return wFUserInfo.copy(str, str2, str3);
+    }
+
+    @NotNull
+    /* JADX INFO: renamed from: component1, reason: from getter */
+    public final String getUserId() {
+        return this.userId;
+    }
+
+    @NotNull
+    /* JADX INFO: renamed from: component2, reason: from getter */
+    public final String getUserRegion() {
+        return this.userRegion;
+    }
+
+    @NotNull
+    /* JADX INFO: renamed from: component3, reason: from getter */
+    public final String getUserCountry() {
+        return this.userCountry;
+    }
+
+    @NotNull
+    public final WFUserInfo copy(@NotNull String userId, @NotNull String userRegion, @NotNull String userCountry) {
+        return new WFUserInfo(userId, userRegion, userCountry);
+    }
+
+    public boolean equals(@Nullable Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof WFUserInfo)) {
+            return false;
+        }
+        WFUserInfo wFUserInfo = (WFUserInfo) other;
+        return Intrinsics.areEqual(this.userId, wFUserInfo.userId) && Intrinsics.areEqual(this.userRegion, wFUserInfo.userRegion) && Intrinsics.areEqual(this.userCountry, wFUserInfo.userCountry);
+    }
+
+    @NotNull
+    public final String getUserCountry() {
+        return this.userCountry;
+    }
+
+    @NotNull
+    public final String getUserId() {
+        return this.userId;
+    }
+
+    @NotNull
+    public final String getUserRegion() {
+        return this.userRegion;
+    }
+
+    public int hashCode() {
+        return (((this.userId.hashCode() * 31) + this.userRegion.hashCode()) * 31) + this.userCountry.hashCode();
+    }
+
+    @NotNull
+    public String toString() {
+        return "WFUserInfo(userId=" + this.userId + ", userRegion=" + this.userRegion + ", userCountry=" + this.userCountry + ")";
+    }
+}

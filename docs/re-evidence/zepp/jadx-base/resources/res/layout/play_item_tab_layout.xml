@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="16sp"
+        android:textColor="#666666"
+        android:id="@+id/item_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <View
+        android:id="@+id/tab_item_indicator"
+        android:background="#ff312e"
+        android:visibility="invisible"
+        android:layout_width="20dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_tab"/>
+    <View
+        android:id="@+id/item_redot"
+        android:background="@drawable/play_redot_bg"
+        android:visibility="gone"
+        android:layout_width="7dp"
+        android:layout_height="7dp"
+        android:layout_marginStart="2dp"
+        app:layout_constraintStart_toEndOf="@+id/item_tab"
+        app:layout_constraintTop_toTopOf="@+id/item_tab"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Slice</title>
+    <g id="2021-10-应用商店-黑色模式" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Developer-Bridge-连接成功" transform="translate(-166.000000, -370.000000)" stroke="#FFFFFF" stroke-width="2">
+            <g id="toast1" transform="translate(128.000000, 346.000000)">
+                <g id="成功提示" transform="translate(38.000000, 24.000000)">
+                    <path d="M22,1 C27.8330287,1 33.1105986,3.37818584 36.9160107,7.21782552 C38.1948532,8.50817047 39.3074997,9.9635145 40.2191003,11.5491304 C41.9884955,14.6267733 43,18.195289 43,22 C43,27.7989899 40.6494949,33.0489899 36.8492424,36.8492424 C33.0489899,40.6494949 27.7989899,43 22,43 C16.2010101,43 10.9510101,40.6494949 7.1507576,36.8492424 C3.35050506,33.0489899 1,27.7989899 1,22 C1,16.2010101 3.35050506,10.9510101 7.1507576,7.1507576 C10.9510101,3.35050506 16.2010101,1 22,1 Z" id="Fill"></path>
+                    <polyline id="Rectangle-4" stroke-linejoin="bevel" points="32 16 19.5199605 28.4800395 12 21"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

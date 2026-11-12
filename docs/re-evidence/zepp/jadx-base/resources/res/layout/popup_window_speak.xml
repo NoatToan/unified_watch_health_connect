@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@drawable/bg_speak_popup"
+    android:padding="16dp"
+    android:layout_width="@dimen/popup_size"
+    android:layout_height="@dimen/popup_size"
+    android:minWidth="@dimen/popup_size"
+    android:minHeight="@dimen/popup_size">
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <ImageView
+            android:id="@+id/imv_speaking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_record"
+            android:scaleType="centerInside"/>
+        <com.huami.watch.companion.ecg.view.voice.VoiceAnimView
+            android:id="@+id/view_level"
+            android:visibility="visible"
+            android:layout_width="20dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            app:levelColor="@color/s3"
+            app:maxLevel="7"/>
+    </LinearLayout>
+    <TextView
+        android:textSize="14sp"
+        android:textColor="@color/s3"
+        android:gravity="start|center_vertical"
+        android:id="@+id/tx_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/move_up_cancel"
+        android:maxLines="2"/>
+</LinearLayout>

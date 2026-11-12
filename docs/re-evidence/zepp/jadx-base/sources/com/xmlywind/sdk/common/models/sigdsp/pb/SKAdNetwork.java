@@ -1,0 +1,325 @@
+package com.xmlywind.sdk.common.models.sigdsp.pb;
+
+import android.os.Parcelable;
+import com.xmlywind.wire.AndroidMessage;
+import com.xmlywind.wire.FieldEncoding;
+import com.xmlywind.wire.Message;
+import com.xmlywind.wire.ProtoAdapter;
+import com.xmlywind.wire.ProtoReader;
+import com.xmlywind.wire.ProtoWriter;
+import com.xmlywind.wire.WireField;
+import com.xmlywind.wire.internal.Internal;
+import com.xmlywind.wire.okio.ByteString;
+
+/* JADX INFO: loaded from: classes22.dex */
+public final class SKAdNetwork extends AndroidMessage<SKAdNetwork, Builder> {
+    public static final ProtoAdapter<SKAdNetwork> ADAPTER;
+    public static final Parcelable.Creator<SKAdNetwork> CREATOR;
+    public static final String DEFAULT_AD_NETWORK_ID = "";
+    public static final Integer DEFAULT_CAMPAIGN_ID;
+    public static final Integer DEFAULT_FIDELITY_TYPE;
+    public static final String DEFAULT_ITUNES_ID = "";
+    public static final String DEFAULT_NONCE = "";
+    public static final String DEFAULT_SIGN = "";
+    public static final String DEFAULT_SOURCE_APP_ID = "";
+    public static final Long DEFAULT_TIMESTAMP;
+    public static final String DEFAULT_VERSION = "";
+    private static final long serialVersionUID = 0;
+
+    @WireField(adapter = "com.squareup.wire.ProtoAdapter#STRING", tag = 2)
+    public final String ad_network_id;
+
+    @WireField(adapter = "com.squareup.wire.ProtoAdapter#INT32", tag = 3)
+    public final Integer campaign_id;
+
+    @WireField(adapter = "com.squareup.wire.ProtoAdapter#UINT32", tag = 9)
+    public final Integer fidelity_type;
+
+    @WireField(adapter = "com.squareup.wire.ProtoAdapter#STRING", tag = 4)
+    public final String itunes_id;
+
+    @WireField(adapter = "com.squareup.wire.ProtoAdapter#STRING", tag = 6)
+    public final String nonce;
+
+    @WireField(adapter = "com.squareup.wire.ProtoAdapter#STRING", tag = 8)
+    public final String sign;
+
+    @WireField(adapter = "com.squareup.wire.ProtoAdapter#STRING", tag = 5)
+    public final String source_app_id;
+
+    @WireField(adapter = "com.squareup.wire.ProtoAdapter#UINT64", tag = 7)
+    public final Long timestamp;
+
+    @WireField(adapter = "com.squareup.wire.ProtoAdapter#STRING", tag = 1)
+    public final String version;
+
+    public static final class Builder extends Message.Builder<SKAdNetwork, Builder> {
+        public String ad_network_id;
+        public Integer campaign_id;
+        public Integer fidelity_type;
+        public String itunes_id;
+        public String nonce;
+        public String sign;
+        public String source_app_id;
+        public Long timestamp;
+        public String version;
+
+        public Builder ad_network_id(String str) {
+            this.ad_network_id = str;
+            return this;
+        }
+
+        @Override // com.xmlywind.wire.Message.Builder
+        public SKAdNetwork build() {
+            return new SKAdNetwork(this.version, this.ad_network_id, this.campaign_id, this.itunes_id, this.source_app_id, this.nonce, this.timestamp, this.sign, this.fidelity_type, super.buildUnknownFields());
+        }
+
+        public Builder campaign_id(Integer num) {
+            this.campaign_id = num;
+            return this;
+        }
+
+        public Builder fidelity_type(Integer num) {
+            this.fidelity_type = num;
+            return this;
+        }
+
+        public Builder itunes_id(String str) {
+            this.itunes_id = str;
+            return this;
+        }
+
+        public Builder nonce(String str) {
+            this.nonce = str;
+            return this;
+        }
+
+        public Builder sign(String str) {
+            this.sign = str;
+            return this;
+        }
+
+        public Builder source_app_id(String str) {
+            this.source_app_id = str;
+            return this;
+        }
+
+        public Builder timestamp(Long l) {
+            this.timestamp = l;
+            return this;
+        }
+
+        public Builder version(String str) {
+            this.version = str;
+            return this;
+        }
+    }
+
+    public static final class ProtoAdapter_SKAdNetwork extends ProtoAdapter<SKAdNetwork> {
+        public ProtoAdapter_SKAdNetwork() {
+            super(FieldEncoding.LENGTH_DELIMITED, SKAdNetwork.class);
+        }
+
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // com.xmlywind.wire.ProtoAdapter
+        public SKAdNetwork decode(ProtoReader protoReader) {
+            Builder builder = new Builder();
+            long jBeginMessage = protoReader.beginMessage();
+            while (true) {
+                int iNextTag = protoReader.nextTag();
+                if (iNextTag == -1) {
+                    protoReader.endMessage(jBeginMessage);
+                    return builder.build();
+                }
+                switch (iNextTag) {
+                    case 1:
+                        builder.version(ProtoAdapter.STRING.decode(protoReader));
+                        break;
+                    case 2:
+                        builder.ad_network_id(ProtoAdapter.STRING.decode(protoReader));
+                        break;
+                    case 3:
+                        builder.campaign_id(ProtoAdapter.INT32.decode(protoReader));
+                        break;
+                    case 4:
+                        builder.itunes_id(ProtoAdapter.STRING.decode(protoReader));
+                        break;
+                    case 5:
+                        builder.source_app_id(ProtoAdapter.STRING.decode(protoReader));
+                        break;
+                    case 6:
+                        builder.nonce(ProtoAdapter.STRING.decode(protoReader));
+                        break;
+                    case 7:
+                        builder.timestamp(ProtoAdapter.UINT64.decode(protoReader));
+                        break;
+                    case 8:
+                        builder.sign(ProtoAdapter.STRING.decode(protoReader));
+                        break;
+                    case 9:
+                        builder.fidelity_type(ProtoAdapter.UINT32.decode(protoReader));
+                        break;
+                    default:
+                        FieldEncoding fieldEncodingPeekFieldEncoding = protoReader.peekFieldEncoding();
+                        builder.addUnknownField(iNextTag, fieldEncodingPeekFieldEncoding, fieldEncodingPeekFieldEncoding.rawProtoAdapter().decode(protoReader));
+                        break;
+                }
+            }
+        }
+
+        @Override // com.xmlywind.wire.ProtoAdapter
+        public void encode(ProtoWriter protoWriter, SKAdNetwork sKAdNetwork) {
+            ProtoAdapter<String> protoAdapter = ProtoAdapter.STRING;
+            protoAdapter.encodeWithTag(protoWriter, 1, sKAdNetwork.version);
+            protoAdapter.encodeWithTag(protoWriter, 2, sKAdNetwork.ad_network_id);
+            ProtoAdapter.INT32.encodeWithTag(protoWriter, 3, sKAdNetwork.campaign_id);
+            protoAdapter.encodeWithTag(protoWriter, 4, sKAdNetwork.itunes_id);
+            protoAdapter.encodeWithTag(protoWriter, 5, sKAdNetwork.source_app_id);
+            protoAdapter.encodeWithTag(protoWriter, 6, sKAdNetwork.nonce);
+            ProtoAdapter.UINT64.encodeWithTag(protoWriter, 7, sKAdNetwork.timestamp);
+            protoAdapter.encodeWithTag(protoWriter, 8, sKAdNetwork.sign);
+            ProtoAdapter.UINT32.encodeWithTag(protoWriter, 9, sKAdNetwork.fidelity_type);
+            protoWriter.writeBytes(sKAdNetwork.unknownFields());
+        }
+
+        @Override // com.xmlywind.wire.ProtoAdapter
+        public int encodedSize(SKAdNetwork sKAdNetwork) {
+            ProtoAdapter<String> protoAdapter = ProtoAdapter.STRING;
+            return protoAdapter.encodedSizeWithTag(1, sKAdNetwork.version) + protoAdapter.encodedSizeWithTag(2, sKAdNetwork.ad_network_id) + ProtoAdapter.INT32.encodedSizeWithTag(3, sKAdNetwork.campaign_id) + protoAdapter.encodedSizeWithTag(4, sKAdNetwork.itunes_id) + protoAdapter.encodedSizeWithTag(5, sKAdNetwork.source_app_id) + protoAdapter.encodedSizeWithTag(6, sKAdNetwork.nonce) + ProtoAdapter.UINT64.encodedSizeWithTag(7, sKAdNetwork.timestamp) + protoAdapter.encodedSizeWithTag(8, sKAdNetwork.sign) + ProtoAdapter.UINT32.encodedSizeWithTag(9, sKAdNetwork.fidelity_type) + sKAdNetwork.unknownFields().size();
+        }
+
+        @Override // com.xmlywind.wire.ProtoAdapter
+        public SKAdNetwork redact(SKAdNetwork sKAdNetwork) {
+            Builder builderNewBuilder = sKAdNetwork.newBuilder();
+            builderNewBuilder.clearUnknownFields();
+            return builderNewBuilder.build();
+        }
+    }
+
+    static {
+        ProtoAdapter_SKAdNetwork protoAdapter_SKAdNetwork = new ProtoAdapter_SKAdNetwork();
+        ADAPTER = protoAdapter_SKAdNetwork;
+        CREATOR = AndroidMessage.newCreator(protoAdapter_SKAdNetwork);
+        DEFAULT_CAMPAIGN_ID = 0;
+        DEFAULT_TIMESTAMP = 0L;
+        DEFAULT_FIDELITY_TYPE = 0;
+    }
+
+    public SKAdNetwork(String str, String str2, Integer num, String str3, String str4, String str5, Long l, String str6, Integer num2) {
+        this(str, str2, num, str3, str4, str5, l, str6, num2, ByteString.EMPTY);
+    }
+
+    public SKAdNetwork(String str, String str2, Integer num, String str3, String str4, String str5, Long l, String str6, Integer num2, ByteString byteString) {
+        super(ADAPTER, byteString);
+        this.version = str;
+        this.ad_network_id = str2;
+        this.campaign_id = num;
+        this.itunes_id = str3;
+        this.source_app_id = str4;
+        this.nonce = str5;
+        this.timestamp = l;
+        this.sign = str6;
+        this.fidelity_type = num2;
+    }
+
+    public boolean equals(Object obj) {
+        if (obj != this) {
+            if (!(obj instanceof SKAdNetwork)) {
+                return false;
+            }
+            SKAdNetwork sKAdNetwork = (SKAdNetwork) obj;
+            if (!unknownFields().equals(sKAdNetwork.unknownFields()) || !Internal.equals(this.version, sKAdNetwork.version) || !Internal.equals(this.ad_network_id, sKAdNetwork.ad_network_id) || !Internal.equals(this.campaign_id, sKAdNetwork.campaign_id) || !Internal.equals(this.itunes_id, sKAdNetwork.itunes_id) || !Internal.equals(this.source_app_id, sKAdNetwork.source_app_id) || !Internal.equals(this.nonce, sKAdNetwork.nonce) || !Internal.equals(this.timestamp, sKAdNetwork.timestamp) || !Internal.equals(this.sign, sKAdNetwork.sign) || !Internal.equals(this.fidelity_type, sKAdNetwork.fidelity_type)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int hashCode() {
+        int i = this.hashCode;
+        if (i != 0) {
+            return i;
+        }
+        int iHashCode = unknownFields().hashCode();
+        String str = this.version;
+        int iHashCode2 = str != null ? str.hashCode() : 0;
+        String str2 = this.ad_network_id;
+        int iHashCode3 = str2 != null ? str2.hashCode() : 0;
+        Integer num = this.campaign_id;
+        int iHashCode4 = num != null ? num.hashCode() : 0;
+        String str3 = this.itunes_id;
+        int iHashCode5 = str3 != null ? str3.hashCode() : 0;
+        String str4 = this.source_app_id;
+        int iHashCode6 = str4 != null ? str4.hashCode() : 0;
+        String str5 = this.nonce;
+        int iHashCode7 = str5 != null ? str5.hashCode() : 0;
+        Long l = this.timestamp;
+        int iHashCode8 = l != null ? l.hashCode() : 0;
+        String str6 = this.sign;
+        int iHashCode9 = str6 != null ? str6.hashCode() : 0;
+        Integer num2 = this.fidelity_type;
+        int iHashCode10 = ((iHashCode9 + ((iHashCode8 + ((iHashCode7 + ((iHashCode6 + ((iHashCode5 + ((iHashCode4 + ((iHashCode3 + ((iHashCode2 + (iHashCode * 37)) * 37)) * 37)) * 37)) * 37)) * 37)) * 37)) * 37)) * 37) + (num2 != null ? num2.hashCode() : 0);
+        this.hashCode = iHashCode10;
+        return iHashCode10;
+    }
+
+    @Override // com.xmlywind.wire.Message
+    public Builder newBuilder() {
+        Builder builder = new Builder();
+        builder.version = this.version;
+        builder.ad_network_id = this.ad_network_id;
+        builder.campaign_id = this.campaign_id;
+        builder.itunes_id = this.itunes_id;
+        builder.source_app_id = this.source_app_id;
+        builder.nonce = this.nonce;
+        builder.timestamp = this.timestamp;
+        builder.sign = this.sign;
+        builder.fidelity_type = this.fidelity_type;
+        builder.addUnknownFields(unknownFields());
+        return builder;
+    }
+
+    @Override // com.xmlywind.wire.Message
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if (this.version != null) {
+            sb.append(", version=");
+            sb.append(this.version);
+        }
+        if (this.ad_network_id != null) {
+            sb.append(", ad_network_id=");
+            sb.append(this.ad_network_id);
+        }
+        if (this.campaign_id != null) {
+            sb.append(", campaign_id=");
+            sb.append(this.campaign_id);
+        }
+        if (this.itunes_id != null) {
+            sb.append(", itunes_id=");
+            sb.append(this.itunes_id);
+        }
+        if (this.source_app_id != null) {
+            sb.append(", source_app_id=");
+            sb.append(this.source_app_id);
+        }
+        if (this.nonce != null) {
+            sb.append(", nonce=");
+            sb.append(this.nonce);
+        }
+        if (this.timestamp != null) {
+            sb.append(", timestamp=");
+            sb.append(this.timestamp);
+        }
+        if (this.sign != null) {
+            sb.append(", sign=");
+            sb.append(this.sign);
+        }
+        if (this.fidelity_type != null) {
+            sb.append(", fidelity_type=");
+            sb.append(this.fidelity_type);
+        }
+        StringBuilder sbReplace = sb.replace(0, 2, "SKAdNetwork{");
+        sbReplace.append('}');
+        return sbReplace.toString();
+    }
+}

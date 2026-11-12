@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.Theme.AppCompat" parent="@style/Base.V28.Theme.AppCompat">
+    </style>
+    <style name="Base.Theme.AppCompat.Light" parent="@style/Base.V28.Theme.AppCompat.Light">
+    </style>
+    <style name="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:backgroundDimAmount">0.32</item>
+        <item name="android:checkedTextViewStyle">@style/Widget.MaterialComponents.CheckedTextView</item>
+        <item name="android:dialogCornerRadius">@null</item>
+        <item name="alertDialogStyle">@style/MaterialAlertDialog.MaterialComponents</item>
+        <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.MaterialComponents.Body.Text</item>
+    </style>
+    <style name="Base.V28.Theme.AppCompat" parent="@style/Base.V26.Theme.AppCompat">
+        <item name="dialogCornerRadius">?android:attr/dialogCornerRadius</item>
+    </style>
+    <style name="Base.V28.Theme.AppCompat.Light" parent="@style/Base.V26.Theme.AppCompat.Light">
+        <item name="dialogCornerRadius">?android:attr/dialogCornerRadius</item>
+    </style>
+    <style name="Theme.App.Zepp.Dark" parent="@style/Theme.MaterialComponents.NoActionBar">
+        <item name="android:textColorPrimary">#e8e8e9</item>
+        <item name="android:textColorSecondary">#a4a5a5</item>
+        <item name="android:buttonStyle">@style/Rainbow.Widget.Button.Appcompat</item>
+        <item name="android:listChoiceIndicatorSingle">@drawable/rainbow_abc_btn_radio_material</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/rainbow_abc_btn_check_material</item>
+        <item name="android:listPreferredItemHeightSmall">64dp</item>
+        <item name="android:switchStyle">@style/Rainbow.Widget.Switch</item>
+        <item name="android:buttonCornerRadius">@dimen/rainbow_corner_radius</item>
+        <item name="alertDialogStyle">@style/AlertDialog.AppCompat.Custom</item>
+        <item name="buttonStyle">@style/Rainbow.Widget.Button.Appcompat</item>
+        <item name="cardViewStyle">@style/Rainbow.Widget.CardView</item>
+        <item name="colorDivider">#38393a</item>
+        <item name="colorOnPrimary">#1d1e1f</item>
+        <item name="colorSurface">#1d1e1f</item>
+        <item name="dialogBackground">#1d1e1f</item>
+        <item name="dialogCornerRadius">@dimen/rainbow_corner_radius</item>
+        <item name="listTileStyle">@style/Rainbow.Widget.ListTileView</item>
+        <item name="materialButtonStyle">@style/Rainbow.Widget.Button</item>
+        <item name="materialCardViewStyle">@style/Rainbow.Widget.CardView</item>
+        <item name="switchStyle">@style/Rainbow.Widget.Switch</item>
+        <item name="tabStyle">@style/Rainbow.Widget.TabLayout</item>
+        <item name="titleBarSearchBackgroundColor">#38393a</item>
+        <item name="titleBarSearchIcon">#616162</item>
+        <item name="viewInflaterClass">com.huami.lib.rainbow.RainbowViewInflater</item>
+    </style>
+    <style name="Theme.Rainbow" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:buttonStyle">@style/Rainbow.Widget.Button.Appcompat</item>
+        <item name="android:checkboxStyle">@style/Rainbow.Widget.CheckBox</item>
+        <item name="android:radioButtonStyle">@style/Rainbow.Widget.RadioButton</item>
+        <item name="android:switchStyle">@style/Rainbow.Widget.Switch</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="android:buttonCornerRadius">@dimen/rainbow_corner_radius</item>
+        <item name="buttonStyle">@style/Rainbow.Widget.Button.Appcompat</item>
+        <item name="buttonStyle26">@style/Rainbow.Widget.Button.26</item>
+        <item name="buttonStyle32">@style/Rainbow.Widget.Button.32</item>
+        <item name="buttonStyle38">@style/Rainbow.Widget.Button.38</item>
+        <item name="buttonStyle44">@style/Rainbow.Widget.Button.44</item>
+        <item name="buttonStyle48">@style/Rainbow.Widget.Button.48</item>
+        <item name="buttonStyleGray_26_flat">@style/Rainbow.Widget.Button.Gray.26</item>
+        <item name="buttonStyleGray_26_flat_circular">@style/Rainbow.Widget.Button.Gray.26.Circular</item>
+        <item name="buttonStyleGray_26_outline">@style/Rainbow.Widget.Button.Gray.26.Outline</item>
+        <item name="buttonStyleGray_26_outline_circular">@style/Rainbow.Widget.Button.Gray.26.Outline.Circular</item>
+        <item name="buttonStyleGray_32_flat">@style/Rainbow.Widget.Button.Gray.32</item>
+        <item name="buttonStyleGray_32_flat_circular">@style/Rainbow.Widget.Button.Gray.32.Circular</item>
+        <item name="buttonStyleGray_32_outline">@style/Rainbow.Widget.Button.Gray.32.Outline</item>
+        <item name="buttonStyleGray_32_outline_circular">@style/Rainbow.Widget.Button.Gray.32.Outline.Circular</item>
+        <item name="buttonStyleGray_38_flat">@style/Rainbow.Widget.Button.Gray.38</item>
+        <item name="buttonStyleGray_38_flat_circular">@style/Rainbow.Widget.Button.Gray.38.Circular</item>
+        <item name="buttonStyleGray_38_outline">@style/Rainbow.Widget.Button.Gray.38.Outline</item>
+        <item name="buttonStyleGray_38_outline_circular">@style/Rainbow.Widget.Button.Gray.38.Outline.Circular</item>
+        <item name="buttonStyleGray_44_flat">@style/Rainbow.Widget.Button.Gray.44</item>
+        <item name="buttonStyleGray_44_flat_circular">@style/Rainbow.Widget.Button.Gray.44.Circular</item>
+        <item name="buttonStyleGray_44_outline">@style/Rainbow.Widget.Button.Gray.44.Outline</item>
+        <item name="buttonStyleGray_44_outline_circular">@style/Rainbow.Widget.Button.Gray.44.Outline.Circular</item>
+        <item name="buttonStyleGray_48_flat">@style/Rainbow.Widget.Button.Gray.48</item>
+        <item name="buttonStyleGray_48_flat_circular">@style/Rainbow.Widget.Button.Gray.48.Circular</item>
+        <item name="buttonStyleGray_48_outline">@style/Rainbow.Widget.Button.Gray.48.Outline</item>
+        <item name="buttonStyleGray_48_outline_circular">@style/Rainbow.Widget.Button.Gray.48.Outline.Circular</item>
+        <item name="buttonStyleRed_26_flat">?attr/buttonStyle26</item>
+        <item name="buttonStyleRed_26_flat_circular">@style/Rainbow.Widget.Button.26.Circular</item>
+        <item name="buttonStyleRed_26_outline">@style/Rainbow.Widget.Button.26.Outline</item>
+        <item name="buttonStyleRed_26_outline_circular">@style/Rainbow.Widget.Button.26.Outline.Circular</item>
+        <item name="buttonStyleRed_32_flat">?attr/buttonStyle32</item>
+        <item name="buttonStyleRed_32_flat_circular">@style/Rainbow.Widget.Button.32.Circular</item>
+        <item name="buttonStyleRed_32_outline">@style/Rainbow.Widget.Button.32.Outline</item>
+        <item name="buttonStyleRed_32_outline_circular">@style/Rainbow.Widget.Button.32.Outline.Circular</item>
+        <item name="buttonStyleRed_38_flat">?attr/buttonStyle38</item>
+        <item name="buttonStyleRed_38_flat_circular">@style/Rainbow.Widget.Button.38.Circular</item>
+        <item name="buttonStyleRed_38_outline">@style/Rainbow.Widget.Button.38.Outline</item>
+        <item name="buttonStyleRed_38_outline_circular">@style/Rainbow.Widget.Button.38.Outline.Circular</item>
+        <item name="buttonStyleRed_44_flat">?attr/buttonStyle44</item>
+        <item name="buttonStyleRed_44_flat_circular">@style/Rainbow.Widget.Button.44.Circular</item>
+        <item name="buttonStyleRed_44_outline">@style/Rainbow.Widget.Button.44.Outline</item>
+        <item name="buttonStyleRed_44_outline_circular">@style/Rainbow.Widget.Button.44.Outline.Circular</item>
+        <item name="buttonStyleRed_48_flat">?attr/buttonStyle48</item>
+        <item name="buttonStyleRed_48_flat_circular">@style/Rainbow.Widget.Button.48.Circular</item>
+        <item name="buttonStyleRed_48_outline">@style/Rainbow.Widget.Button.48.Outline</item>
+        <item name="buttonStyleRed_48_outline_circular">@style/Rainbow.Widget.Button.48.Outline.Circular</item>
+        <item name="cardViewStyle">@style/Rainbow.Widget.CardView</item>
+        <item name="checkboxStyle">@style/Rainbow.Widget.CheckBox</item>
+        <item name="materialButtonStyle">@style/Rainbow.Widget.Button</item>
+        <item name="materialCardViewStyle">@style/Rainbow.Widget.CardView</item>
+        <item name="radioButtonStyle">@style/Rainbow.Widget.RadioButton</item>
+        <item name="switchStyle">@style/Rainbow.Widget.Switch</item>
+        <item name="tabStyle">@style/Rainbow.Widget.TabLayout</item>
+        <item name="textAppearanceBody1">@style/Rainbow.TextAppearance.Body1</item>
+        <item name="textAppearanceBody2">@style/Rainbow.TextAppearance.Body2</item>
+        <item name="textAppearanceBody3">@style/Rainbow.TextAppearance.Body3</item>
+        <item name="textAppearanceBody4">@style/Rainbow.TextAppearance.Body4</item>
+        <item name="textAppearanceBody5">@style/Rainbow.TextAppearance.Body5</item>
+        <item name="textAppearanceNumber1">@style/Rainbow.TextAppearance.Number1</item>
+        <item name="textAppearanceNumber2">@style/Rainbow.TextAppearance.Number2</item>
+        <item name="textAppearanceNumber3">@style/Rainbow.TextAppearance.Number3</item>
+        <item name="textAppearanceNumber4">@style/Rainbow.TextAppearance.Number4</item>
+        <item name="textAppearanceNumber5">@style/Rainbow.TextAppearance.Number5</item>
+        <item name="textAppearanceNumber6">@style/Rainbow.TextAppearance.Number6</item>
+        <item name="textAppearanceNumber7">@style/Rainbow.TextAppearance.Number7</item>
+        <item name="textAppearanceNumber8">@style/Rainbow.TextAppearance.Number8</item>
+        <item name="textAppearanceTitle1">@style/Rainbow.TextAppearance.Title1</item>
+        <item name="textAppearanceTitle2">@style/Rainbow.TextAppearance.Title2</item>
+        <item name="textAppearanceTitle3">@style/Rainbow.TextAppearance.Title3</item>
+        <item name="viewInflaterClass">com.huami.lib.rainbow.RainbowViewInflater</item>
+    </style>
+</resources>

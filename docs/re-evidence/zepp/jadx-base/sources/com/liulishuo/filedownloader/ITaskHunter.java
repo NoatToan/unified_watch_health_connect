@@ -1,0 +1,53 @@
+package com.liulishuo.filedownloader;
+
+import com.liulishuo.filedownloader.message.MessageSnapshot;
+
+/* JADX INFO: loaded from: classes18.dex */
+public interface ITaskHunter extends IDownloadSpeed.Lookup {
+
+    public interface IMessageHandler {
+        d getMessenger();
+
+        MessageSnapshot prepareErrorMessage(Throwable th);
+
+        boolean updateKeepAhead(MessageSnapshot messageSnapshot);
+
+        boolean updateKeepFlow(MessageSnapshot messageSnapshot);
+
+        boolean updateMoreLikelyCompleted(MessageSnapshot messageSnapshot);
+
+        boolean updateSameFilePathTaskRunning(MessageSnapshot messageSnapshot);
+    }
+
+    public interface IStarter {
+        boolean equalListener(FileDownloadListener fileDownloadListener);
+
+        void start();
+    }
+
+    void free();
+
+    Throwable getErrorCause();
+
+    String getEtag();
+
+    int getRetryingTimes();
+
+    long getSofarBytes();
+
+    byte getStatus();
+
+    long getTotalBytes();
+
+    void intoLaunchPool();
+
+    boolean isLargeFile();
+
+    boolean isResuming();
+
+    boolean isReusedOldFile();
+
+    boolean pause();
+
+    void reset();
+}

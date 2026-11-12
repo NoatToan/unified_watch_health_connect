@@ -1,0 +1,256 @@
+package com.beaglebuddy.id3.v23;
+
+import com.beaglebuddy.id3.enums.ID3TagVersion;
+import com.beaglebuddy.id3.enums.v23.FrameType;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+
+/* JADX INFO: loaded from: classes2.dex */
+public class ID3v23Tag {
+    public static int DEFAULT_PADDING_SIZE = 256;
+    private ID3v23TagHeader a;
+    private ID3v23TagExtendedHeader b;
+    private List<ID3v23Frame> c;
+    private List<ID3v23Frame> d;
+    private byte[] e;
+
+    public ID3v23Tag() {
+        this.a = new ID3v23TagHeader();
+        this.b = null;
+        this.c = new Vector();
+        this.d = new Vector();
+        this.e = new byte[DEFAULT_PADDING_SIZE];
+    }
+
+    public ID3v23Frame addFrame(FrameType frameType) {
+        return addFrame(new ID3v23Frame(frameType));
+    }
+
+    public ID3v23TagExtendedHeader getExtendedHeader() throws IllegalStateException {
+        if (this.a.isExtendedHeaderPresent()) {
+            return this.b;
+        }
+        throw new IllegalStateException("The extended header may not be read from the ID3v2.3 tag header when the extendedHeaderPresent flag is false.");
+    }
+
+    public ID3v23Frame getFrame(FrameType frameType) {
+        for (ID3v23Frame iD3v23Frame : this.c) {
+            if (iD3v23Frame.getHeader().getFrameType() == frameType) {
+                return iD3v23Frame;
+            }
+        }
+        return null;
+    }
+
+    public List<ID3v23Frame> getFrames() {
+        return this.c;
+    }
+
+    public ID3v23TagHeader getHeader() {
+        return this.a;
+    }
+
+    public List<ID3v23Frame> getInvalidFrames() {
+        return this.d;
+    }
+
+    public byte[] getPadding() {
+        return this.e;
+    }
+
+    public int getSize() {
+        return this.a.getSize() + this.a.getTagSize();
+    }
+
+    public ID3TagVersion getVersion() {
+        return ID3TagVersion.ID3V2_3;
+    }
+
+    public boolean isDirty() {
+        boolean zIsDirty = this.a.isDirty();
+        if (this.a.isExtendedHeaderPresent()) {
+            zIsDirty = zIsDirty || this.b.isDirty();
+        }
+        if (!zIsDirty) {
+            Iterator<ID3v23Frame> it2 = this.c.iterator();
+            while (it2.hasNext()) {
+                if (it2.next().isDirty()) {
+                    zIsDirty = true;
+                }
+            }
+        }
+        return zIsDirty;
+    }
+
+    public ID3v23Frame removeFrame(FrameType frameType) {
+        ID3v23Frame next;
+        Iterator<ID3v23Frame> it2 = this.c.iterator();
+        do {
+            if (!it2.hasNext()) {
+                next = null;
+                break;
+            }
+            next = it2.next();
+        } while (next.getHeader().getFrameType() != frameType);
+        if (next != null) {
+            this.c.remove(next);
+        }
+        return next;
+    }
+
+    public List<ID3v23Frame> removeFrames(FrameType frameType) {
+        Vector vector = new Vector();
+        for (ID3v23Frame iD3v23Frame : this.c) {
+            if (iD3v23Frame.getHeader().getFrameType() == frameType) {
+                vector.add(iD3v23Frame);
+            }
+        }
+        Iterator it2 = vector.iterator();
+        while (it2.hasNext()) {
+            this.c.remove((ID3v23Frame) it2.next());
+        }
+        return vector;
+    }
+
+    public void save(OutputStream outputStream) throws IOException {
+        setBuffer();
+        this.a.save(outputStream);
+        if (this.a.isExtendedHeaderPresent()) {
+            this.b.save(outputStream);
+        }
+        Iterator<ID3v23Frame> it2 = this.c.iterator();
+        while (it2.hasNext()) {
+            it2.next().save(outputStream);
+        }
+        outputStream.write(this.e);
+    }
+
+    public void setBuffer() {
+        this.a.setBuffer();
+        int size = this.a.getSize() + 0;
+        if (this.a.isExtendedHeaderPresent()) {
+            this.b.setBuffer();
+            size += this.b.getSize();
+        }
+        for (ID3v23Frame iD3v23Frame : this.c) {
+            iD3v23Frame.setBuffer();
+            size += iD3v23Frame.getSize();
+        }
+        this.a.setTagSize((size + getPadding().length) - 10);
+        this.a.setBuffer();
+    }
+
+    public void setExtendedHeader(ID3v23TagExtendedHeader iD3v23TagExtendedHeader) {
+        this.b = iD3v23TagExtendedHeader;
+        this.a.setExtendedHeaderPresent(iD3v23TagExtendedHeader != null);
+    }
+
+    public void setFrames(List<ID3v23Frame> list) {
+        this.c = list;
+    }
+
+    public void setHeader(ID3v23TagHeader iD3v23TagHeader) {
+        this.a = iD3v23TagHeader;
+    }
+
+    public void setPadding(int i) {
+        this.e = new byte[i];
+    }
+
+    public String toString() {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("ID3v2.3 tag\n");
+        stringBuffer.append("   num frames: " + this.c.size() + "\n");
+        stringBuffer.append("   tag size..: " + (getSize() - this.e.length) + " bytes\n");
+        stringBuffer.append("   padding...: " + this.e.length + " bytes\n");
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.a.toString());
+        sb.append("\n");
+        stringBuffer.append(sb.toString());
+        if (this.a.isExtendedHeaderPresent()) {
+            stringBuffer.append(this.b.toString() + "\n");
+        }
+        Iterator<ID3v23Frame> it2 = this.c.iterator();
+        while (it2.hasNext()) {
+            stringBuffer.append(it2.next().toString());
+        }
+        return stringBuffer.toString();
+    }
+
+    public ID3v23Frame addFrame(ID3v23Frame iD3v23Frame) {
+        this.c.add(iD3v23Frame);
+        return iD3v23Frame;
+    }
+
+    public List<ID3v23Frame> getFrames(FrameType frameType) {
+        Vector vector = new Vector();
+        for (ID3v23Frame iD3v23Frame : this.c) {
+            if (iD3v23Frame.getHeader().getFrameType() == frameType) {
+                vector.add(iD3v23Frame);
+            }
+        }
+        return vector;
+    }
+
+    public ID3v23Tag(InputStream inputStream) throws IOException {
+        int i;
+        ID3v23TagHeader iD3v23TagHeader = new ID3v23TagHeader(inputStream);
+        this.a = iD3v23TagHeader;
+        if (iD3v23TagHeader.isExtendedHeaderPresent()) {
+            this.b = new ID3v23TagExtendedHeader(inputStream);
+        }
+        this.c = new Vector();
+        this.d = new Vector();
+        int tagSize = this.a.getTagSize() + 10;
+        int size = this.a.getSize();
+        int size2 = this.a.isExtendedHeaderPresent() ? this.b.getSize() : 0;
+        while (true) {
+            i = size + size2;
+            if (i >= tagSize) {
+                break;
+            }
+            ID3v23FrameHeader iD3v23FrameHeader = new ID3v23FrameHeader(inputStream);
+            if (iD3v23FrameHeader.isPadding()) {
+                break;
+            }
+            ID3v23Frame iD3v23Frame = new ID3v23Frame(iD3v23FrameHeader, inputStream);
+            if (iD3v23Frame.isValid()) {
+                this.c.add(iD3v23Frame);
+            } else {
+                this.d.add(iD3v23Frame);
+            }
+            size = i + iD3v23Frame.getHeader().getSize();
+            size2 = iD3v23Frame.getBody().getSize();
+        }
+        int i2 = tagSize - i;
+        this.e = new byte[i2];
+        if (i < tagSize) {
+            int i3 = i2 - 1;
+            byte[] bArr = new byte[i3];
+            inputStream.read(bArr);
+            System.arraycopy(bArr, 0, this.e, 1, i3);
+        }
+    }
+
+    public void removeFrames() {
+        this.c = new Vector();
+    }
+
+    public void save(RandomAccessFile randomAccessFile) throws IOException {
+        setBuffer();
+        this.a.save(randomAccessFile);
+        if (this.a.isExtendedHeaderPresent()) {
+            this.b.save(randomAccessFile);
+        }
+        Iterator<ID3v23Frame> it2 = this.c.iterator();
+        while (it2.hasNext()) {
+            it2.next().save(randomAccessFile);
+        }
+        randomAccessFile.write(this.e);
+    }
+}

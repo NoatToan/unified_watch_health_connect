@@ -1,0 +1,35 @@
+package com.airoha.android.lib.fota.stage;
+
+/* JADX INFO: loaded from: classes2.dex */
+public enum FotaStageEnum {
+    None,
+    InquiryFota,
+    QueryState,
+    StartTranscation,
+    CheckIntegrity,
+    Commit,
+    DiffFlashPartitionEraseStorage,
+    ProgramDiffFotaStorage,
+    GetPartitionEraseStatusStorage,
+    ComparePartitionV2Storage,
+    WriteState,
+    CheckAgentChannel,
+    GetAgentClientVersion,
+    GetAvaDst,
+    TwsGetBatery,
+    TwsQueryState,
+    TwsStartTranscation,
+    TwsDiffFlashPartitionEraseStorage,
+    TwsProgramDiffFotaStorage,
+    TwsGetPartitionEraseStatusStorage,
+    TwsComparePartitionV2Storage,
+    RoleSwitch,
+    TwsCommit,
+    TwsQueryPartition,
+    TwsWriteState,
+    Start,
+    TwsActiveFotaPreparation,
+    Cancel,
+    GetModelName,
+    Unknown
+}

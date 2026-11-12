@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/account_ui_trans"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/account_ui_dialog_empty_area"/>
+    <androidx.cardview.widget.CardView
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/dialog_bg"
+        app:cardCornerRadius="4dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/web_container"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"/>
+            <View
+                android:background="@color/account_ui_black_20_percent"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
+            <TextView
+                android:textSize="@dimen/account_ui_person_info_setting_text_size"
+                android:textColor="@color/account_ui_select_agreement_continue"
+                android:gravity="center"
+                android:id="@+id/tv_known_it"
+                android:background="@drawable/account_ui_btn_click_bg_round_dialog_bottom_left"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/account_ui_item_height_max"
+                android:text="@string/account_ui_got_it"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

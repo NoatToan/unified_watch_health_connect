@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="access_door_search_count_tip">
+        <item quantity="one">%1$d हिट मिला।</item>
+        <item quantity="other">%1$d हिट मिले।</item>
+    </plurals>
+    <plurals name="account_ui_account_age_check_content_by_upgrade">
+        <item quantity="one">ब्रांड अपग्रेड के कारण, आपके डेटा की सुरक्षा को सुरक्षित करने के लिए आपके अभिभावक द्वारा खाता जानकारी की पुष्टि की जानी चाहिए। कृपया जल्द से जल्द पुष्टि करें। नहीं तो, आपका खाता %1$sदिन में फ्रीज़ कर दिया जाएगा।</item>
+        <item quantity="other">ब्रांड अपग्रेड के कारण, आपके डेटा की सुरक्षा को सुरक्षित करने के लिए आपके अभिभावक द्वारा खाता जानकारी की पुष्टि की जानी चाहिए। कृपया जल्द से जल्द पुष्टि करें। नहीं तो, आपका खाता %1$sदिनों में फ्रीज़ कर दिया जाएगा।</item>
+    </plurals>
+    <plurals name="account_ui_login_failed_with_block_minutes">
+        <item quantity="one">खाता या पासवर्ड दर्ज करने की अधिकतम संख्या पूरी हो गई है। कृपया %s मिनट में पुनः प्रयास करें</item>
+        <item quantity="other">खाता या पासवर्ड दर्ज करने की अधिकतम संख्या पूरी हो गई है। कृपया %s मिनट में पुनः प्रयास करें</item>
+    </plurals>
+    <plurals name="account_ui_password_error_with_times">
+        <item quantity="one">खाता नाम या पासवर्ड गलत है। आपका %s प्रयास शेष है</item>
+        <item quantity="other">खाता नाम या पासवर्ड गलत है। आपके %s प्रयास शेष हैं</item>
+    </plurals>
+    <plurals name="action_amout">
+        <item quantity="one">%d पाठ्यक्रम</item>
+        <item quantity="other">%d पाठ्यक्रम</item>
+    </plurals>
+    <plurals name="alart_later_time">
+        <item quantity="one">%s मिनट बाद फिर से कंपन करें</item>
+        <item quantity="other">%s मिनटों बाद फिर से कंपन करें</item>
+    </plurals>
+    <plurals name="app_day_report_title_rank">
+        <item quantity="one">आज उपयोगकर्ताओं के %d%% से आगे</item>
+        <item quantity="other">आज उपयोगकर्ताओं के %d%% से आगे</item>
+    </plurals>
+    <plurals name="app_sort_tips_max">
+        <item quantity="one">ऐप सूची में अधिकतम %d ऐप जोड़ा जा सकता है</item>
+        <item quantity="other">ऐप सूची में अधिकतम %d ऐप जोड़े जा सकते हैं</item>
+    </plurals>
+    <plurals name="app_sort_tips_more_max">
+        <item quantity="one">ज़्यादा सूची में अधिकतम %d ऐप जोड़ा जा सकता है</item>
+        <item quantity="other">ज़्यादा सूची में अधिकतम %d ऐप जोड़े जा सकते हैं</item>
+    </plurals>
+    <plurals name="bf3_compare_last_mon">
+        <item quantity="one">%1$dदि पहले से तुलना की गई है</item>
+        <item quantity="other">%1$dदि पहले से तुलना की गई है</item>
+    </plurals>
+    <plurals name="blood_pressure_has_correct">
+        <item quantity="one">%d दिन के लिए कैलिब्रेट किया गया</item>
+        <item quantity="other">%d दिनों के लिए कैलिब्रेट किया गया</item>
+    </plurals>
+    <plurals name="blood_pressure_item_summary_new">
+        <item quantity="one">पेकिंग यूनिवर्सिटी फ़र्स्ट हॉस्पिटल द्वारा लॉन्च किए गए रक्तचाप जांच अनुसंधान प्रोजेक्ट के लिए हर %d दिन में कैलिब्रेशन की आवश्यकता होती है</item>
+        <item quantity="other">पेकिंग यूनिवर्सिटी फ़र्स्ट हॉस्पिटल द्वारा लॉन्च किए गए रक्तचाप जांच अनुसंधान प्रोजेक्ट के लिए हर %d दिनों में कैलिब्रेशन की आवश्यकता होती है</item>
+    </plurals>
+    <plurals name="blood_pressure_next_correct_days">
+        <item quantity="one">%d दिन बाद कैलिब्रेट करें</item>
+        <item quantity="other">%d दिनों बाद कैलिब्रेट करें</item>
+    </plurals>
+    <plurals name="bodyfat_3_health">
+        <item quantity="one">%d लक्ष्य पाया गया</item>
+        <item quantity="other">%d लक्ष्य पाए गए</item>
+    </plurals>
+    <plurals name="bodyfat_3_need_attention">
+        <item quantity="one">%d आइटम पर आपको ध्यान देने की जरूरत है</item>
+        <item quantity="other">%d आइटमों पर आपको ध्यान देने की जरूरत है</item>
+    </plurals>
+    <plurals name="bodyfat_3_not_up_to_standard">
+        <item quantity="one">%d आइटम का लक्ष्य पूरा नहीं हुआ</item>
+        <item quantity="other">%d आइटमों का लक्ष्य पूरा नहीं हुआ</item>
+    </plurals>
+    <plurals name="bodyfat_tips_achieve_weight_goal_1">
+        <item quantity="one">बधाइयां!\nआखिरी %1$d दिन में आपका वज़न बढ़ गया</item>
+        <item quantity="other">बधाइयां!\nआखिरी %1$d दिनों में आपका वज़न बढ़ गया</item>
+    </plurals>
+    <plurals name="bodyfat_unit_score">
+        <item quantity="one">स्कोर</item>
+        <item quantity="other">स्कोर</item>
+    </plurals>
+    <plurals name="bt_contact_max_count">
+        <item quantity="one">आप %1$d शीर्ष संपर्क जोड़ सकते हैं और वे स्वचालित रूप से आपकी वॉच में सिंक्रनाइज़ हो जाते हैं</item>
+        <item quantity="other">आप %1$d शीर्ष संपर्क तक जोड़ सकते हैं और वे स्वचालित रूप से आपकी वॉच में सिंक्रनाइज़ हो जाते हैं</item>
+    </plurals>
+    <plurals name="course_number">
+        <item quantity="one">%d पाठ्यक्रम</item>
+        <item quantity="other">%d पाठ्यक्रम</item>
+    </plurals>
+    <plurals name="course_will_start_xdays_after">
+        <item quantity="one">पाठ्यक्रम %d दिन में आरंभ होने वाला है</item>
+        <item quantity="other">पाठ्यक्रम %d दिनों में आरंभ होने वाला है</item>
+    </plurals>
+    <plurals name="download_time">
+        <item quantity="one">%d डाउनलोड</item>
+        <item quantity="other">%d डाउनलोड्स</item>
+    </plurals>
+    <plurals name="ds_Auto_screen_time">
+        <item quantity="one">%1$d सेकंड।</item>
+        <item quantity="other">%1$d सेकंड।</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval">
+        <item quantity="one">डेटा अंतराल: %1$s सेकंड</item>
+        <item quantity="other">डेटा अंतराल: %1$s सेकंड्स</item>
+    </plurals>
+    <plurals name="ds_gps_data_interval_simple">
+        <item quantity="one">%1$s सेकंड</item>
+        <item quantity="other">%1$s सेकंड्स</item>
+    </plurals>
+    <plurals name="event_remind_count">
+        <item quantity="one">%d अनुस्मारक</item>
+        <item quantity="other">%d अनुस्मारक</item>
+    </plurals>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+        <item quantity="one">वीडियो को %d सेकंड आगे बढ़ाएं</item>
+        <item quantity="other">वीडियो को %d सेकंड आगे बढ़ाएं</item>
+    </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+        <item quantity="one">वीडियो को %d सेकंड पीछे ले जाएं</item>
+        <item quantity="other">वीडियो को %d सेकंड पीछे ले जाएं</item>
+    </plurals>
+    <plurals name="fh_cal">
+        <item quantity="one">%1$d किलो कैलोरी</item>
+        <item quantity="other">%1$d किलो कैलोरी</item>
+    </plurals>
+    <plurals name="fh_cal_en">
+        <item quantity="one">%1$d किलो कैलोरी</item>
+        <item quantity="other">%1$d किलो कैलोरी</item>
+    </plurals>
+    <plurals name="fh_course_number">
+        <item quantity="one">%1$s अध्याय</item>
+        <item quantity="other">%1$s अध्याय</item>
+    </plurals>
+    <plurals name="fh_status_in_period_remain_plurals">
+        <item quantity="one">मासिक धर्म का %1$s, %2$s बाकी।</item>
+        <item quantity="other">मासिक धर्म का %1$s, %2$s बाकी।</item>
+    </plurals>
+    <plurals name="fh_status_in_predict_period_remain_plurals">
+        <item quantity="one">मासिक धर्म का लगभग %1$s, %2$s बाकी।</item>
+        <item quantity="other">मासिक धर्म का लगभग %1$s, %2$s बाकी।</item>
+    </plurals>
+    <plurals name="fh_status_in_real_period_predict_remain_plurals">
+        <item quantity="one">मासिक धर्म का %1$s, लगभग %2$s बाकी।</item>
+        <item quantity="other">मासिक धर्म का %1$s, लगभग %2$s बाकी।</item>
+    </plurals>
+    <plurals name="fh_study_number">
+        <item quantity="one">%1$s दर्शक</item>
+        <item quantity="other">%1$s दर्शक</item>
+    </plurals>
+    <plurals name="fh_the_day">
+        <item quantity="one">दिन %1$d</item>
+        <item quantity="other">दिन %1$d</item>
+    </plurals>
+    <plurals name="fh_time_day_var">
+        <item quantity="one">%1$d दिन</item>
+        <item quantity="other">%1$d दिन</item>
+    </plurals>
+    <plurals name="find_device_counter">
+        <item quantity="one">रद्द करें (%1$dसेकंड)</item>
+        <item quantity="other">रद्द करें (%1$dसेकंड)</item>
+    </plurals>
+    <plurals name="fix_hour">
+        <item quantity="one">%1$d घंटे</item>
+        <item quantity="other">%1$d घंटे</item>
+    </plurals>
+    <plurals name="fix_minute">
+        <item quantity="one">%1$d मिनट</item>
+        <item quantity="other">%1$d मिनट</item>
+    </plurals>
+    <plurals name="fw_transfer_left_time">
+        <item quantity="one">डाउनलोड हो रहा है। कृपया %s मिनट इंतज़ार करें</item>
+        <item quantity="other">डाउनलोड हो रहा है। कृपया %s मिनटों तक इंतज़ार करें</item>
+    </plurals>
+    <plurals name="have_finish_x_times_training">
+        <item quantity="one">%d प्रशिक्षण सत्र समाप्त हुआ</item>
+        <item quantity="other">%d प्रशिक्षण सत्र समाप्त हुए</item>
+    </plurals>
+    <plurals name="health_detect_hr_warn_times">
+        <item quantity="one">%d बार/मिनट</item>
+        <item quantity="other">%d बार/मिनट</item>
+    </plurals>
+    <plurals name="homepage_card_sort_show_limit">
+        <item quantity="one">होम पेज में कम से कम %1$d कार्ड होना चाहिए</item>
+        <item quantity="other">होम पेज में कम से कम %1$d कार्ड होने चाहिए</item>
+    </plurals>
+    <plurals name="homepage_item_card_average_hrv">
+        <item quantity="one">औसत हृदय दर %1$d bpm</item>
+        <item quantity="other">औसत हृदय दर %1$d bpm</item>
+    </plurals>
+    <plurals name="homepage_item_card_unit_time_per_minute">
+        <item quantity="one">समय/मिनट</item>
+        <item quantity="other">समय/मिनट</item>
+    </plurals>
+    <plurals name="homepage_item_card_x_minutes_ago">
+        <item quantity="one">%d मिनट पहले</item>
+        <item quantity="other">%d मिनट पहले</item>
+    </plurals>
+    <plurals name="how_many_times">
+        <item quantity="one">सत्र %d</item>
+        <item quantity="other">सत्र %d</item>
+    </plurals>
+    <plurals name="incoming_call_delay_dialog_alert_tips">
+        <item quantity="one">फ़ोन कॉल आने के %d सेकंड बाद मुझे अनुस्मारक दें</item>
+        <item quantity="other">फ़ोन कॉल आने के %d सेकंड बाद मुझे अनुस्मारक दें</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_limited">
+        <item quantity="one">आप अधिकतम %1$d SMS प्रत्युत्तर जोड़ सकते हैं</item>
+        <item quantity="other">आप अधिकतम %1$d SMS प्रत्युत्तरों को जोड़ सकते हैं</item>
+    </plurals>
+    <plurals name="incoming_call_reply_msg_min">
+        <item quantity="one">कम से कम %1$d SMS का जवाब रखें</item>
+        <item quantity="other">कम से कम %1$d SMS का जवाब रखें</item>
+    </plurals>
+    <plurals name="input_out_of_max">
+        <item quantity="one">%d वर्ण तक दर्ज करें</item>
+        <item quantity="other">%d वर्ण तक दर्ज करें</item>
+    </plurals>
+    <plurals name="km_segment_records">
+        <item quantity="one">लैप का %1$d रिकॉर्ड</item>
+        <item quantity="other">लैप के %1$d रिकार्ड्स</item>
+    </plurals>
+    <plurals name="learn_times">
+        <item quantity="one">%d व्यू</item>
+        <item quantity="other">%d व्यूज़</item>
+    </plurals>
+    <plurals name="lose_weight_monthly_interval">
+        <item quantity="one">%1$d महीना</item>
+        <item quantity="other">%1$d महीने</item>
+    </plurals>
+    <plurals name="lose_weight_sport_minute">
+        <item quantity="one">लगभग %1$d मिनट प्रतिदिन</item>
+        <item quantity="other">लगभग %1$d मिनट प्रतिदिन</item>
+    </plurals>
+    <plurals name="mili_setting_last_charge">
+        <item quantity="one">%dd पहले अंतिम बार चार्ज किया</item>
+        <item quantity="other">%dd पहले अंतिम बार चार्ज किया</item>
+    </plurals>
+    <plurals name="mine_goal">
+        <item quantity="one">पाया गया लक्ष्य: %d</item>
+        <item quantity="other">पाए गए लक्ष्य: %d</item>
+    </plurals>
+    <plurals name="mine_step_goal">
+        <item quantity="one">%d कदम</item>
+        <item quantity="other">%d कदम</item>
+    </plurals>
+    <plurals name="mine_weight_goal">
+        <item quantity="one">%d %s</item>
+        <item quantity="other">%d %s</item>
+    </plurals>
+    <plurals name="mtrl_badge_content_description">
+        <item quantity="one">%d नई सूचनाएं</item>
+        <item quantity="other">%d नई सूचनाएं</item>
+    </plurals>
+    <plurals name="next_rest_time">
+        <item quantity="one">%d&quot;</item>
+        <item quantity="other">%d&quot;</item>
+    </plurals>
+    <plurals name="next_rest_time_seconds">
+        <item quantity="one">%dसेकंड</item>
+        <item quantity="other">%dसेकंड</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_max">
+        <item quantity="one">%1$dसाल से बड़ा। %2$s का विश्लेषण नहीं कर सकते</item>
+        <item quantity="other">%1$dसाल से बड़ा। %2$s का विश्लेषण नहीं कर सकते</item>
+    </plurals>
+    <plurals name="no_body_params_for_age_min">
+        <item quantity="one">%1$dसाल से छोटा। %2$s का विश्लेषण नहीं कर सकते</item>
+        <item quantity="other">%1$dसाल से छोटा। %2$s का विश्लेषण नहीं कर सकते</item>
+    </plurals>
+    <plurals name="numberFoot">
+        <item quantity="one">%s फुट</item>
+        <item quantity="other">%s फुट</item>
+    </plurals>
+    <plurals name="numberInch">
+        <item quantity="one">%s इंच</item>
+        <item quantity="other">%s इंच</item>
+    </plurals>
+    <plurals name="one_foot_time_seconds">
+        <item quantity="one">%ds</item>
+        <item quantity="other">%ds</item>
+    </plurals>
+    <plurals name="over_view_sports_item">
+        <item quantity="one">वर्कआउट</item>
+        <item quantity="other">वर्कआउट</item>
+    </plurals>
+    <plurals name="people_attended">
+        <item quantity="one">%d भागीदार</item>
+        <item quantity="other">%d भागीदार</item>
+    </plurals>
+    <plurals name="phn_exercise_time_unit">
+        <item quantity="one">मिनट</item>
+        <item quantity="other">मिनट</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_limited">
+        <item quantity="one">आप अधिकतम %1$d SMS जवाब को जोड़ सकते हैं</item>
+        <item quantity="other">आप अधिकतम %1$d SMS जवाबों को जोड़ सकते हैं</item>
+    </plurals>
+    <plurals name="phone_call_reply_msg_min">
+        <item quantity="one">आप कम से कम %1$d SMS जवाब को रख सकते हैं</item>
+        <item quantity="other">आप कम से कम %1$d SMS जवाबों को रख सकते हैं</item>
+    </plurals>
+    <plurals name="picker_number_of_items_selected">
+        <item quantity="one">&quot;चयनित %1$d आइटम&quot;</item>
+        <item quantity="other">&quot;चयनित %1$d आइटम्स&quot;</item>
+    </plurals>
+    <plurals name="play_tool_bike_history">
+        <item quantity="one">आपने %1$d दिन पहले साइकिल चलाई थी</item>
+        <item quantity="other">आपने %1$d दिन पहले साइकिल चलाई थी</item>
+    </plurals>
+    <plurals name="play_tool_hour_unit">
+        <item quantity="one">घंटा</item>
+        <item quantity="other">घंटे</item>
+    </plurals>
+    <plurals name="play_tool_kcal_unit">
+        <item quantity="one">kcal</item>
+        <item quantity="other">kcal</item>
+    </plurals>
+    <plurals name="play_tool_run_history">
+        <item quantity="one">आप %1$d दिन पहले दौड़े थे</item>
+        <item quantity="other">आप %1$d दिन पहले दौड़े थे</item>
+    </plurals>
+    <plurals name="play_tool_scale_second_unit">
+        <item quantity="one">सेकंड</item>
+        <item quantity="other">सेकंड</item>
+    </plurals>
+    <plurals name="play_tool_snore_audio">
+        <item quantity="one">%1$d ऑडियो क्लिप का आज पता चला</item>
+        <item quantity="other">%1$d ऑडियो क्लिप का आज पता चला</item>
+    </plurals>
+    <plurals name="play_tool_step_unit">
+        <item quantity="one">कदम</item>
+        <item quantity="other">कदम</item>
+    </plurals>
+    <plurals name="play_tool_walk_history">
+        <item quantity="one">आप %1$d दिन पहले टहले थे</item>
+        <item quantity="other">आप %1$d दिन पहले टहले थे</item>
+    </plurals>
+    <plurals name="plural_days">
+        <item quantity="one">%dदि</item>
+        <item quantity="other">%dदि</item>
+    </plurals>
+    <plurals name="plural_hours">
+        <item quantity="one">%d घंटा</item>
+        <item quantity="other">%d घंटा</item>
+    </plurals>
+    <plurals name="realtime_unit_steps">
+        <item quantity="one">%d कदम</item>
+        <item quantity="other">%d कदम</item>
+    </plurals>
+    <plurals name="risk_level_low_more_hour_tip">
+        <item quantity="one">नींद में सांस लेने की गुणवत्ता %1$d है। हम अनुशंसा करते हैं कि आप नींद में सांस लेने पर लगातार ध्यान दें। अगर आप बीमार महसूस कर रहे हों, तो कृपया चिकित्सा सलाह लें</item>
+        <item quantity="other">नींद में सांस लेने की गुणवत्ता %1$d है। हम अनुशंसा करते हैं कि आप नींद में सांस लेने पर लगातार ध्यान दें। अगर आप बीमार महसूस कर रहे हों, तो कृपया चिकित्सा सलाह लें</item>
+    </plurals>
+    <plurals name="risk_level_medium_more_hour_tip">
+        <item quantity="one">नींद में सांस लेने की गुणवत्ता %1$d है। आपको नींद में सांस लेने में समस्या है इसका पता लगाने के लिए हम अनुशंसा करते हैं कि आप चिकित्सा सलाह लें</item>
+        <item quantity="other">नींद में सांस लेने की गुणवत्ता %1$d है। आपको नींद में सांस लेने में समस्या है इसका पता लगाने के लिए हम अनुशंसा करते हैं कि आप चिकित्सा सलाह लें</item>
+    </plurals>
+    <plurals name="risk_level_normal_more_hour_tip">
+        <item quantity="one">नींद में सांस लेने की गुणवत्ता %1$d है, इसे कायम रखें</item>
+        <item quantity="other">नींद में सांस लेने की गुणवत्ता %1$d है, इसे कायम रखें</item>
+    </plurals>
+    <plurals name="run_insurance_remain_time_day">
+        <item quantity="one">रनिंग बीमा %1$d दिन में समाप्त हो जाएगी, नवीनीकृत करने के लिए टैप करें</item>
+        <item quantity="other">रनिंग बीमा %1$d दिनों में समाप्त हो जाएगी, नवीनीकृत करने के लिए टैप करें</item>
+    </plurals>
+    <plurals name="running_history_record_sync_fail_unsync_count">
+        <item quantity="one">%d आइटम सिंक नहीं किया गया है</item>
+        <item quantity="other">%d आइटम सिंक नहीं किए गए हैं</item>
+    </plurals>
+    <plurals name="running_history_record_unsync_count">
+        <item quantity="one">%d आइटम सिंक नहीं किया गया है</item>
+        <item quantity="other">%d आइटम सिंक नहीं किए गए हैं</item>
+    </plurals>
+    <plurals name="running_record_cycle_times">
+        <item quantity="one">‎%1‎$d साइकलिंग सत्र</item>
+        <item quantity="other">‎%1‎$d साइकलिंग सत्र</item>
+    </plurals>
+    <plurals name="running_record_elli_times">
+        <item quantity="one">%1$d एलिप्टिकल ट्रेनर सत्र</item>
+        <item quantity="other">%1$d एलिप्टिकल ट्रेनर सत्र</item>
+    </plurals>
+    <plurals name="running_record_free_training_times">
+        <item quantity="one">%1$d बार मुफ़्त कसरत</item>
+        <item quantity="other">%1$d बार मुफ़्त कसरत</item>
+    </plurals>
+    <plurals name="running_record_run_times">
+        <item quantity="one">%1$d रनिंग सत्र</item>
+        <item quantity="other">%1$d रनिंग सत्र</item>
+    </plurals>
+    <plurals name="running_record_swim_times">
+        <item quantity="one">%1$d स्विमिंग सत्र</item>
+        <item quantity="other">%1$d स्विमिंग सत्र</item>
+    </plurals>
+    <plurals name="running_record_training_times">
+        <item quantity="one">प्रशिक्षण: %1$d सत्र</item>
+        <item quantity="other">प्रशिक्षण: %1$d सत्र</item>
+    </plurals>
+    <plurals name="running_record_triathlon_times">
+        <item quantity="one">%1$d ट्राईथलोन सत्र</item>
+        <item quantity="other">%1$d ट्राईथलोन सत्र</item>
+    </plurals>
+    <plurals name="running_record_walk_times">
+        <item quantity="one">%1$d‎ टहलने के सत्र</item>
+        <item quantity="other">%1$d‎ टहलने के सत्र</item>
+    </plurals>
+    <plurals name="running_record_workout_times">
+        <item quantity="one">कसरत: %1$d सत्र</item>
+        <item quantity="other">कसरत: %1$d सत्र</item>
+    </plurals>
+    <plurals name="schedule_over_count">
+        <item quantity="one">अधिकतम %d ईवेंट जोड़ें</item>
+        <item quantity="other">अधिकतम %d ईवेंट्स जोड़ें</item>
+    </plurals>
+    <plurals name="share_continue_max_day">
+        <item quantity="one">निजी सर्वश्रेष्ठ: %d दिन</item>
+        <item quantity="other">निजी सर्वश्रेष्ठ: %d दिन</item>
+    </plurals>
+    <plurals name="share_step_rank">
+        <item quantity="one">उपयोगकर्ताओं के %d%% से आगे</item>
+        <item quantity="other">उपयोगकर्ताओं के %d%% से आगे</item>
+    </plurals>
+    <plurals name="sleep_count_unit">
+        <item quantity="one">बार</item>
+        <item quantity="other">बार</item>
+    </plurals>
+    <plurals name="sleep_record_unit">
+        <item quantity="one">दिन</item>
+        <item quantity="other">दिन</item>
+    </plurals>
+    <plurals name="sleep_score_unit">
+        <item quantity="one">पॉइंट</item>
+        <item quantity="other">अंक</item>
+    </plurals>
+    <plurals name="sleep_turn_over_times">
+        <item quantity="one">%d बार</item>
+        <item quantity="other">%d बार</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_main_title">
+        <item quantity="one">पिछले महीने की तुलना में नींद स्कोर में %d की बढ़ोत्तरी हुई</item>
+        <item quantity="other">पिछले महीने की तुलना में नींद स्कोर में %d की बढ़ोत्तरी हुई</item>
+    </plurals>
+    <plurals name="slp_month_score_increate_sub_title">
+        <item quantity="one">इस माह का नींद स्कोर %d है, इसे बरकरार रखें।</item>
+        <item quantity="other">इस माह का नींद स्कोर %d है, इसे बरकरार रखें।</item>
+    </plurals>
+    <plurals name="slp_score_increate_main_title">
+        <item quantity="one">पिछले सप्ताह की तुलना में नींद स्कोर में %d की बढ़ोत्तरी हुई</item>
+        <item quantity="other">पिछले सप्ताह की तुलना में नींद स्कोर में %d की बढ़ोत्तरी हुई</item>
+    </plurals>
+    <plurals name="slp_score_increate_sub_title">
+        <item quantity="one">इस सप्ताह का नींद स्कोर %d है, इसे बरकरार रखें।</item>
+        <item quantity="other">इस सप्ताह का नींद स्कोर %d है, इसे बरकरार रखें।</item>
+    </plurals>
+    <plurals name="snore_list_top_num_desc">
+        <item quantity="one">आज ऑडियो का %1$d क्लिप रिकॉर्ड किया गया है।</item>
+        <item quantity="other">आज ऑडियो के %1$d क्लिप रिकॉर्ड किए गए हैं।</item>
+    </plurals>
+    <plurals name="snore_num_segment">
+        <item quantity="one">%1$d क्लिप</item>
+        <item quantity="other">%1$d क्लिप</item>
+    </plurals>
+    <plurals name="speak_time_left">
+        <item quantity="one">और %d सेकंड बोल सकते हैं</item>
+        <item quantity="other">और %d सेकंड बोल सकते हैं</item>
+    </plurals>
+    <plurals name="sport_end_page_sport_times">
+        <item quantity="one">पूर्ण गतिविधियां: %1$d session of %2$s</item>
+        <item quantity="other">पूर्ण गतिविधियां: %1$d session of %2$s</item>
+    </plurals>
+    <plurals name="sporting_data_unit_steps">
+        <item quantity="one">कदम</item>
+        <item quantity="other">कदम</item>
+    </plurals>
+    <plurals name="step_text_unit_step">
+        <item quantity="one">कदम</item>
+        <item quantity="other">कदम</item>
+    </plurals>
+    <plurals name="step_text_unit_step_day">
+        <item quantity="one">कदम/हर दिन</item>
+        <item quantity="other">कदम/हर दिन</item>
+    </plurals>
+    <plurals name="td_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; बार</item>
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; बार</item>
+    </plurals>
+    <plurals name="td_dominat_time_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; दिन के लिए सूची में सबसे ऊपर रहा</item>
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; दिनों के लिए सूची में सबसे ऊपर रहा</item>
+    </plurals>
+    <plurals name="td_dominating_number_upload">
+        <item quantity="one">%1$d बार सूची में सबसे ऊपर</item>
+        <item quantity="other">%1$d बार सूची में सबसे ऊपर</item>
+    </plurals>
+    <plurals name="td_dominating_time_upload">
+        <item quantity="one">%1$d दिन के लिए सूची में सबसे ऊपर</item>
+        <item quantity="other">%1$d दिनों के लिए सूची में सबसे ऊपर</item>
+    </plurals>
+    <plurals name="td_line_startup_friend_upload">
+        <item quantity="one">%1$d दोस्त से मिलान हुआ:</item>
+        <item quantity="other">%1$d दोस्तों से मिलान हुआ:</item>
+    </plurals>
+    <plurals name="td_run_count_format">
+        <item quantity="one">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; बार दौड़े</item>
+        <item quantity="other">&lt;font color=&quot;#ff5353&quot;&gt;%1$d&lt;/font&gt; बार दौड़े</item>
+    </plurals>
+    <plurals name="tdmill_not_upload_upgrade">
+        <item quantity="one">दौड़ने का %1$d रिकॉर्ड अपलोड नहीं हुआ</item>
+        <item quantity="other">दौड़ने के %1$d रिकॉर्ड अपलोड नहीं हुए</item>
+    </plurals>
+    <plurals name="tdmill_run_man_upgrade">
+        <item quantity="one">%1$d प्रतिभागी</item>
+        <item quantity="other">%1$d प्रतिभागी</item>
+    </plurals>
+    <plurals name="time_format_hour">
+        <item quantity="one">%dघंटा</item>
+        <item quantity="other">%dघंटे</item>
+    </plurals>
+    <plurals name="time_format_minute">
+        <item quantity="one">%dमिनट</item>
+        <item quantity="other">%dमिनट</item>
+    </plurals>
+    <plurals name="times_unit">
+        <item quantity="one">%1$d बार</item>
+        <item quantity="other">%1$d बार</item>
+    </plurals>
+    <plurals name="tips_achieve_weight_goal">
+        <item quantity="one">बधाइयां!\nआखिरी %1$d दिन में आपका वज़न कम हो गया</item>
+        <item quantity="other">बधाइयां!\nआखिरी %1$d दिनों में आपका वज़न कम हो गया</item>
+    </plurals>
+    <plurals name="tips_number_weight_record_claim">
+        <item quantity="one">वज़न का %1$d रिकॉर्ड, दावा किए जाने की प्रतीक्षा कर रहा है।</item>
+        <item quantity="other">वज़न के %1$d रिकॉर्ड, दावा किए जाने की प्रतीक्षा कर रहे हैं।</item>
+    </plurals>
+    <plurals name="todo_list_tips_max">
+        <item quantity="one">अधिकतम %1$d कार्यक्रम जोड़ा जा सकता है</item>
+        <item quantity="other">अधिकतम %1$d कार्यक्रम जोड़े जा सकते हैं</item>
+    </plurals>
+    <plurals name="too_old_for_calculate">
+        <item quantity="one">%d वर्ष से ज़्यादा उम्र के लोगों का विश्लेषण नहीं किया जा सकता</item>
+        <item quantity="other">%d वर्ष से ज़्यादा उम्र के लोगों का विश्लेषण नहीं किया जा सकता</item>
+    </plurals>
+    <plurals name="too_young_for_calculate">
+        <item quantity="one">%d वर्ष से कम उम्र के लोगों का विश्लेषण नहीं किया जा सकता</item>
+        <item quantity="other">%d वर्ष से कम उम्र के लोगों का विश्लेषण नहीं किया जा सकता</item>
+    </plurals>
+    <plurals name="tr_cal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="tr_course_number">
+        <item quantity="one">%d पाठ्यक्रम</item>
+        <item quantity="other">%d पाठ्यक्रम</item>
+    </plurals>
+    <plurals name="tr_expiry">
+        <item quantity="one">पाठ्यक्रम %d दिन में समाप्त होता है</item>
+        <item quantity="other">पाठ्यक्रम %d दिनों में समाप्त होता है</item>
+    </plurals>
+    <plurals name="tr_study_number">
+        <item quantity="one">%d दर्शक</item>
+        <item quantity="other">%d दर्शक</item>
+    </plurals>
+    <plurals name="tr_total_group_number">
+        <item quantity="one">कुल सेट: %d</item>
+        <item quantity="other">कुल सेट्स: %d</item>
+    </plurals>
+    <plurals name="tr_train_times">
+        <item quantity="one">कितनी बार सीखा: %d</item>
+        <item quantity="other">कितनी बार सीखा: %d</item>
+    </plurals>
+    <plurals name="tr_wait_x_days_then_begin">
+        <item quantity="one">%d दिन में आरंभ होने वाला है</item>
+        <item quantity="other">%d दिनों में आरंभ होने वाला है</item>
+    </plurals>
+    <plurals name="training_consume_time_min">
+        <item quantity="one"> %1$d मिनट के लिए प्रशिक्षित</item>
+        <item quantity="other"> %1$d मिनट के लिए प्रशिक्षित</item>
+    </plurals>
+    <plurals name="training_consume_time_sec">
+        <item quantity="one"> %1$d s के लिए प्रशिक्षित</item>
+        <item quantity="other"> %1$d s के लिए प्रशिक्षित</item>
+    </plurals>
+    <plurals name="training_notify_content">
+        <item quantity="one">प्रशिक्षण पाठ्यक्रम का दिन %1$d: आपको%3$s (%2$d मिनट) पूर्ण करने की आवश्यकता है</item>
+        <item quantity="other">प्रशिक्षण पाठ्यक्रम का दिन %1$d: आपको%3$s (%2$d मिनट) पूर्ण करने की आवश्यकता है</item>
+    </plurals>
+    <plurals name="training_playing_title_time">
+        <item quantity="one"> %1$d  सेकंड</item>
+        <item quantity="other"> %1$d  सेकंड्स</item>
+    </plurals>
+    <plurals name="training_playing_title_times">
+        <item quantity="one"> %1$d  बार</item>
+        <item quantity="other"> %1$d  बार</item>
+    </plurals>
+    <plurals name="training_rest_interval_time">
+        <item quantity="one"> %1$d s के लिए रोका गया</item>
+        <item quantity="other"> %1$d s के लिए रोका गया</item>
+    </plurals>
+    <plurals name="unit_step">
+        <item quantity="one"> कदम</item>
+        <item quantity="other"> कदम</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_first_part">
+        <item quantity="one">आपके द्वारा दर्ज की गई आयु %1$d वर्ष से कम है, इसलिए आप Zepp का उपयोग केवल तभी जारी रख सकते हैं जब हम आपके अभिभावक से अनुमति और सहमति प्राप्त कर लेते हैं।</item>
+        <item quantity="other">आपके द्वारा दर्ज की गई आयु %1$d वर्ष से कम है, इसलिए आप Zepp का उपयोग केवल तभी जारी रख सकते हैं जब हम आपके अभिभावक से अनुमति और सहमति प्राप्त कर लेते हैं।</item>
+    </plurals>
+    <plurals name="user_info_authorize_message_second_part">
+        <item quantity="one">नहीं तो, आपका खाता %1$d दिन में फ़्रीज़ हो जाएगा।</item>
+        <item quantity="other">नहीं तो, आपका खाता %1$d दिन में फ़्रीज़ हो जाएगा।</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_btn">
+        <item quantity="one">%1$dसे कम उम्र</item>
+        <item quantity="other">%1$dसे कम उम्र</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_message">
+        <item quantity="one">नाबालिगों के डेटा की गोपनीयता की रक्षा करने के लिए, यदि आपकी उम्र %1$d,से कम है। इससे पहले कि हम आपको पूर्ण सेवाएं प्रदान करें, हमें आपके अभिभावक से प्राधिकरण और सहमति की आवश्यकता है।</item>
+        <item quantity="other">नाबालिगों के डेटा की गोपनीयता की रक्षा करने के लिए, यदि आपकी उम्र %1$d, से कम है। इससे पहले कि हम आपको पूर्ण सेवाएं प्रदान करें, हमें आपके अभिभावक से प्राधिकरण और सहमति की आवश्यकता है।</item>
+    </plurals>
+    <plurals name="user_info_confirm_age_title">
+        <item quantity="one">कृपया पुष्टि करें कि आपकी उम्र %1$dसे कम उम्र के नहीं हैं</item>
+        <item quantity="other">कृपया पुष्टि करें कि आपकी उम्र %1$dसे कम उम्र के नहीं हैं</item>
+    </plurals>
+    <plurals name="user_info_numberFoot">
+        <item quantity="one">%s फुट</item>
+        <item quantity="other">%s फुट</item>
+    </plurals>
+    <plurals name="user_info_numberInch">
+        <item quantity="one">%s इंच</item>
+        <item quantity="other">%s इंच</item>
+    </plurals>
+    <plurals name="user_info_with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_kcal">
+        <item quantity="one">%d kcal</item>
+        <item quantity="other">%d kcal</item>
+    </plurals>
+    <plurals name="with_minute_time">
+        <item quantity="one">%d मिनट</item>
+        <item quantity="other">%d मिनट</item>
+    </plurals>
+    <plurals name="with_unit_times">
+        <item quantity="one">%d सत्र</item>
+        <item quantity="other">%d सत्र</item>
+    </plurals>
+</resources>

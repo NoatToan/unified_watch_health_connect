@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.huami.widget.typeface.TypefaceTextView
+        android:textSize="@dimen/tr_font_size_title"
+        android:textColor="@color/s1"
+        android:gravity="start"
+        android:id="@+id/joined_courses_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/tr_joined_courses"
+        android:fontFamily="lt-bold"
+        app:layout_constraintEnd_toStartOf="@+id/continue_course"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/TrainingTextSingleLineStyle"/>
+    <com.huami.widget.typeface.TypefaceTextView
+        android:textSize="@dimen/tr_font_size_subtitle"
+        android:textColor="@color/s2"
+        android:gravity="start"
+        android:id="@+id/joined_course_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="lt"
+        app:layout_constraintEnd_toStartOf="@+id/continue_course"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/joined_courses_title"
+        style="@style/TrainingTextSingleLineStyle"/>
+    <com.huami.widget.typeface.TypefaceTextView
+        android:textSize="@dimen/tr_font_size_button"
+        android:textColor="@color/s5"
+        android:gravity="center"
+        android:id="@+id/continue_course"
+        android:background="@drawable/tr_shape_corner_orange_bg"
+        android:layout_width="76dp"
+        android:layout_height="24dp"
+        android:text="@string/tr_continue_training"
+        android:fontFamily="lt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/TrainingTextSingleLineStyle"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

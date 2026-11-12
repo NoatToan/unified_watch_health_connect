@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/dis_notify_iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_checked="true"
+        app:ltv_subtitle="@string/dis_notify_tips"
+        app:ltv_title="@string/dis_notify"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/vibrate_mode_iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_tips="@string/custom_vibrate_mode_default"
+        app:ltv_title="@string/custom_vibrate_mode"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/dis_notify_start_iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_tips="08:00"
+        app:ltv_title="@string/long_sit_alert_start"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/dis_notify_stop_iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ltv_tips="21:00"
+        app:ltv_title="@string/long_sit_alert_stop"/>
+</LinearLayout>

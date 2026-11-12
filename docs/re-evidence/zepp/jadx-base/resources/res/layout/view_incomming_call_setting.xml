@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/s2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/phone_alert_setting_title"
+        android:layout_marginStart="@dimen/size_15dp"
+        android:layout_marginEnd="@dimen/size_15dp"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/show_dial_info_itv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_15dp"
+        android:layout_marginEnd="@dimen/size_15dp"
+        app:ltv_checked="false"
+        app:ltv_radius_position="all"
+        app:ltv_subtitle="@string/show_contact_info_summary_watch"
+        app:ltv_title="@string/show_contact_info_tips"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/delay_itv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_15dp"
+        android:layout_marginStart="@dimen/size_15dp"
+        android:layout_marginEnd="@dimen/size_15dp"
+        app:ltv_checked="false"
+        app:ltv_divider_padding="all"
+        app:ltv_radius_position="top"
+        app:ltv_title="@string/delay_alert"/>
+    <com.huami.lib.rainbow.ListTile
+        android:id="@+id/delay_time_itv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_15dp"
+        android:layout_marginEnd="@dimen/size_15dp"
+        app:ltv_radius_position="bottom"
+        app:ltv_title="@string/delay_alert_time"/>
+</LinearLayout>

@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright (c) 2021 Zepp Health. All Rights Reserved.
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js_runner</title>
+    <script src="./mobile-main-service.js"></script>
+    <script>
+         function _loadFileAsScript(filePath) {
+            var _callback = function() {
+                console.log("Loaded and evaluated: " + filePath);
+            }
+            var head = document.getElementsByTagName('head')[0];
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = filePath;
+            script.charset = "UTF-8";
+            script.onreadystatechange = _callback;
+            script.onload = _callback;
+            head.appendChild(script);
+        }
+    </script>
+</head>
+<body>
+<div>hello</div>
+</body>
+</html>

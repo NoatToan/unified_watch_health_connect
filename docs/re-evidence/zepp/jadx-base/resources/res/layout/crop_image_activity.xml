@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/s10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.huami.lib.view.dim.DimPanelBottomBar
+        android:id="@+id/bottom_bar"
+        android:background="@color/trans"
+        android:paddingTop="@dimen/person_info_crop_image_bottom_bar_padding_top"
+        android:paddingBottom="@dimen/person_info_crop_image_bottom_bar_padding_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:left_text="@string/cancel"
+        app:left_text_color="@color/s1"
+        app:right_text="@string/confirm"
+        app:right_text_color="@color/s1"/>
+    <RelativeLayout
+        android:background="@color/trans"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_centerInParent="true">
+        <com.xiaomi.hm.health.baseui.clip.ClipImageLayout
+            android:id="@+id/CropImageView"
+            android:background="@color/trans"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+</RelativeLayout>

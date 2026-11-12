@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="ecg_afib">
+        <item>אין מספיק נתונים</item>
+        <item>קצב לב חריג</item>
+        <item>לא אותרו חריגות</item>
+        <item>אין מספיק נתונים</item>
+        <item>לא אותרו חריגות</item>
+        <item />
+        <item>לא אותרו חריגות</item>
+        <item>איכות האות נמוכה</item>
+    </array>
+    <array name="ecg_afib_desc">
+        <item>התאם את שיטת השימוש ונסה שוב.</item>
+        <item>לעיון בלבד. התייעץ עם רופא אם אתה חש באי נוחות כלשהי.</item>
+        <item>לעיון בלבד. התייעץ עם רופא אם אתה חש באי נוחות כלשהי.</item>
+        <item>התאם את שיטת השימוש ונסה שוב.</item>
+        <item>לעיון בלבד. התייעץ עם רופא אם אתה חש באי נוחות כלשהי.</item>
+        <item />
+        <item>לעיון בלבד. התייעץ עם רופא אם אתה חש באי נוחות כלשהי.</item>
+        <item>התאם את שיטת השימוש ונסה שוב.</item>
+    </array>
+    <array name="month_titles">
+        <item>ינו</item>
+        <item>פבר</item>
+        <item>מרץ</item>
+        <item>אפר</item>
+        <item>מאי</item>
+        <item>יונ</item>
+        <item>יול</item>
+        <item>אוג</item>
+        <item>ספט</item>
+        <item>אוק</item>
+        <item>נוב</item>
+        <item>דצב</item>
+    </array>
+    <array name="pin_time">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+        <item>150</item>
+        <item>180</item>
+        <item>210</item>
+        <item>240</item>
+        <item>270</item>
+        <item>300</item>
+        <item>330</item>
+        <item>360</item>
+        <item>390</item>
+        <item>420</item>
+        <item>450</item>
+        <item>480</item>
+    </array>
+</resources>
