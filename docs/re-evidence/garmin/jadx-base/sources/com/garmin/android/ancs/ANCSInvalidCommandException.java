@@ -1,0 +1,12 @@
+package com.garmin.android.ancs;
+
+import am.j;
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes7.dex */
+@Metadata(d1 = {"\u0000\u0016\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0005\n\u0002\b\u0002\u0018\u00002\u00060\u0001j\u0002`\u0002B\r\u0012\u0006\u0010\u0003\u001a\u00020\u0004¢\u0006\u0002\u0010\u0005¨\u0006\u0006"}, d2 = {"Lcom/garmin/android/ancs/ANCSInvalidCommandException;", "Ljava/lang/Exception;", "Lkotlin/Exception;", "command", "", "(B)V", "gncs-all-modules_release"}, k = 1, mv = {1, 9, 0}, xi = 48)
+public final class ANCSInvalidCommandException extends Exception {
+    public ANCSInvalidCommandException(byte b14) {
+        super(j.h(b14, "Invalid command: "));
+    }
+}

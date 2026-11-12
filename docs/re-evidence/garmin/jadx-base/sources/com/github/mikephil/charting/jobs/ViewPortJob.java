@@ -1,0 +1,34 @@
+package com.github.mikephil.charting.jobs;
+
+import android.view.View;
+import com.github.mikephil.charting.utils.ObjectPool;
+import com.github.mikephil.charting.utils.Transformer;
+import com.github.mikephil.charting.utils.ViewPortHandler;
+
+/* JADX INFO: loaded from: classes13.dex */
+public abstract class ViewPortJob extends ObjectPool.Poolable implements Runnable {
+    protected Transformer mTrans;
+    protected ViewPortHandler mViewPortHandler;
+    protected float[] pts = new float[2];
+
+    /* JADX INFO: renamed from: view, reason: collision with root package name */
+    protected View f52822view;
+    protected float xValue;
+    protected float yValue;
+
+    public ViewPortJob(ViewPortHandler viewPortHandler, float f14, float f15, Transformer transformer, View view2) {
+        this.mViewPortHandler = viewPortHandler;
+        this.xValue = f14;
+        this.yValue = f15;
+        this.mTrans = transformer;
+        this.f52822view = view2;
+    }
+
+    public float getXValue() {
+        return this.xValue;
+    }
+
+    public float getYValue() {
+        return this.yValue;
+    }
+}

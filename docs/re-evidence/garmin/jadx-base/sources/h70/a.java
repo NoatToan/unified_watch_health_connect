@@ -1,0 +1,24 @@
+package h70;
+
+import a70.c;
+import o70.t;
+import p005kotlin.Metadata;
+import r70.s;
+
+/* JADX INFO: loaded from: classes8.dex */
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\b\u0007\u0018\u00002\u00020\u0001B\u000f\u0012\u0006\u0010\u0003\u001a\u00020\u0002¢\u0006\u0004\b\u0004\u0010\u0005¨\u0006\u0006"}, d2 = {"Lh70/a;", "Lr70/s;", "La70/c;", "useCase", "<init>", "(La70/c;)V", "gcm-cycling-ability_vanillaRelease"}, k = 1, mv = {2, 3, 0}, xi = 48)
+public final class a implements s {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public final c f82331a;
+
+    public a(c cVar) {
+        cVar.getClass();
+        this.f82331a = cVar;
+    }
+
+    @Override // r70.s
+    public final String a() {
+        return t.f130069l.a();
+    }
+}

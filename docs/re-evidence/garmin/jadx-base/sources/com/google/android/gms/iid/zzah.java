@@ -1,0 +1,19 @@
+package com.google.android.gms.iid;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
+/* JADX INFO: loaded from: classes14.dex */
+final class zzah extends BroadcastReceiver {
+    private final /* synthetic */ zzaf zzdc;
+
+    public zzah(zzaf zzafVar) {
+        this.zzdc = zzafVar;
+    }
+
+    @Override // android.content.BroadcastReceiver
+    public final void onReceive(Context context, Intent intent) {
+        this.zzdc.zzh(intent);
+    }
+}

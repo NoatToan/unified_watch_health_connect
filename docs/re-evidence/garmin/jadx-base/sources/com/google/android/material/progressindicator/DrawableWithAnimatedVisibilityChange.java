@@ -1,0 +1,307 @@
+package com.google.android.material.progressindicator;
+
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.content.Context;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
+import android.util.Property;
+import androidx.vectordrawable.graphics.drawable.b;
+import com.google.android.material.animation.AnimationUtils;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import vb.h;
+
+/* JADX INFO: loaded from: classes14.dex */
+abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements Animatable {
+    private static final boolean DEFAULT_DRAWABLE_RESTART = false;
+    private static final int GROW_DURATION = 500;
+    private static final Property<DrawableWithAnimatedVisibilityChange, Float> GROW_FRACTION = new Property<DrawableWithAnimatedVisibilityChange, Float>(Float.class, "growFraction") { // from class: com.google.android.material.progressindicator.DrawableWithAnimatedVisibilityChange.3
+        @Override // android.util.Property
+        public Float get(DrawableWithAnimatedVisibilityChange drawableWithAnimatedVisibilityChange) {
+            return Float.valueOf(drawableWithAnimatedVisibilityChange.getGrowFraction());
+        }
+
+        @Override // android.util.Property
+        public void set(DrawableWithAnimatedVisibilityChange drawableWithAnimatedVisibilityChange, Float f14) {
+            drawableWithAnimatedVisibilityChange.setGrowFraction(f14.floatValue());
+        }
+    };
+    private List<b> animationCallbacks;
+    final BaseProgressIndicatorSpec baseSpec;
+    final Context context;
+    private float growFraction;
+    private ValueAnimator hideAnimator;
+    private boolean ignoreCallbacks;
+    private b internalAnimationCallback;
+    private float mockGrowFraction;
+    private boolean mockHideAnimationRunning;
+    private boolean mockShowAnimationRunning;
+    private ValueAnimator showAnimator;
+    private int totalAlpha;
+    final Paint paint = new Paint();
+    AnimatorDurationScaleProvider animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
+
+    public DrawableWithAnimatedVisibilityChange(Context context, BaseProgressIndicatorSpec baseProgressIndicatorSpec) {
+        this.context = context;
+        this.baseSpec = baseProgressIndicatorSpec;
+        setAlpha(255);
+    }
+
+    private void cancelAnimatorsWithoutCallbacks(ValueAnimator... valueAnimatorArr) {
+        boolean z14 = this.ignoreCallbacks;
+        this.ignoreCallbacks = true;
+        for (ValueAnimator valueAnimator : valueAnimatorArr) {
+            valueAnimator.cancel();
+        }
+        this.ignoreCallbacks = z14;
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void dispatchAnimationEnd() {
+        b bVar = this.internalAnimationCallback;
+        if (bVar != null) {
+            bVar.onAnimationEnd(this);
+        }
+        List<b> list = this.animationCallbacks;
+        if (list == null || this.ignoreCallbacks) {
+            return;
+        }
+        Iterator<b> it = list.iterator();
+        while (it.hasNext()) {
+            it.next().onAnimationEnd(this);
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void dispatchAnimationStart() {
+        b bVar = this.internalAnimationCallback;
+        if (bVar != null) {
+            bVar.onAnimationStart(this);
+        }
+        List<b> list = this.animationCallbacks;
+        if (list == null || this.ignoreCallbacks) {
+            return;
+        }
+        Iterator<b> it = list.iterator();
+        while (it.hasNext()) {
+            it.next().onAnimationStart(this);
+        }
+    }
+
+    private void endAnimatorsWithoutCallbacks(ValueAnimator... valueAnimatorArr) {
+        boolean z14 = this.ignoreCallbacks;
+        this.ignoreCallbacks = true;
+        for (ValueAnimator valueAnimator : valueAnimatorArr) {
+            valueAnimator.end();
+        }
+        this.ignoreCallbacks = z14;
+    }
+
+    private void maybeInitializeAnimators() {
+        if (this.showAnimator == null) {
+            ObjectAnimator objectAnimatorOfFloat = ObjectAnimator.ofFloat(this, GROW_FRACTION, 0.0f, 1.0f);
+            this.showAnimator = objectAnimatorOfFloat;
+            objectAnimatorOfFloat.setDuration(500L);
+            this.showAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+            setShowAnimator(this.showAnimator);
+        }
+        if (this.hideAnimator == null) {
+            ObjectAnimator objectAnimatorOfFloat2 = ObjectAnimator.ofFloat(this, GROW_FRACTION, 1.0f, 0.0f);
+            this.hideAnimator = objectAnimatorOfFloat2;
+            objectAnimatorOfFloat2.setDuration(500L);
+            this.hideAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+            setHideAnimator(this.hideAnimator);
+        }
+    }
+
+    private void setHideAnimator(ValueAnimator valueAnimator) {
+        ValueAnimator valueAnimator2 = this.hideAnimator;
+        if (valueAnimator2 != null && valueAnimator2.isRunning()) {
+            h.s("Cannot set hideAnimator while the current hideAnimator is running.");
+        } else {
+            this.hideAnimator = valueAnimator;
+            valueAnimator.addListener(new AnimatorListenerAdapter() { // from class: com.google.android.material.progressindicator.DrawableWithAnimatedVisibilityChange.2
+                @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
+                public void onAnimationEnd(Animator animator) {
+                    super.onAnimationEnd(animator);
+                    DrawableWithAnimatedVisibilityChange.super.setVisible(false, false);
+                    DrawableWithAnimatedVisibilityChange.this.dispatchAnimationEnd();
+                }
+            });
+        }
+    }
+
+    private void setShowAnimator(ValueAnimator valueAnimator) {
+        ValueAnimator valueAnimator2 = this.showAnimator;
+        if (valueAnimator2 != null && valueAnimator2.isRunning()) {
+            h.s("Cannot set showAnimator while the current showAnimator is running.");
+        } else {
+            this.showAnimator = valueAnimator;
+            valueAnimator.addListener(new AnimatorListenerAdapter() { // from class: com.google.android.material.progressindicator.DrawableWithAnimatedVisibilityChange.1
+                @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
+                public void onAnimationStart(Animator animator) {
+                    super.onAnimationStart(animator);
+                    DrawableWithAnimatedVisibilityChange.this.dispatchAnimationStart();
+                }
+            });
+        }
+    }
+
+    public void clearAnimationCallbacks() {
+        this.animationCallbacks.clear();
+        this.animationCallbacks = null;
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public int getAlpha() {
+        return this.totalAlpha;
+    }
+
+    public float getGrowFraction() {
+        if (this.baseSpec.isShowAnimationEnabled() || this.baseSpec.isHideAnimationEnabled()) {
+            return (this.mockHideAnimationRunning || this.mockShowAnimationRunning) ? this.mockGrowFraction : this.growFraction;
+        }
+        return 1.0f;
+    }
+
+    public ValueAnimator getHideAnimator() {
+        return this.hideAnimator;
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public int getOpacity() {
+        return -3;
+    }
+
+    public boolean hideNow() {
+        return setVisible(false, false, false);
+    }
+
+    public boolean isHiding() {
+        ValueAnimator valueAnimator = this.hideAnimator;
+        return (valueAnimator != null && valueAnimator.isRunning()) || this.mockHideAnimationRunning;
+    }
+
+    public boolean isRunning() {
+        return isShowing() || isHiding();
+    }
+
+    public boolean isShowing() {
+        ValueAnimator valueAnimator = this.showAnimator;
+        return (valueAnimator != null && valueAnimator.isRunning()) || this.mockShowAnimationRunning;
+    }
+
+    public void registerAnimationCallback(b bVar) {
+        if (this.animationCallbacks == null) {
+            this.animationCallbacks = new ArrayList();
+        }
+        if (this.animationCallbacks.contains(bVar)) {
+            return;
+        }
+        this.animationCallbacks.add(bVar);
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void setAlpha(int i14) {
+        this.totalAlpha = i14;
+        invalidateSelf();
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void setColorFilter(ColorFilter colorFilter) {
+        this.paint.setColorFilter(colorFilter);
+        invalidateSelf();
+    }
+
+    public void setGrowFraction(float f14) {
+        if (this.growFraction != f14) {
+            this.growFraction = f14;
+            invalidateSelf();
+        }
+    }
+
+    public void setInternalAnimationCallback(b bVar) {
+        this.internalAnimationCallback = bVar;
+    }
+
+    public void setMockHideAnimationRunning(boolean z14, float f14) {
+        this.mockHideAnimationRunning = z14;
+        this.mockGrowFraction = f14;
+    }
+
+    public void setMockShowAnimationRunning(boolean z14, float f14) {
+        this.mockShowAnimationRunning = z14;
+        this.mockGrowFraction = f14;
+    }
+
+    public boolean setVisible(boolean z14, boolean z15, boolean z16) {
+        return setVisibleInternal(z14, z15, z16 && this.animatorDurationScaleProvider.getSystemAnimatorDurationScale(this.context.getContentResolver()) > 0.0f);
+    }
+
+    public boolean setVisibleInternal(boolean z14, boolean z15, boolean z16) {
+        maybeInitializeAnimators();
+        if (!isVisible() && !z14) {
+            return false;
+        }
+        ValueAnimator valueAnimator = z14 ? this.showAnimator : this.hideAnimator;
+        ValueAnimator valueAnimator2 = z14 ? this.hideAnimator : this.showAnimator;
+        if (!z16) {
+            if (valueAnimator2.isRunning()) {
+                cancelAnimatorsWithoutCallbacks(valueAnimator2);
+            }
+            if (valueAnimator.isRunning()) {
+                valueAnimator.end();
+            } else {
+                endAnimatorsWithoutCallbacks(valueAnimator);
+            }
+            return super.setVisible(z14, false);
+        }
+        if (valueAnimator.isRunning()) {
+            return false;
+        }
+        boolean z17 = !z14 || super.setVisible(z14, false);
+        BaseProgressIndicatorSpec baseProgressIndicatorSpec = this.baseSpec;
+        if (!(z14 ? baseProgressIndicatorSpec.isShowAnimationEnabled() : baseProgressIndicatorSpec.isHideAnimationEnabled())) {
+            endAnimatorsWithoutCallbacks(valueAnimator);
+            return z17;
+        }
+        if (z15 || !valueAnimator.isPaused()) {
+            valueAnimator.start();
+            return z17;
+        }
+        valueAnimator.resume();
+        return z17;
+    }
+
+    public void start() {
+        setVisibleInternal(true, true, false);
+    }
+
+    public void stop() {
+        setVisibleInternal(false, true, false);
+    }
+
+    public boolean unregisterAnimationCallback(b bVar) {
+        List<b> list = this.animationCallbacks;
+        if (list == null || !list.contains(bVar)) {
+            return false;
+        }
+        this.animationCallbacks.remove(bVar);
+        if (!this.animationCallbacks.isEmpty()) {
+            return true;
+        }
+        this.animationCallbacks = null;
+        return true;
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public boolean setVisible(boolean z14, boolean z15) {
+        return setVisible(z14, z15, true);
+    }
+}

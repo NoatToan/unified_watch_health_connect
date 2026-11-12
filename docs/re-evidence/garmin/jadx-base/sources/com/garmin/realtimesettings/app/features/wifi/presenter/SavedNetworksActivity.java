@@ -1,0 +1,62 @@
+package com.garmin.realtimesettings.app.features.wifi.presenter;
+
+import android.content.Intent;
+import android.os.Bundle;
+import com.garmin.android.apps.connectmobile.R;
+import cx2.h;
+import gw2.b;
+import p005kotlin.Metadata;
+import p005kotlin.jvm.internal.j;
+import p005kotlin.jvm.internal.s;
+
+/* JADX INFO: loaded from: classes13.dex */
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0004\b\u0001\u0018\u00002\u00020\u00012\u00020\u0002:\u0001\u0005B\u0007¢\u0006\u0004\b\u0003\u0010\u0004¨\u0006\u0006"}, d2 = {"Lcom/garmin/realtimesettings/app/features/wifi/presenter/SavedNetworksActivity;", "Lcom/garmin/realtimesettings/app/presentationlayer/a;", "", "<init>", "()V", "a", "real-time-settings_release"}, k = 1, mv = {2, 2, 0}, xi = 48)
+public final class SavedNetworksActivity extends com.garmin.realtimesettings.app.presentationlayer.a {
+
+    /* JADX INFO: renamed from: p, reason: collision with root package name */
+    public final int f52562p;
+
+    static {
+        new a(null);
+    }
+
+    public SavedNetworksActivity() {
+        b.f79871a.getClass();
+        int i14 = b.f79872b;
+        b.f79872b = i14 + 1;
+        this.f52562p = i14;
+        new h("SavedNetworksActivity", null, 2, null);
+    }
+
+    @Override // androidx.fragment.app.m, b.g, android.app.Activity
+    public final void onActivityResult(int i14, int i15, Intent intent) {
+        super.onActivityResult(i14, i15, intent);
+        if (i14 == this.f52562p && i15 == -1) {
+            if (intent != null) {
+            }
+            if (intent != null) {
+            }
+            s.m("viewModel");
+            throw null;
+        }
+    }
+
+    @Override // com.garmin.realtimesettings.app.presentationlayer.a, androidx.fragment.app.m, b.g, z6.e, android.app.Activity
+    public final void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        setContentView(R.layout.rts_saved_networks);
+        com.garmin.realtimesettings.app.initialization.b.f52589a.getClass();
+        com.garmin.realtimesettings.app.initialization.b.a();
+        throw new IllegalStateException("Consumers using the library's Wifi flow must supply a delegate");
+    }
+
+    @Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0003\b\u0086\u0003\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, d2 = {"Lcom/garmin/realtimesettings/app/features/wifi/presenter/SavedNetworksActivity$a;", "", "<init>", "()V", "real-time-settings_release"}, k = 1, mv = {2, 2, 0}, xi = 48)
+    public static final class a {
+        public /* synthetic */ a(j jVar) {
+            this();
+        }
+
+        private a() {
+        }
+    }
+}

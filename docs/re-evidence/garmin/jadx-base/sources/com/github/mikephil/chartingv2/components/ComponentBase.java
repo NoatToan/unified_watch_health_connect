@@ -1,0 +1,69 @@
+package com.github.mikephil.chartingv2.components;
+
+import android.graphics.Typeface;
+import com.github.mikephil.chartingv2.utils.Utils;
+
+/* JADX INFO: loaded from: classes13.dex */
+@Deprecated
+public abstract class ComponentBase {
+    protected boolean mEnabled = true;
+    protected float mXOffset = 5.0f;
+    protected float mYOffset = 5.0f;
+    protected Typeface mTypeface = null;
+    protected float mTextSize = 10.0f;
+    protected int mTextColor = -16777216;
+
+    public int getTextColor() {
+        return this.mTextColor;
+    }
+
+    public float getTextSize() {
+        return this.mTextSize;
+    }
+
+    public Typeface getTypeface() {
+        return this.mTypeface;
+    }
+
+    public float getXOffset() {
+        return this.mXOffset;
+    }
+
+    public float getYOffset() {
+        return this.mYOffset;
+    }
+
+    public boolean isEnabled() {
+        return this.mEnabled;
+    }
+
+    public void setEnabled(boolean z14) {
+        this.mEnabled = z14;
+    }
+
+    public void setTextColor(int i14) {
+        this.mTextColor = i14;
+    }
+
+    public void setTextSize(float f14) {
+        if (f14 > 24.0f) {
+            f14 = 24.0f;
+        }
+        if (f14 < 6.0f) {
+            f14 = 6.0f;
+        }
+        this.mTextSize = Utils.convertDpToPixel(f14);
+    }
+
+    public void setTypeface(Typeface typeface) {
+        this.mTypeface = typeface;
+    }
+
+    public void setXOffset(float f14) {
+        this.mXOffset = Utils.convertDpToPixel(f14);
+    }
+
+    public void setYOffset(float f14) {
+        this.mYOffset = Utils.convertDpToPixel(f14);
+    }
+}

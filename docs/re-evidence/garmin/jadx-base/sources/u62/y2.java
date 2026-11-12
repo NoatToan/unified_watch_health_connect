@@ -1,0 +1,121 @@
+package u62;
+
+/* JADX INFO: loaded from: classes9.dex */
+public final class y2 {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public static u4.d f169061a;
+
+    public static final u4.d a(t62.a aVar) {
+        aVar.getClass();
+        u4.d dVar = f169061a;
+        if (dVar != null) {
+            return dVar;
+        }
+        float f14 = (float) 24.0d;
+        g6.f.a aVar2 = g6.f.f75994b;
+        u4.d.a aVar3 = new u4.d.a("Rally", f14, f14, 24.0f, 24.0f, 0L, 0, true, 96, null);
+        o4.t1 t1Var = new o4.t1(o4.f0.d(4278190080L), null);
+        o4.u1.f129010b.getClass();
+        o4.v1.f129019b.getClass();
+        u4.e eVarF = z.f(o4.h1.f128863b, 22.0f, 15.873f, 17.9999f, 8.708f);
+        eVarF.i(11.4268f, 15.873f);
+        eVarF.i(12.6348f, 16.4804f);
+        eVarF.i(14.5488f, 14.8603f);
+        eVarF.i(16.2607f, 15.5693f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarF, 20.5908f, 14.455f, 22.0f, 15.873f);
+        u4.d.a.b(aVar3, eVarF.f168407a, 0, t1Var, 1.0f, null, 0.0f, 0, 4.0f);
+        o4.t1 t1Var2 = new o4.t1(o4.f0.d(4278190080L), null);
+        int i14 = o4.h1.f128864c;
+        u4.e eVarL = com.nimbusds.jose.shaded.gson.internal.a.l(9.918f, 7.0605f);
+        eVarL.d(10.8321f, 6.9197f, 11.7775f, 7.026f, 12.6875f, 7.3661f);
+        eVarL.i(15.96f, 8.5888f);
+        eVarL.d(15.9819f, 8.5887f, 18.3703f, 8.5826f, 19.4775f, 8.7304f);
+        eVarL.d(20.5898f, 8.879f, 21.166f, 10.08f, 21.166f, 10.08f);
+        eVarL.i(21.5635f, 11.9501f);
+        eVarL.i(20.4219f, 12.3222f);
+        eVarL.d(20.4774f, 12.0127f, 20.4768f, 11.6878f, 20.4072f, 11.3613f);
+        eVarL.d(20.1803f, 10.2981f, 19.3085f, 9.5404f, 18.2891f, 9.4062f);
+        eVarL.d(18.2855f, 9.4057f, 18.2819f, 9.4047f, 18.2783f, 9.4042f);
+        eVarL.d(18.2096f, 9.3955f, 18.1403f, 9.3906f, 18.0703f, 9.3876f);
+        eVarL.d(18.055f, 9.3869f, 18.0397f, 9.3861f, 18.0244f, 9.3857f);
+        eVarL.d(17.968f, 9.3843f, 17.9114f, 9.3851f, 17.8545f, 9.3876f);
+        eVarL.d(17.824f, 9.3889f, 17.7934f, 9.3901f, 17.7627f, 9.3925f);
+        eVarL.d(17.7152f, 9.3964f, 17.6678f, 9.4024f, 17.6201f, 9.4091f);
+        eVarL.d(17.6007f, 9.4118f, 17.5809f, 9.4128f, 17.5615f, 9.4159f);
+        eVarL.i(17.4668f, 9.4335f);
+        eVarL.d(17.4584f, 9.4352f, 17.4498f, 9.4366f, 17.4414f, 9.4384f);
+        eVarL.d(16.0916f, 9.7267f, 15.2305f, 11.0542f, 15.5186f, 12.4042f);
+        eVarL.d(15.5208f, 12.4148f, 15.525f, 12.4259f, 15.5273f, 12.4365f);
+        eVarL.i(15.5498f, 12.5322f);
+        eVarL.d(15.5535f, 12.5462f, 15.5595f, 12.5602f, 15.5635f, 12.5741f);
+        eVarL.d(15.5768f, 12.6204f, 15.5907f, 12.666f, 15.6064f, 12.7109f);
+        eVarL.d(15.6213f, 12.7536f, 15.6383f, 12.7953f, 15.6553f, 12.8368f);
+        eVarL.d(15.6673f, 12.8661f, 15.6793f, 12.8952f, 15.6924f, 12.9238f);
+        eVarL.d(15.7149f, 12.9733f, 15.7392f, 13.0217f, 15.7646f, 13.0693f);
+        eVarL.d(15.7761f, 13.0905f, 15.7868f, 13.112f, 15.7988f, 13.1327f);
+        eVarL.d(15.8326f, 13.1916f, 15.8691f, 13.2482f, 15.9072f, 13.3036f);
+        eVarL.d(15.9118f, 13.3102f, 15.9163f, 13.3167f, 15.9209f, 13.3232f);
+        eVarL.d(15.9418f, 13.353f, 15.9613f, 13.3842f, 15.9834f, 13.413f);
+        eVarL.i(8.9727f, 14.9179f);
+        eVarL.d(9.0698f, 14.5507f, 9.0875f, 14.1565f, 9.0029f, 13.7597f);
+        eVarL.d(8.7148f, 12.4097f, 7.3871f, 11.5489f, 6.0371f, 11.8368f);
+        eVarL.d(5.0142f, 12.0553f, 4.2718f, 12.8709f, 4.0977f, 13.8407f);
+        eVarL.d(4.0315f, 14.1676f, 4.029f, 14.5128f, 4.1025f, 14.8593f);
+        eVarL.d(4.1563f, 15.1126f, 4.2471f, 15.3487f, 4.3672f, 15.5634f);
+        eVarL.i(3.3008f, 15.8124f);
+        eVarL.i(2.8379f, 13.6298f);
+        eVarL.i(3.2676f, 12.9228f);
+        eVarL.i(3.0176f, 11.748f);
+        eVarL.i(4.5693f, 8.7148f);
+        eVarL.d(6.5351f, 7.7239f, 8.5788f, 7.2673f, 9.918f, 7.0605f);
+        eVarL.c();
+        eVarL.k(7.6982f, 8.2255f);
+        eVarL.d(6.6652f, 8.5197f, 5.9738f, 8.8243f, 5.0527f, 9.2861f);
+        eVarL.i(4.9844f, 9.4335f);
+        eVarL.d(5.3448f, 9.649f, 6.6552f, 10.0847f, 7.1533f, 10.1142f);
+        eVarL.d(7.3208f, 10.1237f, 7.8962f, 10.0878f, 8.3897f, 10.0536f);
+        r1.q2.y(eVarL, 7.6982f, 8.2255f, 12.6289f, 7.9804f);
+        eVarL.d(11.7805f, 7.6633f, 10.8849f, 7.5641f, 10.0391f, 7.6943f);
+        eVarL.d(9.6574f, 7.7531f, 9.2709f, 7.8255f, 8.8906f, 7.9071f);
+        eVarL.d(8.7692f, 7.9332f, 8.7536f, 7.9526f, 8.6367f, 7.9804f);
+        eVarL.i(9.5547f, 9.9413f);
+        eVarL.i(15.0049f, 9.1825f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 14.9404f, 8.8447f, 12.6289f, 7.9804f);
+        u4.d.a.b(aVar3, eVarL.f168407a, i14, t1Var2, 1.0f, null, 0.0f, 0, 4.0f);
+        o4.t1 t1Var3 = new o4.t1(o4.f0.d(4278190080L), null);
+        u4.e eVarL2 = com.nimbusds.jose.shaded.gson.internal.a.l(6.2451f, 12.8144f);
+        eVarL2.d(7.0549f, 12.6416f, 7.8523f, 13.1579f, 8.0254f, 13.9677f);
+        eVarL2.i(8.0498f, 14.12f);
+        eVarL2.d(8.1322f, 14.8753f, 7.6308f, 15.5856f, 6.8721f, 15.748f);
+        eVarL2.i(6.8018f, 15.7607f);
+        eVarL2.i(6.7959f, 15.7616f);
+        eVarL2.d(6.7938f, 15.7619f, 6.7912f, 15.7623f, 6.7891f, 15.7626f);
+        eVarL2.d(6.7546f, 15.768f, 6.7199f, 15.7724f, 6.6856f, 15.7753f);
+        eVarL2.i(6.6504f, 15.7782f);
+        eVarL2.g(6.6445f);
+        eVarL2.d(5.9179f, 15.8208f, 5.2487f, 15.3284f, 5.0918f, 14.5947f);
+        eVarL2.d(4.9189f, 13.7847f, 5.4354f, 12.9876f, 6.2451f, 12.8144f);
+        eVarL2.c();
+        u4.d.a.b(aVar3, eVarL2.f168407a, 0, t1Var3, 1.0f, null, 0.0f, 0, 4.0f);
+        o4.t1 t1Var4 = new o4.t1(o4.f0.d(4278190080L), null);
+        u4.e eVarL3 = com.nimbusds.jose.shaded.gson.internal.a.l(17.6494f, 10.4159f);
+        eVarL3.d(18.4593f, 10.2431f, 19.2566f, 10.7595f, 19.4297f, 11.5693f);
+        eVarL3.i(19.4541f, 11.7216f);
+        eVarL3.d(19.5363f, 12.4767f, 19.0352f, 13.1873f, 18.2764f, 13.3495f);
+        eVarL3.i(18.124f, 13.374f);
+        eVarL3.d(17.3689f, 13.4564f, 16.6585f, 12.9549f, 16.4961f, 12.1962f);
+        eVarL3.d(16.3232f, 11.3864f, 16.8398f, 10.5891f, 17.6494f, 10.4159f);
+        eVarL3.c();
+        u4.d.a.b(aVar3, eVarL3.f168407a, 0, t1Var4, 1.0f, null, 0.0f, 0, 4.0f);
+        o4.t1 t1Var5 = new o4.t1(o4.f0.d(4278190080L), null);
+        u4.e eVarM = com.nimbusds.jose.shaded.gson.internal.a.m(3.5205f, 8.5693f, 2.7852f, 10.0077f);
+        eVarM.i(2.2393f, 9.7958f);
+        eVarM.i(2.0f, 8.6679f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarM, 3.1934f, 8.412f, 3.5205f, 8.5693f);
+        u4.d.a.b(aVar3, eVarM.f168407a, 0, t1Var5, 1.0f, null, 0.0f, 0, 4.0f);
+        u4.d dVarC = aVar3.c();
+        f169061a = dVarC;
+        return dVarC;
+    }
+}

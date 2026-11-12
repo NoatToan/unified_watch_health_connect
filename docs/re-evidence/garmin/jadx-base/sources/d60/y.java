@@ -1,0 +1,62 @@
+package d60;
+
+import com.garmin.android.apps.connectmobile.courses.model.GeoPointDTO;
+import java.util.List;
+import org.koin.java.KoinJavaComponent;
+import p005kotlin.Metadata;
+import p005kotlin.Unit;
+
+/* JADX INFO: loaded from: classes8.dex */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\u0010\u0002\u001a\b\u0012\u0004\u0012\u00020\u00010\u0000H\n¢\u0006\u0004\b\u0002\u0010\u0003"}, d2 = {"Lc83/a0;", "Lk30/u;", "<anonymous>", "()Lc83/a0;"}, k = 3, mv = {2, 3, 0})
+@v13.e(c = "com.garmin.android.apps.connectmobile.courses.repo.CoursesRepo$getOnCourseRouteFeatures$4", f = "CoursesRepo.kt", l = {320}, m = "invokeSuspend", v = 2)
+public final class y extends v13.i implements e23.l<t13.d<? super c83.a0<k30.u>>, Object> {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public int f57959a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final /* synthetic */ List<GeoPointDTO> f57960b;
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    public final /* synthetic */ b f57961c;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public y(List<GeoPointDTO> list, b bVar, t13.d<? super y> dVar) {
+        super(1, dVar);
+        this.f57960b = list;
+        this.f57961c = bVar;
+    }
+
+    @Override // v13.a
+    public final t13.d<Unit> create(t13.d<?> dVar) {
+        return new y(this.f57960b, this.f57961c, dVar);
+    }
+
+    @Override // e23.l
+    public final Object invoke(t13.d<? super c83.a0<k30.u>> dVar) {
+        return ((y) create(dVar)).invokeSuspend(Unit.INSTANCE);
+    }
+
+    @Override // v13.a
+    public final Object invokeSuspend(Object obj) {
+        u13.a aVar = u13.a.COROUTINE_SUSPENDED;
+        int i14 = this.f57959a;
+        if (i14 != 0) {
+            if (i14 == 1) {
+                o13.r.b(obj);
+                return obj;
+            }
+            vb.h.z("call to 'resume' before 'invoke' with coroutine");
+            return null;
+        }
+        o13.r.b(obj);
+        String json = iu1.n.a().toJson(this.f57960b);
+        b.a aVar2 = b.f57806c;
+        a aVarB = this.f57961c.b();
+        json.getClass();
+        o53.i0<c83.a0<k30.u>> i0VarI = aVarB.I(json, true, true, true, ((rt1.m) KoinJavaComponent.get$default(rt1.m.class, null, null, 6, null)).c());
+        this.f57959a = 1;
+        Object objAwait = i0VarI.await(this);
+        return objAwait == aVar ? aVar : objAwait;
+    }
+}

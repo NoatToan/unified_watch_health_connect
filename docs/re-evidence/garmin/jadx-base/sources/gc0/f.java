@@ -1,0 +1,12 @@
+package gc0;
+
+/* JADX INFO: loaded from: classes8.dex */
+public enum f {
+    NONE,
+    INITIATED,
+    STARTED,
+    IN_PROGRESS_NO_SUB_STATUS,
+    IN_PROGRESS_SUB_STATUS_SENDING_SOFTWARE_UPDATE_TO_DEVICE,
+    FINISHED_SUCCESS,
+    FINISHED_FAILURE
+}

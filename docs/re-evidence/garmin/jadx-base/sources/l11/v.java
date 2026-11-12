@@ -1,0 +1,83 @@
+package l11;
+
+import com.garmin.android.apps.connectmobile.a2;
+import com.garmin.android.apps.connectmobile.i2;
+import com.garmin.android.apps.connectmobile.v2;
+import lc.u0;
+import o53.b0;
+import p005kotlin.Metadata;
+import p005kotlin.Unit;
+
+/* JADX INFO: loaded from: classes9.dex */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0002\b\u0002\u0010\u0002\u001a\u00020\u0001*\u00020\u0000H\n¢\u0006\u0004\b\u0002\u0010\u0003"}, d2 = {"Lo53/b0;", "", "<anonymous>", "(Lo53/b0;)V"}, k = 3, mv = {2, 3, 0})
+@v13.e(c = "com.garmin.android.apps.connectmobile.nutrition.presentation.details.viewmodel.RecipeDetailsViewModel$deleteRecipe$1", f = "RecipeDetailsViewModel.kt", l = {400}, m = "invokeSuspend", v = 2)
+public final class v extends v13.i implements e23.p<b0, t13.d<? super Unit>, Object> {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public int f108306a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public /* synthetic */ Object f108307b;
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    public final /* synthetic */ t f108308c;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public v(t tVar, t13.d<? super v> dVar) {
+        super(2, dVar);
+        this.f108308c = tVar;
+    }
+
+    @Override // v13.a
+    public final t13.d<Unit> create(Object obj, t13.d<?> dVar) {
+        v vVar = new v(this.f108308c, dVar);
+        vVar.f108307b = obj;
+        return vVar;
+    }
+
+    @Override // e23.p
+    public final Object invoke(b0 b0Var, t13.d<? super Unit> dVar) {
+        return ((v) create(b0Var, dVar)).invokeSuspend(Unit.INSTANCE);
+    }
+
+    @Override // v13.a
+    public final Object invokeSuspend(Object obj) throws Throwable {
+        b0 b0Var = (b0) this.f108307b;
+        u13.a aVar = u13.a.COROUTINE_SUSPENDED;
+        int i14 = this.f108306a;
+        t tVar = this.f108308c;
+        if (i14 == 0) {
+            o13.r.b(obj);
+            tVar.f108268p.setValue(t.c.i.f108288a);
+            v01.w wVar = tVar.f108262j;
+            String str = tVar.f108253a;
+            this.f108307b = b0Var;
+            this.f108306a = 1;
+            obj = ge1.b.e0(wVar.f174573c, new v01.v(wVar, str, null), this);
+            if (obj == aVar) {
+                return aVar;
+            }
+        } else {
+            if (i14 != 1) {
+                vb.h.z("call to 'resume' before 'invoke' with coroutine");
+                return null;
+            }
+            o13.r.b(obj);
+        }
+        v2 v2Var = (v2) obj;
+        if (v2Var instanceof v2.a) {
+            a2 a2Var = a2.NUTRITION;
+            String strD = com.airbnb.lottie.animation.keyframe.a.d(((v2.a) v2Var).f47383a, "Failed to delete recipe. exception=");
+            i2.f36769a.getClass();
+            i2.a.f(a2Var, "RecipeDetailsViewModel", strD);
+            tVar.f108268p.setValue(t.c.C2081c.f108282a);
+        } else {
+            if (!(v2Var instanceof v2.b)) {
+                u0.r();
+                return null;
+            }
+            tVar.f108268p.setValue(t.c.a.f108279a);
+        }
+        return Unit.INSTANCE;
+    }
+}

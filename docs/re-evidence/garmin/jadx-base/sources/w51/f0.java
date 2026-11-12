@@ -1,0 +1,14 @@
+package w51;
+
+import java.util.Comparator;
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes9.dex */
+@Metadata(k = 3, mv = {2, 3, 0}, xi = 48)
+public final class f0<T> implements Comparator {
+    /* JADX WARN: Multi-variable type inference failed */
+    @Override // java.util.Comparator
+    public final int compare(T t7, T t14) {
+        return r13.a.b(((z51.h) t14).f202512h, ((z51.h) t7).f202512h);
+    }
+}

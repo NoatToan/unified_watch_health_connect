@@ -1,0 +1,15 @@
+package a41;
+
+import java.util.Comparator;
+import p005kotlin.Metadata;
+import t31.c;
+
+/* JADX INFO: loaded from: classes9.dex */
+@Metadata(k = 3, mv = {2, 3, 0}, xi = 48)
+public final class b<T> implements Comparator {
+    /* JADX WARN: Multi-variable type inference failed */
+    @Override // java.util.Comparator
+    public final int compare(T t7, T t14) {
+        return r13.a.b(Integer.valueOf(((c) t7).ordinal()), Integer.valueOf(((c) t14).ordinal()));
+    }
+}

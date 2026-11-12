@@ -1,0 +1,5 @@
+package com.garmin.android.apps.connectmobile;
+
+/* JADX INFO: loaded from: classes7.dex */
+public interface p2 {
+}

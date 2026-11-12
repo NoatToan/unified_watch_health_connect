@@ -1,0 +1,13 @@
+package lj0;
+
+/* JADX INFO: loaded from: classes8.dex */
+public enum c {
+    OAUTH_EXCEPTION,
+    CONNECT_EXCEPTION,
+    IO_EXCEPTION,
+    SSL_EXCEPTION,
+    ERROR_CODE_RESPONSE,
+    NULL_GC_DATA_RESPONSE,
+    JSON_EXCEPTION,
+    UNKNOWN_EXCEPTION
+}

@@ -1,0 +1,19 @@
+package z10;
+
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes7.dex */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0010\n\u0002\b\u0003\b\u0086\u0081\u0002\u0018\u00002\b\u0012\u0004\u0012\u00020\u00000\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, d2 = {"Lz10/c0;", "", "<init>", "(Ljava/lang/String;I)V", "gcm-consent_vanillaRelease"}, k = 1, mv = {2, 3, 0}, xi = 48)
+public enum c0 {
+    LOADING,
+    ERROR,
+    PRIVACY_POLICY,
+    STORAGE_AND_PROCESSING_CONSENT,
+    LIVETRACK_CONSENT_NOTICE,
+    LIVETRACK_CONSENT,
+    COACH_CONSENT,
+    INSIGHT_CONSENT,
+    PRODUCT_IMPROVEMENT,
+    AUTO_DETECTION_ACTIVITY,
+    END_FLOW
+}

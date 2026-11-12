@@ -1,0 +1,25 @@
+package com.mapbox.maps.plugin.gestures;
+
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes3.dex */
+@Metadata(d1 = {"\u0000\u001e\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u0006\n\u0000\n\u0002\u0010\u0007\n\u0002\b\n\n\u0002\u0010\t\n\u0002\b\u0005\"\u000e\u0010\u0000\u001a\u00020\u0001X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\u0002\u001a\u00020\u0003X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\u0004\u001a\u00020\u0005X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\u0006\u001a\u00020\u0003X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\u0007\u001a\u00020\u0003X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\b\u001a\u00020\u0003X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\t\u001a\u00020\u0003X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\n\u001a\u00020\u0003X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\u000b\u001a\u00020\u0003X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\f\u001a\u00020\u0003X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\r\u001a\u00020\u0003X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\u000e\u001a\u00020\u0003X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\u000f\u001a\u00020\u0010X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\u0011\u001a\u00020\u0003X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\u0012\u001a\u00020\u0005X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\u0013\u001a\u00020\u0010X\u0080T¢\u0006\u0002\n\u0000\"\u000e\u0010\u0014\u001a\u00020\u0005X\u0080T¢\u0006\u0002\n\u0000¨\u0006\u0015"}, d2 = {"ANIMATION_DURATION", "", "FLING_LIMITING_FACTOR", "", "MAXIMUM_ANGULAR_VELOCITY", "", "MAXIMUM_PITCH", "MAX_ABSOLUTE_SCALE_VELOCITY_CHANGE", "MAX_FLING_PITCH_FACTOR", "MINIMUM_PITCH", "NORMAL_MAX_PITCH", "QUICK_ZOOM_MAX_ZOOM_CHANGE", "ROTATE_VELOCITY_RATIO_THRESHOLD", "SCALE_VELOCITY_ANIMATION_DURATION_MULTIPLIER", "SCALE_VELOCITY_RATIO_THRESHOLD", "SCHEDULED_ANIMATION_TIMEOUT", "", "SCROLL_LIMITING_FACTOR", "SHOVE_PIXEL_CHANGE_FACTOR", "VELOCITY_THRESHOLD_IGNORE_FLING", "ZOOM_RATE", "plugin-gestures_release"}, k = 2, mv = {1, 7, 1}, xi = 48)
+public final class GesturesConstantsKt {
+    public static final int ANIMATION_DURATION = 300;
+    public static final double FLING_LIMITING_FACTOR = 10.0d;
+    public static final float MAXIMUM_ANGULAR_VELOCITY = 30.0f;
+    public static final double MAXIMUM_PITCH = 85.0d;
+    public static final double MAX_ABSOLUTE_SCALE_VELOCITY_CHANGE = 2.5d;
+    public static final double MAX_FLING_PITCH_FACTOR = 300.0d;
+    public static final double MINIMUM_PITCH = 0.0d;
+    public static final double NORMAL_MAX_PITCH = 60.0d;
+    public static final double QUICK_ZOOM_MAX_ZOOM_CHANGE = 4.0d;
+    public static final double ROTATE_VELOCITY_RATIO_THRESHOLD = 2.2000000000000003E-4d;
+    public static final double SCALE_VELOCITY_ANIMATION_DURATION_MULTIPLIER = 150.0d;
+    public static final double SCALE_VELOCITY_RATIO_THRESHOLD = 0.004d;
+    public static final long SCHEDULED_ANIMATION_TIMEOUT = 150;
+    public static final double SCROLL_LIMITING_FACTOR = 100.0d;
+    public static final float SHOVE_PIXEL_CHANGE_FACTOR = 0.1f;
+    public static final long VELOCITY_THRESHOLD_IGNORE_FLING = 1000;
+    public static final float ZOOM_RATE = 0.65f;
+}

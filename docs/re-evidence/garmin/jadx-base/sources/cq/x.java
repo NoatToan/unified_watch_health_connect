@@ -1,0 +1,68 @@
+package cq;
+
+import android.content.Context;
+import android.graphics.Paint;
+import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.renderer.DataRenderer;
+import com.github.mikephil.charting.utils.Transformer;
+import com.github.mikephil.charting.utils.ViewPortHandler;
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes7.dex */
+@Metadata(d1 = {"\u0000\u0014\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\b\u0007\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\u000f\u0012\u0006\u0010\u0004\u001a\u00020\u0003¢\u0006\u0004\b\u0005\u0010\u0006¨\u0006\u0007"}, d2 = {"Lcq/x;", "Lqz/h;", "Lf00/c;", "Lcom/github/mikephil/charting/charts/LineChart;", "chart", "<init>", "(Lcom/github/mikephil/charting/charts/LineChart;)V", "gcm-activities_vanillaRelease"}, k = 1, mv = {2, 3, 0}, xi = 48)
+public final class x implements qz.h<f00.c> {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public final pm.a f55112a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final i00.c f55113b;
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    public final f00.c f55114c;
+
+    public x(LineChart lineChart) {
+        lineChart.getClass();
+        Context context = lineChart.getContext();
+        ViewPortHandler viewPortHandler = lineChart.getViewPortHandler();
+        Transformer transformer = lineChart.getTransformer(YAxis.AxisDependency.LEFT);
+        context.getClass();
+        m00.a aVar = new m00.a(context, null, 2, null);
+        viewPortHandler.getClass();
+        pm.a aVar2 = new pm.a(viewPortHandler, com.nimbusds.jose.shaded.gson.internal.a.e(lineChart, transformer), transformer);
+        aVar2.f80601e = new m00.d(aVar);
+        aVar2.f80603g = true;
+        aVar2.f80605i = 8.0f;
+        this.f55112a = aVar2;
+        YAxis axisLeft = lineChart.getAxisLeft();
+        axisLeft.getClass();
+        i00.c cVar = new i00.c(viewPortHandler, axisLeft, transformer);
+        cVar.f86714d = new m00.e(aVar);
+        this.f55113b = cVar;
+        ChartAnimator animator = lineChart.getAnimator();
+        animator.getClass();
+        f00.c cVar2 = new f00.c(lineChart, animator, viewPortHandler);
+        cVar2.f67652c = Paint.Cap.ROUND;
+        this.f55114c = cVar2;
+    }
+
+    @Override // qz.h
+    /* JADX INFO: renamed from: b */
+    public final h00.b getF157069d() {
+        return this.f55112a;
+    }
+
+    @Override // qz.h
+    /* JADX INFO: renamed from: c */
+    public final DataRenderer getF173486i() {
+        return this.f55114c;
+    }
+
+    @Override // qz.h
+    /* JADX INFO: renamed from: d */
+    public final i00.b getF157070e() {
+        return this.f55113b;
+    }
+}

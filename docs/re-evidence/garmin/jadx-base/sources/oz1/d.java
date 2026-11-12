@@ -1,0 +1,108 @@
+package oz1;
+
+import com.garmin.android.apps.connectmobile.R;
+import com.google.firebase.messaging.Constants;
+import p005kotlin.Metadata;
+
+/* JADX WARN: Enum visitor error
+jadx.core.utils.exceptions.JadxRuntimeException: Can't remove SSA var: r0v1 oz1.d[], still in use, count: 1, list:
+  (r0v1 oz1.d[]) from 0x0079: CONSTRUCTOR (r0v1 oz1.d[]) A[MD:(T extends java.lang.Enum<T>[]):void (m), WRAPPED] call: w13.c.<init>(java.lang.Enum[]):void type: CONSTRUCTOR
+	at jadx.core.utils.InsnRemover.removeSsaVar(InsnRemover.java:164)
+	at jadx.core.utils.InsnRemover.unbindResult(InsnRemover.java:129)
+	at jadx.core.utils.InsnRemover.lambda$unbindInsns$1(InsnRemover.java:101)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1612)
+	at jadx.core.utils.InsnRemover.unbindInsns(InsnRemover.java:100)
+	at jadx.core.utils.InsnRemover.removeAllAndUnbind(InsnRemover.java:257)
+	at jadx.core.dex.visitors.EnumVisitor.convertToEnum(EnumVisitor.java:187)
+	at jadx.core.dex.visitors.EnumVisitor.visit(EnumVisitor.java:102)
+ */
+/* JADX WARN: Failed to restore enum class, 'enum' modifier and super class removed */
+/* JADX INFO: loaded from: classes10.dex */
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0010\u0010\n\u0002\u0010\b\n\u0002\b\u0006\b\u0086\u0081\u0002\u0018\u00002\b\u0012\u0004\u0012\u00020\u00000\u0001:\u0001\u0007B\u0019\b\u0002\u0012\u0006\u0010\u0003\u001a\u00020\u0002\u0012\u0006\u0010\u0004\u001a\u00020\u0002¢\u0006\u0004\b\u0005\u0010\u0006¨\u0006\b"}, d2 = {"Loz1/d;", "", "", "value", Constants.ScionAnalytics.PARAM_LABEL, "<init>", "(Ljava/lang/String;III)V", "a", "gcm-domain-training_vanillaRelease"}, k = 1, mv = {2, 3, 0}, xi = 48)
+public final class d {
+    NONE(R.string.no_value, R.string.tr_feedback_acute_load_no_data),
+    VERY_POOR(R.string.hrv_stress_level_very_high, R.string.tr_feedback_acute_load_poor),
+    POOR(R.string.hrv_stress_level_very_high, R.string.tr_feedback_acute_load_poor),
+    MODERATE(R.string.lbl_high, R.string.tr_feedback_acute_load_moderate),
+    GOOD(R.string.tr_acwr_display_good, R.string.tr_feedback_acute_load_good_optimal),
+    GOOD_NOT_OPTIMAL(R.string.tr_acwr_display_good, R.string.tr_feedback_acute_load_good_not_optimal),
+    GOOD_OPTIMAL(R.string.tr_acwr_display_good, R.string.tr_feedback_acute_load_good_optimal),
+    VERY_GOOD(R.string.tr_acwr_display_very_good, R.string.tr_feedback_acute_load_very_good);
+
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    public static final a f134527c = new a(null);
+
+    /* JADX INFO: renamed from: m, reason: collision with root package name */
+    public static final /* synthetic */ w13.c f134537m;
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public final int f134538a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final int f134539b;
+
+    static {
+        f134537m = new w13.c(new d[]{r0, r1, r2, r3, r4, r5, r6, r7});
+    }
+
+    private d(int i14, int i15) {
+        super(str, i);
+        this.f134538a = i14;
+        this.f134539b = i15;
+    }
+
+    public static d valueOf(String str) {
+        return (d) Enum.valueOf(d.class, str);
+    }
+
+    public static d[] values() {
+        return (d[]) f134536l.clone();
+    }
+
+    @Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0003\b\u0086\u0003\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, d2 = {"Loz1/d$a;", "", "<init>", "()V", "gcm-domain-training_vanillaRelease"}, k = 1, mv = {2, 3, 0}, xi = 48)
+    public static final class a {
+        public /* synthetic */ a(p005kotlin.jvm.internal.j jVar) {
+            this();
+        }
+
+        public static d a(int i14) {
+            Object next;
+            w13.c cVar = d.f134537m;
+            p13.c.b bVarN = com.airbnb.lottie.animation.keyframe.a.n(cVar, cVar);
+            do {
+                if (!bVarN.hasNext()) {
+                    next = null;
+                    break;
+                }
+                next = bVarN.next();
+            } while (((d) next).f134538a != i14);
+            d dVar = (d) next;
+            return dVar == null ? d.NONE : dVar;
+        }
+
+        public static d b(int i14, Double d14) {
+            Object next;
+            w13.c cVar = d.f134537m;
+            p13.c.b bVarN = com.airbnb.lottie.animation.keyframe.a.n(cVar, cVar);
+            do {
+                if (!bVarN.hasNext()) {
+                    next = null;
+                    break;
+                }
+                next = bVarN.next();
+            } while (((d) next).f134538a != i14);
+            d dVar = (d) next;
+            if (dVar == null) {
+                dVar = d.NONE;
+            }
+            if (dVar == d.GOOD) {
+                return (d14 == null || d14.doubleValue() >= 1.3d) ? d.GOOD_NOT_OPTIMAL : d.GOOD_OPTIMAL;
+            }
+            return dVar;
+        }
+
+        private a() {
+        }
+    }
+}

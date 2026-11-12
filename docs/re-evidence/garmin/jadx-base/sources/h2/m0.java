@@ -1,0 +1,62 @@
+package h2;
+
+import p005kotlin.Metadata;
+import p005kotlin.Unit;
+import p008y1.l2;
+import u1.k1;
+
+/* JADX INFO: loaded from: classes.dex */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0002\b\u0002\u0010\u0002\u001a\u00020\u0001*\u00020\u0000H\n¢\u0006\u0004\b\u0002\u0010\u0003"}, d2 = {"Lo53/b0;", "", "<anonymous>", "(Lo53/b0;)V"}, k = 3, mv = {2, 0, 0})
+@v13.e(c = "androidx.compose.foundation.pager.PagerState$requestScrollToPage$1", f = "PagerState.kt", l = {634}, m = "invokeSuspend", v = 1)
+public final class m0 extends v13.i implements e23.p<o53.b0, t13.d<? super Unit>, Object> {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public int f80975a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final /* synthetic */ j0 f80976b;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public m0(j0 j0Var, t13.d<? super m0> dVar) {
+        super(2, dVar);
+        this.f80976b = j0Var;
+    }
+
+    @Override // v13.a
+    public final t13.d<Unit> create(Object obj, t13.d<?> dVar) {
+        return new m0(this.f80976b, dVar);
+    }
+
+    @Override // e23.p
+    public final Object invoke(o53.b0 b0Var, t13.d<? super Unit> dVar) {
+        return ((m0) create(b0Var, dVar)).invokeSuspend(Unit.INSTANCE);
+    }
+
+    @Override // v13.a
+    public final Object invokeSuspend(Object obj) {
+        Object obj2 = u13.a.COROUTINE_SUSPENDED;
+        int i14 = this.f80975a;
+        if (i14 == 0) {
+            o13.r.b(obj);
+            this.f80975a = 1;
+            k1 k1Var = k1.Default;
+            l2 l2Var = new l2(null);
+            j0 j0Var = this.f80976b;
+            j0Var.getClass();
+            Object objV = j0.v(j0Var, k1Var, l2Var, this);
+            if (objV != obj2) {
+                objV = Unit.INSTANCE;
+            }
+            if (objV == obj2) {
+                return obj2;
+            }
+        } else {
+            if (i14 != 1) {
+                vb.h.z("call to 'resume' before 'invoke' with coroutine");
+                return null;
+            }
+            o13.r.b(obj);
+        }
+        return Unit.INSTANCE;
+    }
+}

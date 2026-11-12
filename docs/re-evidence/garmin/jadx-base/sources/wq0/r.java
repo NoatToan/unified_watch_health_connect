@@ -1,0 +1,14 @@
+package wq0;
+
+import java.util.Comparator;
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes8.dex */
+@Metadata(k = 3, mv = {2, 3, 0}, xi = 48)
+public final class r<T> implements Comparator {
+    /* JADX WARN: Multi-variable type inference failed */
+    @Override // java.util.Comparator
+    public final int compare(T t7, T t14) {
+        return r13.a.b(Integer.valueOf(((a0.b) t7).f186582b.f166055a), Integer.valueOf(((a0.b) t14).f186582b.f166055a));
+    }
+}

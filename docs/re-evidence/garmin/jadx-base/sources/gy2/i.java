@@ -1,0 +1,18 @@
+package gy2;
+
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes13.dex */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0010\n\u0002\b\u0003\b\u0086\u0081\u0002\u0018\u00002\b\u0012\u0004\u0012\u00020\u00000\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, d2 = {"Lgy2/i;", "", "<init>", "(Ljava/lang/String;I)V", "util_sync_release"}, k = 1, mv = {1, 9, 0}, xi = 48)
+public enum i {
+    DEVICE_MESSAGE_DOWNLOAD_FAILED,
+    INVALID_MESSAGE_DOWNLOAD_RESPONSE,
+    FIT_FILE_CONTENT_NOT_FOUND,
+    INVALID_SOFTWARE_UPDATE_FILE_URL,
+    SOFTWARE_UPDATE_FILE_DOWNLOAD_FAILED,
+    CONTENT_DOES_NOT_EXIST,
+    TEMP_FILE_WRITE_FAILED,
+    NO_NETWORK_CONNECTIVITY,
+    UNEXPECTED_SERVER_RESPONSE,
+    EMPTY_SERVER_RESPONSE
+}

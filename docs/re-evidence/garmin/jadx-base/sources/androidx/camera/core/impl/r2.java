@@ -1,0 +1,25 @@
+package androidx.camera.core.impl;
+
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes.dex */
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0010\u0010\n\u0002\u0010\b\n\u0002\b\u0004\b\u0086\u0081\u0002\u0018\u00002\b\u0012\u0004\u0012\u00020\u00000\u0001B\u0011\b\u0002\u0012\u0006\u0010\u0003\u001a\u00020\u0002¢\u0006\u0004\b\u0004\u0010\u0005¨\u0006\u0006"}, d2 = {"Landroidx/camera/core/impl/r2;", "", "", "intValue", "<init>", "(Ljava/lang/String;II)V", "camera-core_release"}, k = 1, mv = {2, 0, 0}, xi = 48)
+public enum r2 {
+    DEFAULT(0),
+    PREVIEW(1),
+    VIDEO_RECORD(3),
+    STILL_CAPTURE(2),
+    /* JADX INFO: Fake field, exist only in values array */
+    VIDEO_CALL(5),
+    PREVIEW_VIDEO_STILL(4),
+    /* JADX INFO: Fake field, exist only in values array */
+    CROPPED_RAW(6);
+
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public final long f5738a;
+
+    r2(int i14) {
+        this.f5738a = i14;
+    }
+}

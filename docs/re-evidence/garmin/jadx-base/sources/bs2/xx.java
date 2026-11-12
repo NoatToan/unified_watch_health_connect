@@ -1,0 +1,32 @@
+package bs2;
+
+import com.google.android.exoplayer2.extractor.ts.TsExtractor;
+import com.mapbox.turf.TurfConstants;
+
+/* JADX INFO: loaded from: classes11.dex */
+public class xx extends bk {
+
+    /* JADX INFO: renamed from: e, reason: collision with root package name */
+    public static final bk f20679e;
+
+    static {
+        bk bkVar = new bk("timing_gate", 435);
+        f20679e = bkVar;
+        bkVar.e(new rc("message_index", 254, 132, 1.0d, 0.0d, "", false, zn.MESSAGE_INDEX));
+        zn znVar = zn.SINT32;
+        bkVar.e(new rc("position_lat", 0, 133, 1.0d, 0.0d, "semicircles", false, znVar));
+        bkVar.e(new rc("position_long", 1, 133, 1.0d, 0.0d, "semicircles", false, znVar));
+        bkVar.e(new rc("heading", 2, 131, 10000.0d, 0.0d, TurfConstants.UNIT_RADIANS, false, zn.SINT16));
+        bkVar.e(new rc("distance", 3, TsExtractor.TS_STREAM_TYPE_SPLICE_INFO, 100.0d, 0.0d, "m", false, zn.UINT32));
+        bkVar.e(new rc("checksum", 252, 2, 1.0d, 0.0d, "", false, zn.CHECKSUM));
+        bkVar.e(new rc("pad", 251, 13, 1.0d, 0.0d, "", false, zn.BYTE));
+    }
+
+    public xx() {
+        super(wb.b(435));
+    }
+
+    public xx(bk bkVar) {
+        super(bkVar);
+    }
+}

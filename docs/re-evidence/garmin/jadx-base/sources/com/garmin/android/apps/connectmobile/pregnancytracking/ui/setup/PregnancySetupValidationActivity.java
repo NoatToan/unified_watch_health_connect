@@ -1,0 +1,37 @@
+package com.garmin.android.apps.connectmobile.pregnancytracking.ui.setup;
+
+import androidx.fragment.app.Fragment;
+import com.garmin.android.apps.connectmobile.R;
+import p005kotlin.Metadata;
+import p005kotlin.jvm.internal.j;
+import z10.p3;
+
+/* JADX INFO: loaded from: classes9.dex */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\b\u0007\u0018\u00002\u00020\u0001:\u0001\u0004B\u0007¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0005"}, d2 = {"Lcom/garmin/android/apps/connectmobile/pregnancytracking/ui/setup/PregnancySetupValidationActivity;", "Lz10/p3;", "<init>", "()V", "a", "app_vanillaRelease"}, k = 1, mv = {2, 3, 0}, xi = 48)
+public final class PregnancySetupValidationActivity extends p3 {
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    public static final a f40945c = new a(null);
+
+    @Override // z10.p3
+    public final Fragment ca() {
+        return new d();
+    }
+
+    @Override // z10.p3
+    public final String da() {
+        String string = getString(R.string.mct_setup);
+        string.getClass();
+        return string;
+    }
+
+    @Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0003\b\u0086\u0003\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, d2 = {"Lcom/garmin/android/apps/connectmobile/pregnancytracking/ui/setup/PregnancySetupValidationActivity$a;", "", "<init>", "()V", "app_vanillaRelease"}, k = 1, mv = {2, 3, 0}, xi = 48)
+    public static final class a {
+        public /* synthetic */ a(j jVar) {
+            this();
+        }
+
+        private a() {
+        }
+    }
+}

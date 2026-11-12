@@ -1,0 +1,30 @@
+package bs2;
+
+import com.google.android.exoplayer2.extractor.ts.TsExtractor;
+
+/* JADX INFO: loaded from: classes11.dex */
+public class dw extends bk {
+
+    /* JADX INFO: renamed from: e, reason: collision with root package name */
+    public static final bk f20064e;
+
+    static {
+        bk bkVar = new bk("stamina_potential_true_up", 357);
+        f20064e = bkVar;
+        bkVar.e(new rc("timestamp", 253, TsExtractor.TS_STREAM_TYPE_SPLICE_INFO, 1.0d, 0.0d, "", false, zn.DATE_TIME));
+        zn znVar = zn.UINT8;
+        bkVar.e(new rc("load_based_stamina_potential", 0, 2, 1.0d, 0.0d, "%", false, znVar));
+        bkVar.e(new rc("distance_based_stamina_potential", 1, 2, 1.0d, 0.0d, "%", false, znVar));
+        bkVar.e(new rc("latest_recovery_time", 2, 132, 1.0d, 0.0d, "minutes", false, zn.UINT16));
+        bkVar.e(new rc("checksum", 252, 2, 1.0d, 0.0d, "", false, zn.CHECKSUM));
+        bkVar.e(new rc("pad", 251, 13, 1.0d, 0.0d, "", false, zn.BYTE));
+    }
+
+    public dw() {
+        super(wb.b(357));
+    }
+
+    public dw(bk bkVar) {
+        super(bkVar);
+    }
+}

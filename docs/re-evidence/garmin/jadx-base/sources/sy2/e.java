@@ -1,0 +1,8 @@
+package sy2;
+
+/* JADX INFO: loaded from: classes13.dex */
+public interface e<PresenterType> {
+    void a(PresenterType presentertype);
+
+    PresenterType b();
+}

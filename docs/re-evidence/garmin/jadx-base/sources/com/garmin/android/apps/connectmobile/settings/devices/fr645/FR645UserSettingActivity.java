@@ -1,0 +1,70 @@
+package com.garmin.android.apps.connectmobile.settings.devices.fr645;
+
+import android.content.Intent;
+import android.os.Bundle;
+import ch1.a1;
+import ch1.c3;
+import ch1.e6;
+import ch1.g0;
+import ch1.o1;
+import ch1.x3;
+import ch1.y3;
+import ch1.z3;
+import com.garmin.android.apps.connectmobile.R;
+import com.garmin.android.apps.connectmobile.settings.devices.swim.css.CriticalSwimSpeedEditActivity;
+import fb2.k;
+import ig1.h0;
+import ig1.s;
+import ig1.s0;
+import java.util.ArrayList;
+import java.util.Observable;
+import ng1.l0;
+import vg1.w;
+
+/* JADX INFO: loaded from: classes10.dex */
+public class FR645UserSettingActivity extends l0 {
+    @Override // ng1.l0
+    public void da() {
+        ArrayList arrayList = this.f125961r;
+        arrayList.clear();
+        arrayList.add(new c3(this));
+        arrayList.add(new h0(this));
+        arrayList.add(new o1(this));
+        arrayList.add(new e6(this));
+        arrayList.add(new s(this));
+        arrayList.add(new k(this));
+        arrayList.add(new y3(this));
+        arrayList.add(new z3(this));
+        arrayList.add(new x3(this));
+        arrayList.add(new a1(this));
+        arrayList.add(new s0(this));
+        arrayList.add(new g0(this));
+        l0.ea(this, arrayList, this.f125995i, this);
+    }
+
+    @Override // ng1.l0, ng1.q, com.garmin.android.apps.connectmobile.c, com.garmin.android.apps.connectmobile.z1, com.garmin.android.apps.connectmobile.v, androidx.fragment.app.m, b.g, z6.e, android.app.Activity
+    public final void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        initActionBar(true, R.string.devices_settings_user_settings);
+    }
+
+    @Override // ng1.l0, java.util.Observer
+    public final void update(Observable observable, Object obj) {
+        if (obj != null) {
+            if (observable instanceof s0) {
+                Intent intent = new Intent();
+                intent.setClassName(this, this.f125993g.getF178180m());
+                intent.putExtra("GCM_deviceUnitID", this.f125992f);
+                intent.putExtra("GCM_deviceProductNbr", this.f125994h);
+                startActivity(intent);
+                this.f125997k = true;
+            }
+            if (observable instanceof g0) {
+                w.a();
+                CriticalSwimSpeedEditActivity.f43146g.getClass();
+                startActivity(CriticalSwimSpeedEditActivity.a.a(this, false));
+                this.f125997k = true;
+            }
+        }
+    }
+}

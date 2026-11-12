@@ -1,0 +1,137 @@
+package com.google.android.material.datepicker;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import vb.h;
+
+/* JADX INFO: loaded from: classes14.dex */
+final class Month implements Comparable<Month>, Parcelable {
+    public static final Parcelable.Creator<Month> CREATOR = new Parcelable.Creator<Month>() { // from class: com.google.android.material.datepicker.Month.1
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // android.os.Parcelable.Creator
+        public Month createFromParcel(Parcel parcel) {
+            return Month.create(parcel.readInt(), parcel.readInt());
+        }
+
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // android.os.Parcelable.Creator
+        public Month[] newArray(int i14) {
+            return new Month[i14];
+        }
+    };
+    final int daysInMonth;
+    final int daysInWeek;
+    private final Calendar firstOfMonth;
+    private String longName;
+    final int month;
+    final long timeInMillis;
+    final int year;
+
+    private Month(Calendar calendar) {
+        calendar.set(5, 1);
+        Calendar dayCopy = UtcDates.getDayCopy(calendar);
+        this.firstOfMonth = dayCopy;
+        this.month = dayCopy.get(2);
+        this.year = dayCopy.get(1);
+        this.daysInWeek = dayCopy.getMaximum(7);
+        this.daysInMonth = dayCopy.getActualMaximum(5);
+        this.timeInMillis = dayCopy.getTimeInMillis();
+    }
+
+    public static Month create(int i14, int i15) {
+        Calendar utcCalendar = UtcDates.getUtcCalendar();
+        utcCalendar.set(1, i14);
+        utcCalendar.set(2, i15);
+        return new Month(utcCalendar);
+    }
+
+    public static Month current() {
+        return new Month(UtcDates.getTodayCalendar());
+    }
+
+    @Override // java.lang.Comparable
+    public int compareTo(Month month) {
+        return this.firstOfMonth.compareTo(month.firstOfMonth);
+    }
+
+    public int daysFromStartOfWeekToFirstOfMonth(int i14) {
+        int i15 = this.firstOfMonth.get(7);
+        if (i14 <= 0) {
+            i14 = this.firstOfMonth.getFirstDayOfWeek();
+        }
+        int i16 = i15 - i14;
+        return i16 < 0 ? i16 + this.daysInWeek : i16;
+    }
+
+    @Override // android.os.Parcelable
+    public int describeContents() {
+        return 0;
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Month)) {
+            return false;
+        }
+        Month month = (Month) obj;
+        return this.month == month.month && this.year == month.year;
+    }
+
+    public long getDay(int i14) {
+        Calendar dayCopy = UtcDates.getDayCopy(this.firstOfMonth);
+        dayCopy.set(5, i14);
+        return dayCopy.getTimeInMillis();
+    }
+
+    public int getDayOfMonth(long j8) {
+        Calendar dayCopy = UtcDates.getDayCopy(this.firstOfMonth);
+        dayCopy.setTimeInMillis(j8);
+        return dayCopy.get(5);
+    }
+
+    public String getLongName() {
+        if (this.longName == null) {
+            this.longName = DateStrings.getYearMonth(this.firstOfMonth.getTimeInMillis());
+        }
+        return this.longName;
+    }
+
+    public long getStableId() {
+        return this.firstOfMonth.getTimeInMillis();
+    }
+
+    public int hashCode() {
+        return Arrays.hashCode(new Object[]{Integer.valueOf(this.month), Integer.valueOf(this.year)});
+    }
+
+    public Month monthsLater(int i14) {
+        Calendar dayCopy = UtcDates.getDayCopy(this.firstOfMonth);
+        dayCopy.add(2, i14);
+        return new Month(dayCopy);
+    }
+
+    public int monthsUntil(Month month) {
+        if (this.firstOfMonth instanceof GregorianCalendar) {
+            return (month.month - this.month) + ((month.year - this.year) * 12);
+        }
+        h.s("Only Gregorian calendars are supported.");
+        return 0;
+    }
+
+    @Override // android.os.Parcelable
+    public void writeToParcel(Parcel parcel, int i14) {
+        parcel.writeInt(this.year);
+        parcel.writeInt(this.month);
+    }
+
+    public static Month create(long j8) {
+        Calendar utcCalendar = UtcDates.getUtcCalendar();
+        utcCalendar.setTimeInMillis(j8);
+        return new Month(utcCalendar);
+    }
+}

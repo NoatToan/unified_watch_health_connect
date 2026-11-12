@@ -1,0 +1,17 @@
+package k53;
+
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes3.dex */
+@Metadata(d1 = {"\u0000\u0014\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\b\u0000\u0018\u0000*\u0004\b\u0000\u0010\u0001*\u0004\b\u0001\u0010\u00022\u0014\u0012\u0004\u0012\u00028\u0000\u0012\u0004\u0012\u00028\u0001\u0012\u0004\u0012\u00028\u00010\u0003B\u001b\u0012\u0012\u0010\u0005\u001a\u000e\u0012\u0004\u0012\u00028\u0000\u0012\u0004\u0012\u00028\u00010\u0004¢\u0006\u0004\b\u0006\u0010\u0007¨\u0006\b"}, d2 = {"Lk53/m;", "K", "V", "Lk53/g;", "Lk53/f;", "builder", "<init>", "(Lk53/f;)V", "kotlinx-collections-immutable"}, k = 1, mv = {2, 1, 0}, xi = 48)
+public final class m<K, V> extends g<K, V, V> {
+    /* JADX WARN: Illegal instructions before constructor call */
+    public m(f<K, V> fVar) {
+        fVar.getClass();
+        u[] uVarArr = new u[8];
+        for (int i14 = 0; i14 < 8; i14++) {
+            uVarArr[i14] = new y();
+        }
+        super(fVar, uVarArr);
+    }
+}

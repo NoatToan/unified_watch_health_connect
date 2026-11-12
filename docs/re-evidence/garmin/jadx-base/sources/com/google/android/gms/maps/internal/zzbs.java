@@ -1,0 +1,31 @@
+package com.google.android.gms.maps.internal;
+
+import android.os.IBinder;
+import android.os.IInterface;
+import android.os.Parcel;
+
+/* JADX INFO: loaded from: classes14.dex */
+public abstract class zzbs extends com.google.android.gms.internal.maps.zzb implements zzbt {
+    public zzbs() {
+        super("com.google.android.gms.maps.internal.IOnStreetViewPanoramaReadyCallback");
+    }
+
+    @Override // com.google.android.gms.internal.maps.zzb
+    public final boolean zza(int i14, Parcel parcel, Parcel parcel2, int i15) {
+        IStreetViewPanoramaDelegate zzbxVar;
+        if (i14 != 1) {
+            return false;
+        }
+        IBinder strongBinder = parcel.readStrongBinder();
+        if (strongBinder == null) {
+            zzbxVar = null;
+        } else {
+            IInterface iInterfaceQueryLocalInterface = strongBinder.queryLocalInterface("com.google.android.gms.maps.internal.IStreetViewPanoramaDelegate");
+            zzbxVar = iInterfaceQueryLocalInterface instanceof IStreetViewPanoramaDelegate ? (IStreetViewPanoramaDelegate) iInterfaceQueryLocalInterface : new zzbx(strongBinder);
+        }
+        com.google.android.gms.internal.maps.zzc.zzd(parcel);
+        zzb(zzbxVar);
+        parcel2.writeNoException();
+        return true;
+    }
+}

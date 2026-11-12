@@ -1,0 +1,35 @@
+package n70;
+
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes8.dex */
+@Metadata(d1 = {"\u0000\u001c\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0004\b\u0007\u0018\u00002\u00020\u0001B!\u0012\u0006\u0010\u0003\u001a\u00020\u0002\u0012\b\b\u0002\u0010\u0005\u001a\u00020\u0004\u0012\u0006\u0010\u0007\u001a\u00020\u0006¢\u0006\u0004\b\b\u0010\t¨\u0006\n"}, d2 = {"Ln70/w2;", "", "Lcom/garmin/android/apps/connectmobile/dashboard/data/datasource/s0;", "dashboardPreferences", "Lbo1/a;", "snapshotDataManager", "Lzd0/j1;", "subscriptionProvider", "<init>", "(Lcom/garmin/android/apps/connectmobile/dashboard/data/datasource/s0;Lbo1/a;Lzd0/j1;)V", "gcm-dashboard_vanillaRelease"}, k = 1, mv = {2, 3, 0}, xi = 48)
+public final class w2 {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public final com.garmin.android.apps.connectmobile.dashboard.data.datasource.s0 f124707a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final bo1.a f124708b;
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    public final zd0.j1 f124709c;
+
+    public w2(com.garmin.android.apps.connectmobile.dashboard.data.datasource.s0 s0Var, bo1.a aVar, zd0.j1 j1Var) {
+        s0Var.getClass();
+        aVar.getClass();
+        j1Var.getClass();
+        this.f124707a = s0Var;
+        this.f124708b = aVar;
+        this.f124709c = j1Var;
+    }
+
+    /* JADX WARN: Illegal instructions before constructor call */
+    public /* synthetic */ w2(com.garmin.android.apps.connectmobile.dashboard.data.datasource.s0 s0Var, bo1.a aVar, zd0.j1 j1Var, int i14, p005kotlin.jvm.internal.j jVar) {
+        if ((i14 & 2) != 0) {
+            aVar = bo1.a.a();
+            aVar.getClass();
+        }
+        this(s0Var, aVar, j1Var);
+    }
+}

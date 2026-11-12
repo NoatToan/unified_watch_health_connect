@@ -1,0 +1,52 @@
+package wn1;
+
+import com.garmin.android.apps.connectmobile.devices.model.DeviceSettingsDTO;
+import p005kotlin.Metadata;
+import p005kotlin.Unit;
+
+/* JADX INFO: loaded from: classes10.dex */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\u0010\u0002\u001a\b\u0012\u0004\u0012\u00020\u00010\u0000H\n¢\u0006\u0004\b\u0002\u0010\u0003"}, d2 = {"Lc83/a0;", "Lcom/garmin/android/apps/connectmobile/devices/model/DeviceSettingsDTO;", "<anonymous>", "()Lc83/a0;"}, k = 3, mv = {2, 3, 0})
+@v13.e(c = "com.garmin.android.apps.connectmobile.smartscale.InviteSocialRepository$getDeviceShortName$2", f = "InviteSocialRepository.kt", l = {47}, m = "invokeSuspend", v = 2)
+public final class y extends v13.i implements e23.l<t13.d<? super c83.a0<DeviceSettingsDTO>>, Object> {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public int f186341a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final /* synthetic */ long f186342b;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public y(long j8, t13.d<? super y> dVar) {
+        super(1, dVar);
+        this.f186342b = j8;
+    }
+
+    @Override // v13.a
+    public final t13.d<Unit> create(t13.d<?> dVar) {
+        return new y(this.f186342b, dVar);
+    }
+
+    @Override // e23.l
+    public final Object invoke(t13.d<? super c83.a0<DeviceSettingsDTO>> dVar) {
+        return ((y) create(dVar)).invokeSuspend(Unit.INSTANCE);
+    }
+
+    @Override // v13.a
+    public final Object invokeSuspend(Object obj) {
+        u13.a aVar = u13.a.COROUTINE_SUSPENDED;
+        int i14 = this.f186341a;
+        if (i14 != 0) {
+            if (i14 == 1) {
+                o13.r.b(obj);
+                return obj;
+            }
+            vb.h.z("call to 'resume' before 'invoke' with coroutine");
+            return null;
+        }
+        o13.r.b(obj);
+        s sVarA = t.a.a(t.f186332a);
+        this.f186341a = 1;
+        Object objE = sVarA.e(this.f186342b, this);
+        return objE == aVar ? aVar : objE;
+    }
+}

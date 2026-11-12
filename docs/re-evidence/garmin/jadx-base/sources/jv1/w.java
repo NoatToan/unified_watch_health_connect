@@ -1,0 +1,58 @@
+package jv1;
+
+import am.x0;
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes10.dex */
+@Metadata(d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\u0010\u0006\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\b\u0087\b\u0018\u00002\u00020\u0001B)\u0012\n\b\u0002\u0010\u0003\u001a\u0004\u0018\u00010\u0002\u0012\n\b\u0002\u0010\u0004\u001a\u0004\u0018\u00010\u0002\u0012\b\b\u0002\u0010\u0006\u001a\u00020\u0005¢\u0006\u0004\b\u0007\u0010\b¨\u0006\t"}, d2 = {"Ljv1/w;", "", "", "distanceInMeters", "durationInSecs", "Lam/x0;", "activityType", "<init>", "(Ljava/lang/Double;Ljava/lang/Double;Lam/x0;)V", "gcm-training-plans_vanillaRelease"}, k = 1, mv = {2, 3, 0}, xi = 48)
+public final /* data */ class w {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public final Double f101167a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final Double f101168b;
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    public final x0 f101169c;
+
+    public /* synthetic */ w(Double d14, Double d15, x0 x0Var, int i14, p005kotlin.jvm.internal.j jVar) {
+        this((i14 & 1) != 0 ? null : d14, (i14 & 2) != 0 ? null : d15, (i14 & 4) != 0 ? x0.f4346x : x0Var);
+    }
+
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof w)) {
+            return false;
+        }
+        w wVar = (w) obj;
+        return p005kotlin.jvm.internal.s.g(this.f101167a, wVar.f101167a) && p005kotlin.jvm.internal.s.g(this.f101168b, wVar.f101168b) && this.f101169c == wVar.f101169c;
+    }
+
+    public final int hashCode() {
+        Double d14 = this.f101167a;
+        int iHashCode = (d14 == null ? 0 : d14.hashCode()) * 31;
+        Double d15 = this.f101168b;
+        return this.f101169c.hashCode() + ((iHashCode + (d15 != null ? d15.hashCode() : 0)) * 31);
+    }
+
+    public final String toString() {
+        StringBuilder sbI = tn.k.i("LegActivityDistanceDuration(distanceInMeters=", this.f101167a, this.f101168b, ", durationInSecs=", ", activityType=");
+        sbI.append(this.f101169c);
+        sbI.append(")");
+        return sbI.toString();
+    }
+
+    public w(Double d14, Double d15, x0 x0Var) {
+        x0Var.getClass();
+        this.f101167a = d14;
+        this.f101168b = d15;
+        this.f101169c = x0Var;
+    }
+
+    public w() {
+        this(null, null, null, 7, null);
+    }
+}

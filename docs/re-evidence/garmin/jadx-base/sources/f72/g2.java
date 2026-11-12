@@ -1,0 +1,121 @@
+package f72;
+
+/* JADX INFO: loaded from: classes9.dex */
+public final class g2 {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public static u4.d f69567a;
+
+    public static final u4.d a(t62.c cVar) {
+        cVar.getClass();
+        u4.d dVar = f69567a;
+        if (dVar != null) {
+            return dVar;
+        }
+        float f14 = (float) 24.0d;
+        g6.f.a aVar = g6.f.f75994b;
+        u4.d.a aVar2 = new u4.d.a("Hiccups", f14, f14, 24.0f, 24.0f, 0L, 0, true, 96, null);
+        o4.t1 t1Var = new o4.t1(o4.f0.d(4278190080L), null);
+        o4.u1.f129010b.getClass();
+        o4.v1.f129019b.getClass();
+        u4.e eVarK = b71.i.k(o4.h1.f128863b, 11.722f, 5.889f);
+        eVarK.e(0.461f, 0.0f, 0.834f, -0.267f, 0.834f, -0.595f);
+        eVarK.p(-2.7f);
+        eVarK.e(0.0f, -0.327f, -0.373f, -0.594f, -0.834f, -0.594f);
+        eVarK.e(-0.46f, 0.0f, -0.833f, 0.267f, -0.833f, 0.594f);
+        eVarK.p(2.7f);
+        eVarK.e(0.0f, 0.328f, 0.372f, 0.595f, 0.833f, 0.595f);
+        eVarK.c();
+        eVarK.k(11.722f, 11.444f);
+        eVarK.e(0.461f, 0.0f, 0.834f, -0.266f, 0.834f, -0.594f);
+        eVarK.p(-2.7f);
+        eVarK.e(0.0f, -0.328f, -0.373f, -0.594f, -0.834f, -0.594f);
+        eVarK.e(-0.46f, 0.0f, -0.833f, 0.266f, -0.833f, 0.594f);
+        eVarK.p(2.7f);
+        eVarK.e(0.0f, 0.328f, 0.372f, 0.594f, 0.833f, 0.594f);
+        v.e0.q(eVarK, 13.15f, 5.889f, 2.7f);
+        eVarK.e(0.328f, 0.0f, 0.595f, 0.372f, 0.595f, 0.833f);
+        eVarK.e(0.0f, 0.461f, -0.267f, 0.834f, -0.595f, 0.834f);
+        eVarK.h(-2.7f);
+        eVarK.e(-0.328f, 0.0f, -0.594f, -0.373f, -0.594f, -0.834f);
+        eVarK.e(0.0f, -0.46f, 0.266f, -0.833f, 0.594f, -0.833f);
+        eVarK.c();
+        eVarK.k(10.889f, 6.722f);
+        eVarK.e(0.0f, -0.46f, -0.267f, -0.833f, -0.595f, -0.833f);
+        eVarK.h(-2.7f);
+        eVarK.e(-0.327f, 0.0f, -0.594f, 0.372f, -0.594f, 0.833f);
+        eVarK.e(0.0f, 0.461f, 0.267f, 0.834f, 0.595f, 0.834f);
+        eVarK.h(2.7f);
+        eVarK.e(0.327f, 0.0f, 0.594f, -0.373f, 0.594f, -0.834f);
+        eVarK.c();
+        eVarK.k(7.556f, 13.15f);
+        eVarK.e(0.0f, -0.328f, 0.372f, -0.594f, 0.833f, -0.594f);
+        eVarK.e(0.461f, 0.0f, 0.833f, 0.266f, 0.833f, 0.594f);
+        eVarK.p(2.7f);
+        eVarK.e(0.0f, 0.328f, -0.372f, 0.594f, -0.833f, 0.594f);
+        eVarK.e(-0.461f, 0.0f, -0.833f, -0.266f, -0.833f, -0.594f);
+        v.e0.t(eVarK, -2.7f, 8.389f, 18.111f);
+        eVarK.e(-0.461f, 0.0f, -0.833f, 0.267f, -0.833f, 0.595f);
+        eVarK.p(2.7f);
+        eVarK.e(0.0f, 0.327f, 0.372f, 0.594f, 0.833f, 0.594f);
+        eVarK.e(0.461f, 0.0f, 0.833f, -0.267f, 0.833f, -0.594f);
+        eVarK.p(-2.7f);
+        eVarK.e(0.0f, -0.328f, -0.372f, -0.595f, -0.833f, -0.595f);
+        eVarK.c();
+        eVarK.k(12.517f, 16.444f);
+        eVarK.e(0.328f, 0.0f, 0.594f, 0.373f, 0.594f, 0.834f);
+        eVarK.e(0.0f, 0.46f, -0.267f, 0.833f, -0.594f, 0.833f);
+        eVarK.h(-2.7f);
+        eVarK.e(-0.328f, 0.0f, -0.595f, -0.372f, -0.595f, -0.833f);
+        eVarK.e(0.0f, -0.461f, 0.267f, -0.834f, 0.595f, -0.834f);
+        eVarK.h(2.7f);
+        eVarK.c();
+        eVarK.k(6.961f, 16.444f);
+        eVarK.h(-2.7f);
+        eVarK.e(-0.328f, 0.0f, -0.594f, 0.373f, -0.594f, 0.834f);
+        eVarK.e(0.0f, 0.46f, 0.266f, 0.833f, 0.594f, 0.833f);
+        eVarK.h(2.7f);
+        eVarK.e(0.328f, 0.0f, 0.595f, -0.372f, 0.595f, -0.833f);
+        eVarK.e(0.0f, -0.461f, -0.267f, -0.834f, -0.595f, -0.834f);
+        eVarK.c();
+        eVarK.k(16.082f, 10.433f);
+        eVarK.b(0.506f, 0.506f, 0.363f, false, true, -0.1f);
+        eVarK.b(0.506f, 0.506f, 0.555f, false, true, 0.422f);
+        eVarK.p(1.934f);
+        eVarK.b(0.556f, 0.556f, -1.111f, false, true, 0.0f);
+        eVarK.p(-1.934f);
+        eVarK.b(0.505f, 0.505f, 0.193f, false, true, -0.322f);
+        eVarK.c();
+        eVarK.k(16.445f, 14.222f);
+        eVarK.b(0.506f, 0.506f, -0.556f, false, false, 0.422f);
+        eVarK.p(1.934f);
+        eVarK.b(0.556f, 0.556f, 1.111f, true, false, 0.0f);
+        eVarK.p(-1.934f);
+        eVarK.b(0.505f, 0.505f, -0.555f, false, false, -0.422f);
+        v.e0.q(eVarK, 17.422f, 13.111f, 1.934f);
+        eVarK.b(0.556f, 0.556f, 0.0f, true, true, 1.111f);
+        eVarK.h(-1.934f);
+        eVarK.b(0.555f, 0.555f, 0.0f, true, true, -1.11f);
+        v.e0.q(eVarK, 15.467f, 13.111f, -1.934f);
+        eVarK.b(0.555f, 0.555f, 0.0f, true, false, 1.111f);
+        eVarK.h(1.934f);
+        eVarK.b(0.555f, 0.555f, 0.0f, true, false, -1.11f);
+        eVarK.c();
+        eVarK.k(6.517f, 10.333f);
+        eVarK.b(1.111f, 1.111f, -2.222f, true, true, 0.0f);
+        eVarK.b(1.111f, 1.111f, 2.222f, false, true, 0.0f);
+        eVarK.c();
+        eVarK.k(19.222f, 9.778f);
+        eVarK.b(1.111f, 1.111f, 0.0f, true, false, -2.222f);
+        eVarK.b(1.111f, 1.111f, 0.0f, false, false, 2.222f);
+        eVarK.c();
+        eVarK.k(17.0f, 20.333f);
+        eVarK.b(1.111f, 1.111f, -2.222f, true, true, 0.0f);
+        eVarK.b(1.111f, 1.111f, 2.222f, false, true, 0.0f);
+        eVarK.c();
+        u4.d.a.b(aVar2, eVarK.f168407a, 0, t1Var, 1.0f, null, 0.0f, 0, 4.0f);
+        u4.d dVarC = aVar2.c();
+        f69567a = dVarC;
+        return dVarC;
+    }
+}

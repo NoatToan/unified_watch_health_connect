@@ -1,0 +1,9 @@
+package com.google.android.gms.maps.internal;
+
+import android.os.IInterface;
+import com.google.android.gms.maps.model.PointOfInterest;
+
+/* JADX INFO: loaded from: classes14.dex */
+public interface zzbf extends IInterface {
+    void zzb(PointOfInterest pointOfInterest);
+}

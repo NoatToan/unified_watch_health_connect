@@ -1,0 +1,124 @@
+package u62;
+
+/* JADX INFO: loaded from: classes9.dex */
+public final class w1 {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public static u4.d f169046a;
+
+    public static final u4.d a(t62.a aVar) {
+        aVar.getClass();
+        u4.d dVar = f169046a;
+        if (dVar != null) {
+            return dVar;
+        }
+        float f14 = (float) 24.0d;
+        g6.f.a aVar2 = g6.f.f75994b;
+        u4.d.a aVar3 = new u4.d.a("Horseback", f14, f14, 24.0f, 24.0f, 0L, 0, true, 96, null);
+        o4.t1 t1Var = new o4.t1(o4.f0.d(4278190080L), null);
+        o4.u1.f129010b.getClass();
+        o4.v1.f129019b.getClass();
+        u4.e eVarK = b71.i.k(o4.h1.f128863b, 18.8579f, 6.1812f);
+        eVarK.d(19.085f, 6.2351f, 19.2959f, 6.3428f, 19.4726f, 6.4955f);
+        eVarK.i(21.9126f, 8.754f);
+        eVarK.d(22.01f, 8.8535f, 22.0286f, 9.0164f, 21.9552f, 9.1347f);
+        eVarK.i(21.4783f, 9.8744f);
+        eVarK.d(21.3969f, 9.9908f, 21.2354f, 10.0411f, 21.1015f, 9.9933f);
+        eVarK.i(20.119f, 9.4599f);
+        eVarK.d(20.0188f, 9.4213f, 19.3296f, 8.9798f, 19.2247f, 9.0029f);
+        eVarK.d(19.1197f, 9.0255f, 19.0232f, 9.0778f, 18.9481f, 9.1546f);
+        eVarK.i(18.7528f, 9.681f);
+        eVarK.d(18.5526f, 10.3911f, 17.9481f, 12.9238f, 17.4282f, 14.0038f);
+        eVarK.d(17.0914f, 15.017f, 16.2624f, 15.4046f, 15.8617f, 15.611f);
+        eVarK.i(15.3848f, 18.1223f);
+        eVarK.i(13.2501f, 19.7999f);
+        eVarK.o(19.0186f);
+        eVarK.i(14.5936f, 17.5364f);
+        eVarK.d(14.4215f, 17.034f, 14.2162f, 16.5431f, 13.9789f, 16.068f);
+        eVarK.i(13.6834f, 15.8678f);
+        eVarK.g(13.0548f);
+        eVarK.i(14.2456f, 11.8077f);
+        eVarK.i(14.3695f, 11.3883f);
+        eVarK.i(14.0503f, 11.083f);
+        eVarK.i(13.2164f, 10.3106f);
+        eVarK.d(13.4902f, 10.2741f, 13.7492f, 10.1638f, 13.965f, 9.9914f);
+        eVarK.i(14.8345f, 9.9586f);
+        eVarK.g(15.3114f);
+        eVarK.i(16.4169f, 8.3901f);
+        eVarK.i(16.9205f, 7.5771f);
+        eVarK.d(16.9205f, 7.5771f, 17.4501f, 6.6302f, 17.566f, 6.5192f);
+        eVarK.d(17.6817f, 6.4087f, 17.9648f, 6.2443f, 18.2005f, 6.1901f);
+        eVarK.i(18.6764f, 5.5714f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarK, 19.0482f, 5.504f, 18.8579f, 6.1812f);
+        u4.d.a.b(aVar3, eVarK.f168407a, 0, t1Var, 1.0f, null, 0.0f, 0, 4.0f);
+        o4.t1 t1Var2 = new o4.t1(o4.f0.d(4278190080L), null);
+        u4.e eVarM = com.nimbusds.jose.shaded.gson.internal.a.m(17.792f, 17.0882f, 16.4526f, 19.7999f);
+        eVarM.i(15.8666f, 19.1178f);
+        eVarM.i(16.7292f, 16.9732f);
+        eVarM.i(16.4149f, 16.6589f);
+        eVarM.i(16.6142f, 16.1255f);
+        eVarM.i(17.0911f, 15.7627f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarM, 17.2338f, 15.6586f, 17.792f, 17.0882f);
+        u4.d.a.b(aVar3, eVarM.f168407a, 0, t1Var2, 1.0f, null, 0.0f, 0, 4.0f);
+        o4.t1 t1Var3 = new o4.t1(o4.f0.d(4278190080L), null);
+        u4.e eVarL = com.nimbusds.jose.shaded.gson.internal.a.l(8.5893f, 9.9725f);
+        eVarL.d(8.6451f, 10.2477f, 8.8035f, 10.491f, 9.0324f, 10.6536f);
+        eVarL.i(11.3297f, 12.3312f);
+        eVarL.i(10.9668f, 15.3869f);
+        eVarL.i(9.7037f, 14.791f);
+        eVarL.i(7.2875f, 17.0882f);
+        eVarL.i(9.2704f, 19.4995f);
+        eVarL.i(8.2928f, 19.562f);
+        eVarL.i(5.7101f, 16.9019f);
+        eVarL.i(6.997f, 15.2154f);
+        eVarL.i(6.3158f, 12.8319f);
+        eVarL.d(6.1794f, 12.337f, 6.242f, 11.8083f, 6.4913f, 11.3596f);
+        eVarL.d(6.3847f, 11.3398f, 6.2744f, 11.3545f, 6.177f, 11.4022f);
+        eVarL.i(4.2298f, 12.7556f);
+        eVarL.d(4.1036f, 12.8202f, 3.9614f, 12.8469f, 3.8203f, 12.8319f);
+        eVarL.i(2.6673f, 12.699f);
+        eVarL.i(2.0f, 11.6312f);
+        eVarL.i(3.6012f, 11.7978f);
+        eVarL.d(3.7657f, 11.8206f, 3.9335f, 11.7891f, 4.0781f, 11.7076f);
+        eVarL.i(5.8677f, 10.3582f);
+        eVarL.d(5.9994f, 10.2786f, 6.1685f, 10.2762f, 6.3109f, 10.3344f);
+        eVarL.i(6.9831f, 10.611f);
+        eVarL.d(7.1816f, 10.3885f, 7.4294f, 10.2157f, 7.7069f, 10.1064f);
+        eVarL.d(7.9869f, 9.9958f, 8.2891f, 9.9498f, 8.5893f, 9.9725f);
+        eVarL.c();
+        u4.d.a.b(aVar3, eVarL.f168407a, 0, t1Var3, 1.0f, null, 0.0f, 0, 4.0f);
+        o4.t1 t1Var4 = new o4.t1(o4.f0.d(4278190080L), null);
+        u4.e eVarJ = sn.a.j(9.7989f, 16.8691f, 12.1209f, 20.4781f, 11.0611f);
+        eVarJ.i(8.6557f, 17.0169f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarJ, 9.9377f, 15.7775f, 9.7989f, 16.8691f);
+        u4.d.a.b(aVar3, eVarJ.f168407a, 0, t1Var4, 1.0f, null, 0.0f, 0, 4.0f);
+        o4.t1 t1Var5 = new o4.t1(o4.f0.d(4278190080L), null);
+        u4.e eVarM2 = com.nimbusds.jose.shaded.gson.internal.a.m(12.6067f, 6.6362f, 13.8411f, 8.4199f);
+        eVarM2.i(15.4086f, 8.6856f);
+        eVarM2.i(14.9356f, 9.333f);
+        eVarM2.i(13.3404f, 9.3112f);
+        eVarM2.i(12.5353f, 8.2186f);
+        eVarM2.i(11.7441f, 9.9775f);
+        eVarM2.i(13.5307f, 11.6451f);
+        eVarM2.i(12.2874f, 15.8727f);
+        eVarM2.i(12.2111f, 16.1444f);
+        eVarM2.g(11.6291f);
+        eVarM2.i(11.6866f, 15.6675f);
+        eVarM2.i(12.1209f, 12.003f);
+        eVarM2.i(9.4846f, 10.0964f);
+        eVarM2.d(9.3154f, 9.9271f, 9.3024f, 9.6534f, 9.4608f, 9.4718f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarM2, 11.177f, 6.312f, 12.6067f, 6.6362f);
+        u4.d.a.b(aVar3, eVarM2.f168407a, 0, t1Var5, 1.0f, null, 0.0f, 0, 4.0f);
+        o4.t1 t1Var6 = new o4.t1(o4.f0.d(4278190080L), null);
+        u4.e eVarL2 = com.nimbusds.jose.shaded.gson.internal.a.l(12.7544f, 3.525f);
+        eVarL2.d(13.4188f, 3.525f, 13.9569f, 4.0633f, 13.9571f, 4.7277f);
+        eVarL2.d(13.9571f, 5.3921f, 13.4188f, 5.9313f, 12.7544f, 5.9313f);
+        eVarL2.d(12.0899f, 5.9313f, 11.5508f, 5.3921f, 11.5508f, 4.7277f);
+        eVarL2.d(11.5509f, 4.0633f, 12.09f, 3.525f, 12.7544f, 3.525f);
+        eVarL2.c();
+        u4.d.a.b(aVar3, eVarL2.f168407a, 0, t1Var6, 1.0f, null, 0.0f, 0, 4.0f);
+        u4.d dVarC = aVar3.c();
+        f169046a = dVarC;
+        return dVarC;
+    }
+}

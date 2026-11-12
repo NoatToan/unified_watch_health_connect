@@ -1,0 +1,73 @@
+package j20;
+
+import android.widget.TextView;
+import com.garmin.android.apps.connectmobile.a2;
+import com.garmin.android.apps.connectmobile.g3;
+import com.garmin.android.apps.connectmobile.i2;
+import lc.u0;
+import p005kotlin.Unit;
+
+/* JADX INFO: loaded from: classes7.dex */
+public final /* synthetic */ class z implements e23.l {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public final /* synthetic */ int f96633a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final /* synthetic */ com.garmin.android.apps.connectmobile.contacts.emergency.g f96634b;
+
+    public /* synthetic */ z(com.garmin.android.apps.connectmobile.contacts.emergency.g gVar, int i14) {
+        this.f96633a = i14;
+        this.f96634b = gVar;
+    }
+
+    /* JADX WARN: Multi-variable type inference failed */
+    @Override // e23.l
+    public final Object invoke(Object obj) {
+        TextView textView;
+        int i14 = this.f96633a;
+        com.garmin.android.apps.connectmobile.contacts.emergency.g gVar = this.f96634b;
+        g3 g3Var = (g3) obj;
+        switch (i14) {
+            case 0:
+                com.garmin.android.apps.connectmobile.contacts.emergency.g.a aVar = com.garmin.android.apps.connectmobile.contacts.emergency.g.f32695h;
+                int i15 = com.garmin.android.apps.connectmobile.contacts.emergency.g.b.f32703a[g3Var.f35300a.ordinal()];
+                if (i15 != 1) {
+                    if (i15 == 2) {
+                        gVar.v6();
+                    } else {
+                        if (i15 != 3) {
+                            u0.r();
+                            return null;
+                        }
+                        a2 a2Var = a2.SAFETY_FEATURES;
+                        i2.f36769a.getClass();
+                        i2.a.b(a2Var, "SendNewRequestFragment", "Status was ERROR while observing contactLiveData, not Status.SUCCESS");
+                        gVar.v6();
+                    }
+                }
+                return Unit.INSTANCE;
+            default:
+                com.garmin.android.apps.connectmobile.contacts.emergency.g.a aVar2 = com.garmin.android.apps.connectmobile.contacts.emergency.g.f32695h;
+                int i16 = com.garmin.android.apps.connectmobile.contacts.emergency.g.b.f32703a[g3Var.f35300a.ordinal()];
+                if (i16 == 1) {
+                    g22.e.l(gVar);
+                } else if (i16 == 2) {
+                    String str = (String) g3Var.f35301b;
+                    if (str != null && (textView = gVar.f32699d) != null) {
+                        textView.setText(str);
+                        gVar.v6();
+                    }
+                    g22.e.f(gVar);
+                } else {
+                    if (i16 != 3) {
+                        u0.r();
+                        return null;
+                    }
+                    g22.e.f(gVar);
+                    g22.e.c(gVar);
+                }
+                return Unit.INSTANCE;
+        }
+    }
+}

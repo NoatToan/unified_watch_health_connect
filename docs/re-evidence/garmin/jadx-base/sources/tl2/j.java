@@ -1,0 +1,6 @@
+package tl2;
+
+/* JADX INFO: loaded from: classes11.dex */
+public interface j {
+    void a(boolean z14);
+}

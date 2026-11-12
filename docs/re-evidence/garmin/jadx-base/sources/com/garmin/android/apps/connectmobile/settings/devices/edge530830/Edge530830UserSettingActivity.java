@@ -1,0 +1,68 @@
+package com.garmin.android.apps.connectmobile.settings.devices.edge530830;
+
+import android.content.Intent;
+import android.os.Bundle;
+import ch1.a1;
+import ch1.c3;
+import ch1.e6;
+import ch1.o1;
+import ch1.z4;
+import com.garmin.android.apps.connectmobile.R;
+import com.garmin.android.apps.connectmobile.settings.usersettings.heartratezones.ui.PowerZonesConfigActivity;
+import com.garmin.android.apps.connectmobile.settings.usersettings.heartratezones.ui.PowerZonesListActivity;
+import fb2.k;
+import ig1.h0;
+import ig1.p1;
+import ig1.s;
+import ig1.s0;
+import java.util.ArrayList;
+import java.util.Observable;
+import ng1.l0;
+import vk1.e;
+
+/* JADX INFO: loaded from: classes10.dex */
+public class Edge530830UserSettingActivity extends l0 {
+    @Override // ng1.l0
+    public final void da() {
+        ArrayList arrayList = this.f125961r;
+        arrayList.clear();
+        arrayList.add(new c3(this));
+        arrayList.add(new h0(this));
+        arrayList.add(new o1(this));
+        arrayList.add(new e6(this));
+        arrayList.add(new s(this));
+        arrayList.add(new k(this));
+        arrayList.add(new a1(this));
+        arrayList.add(new z4(this, true));
+        arrayList.add(new s0(this));
+        arrayList.add(new p1(this));
+        l0.ea(this, arrayList, this.f125995i, this);
+    }
+
+    @Override // ng1.l0, ng1.q, com.garmin.android.apps.connectmobile.c, com.garmin.android.apps.connectmobile.z1, com.garmin.android.apps.connectmobile.v, androidx.fragment.app.m, b.g, z6.e, android.app.Activity
+    public final void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        initActionBar(true, R.string.devices_settings_user_settings);
+    }
+
+    @Override // ng1.l0, java.util.Observer
+    public final void update(Observable observable, Object obj) {
+        if (obj != null) {
+            if (observable instanceof s0) {
+                Intent intent = new Intent();
+                intent.setClassName(this, this.f125993g.getF178180m());
+                intent.putExtra("GCM_deviceUnitID", this.f125992f);
+                startActivity(intent);
+                this.f125997k = true;
+            }
+            if (observable instanceof p1) {
+                if (this.f125998l) {
+                    PowerZonesListActivity.ca(this, this.f125992f);
+                } else {
+                    PowerZonesConfigActivity.ca(this, this.f125999m, e.CYCLING.name());
+                }
+                this.f125997k = true;
+            }
+        }
+    }
+}

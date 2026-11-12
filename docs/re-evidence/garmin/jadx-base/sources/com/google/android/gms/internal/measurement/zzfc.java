@@ -1,0 +1,40 @@
+package com.google.android.gms.internal.measurement;
+
+/* JADX INFO: loaded from: classes14.dex */
+public final class zzfc extends zzmb implements zznn {
+    public /* synthetic */ zzfc(byte[] bArr) {
+        super(zzfd.zzi);
+    }
+
+    public final int zza() {
+        return ((zzfd) this.zza).zzd();
+    }
+
+    public final zzfn zzb(int i14) {
+        return ((zzfd) this.zza).zze(i14);
+    }
+
+    public final zzfc zzc(int i14, zzfm zzfmVar) {
+        zzaX();
+        ((zzfd) this.zza).zzi(i14, (zzfn) zzfmVar.zzbc());
+        return this;
+    }
+
+    public final int zzd() {
+        return ((zzfd) this.zza).zzg();
+    }
+
+    public final zzff zze(int i14) {
+        return ((zzfd) this.zza).zzh(i14);
+    }
+
+    public final zzfc zzf(int i14, zzfe zzfeVar) {
+        zzaX();
+        ((zzfd) this.zza).zzj(i14, (zzff) zzfeVar.zzbc());
+        return this;
+    }
+
+    private zzfc() {
+        throw null;
+    }
+}

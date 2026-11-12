@@ -1,0 +1,34 @@
+package n3;
+
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes.dex */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0003\bÁ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, d2 = {"Ln3/l0;", "", "<init>", "()V", "material3"}, k = 1, mv = {2, 0, 0}, xi = 48)
+public final class l0 {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public static final l0 f123085a = new l0();
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public static final m f123086b;
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    public static final float f123087c;
+
+    /* JADX INFO: renamed from: d, reason: collision with root package name */
+    public static final m f123088d;
+
+    static {
+        m mVar = m.OnSurfaceVariant;
+        f123086b = mVar;
+        f123087c = 0.38f;
+        m mVar2 = m.OutlineVariant;
+        f123088d = mVar;
+        m mVar3 = m.Background;
+        m mVar4 = m.Background;
+        m mVar5 = m.Background;
+    }
+
+    private l0() {
+    }
+}

@@ -1,0 +1,60 @@
+package com.google.android.gms.internal.maps;
+
+import c22.t;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+/* JADX INFO: loaded from: classes14.dex */
+abstract class zzbe extends zzca {
+    private final int zza;
+    private int zzb;
+
+    public zzbe(int i14, int i15) {
+        zzbc.zzb(i15, i14, FirebaseAnalytics.Param.INDEX);
+        this.zza = i14;
+        this.zzb = i15;
+    }
+
+    @Override // java.util.Iterator, java.util.ListIterator
+    public final boolean hasNext() {
+        return this.zzb < this.zza;
+    }
+
+    @Override // java.util.ListIterator
+    public final boolean hasPrevious() {
+        return this.zzb > 0;
+    }
+
+    @Override // java.util.Iterator, java.util.ListIterator
+    public final Object next() {
+        if (!hasNext()) {
+            t.g();
+            return null;
+        }
+        int i14 = this.zzb;
+        this.zzb = i14 + 1;
+        return zza(i14);
+    }
+
+    @Override // java.util.ListIterator
+    public final int nextIndex() {
+        return this.zzb;
+    }
+
+    @Override // java.util.ListIterator
+    public final Object previous() {
+        if (!hasPrevious()) {
+            t.g();
+            return null;
+        }
+        int i14 = this.zzb - 1;
+        this.zzb = i14;
+        return zza(i14);
+    }
+
+    @Override // java.util.ListIterator
+    public final int previousIndex() {
+        return this.zzb - 1;
+    }
+
+    public abstract Object zza(int i14);
+}

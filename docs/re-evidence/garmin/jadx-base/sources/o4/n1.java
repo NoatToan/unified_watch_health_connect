@@ -1,0 +1,21 @@
+package o4;
+
+import android.graphics.RenderEffect;
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes.dex */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0003\b7\u0018\u00002\u00020\u0001B\t\b\u0004¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, d2 = {"Lo4/n1;", "", "<init>", "()V", "ui-graphics"}, k = 1, mv = {2, 1, 0}, xi = 48)
+public abstract class n1 {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public RenderEffect f128896a;
+
+    public /* synthetic */ n1(p005kotlin.jvm.internal.j jVar) {
+        this();
+    }
+
+    public abstract RenderEffect a();
+
+    private n1() {
+    }
+}

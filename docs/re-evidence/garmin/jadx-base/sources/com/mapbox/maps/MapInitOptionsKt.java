@@ -1,0 +1,27 @@
+package com.mapbox.maps;
+
+import android.content.Context;
+import ch.qos.logback.core.CoreConstants;
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes2.dex */
+@Metadata(d1 = {"\u0000\u0014\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0007\n\u0000\u001a\u0012\u0010\u0000\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0003\u001a\u0012\u0010\u0000\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0004\u001a\u00020\u0005¨\u0006\u0006"}, d2 = {"applyDefaultParams", "Lcom/mapbox/maps/MapOptions$Builder;", CoreConstants.CONTEXT_SCOPE_VALUE, "Landroid/content/Context;", "pixelRatio", "", "maps-sdk_release"}, k = 2, mv = {1, 7, 1}, xi = 48)
+public final class MapInitOptionsKt {
+    public static final MapOptions.Builder applyDefaultParams(MapOptions.Builder builder, float f14) {
+        builder.getClass();
+        builder.glyphsRasterizationOptions(new GlyphsRasterizationOptions.Builder().rasterizationMode(GlyphsRasterizationMode.IDEOGRAPHS_RASTERIZED_LOCALLY).fontFamily(FontUtils.INSTANCE.extractValidFont(null)).build());
+        builder.pixelRatio(f14);
+        builder.constrainMode(ConstrainMode.HEIGHT_ONLY);
+        builder.contextMode(ContextMode.UNIQUE);
+        builder.orientation(NorthOrientation.UPWARDS);
+        builder.viewportMode(ViewportMode.DEFAULT);
+        builder.crossSourceCollisions(Boolean.TRUE);
+        return builder;
+    }
+
+    public static final MapOptions.Builder applyDefaultParams(MapOptions.Builder builder, Context context) {
+        builder.getClass();
+        context.getClass();
+        return applyDefaultParams(builder, context.getResources().getDisplayMetrics().density);
+    }
+}

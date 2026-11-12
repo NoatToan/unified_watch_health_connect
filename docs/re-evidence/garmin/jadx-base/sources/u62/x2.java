@@ -1,0 +1,126 @@
+package u62;
+
+/* JADX INFO: loaded from: classes9.dex */
+public final class x2 {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public static u4.d f169054a;
+
+    public static final u4.d a(t62.a aVar) {
+        aVar.getClass();
+        u4.d dVar = f169054a;
+        if (dVar != null) {
+            return dVar;
+        }
+        float f14 = (float) 24.0d;
+        g6.f.a aVar2 = g6.f.f75994b;
+        u4.d.a aVar3 = new u4.d.a("Racquetball", f14, f14, 24.0f, 24.0f, 0L, 0, true, 96, null);
+        o4.t1 t1Var = new o4.t1(o4.f0.d(4278190080L), null);
+        o4.u1.f129010b.getClass();
+        o4.v1.f129019b.getClass();
+        u4.e eVarK = b71.i.k(o4.h1.f128863b, 15.2223f, 16.4853f);
+        eVarK.d(14.1626f, 17.5181f, 14.1626f, 19.1926f, 15.2223f, 20.2254f);
+        eVarK.d(16.282f, 21.2582f, 18.0001f, 21.2582f, 19.0598f, 20.2254f);
+        eVarK.d(20.1195f, 19.1926f, 20.1195f, 17.5181f, 19.0598f, 16.4853f);
+        eVarK.d(18.0001f, 15.4525f, 16.282f, 15.4525f, 15.2223f, 16.4853f);
+        eVarK.c();
+        u4.d.a.b(aVar3, eVarK.f168407a, 0, t1Var, 1.0f, null, 0.0f, 0, 4.0f);
+        o4.t1 t1Var2 = new o4.t1(o4.f0.d(4278190080L), null);
+        u4.e eVarL = com.nimbusds.jose.shaded.gson.internal.a.l(18.216f, 13.2648f);
+        eVarL.d(19.2775f, 12.5406f, 19.8083f, 12.1785f, 20.1398f, 11.7839f);
+        eVarL.d(21.1309f, 10.6047f, 21.2792f, 8.9541f, 20.5135f, 7.6249f);
+        eVarL.d(20.2573f, 7.1803f, 19.7992f, 6.7338f, 18.883f, 5.8408f);
+        eVarL.i(18.0852f, 5.0633f);
+        eVarL.d(17.169f, 4.1703f, 16.7109f, 3.7239f, 16.2547f, 3.4742f);
+        eVarL.d(14.891f, 2.7278f, 13.1972f, 2.8724f, 11.9873f, 3.8383f);
+        eVarL.d(11.5826f, 4.1615f, 11.2111f, 4.6788f, 10.468f, 5.7133f);
+        eVarL.d(10.001f, 6.3636f, 9.7675f, 6.6887f, 9.552f, 7.0229f);
+        eVarL.d(8.9229f, 7.9987f, 8.4048f, 9.0384f, 8.0068f, 10.1236f);
+        eVarL.d(7.8704f, 10.4952f, 7.7526f, 10.8751f, 7.5169f, 11.6348f);
+        eVarL.i(6.2982f, 15.5637f);
+        eVarL.d(6.1919f, 15.9066f, 6.1387f, 16.0781f, 6.0584f, 16.236f);
+        eVarL.d(5.9871f, 16.3763f, 5.9001f, 16.5084f, 5.7989f, 16.6299f);
+        eVarL.d(5.685f, 16.7669f, 5.5472f, 16.8854f, 5.2716f, 17.1224f);
+        eVarL.i(3.4435f, 18.6944f);
+        eVarL.d(3.2025f, 18.9017f, 3.0819f, 19.0054f, 3.0344f, 19.1293f);
+        eVarL.d(2.9926f, 19.2381f, 2.9888f, 19.3573f, 3.0235f, 19.4685f);
+        eVarL.d(3.063f, 19.595f, 3.1767f, 19.7058f, 3.404f, 19.9274f);
+        eVarL.i(3.6319f, 20.1495f);
+        eVarL.d(3.8593f, 20.3711f, 3.9729f, 20.4818f, 4.1027f, 20.5203f);
+        eVarL.d(4.2168f, 20.5542f, 4.3391f, 20.5505f, 4.4508f, 20.5098f);
+        eVarL.d(4.5779f, 20.4634f, 4.6843f, 20.346f, 4.897f, 20.111f);
+        eVarL.i(6.51f, 18.3293f);
+        eVarL.d(6.7531f, 18.0607f, 6.8747f, 17.9264f, 7.0152f, 17.8154f);
+        eVarL.d(7.1399f, 17.7168f, 7.2755f, 17.6319f, 7.4194f, 17.5625f);
+        eVarL.d(7.5814f, 17.4842f, 7.7574f, 17.4324f, 8.1092f, 17.3287f);
+        eVarL.i(12.1403f, 16.1409f);
+        eVarL.d(12.9199f, 15.9112f, 13.3097f, 15.7964f, 13.6911f, 15.6635f);
+        eVarL.d(14.8044f, 15.2756f, 15.8711f, 14.7706f, 16.8723f, 14.1575f);
+        eVarL.d(17.2152f, 13.9475f, 17.5488f, 13.7199f, 18.216f, 13.2648f);
+        hb.a.r(eVarL, 16.9491f, 6.2001f, 15.4142f, 7.6961f);
+        eVarL.i(14.596f, 6.8986f);
+        eVarL.i(15.9837f, 5.2757f);
+        eVarL.d(16.1974f, 5.4716f, 16.4951f, 5.7575f, 16.934f, 6.1853f);
+        r1.q2.y(eVarL, 16.9491f, 6.2001f, 17.7166f, 6.9481f);
+        eVarL.i(17.7317f, 6.9628f);
+        eVarL.d(18.1707f, 7.3907f, 18.4642f, 7.6809f, 18.6652f, 7.8891f);
+        eVarL.i(17.0f, 9.2416f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 16.1817f, 8.4441f, 17.7166f, 6.9481f);
+        eVarL.k(19.2643f, 8.7796f);
+        eVarL.d(19.4919f, 9.457f, 19.3559f, 10.2127f, 18.8804f, 10.7784f);
+        eVarL.d(18.8425f, 10.8235f, 18.7962f, 10.8707f, 18.7305f, 10.9281f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 17.7706f, 9.9927f, 19.2643f, 8.7796f);
+        eVarL.k(17.8555f, 11.5714f);
+        eVarL.d(17.6928f, 11.6841f, 17.5034f, 11.814f, 17.2823f, 11.9648f);
+        eVarL.d(16.6277f, 12.4115f, 16.3292f, 12.6146f, 16.0393f, 12.7935f);
+        eVarL.i(15.2588f, 12.0328f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 16.9334f, 10.6727f, 17.8555f, 11.5714f);
+        eVarL.k(15.0676f, 13.3425f);
+        eVarL.d(14.4477f, 13.6625f, 13.8045f, 13.9389f, 13.143f, 14.1693f);
+        eVarL.d(13.0614f, 14.1977f, 12.9792f, 14.2253f, 12.8901f, 14.2541f);
+        eVarL.i(12.7236f, 14.0919f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 14.4215f, 12.7128f, 15.0676f, 13.3425f);
+        eVarL.k(9.6387f, 15.2203f);
+        eVarL.i(9.0515f, 15.3934f);
+        eVarL.i(10.7877f, 13.7012f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 11.1156f, 14.0208f, 9.6387f, 15.2203f);
+        eVarL.k(8.2839f, 14.6454f);
+        eVarL.i(8.4614f, 14.0734f);
+        eVarL.i(9.6924f, 12.6337f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 10.0202f, 12.9532f, 8.2839f, 14.6454f);
+        eVarL.k(9.4529f, 10.9041f);
+        eVarL.d(9.4824f, 10.8173f, 9.5107f, 10.7372f, 9.5398f, 10.6577f);
+        eVarL.d(9.7763f, 10.013f, 10.0599f, 9.3861f, 10.3882f, 8.7818f);
+        eVarL.i(11.0345f, 9.4116f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 9.6195f, 11.0665f, 9.4529f, 10.9041f);
+        eVarL.k(10.9515f, 7.8348f);
+        eVarL.d(11.1351f, 7.5522f, 11.3435f, 7.2614f, 11.8018f, 6.6233f);
+        eVarL.d(11.9566f, 6.4078f, 12.0898f, 6.2233f, 12.2054f, 6.0647f);
+        eVarL.i(13.1277f, 6.9636f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 11.7322f, 8.5956f, 10.9515f, 7.8348f);
+        eVarL.k(12.8654f, 5.212f);
+        eVarL.d(12.9244f, 5.1479f, 12.9728f, 5.1028f, 13.0191f, 5.0658f);
+        eVarL.d(13.5996f, 4.6024f, 14.375f, 4.4698f, 15.0701f, 4.6917f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 13.8254f, 6.1475f, 12.8654f, 5.212f);
+        eVarL.k(14.4881f, 11.2817f);
+        eVarL.i(13.8792f, 10.6882f);
+        eVarL.i(15.4142f, 9.1921f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 16.1627f, 9.9216f, 14.4881f, 11.2817f);
+        eVarL.k(13.1117f, 9.9402f);
+        eVarL.i(12.5028f, 9.3467f);
+        eVarL.i(13.8983f, 7.7147f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 14.6467f, 8.4441f, 13.1117f, 9.9402f);
+        eVarL.k(11.8051f, 10.1628f);
+        eVarL.i(12.3442f, 10.6882f);
+        eVarL.i(10.7877f, 12.2051f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 10.3901f, 11.8176f, 11.8051f, 10.1628f);
+        eVarL.k(13.1117f, 11.4362f);
+        eVarL.i(13.6509f, 11.9617f);
+        eVarL.i(11.9529f, 13.3408f);
+        com.nimbusds.jose.shaded.gson.internal.a.z(eVarL, 11.5552f, 12.9532f, 13.1117f, 11.4362f);
+        u4.d.a.b(aVar3, eVarL.f168407a, 0, t1Var2, 1.0f, null, 0.0f, 0, 4.0f);
+        u4.d dVarC = aVar3.c();
+        f169054a = dVarC;
+        return dVarC;
+    }
+}

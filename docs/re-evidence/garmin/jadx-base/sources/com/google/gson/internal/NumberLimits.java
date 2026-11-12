@@ -1,0 +1,35 @@
+package com.google.gson.internal;
+
+import ch.qos.logback.core.spi.AbstractComponentTracker;
+import com.google.firebase.messaging.l;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+/* JADX INFO: loaded from: classes2.dex */
+public class NumberLimits {
+    private static final int MAX_NUMBER_STRING_LENGTH = 10000;
+
+    private NumberLimits() {
+    }
+
+    private static void checkNumberStringLength(String str) {
+        if (str.length() <= 10000) {
+            return;
+        }
+        l.l("Number string too large: ", str.substring(0, 30), "...");
+    }
+
+    public static BigDecimal parseBigDecimal(String str) {
+        checkNumberStringLength(str);
+        BigDecimal bigDecimal = new BigDecimal(str);
+        if (Math.abs(bigDecimal.scale()) < AbstractComponentTracker.LINGERING_TIMEOUT) {
+            return bigDecimal;
+        }
+        throw new NumberFormatException(fb1.c.n("Number has unsupported scale: ", str));
+    }
+
+    public static BigInteger parseBigInteger(String str) {
+        checkNumberStringLength(str);
+        return new BigInteger(str);
+    }
+}

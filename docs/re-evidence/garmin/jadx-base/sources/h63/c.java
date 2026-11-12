@@ -1,0 +1,41 @@
+package h63;
+
+import m63.q1;
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes3.dex */
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÁ\u0002\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0003\u0010\u0004¨\u0006\u0005"}, d2 = {"Lh63/c;", "Li63/c;", "Lb63/d;", "<init>", "()V", "kotlinx-datetime"}, k = 1, mv = {2, 1, 0}, xi = 48)
+public final class c implements i63.c<b63.d> {
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public static final c f82286b = new c();
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    public static final q1 f82287c = k63.k.a("kotlinx.datetime.DatePeriod", k63.d.i.f103232a);
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public final /* synthetic */ b f82288a = b.f82284a;
+
+    private c() {
+    }
+
+    @Override // i63.b
+    public final Object deserialize(l63.e eVar) {
+        eVar.getClass();
+        return this.f82288a.deserialize(eVar);
+    }
+
+    @Override // i63.i, i63.b
+    /* JADX INFO: renamed from: getDescriptor */
+    public final k63.e getF116202c() {
+        return f82287c;
+    }
+
+    @Override // i63.i
+    public final void serialize(l63.f fVar, Object obj) {
+        b63.d dVar = (b63.d) obj;
+        dVar.getClass();
+        this.f82288a.getClass();
+        fVar.p(dVar.toString());
+    }
+}

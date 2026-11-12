@@ -1,0 +1,48 @@
+package a11;
+
+import c22.l3;
+import i3.e5;
+import java.text.DecimalFormat;
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes9.dex */
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\u0010\b\n\u0002\b\u0005\b\u0087\b\u0018\u00002\u00020\u0001B\u0017\u0012\u0006\u0010\u0003\u001a\u00020\u0002\u0012\u0006\u0010\u0004\u001a\u00020\u0002¢\u0006\u0004\b\u0005\u0010\u0006¨\u0006\u0007"}, d2 = {"La11/h;", "", "", "numerator", "denominator", "<init>", "(II)V", "gcm-nutrition_vanillaRelease"}, k = 1, mv = {2, 3, 0}, xi = 48)
+public final /* data */ class h {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public final int f306a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final int f307b;
+
+    public h(int i14, int i15) {
+        this.f306a = i14;
+        this.f307b = i15;
+    }
+
+    public final double a() {
+        return ((double) this.f306a) / ((double) this.f307b);
+    }
+
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof h)) {
+            return false;
+        }
+        h hVar = (h) obj;
+        return this.f306a == hVar.f306a && this.f307b == hVar.f307b;
+    }
+
+    public final int hashCode() {
+        return Integer.hashCode(this.f307b) + (Integer.hashCode(this.f306a) * 31);
+    }
+
+    public final String toString() {
+        l3.f23124b.getClass();
+        DecimalFormat decimalFormat = l3.f23131i;
+        int i14 = this.f306a;
+        return i14 == 0 ? "" : e5.g(decimalFormat.format(Integer.valueOf(i14)), "/", decimalFormat.format(Integer.valueOf(this.f307b)));
+    }
+}

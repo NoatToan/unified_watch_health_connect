@@ -1,0 +1,31 @@
+package te2;
+
+import p005kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes11.dex */
+@Metadata(k = 3, mv = {2, 1, 0}, xi = 48)
+@v13.e(c = "com.garmin.android.library.mobileauth.biz.ITAutoLoginURIGenerator", f = "ITAutoLoginURIGenerator.kt", l = {275}, m = "portal")
+public final class l1 extends v13.c {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public /* synthetic */ Object f164162a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final /* synthetic */ f1 f164163b;
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    public int f164164c;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public l1(f1 f1Var, t13.d<? super l1> dVar) {
+        super(dVar);
+        this.f164163b = f1Var;
+    }
+
+    @Override // v13.a
+    public final Object invokeSuspend(Object obj) {
+        this.f164162a = obj;
+        this.f164164c |= Integer.MIN_VALUE;
+        return this.f164163b.c(null, null, null, null, null, null, null, this);
+    }
+}

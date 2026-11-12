@@ -1,0 +1,343 @@
+package com.google.crypto.tink.shaded.protobuf;
+
+import com.google.crypto.tink.shaded.protobuf.AbstractMessageLite;
+import com.google.crypto.tink.shaded.protobuf.AbstractMessageLite.Builder;
+import j20.x;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import r1.q2;
+import vb.h;
+
+/* JADX INFO: loaded from: classes2.dex */
+public abstract class AbstractMessageLite<MessageType extends AbstractMessageLite<MessageType, BuilderType>, BuilderType extends Builder<MessageType, BuilderType>> implements MessageLite {
+    protected int memoizedHashCode = 0;
+
+    public interface InternalOneOfEnum {
+        int getNumber();
+    }
+
+    @Deprecated
+    public static <T> void addAll(Iterable<T> iterable, Collection<? super T> collection) {
+        Builder.addAll((Iterable) iterable, (List) collection);
+    }
+
+    public static void checkByteStringIsUtf8(ByteString byteString) {
+        if (byteString.isValidUtf8()) {
+            return;
+        }
+        h.s("Byte string is not UTF-8.");
+    }
+
+    private String getSerializingExceptionMessage(String str) {
+        return "Serializing " + getClass().getName() + " to a " + str + " threw an IOException (should never happen).";
+    }
+
+    public int getMemoizedSerializedSize() {
+        throw new UnsupportedOperationException();
+    }
+
+    public int getSerializedSize(Schema schema) {
+        int memoizedSerializedSize = getMemoizedSerializedSize();
+        if (memoizedSerializedSize != -1) {
+            return memoizedSerializedSize;
+        }
+        int serializedSize = schema.getSerializedSize(this);
+        setMemoizedSerializedSize(serializedSize);
+        return serializedSize;
+    }
+
+    public UninitializedMessageException newUninitializedMessageException() {
+        return new UninitializedMessageException(this);
+    }
+
+    public void setMemoizedSerializedSize(int i14) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.MessageLite
+    public byte[] toByteArray() {
+        try {
+            byte[] bArr = new byte[getSerializedSize()];
+            CodedOutputStream codedOutputStreamNewInstance = CodedOutputStream.newInstance(bArr);
+            writeTo(codedOutputStreamNewInstance);
+            codedOutputStreamNewInstance.checkNoSpaceLeft();
+            return bArr;
+        } catch (IOException e4) {
+            q2.v(getSerializingExceptionMessage("byte array"), e4);
+            return null;
+        }
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.MessageLite
+    public ByteString toByteString() {
+        try {
+            ByteString.CodedBuilder codedBuilderNewCodedBuilder = ByteString.newCodedBuilder(getSerializedSize());
+            writeTo(codedBuilderNewCodedBuilder.getCodedOutput());
+            return codedBuilderNewCodedBuilder.build();
+        } catch (IOException e4) {
+            q2.v(getSerializingExceptionMessage("ByteString"), e4);
+            return null;
+        }
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.MessageLite
+    public void writeDelimitedTo(OutputStream outputStream) {
+        int serializedSize = getSerializedSize();
+        CodedOutputStream codedOutputStreamNewInstance = CodedOutputStream.newInstance(outputStream, CodedOutputStream.computePreferredBufferSize(CodedOutputStream.computeRawVarint32Size(serializedSize) + serializedSize));
+        codedOutputStreamNewInstance.writeRawVarint32(serializedSize);
+        writeTo(codedOutputStreamNewInstance);
+        codedOutputStreamNewInstance.flush();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.MessageLite
+    public void writeTo(OutputStream outputStream) {
+        CodedOutputStream codedOutputStreamNewInstance = CodedOutputStream.newInstance(outputStream, CodedOutputStream.computePreferredBufferSize(getSerializedSize()));
+        writeTo(codedOutputStreamNewInstance);
+        codedOutputStreamNewInstance.flush();
+    }
+
+    public static <T> void addAll(Iterable<T> iterable, List<? super T> list) {
+        Builder.addAll((Iterable) iterable, (List) list);
+    }
+
+    public static abstract class Builder<MessageType extends AbstractMessageLite<MessageType, BuilderType>, BuilderType extends Builder<MessageType, BuilderType>> implements MessageLite.Builder {
+        public static <T> void addAll(Iterable<T> iterable, List<? super T> list) {
+            Internal.checkNotNull(iterable);
+            if (!(iterable instanceof LazyStringList)) {
+                if (iterable instanceof PrimitiveNonBoxingCollection) {
+                    list.addAll((Collection) iterable);
+                    return;
+                } else {
+                    addAllCheckingNulls(iterable, list);
+                    return;
+                }
+            }
+            List<?> underlyingElements = ((LazyStringList) iterable).getUnderlyingElements();
+            LazyStringList lazyStringList = (LazyStringList) list;
+            int size = list.size();
+            for (Object obj : underlyingElements) {
+                if (obj == null) {
+                    String str = "Element at index " + (lazyStringList.size() - size) + " is null.";
+                    for (int size2 = lazyStringList.size() - 1; size2 >= size; size2--) {
+                        lazyStringList.remove(size2);
+                    }
+                    x.l(str);
+                    return;
+                }
+                if (obj instanceof ByteString) {
+                    lazyStringList.add((ByteString) obj);
+                } else {
+                    lazyStringList.add((String) obj);
+                }
+            }
+        }
+
+        private static <T> void addAllCheckingNulls(Iterable<T> iterable, List<? super T> list) {
+            if ((list instanceof ArrayList) && (iterable instanceof Collection)) {
+                ((ArrayList) list).ensureCapacity(((Collection) iterable).size() + list.size());
+            }
+            int size = list.size();
+            for (T t7 : iterable) {
+                if (t7 == null) {
+                    String str = "Element at index " + (list.size() - size) + " is null.";
+                    for (int size2 = list.size() - 1; size2 >= size; size2--) {
+                        list.remove(size2);
+                    }
+                    x.l(str);
+                    return;
+                }
+                list.add(t7);
+            }
+        }
+
+        private String getReadingExceptionMessage(String str) {
+            return "Reading " + getClass().getName() + " from a " + str + " threw an IOException (should never happen).";
+        }
+
+        public static UninitializedMessageException newUninitializedMessageException(MessageLite messageLite) {
+            return new UninitializedMessageException(messageLite);
+        }
+
+        @Override // 
+        /* JADX INFO: renamed from: clone */
+        public abstract BuilderType mo98clone();
+
+        public abstract BuilderType internalMergeFrom(MessageType messagetype);
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public boolean mergeDelimitedFrom(InputStream inputStream, ExtensionRegistryLite extensionRegistryLite) throws IOException {
+            int i14 = inputStream.read();
+            if (i14 == -1) {
+                return false;
+            }
+            mergeFrom((InputStream) new LimitedInputStream(inputStream, CodedInputStream.readRawVarint32(i14, inputStream)), extensionRegistryLite);
+            return true;
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public BuilderType mergeFrom(ByteString byteString) throws InvalidProtocolBufferException {
+            try {
+                CodedInputStream codedInputStreamNewCodedInput = byteString.newCodedInput();
+                mergeFrom(codedInputStreamNewCodedInput);
+                codedInputStreamNewCodedInput.checkLastTagWas(0);
+                return this;
+            } catch (InvalidProtocolBufferException e4) {
+                throw e4;
+            } catch (IOException e14) {
+                q2.v(getReadingExceptionMessage("ByteString"), e14);
+                return null;
+            }
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public abstract BuilderType mergeFrom(CodedInputStream codedInputStream, ExtensionRegistryLite extensionRegistryLite);
+
+        public static final class LimitedInputStream extends FilterInputStream {
+            private int limit;
+
+            public LimitedInputStream(InputStream inputStream, int i14) {
+                super(inputStream);
+                this.limit = i14;
+            }
+
+            @Override // java.io.FilterInputStream, java.io.InputStream
+            public int available() {
+                return Math.min(super.available(), this.limit);
+            }
+
+            @Override // java.io.FilterInputStream, java.io.InputStream
+            public int read(byte[] bArr, int i14, int i15) throws IOException {
+                int i16 = this.limit;
+                if (i16 <= 0) {
+                    return -1;
+                }
+                int i17 = super.read(bArr, i14, Math.min(i15, i16));
+                if (i17 >= 0) {
+                    this.limit -= i17;
+                }
+                return i17;
+            }
+
+            @Override // java.io.FilterInputStream, java.io.InputStream
+            public long skip(long j8) throws IOException {
+                long jSkip = super.skip(Math.min(j8, this.limit));
+                if (jSkip >= 0) {
+                    this.limit = (int) (((long) this.limit) - jSkip);
+                }
+                return jSkip;
+            }
+
+            @Override // java.io.FilterInputStream, java.io.InputStream
+            public int read() throws IOException {
+                if (this.limit <= 0) {
+                    return -1;
+                }
+                int i14 = super.read();
+                if (i14 >= 0) {
+                    this.limit--;
+                }
+                return i14;
+            }
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public boolean mergeDelimitedFrom(InputStream inputStream) {
+            return mergeDelimitedFrom(inputStream, ExtensionRegistryLite.getEmptyRegistry());
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public BuilderType mergeFrom(CodedInputStream codedInputStream) {
+            return (BuilderType) mergeFrom(codedInputStream, ExtensionRegistryLite.getEmptyRegistry());
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public BuilderType mergeFrom(ByteString byteString, ExtensionRegistryLite extensionRegistryLite) throws InvalidProtocolBufferException {
+            try {
+                CodedInputStream codedInputStreamNewCodedInput = byteString.newCodedInput();
+                mergeFrom(codedInputStreamNewCodedInput, extensionRegistryLite);
+                codedInputStreamNewCodedInput.checkLastTagWas(0);
+                return this;
+            } catch (InvalidProtocolBufferException e4) {
+                throw e4;
+            } catch (IOException e14) {
+                q2.v(getReadingExceptionMessage("ByteString"), e14);
+                return null;
+            }
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public BuilderType mergeFrom(byte[] bArr) {
+            return (BuilderType) mergeFrom(bArr, 0, bArr.length);
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public BuilderType mergeFrom(byte[] bArr, int i14, int i15) throws InvalidProtocolBufferException {
+            try {
+                CodedInputStream codedInputStreamNewInstance = CodedInputStream.newInstance(bArr, i14, i15);
+                mergeFrom(codedInputStreamNewInstance);
+                codedInputStreamNewInstance.checkLastTagWas(0);
+                return this;
+            } catch (InvalidProtocolBufferException e4) {
+                throw e4;
+            } catch (IOException e14) {
+                q2.v(getReadingExceptionMessage("byte array"), e14);
+                return null;
+            }
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public BuilderType mergeFrom(byte[] bArr, ExtensionRegistryLite extensionRegistryLite) {
+            return (BuilderType) mergeFrom(bArr, 0, bArr.length, extensionRegistryLite);
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public BuilderType mergeFrom(byte[] bArr, int i14, int i15, ExtensionRegistryLite extensionRegistryLite) throws InvalidProtocolBufferException {
+            try {
+                CodedInputStream codedInputStreamNewInstance = CodedInputStream.newInstance(bArr, i14, i15);
+                mergeFrom(codedInputStreamNewInstance, extensionRegistryLite);
+                codedInputStreamNewInstance.checkLastTagWas(0);
+                return this;
+            } catch (InvalidProtocolBufferException e4) {
+                throw e4;
+            } catch (IOException e14) {
+                q2.v(getReadingExceptionMessage("byte array"), e14);
+                return null;
+            }
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public BuilderType mergeFrom(InputStream inputStream) {
+            CodedInputStream codedInputStreamNewInstance = CodedInputStream.newInstance(inputStream);
+            mergeFrom(codedInputStreamNewInstance);
+            codedInputStreamNewInstance.checkLastTagWas(0);
+            return this;
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public BuilderType mergeFrom(InputStream inputStream, ExtensionRegistryLite extensionRegistryLite) {
+            CodedInputStream codedInputStreamNewInstance = CodedInputStream.newInstance(inputStream);
+            mergeFrom(codedInputStreamNewInstance, extensionRegistryLite);
+            codedInputStreamNewInstance.checkLastTagWas(0);
+            return this;
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.MessageLite.Builder
+        public BuilderType mergeFrom(MessageLite messageLite) {
+            if (getDefaultInstanceForType().getClass().isInstance(messageLite)) {
+                return (BuilderType) internalMergeFrom((AbstractMessageLite) messageLite);
+            }
+            h.s("mergeFrom(MessageLite) can only merge messages of the same type.");
+            return null;
+        }
+
+        @Deprecated
+        public static <T> void addAll(Iterable<T> iterable, Collection<? super T> collection) {
+            addAll((Iterable) iterable, (List) collection);
+        }
+    }
+}

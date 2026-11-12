@@ -1,0 +1,55 @@
+package com.nimbusds.jose.jwk.source;
+
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jose.shaded.jcip.ThreadSafe;
+import com.nimbusds.jose.util.events.EventListener;
+import java.util.Objects;
+
+/* JADX INFO: loaded from: classes3.dex */
+@ThreadSafe
+public class RetryingJWKSetSource<C extends SecurityContext> extends JWKSetSourceWrapper<C> {
+    private final EventListener<RetryingJWKSetSource<C>, C> eventListener;
+
+    public static class RetrialEvent<C extends SecurityContext> extends AbstractJWKSetSourceEvent<RetryingJWKSetSource<C>, C> {
+        private final Exception exception;
+
+        private RetrialEvent(RetryingJWKSetSource<C> retryingJWKSetSource, Exception exc, C c14) {
+            super(retryingJWKSetSource, c14);
+            Objects.requireNonNull(exc);
+            this.exception = exc;
+        }
+
+        @Override // com.nimbusds.jose.jwk.source.AbstractJWKSetSourceEvent, com.nimbusds.jose.util.events.Event
+        public /* bridge */ /* synthetic */ SecurityContext getContext() {
+            return super.getContext();
+        }
+
+        public Exception getException() {
+            return this.exception;
+        }
+
+        @Override // com.nimbusds.jose.jwk.source.AbstractJWKSetSourceEvent, com.nimbusds.jose.util.events.Event
+        public /* bridge */ /* synthetic */ JWKSetSource getSource() {
+            return super.getSource();
+        }
+    }
+
+    public RetryingJWKSetSource(JWKSetSource<C> jWKSetSource, EventListener<RetryingJWKSetSource<C>, C> eventListener) {
+        super(jWKSetSource);
+        this.eventListener = eventListener;
+    }
+
+    @Override // com.nimbusds.jose.jwk.source.JWKSetSource
+    public JWKSet getJWKSet(JWKSetCacheRefreshEvaluator jWKSetCacheRefreshEvaluator, long j8, C c14) {
+        try {
+            return getSource().getJWKSet(jWKSetCacheRefreshEvaluator, j8, c14);
+        } catch (JWKSetUnavailableException e4) {
+            EventListener<RetryingJWKSetSource<C>, C> eventListener = this.eventListener;
+            if (eventListener != null) {
+                eventListener.notify(new RetrialEvent(e4, c14));
+            }
+            return getSource().getJWKSet(jWKSetCacheRefreshEvaluator, j8, c14);
+        }
+    }
+}

@@ -1,0 +1,6 @@
+package androidx.core.view;
+
+/* JADX INFO: loaded from: classes.dex */
+public interface b0 {
+    e onReceiveContent(e eVar);
+}

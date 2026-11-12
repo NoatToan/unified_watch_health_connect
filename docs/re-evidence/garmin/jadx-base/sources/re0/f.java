@@ -1,0 +1,56 @@
+package re0;
+
+import o53.i0;
+import p005kotlin.Metadata;
+import p005kotlin.Unit;
+
+/* JADX INFO: loaded from: classes8.dex */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\u0010\u0002\u001a\b\u0012\u0004\u0012\u00020\u00010\u0000H\n¢\u0006\u0004\b\u0002\u0010\u0003"}, d2 = {"Lc83/a0;", "Lue0/j;", "<anonymous>", "()Lc83/a0;"}, k = 3, mv = {2, 3, 0})
+@v13.e(c = "com.garmin.android.apps.connectmobile.domainfamilyaccounts.api.AccountSharingRepository$sendInvite$2", f = "AccountSharingRepository.kt", l = {21}, m = "invokeSuspend", v = 2)
+public final class f extends v13.i implements e23.l<t13.d<? super c83.a0<ue0.j>>, Object> {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public int f152120a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    public final /* synthetic */ g f152121b;
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    public final /* synthetic */ long f152122c;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public f(g gVar, long j8, t13.d<? super f> dVar) {
+        super(1, dVar);
+        this.f152121b = gVar;
+        this.f152122c = j8;
+    }
+
+    @Override // v13.a
+    public final t13.d<Unit> create(t13.d<?> dVar) {
+        return new f(this.f152121b, this.f152122c, dVar);
+    }
+
+    @Override // e23.l
+    public final Object invoke(t13.d<? super c83.a0<ue0.j>> dVar) {
+        return ((f) create(dVar)).invokeSuspend(Unit.INSTANCE);
+    }
+
+    @Override // v13.a
+    public final Object invokeSuspend(Object obj) {
+        u13.a aVar = u13.a.COROUTINE_SUSPENDED;
+        int i14 = this.f152120a;
+        if (i14 != 0) {
+            if (i14 == 1) {
+                o13.r.b(obj);
+                return obj;
+            }
+            vb.h.z("call to 'resume' before 'invoke' with coroutine");
+            return null;
+        }
+        o13.r.b(obj);
+        i0<c83.a0<ue0.j>> i0VarA = this.f152121b.f152127a.a(new ue0.o(this.f152122c, null, 2, null));
+        this.f152120a = 1;
+        Object objAwait = i0VarA.await(this);
+        return objAwait == aVar ? aVar : objAwait;
+    }
+}

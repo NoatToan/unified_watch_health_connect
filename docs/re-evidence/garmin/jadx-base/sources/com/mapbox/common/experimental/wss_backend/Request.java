@@ -1,0 +1,145 @@
+package com.mapbox.common.experimental.wss_backend;
+
+import com.google.protobuf.a;
+import com.mapbox.bindgen.RecordUtils;
+import com.mapbox.common.BaseMapboxInitializer;
+import com.mapbox.common.MapboxSDKCommonInitializerImpl;
+import com.mapbox.common.NetworkRestriction;
+import j20.x;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Objects;
+
+/* JADX INFO: loaded from: classes2.dex */
+public class Request implements Serializable {
+    private final int flags;
+    private HashMap<String, String> headers;
+    private final NetworkRestriction networkRestriction;
+    private final long timeout;
+    private final String url;
+
+    public static final class Builder {
+        private HashMap<String, String> headers;
+        private String url;
+        private long timeout = 0;
+        private NetworkRestriction networkRestriction = NetworkRestriction.NONE;
+        private int flags = 0;
+
+        public Request build() {
+            if (this.url == null) {
+                x.l("url shouldn't be null");
+                return null;
+            }
+            if (this.headers == null) {
+                x.l("headers shouldn't be null");
+                return null;
+            }
+            if (this.networkRestriction != null) {
+                return new Request(this.url, this.headers, this.timeout, this.networkRestriction, this.flags);
+            }
+            x.l("networkRestriction shouldn't be null");
+            return null;
+        }
+
+        public Builder flags(int i14) {
+            this.flags = i14;
+            return this;
+        }
+
+        public Builder headers(HashMap<String, String> map) {
+            this.headers = map;
+            return this;
+        }
+
+        public Builder networkRestriction(NetworkRestriction networkRestriction) {
+            this.networkRestriction = networkRestriction;
+            return this;
+        }
+
+        public Builder timeout(long j8) {
+            this.timeout = j8;
+            return this;
+        }
+
+        public Builder url(String str) {
+            this.url = str;
+            return this;
+        }
+    }
+
+    static {
+        BaseMapboxInitializer.init(MapboxSDKCommonInitializerImpl.class);
+    }
+
+    private Request(String str, HashMap<String, String> map) {
+        this.url = str;
+        this.headers = map;
+        this.timeout = 0L;
+        this.networkRestriction = NetworkRestriction.NONE;
+        this.flags = 0;
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Request request = (Request) obj;
+        return Objects.equals(this.url, request.url) && Objects.equals(this.headers, request.headers) && this.timeout == request.timeout && Objects.equals(this.networkRestriction, request.networkRestriction) && this.flags == request.flags;
+    }
+
+    public int getFlags() {
+        return this.flags;
+    }
+
+    public HashMap<String, String> getHeaders() {
+        return this.headers;
+    }
+
+    public NetworkRestriction getNetworkRestriction() {
+        return this.networkRestriction;
+    }
+
+    public long getTimeout() {
+        return this.timeout;
+    }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public int hashCode() {
+        return Objects.hash(this.url, this.headers, Long.valueOf(this.timeout), this.networkRestriction, Integer.valueOf(this.flags));
+    }
+
+    public void setHeaders(HashMap<String, String> map) {
+        this.headers = map;
+    }
+
+    public Builder toBuilder() {
+        return new Builder().url(this.url).headers(this.headers).timeout(this.timeout).networkRestriction(this.networkRestriction).flags(this.flags);
+    }
+
+    public String toString() {
+        StringBuilder sb3 = new StringBuilder("[url: ");
+        a.k(this.url, ", headers: ", sb3);
+        sb3.append(RecordUtils.fieldToString(this.headers));
+        sb3.append(", timeout: ");
+        a.h(this.timeout, ", networkRestriction: ", sb3);
+        sb3.append(RecordUtils.fieldToString(this.networkRestriction));
+        sb3.append(", flags: ");
+        sb3.append(RecordUtils.fieldToString(Integer.valueOf(this.flags)));
+        sb3.append("]");
+        return sb3.toString();
+    }
+
+    private Request(String str, HashMap<String, String> map, long j8, NetworkRestriction networkRestriction, int i14) {
+        this.url = str;
+        this.headers = map;
+        this.timeout = j8;
+        this.networkRestriction = networkRestriction;
+        this.flags = i14;
+    }
+}
