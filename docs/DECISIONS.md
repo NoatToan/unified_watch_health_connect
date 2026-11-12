@@ -2961,3 +2961,40 @@ yếu tố gamification nhẹ; xa hơn là community khoe trang bị. Cần Room
   số trần, status 147 có gợi ý "try again", status lạ vẫn giữ số gốc) — `core:ble` trước đây chưa có
   thư mục test nào. `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug`
   BUILD SUCCESSFUL.
+
+## Home/app-shell fixes batch — backfilled log (D-1190)
+
+- **D-1190** · 2026-11-11, log lùi 2026-11-12 · Races hiện khi mất kết nối + pill nav mặc định hiện/reset khi resume + bỏ "Xem tất cả" + rule ripple gốc — **Chốt**
+  **Đáng lẽ phải log ngay sau khi merge (commit `41e0bcf`) nhưng bị bỏ sót** — nhảy thẳng từ D-1187
+  sang D-1188 cho việc khác, nên code đang comment `D-1189` ở `ChromeRipple`/`NoRippleConfiguration`
+  (`core/designsystem/.../theme/Ripple.kt`) và ở các màn đã áp dụng ripple lại
+  (`MetricDataScreen.kt`/`MetricDetailScreen.kt`/`NotificationSettingsScreen.kt`/và đợt dọn thêm 5
+  module ở D-1189 thật) — **những comment "D-1189" đó đều đang trỏ nhầm sang quyết định này (D-1190)**,
+  không phải D-1189 thật (D-1189 là `friendlyConnectionFailureMessage` cho GATT status code, việc khác
+  hẳn). Không sửa lại hết các comment code cho khớp số (chi phí cao, không đáng) — ghi rõ ở đây để
+  người đọc sau không nhầm.
+  **4 việc gộp trong 1 batch** (user báo trong lúc review app thật):
+  1. **Races hiện kể cả không có watch kết nối**: điều tra thấy `HomeUiState` vẫn lên `Success` bình
+     thường (không bị kẹt Loading/Error như brief ban đầu nghi ngờ) — nguyên nhân thật là
+     `RacesState.Error` riêng (mạng không vào được `noattoan.github.io` lúc đó, xem thêm bối cảnh ở
+     D-1188). Không có code nào bị sửa sai hướng vì agent dừng đúng lúc theo chỉ đạo.
+  2. **Bỏ "Xem tất cả" (`AllMetricsRoute`/`AllMetricsScreen`)** khỏi Home — Home giờ chỉ hiện card có
+     data, ẩn phần còn lại vĩnh viễn (không còn escape-hatch cho user thường). Thêm toggle debug-only
+     "Show empty metric cards" trong Profile's Developer section (`UserPreferences.showEmptyMetricCards`,
+     persist qua DataStore) — chỉ hiện ở debug/androidTest build, đúng yêu cầu "chỉ chế độ debug mới
+     show data rỗng".
+  3. **Pill bottom nav**: mặc định `pillVisible = true` đã đúng từ đầu, nhưng thêm
+     `LaunchedEffect(onMainPager)` reset về `true` khi vào lại main pager, và
+     `LifecycleEventObserver` reset về `true` ở `ON_RESUME` (background → foreground) — theo đúng yêu
+     cầu bổ sung giữa chừng của user.
+  4. **No-ripple-by-default cho screen content**: `CompositionLocalProvider(LocalRippleConfiguration
+     provides NoRippleConfiguration)` bọc `UnifiedHealthNavHost` (app module) — mọi nội dung màn hình
+     mất ripple mặc định; `PillBottomNavigation` nằm ngoài provider này (đã `indication = null` sẵn từ
+     D-1091) nên không ảnh hưởng. `ChromeRipple{}` (`core/designsystem`) phục hồi ripple cho back
+     button ở từng `TopAppBar` — ban đầu chỉ áp dụng được ở `feature/home`/`feature/profile` (2 module
+     agent được phép sửa lúc đó), 5 module còn lại (activity/devices/races/training/gear) được dọn nốt
+     sau đó thật sự dưới số **D-1189** (xem entry riêng).
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug` BUILD
+  SUCCESSFUL, 528 test `failures=0 errors=0`. Không có thiết bị thật khả dụng lúc agent chạy (mất kết
+  nối adb giữa chừng — xem D-1188) nên không chụp màn hình xác nhận trực quan lúc đó; đã xác nhận lại
+  bằng mắt trên máy thật khác hôm sau (2026-11-12, không lỗi/crash khi mở app).
