@@ -43,6 +43,7 @@ fun HomeTabContent(
     onOpenRaces: () -> Unit,
     onOpenRaceDetail: (String) -> Unit,
     onOpenTraining: () -> Unit,
+    onOpenGear: () -> Unit,
 ) {
     HomeRoute(
         onMetricClick = onMetricClick,
@@ -51,6 +52,7 @@ fun HomeTabContent(
         onOpenRaces = onOpenRaces,
         onOpenRaceDetail = onOpenRaceDetail,
         onOpenTraining = onOpenTraining,
+        onOpenGear = onOpenGear,
     )
 }
 

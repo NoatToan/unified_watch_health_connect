@@ -46,6 +46,7 @@ fun NavGraphBuilder.mainPagerScreen(
                     onOpenRaces = onOpenRaces,
                     onOpenRaceDetail = onOpenRaceDetail,
                     onOpenTraining = onOpenTraining,
+                    onOpenGear = onOpenGear,
                 )
                 TopLevelDestination.ACTIVITY -> ActivityTabContent(onWorkoutClick = onOpenWorkoutClick)
                 TopLevelDestination.DEVICES -> DevicesTabContent(onOpenDevice = onOpenDeviceClick)

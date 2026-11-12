@@ -24,8 +24,12 @@ import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,7 +37,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,10 +54,17 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.component.TrainingHeroImage
 import com.unified.health.core.designsystem.theme.ChromeRipple
 import com.unified.health.core.designsystem.theme.Spacing
+import com.unified.health.core.model.ActiveTrainingPlan
+import com.unified.health.core.model.TrainingPlanId
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
 
 /**
  * "Chế độ luyện tập" — a static reference guide, phrased like a short article rather than an
@@ -72,9 +85,37 @@ import com.unified.health.core.designsystem.theme.Spacing
  * collapsed; the narrative "why/how" text (unchanged content, just de-emphasized) only shows once
  * expanded.
  */
+/**
+ * Wires [TrainingPlanViewModel] (D-1190) for the two stateful bits this screen itself owns — the
+ * "Đang theo" banner and each [PlanCard]'s "Chọn kế hoạch này" action — same `XRoute` + internal
+ * `XScreen` split as [com.unified.health.feature.home.HomeRoute]/`HomeScreen`.
+ */
+@Composable
+internal fun TrainingRoute(
+    onBack: () -> Unit,
+    onOpenRunningForm: () -> Unit,
+    onOpenCalendar: () -> Unit,
+    viewModel: TrainingPlanViewModel = hiltViewModel(),
+) {
+    val activePlan by viewModel.activePlan.collectAsStateWithLifecycle()
+    TrainingScreen(
+        activePlan = activePlan,
+        onBack = onBack,
+        onOpenRunningForm = onOpenRunningForm,
+        onOpenCalendar = onOpenCalendar,
+        onSelectPlan = viewModel::selectPlan,
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun TrainingScreen(onBack: () -> Unit, onOpenRunningForm: () -> Unit) {
+internal fun TrainingScreen(
+    activePlan: ActiveTrainingPlan?,
+    onBack: () -> Unit,
+    onOpenRunningForm: () -> Unit,
+    onOpenCalendar: () -> Unit = {},
+    onSelectPlan: (TrainingPlanId, LocalDate) -> Unit = { _, _ -> },
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -95,9 +136,54 @@ internal fun TrainingScreen(onBack: () -> Unit, onOpenRunningForm: () -> Unit) {
             contentPadding = PaddingValues(vertical = Spacing.lg),
             verticalArrangement = Arrangement.spacedBy(Spacing.md),
         ) {
+            if (activePlan != null) {
+                item { ActivePlanBanner(activePlan, onClick = onOpenCalendar, modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.lg)) }
+            }
             item { RunningFormEntryCard(onClick = onOpenRunningForm, modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.lg)) }
             item { IntroSection() }
-            TRAINING_DISTANCE_SECTIONS.forEach { section -> distanceSectionItems(section) }
+            TRAINING_DISTANCE_SECTIONS.forEach { section -> distanceSectionItems(section, activePlan?.planId, onSelectPlan) }
+        }
+    }
+}
+
+/** "Đang theo: Novice 5K — tuần 3/8" — the entry point into [TrainingCalendarScreen] once a plan is
+ *  active, placed above everything else on this screen since it's the single most actionable thing
+ *  here for a user already following a plan. */
+@Composable
+private fun ActivePlanBanner(plan: ActiveTrainingPlan, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Card(
+        onClick = onClick,
+        modifier = modifier.testTag("training_active_plan_banner"),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+    ) {
+        Row(
+            Modifier.fillMaxWidth().padding(Spacing.lg),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(Spacing.md),
+        ) {
+            Icon(
+                Icons.Filled.CalendarMonth,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(32.dp),
+            )
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xxs)) {
+                Text(
+                    "Đang theo: ${plan.planId.displayName}",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+                Text(
+                    "Tuần ${plan.currentWeek()}/${plan.planId.totalWeeks} — xem lịch tập đầy đủ",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
+            Icon(
+                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
         }
     }
 }
@@ -207,7 +293,11 @@ private fun BulletText(bold: String, rest: String) {
 
 /** One distance's hero photo, heading, its plan cards, then its "Gợi ý chọn" line (when this distance
  *  has one). The hero sits directly above [SectionHeader] so the section reads as one visual block. */
-private fun LazyListScope.distanceSectionItems(section: DistanceSection) {
+private fun LazyListScope.distanceSectionItems(
+    section: DistanceSection,
+    activePlanId: TrainingPlanId?,
+    onSelectPlan: (TrainingPlanId, LocalDate) -> Unit,
+) {
     item {
         Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             TrainingHeroImage(
@@ -221,7 +311,7 @@ private fun LazyListScope.distanceSectionItems(section: DistanceSection) {
         }
     }
     items(section.plans, key = { "${section.id}_${it.id}" }) { plan ->
-        PlanCard(plan, modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.lg))
+        PlanCard(plan, activePlanId, onSelectPlan, modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.lg))
     }
     section.recommendation?.let { recommendation ->
         item {
@@ -241,9 +331,17 @@ private const val HeroAspectRatio = 16f / 9f
 
 /** One named plan ("Couch to 5K", "Hal Higdon Novice 1", …): its scannable facts ([FactChipsRow])
  *  always show; tap reveals [TrainingPlan.narrative], the longer "why/how" text — the only
- *  interactive/stateful bit of this whole screen besides [RunningFormEntryCard]. */
+ *  interactive/stateful bit of this whole screen besides [RunningFormEntryCard]. D-1190: the 4 Hal
+ *  Higdon Novice plans (and only those — [TrainingPlan.selectablePlanId] is null for every other plan
+ *  on this screen) also get a "Chọn kế hoạch này" action once expanded. */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PlanCard(plan: TrainingPlan, modifier: Modifier = Modifier) {
+private fun PlanCard(
+    plan: TrainingPlan,
+    activePlanId: TrainingPlanId?,
+    onSelectPlan: (TrainingPlanId, LocalDate) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     var expanded by rememberSaveable(plan.id) { mutableStateOf(false) }
     ElevatedCard(onClick = { expanded = !expanded }, modifier = modifier.testTag("training_plan_${plan.id}")) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
@@ -262,10 +360,88 @@ private fun PlanCard(plan: TrainingPlan, modifier: Modifier = Modifier) {
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+                plan.selectablePlanId?.let { planId ->
+                    SelectPlanAction(
+                        planId = planId,
+                        isActive = activePlanId == planId,
+                        anotherPlanAlreadyActive = activePlanId != null,
+                        onSelectPlan = onSelectPlan,
+                    )
+                }
             }
         }
     }
 }
+
+/** The "Chọn kế hoạch này" button + its 2 dialogs (replace-confirmation, then the start-date picker) —
+ *  D-1190. A different plan already active shows a confirmation first, since replacing it discards its
+ *  check-in progress ([TrainingPlanRepository.selectPlan]'s own doc); re-selecting the *same* plan
+ *  that's already active still confirms too (its start date — and so its whole day-by-day schedule —
+ *  may change), rather than special-casing "same id" as silently safe. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SelectPlanAction(
+    planId: TrainingPlanId,
+    isActive: Boolean,
+    anotherPlanAlreadyActive: Boolean,
+    onSelectPlan: (TrainingPlanId, LocalDate) -> Unit,
+) {
+    var showReplaceConfirm by rememberSaveable { mutableStateOf(false) }
+    var showDatePicker by rememberSaveable { mutableStateOf(false) }
+
+    if (isActive) {
+        Text(
+            "Đang theo kế hoạch này",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.testTag("training_plan_active_label_${planId.name}"),
+        )
+    } else {
+        Button(
+            onClick = { if (anotherPlanAlreadyActive) showReplaceConfirm = true else showDatePicker = true },
+            modifier = Modifier.testTag("training_select_plan_${planId.name}"),
+        ) { Text("Chọn kế hoạch này") }
+    }
+
+    if (showReplaceConfirm) {
+        AlertDialog(
+            onDismissRequest = { showReplaceConfirm = false },
+            title = { Text("Thay kế hoạch đang theo?") },
+            text = { Text("Bạn đang theo một kế hoạch khác. Chọn kế hoạch mới sẽ xoá tiến độ check-in hiện tại.") },
+            confirmButton = {
+                TextButton(onClick = { showReplaceConfirm = false; showDatePicker = true }, modifier = Modifier.testTag("training_replace_confirm")) {
+                    Text("Tiếp tục")
+                }
+            },
+            dismissButton = { TextButton(onClick = { showReplaceConfirm = false }) { Text("Huỷ") } },
+        )
+    }
+
+    if (showDatePicker) {
+        val today = LocalDate.now()
+        val datePickerState = rememberDatePickerState(initialSelectedDateMillis = today.toUtcMillis())
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        val startDate = datePickerState.selectedDateMillis?.toLocalDateUtc() ?: today
+                        onSelectPlan(planId, startDate)
+                        showDatePicker = false
+                    },
+                    modifier = Modifier.testTag("training_date_picker_confirm"),
+                ) { Text("Bắt đầu") }
+            },
+            dismissButton = { TextButton(onClick = { showDatePicker = false }) { Text("Huỷ") } },
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
+}
+
+private fun LocalDate.toUtcMillis(): Long = atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+
+private fun Long.toLocalDateUtc(): LocalDate = Instant.ofEpochMilli(this).atZone(ZoneOffset.UTC).toLocalDate()
 
 /** The scannable "stat grid" this screen's redesign is about: one small pill per known fact
  *  ([TrainingPlan.weeks]/[TrainingPlan.perWeek]/[TrainingPlan.longest]/[TrainingPlan.audience]) —
@@ -316,6 +492,9 @@ private data class TrainingPlan(
     val longest: String? = null,
     val audience: String? = null,
     val narrative: String,
+    /** D-1190: non-null only for the 4 Hal Higdon Novice plans — the ones a user can actually select
+     *  and follow a generated calendar for, out of every plan this screen describes. */
+    val selectablePlanId: TrainingPlanId? = null,
 )
 
 /** One milestone distance's whole section: hero photo, heading, its plans, and an optional closing
@@ -366,6 +545,7 @@ private val TRAINING_DISTANCE_SECTIONS: List<DistanceSection> = listOf(
                 audience = "Quen vận động nhẹ",
                 narrative = "Khung có kỷ luật hơn Galloway/C25K, phù hợp người đã quen vận động nhẹ muốn một lịch " +
                     "tập rõ ràng theo tuần.",
+                selectablePlanId = TrainingPlanId.NOVICE_5K,
             ),
         ),
         recommendation = "Gợi ý chọn: chưa từng chạy/lo chấn thương → Galloway; đã đi bộ nhanh ổn → C25K hoặc Higdon Novice.",
@@ -382,6 +562,7 @@ private val TRAINING_DISTANCE_SECTIONS: List<DistanceSection> = listOf(
                 perWeek = "Chạy + cross-training",
                 longest = "Race 10K thật ở tuần cuối",
                 narrative = "Phối hợp chạy và cross-training, tuần cuối lồng sẵn một race 10K thật ngay trong lịch tập.",
+                selectablePlanId = TrainingPlanId.NOVICE_10K,
             ),
             TrainingPlan(
                 id = "higdon_intermediate",
@@ -412,6 +593,7 @@ private val TRAINING_DISTANCE_SECTIONS: List<DistanceSection> = listOf(
                 audience = "Đã chạy ~4.8km, 3-4 lần/tuần",
                 narrative = "Gồm 2 ngày nghỉ/tuần xen giữa các buổi chạy, cross-training và strength — đây là yêu " +
                     "cầu đầu vào tối thiểu trước khi bắt đầu, không phải mục tiêu của chương trình.",
+                selectablePlanId = TrainingPlanId.NOVICE_HALF,
             ),
             TrainingPlan(
                 id = "higdon_novice2",
@@ -441,6 +623,7 @@ private val TRAINING_DISTANCE_SECTIONS: List<DistanceSection> = listOf(
                 longest = "32km",
                 audience = "Lần đầu full marathon",
                 narrative = "Gồm 2 ngày nghỉ/tuần xen giữa — chương trình kinh điển cho người chạy marathon lần đầu.",
+                selectablePlanId = TrainingPlanId.NOVICE_MARATHON,
             ),
             TrainingPlan(
                 id = "higdon_novice2",

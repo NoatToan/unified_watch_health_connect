@@ -32,10 +32,12 @@ import androidx.compose.material.icons.automirrored.outlined.TrendingDown
 import androidx.compose.material.icons.automirrored.outlined.TrendingFlat
 import androidx.compose.material.icons.automirrored.outlined.TrendingUp
 import androidx.compose.material.icons.automirrored.outlined.ViewList
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.BatteryStd
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.ShoppingBag
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedCard
@@ -90,6 +92,7 @@ import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.component.SleepStageChart
 import com.unified.health.core.designsystem.component.SleepStageLegend
 import com.unified.health.core.designsystem.component.SummaryMetricCard
+import com.unified.health.core.designsystem.component.scheduledDayDescription
 import com.unified.health.core.designsystem.component.WatchImage
 import com.unified.health.core.designsystem.component.compactNumber
 import com.unified.health.core.designsystem.component.formatMinutes
@@ -115,6 +118,7 @@ import com.unified.health.core.model.LiveHeartRate
 import com.unified.health.core.model.MetricAggregation
 import com.unified.health.core.model.Race
 import com.unified.health.core.model.RaceStatus
+import com.unified.health.core.model.ScheduledDay
 import com.unified.health.core.model.SleepSession
 import com.unified.health.core.model.StepsSummary
 import com.unified.health.core.model.SyncState
@@ -147,6 +151,7 @@ internal fun HomeRoute(
     onOpenRaces: () -> Unit,
     onOpenRaceDetail: (String) -> Unit,
     onOpenTraining: () -> Unit,
+    onOpenGear: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -167,8 +172,10 @@ internal fun HomeRoute(
         onOpenRaces = onOpenRaces,
         onOpenRaceDetail = onOpenRaceDetail,
         onOpenTraining = onOpenTraining,
+        onOpenGear = onOpenGear,
         onFeedCardsChanged = viewModel::setFeedCards,
         onMetricsViewModeChange = viewModel::setMetricsViewMode,
+        onCheckInToday = viewModel::checkInToday,
     )
 }
 
@@ -194,8 +201,10 @@ internal fun HomeScreen(
     onOpenRaces: () -> Unit = {},
     onOpenRaceDetail: (String) -> Unit = {},
     onOpenTraining: () -> Unit = {},
+    onOpenGear: () -> Unit = {},
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit = { _, _ -> },
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit = {},
+    onCheckInToday: (Int) -> Unit = {},
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val listState = rememberLazyListState()
@@ -241,8 +250,10 @@ internal fun HomeScreen(
                     onOpenRaces = onOpenRaces,
                     onOpenRaceDetail = onOpenRaceDetail,
                     onOpenTraining = onOpenTraining,
+                    onOpenGear = onOpenGear,
                     onFeedCardsChanged = onFeedCardsChanged,
                     onMetricsViewModeChange = onMetricsViewModeChange,
+                    onCheckInToday = onCheckInToday,
                     listState = listState,
                 )
             }
@@ -262,8 +273,10 @@ private fun Summary(
     onOpenRaces: () -> Unit,
     onOpenRaceDetail: (String) -> Unit,
     onOpenTraining: () -> Unit,
+    onOpenGear: () -> Unit,
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit,
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit,
+    onCheckInToday: (Int) -> Unit,
     listState: LazyListState,
 ) {
     var editingFeed by rememberSaveable { mutableStateOf(false) }
@@ -344,10 +357,29 @@ private fun Summary(
             }
         }
         // Same "marketing/discovery content goes last, not above the user's own data" placement as
-        // the Races carousel above (D-1110) — this is Home's entry point into the read-only
-        // feature/training reference guide, not a tie-in to the user's own activity/workout data.
+        // the Races carousel above (D-1110) — Home's second entry point into feature/gear's read-only
+        // catalog (D-1186 added the first one, a Profile row; this is purely additional, not a
+        // replacement). Sits before TrainingEntryCard so the end-of-list reads Races → Gear → Training.
         item {
-            TrainingEntryCard(onClick = onOpenTraining, modifier = Modifier.padding(horizontal = Spacing.lg))
+            GearEntryCard(onClick = onOpenGear, modifier = Modifier.padding(horizontal = Spacing.lg))
+        }
+        // D-1190: a plan actively being followed replaces the plain static TrainingEntryCard with a
+        // richer "today's workout" card (still linking through to the same feature/training screen) —
+        // favors not cluttering Home with both at once, per the task brief. Same "marketing/discovery
+        // content goes last, not above the user's own data" placement as the Races carousel above
+        // (D-1110) either way.
+        item {
+            val todayWorkout = state.todayWorkout
+            if (todayWorkout != null) {
+                TodayWorkoutCard(
+                    workout = todayWorkout,
+                    onClick = onOpenTraining,
+                    onCheckIn = { onCheckInToday(todayWorkout.dayOffset) },
+                    modifier = Modifier.padding(horizontal = Spacing.lg),
+                )
+            } else {
+                TrainingEntryCard(onClick = onOpenTraining, modifier = Modifier.padding(horizontal = Spacing.lg))
+            }
         }
     }
     if (editingFeed) {
@@ -715,6 +747,73 @@ private fun TrainingEntryCard(onClick: () -> Unit, modifier: Modifier = Modifier
                 Text("Chế độ luyện tập", style = MaterialTheme.typography.titleSmall)
                 Text(
                     "Lộ trình tập chạy cho 5K, 10K, Half và Full marathon",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
+}
+
+/**
+ * D-1190: shown instead of [TrainingEntryCard] once a plan is active and today has an uncompleted
+ * entry — "Hôm nay: chạy 4.8 km" + a one-tap check-in right here on Home (the user's explicit ask:
+ * check in from Home itself, not only from `feature/training`'s own calendar screen). Tapping the row
+ * itself still opens the same `feature/training` screen as [TrainingEntryCard] did; the checkmark
+ * button is a separate, smaller tap target so the two actions don't fight each other.
+ */
+@Composable
+private fun TodayWorkoutCard(workout: ScheduledDay, onClick: () -> Unit, onCheckIn: () -> Unit, modifier: Modifier = Modifier) {
+    ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().testTag("today_workout_card")) {
+        Row(Modifier.padding(Spacing.lg).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                Icons.AutoMirrored.Outlined.DirectionsRun,
+                contentDescription = null,
+                tint = UnifiedHealthTheme.metricColors.exercise,
+                modifier = Modifier.size(28.dp),
+            )
+            Spacer(Modifier.width(Spacing.md))
+            Column(Modifier.weight(1f)) {
+                Text("Hôm nay: ${scheduledDayDescription(workout)}", style = MaterialTheme.typography.titleSmall)
+                Text(
+                    "Chạm để xem lịch tập đầy đủ",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            IconButton(onClick = onCheckIn, modifier = Modifier.testTag("today_workout_check_in")) {
+                Icon(Icons.Filled.CheckCircle, contentDescription = "Đã hoàn thành", tint = UnifiedHealthTheme.metricColors.exercise)
+            }
+        }
+    }
+}
+
+/**
+ * Home's second entry point into `feature/gear`'s read-only "Trang bị tham khảo" catalog (D-1186
+ * added the first one, a Profile row — this is purely additional, same shape/placement rationale as
+ * [TrainingEntryCard] above: a plain row card (icon, title, one-line teaser, chevron), no live data
+ * of its own since the destination is a static browse-only catalog, not tied to the user's own gear.
+ */
+@Composable
+private fun GearEntryCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().testTag("gear_entry_card")) {
+        Row(Modifier.padding(Spacing.lg).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                Icons.Outlined.ShoppingBag,
+                contentDescription = null,
+                tint = UnifiedHealthTheme.metricColors.exercise,
+                modifier = Modifier.size(28.dp),
+            )
+            Spacer(Modifier.width(Spacing.md))
+            Column(Modifier.weight(1f)) {
+                Text("Trang bị tham khảo", style = MaterialTheme.typography.titleSmall)
+                Text(
+                    "Giày, quần áo và phụ kiện chạy bộ từ các thương hiệu lớn",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 2,

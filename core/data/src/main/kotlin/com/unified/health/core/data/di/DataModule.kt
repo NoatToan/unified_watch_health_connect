@@ -8,6 +8,7 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import com.unified.health.core.data.database.HealthRecordDao
 import com.unified.health.core.data.database.PairedDeviceDao
+import com.unified.health.core.data.database.TrainingPlanDao
 import com.unified.health.core.data.database.UnifiedHealthDatabase
 import com.unified.health.core.data.datastore.DataStoreNotificationPreferencesRepository
 import com.unified.health.core.data.datastore.DataStoreUserPreferencesRepository
@@ -29,10 +30,12 @@ import com.unified.health.core.data.sync.RawPayloadStore
 import com.unified.health.core.data.sync.RoomWorkoutDetailRowCounter
 import com.unified.health.core.data.sync.WorkoutDetailBackfillState
 import com.unified.health.core.data.sync.WorkoutDetailRowCounter
+import com.unified.health.core.data.training.RoomTrainingPlanRepository
 import com.unified.health.core.domain.repository.HealthConnectRepository
 import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.NotificationPreferencesRepository
 import com.unified.health.core.domain.repository.RacesRepository
+import com.unified.health.core.domain.repository.TrainingPlanRepository
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.domain.repository.DemoDataController
@@ -108,6 +111,11 @@ internal abstract class DataBindingsModule {
     @Singleton
     abstract fun bindGearRepository(impl: RemoteGearRepository): GearRepository
 
+    /** The user's selected Hal Higdon Novice plan + check-in progress (D-1190), Room-backed. */
+    @Binds
+    @Singleton
+    abstract fun bindTrainingPlanRepository(impl: RoomTrainingPlanRepository): TrainingPlanRepository
+
     /** Bound only in debug builds (`:core:demo`); release injects `Optional.empty()`. */
     @BindsOptionalOf
     abstract fun optionalDemoDataController(): DemoDataController
@@ -131,6 +139,9 @@ internal object DataProvidersModule {
 
     @Provides
     fun provideHealthRecordDao(db: UnifiedHealthDatabase): HealthRecordDao = db.healthRecordDao()
+
+    @Provides
+    fun provideTrainingPlanDao(db: UnifiedHealthDatabase): TrainingPlanDao = db.trainingPlanDao()
 
     @Provides
     @Singleton

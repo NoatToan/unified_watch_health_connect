@@ -6,6 +6,7 @@ import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.LiveHealthRepository
 import com.unified.health.core.domain.repository.RacesRepository
 import com.unified.health.core.domain.repository.RacesState
+import com.unified.health.core.domain.repository.TrainingPlanRepository
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.domain.usecase.Highlight
@@ -20,6 +21,7 @@ import com.unified.health.core.model.FeedCardId
 import com.unified.health.core.model.HealthMetricType
 import com.unified.health.core.model.HomeMetricsViewMode
 import com.unified.health.core.model.LiveHeartRate
+import com.unified.health.core.model.ScheduledDay
 import com.unified.health.core.model.SyncState
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.UnitSystem
@@ -64,6 +66,10 @@ sealed interface HomeUiState {
         /** D-1188: Profile's debug-only Developer section toggle — when true, skips the "hide cards
          *  with no data" filter below so every metric card renders, empty ones included. */
         val showEmptyMetricCards: Boolean = false,
+        /** D-1190: today's entry from the user's active Hal Higdon Novice plan, when one is active
+         *  *and* today hasn't been checked in yet — null otherwise (no plan, no entry for today, or
+         *  already checked in), which is exactly when Home should show nothing extra. */
+        val todayWorkout: ScheduledDay? = null,
     ) : HomeUiState
     data class Error(val message: String) : HomeUiState
 }
@@ -84,6 +90,7 @@ class HomeViewModel @Inject constructor(
     private val healthData: HealthDataRepository,
     private val preferences: UserPreferencesRepository,
     private val racesRepository: RacesRepository,
+    private val trainingPlanRepository: TrainingPlanRepository,
     liveHealth: LiveHealthRepository,
 ) : ViewModel() {
 
@@ -140,6 +147,11 @@ class HomeViewModel @Inject constructor(
     private val showEmptyMetricCards: Flow<Boolean> =
         preferences.userPreferences.map { it.showEmptyMetricCards }.distinctUntilChanged()
 
+    /** D-1190: null unless there's an active plan *and* it has an entry for today *and* that entry
+     *  isn't already checked in — exactly the condition under which Home should show anything extra. */
+    private val todayWorkout: Flow<ScheduledDay?> =
+        trainingPlanRepository.activePlan.map { plan -> plan?.entryOn()?.takeUnless { it.completed } }
+
     val uiState: StateFlow<HomeUiState> =
         combine(header, feedBundle, metricsViewMode, unitSystem, showEmptyMetricCards) { state, feed, viewMode, units, showEmpty ->
             val enriched = feed.cards.map { card ->
@@ -159,6 +171,7 @@ class HomeViewModel @Inject constructor(
                 showEmptyMetricCards = showEmpty,
             ) as HomeUiState
         }
+            .combine(todayWorkout) { state, workout -> if (state is HomeUiState.Success) state.copy(todayWorkout = workout) else state }
             .catch { emit(HomeUiState.Error(it.message ?: "Unable to load data")) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeUiState.Loading)
 
@@ -184,6 +197,11 @@ class HomeViewModel @Inject constructor(
     /** D-1073/1074: List/Grid toggle on "All metrics". */
     fun setMetricsViewMode(mode: HomeMetricsViewMode) {
         viewModelScope.launch { preferences.setHomeMetricsViewMode(mode) }
+    }
+
+    /** D-1190: the one-tap check-in action on Home's "today's workout" card. */
+    fun checkInToday(dayOffset: Int) {
+        viewModelScope.launch { trainingPlanRepository.checkIn(dayOffset) }
     }
 
     /** Pull-to-refresh: syncs every connected device and re-fetches the races feed (D-1107). */

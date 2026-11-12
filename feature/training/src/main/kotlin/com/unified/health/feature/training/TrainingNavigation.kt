@@ -35,6 +35,11 @@ private data object TrainingHomeDestination
 @Serializable
 private data object RunningFormDestination
 
+/** Private, same rationale as [RunningFormDestination] above — D-1190's full week-by-week schedule
+ *  + check-in screen for whichever plan is active, reached from [TrainingScreen]'s own banner. */
+@Serializable
+private data object TrainingCalendarDestination
+
 fun NavController.navigateToTraining() = navigate(TrainingDestination)
 
 fun NavGraphBuilder.trainingScreen(onBack: () -> Unit) {
@@ -42,13 +47,17 @@ fun NavGraphBuilder.trainingScreen(onBack: () -> Unit) {
         val innerNavController = rememberNavController()
         NavHost(navController = innerNavController, startDestination = TrainingHomeDestination) {
             composable<TrainingHomeDestination> {
-                TrainingScreen(
+                TrainingRoute(
                     onBack = onBack,
                     onOpenRunningForm = { innerNavController.navigate(RunningFormDestination) },
+                    onOpenCalendar = { innerNavController.navigate(TrainingCalendarDestination) },
                 )
             }
             composable<RunningFormDestination> {
                 RunningFormScreen(onBack = innerNavController::popBackStack)
+            }
+            composable<TrainingCalendarDestination> {
+                TrainingCalendarRoute(onBack = innerNavController::popBackStack)
             }
         }
     }
