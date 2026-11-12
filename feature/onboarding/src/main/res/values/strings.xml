@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature/onboarding screen copy (D-1040 follow-up). Shared cross-feature words
+     (Cancel/Save/Retry…) live in :core:designsystem instead — see its res/values/strings.xml. -->
+<resources>
+    <!-- "Unified Health" (the app/brand name on the welcome step) stays a plain literal in
+         OnboardingScreen.kt rather than a resource — it is a brand name, identical in every
+         locale, same treatment as the notification title in DeviceSyncService.kt. -->
+    <string name="onboarding_tagline">All your health data from your wearable in one place: steps, heart rate, sleep, SpO2 and stress.</string>
+    <string name="action_get_started">Get started</string>
+
+    <string name="onboarding_permissions_title">Permissions</string>
+    <string name="onboarding_permissions_subtitle">Grant what you need now; you can change these later in Settings.</string>
+
+    <string name="permission_bluetooth_title">Nearby devices (Bluetooth)</string>
+    <string name="permission_bluetooth_desc_modern">Find and connect to your watch or band. Your location is not used.</string>
+    <string name="permission_bluetooth_desc_legacy">Android 11 and below require location access to scan for Bluetooth devices.</string>
+
+    <string name="permission_notifications_title">Notifications</string>
+    <string name="permission_notifications_desc">Sync status, goal reminders and health alerts.</string>
+
+    <string name="permission_health_connect_title">Health Connect</string>
+    <string name="permission_health_connect_desc_available">Share health data with other apps through Health Connect.</string>
+    <string name="permission_health_connect_desc_not_installed">Health Connect needs to be installed or updated.</string>
+    <string name="permission_health_connect_desc_not_supported">Health Connect is not supported on this device.</string>
+
+    <string name="permission_battery_title">Background activity</string>
+    <string name="permission_battery_desc">Allow unrestricted battery use so the watch keeps syncing in the background.</string>
+    <string name="action_open_settings">Open settings</string>
+
+    <string name="action_continue">Continue</string>
+    <string name="action_skip_for_now">Skip for now</string>
+
+    <string name="action_allow">Allow</string>
+    <string name="cd_granted">Granted</string>
+</resources>

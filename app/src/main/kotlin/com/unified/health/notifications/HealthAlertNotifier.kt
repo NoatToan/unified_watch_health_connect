@@ -12,6 +12,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.unified.health.MainActivity
+import com.unified.health.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -25,16 +26,16 @@ class HealthAlertNotifier @Inject constructor(@ApplicationContext private val co
         val format = NumberFormat.getIntegerInstance()
         post(
             GOAL_NOTIFICATION_ID,
-            title = "Step goal reached",
-            text = "${format.format(steps)} steps today — you hit your goal of ${format.format(goal)}.",
+            title = context.getString(R.string.notification_goal_reached_title),
+            text = context.getString(R.string.notification_goal_reached_text, format.format(steps), format.format(goal)),
         )
     }
 
     fun lowBattery(deviceId: String, deviceName: String, percent: Int) {
         post(
             LOW_BATTERY_ID_BASE + (deviceId.hashCode() and 0xFFFF),
-            title = "$deviceName battery low",
-            text = "Battery is at $percent%. Charge it to keep recording.",
+            title = context.getString(R.string.notification_low_battery_title, deviceName),
+            text = context.getString(R.string.notification_low_battery_text, percent),
         )
     }
 
@@ -71,8 +72,8 @@ class HealthAlertNotifier @Inject constructor(@ApplicationContext private val co
 
     private fun createChannel() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
-        val channel = NotificationChannel(CHANNEL_ID, "Health alerts", NotificationManager.IMPORTANCE_DEFAULT).apply {
-            description = "Goal achieved and low watch battery"
+        val channel = NotificationChannel(CHANNEL_ID, context.getString(R.string.notification_channel_health_alerts), NotificationManager.IMPORTANCE_DEFAULT).apply {
+            description = context.getString(R.string.notification_channel_health_alerts_description)
         }
         context.getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
     }

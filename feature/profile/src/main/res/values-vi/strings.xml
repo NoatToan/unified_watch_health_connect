@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_title">Hồ sơ</string>
+
+    <string name="setting_personal_info_title">Thông tin cá nhân</string>
+    <string name="setting_personal_info_subtitle">Chiều cao, cân nặng, ngày sinh (sắp ra mắt)</string>
+
+    <string name="setting_step_goal_title">Mục tiêu số bước mỗi ngày</string>
+    <string name="step_goal_subtitle">%1$d bước</string>
+
+    <string name="setting_calorie_goal_title">Mục tiêu calo hoạt động</string>
+    <string name="calorie_goal_value">%1$d kcal</string>
+    <string name="calorie_goal_default">%1$d kcal (mặc định)</string>
+
+    <string name="setting_sleep_goal_title">Mục tiêu giấc ngủ</string>
+    <string name="sleep_goal_value">%1$d giờ</string>
+    <string name="sleep_goal_default">%1$d giờ (mặc định)</string>
+
+    <string name="thresholds_card_title">Ngưỡng tham chiếu sức khoẻ</string>
+    <string name="thresholds_resting_hr">Nhịp tim khi nghỉ: %1$d-%2$d bpm</string>
+    <string name="thresholds_hr_zones">Vùng nhịp tim (%% so với nhịp tim tối đa): %1$s</string>
+    <string name="thresholds_sleep_target">Mục tiêu ngủ: %1$d-%2$d giờ/đêm</string>
+    <string name="thresholds_spo2">SpO2: bình thường %1$d-%2$d%%, cảnh báo dưới %3$d%%</string>
+    <string name="thresholds_vo2max">Các mức VO2max (theo tuổi &amp; giới tính): %1$s</string>
+
+    <string name="setting_units_title">Đơn vị</string>
+    <string name="units_metric">Hệ mét (km, kg)</string>
+    <string name="units_imperial">Hệ Anh/Mỹ (mi, lb)</string>
+
+    <string name="setting_language_title">Ngôn ngữ</string>
+    <string name="language_system_option">Theo máy (%1$s)</string>
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_dialog_title">Chọn ngôn ngữ</string>
+
+    <string name="setting_dynamic_color_title">Màu động</string>
+    <string name="setting_dynamic_color_subtitle">Dùng màu theo hình nền (Android 12 trở lên)</string>
+
+    <string name="setting_gear_title">Trang bị tham khảo</string>
+    <string name="setting_gear_subtitle">Giày, quần áo, phụ kiện chạy bộ từ các hãng — xem và mua tại trang hãng</string>
+
+    <string name="notifications_title">Thông báo</string>
+    <string name="setting_notifications_subtitle">Đạt mục tiêu, pin đồng hồ yếu, nhắc đồng bộ</string>
+
+    <string name="setting_health_connect_title">Health Connect</string>
+    <string name="setting_coming_soon">Sắp ra mắt</string>
+    <string name="setting_health_connect_subtitle">Quản lý chia sẻ dữ liệu (sắp ra mắt)</string>
+    <string name="setting_privacy_title">Quyền riêng tư</string>
+    <string name="setting_export_data_title">Xuất dữ liệu</string>
+    <string name="setting_delete_all_data_title">Xoá toàn bộ dữ liệu</string>
+
+    <string name="goal_unit_steps">bước</string>
+    <string name="goal_unit_kcal">kcal</string>
+    <string name="goal_unit_hours">giờ</string>
+    <string name="use_default_goal">Dùng mặc định</string>
+
+    <string name="developer_section_title">Dành cho nhà phát triển (bản debug)</string>
+    <string name="demo_mode_title">Chế độ demo</string>
+    <string name="demo_mode_subtitle">Hiện đồng hồ ảo (Garmin, Zepp, Huawei, vòng đeo BLE chuẩn, chung) khi quét</string>
+    <string name="fill_demo_data_title">Đổ dữ liệu demo</string>
+    <string name="fill_demo_data_subtitle">Ghi ~90 ngày dữ liệu cho mọi chỉ số vào bộ nhớ máy</string>
+    <string name="clear_demo_data_title">Xoá dữ liệu demo</string>
+    <string name="clear_demo_data_subtitle">Chỉ xoá dữ liệu demo; dữ liệu đồng hồ thật vẫn được giữ</string>
+    <string name="show_empty_metric_cards_title">Hiện thẻ chỉ số rỗng</string>
+    <string name="show_empty_metric_cards_subtitle">Mục Chỉ số ở Trang chủ hiện mọi thẻ, kể cả thẻ chưa có dữ liệu</string>
+
+    <string name="turn_off_demo_mode_title">Tắt chế độ demo?</string>
+    <string name="turn_off_demo_mode_text">Đồng hồ ảo sẽ không còn hiện khi quét nữa. Bạn cũng có thể xoá dữ liệu demo đã đổ.</string>
+    <string name="turn_off_and_clear_data">Tắt và xoá dữ liệu</string>
+    <string name="turn_off_keep_data">Tắt, giữ dữ liệu</string>
+    <string name="clear_demo_data_dialog_title">Xoá dữ liệu demo?</string>
+    <string name="clear_demo_data_dialog_text">Thao tác này chỉ xoá dữ liệu demo; dữ liệu đồng hồ thật (nếu có) vẫn được giữ.</string>
+    <string name="action_clear">Xoá</string>
+
+    <string name="notifications_blocked_title">Thông báo đang tắt</string>
+    <string name="notifications_blocked_text">Android đang chặn thông báo từ Unified Health nên các cảnh báo bên dưới sẽ không hiện được.</string>
+    <string name="action_allow">Cho phép</string>
+    <string name="action_system_settings">Cài đặt hệ thống</string>
+    <string name="notif_section_alerts">Cảnh báo</string>
+    <string name="notif_goal_title">Đạt mục tiêu</string>
+    <string name="notif_goal_subtitle">Mỗi ngày một lần, khi bạn đạt %1$s bước</string>
+    <string name="notif_battery_title">Pin đồng hồ yếu</string>
+    <string name="notif_battery_subtitle">Khi đồng hồ đã ghép báo pin còn %1$d%% trở xuống</string>
+    <string name="notif_sync_title">Nhắc đồng bộ</string>
+    <string name="notif_sync_subtitle">Nhắc tôi khi đồng hồ chưa đồng bộ trong một ngày. Tính năng nhắc sẽ bắt đầu ở bản cập nhật sau; lựa chọn của bạn vẫn được lưu.</string>
+    <string name="notif_footer">Cảnh báo được tạo ngay trên điện thoại từ dữ liệu đã đồng bộ. Không có gì được gửi tới đồng hồ hay máy chủ nào.</string>
+</resources>

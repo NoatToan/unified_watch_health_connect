@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -71,13 +72,13 @@ internal fun ActivityRoute(onWorkoutClick: (String) -> Unit, viewModel: Activity
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ActivityScreen(state: ActivityUiState, onWorkoutClick: (String) -> Unit) {
-    Scaffold(topBar = { TopAppBar(title = { Text("Activity") }) }) { padding ->
+    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.activity_title)) }) }) { padding ->
         when (state) {
             ActivityUiState.Loading -> LoadingState(Modifier.padding(padding))
             is ActivityUiState.Error -> ErrorState(state.message, Modifier.padding(padding))
             ActivityUiState.Empty -> EmptyState(
-                title = "No workouts yet",
-                message = "Workouts recorded on your watch appear here after a sync, with your weekly activity load.",
+                title = stringResource(R.string.workouts_empty_title),
+                message = stringResource(R.string.workouts_empty_message),
                 icon = Icons.Outlined.SportsScore,
                 modifier = Modifier.padding(padding).testTag("workouts_empty"),
             )
@@ -115,10 +116,11 @@ private fun ActivityLoadCard(load: ActivityLoadSummary, unitSystem: UnitSystem) 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Outlined.Insights, contentDescription = null, tint = accent, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(Spacing.sm))
-                Text("Weekly activity load", style = MaterialTheme.typography.titleSmall, color = accent, modifier = Modifier.weight(1f))
-                Text("Last 7 days", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.activity_load_title), style = MaterialTheme.typography.titleSmall, color = accent, modifier = Modifier.weight(1f))
+                Text(stringResource(R.string.activity_load_period), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            Column(Modifier.semantics(mergeDescendants = true) { contentDescription = "Activity load $headline, $trendText" }.testTag("activity_load_value")) {
+            val description = stringResource(R.string.activity_load_value_description, headline, trendText)
+            Column(Modifier.semantics(mergeDescendants = true) { contentDescription = description }.testTag("activity_load_value")) {
                 Text(headline, style = MetricValueTextStyle)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     trendIcon?.let { Icon(it, contentDescription = null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant) }
@@ -134,17 +136,17 @@ private fun ActivityLoadCard(load: ActivityLoadSummary, unitSystem: UnitSystem) 
                 modifier = Modifier.testTag("activity_load_chart"),
             )
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-                StatTile("Workouts", current.workouts.toString(), Modifier.weight(1f))
-                StatTile("Time", current.duration.compact(), Modifier.weight(1f))
+                StatTile(stringResource(R.string.stat_workouts), current.workouts.toString(), Modifier.weight(1f))
+                StatTile(stringResource(R.string.stat_time), current.duration.compact(), Modifier.weight(1f))
                 StatTile(
-                    "Distance",
+                    stringResource(R.string.stat_distance),
                     current.distanceMeters.takeIf { it > 0 }?.let { kilometers(it, unitSystem = unitSystem) },
                     Modifier.weight(1f),
                     unit = unitSystem.distanceUnitLabel(),
                 )
             }
             Text(
-                "Workout minutes weighted by average heart rate, compared with your previous ${ActivityLoadCalculator.BASELINE_WEEKS} weeks (dashed line).",
+                stringResource(R.string.activity_load_caption, ActivityLoadCalculator.BASELINE_WEEKS),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -152,11 +154,12 @@ private fun ActivityLoadCard(load: ActivityLoadSummary, unitSystem: UnitSystem) 
     }
 }
 
+@Composable
 private fun trendCopy(load: ActivityLoadSummary) = when (load.trend) {
-    LoadTrend.NO_BASELINE -> null to "Keep recording workouts to see how this week compares."
-    LoadTrend.BELOW -> Icons.AutoMirrored.Outlined.TrendingDown to "Lower than your usual week (${load.baseline!!.roundToInt()})"
-    LoadTrend.STEADY -> Icons.AutoMirrored.Outlined.TrendingFlat to "In line with your usual week (${load.baseline!!.roundToInt()})"
-    LoadTrend.ABOVE -> Icons.AutoMirrored.Outlined.TrendingUp to "Higher than your usual week (${load.baseline!!.roundToInt()})"
+    LoadTrend.NO_BASELINE -> null to stringResource(R.string.trend_no_baseline)
+    LoadTrend.BELOW -> Icons.AutoMirrored.Outlined.TrendingDown to stringResource(R.string.trend_below, load.baseline!!.roundToInt())
+    LoadTrend.STEADY -> Icons.AutoMirrored.Outlined.TrendingFlat to stringResource(R.string.trend_steady, load.baseline!!.roundToInt())
+    LoadTrend.ABOVE -> Icons.AutoMirrored.Outlined.TrendingUp to stringResource(R.string.trend_above, load.baseline!!.roundToInt())
 }
 
 @Composable

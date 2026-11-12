@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_title">Hoạt động</string>
+
+    <string name="workouts_empty_title">Chưa có buổi tập nào</string>
+    <string name="workouts_empty_message">Các buổi tập ghi trên đồng hồ của bạn sẽ hiện ở đây sau khi đồng bộ, cùng mức tải hoạt động theo tuần.</string>
+
+    <string name="activity_load_title">Tải hoạt động theo tuần</string>
+    <string name="activity_load_period">7 ngày qua</string>
+    <string name="activity_load_value_description">Tải hoạt động %1$s, %2$s</string>
+    <string name="activity_load_caption">Số phút tập được tính theo trọng số nhịp tim trung bình, so với %1$d tuần trước đó (đường đứt nét).</string>
+
+    <string name="trend_no_baseline">Tiếp tục ghi lại buổi tập để xem tuần này so với bình thường ra sao.</string>
+    <string name="trend_below">Thấp hơn tuần thường ngày của bạn (%1$d)</string>
+    <string name="trend_steady">Tương đương tuần thường ngày của bạn (%1$d)</string>
+    <string name="trend_above">Cao hơn tuần thường ngày của bạn (%1$d)</string>
+
+    <string name="stat_workouts">Buổi tập</string>
+    <string name="stat_time">Thời gian</string>
+    <string name="stat_distance">Quãng đường</string>
+
+    <string name="workout_type_walking">Đi bộ</string>
+    <string name="workout_type_running">Chạy bộ</string>
+    <string name="workout_type_cycling">Đạp xe</string>
+    <string name="workout_type_swimming">Bơi</string>
+    <string name="workout_type_strength">Tập sức mạnh</string>
+    <string name="workout_type_yoga">Yoga</string>
+    <string name="workout_type_other">Buổi tập</string>
+
+    <string name="avg_pace">Nhịp độ TB</string>
+    <string name="avg_speed">Tốc độ TB</string>
+
+    <string name="workout_not_found_title">Không tìm thấy buổi tập</string>
+    <string name="workout_not_found_message">Buổi tập này không còn được lưu trên máy nữa.</string>
+
+    <string name="stat_workout_time">Thời lượng tập</string>
+    <string name="stat_active_energy">Năng lượng hoạt động</string>
+    <string name="stat_avg_heart_rate">Nhịp tim TB</string>
+    <string name="stat_max_heart_rate">Nhịp tim tối đa</string>
+    <string name="stat_avg_cadence">Nhịp chân TB</string>
+    <string name="stat_max_cadence">Nhịp chân tối đa</string>
+    <string name="stat_elevation_gain">Độ cao lên</string>
+    <string name="stat_elevation_loss">Độ cao xuống</string>
+
+    <string name="heart_rate_title">Nhịp tim</string>
+    <string name="heart_rate_summary">Trung bình %1$s · thấp nhất %2$s · cao nhất %3$s bpm</string>
+    <string name="heart_rate_empty">Không ghi được mẫu nhịp tim nào trong buổi tập này.</string>
+
+    <string name="source_label">Nguồn</string>
+    <string name="source_unknown">Thiết bị không xác định</string>
+
+    <string name="trends_title">Xu hướng</string>
+    <string name="trend_pace_title">Nhịp độ (càng thấp càng nhanh)</string>
+    <string name="trend_elevation_title">Độ cao</string>
+
+    <string name="splits_title">Chặng</string>
+    <string name="lap_title">Vòng %1$d · %2$s</string>
+    <string name="lap_no_details">Không có dữ liệu chi tiết</string>
+
+    <string name="hr_zones_title">Thời gian theo vùng nhịp tim</string>
+    <string name="hr_zone_description">Vùng %1$d %2$s, %3$d phần trăm thời gian buổi tập</string>
+</resources>

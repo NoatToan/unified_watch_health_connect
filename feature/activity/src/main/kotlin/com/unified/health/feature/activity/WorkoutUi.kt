@@ -8,7 +8,9 @@ import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material.icons.outlined.Pool
 import androidx.compose.material.icons.outlined.SelfImprovement
 import androidx.compose.material.icons.outlined.SportsScore
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.Workout
 import com.unified.health.core.model.WorkoutLap
@@ -19,14 +21,15 @@ import com.unified.health.core.model.metersToDisplayDistance
 import java.time.Duration
 import java.util.Locale
 
+@Composable
 internal fun WorkoutType.label(): String = when (this) {
-    WorkoutType.WALKING -> "Walking"
-    WorkoutType.RUNNING -> "Running"
-    WorkoutType.CYCLING -> "Cycling"
-    WorkoutType.SWIMMING -> "Swimming"
-    WorkoutType.STRENGTH -> "Strength training"
-    WorkoutType.YOGA -> "Yoga"
-    WorkoutType.OTHER -> "Workout"
+    WorkoutType.WALKING -> stringResource(R.string.workout_type_walking)
+    WorkoutType.RUNNING -> stringResource(R.string.workout_type_running)
+    WorkoutType.CYCLING -> stringResource(R.string.workout_type_cycling)
+    WorkoutType.SWIMMING -> stringResource(R.string.workout_type_swimming)
+    WorkoutType.STRENGTH -> stringResource(R.string.workout_type_strength)
+    WorkoutType.YOGA -> stringResource(R.string.workout_type_yoga)
+    WorkoutType.OTHER -> stringResource(R.string.workout_type_other)
 }
 
 internal fun WorkoutType.icon(): ImageVector = when (this) {

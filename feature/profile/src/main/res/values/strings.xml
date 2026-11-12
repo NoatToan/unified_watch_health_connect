@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature/profile screen copy (D-1040/D-1184 follow-up). Shared cross-feature words
+     (Cancel/Save/Retry…) live in :core:designsystem instead — see its res/values/strings.xml. -->
+<resources>
+    <string name="profile_title">Profile</string>
+
+    <string name="setting_personal_info_title">Personal info</string>
+    <string name="setting_personal_info_subtitle">Height, weight, birthday (coming soon)</string>
+
+    <string name="setting_step_goal_title">Daily step goal</string>
+    <string name="step_goal_subtitle">%1$d steps</string>
+
+    <string name="setting_calorie_goal_title">Active calorie goal</string>
+    <string name="calorie_goal_value">%1$d kcal</string>
+    <string name="calorie_goal_default">%1$d kcal (default)</string>
+
+    <string name="setting_sleep_goal_title">Sleep goal</string>
+    <string name="sleep_goal_value">%1$d h</string>
+    <string name="sleep_goal_default">%1$d h (default)</string>
+
+    <!-- ThresholdsReferenceCard: zone label/category names stay as the plain English words the
+         domain layer (core:domain MetricThresholds/Vo2MaxCategory) already returns — translating
+         those is out of scope here (core:domain is not a UI-copy module, D-1040 only covers
+         feature/designsystem res/). -->
+    <string name="thresholds_card_title">Health reference ranges</string>
+    <string name="thresholds_resting_hr">Resting heart rate: %1$d-%2$d bpm</string>
+    <string name="thresholds_hr_zones">Heart rate zones (%% of max HR): %1$s</string>
+    <string name="thresholds_sleep_target">Sleep target: %1$d-%2$d h/night</string>
+    <string name="thresholds_spo2">SpO2: normal %1$d-%2$d%%, alert below %3$d%%</string>
+    <string name="thresholds_vo2max">VO2max bands (by age &amp; sex): %1$s</string>
+
+    <string name="setting_units_title">Units</string>
+    <string name="units_metric">Metric (km, kg)</string>
+    <string name="units_imperial">Imperial (mi, lb)</string>
+
+    <!-- Tri-state language control (D-1184 bug fix): System default / English / Tiếng Việt. -->
+    <string name="setting_language_title">Language</string>
+    <string name="language_system_option">System default (%1$s)</string>
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_dialog_title">Choose language</string>
+
+    <string name="setting_dynamic_color_title">Dynamic color</string>
+    <string name="setting_dynamic_color_subtitle">Use wallpaper colors (Android 12+)</string>
+
+    <string name="setting_gear_title">Gear reference</string>
+    <string name="setting_gear_subtitle">Running shoes, apparel and accessories from brand sites — browse and buy there directly</string>
+
+    <string name="notifications_title">Notifications</string>
+    <string name="setting_notifications_subtitle">Goal achieved, low watch battery, sync reminders</string>
+
+    <string name="setting_health_connect_title">Health Connect</string>
+    <string name="setting_coming_soon">Coming soon</string>
+    <string name="setting_health_connect_subtitle">Manage data sharing (coming soon)</string>
+    <string name="setting_privacy_title">Privacy</string>
+    <string name="setting_export_data_title">Export data</string>
+    <string name="setting_delete_all_data_title">Delete all data</string>
+
+    <string name="goal_unit_steps">steps</string>
+    <string name="goal_unit_kcal">kcal</string>
+    <string name="goal_unit_hours">hours</string>
+    <string name="use_default_goal">Use default</string>
+
+    <string name="developer_section_title">Developer (debug build)</string>
+    <string name="demo_mode_title">Demo mode</string>
+    <string name="demo_mode_subtitle">Show virtual watches (Garmin, Zepp, Huawei, SIG band, generic) in scan</string>
+    <string name="fill_demo_data_title">Fill demo data</string>
+    <string name="fill_demo_data_subtitle">Write ~90 days of every metric into local storage</string>
+    <string name="clear_demo_data_title">Clear demo data</string>
+    <string name="clear_demo_data_subtitle">Delete only demo-seeded data; real watch data is kept</string>
+    <string name="show_empty_metric_cards_title">Show empty metric cards</string>
+    <string name="show_empty_metric_cards_subtitle">Home\'s Metrics section shows every card, including ones with no data</string>
+
+    <string name="turn_off_demo_mode_title">Turn off demo mode?</string>
+    <string name="turn_off_demo_mode_text">Virtual watches will stop appearing in scan. You can also clear the demo data they filled.</string>
+    <string name="turn_off_and_clear_data">Turn off and clear data</string>
+    <string name="turn_off_keep_data">Turn off, keep data</string>
+    <string name="clear_demo_data_dialog_title">Clear demo data?</string>
+    <string name="clear_demo_data_dialog_text">This removes only demo-seeded data; any real watch data is kept.</string>
+    <string name="action_clear">Clear</string>
+
+    <!-- Profile › Notifications (NotificationSettingsScreen.kt). -->
+    <string name="notifications_blocked_title">Notifications are off</string>
+    <string name="notifications_blocked_text">Android is blocking notifications from Unified Health, so the alerts below cannot be shown.</string>
+    <string name="action_allow">Allow</string>
+    <string name="action_system_settings">System settings</string>
+    <string name="notif_section_alerts">Alerts</string>
+    <string name="notif_goal_title">Goal achieved</string>
+    <string name="notif_goal_subtitle">Once a day, when you reach %1$s steps</string>
+    <string name="notif_battery_title">Low watch battery</string>
+    <string name="notif_battery_subtitle">When a paired watch reports %1$d%% or less</string>
+    <string name="notif_sync_title">Sync reminders</string>
+    <string name="notif_sync_subtitle">Remind me when my watch has not synced for a day. Reminders start in a future update; your choice is saved.</string>
+    <string name="notif_footer">Alerts are created on this phone from data already synced. Nothing is sent to your watch or to any server.</string>
+</resources>

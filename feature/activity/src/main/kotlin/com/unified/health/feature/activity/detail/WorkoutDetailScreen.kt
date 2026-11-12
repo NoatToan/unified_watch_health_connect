@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -58,6 +59,8 @@ import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.WorkoutLap
 import com.unified.health.core.model.WorkoutType
 import com.unified.health.core.model.distanceUnitLabel
+import com.unified.health.feature.activity.R
+import com.unified.health.core.designsystem.R as DesignSystemR
 import com.unified.health.feature.activity.icon
 import com.unified.health.feature.activity.kilometers
 import com.unified.health.feature.activity.label
@@ -79,21 +82,27 @@ internal fun WorkoutDetailRoute(onBack: () -> Unit, viewModel: WorkoutDetailView
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WorkoutDetailScreen(state: WorkoutDetailUiState, onBack: () -> Unit) {
-    val title = (state as? WorkoutDetailUiState.Success)?.workout?.type?.label() ?: "Workout"
+    val title = (state as? WorkoutDetailUiState.Success)?.workout?.type?.label() ?: stringResource(R.string.workout_type_other)
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(title) },
                 // D-1189: app chrome, not this screen's own content — restores the normal ripple.
-                navigationIcon = { ChromeRipple { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } } },
+                navigationIcon = {
+                    ChromeRipple {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back))
+                        }
+                    }
+                },
             )
         },
     ) { padding ->
         when (state) {
             WorkoutDetailUiState.Loading -> LoadingState(Modifier.padding(padding))
             WorkoutDetailUiState.NotFound -> EmptyState(
-                title = "Workout not found",
-                message = "This workout is no longer stored on this phone.",
+                title = stringResource(R.string.workout_not_found_title),
+                message = stringResource(R.string.workout_not_found_message),
                 modifier = Modifier.padding(padding).testTag("workout_not_found"),
             )
             is WorkoutDetailUiState.Success -> WorkoutDetailContent(state, Modifier.padding(padding))
@@ -128,13 +137,14 @@ private fun WorkoutDetailContent(state: WorkoutDetailUiState.Success, modifier: 
         }
 
         val pace = workout.paceOrSpeed(unitSystem = state.unitSystem)
+        val paceLabel = stringResource(if (workout.type == WorkoutType.CYCLING) R.string.avg_speed else R.string.avg_pace)
         val tiles = listOf(
-            Triple("Workout time", workout.duration.stopwatch(), ""),
-            Triple("Distance", workout.distanceMeters?.takeIf { it > 0 }?.let { kilometers(it, unitSystem = state.unitSystem) }, state.unitSystem.distanceUnitLabel()),
-            Triple("Active energy", workout.activeKcal?.toString(), "kcal"),
-            Triple(pace?.label ?: "Avg. pace", pace?.value, pace?.unit ?: ""),
-            Triple("Avg. heart rate", state.avgHeartRate?.toString(), "bpm"),
-            Triple("Max heart rate", state.maxHeartRate?.toString(), "bpm"),
+            Triple(stringResource(R.string.stat_workout_time), workout.duration.stopwatch(), ""),
+            Triple(stringResource(R.string.stat_distance), workout.distanceMeters?.takeIf { it > 0 }?.let { kilometers(it, unitSystem = state.unitSystem) }, state.unitSystem.distanceUnitLabel()),
+            Triple(stringResource(R.string.stat_active_energy), workout.activeKcal?.toString(), "kcal"),
+            Triple(paceLabel, pace?.value, pace?.unit ?: ""),
+            Triple(stringResource(R.string.stat_avg_heart_rate), state.avgHeartRate?.toString(), "bpm"),
+            Triple(stringResource(R.string.stat_max_heart_rate), state.maxHeartRate?.toString(), "bpm"),
         )
         Column(Modifier.testTag("workout_stats"), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             tiles.chunked(2).forEach { row ->
@@ -147,10 +157,10 @@ private fun WorkoutDetailContent(state: WorkoutDetailUiState.Success, modifier: 
         // Cadence + elevation summary (D-1093), from lap(19)/record(20) data; omitted entirely when
         // the device reported none of it (e.g. an older file with session(18) only).
         val cadenceTiles = listOf(
-            Triple("Avg. cadence", state.avgCadence?.toString(), "spm"),
-            Triple("Max. cadence", state.maxCadence?.toString(), "spm"),
-            Triple("Elevation gain", state.totalAscentMeters?.roundToInt()?.toString(), "m"),
-            Triple("Elevation loss", state.totalDescentMeters?.roundToInt()?.toString(), "m"),
+            Triple(stringResource(R.string.stat_avg_cadence), state.avgCadence?.toString(), "spm"),
+            Triple(stringResource(R.string.stat_max_cadence), state.maxCadence?.toString(), "spm"),
+            Triple(stringResource(R.string.stat_elevation_gain), state.totalAscentMeters?.roundToInt()?.toString(), "m"),
+            Triple(stringResource(R.string.stat_elevation_loss), state.totalDescentMeters?.roundToInt()?.toString(), "m"),
         )
         if (cadenceTiles.any { it.second != null }) {
             Column(Modifier.testTag("workout_cadence_elevation"), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
@@ -164,19 +174,19 @@ private fun WorkoutDetailContent(state: WorkoutDetailUiState.Success, modifier: 
 
         Card(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-                Text("Heart rate", style = MaterialTheme.typography.titleMedium, color = heartColor)
+                Text(stringResource(R.string.heart_rate_title), style = MaterialTheme.typography.titleMedium, color = heartColor)
                 if (state.hasHeartRateChart) {
                     HealthRangeChart(state.heartRate, heartColor, Modifier.testTag("workout_hr_chart"))
                     state.sampleStats?.let { s ->
                         Text(
-                            "Average ${s.average} · lowest ${s.min} · highest ${s.max} bpm",
+                            stringResource(R.string.heart_rate_summary, s.average, s.min, s.max),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 } else {
                     Text(
-                        "No heart-rate samples were recorded during this workout.",
+                        stringResource(R.string.heart_rate_empty),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.testTag("workout_hr_empty"),
@@ -202,8 +212,8 @@ private fun WorkoutDetailContent(state: WorkoutDetailUiState.Success, modifier: 
                 modifier = Modifier.testTag("workout_source"),
                 colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                 leadingContent = { Icon(Icons.Outlined.Watch, contentDescription = null) },
-                overlineContent = { Text("Source") },
-                headlineContent = { Text(state.source ?: "Unknown device") },
+                overlineContent = { Text(stringResource(R.string.source_label)) },
+                headlineContent = { Text(state.source ?: stringResource(R.string.source_unknown)) },
             )
         }
         Spacer(Modifier.height(Spacing.xl))
@@ -220,15 +230,15 @@ private fun WorkoutDetailContent(state: WorkoutDetailUiState.Success, modifier: 
 private fun TrendCard(state: WorkoutDetailUiState.Success, accent: Color, heartColor: Color) {
     Card(Modifier.fillMaxWidth().testTag("workout_trend")) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
-            Text("Trends", style = MaterialTheme.typography.titleMedium, color = accent)
+            Text(stringResource(R.string.trends_title), style = MaterialTheme.typography.titleMedium, color = accent)
             if (state.paceSeries.any { it.hasData }) {
-                TrendSeries("Pace (lower is faster)", state.paceSeries, accent, "workout_trend_pace") { paceLabel(it) }
+                TrendSeries(stringResource(R.string.trend_pace_title), state.paceSeries, accent, "workout_trend_pace") { paceLabel(it) }
             }
             if (state.elevationSeries.any { it.hasData }) {
-                TrendSeries("Elevation", state.elevationSeries, accent, "workout_trend_elevation") { "${it.roundToInt()} m" }
+                TrendSeries(stringResource(R.string.trend_elevation_title), state.elevationSeries, accent, "workout_trend_elevation") { "${it.roundToInt()} m" }
             }
             if (state.sampleHeartRateSeries.any { it.hasData }) {
-                TrendSeries("Heart rate", state.sampleHeartRateSeries, heartColor, "workout_trend_hr") { "${it.roundToInt()} bpm" }
+                TrendSeries(stringResource(R.string.heart_rate_title), state.sampleHeartRateSeries, heartColor, "workout_trend_hr") { "${it.roundToInt()} bpm" }
             }
         }
     }
@@ -255,7 +265,7 @@ private fun SplitsCard(laps: List<WorkoutLap>, type: WorkoutType, accent: Color,
     Card(Modifier.fillMaxWidth().testTag("workout_splits")) {
         Column(Modifier.padding(vertical = Spacing.sm)) {
             Text(
-                "Splits",
+                stringResource(R.string.splits_title),
                 style = MaterialTheme.typography.titleMedium,
                 color = accent,
                 modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.sm),
@@ -264,7 +274,7 @@ private fun SplitsCard(laps: List<WorkoutLap>, type: WorkoutType, accent: Color,
                 ListItem(
                     modifier = Modifier.testTag("workout_lap_${lap.index}"),
                     colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-                    headlineContent = { Text("Lap ${lap.index + 1} · ${lap.duration.stopwatch()}") },
+                    headlineContent = { Text(stringResource(R.string.lap_title, lap.index + 1, lap.duration.stopwatch())) },
                     supportingContent = { Text(lapSummary(lap, type, unitSystem), maxLines = 2, overflow = TextOverflow.Ellipsis) },
                 )
             }
@@ -272,6 +282,7 @@ private fun SplitsCard(laps: List<WorkoutLap>, type: WorkoutType, accent: Color,
     }
 }
 
+@Composable
 private fun lapSummary(lap: WorkoutLap, type: WorkoutType, unitSystem: UnitSystem): String {
     val parts = mutableListOf<String>()
     lap.distanceMeters?.takeIf { it > 0 }?.let { parts += "${kilometers(it, unitSystem = unitSystem)} ${unitSystem.distanceUnitLabel()}" }
@@ -281,7 +292,7 @@ private fun lapSummary(lap: WorkoutLap, type: WorkoutType, unitSystem: UnitSyste
     if (lap.ascentMeters != null || lap.descentMeters != null) {
         parts += "↑${(lap.ascentMeters ?: 0.0).roundToInt()}m ↓${(lap.descentMeters ?: 0.0).roundToInt()}m"
     }
-    return parts.joinToString(" · ").ifEmpty { "No details recorded" }
+    return parts.joinToString(" · ").ifEmpty { stringResource(R.string.lap_no_details) }
 }
 
 /** % of the workout's time in each HR zone (D-1030 thresholds), from the FIT `record` HR series. */
@@ -289,7 +300,7 @@ private fun lapSummary(lap: WorkoutLap, type: WorkoutType, unitSystem: UnitSyste
 private fun HrZonesCard(zones: List<HeartRateZoneShare>, heartColor: Color) {
     Card(Modifier.fillMaxWidth().testTag("workout_hr_zones")) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-            Text("Time in heart rate zones", style = MaterialTheme.typography.titleMedium, color = heartColor)
+            Text(stringResource(R.string.hr_zones_title), style = MaterialTheme.typography.titleMedium, color = heartColor)
             zones.forEach { share -> HrZoneRow(share) }
         }
     }
@@ -299,10 +310,11 @@ private fun HrZonesCard(zones: List<HeartRateZoneShare>, heartColor: Color) {
 private fun HrZoneRow(share: HeartRateZoneShare) {
     val zone = share.zone
     val percent = share.percentOfTime.roundToInt()
+    val description = stringResource(R.string.hr_zone_description, zone.zone, zone.label, percent)
     Column(
         Modifier
             .fillMaxWidth()
-            .semantics(mergeDescendants = true) { contentDescription = "Zone ${zone.zone} ${zone.label}, $percent percent of workout time" },
+            .semantics(mergeDescendants = true) { contentDescription = description },
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Z${zone.zone} · ${zone.label}", style = MaterialTheme.typography.bodyMedium)

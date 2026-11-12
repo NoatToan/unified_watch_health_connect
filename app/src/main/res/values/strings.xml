@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- app-level copy (D-1040 follow-up): HealthAlertNotifier.kt's posted notifications. -->
 <resources>
     <string name="app_name">Unified Health</string>
+
+    <string name="notification_channel_health_alerts">Health alerts</string>
+    <string name="notification_channel_health_alerts_description">Goal achieved and low watch battery</string>
+
+    <string name="notification_goal_reached_title">Step goal reached</string>
+    <string name="notification_goal_reached_text">%1$s steps today — you hit your goal of %2$s.</string>
+
+    <string name="notification_low_battery_title">%1$s battery low</string>
+    <string name="notification_low_battery_text">Battery is at %1$d%%. Charge it to keep recording.</string>
 </resources>

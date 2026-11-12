@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_tagline">Toàn bộ dữ liệu sức khoẻ từ đồng hồ của bạn ở một nơi: số bước, nhịp tim, giấc ngủ, SpO2 và mức stress.</string>
+    <string name="action_get_started">Bắt đầu</string>
+
+    <string name="onboarding_permissions_title">Quyền truy cập</string>
+    <string name="onboarding_permissions_subtitle">Cấp những quyền cần dùng ngay; bạn có thể đổi lại sau trong Cài đặt.</string>
+
+    <string name="permission_bluetooth_title">Thiết bị lân cận (Bluetooth)</string>
+    <string name="permission_bluetooth_desc_modern">Tìm và kết nối đồng hồ hoặc vòng đeo của bạn. Không dùng vị trí của bạn.</string>
+    <string name="permission_bluetooth_desc_legacy">Android 11 trở xuống cần quyền vị trí để quét thiết bị Bluetooth.</string>
+
+    <string name="permission_notifications_title">Thông báo</string>
+    <string name="permission_notifications_desc">Trạng thái đồng bộ, nhắc mục tiêu và cảnh báo sức khoẻ.</string>
+
+    <string name="permission_health_connect_title">Health Connect</string>
+    <string name="permission_health_connect_desc_available">Chia sẻ dữ liệu sức khoẻ với ứng dụng khác qua Health Connect.</string>
+    <string name="permission_health_connect_desc_not_installed">Cần cài đặt hoặc cập nhật Health Connect.</string>
+    <string name="permission_health_connect_desc_not_supported">Máy này không hỗ trợ Health Connect.</string>
+
+    <string name="permission_battery_title">Hoạt động nền</string>
+    <string name="permission_battery_desc">Cho phép dùng pin không giới hạn để đồng hồ tiếp tục đồng bộ khi chạy nền.</string>
+    <string name="action_open_settings">Mở cài đặt</string>
+
+    <string name="action_continue">Tiếp tục</string>
+    <string name="action_skip_for_now">Bỏ qua lúc này</string>
+
+    <string name="action_allow">Cho phép</string>
+    <string name="cd_granted">Đã cấp quyền</string>
+</resources>

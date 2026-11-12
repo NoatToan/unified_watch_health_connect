@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_health_alerts">Cảnh báo sức khoẻ</string>
+    <string name="notification_channel_health_alerts_description">Đạt mục tiêu và pin đồng hồ yếu</string>
+
+    <string name="notification_goal_reached_title">Đã đạt mục tiêu bước chân</string>
+    <string name="notification_goal_reached_text">%1$s bước hôm nay — bạn đã đạt mục tiêu %2$s.</string>
+
+    <string name="notification_low_battery_title">%1$s sắp hết pin</string>
+    <string name="notification_low_battery_text">Pin còn %1$d%%. Hãy sạc để tiếp tục ghi dữ liệu.</string>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- feature/activity screen copy (D-1040 follow-up). Shared cross-feature words
+     (Cancel/Save/Retry…) live in :core:designsystem instead — see its res/values/strings.xml. -->
+<resources>
+    <string name="activity_title">Activity</string>
+
+    <string name="workouts_empty_title">No workouts yet</string>
+    <string name="workouts_empty_message">Workouts recorded on your watch appear here after a sync, with your weekly activity load.</string>
+
+    <string name="activity_load_title">Weekly activity load</string>
+    <string name="activity_load_period">Last 7 days</string>
+    <string name="activity_load_value_description">Activity load %1$s, %2$s</string>
+    <string name="activity_load_caption">Workout minutes weighted by average heart rate, compared with your previous %1$d weeks (dashed line).</string>
+
+    <string name="trend_no_baseline">Keep recording workouts to see how this week compares.</string>
+    <string name="trend_below">Lower than your usual week (%1$d)</string>
+    <string name="trend_steady">In line with your usual week (%1$d)</string>
+    <string name="trend_above">Higher than your usual week (%1$d)</string>
+
+    <string name="stat_workouts">Workouts</string>
+    <string name="stat_time">Time</string>
+    <string name="stat_distance">Distance</string>
+
+    <!-- WorkoutUi.kt: WorkoutType.label(). -->
+    <string name="workout_type_walking">Walking</string>
+    <string name="workout_type_running">Running</string>
+    <string name="workout_type_cycling">Cycling</string>
+    <string name="workout_type_swimming">Swimming</string>
+    <string name="workout_type_strength">Strength training</string>
+    <string name="workout_type_yoga">Yoga</string>
+    <string name="workout_type_other">Workout</string>
+
+    <string name="avg_pace">Avg. pace</string>
+    <string name="avg_speed">Avg. speed</string>
+
+    <string name="workout_not_found_title">Workout not found</string>
+    <string name="workout_not_found_message">This workout is no longer stored on this phone.</string>
+
+    <string name="stat_workout_time">Workout time</string>
+    <string name="stat_active_energy">Active energy</string>
+    <string name="stat_avg_heart_rate">Avg. heart rate</string>
+    <string name="stat_max_heart_rate">Max heart rate</string>
+    <string name="stat_avg_cadence">Avg. cadence</string>
+    <string name="stat_max_cadence">Max. cadence</string>
+    <string name="stat_elevation_gain">Elevation gain</string>
+    <string name="stat_elevation_loss">Elevation loss</string>
+
+    <string name="heart_rate_title">Heart rate</string>
+    <string name="heart_rate_summary">Average %1$s · lowest %2$s · highest %3$s bpm</string>
+    <string name="heart_rate_empty">No heart-rate samples were recorded during this workout.</string>
+
+    <string name="source_label">Source</string>
+    <string name="source_unknown">Unknown device</string>
+
+    <string name="trends_title">Trends</string>
+    <string name="trend_pace_title">Pace (lower is faster)</string>
+    <string name="trend_elevation_title">Elevation</string>
+
+    <string name="splits_title">Splits</string>
+    <string name="lap_title">Lap %1$d · %2$s</string>
+    <string name="lap_no_details">No details recorded</string>
+
+    <string name="hr_zones_title">Time in heart rate zones</string>
+    <!-- Zone label (e.g. "Warm up"/"Easy") stays the plain English word core:domain already
+         returns (HeartRateZoneShare.zone.label is domain data, not UI copy). -->
+    <string name="hr_zone_description">Zone %1$d %2$s, %3$d percent of workout time</string>
+</resources>

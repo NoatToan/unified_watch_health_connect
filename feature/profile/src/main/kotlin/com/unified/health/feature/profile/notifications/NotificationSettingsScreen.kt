@@ -48,6 +48,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -59,6 +60,8 @@ import com.unified.health.core.designsystem.permission.RuntimePermissions
 import com.unified.health.core.designsystem.theme.ChromeRipple
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.domain.model.DefaultMetricThresholds
+import com.unified.health.feature.profile.R
+import com.unified.health.core.designsystem.R as DesignSystemR
 import java.text.NumberFormat
 
 @Composable
@@ -102,9 +105,15 @@ internal fun NotificationSettingsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Notifications") },
+                title = { Text(stringResource(R.string.notifications_title)) },
                 // D-1189: app chrome, not this screen's own content — restores the normal ripple.
-                navigationIcon = { ChromeRipple { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } } },
+                navigationIcon = {
+                    ChromeRipple {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back))
+                        }
+                    }
+                },
             )
         },
     ) { padding ->
@@ -123,26 +132,26 @@ internal fun NotificationSettingsScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Outlined.NotificationsOff, contentDescription = null, tint = MaterialTheme.colorScheme.error)
                             Spacer(Modifier.width(Spacing.sm))
-                            Text("Notifications are off", style = MaterialTheme.typography.titleMedium)
+                            Text(stringResource(R.string.notifications_blocked_title), style = MaterialTheme.typography.titleMedium)
                         }
                         Text(
-                            "Android is blocking notifications from Unified Health, so the alerts below cannot be shown.",
+                            stringResource(R.string.notifications_blocked_text),
                             style = MaterialTheme.typography.bodyMedium,
                         )
                         Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-                            FilledTonalButton(onClick = onAllow, modifier = Modifier.testTag("notifications_allow")) { Text("Allow") }
-                            TextButton(onClick = onOpenSystemSettings) { Text("System settings") }
+                            FilledTonalButton(onClick = onAllow, modifier = Modifier.testTag("notifications_allow")) { Text(stringResource(R.string.action_allow)) }
+                            TextButton(onClick = onOpenSystemSettings) { Text(stringResource(R.string.action_system_settings)) }
                         }
                     }
                 }
             }
-            SectionHeader("Alerts")
+            SectionHeader(stringResource(R.string.notif_section_alerts))
             ElevatedCard(Modifier.fillMaxWidth()) {
                 ToggleRow(
                     tag = "notif_goal",
                     icon = Icons.Outlined.EmojiEvents,
-                    title = "Goal achieved",
-                    subtitle = "Once a day, when you reach ${NumberFormat.getIntegerInstance().format(state.dailyStepGoal)} steps",
+                    title = stringResource(R.string.notif_goal_title),
+                    subtitle = stringResource(R.string.notif_goal_subtitle, NumberFormat.getIntegerInstance().format(state.dailyStepGoal)),
                     checked = prefs.goalAchieved,
                     onChange = onGoalAchieved,
                 )
@@ -150,8 +159,8 @@ internal fun NotificationSettingsScreen(
                 ToggleRow(
                     tag = "notif_battery",
                     icon = Icons.Outlined.BatteryAlert,
-                    title = "Low watch battery",
-                    subtitle = "When a paired watch reports ${DefaultMetricThresholds.VALUES.lowBatteryPercent}% or less",
+                    title = stringResource(R.string.notif_battery_title),
+                    subtitle = stringResource(R.string.notif_battery_subtitle, DefaultMetricThresholds.VALUES.lowBatteryPercent),
                     checked = prefs.lowWatchBattery,
                     onChange = onLowWatchBattery,
                 )
@@ -159,14 +168,14 @@ internal fun NotificationSettingsScreen(
                 ToggleRow(
                     tag = "notif_sync",
                     icon = Icons.Outlined.Sync,
-                    title = "Sync reminders",
-                    subtitle = "Remind me when my watch has not synced for a day. Reminders start in a future update; your choice is saved.",
+                    title = stringResource(R.string.notif_sync_title),
+                    subtitle = stringResource(R.string.notif_sync_subtitle),
                     checked = prefs.syncReminders,
                     onChange = onSyncReminders,
                 )
             }
             Text(
-                "Alerts are created on this phone from data already synced. Nothing is sent to your watch or to any server.",
+                stringResource(R.string.notif_footer),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

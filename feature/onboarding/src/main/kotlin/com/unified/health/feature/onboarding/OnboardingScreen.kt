@@ -45,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
@@ -87,18 +88,20 @@ private fun WelcomeStep(onNext: () -> Unit) {
             modifier = Modifier.size(96.dp),
         )
         Text(
+            // Brand name, identical in every locale — stays a plain literal (same treatment as
+            // DeviceSyncService.kt's notification title), not routed through strings.xml.
             "Unified Health",
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.semantics { heading() },
         )
         Text(
-            "All your health data from your wearable in one place: steps, heart rate, sleep, SpO2 and stress.",
+            stringResource(R.string.onboarding_tagline),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(Modifier.height(Spacing.lg))
-        Button(onClick = onNext, modifier = Modifier.fillMaxWidth().testTag("get_started")) { Text("Get started") }
+        Button(onClick = onNext, modifier = Modifier.fillMaxWidth().testTag("get_started")) { Text(stringResource(R.string.action_get_started)) }
     }
 }
 
@@ -137,20 +140,20 @@ private fun PermissionsStep(
             .padding(Spacing.lg),
         verticalArrangement = Arrangement.spacedBy(Spacing.md),
     ) {
-        Text("Permissions", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.semantics { heading() })
+        Text(stringResource(R.string.onboarding_permissions_title), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.semantics { heading() })
         Text(
-            "Grant what you need now; you can change these later in Settings.",
+            stringResource(R.string.onboarding_permissions_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         PermissionItem(
             icon = Icons.Outlined.Bluetooth,
-            title = "Nearby devices (Bluetooth)",
+            title = stringResource(R.string.permission_bluetooth_title),
             description = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                "Find and connect to your watch or band. Your location is not used."
+                stringResource(R.string.permission_bluetooth_desc_modern)
             } else {
-                "Android 11 and below require location access to scan for Bluetooth devices."
+                stringResource(R.string.permission_bluetooth_desc_legacy)
             },
             granted = bluetoothGranted,
             tag = "bluetooth",
@@ -159,8 +162,8 @@ private fun PermissionsStep(
         if (RuntimePermissions.notifications.isNotEmpty()) {
             PermissionItem(
                 icon = Icons.Outlined.Notifications,
-                title = "Notifications",
-                description = "Sync status, goal reminders and health alerts.",
+                title = stringResource(R.string.permission_notifications_title),
+                description = stringResource(R.string.permission_notifications_desc),
                 granted = notificationsGranted,
                 tag = "notifications",
                 onGrant = { runtimeLauncher.launch(RuntimePermissions.notifications.toTypedArray()) },
@@ -168,11 +171,11 @@ private fun PermissionsStep(
         }
         PermissionItem(
             icon = Icons.Outlined.HealthAndSafety,
-            title = "Health Connect",
+            title = stringResource(R.string.permission_health_connect_title),
             description = when (state.healthConnectAvailability) {
-                HealthConnectAvailability.AVAILABLE -> "Share health data with other apps through Health Connect."
-                HealthConnectAvailability.NOT_INSTALLED -> "Health Connect needs to be installed or updated."
-                HealthConnectAvailability.NOT_SUPPORTED -> "Health Connect is not supported on this device."
+                HealthConnectAvailability.AVAILABLE -> stringResource(R.string.permission_health_connect_desc_available)
+                HealthConnectAvailability.NOT_INSTALLED -> stringResource(R.string.permission_health_connect_desc_not_installed)
+                HealthConnectAvailability.NOT_SUPPORTED -> stringResource(R.string.permission_health_connect_desc_not_supported)
             },
             granted = state.healthConnectGranted,
             tag = "health_connect",
@@ -181,17 +184,17 @@ private fun PermissionsStep(
         )
         PermissionItem(
             icon = Icons.Outlined.BatterySaver,
-            title = "Background activity",
-            description = "Allow unrestricted battery use so the watch keeps syncing in the background.",
+            title = stringResource(R.string.permission_battery_title),
+            description = stringResource(R.string.permission_battery_desc),
             granted = batteryUnrestricted,
             tag = "battery",
-            grantLabel = "Open settings",
+            grantLabel = stringResource(R.string.action_open_settings),
             onGrant = { context.openBatteryOptimizationSettings() },
         )
 
         Spacer(Modifier.height(Spacing.lg))
-        Button(onClick = onFinish, modifier = Modifier.fillMaxWidth().testTag("onboarding_continue")) { Text("Continue") }
-        TextButton(onClick = onFinish, modifier = Modifier.fillMaxWidth()) { Text("Skip for now") }
+        Button(onClick = onFinish, modifier = Modifier.fillMaxWidth().testTag("onboarding_continue")) { Text(stringResource(R.string.action_continue)) }
+        TextButton(onClick = onFinish, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.action_skip_for_now)) }
     }
 }
 
@@ -204,7 +207,7 @@ private fun PermissionItem(
     onGrant: () -> Unit,
     tag: String,
     enabled: Boolean = true,
-    grantLabel: String = "Allow",
+    grantLabel: String = stringResource(R.string.action_allow),
 ) {
     Card(Modifier.fillMaxWidth().testTag("permission_$tag")) {
         Row(Modifier.padding(Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
@@ -216,7 +219,12 @@ private fun PermissionItem(
             }
             Spacer(Modifier.width(Spacing.sm))
             if (granted) {
-                Icon(Icons.Outlined.CheckCircle, contentDescription = "Granted", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.testTag("granted_$tag"))
+                Icon(
+                    Icons.Outlined.CheckCircle,
+                    contentDescription = stringResource(R.string.cd_granted),
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.testTag("granted_$tag"),
+                )
             } else {
                 FilledTonalButton(onClick = onGrant, enabled = enabled, modifier = Modifier.testTag("grant_$tag")) { Text(grantLabel) }
             }

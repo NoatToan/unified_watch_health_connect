@@ -1,13 +1,18 @@
 package com.unified.health.feature.profile
 
+import android.content.res.Resources
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -37,6 +42,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -52,6 +58,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
@@ -62,6 +70,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.unified.health.core.designsystem.R as DesignSystemR
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.domain.model.DefaultMetricThresholds
 import com.unified.health.core.domain.model.MetricThresholds
@@ -213,7 +222,7 @@ internal fun ProfileRoute(onOpenNotifications: () -> Unit, onOpenGear: () -> Uni
     val demoModeEnabled by viewModel.demoModeEnabled.collectAsStateWithLifecycle()
     val dialog by viewModel.dialog.collectAsStateWithLifecycle()
     var editingGoal by rememberSaveable { mutableStateOf<GoalField?>(null) }
-    Scaffold(topBar = { TopAppBar(title = { Text("Profile") }) }) { padding ->
+    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.profile_title)) }) }) { padding ->
         // D-1144: trailing Spacing.bottomNavClearance (applied *after* verticalScroll, so it extends
         // the scrollable content itself rather than just shrinking the viewport) — the pill nav now
         // floats as a Box overlay over this tab's content instead of reserving Scaffold space, so
@@ -225,24 +234,24 @@ internal fun ProfileRoute(onOpenNotifications: () -> Unit, onOpenGear: () -> Uni
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = Spacing.bottomNavClearance),
         ) {
-            SettingRow(Icons.Outlined.Person, "Personal info", "Height, weight, birthday (coming soon)")
+            SettingRow(Icons.Outlined.Person, stringResource(R.string.setting_personal_info_title), stringResource(R.string.setting_personal_info_subtitle))
             SettingRow(
                 Icons.Outlined.Flag,
-                "Daily step goal",
-                "${prefs.dailyStepGoal} steps",
+                stringResource(R.string.setting_step_goal_title),
+                stringResource(R.string.step_goal_subtitle, prefs.dailyStepGoal),
                 onClick = { editingGoal = GoalField.STEPS },
                 modifier = Modifier.testTag("goal_steps_row"),
             )
             SettingRow(
                 Icons.Outlined.LocalFireDepartment,
-                "Active calorie goal",
+                stringResource(R.string.setting_calorie_goal_title),
                 calorieGoalSubtitle(prefs.activeCalorieGoalOverride, viewModel.thresholds),
                 onClick = { editingGoal = GoalField.CALORIES },
                 modifier = Modifier.testTag("goal_calories_row"),
             )
             SettingRow(
                 Icons.Outlined.Bedtime,
-                "Sleep goal",
+                stringResource(R.string.setting_sleep_goal_title),
                 sleepGoalSubtitle(prefs.sleepGoalHoursOverride, viewModel.thresholds),
                 onClick = { editingGoal = GoalField.SLEEP_HOURS },
                 modifier = Modifier.testTag("goal_sleep_row"),
@@ -250,59 +259,61 @@ internal fun ProfileRoute(onOpenNotifications: () -> Unit, onOpenGear: () -> Uni
             ThresholdsReferenceCard(viewModel.thresholds)
             SettingRow(
                 Icons.Outlined.Straighten,
-                "Units",
-                if (prefs.unitSystem == UnitSystem.METRIC) "Metric (km, kg)" else "Imperial (mi, lb)",
+                stringResource(R.string.setting_units_title),
+                if (prefs.unitSystem == UnitSystem.METRIC) stringResource(R.string.units_metric) else stringResource(R.string.units_imperial),
                 onClick = { viewModel.toggleUnits() },
             )
-            // D-1040: EN/VI toggle for the whole app's UI language — independent of the phone's own
-            // system locale (Vietnamese users often leave the phone itself in English). Not tied to
-            // `UserPreferences`: `AppCompatDelegate.setApplicationLocales` already persists the choice
-            // across restarts via its own per-app locale storage (no AppCompatActivity required since
-            // appcompat 1.6+), so reading `getApplicationLocales()` back here is enough — a second
-            // copy in `UserPreferences` would just be a redundant source of truth to keep in sync.
-            // This row's own copy stays in plain English/Vietnamese literals like the rest of this
-            // screen (D-1040 scoped Profile's *content* localization to a follow-up task; only the
-            // toggle itself — the thing that makes everything else testable — is in scope here).
-            var isVietnamese by remember { mutableStateOf(AppCompatDelegate.getApplicationLocales().toLanguageTags().startsWith("vi")) }
+            // D-1184 bug fix: tri-state control (System default / English / Tiếng Việt) instead of a
+            // binary toggle — see `LanguageChoice`/`currentLanguageChoice()` doc for why the old
+            // binary toggle always lied and showed "English" while following the system locale.
+            var languageChoice by remember { mutableStateOf(currentLanguageChoice()) }
+            var languageDialogOpen by rememberSaveable { mutableStateOf(false) }
             SettingRow(
                 Icons.Outlined.Language,
-                "Language",
-                if (isVietnamese) "Tiếng Việt" else "English",
-                onClick = {
-                    isVietnamese = !isVietnamese
-                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(if (isVietnamese) "vi" else "en"))
-                },
+                stringResource(R.string.setting_language_title),
+                languageChoice.displayLabel(),
+                onClick = { languageDialogOpen = true },
                 modifier = Modifier.testTag("language_row"),
             )
+            if (languageDialogOpen) {
+                LanguageDialog(
+                    current = languageChoice,
+                    onSelect = { choice ->
+                        languageChoice = choice
+                        applyLanguageChoice(choice)
+                        languageDialogOpen = false
+                    },
+                    onDismiss = { languageDialogOpen = false },
+                )
+            }
             ListItem(
                 leadingContent = { Icon(Icons.Outlined.Palette, contentDescription = null) },
-                headlineContent = { Text("Dynamic color") },
-                supportingContent = { Text("Use wallpaper colors (Android 12+)") },
+                headlineContent = { Text(stringResource(R.string.setting_dynamic_color_title)) },
+                supportingContent = { Text(stringResource(R.string.setting_dynamic_color_subtitle)) },
                 trailingContent = { Switch(checked = prefs.useDynamicColor, onCheckedChange = { viewModel.setDynamicColor(it) }) },
             )
             // Reference/discovery content (D-1184/D-1185's closing note), kept here rather than on
             // Home like the Training guide — the user asked for it as a Profile row, not a daily-use
-            // metric. This row's own label/subtitle stay in plain Vietnamese like the Races/Training
-            // entry points (not routed through the EN-baseline strings.xml localization system).
+            // metric.
             SettingRow(
                 Icons.Outlined.Checkroom,
-                "Trang bị tham khảo",
-                "Giày, quần áo, phụ kiện chạy bộ từ các hãng — xem và mua tại trang hãng",
+                stringResource(R.string.setting_gear_title),
+                stringResource(R.string.setting_gear_subtitle),
                 onClick = onOpenGear,
                 modifier = Modifier.testTag("gear_row"),
             )
             HorizontalDivider(Modifier.padding(vertical = Spacing.sm))
             SettingRow(
                 Icons.Outlined.Notifications,
-                "Notifications",
-                "Goal achieved, low watch battery, sync reminders",
+                stringResource(R.string.notifications_title),
+                stringResource(R.string.setting_notifications_subtitle),
                 onClick = onOpenNotifications,
                 modifier = Modifier.testTag("profile_notifications"),
             )
-            SettingRow(Icons.Outlined.HealthAndSafety, "Health Connect", "Manage data sharing (coming soon)")
-            SettingRow(Icons.Outlined.PrivacyTip, "Privacy", "Coming soon")
-            SettingRow(Icons.Outlined.FileDownload, "Export data", "Coming soon")
-            SettingRow(Icons.Outlined.DeleteForever, "Delete all data", "Coming soon", destructive = true)
+            SettingRow(Icons.Outlined.HealthAndSafety, stringResource(R.string.setting_health_connect_title), stringResource(R.string.setting_health_connect_subtitle))
+            SettingRow(Icons.Outlined.PrivacyTip, stringResource(R.string.setting_privacy_title), stringResource(R.string.setting_coming_soon))
+            SettingRow(Icons.Outlined.FileDownload, stringResource(R.string.setting_export_data_title), stringResource(R.string.setting_coming_soon))
+            SettingRow(Icons.Outlined.DeleteForever, stringResource(R.string.setting_delete_all_data_title), stringResource(R.string.setting_coming_soon), destructive = true)
             if (viewModel.developerToolsAvailable) {
                 DeveloperSection(
                     demoModeEnabled = demoModeEnabled,
@@ -371,11 +382,98 @@ private fun Modifier.clickableRow(onClick: () -> Unit): Modifier = clickable(onC
 /** Which goal [GoalEditDialog] is editing. */
 private enum class GoalField { STEPS, CALORIES, SLEEP_HOURS }
 
+@Composable
 private fun calorieGoalSubtitle(override: Int?, thresholds: MetricThresholds): String =
-    if (override != null) "$override kcal" else "${thresholds.activeCalorieGoal(profile = null)} kcal (default)"
+    if (override != null) stringResource(R.string.calorie_goal_value, override) else stringResource(R.string.calorie_goal_default, thresholds.activeCalorieGoal(profile = null))
 
+@Composable
 private fun sleepGoalSubtitle(override: Int?, thresholds: MetricThresholds): String =
-    if (override != null) "$override h" else "${thresholds.sleepDurationHours.last} h (default)"
+    if (override != null) stringResource(R.string.sleep_goal_value, override) else stringResource(R.string.sleep_goal_default, thresholds.sleepDurationHours.last)
+
+/**
+ * D-1184 bug fix: tri-state language control. `SYSTEM` (localeTag null) means "no per-app
+ * override — follow the phone's own system language"; `AppCompatDelegate.getApplicationLocales()`
+ * returns an *empty* `LocaleListCompat` in that state, whose `.toLanguageTags()` is `""` — the
+ * pre-existing bug compared that against `"vi"` with `startsWith`, which is always false, so the
+ * row always showed "English" even while correctly following a Vietnamese system locale.
+ */
+private enum class LanguageChoice(val localeTag: String?) {
+    SYSTEM(null),
+    ENGLISH("en"),
+    VIETNAMESE("vi"),
+}
+
+/** Reads the *currently active* choice back from AppCompat's own per-app locale storage (D-1184: no second copy in `UserPreferences`). */
+private fun currentLanguageChoice(): LanguageChoice {
+    val tags = AppCompatDelegate.getApplicationLocales().toLanguageTags()
+    return when {
+        tags.isEmpty() -> LanguageChoice.SYSTEM
+        tags.startsWith("vi") -> LanguageChoice.VIETNAMESE
+        else -> LanguageChoice.ENGLISH
+    }
+}
+
+/**
+ * `LocaleListCompat.getEmptyLocaleList()` is AppCompat's documented way to clear a per-app locale
+ * override and revert to following the system locale (the counterpart of `forLanguageTags` for an
+ * explicit one) — confirmed against AppCompat's per-app language API, not guessed.
+ */
+private fun applyLanguageChoice(choice: LanguageChoice) {
+    val locales = choice.localeTag?.let { LocaleListCompat.forLanguageTags(it) } ?: LocaleListCompat.getEmptyLocaleList()
+    AppCompatDelegate.setApplicationLocales(locales)
+}
+
+/**
+ * The phone's own system language, read via `Resources.getSystem()` (framework resources, never
+ * affected by this app's own per-app locale override) rather than `Locale.getDefault()` — querying
+ * the latter here would reintroduce the same class of bug, since `AppCompatDelegate` also updates
+ * the process-wide default locale when an override is active.
+ */
+@Composable
+private fun systemLanguageLabel(): String =
+    if (Resources.getSystem().configuration.locales[0].language == "vi") {
+        stringResource(R.string.language_vietnamese)
+    } else {
+        stringResource(R.string.language_english)
+    }
+
+@Composable
+private fun LanguageChoice.displayLabel(): String = when (this) {
+    LanguageChoice.SYSTEM -> stringResource(R.string.language_system_option, systemLanguageLabel())
+    LanguageChoice.ENGLISH -> stringResource(R.string.language_english)
+    LanguageChoice.VIETNAMESE -> stringResource(R.string.language_vietnamese)
+}
+
+@Composable
+private fun LanguageDialog(current: LanguageChoice, onSelect: (LanguageChoice) -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.language_dialog_title)) },
+        text = {
+            Column(Modifier.selectableGroup()) {
+                LanguageChoice.entries.forEach { choice ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(selected = choice == current, onClick = { onSelect(choice) }, role = Role.RadioButton)
+                            .padding(vertical = Spacing.xs)
+                            .testTag("language_option_${choice.name.lowercase()}"),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        RadioButton(selected = choice == current, onClick = null)
+                        Spacer(Modifier.width(Spacing.sm))
+                        Text(choice.displayLabel())
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss, modifier = Modifier.testTag("language_dialog_done")) {
+                Text(stringResource(DesignSystemR.string.action_done))
+            }
+        },
+    )
+}
 
 /**
  * Everything this dialog edits is a positive integer goal (steps/kcal/hours); only step goal has no
@@ -391,11 +489,13 @@ private fun GoalEditDialog(
     onDismiss: () -> Unit,
 ) {
     val (title, initial) = when (field) {
-        GoalField.STEPS -> "Daily step goal" to prefs.dailyStepGoal
-        GoalField.CALORIES -> "Active calorie goal" to (prefs.activeCalorieGoalOverride ?: thresholds.activeCalorieGoal(profile = null))
-        GoalField.SLEEP_HOURS -> "Sleep goal" to (prefs.sleepGoalHoursOverride ?: thresholds.sleepDurationHours.last)
+        GoalField.STEPS -> stringResource(R.string.setting_step_goal_title) to prefs.dailyStepGoal
+        GoalField.CALORIES -> stringResource(R.string.setting_calorie_goal_title) to (prefs.activeCalorieGoalOverride ?: thresholds.activeCalorieGoal(profile = null))
+        GoalField.SLEEP_HOURS -> stringResource(R.string.setting_sleep_goal_title) to (prefs.sleepGoalHoursOverride ?: thresholds.sleepDurationHours.last)
     }
-    val unit = if (field == GoalField.SLEEP_HOURS) "hours" else if (field == GoalField.CALORIES) "kcal" else "steps"
+    val unit = stringResource(
+        if (field == GoalField.SLEEP_HOURS) R.string.goal_unit_hours else if (field == GoalField.CALORIES) R.string.goal_unit_kcal else R.string.goal_unit_steps,
+    )
     var value by rememberSaveable(field) { mutableStateOf(initial.toString()) }
     val parsed = value.toIntOrNull()
     AlertDialog(
@@ -413,15 +513,15 @@ private fun GoalEditDialog(
         },
         confirmButton = {
             TextButton(onClick = { parsed?.let(onSave) }, enabled = parsed != null && parsed > 0, modifier = Modifier.testTag("save_goal")) {
-                Text("Save")
+                Text(stringResource(DesignSystemR.string.action_save))
             }
         },
         dismissButton = {
             Row {
                 if (onUseDefault != null) {
-                    TextButton(onClick = onUseDefault, modifier = Modifier.testTag("use_default_goal")) { Text("Use default") }
+                    TextButton(onClick = onUseDefault, modifier = Modifier.testTag("use_default_goal")) { Text(stringResource(R.string.use_default_goal)) }
                 }
-                TextButton(onClick = onDismiss) { Text("Cancel") }
+                TextButton(onClick = onDismiss) { Text(stringResource(DesignSystemR.string.action_cancel)) }
             }
         },
     )
@@ -437,27 +537,31 @@ private fun ThresholdsReferenceCard(thresholds: MetricThresholds) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 Icon(Icons.Outlined.MonitorHeart, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                Text("Health reference ranges", style = MaterialTheme.typography.titleSmall)
+                Text(stringResource(R.string.thresholds_card_title), style = MaterialTheme.typography.titleSmall)
             }
             Text(
-                "Resting heart rate: ${thresholds.restingHeartRate.first}-${thresholds.restingHeartRate.last} bpm",
+                stringResource(R.string.thresholds_resting_hr, thresholds.restingHeartRate.first, thresholds.restingHeartRate.last),
                 style = MaterialTheme.typography.bodyMedium,
             )
+            // Zone label/category names stay the plain English words core:domain already returns
+            // (MetricThresholds/Vo2MaxCategory are not UI-copy — see strings.xml header note).
             Text(
-                "Heart rate zones (% of max HR): " +
+                stringResource(
+                    R.string.thresholds_hr_zones,
                     thresholds.heartRateZones.joinToString(", ") { "Z${it.zone} ${it.label} ${it.percentOfMaxHr.first}-${it.percentOfMaxHr.last}%" },
+                ),
                 style = MaterialTheme.typography.bodyMedium,
             )
             Text(
-                "Sleep target: ${thresholds.sleepDurationHours.first}-${thresholds.sleepDurationHours.last} h/night",
+                stringResource(R.string.thresholds_sleep_target, thresholds.sleepDurationHours.first, thresholds.sleepDurationHours.last),
                 style = MaterialTheme.typography.bodyMedium,
             )
             Text(
-                "SpO2: normal ${thresholds.spo2.normal.first}-${thresholds.spo2.normal.last}%, alert below ${thresholds.spo2.alertBelowPercent}%",
+                stringResource(R.string.thresholds_spo2, thresholds.spo2.normal.first, thresholds.spo2.normal.last, thresholds.spo2.alertBelowPercent),
                 style = MaterialTheme.typography.bodyMedium,
             )
             Text(
-                "VO2max bands (by age & sex): " + Vo2MaxCategory.entries.joinToString(", ") { it.name.lowercase().replace('_', ' ') },
+                stringResource(R.string.thresholds_vo2max, Vo2MaxCategory.entries.joinToString(", ") { it.name.lowercase().replace('_', ' ') }),
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
@@ -481,7 +585,7 @@ private fun DeveloperSection(
 ) {
     HorizontalDivider(Modifier.padding(vertical = Spacing.sm))
     Text(
-        "Developer (debug build)",
+        stringResource(R.string.developer_section_title),
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.sm),
@@ -490,8 +594,8 @@ private fun DeveloperSection(
     ListItem(
         modifier = Modifier.testTag("demo_mode_row"),
         leadingContent = { Icon(Icons.Outlined.Science, contentDescription = null) },
-        headlineContent = { Text("Demo mode") },
-        supportingContent = { Text("Show virtual watches (Garmin, Zepp, Huawei, SIG band, generic) in scan") },
+        headlineContent = { Text(stringResource(R.string.demo_mode_title)) },
+        supportingContent = { Text(stringResource(R.string.demo_mode_subtitle)) },
         trailingContent = {
             Switch(
                 checked = demoModeEnabled,
@@ -504,14 +608,14 @@ private fun DeveloperSection(
         ListItem(
             modifier = Modifier.clickable(enabled = !busy, onClick = onFill).testTag("fill_demo_data"),
             leadingContent = { Icon(Icons.Outlined.Science, contentDescription = null) },
-            headlineContent = { Text("Fill demo data") },
-            supportingContent = { Text("Write ~90 days of every metric into local storage") },
+            headlineContent = { Text(stringResource(R.string.fill_demo_data_title)) },
+            supportingContent = { Text(stringResource(R.string.fill_demo_data_subtitle)) },
         )
         ListItem(
             modifier = Modifier.clickable(enabled = !busy, onClick = onRequestClear).testTag("clear_demo_data"),
             leadingContent = { Icon(Icons.Outlined.DeleteSweep, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
-            headlineContent = { Text("Clear demo data", color = MaterialTheme.colorScheme.error) },
-            supportingContent = { Text("Delete only demo-seeded data; real watch data is kept") },
+            headlineContent = { Text(stringResource(R.string.clear_demo_data_title), color = MaterialTheme.colorScheme.error) },
+            supportingContent = { Text(stringResource(R.string.clear_demo_data_subtitle)) },
         )
     }
     // D-1188: Home's "Xem tất cả" escape hatch (D-1119) was removed for normal use — Home now always
@@ -522,8 +626,8 @@ private fun DeveloperSection(
     ListItem(
         modifier = Modifier.testTag("show_empty_metric_cards_row"),
         leadingContent = { Icon(Icons.Outlined.GridView, contentDescription = null) },
-        headlineContent = { Text("Show empty metric cards") },
-        supportingContent = { Text("Home's Metrics section shows every card, including ones with no data") },
+        headlineContent = { Text(stringResource(R.string.show_empty_metric_cards_title)) },
+        supportingContent = { Text(stringResource(R.string.show_empty_metric_cards_subtitle)) },
         trailingContent = {
             Switch(
                 checked = showEmptyMetricCards,
@@ -553,27 +657,27 @@ private fun DeveloperDialogHost(
     when (dialog) {
         DeveloperDialog.ConfirmTurnOffDemoMode -> AlertDialog(
             onDismissRequest = onDismiss,
-            title = { Text("Turn off demo mode?") },
-            text = { Text("Virtual watches will stop appearing in scan. You can also clear the demo data they filled.") },
+            title = { Text(stringResource(R.string.turn_off_demo_mode_title)) },
+            text = { Text(stringResource(R.string.turn_off_demo_mode_text)) },
             confirmButton = {
                 TextButton(onClick = { onConfirmTurnOff(true) }, modifier = Modifier.testTag("confirm_turn_off_and_clear")) {
-                    Text("Turn off and clear data")
+                    Text(stringResource(R.string.turn_off_and_clear_data))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { onConfirmTurnOff(false) }, modifier = Modifier.testTag("confirm_turn_off_keep_data")) {
-                    Text("Turn off, keep data")
+                    Text(stringResource(R.string.turn_off_keep_data))
                 }
             },
         )
         DeveloperDialog.ConfirmClearDemoData -> AlertDialog(
             onDismissRequest = onDismiss,
-            title = { Text("Clear demo data?") },
-            text = { Text("This removes only demo-seeded data; any real watch data is kept.") },
+            title = { Text(stringResource(R.string.clear_demo_data_dialog_title)) },
+            text = { Text(stringResource(R.string.clear_demo_data_dialog_text)) },
             confirmButton = {
-                TextButton(onClick = onConfirmClear, modifier = Modifier.testTag("confirm_clear_demo_data")) { Text("Clear") }
+                TextButton(onClick = onConfirmClear, modifier = Modifier.testTag("confirm_clear_demo_data")) { Text(stringResource(R.string.action_clear)) }
             },
-            dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+            dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(DesignSystemR.string.action_cancel)) } },
         )
     }
 }
