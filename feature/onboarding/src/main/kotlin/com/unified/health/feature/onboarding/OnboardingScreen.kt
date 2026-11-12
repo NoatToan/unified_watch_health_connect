@@ -55,6 +55,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.unified.health.core.designsystem.permission.RuntimePermissions
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.model.HealthConnectAvailability
 
@@ -77,6 +78,9 @@ internal fun OnboardingRoute(onFinished: () -> Unit, viewModel: OnboardingViewMo
 @Composable
 private fun WelcomeStep(onNext: () -> Unit) {
     Column(
+        // D-1204: Spacing.xl (24dp) kept as-is, not routed through Gaps — a deliberately more generous
+        // margin than the app's usual screenHorizontal for this one-time, centered welcome splash, not
+        // part of the "too airy" list/card feedback this pass addresses.
         modifier = Modifier.fillMaxSize().safeDrawingPadding().padding(Spacing.xl),
         verticalArrangement = Arrangement.spacedBy(Spacing.lg, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -137,8 +141,8 @@ private fun PermissionsStep(
             .fillMaxSize()
             .safeDrawingPadding()
             .verticalScroll(rememberScrollState())
-            .padding(Spacing.lg),
-        verticalArrangement = Arrangement.spacedBy(Spacing.md),
+            .padding(Gaps.cardPadding),
+        verticalArrangement = Arrangement.spacedBy(Gaps.itemGap),
     ) {
         Text(stringResource(R.string.onboarding_permissions_title), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.semantics { heading() })
         Text(
@@ -192,7 +196,7 @@ private fun PermissionsStep(
             onGrant = { context.openBatteryOptimizationSettings() },
         )
 
-        Spacer(Modifier.height(Spacing.lg))
+        Spacer(Modifier.height(Gaps.sectionGap))
         Button(onClick = onFinish, modifier = Modifier.fillMaxWidth().testTag("onboarding_continue")) { Text(stringResource(R.string.action_continue)) }
         TextButton(onClick = onFinish, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.action_skip_for_now)) }
     }
@@ -210,7 +214,7 @@ private fun PermissionItem(
     grantLabel: String = stringResource(R.string.action_allow),
 ) {
     Card(Modifier.fillMaxWidth().testTag("permission_$tag")) {
-        Row(Modifier.padding(Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.padding(Gaps.cardPadding), verticalAlignment = Alignment.CenterVertically) {
             Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.width(Spacing.md))
             Column(Modifier.weight(1f)) {

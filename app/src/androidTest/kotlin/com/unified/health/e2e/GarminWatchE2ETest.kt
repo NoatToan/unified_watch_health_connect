@@ -39,7 +39,7 @@ class GarminWatchE2ETest : E2EBase() {
         report.flow(40, "garmin-watch", "Garmin watch (driver:garmin, dedicated GFDI service)") {
             step("scan", "Open Devices, tap Scan", "$name is listed as ${WearableVendor.GARMIN.displayName}") {
                 clickTag("nav_DEVICES")
-                clickTag("scan_fab")
+                clickTag("onboarding_scan_button")
                 waitForTag("discovered_$watch", timeoutMs = 20_000)
                 waitFor(hasText(name) and hasAnyAncestor(hasTestTag("discovered_$watch")), what = "watch name")
                 waitFor(

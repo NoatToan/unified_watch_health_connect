@@ -14,6 +14,11 @@ are in Vietnamese; code, comments and commit messages are in English.
   - `e2e-flows` — E2E UI flows, mock devices, seeded data, screenshot report
   Give each agent a self-contained brief (goal, files, constraints, how to verify). Independent
   tasks run in parallel; tasks touching the same files run one after another.
+- **Raw RE dumps / vendor app analysis run on DeepSeek via `claude-deepseek -p "<prompt>"`** (D-003):
+  reading `../rea-output/<brand>/` and `docs/re-evidence/<brand>/jadx-base/` to distill evidence. Run it
+  inside the repo with `--permission-mode bypassPermissions < /dev/null`, log to the scratchpad, and pass
+  only the distilled result to the coding agent. `claude-deepseek` is a script on PATH (`~/bin`), so it
+  also works from non-interactive shells. Do not use `claude-personal` for DeepSeek.
 - After an agent finishes, review its diff and re-run the checks below before reporting done.
 - Decide autonomously and log each decision in `docs/DECISIONS.md` (`D-<area><nn>`, date,
   **Chốt** = settled / **Tạm** = provisional, then the reasoning).
@@ -21,7 +26,7 @@ are in Vietnamese; code, comments and commit messages are in English.
   `docs/re-evidence/<brand>/` first.** Every vendor's own companion app (Garmin Connect, Huawei
   Health, Zepp, …) bundles its full FIT/protocol profile inside the APK, so the real answer is
   almost always already sitting in `docs/re-evidence/<brand>/jadx-base/` — read it (via
-  `claude-personal -p`, D-003) before inventing a field number from memory or general docs. D-1082
+  `claude-deepseek -p`, D-003) before inventing a field number from memory or general docs. D-1082
   is the cautionary example: three FIT message/field numbers were guessed `[Ext]` and two of three
   turned out wrong, discoverable by grepping evidence already on disk.
 

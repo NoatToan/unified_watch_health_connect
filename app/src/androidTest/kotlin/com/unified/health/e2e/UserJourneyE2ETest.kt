@@ -71,7 +71,7 @@ class UserJourneyE2ETest : E2EBase() {
                 waitForText("No device paired yet")
             }
             step("scanning", "Tap \"Scan\"", "Scan runs and the simulated watch is listed with its brand") {
-                clickTag("scan_fab")
+                clickTag("onboarding_scan_button")
                 waitForTag("discovered_$watch")
                 compose.onNode(hasText(DemoDevice.NAME) and hasAnyAncestor(hasTestTag("discovered_$watch")), useUnmergedTree = true).assertIsDisplayed()
             }

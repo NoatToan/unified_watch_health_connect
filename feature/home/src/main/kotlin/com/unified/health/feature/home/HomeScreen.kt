@@ -1,17 +1,21 @@
 package com.unified.health.feature.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +27,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -48,7 +54,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -59,6 +64,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,19 +74,26 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.unified.health.core.designsystem.component.ActivityRings
+import com.unified.health.core.designsystem.component.AppScreen
 import com.unified.health.core.designsystem.component.ErrorState
 import com.unified.health.core.designsystem.component.HealthBarChart
 import com.unified.health.core.designsystem.component.HealthRangeChart
@@ -101,6 +114,7 @@ import com.unified.health.core.designsystem.component.icon
 import com.unified.health.core.designsystem.component.label
 import com.unified.health.core.designsystem.component.timeLabel
 import com.unified.health.core.designsystem.component.unit
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.MetricValueTextStyle
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
@@ -126,6 +140,7 @@ import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.WatchModelMatcher
 import com.unified.health.core.model.WearableDevice
 import com.unified.health.core.model.WearableVendor
+import com.unified.health.core.model.WeekActivityDay
 import com.unified.health.core.model.Workout
 import com.unified.health.core.model.distanceUnitLabel
 import com.unified.health.core.model.metersToDisplayDistance
@@ -135,12 +150,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlin.math.abs
+import java.time.DayOfWeek
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.time.format.TextStyle
 import com.unified.health.core.designsystem.R as DesignSystemR
 
 @Composable
@@ -176,6 +193,8 @@ internal fun HomeRoute(
         onFeedCardsChanged = viewModel::setFeedCards,
         onMetricsViewModeChange = viewModel::setMetricsViewMode,
         onCheckInToday = viewModel::checkInToday,
+        onSelectDay = viewModel::selectDay,
+        onJumpToToday = viewModel::jumpToToday,
     )
 }
 
@@ -205,6 +224,8 @@ internal fun HomeScreen(
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit = { _, _ -> },
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit = {},
     onCheckInToday: (Int) -> Unit = {},
+    onSelectDay: (LocalDate) -> Unit = {},
+    onJumpToToday: () -> Unit = {},
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val listState = rememberLazyListState()
@@ -214,30 +235,29 @@ internal fun HomeScreen(
     // code with nothing left to collapse.
     val device = (state as? HomeUiState.Success)?.device
     val syncState = (state as? HomeUiState.Success)?.syncState ?: SyncState.Idle
-    Scaffold(
+    // D-1194: top-level tab (inside the main pager) — bottomClearance clears PillBottomNavigation's
+    // floating pill, routed through AppScreen instead of this screen adding it manually.
+    AppScreen(
+        title = stringResource(R.string.home_title),
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.home_title)) },
-                actions = {
-                    // D-1147: the only device affordance left on Home — always visible now (no banner
-                    // left in the body for it to reveal alongside), with a status dot (D-1054's LiveDot)
-                    // showing whether the device is connected and actively syncing right now.
-                    if (device != null) {
-                        DeviceChip(device, syncState, Modifier.testTag("device_chip"))
-                    }
-                },
-                scrollBehavior = scrollBehavior,
-            )
+        actions = {
+            // D-1147: the only device affordance left on Home — always visible now (no banner left in
+            // the body for it to reveal alongside), with a status dot (D-1054's LiveDot) showing
+            // whether the device is connected and actively syncing right now.
+            if (device != null) {
+                DeviceChip(device, syncState, Modifier.testTag("device_chip"))
+            }
         },
-    ) { padding ->
+        topBarScrollBehavior = scrollBehavior,
+        bottomClearance = Spacing.bottomNavClearance,
+    ) { contentPadding ->
         when (state) {
-            HomeUiState.Loading -> LoadingState(Modifier.padding(padding))
-            is HomeUiState.Error -> ErrorState(state.message, Modifier.padding(padding), onRetry = onRefresh)
+            HomeUiState.Loading -> LoadingState(Modifier.padding(contentPadding))
+            is HomeUiState.Error -> ErrorState(state.message, Modifier.padding(contentPadding), onRetry = onRefresh)
             is HomeUiState.Success -> PullToRefreshBox(
                 isRefreshing = isRefreshing,
                 onRefresh = onRefresh,
-                modifier = Modifier.fillMaxSize().padding(padding),
+                modifier = Modifier.fillMaxSize(),
             ) {
                 Summary(
                     state = state,
@@ -254,7 +274,10 @@ internal fun HomeScreen(
                     onFeedCardsChanged = onFeedCardsChanged,
                     onMetricsViewModeChange = onMetricsViewModeChange,
                     onCheckInToday = onCheckInToday,
+                    onSelectDay = onSelectDay,
+                    onJumpToToday = onJumpToToday,
                     listState = listState,
+                    contentPadding = contentPadding,
                 )
             }
         }
@@ -277,7 +300,10 @@ private fun Summary(
     onFeedCardsChanged: (List<String>, Set<String>) -> Unit,
     onMetricsViewModeChange: (HomeMetricsViewMode) -> Unit,
     onCheckInToday: (Int) -> Unit,
+    onSelectDay: (LocalDate) -> Unit,
+    onJumpToToday: () -> Unit,
     listState: LazyListState,
+    contentPadding: PaddingValues,
 ) {
     var editingFeed by rememberSaveable { mutableStateOf(false) }
     // The live bpm (while fresh) used to override the Pinned heart-rate card's value; now that Pinned
@@ -292,17 +318,41 @@ private fun Summary(
         // *true* full width to scroll within. A shared contentPadding here previously left every
         // item, including the carousel, permanently constrained to (screen width - 2*lg): no
         // Modifier trick on a child can claw back space a LazyColumn already decided not to give it.
-        // D-1144: bottom clearance is now Spacing.bottomNavClearance (was Spacing.xxl) — the pill nav
-        // floats as a Box overlay over this list instead of reserving Scaffold space, so without this
-        // the last item would permanently sit behind it instead of merely scrolling behind it.
-        contentPadding = PaddingValues(top = Spacing.sm, bottom = Spacing.bottomNavClearance),
-        verticalArrangement = Arrangement.spacedBy(Spacing.md),
+        // D-1194: contentPadding (AppScreen's own, already including Spacing.bottomNavClearance via
+        // HomeScreen's bottomClearance param) merged with Gaps.screenTop (D-1204) — passed straight to the
+        // LazyColumn's own contentPadding, never as an outer Modifier.padding, so the list scrolls
+        // fully behind the gesture bar instead of stopping in a dead strip above it (D-1144's original
+        // bottomNavClearance intent carries over unchanged, just sourced from AppScreen now).
+        contentPadding = PaddingValues(
+            top = contentPadding.calculateTopPadding() + Gaps.screenTop,
+            bottom = contentPadding.calculateBottomPadding(),
+        ),
+        verticalArrangement = Arrangement.spacedBy(Gaps.itemGap),
     ) {
         // D-1147: DeviceBanner removed entirely from Home's body — the small header chip (TopAppBar
         // actions, DeviceChip below) is now the only device affordance on Home.
-        item { RingsCard(state.summary, onClick = { onMetricClick(HealthMetricType.CALORIES) }, modifier = Modifier.padding(horizontal = Spacing.lg)) }
         item {
-            Row(modifier = Modifier.padding(horizontal = Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
+            RingsCard(
+                summary = state.selectedDaySummary,
+                selectedDate = state.selectedDate,
+                onClick = { onMetricClick(HealthMetricType.CALORIES) },
+                onJumpToToday = onJumpToToday,
+                modifier = Modifier.padding(horizontal = Gaps.screenHorizontal),
+            )
+        }
+        // D-1196/D-1215: always-on "7 mini rings" week strip, directly under the big ring — tapping
+        // a day previews it on the big ring above (RingsCard); the strip itself always shows every
+        // day's own data regardless of the current selection.
+        item {
+            WeekRingsStrip(
+                week = state.week,
+                selectedDate = state.selectedDate,
+                onSelectDay = onSelectDay,
+                modifier = Modifier.padding(horizontal = Gaps.screenHorizontal),
+            )
+        }
+        item {
+            Row(modifier = Modifier.padding(horizontal = Gaps.screenHorizontal), verticalAlignment = Alignment.CenterVertically) {
                 SectionHeader(stringResource(R.string.metrics_section_title), Modifier.weight(1f))
                 ViewModeToggle(
                     mode = state.metricsViewMode,
@@ -324,15 +374,15 @@ private fun Summary(
                 Text(
                     stringResource(R.string.no_metrics_with_data),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = Spacing.lg).testTag("feed_empty"),
+                    modifier = Modifier.padding(horizontal = Gaps.screenHorizontal).testTag("feed_empty"),
                 )
             }
         }
         feedCardItems(cardsWithData, state.metricsViewMode, state.unitSystem, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm)
         if (state.highlights.isNotEmpty()) {
-            item { SectionHeader(stringResource(R.string.highlights_section_title), Modifier.padding(horizontal = Spacing.lg)) }
+            item { SectionHeader(stringResource(R.string.highlights_section_title), Modifier.padding(horizontal = Gaps.screenHorizontal)) }
             items(state.highlights, key = { "highlight_${it.metric.name}" }) { highlight ->
-                HighlightCard(highlight, state.unitSystem, onClick = { onMetricClick(highlight.metric) }, modifier = Modifier.padding(horizontal = Spacing.lg))
+                HighlightCard(highlight, state.unitSystem, onClick = { onMetricClick(highlight.metric) }, modifier = Modifier.padding(horizontal = Gaps.screenHorizontal))
             }
         }
         // D-1110: moved to the end of the content (was right after RingsCard, D-1105) — marketing/
@@ -361,7 +411,7 @@ private fun Summary(
         // catalog (D-1186 added the first one, a Profile row; this is purely additional, not a
         // replacement). Sits before TrainingEntryCard so the end-of-list reads Races → Gear → Training.
         item {
-            GearEntryCard(onClick = onOpenGear, modifier = Modifier.padding(horizontal = Spacing.lg))
+            GearEntryCard(onClick = onOpenGear, modifier = Modifier.padding(horizontal = Gaps.screenHorizontal))
         }
         // D-1190: a plan actively being followed replaces the plain static TrainingEntryCard with a
         // richer "today's workout" card (still linking through to the same feature/training screen) —
@@ -375,10 +425,10 @@ private fun Summary(
                     workout = todayWorkout,
                     onClick = onOpenTraining,
                     onCheckIn = { onCheckInToday(todayWorkout.dayOffset) },
-                    modifier = Modifier.padding(horizontal = Spacing.lg),
+                    modifier = Modifier.padding(horizontal = Gaps.screenHorizontal),
                 )
             } else {
-                TrainingEntryCard(onClick = onOpenTraining, modifier = Modifier.padding(horizontal = Spacing.lg))
+                TrainingEntryCard(onClick = onOpenTraining, modifier = Modifier.padding(horizontal = Gaps.screenHorizontal))
             }
         }
     }
@@ -454,16 +504,25 @@ private fun LazyListScope.feedCardItems(
     // every card gets the same inset without duplicating the constant elsewhere.
     when (viewMode) {
         HomeMetricsViewMode.LIST -> items(cards, key = { "feed_${it.id}" }) { card ->
-            FeedCard(card, unitSystem, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = false, modifier = Modifier.padding(horizontal = Spacing.lg).testTag("card_${card.id}"))
+            FeedCard(card, unitSystem, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = false, modifier = Modifier.padding(horizontal = Gaps.screenHorizontal).testTag("card_${card.id}"))
         }
         // D-1050/1073: 2-column grid — a plain Row per pair (not a nested LazyVerticalGrid, which
         // cannot be sized inside this LazyColumn) keeps the existing per-card composables and
         // "Edit cards" ordering untouched; cards render in their compact (no/tiny chart) form.
+        // D-1196: `height(IntrinsicSize.Max)` + `fillMaxHeight()` on each card — without it, a row
+        // with e.g. a taller "Workouts" card next to a shorter "VO2max" card left the shorter card's
+        // own height (and the ElevatedCard's own background) stopping short, a visibly ragged row.
+        // D-1204: horizontalArrangement uses Gaps.gridGap (halved from the old Spacing.md) — the
+        // outer LazyColumn's own Gaps.itemGap vertical arrangement (see Summary()) already supplies
+        // the matching vertical gap between grid rows, so both axes of this 2-column grid are 8dp.
         HomeMetricsViewMode.GRID -> items(cards.chunked(2), key = { pair -> pair.joinToString("_") { it.id } }) { pair ->
-            Row(Modifier.fillMaxWidth().padding(horizontal = Spacing.lg), horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = Gaps.screenHorizontal).height(IntrinsicSize.Max),
+                horizontalArrangement = Arrangement.spacedBy(Gaps.gridGap),
+            ) {
                 pair.forEach { card ->
-                    Box(Modifier.weight(1f)) {
-                        FeedCard(card, unitSystem, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = true, modifier = Modifier.testTag("card_${card.id}"))
+                    Box(Modifier.weight(1f).fillMaxHeight()) {
+                        FeedCard(card, unitSystem, onMetricClick, onOpenWorkouts, liveMetrics, liveBpm, compact = true, modifier = Modifier.fillMaxHeight().testTag("card_${card.id}"))
                     }
                 }
                 if (pair.size == 1) Spacer(Modifier.weight(1f))
@@ -486,7 +545,7 @@ private fun HighlightCard(highlight: Highlight, unitSystem: UnitSystem, onClick:
     }
     val perDay = if (metric.aggregation == MetricAggregation.CUMULATIVE) stringResource(R.string.highlight_per_day_suffix) else ""
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().testTag("highlight_${metric.name}")) {
-        Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     when (highlight.trend) {
@@ -502,7 +561,7 @@ private fun HighlightCard(highlight: Highlight, unitSystem: UnitSystem, onClick:
                 Text(metric.label(), style = MaterialTheme.typography.titleSmall, color = accent)
             }
             Text(
-                stringResource(R.string.highlight_body, verb, recent, unit, perDay, change),
+                highlightCardBody(stringResource(R.string.highlight_body), verb, recent, unit, perDay, change),
                 style = MaterialTheme.typography.bodyMedium,
             )
             ComparisonBar(stringResource(R.string.comparison_last_7_days), highlight.recentAverage, maxOf(highlight.recentAverage, highlight.previousAverage), metric, unitSystem, accent)
@@ -510,6 +569,26 @@ private fun HighlightCard(highlight: Highlight, unitSystem: UnitSystem, onClick:
         }
     }
 }
+
+/**
+ * D-1205: pure composer behind [HighlightCard]'s body sentence — "Over the last 7 days, you
+ * averaged 7,606 steps a day. That's 12% more than the 7 days before." Every piece ([template],
+ * [verb], [value], [unitSuffix], [perDaySuffix], [change]) is already resolved by the caller (from
+ * `stringResource`), so this is a plain JVM-testable format call with no Compose/Android dependency
+ * (see `HighlightCardBodyTest`) — it only concatenates them in the right order/positions. The bug
+ * this followed from a bare leading space in the `highlight_per_day_suffix` *string resource* being
+ * silently trimmed by the Android resource compiler (fixed with an escaped leading space in
+ * `strings.xml`), not in this function, but this still guards the sentence's overall shape against
+ * a future regression.
+ */
+internal fun highlightCardBody(
+    template: String,
+    verb: String,
+    value: String,
+    unitSuffix: String,
+    perDaySuffix: String,
+    change: String,
+): String = template.format(verb, value, unitSuffix, perDaySuffix, change)
 
 @Composable
 private fun ComparisonBar(label: String, value: Double, max: Double, metric: HealthMetricType, unitSystem: UnitSystem, color: Color) {
@@ -591,8 +670,21 @@ private fun DeviceChip(device: WearableDevice, syncState: SyncState, modifier: M
     }
 }
 
+/**
+ * D-1215: [summary] is now whichever day is selected (see [HomeUiState.Success.selectedDaySummary]),
+ * not always today's — [selectedDate] (`null` = today) drives the optional date-label header above
+ * the rings and which day's `ActivityRings` instance is composed. Today's own rendering is
+ * byte-for-byte unchanged from before this feature: [selectedDate] is `null`, so the header is
+ * skipped entirely and [summary] is exactly the same `DailyHealthSummary` passed in previously.
+ */
 @Composable
-private fun RingsCard(summary: DailyHealthSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun RingsCard(
+    summary: DailyHealthSummary,
+    selectedDate: LocalDate?,
+    onClick: () -> Unit,
+    onJumpToToday: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val colors = UnifiedHealthTheme.metricColors
     val moveLabel = stringResource(R.string.ring_move)
     val exerciseLabel = stringResource(R.string.ring_exercise)
@@ -603,27 +695,293 @@ private fun RingsCard(summary: DailyHealthSummary, onClick: () -> Unit, modifier
         RingSpec(exerciseLabel, exerciseProgress, colors.exercise),
         RingSpec(stepsLabel, summary.steps.progress, colors.steps),
     )
-    // D-1157: no background box behind the rings on Home — they sit directly on Home's own
-    // background. Surface(color = Color.Transparent) instead of a plain Modifier.clickable so onClick
-    // keeps its ripple + semantics/role exactly as the old Card gave it, just with zero fill/elevation
-    // of its own to paint.
-    Surface(
-        onClick = onClick,
-        modifier = modifier.fillMaxWidth().testTag("activity_rings"),
-        color = Color.Transparent,
-        tonalElevation = 0.dp,
-        shadowElevation = 0.dp,
-    ) {
-        Row(modifier = Modifier.padding(Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
-            ActivityRings(rings = rings, size = 120.dp, strokeWidth = 12.dp)
-            Spacer(Modifier.width(Spacing.xl))
-            Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-                RingLegend(moveLabel, stringResource(R.string.ring_calories_progress, summary.calories.activeKcal, summary.calories.goalKcal), colors.calories)
-                RingLegend(exerciseLabel, stringResource(R.string.ring_minutes_progress, summary.activeMinutes, summary.activeMinutesGoal), colors.exercise)
-                RingLegend(stepsLabel, stringResource(R.string.ring_count_progress, summary.steps.count, summary.steps.goal), colors.steps)
+    Column(modifier = modifier.fillMaxWidth()) {
+        // D-1215: only shown once a day other than today is selected — the date label + "Today"
+        // action to jump back. Absent entirely while viewing today, so there's no extra header row
+        // to account for in that (unchanged) case.
+        if (selectedDate != null) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(bottom = Spacing.xs),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    selectedDayLabel(selectedDate),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.testTag("selected_day_label"),
+                )
+                TextButton(onClick = onJumpToToday, modifier = Modifier.testTag("jump_to_today")) {
+                    Text(stringResource(R.string.selected_day_today_action))
+                }
+            }
+        }
+        // D-1157: no background box behind the rings on Home — they sit directly on Home's own
+        // background. Surface(color = Color.Transparent) instead of a plain Modifier.clickable so
+        // onClick keeps its ripple + semantics/role exactly as the old Card gave it, just with zero
+        // fill/elevation of its own to paint.
+        Surface(
+            onClick = onClick,
+            modifier = Modifier.fillMaxWidth().testTag("activity_rings"),
+            color = Color.Transparent,
+            tonalElevation = 0.dp,
+            shadowElevation = 0.dp,
+        ) {
+            Row(modifier = Modifier.padding(Gaps.cardPadding), verticalAlignment = Alignment.CenterVertically) {
+                // D-1215: keyed on the selected day so switching days discards the previous
+                // `ActivityRings` composition and starts a fresh one — its own one-shot intro
+                // animation (`core:designsystem`, D-1157) then replays from 0 toward the new day's
+                // progress instead of silently snapping, reusing that existing animation as-is rather
+                // than adding a second one here. Today's own key never changes while just viewing
+                // today, so nothing re-animates on every unrelated recomposition (e.g. a live heart
+                // rate tick) — only an actual day switch changes this key.
+                key(selectedDate) {
+                    ActivityRings(rings = rings, size = 120.dp, strokeWidth = 12.dp)
+                }
+                Spacer(Modifier.width(Spacing.xl))
+                Column(verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
+                    RingLegend(moveLabel, stringResource(R.string.ring_calories_progress, summary.calories.activeKcal, summary.calories.goalKcal), colors.calories)
+                    RingLegend(exerciseLabel, stringResource(R.string.ring_minutes_progress, summary.activeMinutes, summary.activeMinutesGoal), colors.exercise)
+                    RingLegend(stepsLabel, stringResource(R.string.ring_count_progress, summary.steps.count, summary.steps.goal), colors.steps)
+                }
             }
         }
     }
+}
+
+/** D-1215: "Thứ 3, 10/11" (VI) / "Tue, Nov 10" (EN) — the big ring's header label for a selected day
+ *  other than today. The weekday piece and the overall arg order come from `selected_day_label`
+ *  (string resource, differs in shape per locale: VI is pure `dd/mm` numerals, EN needs the month's
+ *  short English name) — [monthShortName] is computed here in plain `java.time` (always English,
+ *  [Locale.ENGLISH] explicit, independent of the device's locale) since only the EN template
+ *  references it; the VI template ignores that argument entirely. */
+@Composable
+private fun selectedDayLabel(date: LocalDate): String {
+    val weekday = selectedDayWeekdayLabel(date.dayOfWeek)
+    val monthShortName = date.month.getDisplayName(TextStyle.SHORT, java.util.Locale.ENGLISH)
+    return stringResource(R.string.selected_day_label, weekday, date.dayOfMonth, date.monthValue, monthShortName)
+}
+
+/** Mon..Sun label for [selectedDayLabel] — deliberately separate string resources from
+ *  `week_ring_mon`..`week_ring_sun` (the mini-ring strip's own, ultra-abbreviated "T2".."CN"/"Mon"
+ *  .."Sun"): this label has room for "Thứ 3" (VI) rather than "T3", a different wording, not just a
+ *  narrower one, so sharing the same resource would force one of the two call sites to compromise. */
+@Composable
+private fun selectedDayWeekdayLabel(dayOfWeek: DayOfWeek): String = when (dayOfWeek) {
+    DayOfWeek.MONDAY -> stringResource(R.string.selected_day_mon)
+    DayOfWeek.TUESDAY -> stringResource(R.string.selected_day_tue)
+    DayOfWeek.WEDNESDAY -> stringResource(R.string.selected_day_wed)
+    DayOfWeek.THURSDAY -> stringResource(R.string.selected_day_thu)
+    DayOfWeek.FRIDAY -> stringResource(R.string.selected_day_fri)
+    DayOfWeek.SATURDAY -> stringResource(R.string.selected_day_sat)
+    DayOfWeek.SUNDAY -> stringResource(R.string.selected_day_sun)
+}
+
+/** Mini ring size (D-1205 doubled it to 76dp/6dp stroke; D-1215 shrinks both back down by about a
+ *  third per follow-up review — 50dp/4dp — now that the strip also carries a selection outline, so
+ *  the previous size read as oversized next to the rest of Home). Still small enough that 4 fit
+ *  evenly in one row of equal-width columns across the card width at a 360dp-wide screen, next to a
+ *  weekday label below each one). */
+private val WEEK_RING_SIZE = 50.dp
+private val WEEK_RING_STROKE = 4.dp
+private val WEEK_RING_GAP = 1.dp
+
+/** D-1205: every day's ring box — today included — is this exact fixed size, so today's "spotlight"
+ *  backdrop (drawn only for [WeekActivityDay.isToday]) never changes the *box's* size and therefore
+ *  never shifts the weekday label/dot below it out of alignment with the other six days. Sized a
+ *  bit larger than [WEEK_RING_SIZE] so the backdrop still reads as a halo around the ring, while
+ *  staying inside one quarter of a 360dp-wide row (minus screen padding). D-1215: shrunk from 80dp to
+ *  54dp in proportion with [WEEK_RING_SIZE]'s own shrink; also doubles as the selected-day outline's
+ *  own size (see [DayRing]) so the outline hugs this same backdrop boundary. */
+private val WEEK_RING_BOX_SIZE = 54.dp
+
+/** D-1215: the 2dp primary outline a *non-today* selected day gets around its ring (distinct from
+ *  the "today" backdrop+bold-label+dot marker above, which never moves off today — see
+ *  [HomeDaySelection]'s "selection never equals today" invariant). Drawn at [WEEK_RING_BOX_SIZE] so
+ *  it sits right at the fixed box's own edge, inside the box — selecting a day never changes the
+ *  box/column's own size, only what's painted inside it. */
+private val WEEK_RING_SELECTION_OUTLINE_WIDTH = 2.dp
+
+/** Columns per week-ring row (D-1205: split 7 days into two rows of up to 4 equal-width columns —
+ *  Mon–Thu, then Fri–Sun left-aligned under the same 4 columns — instead of 7 columns that no
+ *  longer fit the doubled ring size on one row). */
+private const val WEEK_RING_COLUMNS = 4
+
+/**
+ * D-1196: "7 mini rings" week strip, always visible directly under [RingsCard] — one mini version
+ * of the same 3 concentric rings (Move/Exercise/Steps, same colors/goals) per day of the *current*
+ * calendar week, Monday→Sunday, fixed positions (not a rolling 7-day window — see
+ * `ObserveWeekActivitySummaryUseCase`/`WeekRange`, `:core:domain`).
+ *
+ * D-1215: each non-future day is now tappable — [onSelectDay] previews that day on the big ring
+ * above (see [RingsCard]/[HomeViewModel.selectDay]); [selectedDate] (`null` = today) drives the
+ * selection outline on exactly one day at a time. Future days stay non-tappable, same as the
+ * D-1189 "not clickable at all" baseline this strip started from.
+ *
+ * D-1205: laid out as two rows of [WEEK_RING_COLUMNS] equal-width columns (Mon–Thu / Fri–Sun) so the
+ * doubled ring size still fits a 360dp-wide screen; row 2's 3 days fill the first 3 columns and the
+ * 4th is a blank spacer of the same weight, so Fri/Sat/Sun line up directly under Mon/Tue/Wed.
+ */
+@Composable
+private fun WeekRingsStrip(
+    week: List<WeekActivityDay>,
+    selectedDate: LocalDate?,
+    onSelectDay: (LocalDate) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    if (week.isEmpty()) return
+    Column(modifier = modifier.fillMaxWidth().testTag("week_rings_strip"), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        WeekRingsRow(week.take(WEEK_RING_COLUMNS), selectedDate, onSelectDay)
+        WeekRingsRow(week.drop(WEEK_RING_COLUMNS), selectedDate, onSelectDay)
+    }
+}
+
+/** One row of [WeekRingsStrip]: up to [WEEK_RING_COLUMNS] days, each an equal-weight column; any
+ *  missing columns (row 2, which only has 3 days) are filled with same-weight blank spacers so the
+ *  real items stay aligned under row 1's columns instead of stretching wider or centering. */
+@Composable
+private fun WeekRingsRow(days: List<WeekActivityDay>, selectedDate: LocalDate?, onSelectDay: (LocalDate) -> Unit) {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        days.forEach { day ->
+            DayRing(
+                day = day,
+                isSelected = selectedDate == day.summary.date,
+                onSelect = onSelectDay,
+                modifier = Modifier.weight(1f).testTag("week_ring_day_${day.summary.date}"),
+            )
+        }
+        repeat(WEEK_RING_COLUMNS - days.size) {
+            Spacer(modifier = Modifier.weight(1f))
+        }
+    }
+}
+
+/**
+ * One day of [WeekRingsStrip]: the mini rings themselves, a weekday label below, and for *today*
+ * only — a subtle filled `primaryContainer` backdrop behind the ring plus a bold `primary` label
+ * and a small dot underneath, the UX cue that distinguishes "today" from the other 6 (D-1196).
+ * Future days render their rings as empty tracks (progress forced to 0) at reduced alpha; past days
+ * with no data are already empty tracks at normal alpha as a natural consequence of 0 progress, no
+ * special-casing needed.
+ *
+ * D-1205: the ring `Box` is [WEEK_RING_BOX_SIZE] for every day (today included) and the "today dot"
+ * below the label is always laid out, just invisible (`Color.Transparent`) on the other 6 days — on
+ * device, today's bigger backdrop circle and the conditionally-present dot were pushing today's
+ * label/dot down relative to the rest of the row, since the Box/Column auto-sized to today's larger
+ * content. Reserving the same fixed size/space for every day keeps all 4 (or 3) labels in a row on
+ * one baseline.
+ *
+ * D-1215: [isSelected] (always `false` for [WeekActivityDay.isToday] by construction, see
+ * [HomeDaySelection]) draws a [WEEK_RING_SELECTION_OUTLINE_WIDTH] primary outline at
+ * [WEEK_RING_BOX_SIZE] — inside the same fixed box, so it never changes the column's own
+ * size/baseline, same rationale as the today backdrop above. The column is a
+ * [androidx.compose.foundation.selection.selectable] ([Role.Tab], disabled — no ripple, no click —
+ * for [WeekActivityDay.isFuture]) wrapping the existing `clearAndSetSemantics` block: `selectable`'s
+ * own node (role/selected/click action, `mergeDescendants = true`) sits as the *ancestor* of this
+ * block in the modifier chain, so accessibility services still get one single merged node — role,
+ * selected state, the click action, *and* this block's [stateDescription]/[contentDescription] — the
+ * Canvas's own per-ring semantics stay cleared/replaced exactly as before (D-1196).
+ */
+@Composable
+private fun DayRing(day: WeekActivityDay, isSelected: Boolean, onSelect: (LocalDate) -> Unit, modifier: Modifier = Modifier) {
+    val colors = UnifiedHealthTheme.metricColors
+    val summary = day.summary
+    val exerciseProgress = if (summary.activeMinutesGoal > 0) {
+        (summary.activeMinutes.toFloat() / summary.activeMinutesGoal).coerceIn(0f, 1f)
+    } else {
+        0f
+    }
+    // D-1196: future days show empty tracks only — progress forced to 0 regardless of whatever the
+    // repository happens to return for a date that hasn't happened yet.
+    val rings = listOf(
+        RingSpec("", if (day.isFuture) 0f else summary.calories.progress, colors.calories),
+        RingSpec("", if (day.isFuture) 0f else exerciseProgress, colors.exercise),
+        RingSpec("", if (day.isFuture) 0f else summary.steps.progress, colors.steps),
+    )
+    val weekdayLabel = weekdayShortLabel(summary.date.dayOfWeek)
+    // Unchanged (D-1215 brief: contentDescription stays as-is) — only the new stateDescription below
+    // is additive.
+    val description = stringResource(
+        R.string.week_ring_description,
+        weekdayLabel,
+        summary.calories.activeKcal,
+        summary.calories.goalKcal,
+        summary.activeMinutes,
+        summary.activeMinutesGoal,
+        summary.steps.count,
+        summary.steps.goal,
+    ) + if (day.isToday) stringResource(R.string.week_ring_today_suffix) else ""
+    // D-1215: "Today"/"Hôm nay" for today, "Selected"/"Đã chọn" for a selected non-today day, absent
+    // otherwise — the two states this requirement asks for, read out via `stateDescription` rather
+    // than folded into [description] so TalkBack announces them as the item's *state*, not its name.
+    val todayStateLabel = stringResource(R.string.selected_day_today_action)
+    val selectedStateLabel = stringResource(R.string.week_ring_state_selected)
+    val stateDescriptionText = when {
+        day.isToday -> todayStateLabel
+        isSelected -> selectedStateLabel
+        else -> null
+    }
+
+    Column(
+        modifier = modifier
+            .sizeIn(minWidth = Spacing.minTouchTarget, minHeight = Spacing.minTouchTarget)
+            .selectable(selected = isSelected, enabled = !day.isFuture, role = Role.Tab, onClick = { onSelect(day.summary.date) })
+            // D-1196: the whole day (ring + label) is one merged accessibility node with the full
+            // description — the Canvas's own per-ring semantics (ActivityRings) are cleared/replaced here.
+            .clearAndSetSemantics {
+                contentDescription = description
+                stateDescriptionText?.let { stateDescription = it }
+            }
+            .alpha(if (day.isFuture) WEEK_RING_FUTURE_ALPHA else 1f),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(modifier = Modifier.size(WEEK_RING_BOX_SIZE), contentAlignment = Alignment.Center) {
+            if (day.isToday) {
+                Box(
+                    modifier = Modifier
+                        .size(WEEK_RING_BOX_SIZE)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                )
+            }
+            if (isSelected) {
+                Box(
+                    modifier = Modifier
+                        .size(WEEK_RING_BOX_SIZE)
+                        .border(WEEK_RING_SELECTION_OUTLINE_WIDTH, MaterialTheme.colorScheme.primary, CircleShape),
+                )
+            }
+            ActivityRings(rings = rings, size = WEEK_RING_SIZE, strokeWidth = WEEK_RING_STROKE, gap = WEEK_RING_GAP)
+        }
+        Spacer(Modifier.height(Spacing.xs))
+        Text(
+            weekdayLabel,
+            style = MaterialTheme.typography.labelSmall,
+            color = if (day.isToday) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = if (day.isToday) FontWeight.Bold else FontWeight.Normal,
+        )
+        Spacer(Modifier.height(Spacing.xs))
+        Box(
+            modifier = Modifier
+                .size(4.dp)
+                .clip(CircleShape)
+                .background(if (day.isToday) MaterialTheme.colorScheme.primary else Color.Transparent),
+        )
+    }
+}
+
+private const val WEEK_RING_FUTURE_ALPHA = 0.4f
+
+/** Mon..Sun short weekday label, localized EN/VI via string resources (D-1192). */
+@Composable
+private fun weekdayShortLabel(dayOfWeek: DayOfWeek): String = when (dayOfWeek) {
+    DayOfWeek.MONDAY -> stringResource(R.string.week_ring_mon)
+    DayOfWeek.TUESDAY -> stringResource(R.string.week_ring_tue)
+    DayOfWeek.WEDNESDAY -> stringResource(R.string.week_ring_wed)
+    DayOfWeek.THURSDAY -> stringResource(R.string.week_ring_thu)
+    DayOfWeek.FRIDAY -> stringResource(R.string.week_ring_fri)
+    DayOfWeek.SATURDAY -> stringResource(R.string.week_ring_sat)
+    DayOfWeek.SUNDAY -> stringResource(R.string.week_ring_sun)
 }
 
 /** D-1181: the carousel's own key inside Home's `Summary` LazyColumn (see the `item(key = ...)` call
@@ -660,8 +1018,8 @@ private fun RacesCarousel(
     // the one exception that gets the LazyColumn's true, unconstrained full width. A Modifier trick
     // on the LazyRow itself (tried first, D-1117) could not claw back width an ancestor had already
     // excluded from this item's constraints; this way there is no ancestor constraint to fight.
-    Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-        Row(modifier = Modifier.padding(horizontal = Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
+    Column(verticalArrangement = Arrangement.spacedBy(Gaps.itemGap)) {
+        Row(modifier = Modifier.padding(horizontal = Gaps.screenHorizontal), verticalAlignment = Alignment.CenterVertically) {
             SectionHeader(stringResource(R.string.races_carousel_title), Modifier.weight(1f))
             TextButton(onClick = onOpenRaces, modifier = Modifier.testTag("races_see_all")) { Text(stringResource(R.string.see_all)) }
         }
@@ -674,11 +1032,11 @@ private fun RacesCarousel(
         LazyRow(
             state = listState,
             flingBehavior = rememberSnapFlingBehavior(listState),
-            horizontalArrangement = Arrangement.spacedBy(Spacing.md),
-            // Same Spacing.lg as every other item's own inset (above, and in feedCardItems/DeviceBanner/
-            // RingsCard/etc.) — the first/last card lines up with them at rest, while the row itself
-            // spans the full screen width so scrolling reaches the true edge on either side.
-            contentPadding = PaddingValues(horizontal = Spacing.lg),
+            horizontalArrangement = Arrangement.spacedBy(Gaps.itemGap),
+            // Same Gaps.screenHorizontal as every other item's own inset (above, and in feedCardItems/
+            // DeviceBanner/RingsCard/etc.) — the first/last card lines up with them at rest, while the
+            // row itself spans the full screen width so scrolling reaches the true edge on either side.
+            contentPadding = PaddingValues(horizontal = Gaps.screenHorizontal),
             modifier = Modifier.fillMaxWidth().testTag("races_carousel"),
         ) {
             // D-1133: items(...) keeps this genuinely lazy — only cards near the viewport compose at
@@ -735,7 +1093,7 @@ private fun RacesCarousel(
 @Composable
 private fun TrainingEntryCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().testTag("training_entry_card")) {
-        Row(Modifier.padding(Spacing.lg).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.padding(Gaps.cardPadding).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 Icons.AutoMirrored.Outlined.DirectionsRun,
                 contentDescription = null,
@@ -768,7 +1126,7 @@ private fun TrainingEntryCard(onClick: () -> Unit, modifier: Modifier = Modifier
 @Composable
 private fun TodayWorkoutCard(workout: ScheduledDay, onClick: () -> Unit, onCheckIn: () -> Unit, modifier: Modifier = Modifier) {
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().testTag("today_workout_card")) {
-        Row(Modifier.padding(Spacing.lg).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.padding(Gaps.cardPadding).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 Icons.AutoMirrored.Outlined.DirectionsRun,
                 contentDescription = null,
@@ -802,7 +1160,7 @@ private fun TodayWorkoutCard(workout: ScheduledDay, onClick: () -> Unit, onCheck
 @Composable
 private fun GearEntryCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().testTag("gear_entry_card")) {
-        Row(Modifier.padding(Spacing.lg).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.padding(Gaps.cardPadding).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 Icons.Outlined.ShoppingBag,
                 contentDescription = null,
@@ -838,7 +1196,7 @@ private fun RingLegend(label: String, value: String, color: Color) {
 @Composable
 private fun WorkoutsFeedCard(recent: List<Workout>, unitSystem: UnitSystem, onClick: () -> Unit, compact: Boolean = false, modifier: Modifier = Modifier) {
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
-        Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(stringResource(R.string.workouts_card_title), style = MaterialTheme.typography.titleSmall, color = UnifiedHealthTheme.metricColors.exercise, modifier = Modifier.weight(1f))
                 Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -941,7 +1299,7 @@ private fun MetricFeedCard(
         if (isLive != null) append(if (isLive) liveSuffix else notLiveSuffix)
     }
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().semantics(mergeDescendants = true) { contentDescription = description }) {
-        Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
             FeedCardHeader(metric, accent, value, metric.unit(unitSystem), cardTimeLabel, isLive, compact = compact)
             if (!compact) {
                 card.restingBpm?.let {

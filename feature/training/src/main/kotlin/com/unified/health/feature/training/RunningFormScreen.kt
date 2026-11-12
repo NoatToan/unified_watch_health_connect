@@ -20,7 +20,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Pause
@@ -29,13 +28,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,7 +48,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.unified.health.core.designsystem.theme.ChromeRipple
+import com.unified.health.core.designsystem.component.AppScreen
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.Spacing
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -87,24 +85,13 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun RunningFormScreen(onBack: () -> Unit) {
     var mode by rememberSaveable { mutableStateOf(ViewMode.StepByStep) }
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Dáng chạy đúng") },
-                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
-                navigationIcon = {
-                    ChromeRipple {
-                        IconButton(onClick = onBack) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                        }
-                    }
-                },
-            )
-        },
-    ) { padding ->
+    // D-1194: not scrollable (a fixed Column with a weighted content area + LicenseAttribution pinned
+    // below it) — contentPadding is safe to apply as a plain Modifier.padding here, no scroll viewport
+    // to clip; this is what keeps LicenseAttribution clear of the gesture bar.
+    AppScreen(title = "Dáng chạy đúng", onBack = onBack) { contentPadding ->
         Column(
-            Modifier.fillMaxSize().padding(padding).padding(Spacing.lg).testTag("running_form_screen"),
-            verticalArrangement = Arrangement.spacedBy(Spacing.lg),
+            Modifier.fillMaxSize().padding(contentPadding).padding(Gaps.cardPadding).testTag("running_form_screen"),
+            verticalArrangement = Arrangement.spacedBy(Gaps.sectionGap),
         ) {
             ModeToggle(mode, onModeChange = { mode = it })
             when (mode) {

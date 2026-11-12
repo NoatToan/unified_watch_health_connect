@@ -5,17 +5,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -27,12 +21,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.unified.health.core.designsystem.component.AppScreen
 import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.formatValueLocalized
 import com.unified.health.core.designsystem.component.label
 import com.unified.health.core.designsystem.component.unit
-import com.unified.health.core.designsystem.theme.ChromeRipple
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.UserPreferencesRepository
@@ -89,31 +84,32 @@ internal fun MetricDataRoute(onBack: () -> Unit, viewModel: MetricDataViewModel 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MetricDataScreen(state: MetricDataUiState, onBack: () -> Unit) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.all_recorded_data_title)) },
-                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
-                navigationIcon = { ChromeRipple { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back)) } } },
-            )
-        },
-    ) { padding ->
+    AppScreen(title = stringResource(R.string.all_recorded_data_title), onBack = onBack) { contentPadding ->
         val rows = state.rows
         when {
-            rows == null -> LoadingState(Modifier.padding(padding))
-            rows.isEmpty() -> EmptyState(stringResource(R.string.no_data), stringResource(R.string.no_data_for_metric, state.metric.label()), Modifier.padding(padding))
+            rows == null -> LoadingState(Modifier.padding(contentPadding))
+            rows.isEmpty() -> EmptyState(stringResource(R.string.no_data), stringResource(R.string.no_data_for_metric, state.metric.label()), Modifier.padding(contentPadding))
+            // D-1194: contentPadding merged into this LazyColumn's own contentPadding (never as an
+            // outer Modifier.padding) — the list scrolls fully behind the gesture bar instead of
+            // stopping in a dead strip above it.
             else -> LazyColumn(
-                modifier = Modifier.fillMaxSize().padding(padding).testTag("all_data_list"),
-                contentPadding = PaddingValues(bottom = Spacing.xxl),
+                modifier = Modifier.fillMaxSize().testTag("all_data_list"),
+                contentPadding = PaddingValues(
+                    top = contentPadding.calculateTopPadding(),
+                    bottom = contentPadding.calculateBottomPadding() + Spacing.xxl,
+                ),
             ) {
                 item {
                     Text(
                         state.metric.label(),
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.sm),
+                        modifier = Modifier.padding(horizontal = Gaps.screenHorizontal, vertical = Gaps.screenTop),
                     )
                 }
-                itemsIndexed(rows) { index, row ->
+                // D-1207: a stable key (reading time + source, not just the default index-derived one)
+                // so a list that can run into the thousands (raw per-sample data) doesn't lose its
+                // per-row state/identity across recompositions purely because of its position.
+                itemsIndexed(rows, key = { index, row -> "${row.reading.time}_${row.reading.sourceId}_$index" }) { index, row ->
                     val metric = state.metric
                     ListItem(
                         headlineContent = { Text("${metric.formatValueLocalized(row.reading.value, unitSystem = state.unitSystem)} ${metric.unit(state.unitSystem)}".trim()) },

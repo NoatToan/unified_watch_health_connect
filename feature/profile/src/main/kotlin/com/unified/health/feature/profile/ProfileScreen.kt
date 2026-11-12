@@ -43,11 +43,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -71,6 +69,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.unified.health.core.designsystem.R as DesignSystemR
+import com.unified.health.core.designsystem.component.AppScreen
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.domain.model.DefaultMetricThresholds
 import com.unified.health.core.domain.model.MetricThresholds
@@ -222,17 +222,18 @@ internal fun ProfileRoute(onOpenNotifications: () -> Unit, onOpenGear: () -> Uni
     val demoModeEnabled by viewModel.demoModeEnabled.collectAsStateWithLifecycle()
     val dialog by viewModel.dialog.collectAsStateWithLifecycle()
     var editingGoal by rememberSaveable { mutableStateOf<GoalField?>(null) }
-    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.profile_title)) }) }) { padding ->
-        // D-1144: trailing Spacing.bottomNavClearance (applied *after* verticalScroll, so it extends
-        // the scrollable content itself rather than just shrinking the viewport) — the pill nav now
-        // floats as a Box overlay over this tab's content instead of reserving Scaffold space, so
-        // without this the last row would sit permanently behind it.
+    // D-1194: top-level tab (inside the main pager) — bottomClearance clears PillBottomNavigation's
+    // floating pill, routed through AppScreen instead of this screen adding it manually (D-1144's
+    // original intent carries over unchanged, just sourced from AppScreen's contentPadding now).
+    AppScreen(title = stringResource(R.string.profile_title), bottomClearance = Spacing.bottomNavClearance) { contentPadding ->
+        // D-1194: contentPadding chained AFTER verticalScroll (not as an outer Modifier.padding
+        // before it) — the last row scrolls fully behind the gesture bar instead of stopping in a
+        // dead strip above it.
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .padding(bottom = Spacing.bottomNavClearance),
+                .padding(contentPadding),
         ) {
             SettingRow(Icons.Outlined.Person, stringResource(R.string.setting_personal_info_title), stringResource(R.string.setting_personal_info_subtitle))
             SettingRow(
@@ -533,8 +534,8 @@ private fun GoalEditDialog(
  */
 @Composable
 private fun ThresholdsReferenceCard(thresholds: MetricThresholds) {
-    OutlinedCard(Modifier.fillMaxWidth().padding(horizontal = Spacing.lg, vertical = Spacing.sm).testTag("thresholds_reference_card")) {
-        Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+    OutlinedCard(Modifier.fillMaxWidth().padding(horizontal = Gaps.screenHorizontal, vertical = Gaps.itemGap).testTag("thresholds_reference_card")) {
+        Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 Icon(Icons.Outlined.MonitorHeart, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                 Text(stringResource(R.string.thresholds_card_title), style = MaterialTheme.typography.titleSmall)
@@ -588,7 +589,7 @@ private fun DeveloperSection(
         stringResource(R.string.developer_section_title),
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.sm),
+        modifier = Modifier.padding(horizontal = Gaps.screenHorizontal, vertical = Gaps.itemGap),
     )
     val busy = status is DeveloperStatus.Working
     ListItem(
@@ -638,11 +639,11 @@ private fun DeveloperSection(
     )
     when (status) {
         DeveloperStatus.Idle -> Unit
-        is DeveloperStatus.Working -> LinearProgressIndicator(Modifier.fillMaxWidth().padding(horizontal = Spacing.lg))
+        is DeveloperStatus.Working -> LinearProgressIndicator(Modifier.fillMaxWidth().padding(horizontal = Gaps.screenHorizontal))
         is DeveloperStatus.Done -> Text(
             status.message,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(horizontal = Spacing.lg).testTag("developer_status"),
+            modifier = Modifier.padding(horizontal = Gaps.screenHorizontal).testTag("developer_status"),
         )
     }
 }

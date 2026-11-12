@@ -9,15 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,12 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.unified.health.core.designsystem.component.AppScreen
 import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.ErrorState
 import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.RaceCard
-import com.unified.health.core.designsystem.theme.ChromeRipple
-import com.unified.health.core.designsystem.theme.Spacing
+import com.unified.health.core.designsystem.theme.Gaps
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -70,34 +64,32 @@ internal fun RacesScreen(
     onMonthFilterChange: (YearMonth?) -> Unit,
     onShowPastChange: (Boolean) -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Giải chạy sắp tới") },
-                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
-                navigationIcon = { ChromeRipple { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } } },
-            )
-        },
-    ) { padding ->
+    AppScreen(title = "Giải chạy sắp tới", onBack = onBack) { contentPadding ->
         when (state) {
-            RacesUiState.Loading -> LoadingState(Modifier.padding(padding))
-            is RacesUiState.Error -> ErrorState(state.message, Modifier.padding(padding), onRetry = onRefresh)
+            RacesUiState.Loading -> LoadingState(Modifier.padding(contentPadding))
+            is RacesUiState.Error -> ErrorState(state.message, Modifier.padding(contentPadding), onRetry = onRefresh)
             RacesUiState.Empty -> EmptyState(
                 title = "Chưa có giải chạy nào",
                 message = "Dữ liệu giải chạy đang được cập nhật, quay lại sau nhé.",
-                modifier = Modifier.padding(padding),
+                modifier = Modifier.padding(contentPadding),
                 actionLabel = "Thử lại",
                 onAction = onRefresh,
             )
             is RacesUiState.Success -> PullToRefreshBox(
                 isRefreshing = isRefreshing,
                 onRefresh = onRefresh,
-                modifier = Modifier.fillMaxSize().padding(padding),
+                modifier = Modifier.fillMaxSize(),
             ) {
+                // D-1194: contentPadding merged into this LazyColumn's own contentPadding (never as
+                // an outer Modifier.padding) — the list scrolls fully behind the gesture bar instead
+                // of stopping in a dead strip above it.
                 LazyColumn(
                     modifier = Modifier.fillMaxSize().testTag("races_list"),
-                    contentPadding = PaddingValues(vertical = Spacing.lg),
-                    verticalArrangement = Arrangement.spacedBy(Spacing.md),
+                    contentPadding = PaddingValues(
+                        top = contentPadding.calculateTopPadding() + Gaps.screenTop,
+                        bottom = contentPadding.calculateBottomPadding() + Gaps.sectionGap,
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(Gaps.itemGap),
                 ) {
                     item {
                         RaceFiltersSection(
@@ -112,7 +104,7 @@ internal fun RacesScreen(
                             EmptyState(
                                 title = "Không có giải nào khớp bộ lọc",
                                 message = "Thử bỏ bớt bộ lọc hoặc bật \"Đã diễn ra\" để xem thêm.",
-                                modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.lg),
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = Gaps.screenHorizontal),
                             )
                         }
                     } else {
@@ -120,7 +112,7 @@ internal fun RacesScreen(
                             RaceCard(
                                 race = race,
                                 onClick = { onOpenRaceDetail(race.id) },
-                                modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.lg).testTag("race_card_${race.id}"),
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = Gaps.screenHorizontal).testTag("race_card_${race.id}"),
                             )
                         }
                     }
@@ -146,7 +138,7 @@ private fun RaceFiltersSection(
 ) {
     Column(
         modifier = Modifier.fillMaxWidth().testTag("races_filters"),
-        verticalArrangement = Arrangement.spacedBy(Spacing.sm),
+        verticalArrangement = Arrangement.spacedBy(Gaps.itemGap),
     ) {
         if (state.availableProvinces.isNotEmpty()) {
             FilterChipRow(
@@ -170,7 +162,7 @@ private fun RaceFiltersSection(
             selected = state.filters.showPast,
             onClick = { onShowPastChange(!state.filters.showPast) },
             label = { Text("Đã diễn ra") },
-            modifier = Modifier.padding(horizontal = Spacing.lg).testTag("races_filter_show_past"),
+            modifier = Modifier.padding(horizontal = Gaps.screenHorizontal).testTag("races_filter_show_past"),
         )
     }
 }
@@ -187,8 +179,8 @@ private fun <T> FilterChipRow(
 ) {
     LazyRow(
         modifier = modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(horizontal = Spacing.lg),
-        horizontalArrangement = Arrangement.spacedBy(Spacing.xs),
+        contentPadding = PaddingValues(horizontal = Gaps.screenHorizontal),
+        horizontalArrangement = Arrangement.spacedBy(Gaps.chipGap),
     ) {
         item {
             FilterChip(selected = selected == null, onClick = { onSelect(null) }, label = { Text("Tất cả") })

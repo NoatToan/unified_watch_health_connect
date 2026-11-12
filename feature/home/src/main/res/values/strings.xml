@@ -21,6 +21,37 @@
     <string name="ring_minutes_progress">%1$d / %2$d min</string>
     <string name="ring_count_progress">%1$d / %2$d</string>
 
+    <!-- WeekRingsStrip/DayRing (D-1196): "7 mini rings" week strip under the big ring. Mon..Sun
+         short weekday labels + the per-day accessibility description. -->
+    <string name="week_ring_mon">Mon</string>
+    <string name="week_ring_tue">Tue</string>
+    <string name="week_ring_wed">Wed</string>
+    <string name="week_ring_thu">Thu</string>
+    <string name="week_ring_fri">Fri</string>
+    <string name="week_ring_sat">Sat</string>
+    <string name="week_ring_sun">Sun</string>
+    <string name="week_ring_description">%1$s: %2$d/%3$d kcal, %4$d/%5$d min, %6$d/%7$d steps</string>
+    <string name="week_ring_today_suffix">, today</string>
+    <!-- D-1215: a selected (non-today) day's stateDescription — read out as the item's *state*, not
+         folded into week_ring_description's name/value text above. -->
+    <string name="week_ring_state_selected">Selected</string>
+
+    <!-- D-1215: RingsCard's selected-day header — "Tue, Nov 10" + a "Today" action to jump back.
+         selected_day_mon..sun are deliberately separate from week_ring_mon..sun above: this label
+         has room for a less-abbreviated weekday than the mini-ring strip's own "Mon".."Sun" does
+         (VI needs "Thứ 3", not "T3" — see HomeScreen.kt's selectedDayWeekdayLabel). Args:
+         %1$s weekday, %2$d day-of-month, %3$d month-number (unused here, the VI template needs it),
+         %4$s month's short English name (e.g. "Nov"). -->
+    <string name="selected_day_mon">Mon</string>
+    <string name="selected_day_tue">Tue</string>
+    <string name="selected_day_wed">Wed</string>
+    <string name="selected_day_thu">Thu</string>
+    <string name="selected_day_fri">Fri</string>
+    <string name="selected_day_sat">Sat</string>
+    <string name="selected_day_sun">Sun</string>
+    <string name="selected_day_label">%1$s, %4$s %2$d</string>
+    <string name="selected_day_today_action">Today</string>
+
     <string name="races_carousel_title">Upcoming races</string>
 
     <string name="workouts_card_title">Workouts</string>
@@ -38,7 +69,10 @@
     <!-- HighlightCard: "Over the last 7 days, you averaged 7,840 steps a day. That's 12% more than the 7 days before." -->
     <string name="highlight_verb_slept">slept</string>
     <string name="highlight_verb_averaged">averaged</string>
-    <string name="highlight_per_day_suffix"> a day</string>
+    <!-- Bug fix: a plain leading space here (" a day") is silently trimmed by the Android resource
+         compiler since it isn't quoted/escaped, which produced "...stepsa day" at runtime —
+         \u0020 preserves it. -->
+    <string name="highlight_per_day_suffix">\u0020a day</string>
     <string name="highlight_change_more">%1$d%% more than</string>
     <string name="highlight_change_less">%1$d%% less than</string>
     <string name="highlight_change_steady">about the same as</string>

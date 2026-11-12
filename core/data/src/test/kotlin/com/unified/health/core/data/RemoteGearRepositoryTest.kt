@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.unified.health.core.data.gear.RemoteGearRepository
 import com.unified.health.core.domain.repository.GearState
 import com.unified.health.core.model.GearCategory
+import com.unified.health.core.model.GearGender
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -139,6 +140,35 @@ class RemoteGearRepositoryTest {
         assertEquals(GearCategory.APPAREL, categoryById["apparel-1"])
         assertEquals(GearCategory.ACCESSORIES, categoryById["no-category"])
         assertEquals(GearCategory.ACCESSORIES, categoryById["bad-category"])
+    }
+
+    @Test
+    fun `gender prefers the feed's own literal value, else falls back to the name classifier, else null`() = runTest {
+        val store = newStore("gear-prefs9.preferences_pb")
+        val json = """
+            {
+              "items": [
+                { "id": "literal-women", "name": "Something", "productUrl": "https://example.com/a", "gender": "women" },
+                { "id": "literal-men-case", "name": "Something else", "productUrl": "https://example.com/b", "gender": "MEN" },
+                { "id": "fallback-unisex", "name": "Mũ Thể Thao Unisex Salomon Logo", "productUrl": "https://example.com/c" },
+                { "id": "fallback-kids", "name": "Giày chạy bộ trẻ em YKFW002-1V", "productUrl": "https://example.com/d" },
+                { "id": "no-signal", "name": "Coolmate Sporty Bag", "productUrl": "https://example.com/e" },
+                { "id": "literal-wins-over-name", "name": "Áo Thun Nam", "productUrl": "https://example.com/f", "gender": "women" }
+              ]
+            }
+        """.trimIndent()
+        val repository = repository(store, client { request -> jsonResponse(request, json) })
+
+        runCurrent()
+        val state = repository.items.first() as GearState.Success
+        val genderById = state.items.associate { it.id to it.gender }
+        assertEquals(GearGender.WOMEN, genderById["literal-women"])
+        assertEquals(GearGender.MEN, genderById["literal-men-case"])
+        assertEquals(GearGender.UNISEX, genderById["fallback-unisex"])
+        assertEquals(GearGender.KIDS, genderById["fallback-kids"])
+        assertNull(genderById["no-signal"])
+        // The name alone ("Nam") would classify MEN, but the feed's own literal "women" wins.
+        assertEquals(GearGender.WOMEN, genderById["literal-wins-over-name"])
     }
 
     @Test

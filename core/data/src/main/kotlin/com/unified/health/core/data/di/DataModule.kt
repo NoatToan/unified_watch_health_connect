@@ -41,6 +41,7 @@ import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.domain.repository.DemoDataController
 import com.unified.health.core.domain.repository.GearRepository
 import com.unified.health.core.domain.repository.DemoModeController
+import com.unified.health.core.domain.repository.SyntheticWorkoutDetailSource
 import dagger.Binds
 import dagger.BindsOptionalOf
 import dagger.Module
@@ -123,6 +124,11 @@ internal abstract class DataBindingsModule {
     /** Bound only in debug builds (`:core:demo`); release injects `Optional.empty()`. */
     @BindsOptionalOf
     abstract fun optionalDemoModeController(): DemoModeController
+
+    /** Bound only in debug builds (`:core:demo`), D-1195; release injects `Optional.empty()`, so
+     *  release never synthesizes workout detail. */
+    @BindsOptionalOf
+    abstract fun optionalSyntheticWorkoutDetailSource(): SyntheticWorkoutDetailSource
 }
 
 @Module

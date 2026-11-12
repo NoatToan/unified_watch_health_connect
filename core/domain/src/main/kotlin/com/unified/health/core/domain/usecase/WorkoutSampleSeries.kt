@@ -24,6 +24,10 @@ object WorkoutSampleSeries {
     fun elevation(samples: List<WorkoutSample>, start: Instant, end: Instant, maxBuckets: Int = MAX_BUCKETS): List<ChartPoint> =
         buckets(samples, start, end, maxBuckets) { it.altitudeMeters?.toFloat() }
 
+    /** Cadence (steps/min) over elapsed time (docs/DECISIONS.md D-1201's Charts-section cadence chart). */
+    fun cadence(samples: List<WorkoutSample>, start: Instant, end: Instant, maxBuckets: Int = MAX_BUCKETS): List<ChartPoint> =
+        buckets(samples, start, end, maxBuckets) { it.cadence?.toFloat()?.takeIf { spm -> spm > 0f } }
+
     /** Pace in seconds/km (lower is faster) derived from instantaneous speed. */
     fun paceSecondsPerKm(samples: List<WorkoutSample>, start: Instant, end: Instant, maxBuckets: Int = MAX_BUCKETS): List<ChartPoint> =
         buckets(samples, start, end, maxBuckets) { s -> s.speedMps?.takeIf { it >= MIN_MOVING_SPEED_MPS }?.let { (1000.0 / it).toFloat() } }

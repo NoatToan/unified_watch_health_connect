@@ -9,7 +9,7 @@
     <string name="scan_qr_code">Quét mã QR</string>
     <string name="scan_enter_mac_address">Nhập địa chỉ MAC</string>
     <string name="scan_empty_scanning">Đang tìm thiết bị đeo gần đây…</string>
-    <string name="scan_empty_idle">Nhấn Quét để tìm đồng hồ hoặc vòng tay của bạn. Giữ thiết bị gần điện thoại.</string>
+    <string name="scan_empty_no_results">Chưa tìm thấy thiết bị nào. Giữ thiết bị gần điện thoại rồi thử lại.</string>
 
     <string name="backup_key_title">Sao lưu khóa của %1$s</string>
     <string name="backup_key_message">Khóa này đã được ghi vào %1$s. Nếu không có khóa, bạn phải đặt lại đồng hồ để ghép nối lại.</string>
@@ -26,6 +26,7 @@
     <string name="no_paired_device_title">Chưa ghép nối thiết bị nào</string>
     <string name="no_paired_device_message">Ghép nối đồng hồ hoặc vòng tay để đồng bộ số bước, nhịp tim, giấc ngủ và nhiều hơn nữa.</string>
     <string name="scan_for_devices">Quét tìm thiết bị</string>
+    <string name="add_device">Thêm thiết bị</string>
 
     <string name="unpair_dialog_title">Hủy ghép nối %1$s?</string>
     <string name="unpair_dialog_message">Thiết bị sẽ bị xóa khỏi ứng dụng. Dữ liệu đã đồng bộ vẫn được giữ lại.</string>

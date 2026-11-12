@@ -48,7 +48,7 @@ class HuaweiWatchE2ETest : E2EBase() {
             }
             step("scanning", "Open Devices, tap \"Scan\"", "The simulated Huawei watch is listed with its brand") {
                 clickTag("nav_DEVICES")
-                clickTag("scan_fab")
+                clickTag("onboarding_scan_button")
                 waitForTag("discovered_$watch")
                 compose.onNode(
                     hasText(HuaweiVirtualDevice.NAME) and hasAnyAncestor(hasTestTag("discovered_$watch")),
@@ -114,7 +114,7 @@ class HuaweiWatchE2ETest : E2EBase() {
             }
             step("scanning", "Open Devices, tap \"Scan\"", "The auth-required simulated Huawei watch is listed") {
                 clickTag("nav_DEVICES")
-                clickTag("scan_fab")
+                clickTag("onboarding_scan_button")
                 waitForTag("discovered_$authRequiredWatch")
                 compose.onNode(
                     hasText(HuaweiAuthRequiredVirtualDevice.NAME) and hasAnyAncestor(hasTestTag("discovered_$authRequiredWatch")),

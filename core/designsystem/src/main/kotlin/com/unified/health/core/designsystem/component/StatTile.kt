@@ -17,6 +17,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.Spacing
 
 /**
@@ -33,7 +34,7 @@ fun StatTile(
 ) {
     val description = "$label, " + (value?.let { "$it $unit".trim() } ?: "no data")
     Card(modifier.semantics(mergeDescendants = true) { contentDescription = description }) {
-        Column(Modifier.fillMaxWidth().padding(Spacing.md)) {
+        Column(Modifier.fillMaxWidth().padding(Gaps.cardPadding)) {
             Text(
                 label,
                 style = MaterialTheme.typography.labelMedium,

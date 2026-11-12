@@ -18,6 +18,30 @@
     <string name="ring_minutes_progress">%1$d / %2$d phút</string>
     <string name="ring_count_progress">%1$d / %2$d</string>
 
+    <string name="week_ring_mon">T2</string>
+    <string name="week_ring_tue">T3</string>
+    <string name="week_ring_wed">T4</string>
+    <string name="week_ring_thu">T5</string>
+    <string name="week_ring_fri">T6</string>
+    <string name="week_ring_sat">T7</string>
+    <string name="week_ring_sun">CN</string>
+    <string name="week_ring_description">%1$s: %2$d/%3$d kcal, %4$d/%5$d phút, %6$d/%7$d bước</string>
+    <string name="week_ring_today_suffix">, hôm nay</string>
+    <string name="week_ring_state_selected">Đã chọn</string>
+
+    <!-- D-1215: RingsCard's selected-day header — "Thứ 3, 10/11" + nút "Hôm nay" để quay lại hôm
+         nay. selected_day_mon..sun tách riêng khỏi week_ring_mon..sun ở trên vì nhãn này cần dạng
+         đầy đủ hơn "T3" của dải vòng mini (xem HomeScreen.kt's selectedDayWeekdayLabel). -->
+    <string name="selected_day_mon">Thứ 2</string>
+    <string name="selected_day_tue">Thứ 3</string>
+    <string name="selected_day_wed">Thứ 4</string>
+    <string name="selected_day_thu">Thứ 5</string>
+    <string name="selected_day_fri">Thứ 6</string>
+    <string name="selected_day_sat">Thứ 7</string>
+    <string name="selected_day_sun">Chủ Nhật</string>
+    <string name="selected_day_label">%1$s, %2$02d/%3$02d</string>
+    <string name="selected_day_today_action">Hôm nay</string>
+
     <string name="races_carousel_title">Giải chạy sắp tới</string>
 
     <string name="workouts_card_title">Buổi tập</string>
@@ -33,7 +57,7 @@
 
     <string name="highlight_verb_slept">đã ngủ</string>
     <string name="highlight_verb_averaged">trung bình đạt</string>
-    <string name="highlight_per_day_suffix"> mỗi ngày</string>
+    <string name="highlight_per_day_suffix">\u0020mỗi ngày</string>
     <string name="highlight_change_more">tăng %1$d%%</string>
     <string name="highlight_change_less">giảm %1$d%%</string>
     <string name="highlight_change_steady">tương đương</string>

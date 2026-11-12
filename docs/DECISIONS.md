@@ -3147,3 +3147,1231 @@ yếu tố gamification nhẹ; xa hơn là community khoe trang bị. Cần Room
   danh sách Marathon (42km) ở cuối — nội dung/nền cuộn liền mạch ra sau thanh gesture, không còn dải
   nền trống đứng yên; tiện thể xác nhận luôn `RaceDetailScreen`/`MetricDetailScreen`/`DevicesScreen`
   (chạm nhầm lúc test thủ công) không bị vỡ layout.
+
+- **D-1195** · 2026-11-12 · Pill bottom nav: ẩn nhưng vẫn "hit-test" được khi cuộn xuống (user review) — **Chốt**
+  Bug: `PillBottomNavigation` chỉ đổi `alpha` 1→0 qua `graphicsLayer` lúc ẩn theo cuộn (D-1134/D-1140);
+  `Surface` + các `PillNavItem` vẫn nằm nguyên trong cây layout nên vẫn chặn chạm dù vô hình hoàn
+  toàn — chạm vào đúng ô trống nơi pill từng hiện (vd. "Profile") vẫn đổi tab, thay vì rơi xuống nội
+  dung cuộn phía sau (card/nút). **Sửa**: khi tween D-1158's `animateFloatAsState` chạy xong và
+  `alpha <= 0f` trong lúc `visible == false`, bỏ hẳn việc compose `Surface` (`if (!visible && alpha
+  <= 0f) return` ngay đầu `PillBottomNavigation`) — không còn gì ở vùng đó để hit-test, chạm xuyên
+  thẳng xuống nội dung. Giữa chừng fade-out (`visible == false` nhưng `alpha > 0f`, Surface còn đang
+  compose cho tween mượt) chặn điều hướng bằng cách truyền `enabled = visible` xuống `PillNavItem`,
+  gắn thẳng vào tham số `enabled` có sẵn của `Modifier.selectable(...)` (xác nhận bằng `javap` trên
+  `foundation-android-1.12.1.aar` — chữ ký thật là `selectable(selected, interactionSource,
+  indication, enabled = true, role, onClick)`, không cần bọc `.then(if...)`). Fade-in (`visible` bật
+  lại) vào lại nhánh composable ngay (có thể `alpha` vẫn còn 0f khung hình đó) và `enabled = visible`
+  = true ngay, nên bấm được tức thì như cũ — không đổi gì ở D-1158 (không shadow), D-1134 (glass
+  alpha/border), D-1141 (bán trong suốt), D-1190 (reset `pillVisible` khi resume/vào lại main pager).
+  Không có test E2E/Compose-rule nào sẵn có bao sát riêng hành vi ẩn/hiện của pill (chỉ có harness
+  E2E đầy đủ Hilt dưới `app/src/androidTest/e2e`, dùng chung màn Home/Activity đang bị agent khác
+  sửa dở dang) — không thêm test tự động mới để tránh phụ thuộc vào code đang đổi; xác minh bằng tay
+  trên emulator thay thế.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :app:assembleDebug` BUILD SUCCESSFUL
+  (feature/devices thiếu KSP debug output — chạy lại `:feature:devices:kspDebugKotlin --rerun` sinh đủ
+  `*ViewModel_HiltModules_BindsModule.java` rồi assemble lại sạch). Cài APK lên emulator thật: cuộn
+  Home xuống cho pill ẩn hẳn, chạm vào đúng toạ độ (905, 2250) nơi "Profile" từng hiện — tab KHÔNG đổi
+  (dumpsys xác nhận vẫn ở Home), chạm xuyên thẳng xuống thẻ "Upcoming races" phía sau và mở đúng
+  `RaceDetailScreen` của card đó; cuộn lên lại, pill hiện lại, chạm "Profile" đổi tab bình thường (icon
+  + label tô đậm xanh). Không crash (`logcat` sạch exception). Screenshot ở
+  `/private/tmp/claude-501/-Users-Apple-Documents-Projects-noattoan/c9d7be03-0705-4257-958d-425d46c7b31e/scratchpad/`.
+
+## Gear detail: variant picker hiện cả ảnh thumbnail, thu nhỏ còn nửa card (D-1196)
+
+- **D-1196** · 2026-11-12 · `ColorVariantPicker` đổi từ `FilterChip` chữ sang tile ảnh+label — **Chốt**
+  User review thấy color picker ở `GearDetailScreen` chỉ hiện tên màu dạng chữ (`FilterChip`), khó
+  hình dung màu thật trong khi phần lớn variant (Puma, Coolmate ở feed `gear/latest.json`) đã có sẵn
+  `imageUrl` riêng — đổi sang tile compact gồm thumbnail vuông 56dp (bo góc, `ContentScale.Crop`, qua
+  `core/designsystem`'s `GearImage` có sẵn fallback icon khi `imageUrl` null — không gọi Coil trực
+  tiếp trong `feature/gear`, đúng D-1109) + label màu `labelSmall` tối đa 2 dòng/ellipsize bên dưới,
+  tile rộng 68dp (~nửa footprint một card thường). Selected: viền primary 2dp quanh thumbnail + label
+  primary/bold; unselected: viền `outlineVariant` 1dp. Tương tác giữ nguyên y hệt cũ — tap tile gọi
+  `onSelect(if (selected?.color == variant.color) null else variant.color)`, ảnh hero vẫn đổi theo
+  variant đã chọn (logic ở `GearDetailViewModel`/`GearDetailUiState`, không đổi). Tile dùng
+  `Modifier.selectable(selected, onClick, role = Role.RadioButton)` (cùng pattern với
+  `ProfileScreen`'s `LanguageChoice` picker) thay vì tự quản lý Row/RadioButton riêng — tận dụng
+  `mergeDescendants` mặc định của `selectable` để TalkBack đọc gộp label màu + trạng thái chọn, không
+  cần set `contentDescription` tay (tránh đọc trùng lặp). Giữ testTag `gear_variant_${color}` y hệt
+  cũ. Không thêm `ChromeRipple` — tile là nội dung màn hình (không phải app chrome), tự kế thừa
+  `NoRippleConfiguration` mặc định toàn app (D-1189 thật, không phải D-1190 — xem ghi chú phân biệt ở
+  entry D-1190). Không có test UI/Compose-rule sẵn có cho `GearDetailScreen`/`GearDetailViewModel`
+  tham chiếu `FilterChip` để phải sửa (`GearViewModelTest` hiện có không test màn hình, chỉ test
+  `GearViewModel` — màn catalog, không đụng tới detail/variant).
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :feature:gear:testDebugUnitTest
+  :app:assembleDebug` BUILD SUCCESSFUL; `TEST-com.unified.health.feature.gear.GearViewModelTest.xml`
+  `tests="5" failures="0" errors="0"`; `feature/gear/build/generated/ksp/debug/java/hilt_aggregated_deps`
+  có đủ 2 `*ViewModel_HiltModules_BindsModule.java` (không gặp flake KSP). **Không xác minh trên
+  emulator thật** — theo chỉ đạo đổi giữa chừng của coordinator: nhiều agent đang dùng chung
+  `emulator-5554` (đã thấy nhầm lẫn thật khi thử: back/tap của agent này vô tình lẫn với màn hình
+  workout detail agent khác đang test), nên dừng hẳn adb/emulator, chỉ verify bằng Gradle; main
+  session sẽ chạy một lượt test emulator gộp sau khi mọi agent xong.
+
+## RaceCard: CTA "Xem chi tiết" bị cắt ở carousel Home + tối ưu khoảng trống thẻ (D-1197)
+
+- **D-1197** · 2026-11-12 · `core/designsystem/.../component/RaceCard.kt` — **Chốt**
+  **Bug user báo** (screenshot carousel "Upcoming races" ở Home): badge CTA đáy thẻ ("Xem chi tiết"/
+  `ClosedBadge`, ~dòng 384-410 cũ) bị cắt mất nửa dưới chữ + viên pill, trên thẻ có nội dung dài — ví
+  dụ tên giải 2 dòng kiểu "...Ironman 70.3..." cộng chip khoảng cách dài "90km đạp + 21.1km chạy
+  (70.3)", và một thẻ khác có nhiều chip khoảng cách ("...m", "2km fun run").
+  **Nguyên nhân thật**: `Card(modifier = modifier.height(RaceCardHeight))` cố định 220dp trong khi nội
+  dung `Column` bên trong (tên giải wrap, chip wrap, dấu tiếng Việt chồng, font scale user) co giãn —
+  `Column` không tự co nội dung sớm để nhường chỗ cho nội dung muộn; hàng giá+CTA là con cuối cùng,
+  khi tổng chiều cao các con vượt quá 220dp thì nó bị đẩy ra ngoài biên card và bị clip hình chữ nhật
+  bo góc của `Card` cắt mất. Thêm một phần: một chip khoảng cách có label quá dài tự wrap xuống 2 dòng
+  bên trong `Pill` (không giới hạn `maxLines`) càng đẩy `DistancePills` cao hơn.
+  **Sửa (giữ chiều cao card cố định — carousel cần card đều nhau)**: tách `Column` ngoài cùng thành
+  đúng 2 phần: phần giữa linh hoạt (`RaceCardFlexibleContent`, `Modifier.weight(1f)`) chứa header +
+  `DistancePills`, và hàng giá+CTA (`RaceCardBottomInfo`) luôn đo đúng chiều cao thật, không weight —
+  nhờ `weight(1f)` của Compose, phần linh hoạt luôn chỉ nhận đúng phần còn lại sau khi hàng giá+CTA đã
+  chiếm đủ chỗ, nên CTA không bao giờ bị đẩy ra ngoài biên card nữa. Giới hạn thêm để phần linh hoạt ít
+  phải tràn: `RaceNameText` giữ `maxLines` cố định (2 hoặc 3, xem bên dưới); `Pill` (dùng bởi
+  `DistancePills`) thêm `maxLines = 1` + `TextOverflow.Ellipsis` — chip dài giờ ellipsize thay vì wrap
+  2 dòng, không còn đẩy chiều cao `DistancePills` lên.
+  **Yêu cầu bổ sung giữa chừng của user (tối ưu khoảng trống thẻ)**: gộp hàng badge địa hình + logo ảnh
+  (trước là 1 hàng riêng phía trên tên giải, ăn hẳn 1 hàng chiều cao dù có ảnh hay không) vào ngay
+  trong header cùng tên giải — `Row` 2 cột: cột trái (weight 0.7 khi có logo) chứa badge địa hình + tên
+  giải + ngày/countdown, căn trái; cột phải (weight 0.3) chứa logo ảnh nhỏ (`RaceThumbnailBadge`, giữ
+  nguyên bo góc/`ContentScale.Fit`/cap kích thước cũ), căn trên, flush theo cạnh phải. Giải không có
+  ảnh thật (nền gradient, `RaceCardWithGradient`) thì cột trái chiếm trọn chiều rộng (không để hở 30%
+  trống) và tên giải được thêm 1 dòng (`maxLines = 3` thay vì 2) vì không còn chia sẻ chiều rộng với
+  logo.
+  **Extract logic để test**: `visibleDistancePills()` (sort theo km giảm dần + cắt ở
+  `MAX_DISTANCE_PILLS = 4` + đếm phần dư thành chip "+N") tách khỏi `DistancePills` composable thành
+  hàm thuần `internal`, có test JVM riêng độc lập với Compose.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :core:designsystem:testDebugUnitTest
+  :app:assembleDebug` BUILD SUCCESSFUL (chạy lại với `--rerun-tasks` trên riêng test task để chắc chắn
+  không đọc kết quả cache cũ); `TEST-...RaceCardTest.xml` `tests="7" failures="0" errors="0"` (4 test
+  cũ + 3 test mới cho `visibleDistancePills`). **Không xác minh trên emulator thật** — theo chỉ đạo đổi
+  giữa chừng của coordinator: nhiều agent đang dùng chung `emulator-5554` (gặp va chạm thật khi thử —
+  swipe/tap/back của agent này liên tục lẫn với agent khác đang live-test, ví dụ PillBottomNavigation
+  agent test swipe-chuyển-tab và feature/gear agent test màn hình khác trên cùng máy), nên dừng hẳn
+  adb/emulator giữa chừng (không đổi `font_scale`, không cần khôi phục), chỉ verify bằng Gradle; main
+  session sẽ chạy một lượt test emulator gộp sau khi mọi agent xong (gồm cả card Ironman 70.3 tên 2
+  dòng + chip dài, card nhiều chip, và `font_scale` 1.3 như brief gốc yêu cầu).
+
+## Workout detail: derived metrics cho mọi workout + synthesize splits/samples cho demo (D-1197)
+
+- **D-1197** · 2026-11-12 · Demo workout thiếu splits/pace chart/elevation/HR zones/cadence vì
+  `DemoHealthDataGenerator.workoutFor()` chỉ ghi `HealthRecord.Workout` tóm tắt — user cấm backfill
+  (không ghi row giả vào Room/migrate); tính khi mở detail, không lưu — **Chốt**
+  **Số thật trong brief là D-1195**, nhưng một agent khác (pill bottom-nav hit-test fix) đã chiếm số
+  đó trước khi agent này ghi log, rồi một agent thứ ba (`GearDetailScreen` variant picker) chiếm luôn
+  D-1196 — không sửa lại 2 entry đó, ghi số thật ở đây (D-1197), giống cách D-1189/D-1190 và
+  D-1193/D-1194 từng xử lý va chạm số tương tự.
+  **2 lớp, không nhầm lẫn nhau**:
+  1. **Derived — luôn có, cho MỌI workout (thật lẫn demo)**, tính thẳng từ field đã lưu, không cần
+     laps/samples: `WorkoutDerivedMetrics` (`core/domain/usecase`) — `kcalPerMinute(workout)`
+     (activeKcal/duration, phút lẻ không làm tròn về 0) và `derive(...)` gộp nó với HR zones vào một
+     holder `WorkoutDerivedDetail(kcalPerMinute, hrZones)`. HR-zones fallback: khi `workoutSamples`
+     (lap/sample thật hoặc demo đã synth) không có HR nào, `HeartRateZoneBreakdown.percentagesFromReadings`
+     (overload mới, cùng logic với `percentages(samples,...)` cũ nhưng nhận thẳng `List<Int>`) dùng
+     stream HR theo phút (`observeHeartRateSamples`, đã có sẵn trong `WorkoutDetailViewModel`) — áp
+     dụng cho CẢ thiết bị thật (FIT chỉ có `session`, không có `record`), không riêng demo. Avg
+     pace/speed (D-1093 cũ) đã có sẵn, đã test, ở `feature/activity/WorkoutUi.kt#paceOrSpeed` — không
+     đụng/không nhân bản vào domain, chỉ thêm kcal/min còn thiếu thật sự.
+  2. **Synthesized — chỉ demo, không persist**: `SyntheticWorkoutDetailGenerator`
+     (`core/demo/.../detail`, pure, seed = `workout.id.hashCode()*31 + start.toEpochMilli()` → cùng
+     workout luôn ra cùng laps/samples) sinh lap 1km (running/walking)/5km (cycling)/time-based 10 phút
+     (sport khác hoặc không có distance) và sample mỗi 5s: speed+split nhẹ, cadence theo dải thật
+     (run 160-180/walk 100-120/cycle 80-95 spm, null cho sport khác), altitude đồi thoải (null cho
+     indoor STRENGTH/YOGA), HR ramp-up+drift rồi bias+clip 3 vòng để avg/max sample khớp
+     `workout.avgHeartRate`/`maxHeartRate` trong ~2bpm (ép đúng max vào mẫu đỉnh). Ràng buộc cứng
+     (test): tổng lap distance = workout distance (±1m, lap cuối nhận phần dư), tổng lap duration =
+     workout duration (chính xác, lap liền kề), tổng lap calories = workout.activeKcal. Gate theo
+     device: `DemoSyntheticWorkoutDetailSource.supplement()` trả null nếu
+     `workout.sourceDeviceId !in DemoDeviceIds.ALL` — generator thuần không tự biết gì về demo/thật.
+  **DI theo đúng pattern `DemoModeController`/`DemoDataController` đã có** (không tự nghĩ cách mới):
+  interface `SyntheticWorkoutDetailSource`/data class `WorkoutDetailSupplement` ở
+  `core/domain/repository`; `@BindsOptionalOf` trong `core/data`'s `DataBindingsModule` (luôn có mặt,
+  release inject `Optional.empty()`); `@Binds` thật trong `core/demo`'s `DemoDataModule` (chỉ debug/
+  androidTest, app chỉ `debugImplementation(core.demo)`) — `assembleRelease`/`compileReleaseKotlin`
+  build sạch xác nhận graph release không cần binding thật. `WorkoutDetailViewModel` nhận
+  `Optional<SyntheticWorkoutDetailSource>`, cache theo `workoutId` trong map ở ViewModel (không tính
+  lại khi rotation/recompose vì ViewModel sống qua đó), chỉ gọi `.supplement(workout)` khi
+  `observeWorkoutLaps`/`observeWorkoutSamples` rỗng — **thật luôn thắng demo luôn thắng rỗng**.
+  **Theo yêu cầu "giữ mở rộng được" của coordinator** (RE Huawei detail-parity sắp tới — best-km pace,
+  stride length, running-form, training load/recovery): gộp mọi derived metric vào MỘT holder
+  `WorkoutDerivedDetail` trong `WorkoutDetailUiState.Success` thay vì rải thêm field rời (field cũ
+  `hrZones` cũng dời vào đây) — field mới sau này chỉ thêm vào holder, không đụng chữ ký `Success`/
+  constructor ViewModel nữa. **Cân nhắc rồi KHÔNG làm**: thêm field `distanceMeters` vào
+  `WorkoutSample` (core/model) để tính stride length — đổi schema cross-cutting (Room entity, mọi FIT
+  parser driver/*), rủi ro/phạm vi vượt task này, và chưa có RE evidence Huawei thật có field tương
+  ứng; cadence+speed hiện có đã đủ tính stride length sau này (speed/((cadence/60)) kiểu) khi task RE
+  Huawei tới — để agent đó quyết định có cần field distance riêng hay không, không đoán trước.
+  **Test mới (34, toàn bộ pass)**: `WorkoutDerivedMetricsTest` (7, gồm `derive` 2 case thắng/fallback),
+  `HeartRateZoneBreakdownTest` (4, `percentages` vs `percentagesFromReadings` khớp nhau),
+  `SyntheticWorkoutDetailGeneratorTest` (10 — determinism, reconcile distance/duration/calories/HR
+  ±2bpm, cadence theo dải, non-distance sport, workout 0s), `DemoSyntheticWorkoutDetailSourceTest` (3
+  — mọi id trong `DemoDeviceIds.ALL` có supplement, thiết bị thật/không rõ thì null),
+  `WorkoutDetailViewModelTest` thêm 6 case (fallback synth khi rỗng, thật thắng synth dù cả hai có,
+  không synthetic source thì rỗng kể cả workout "giống demo", HR-zone fallback từ stream phút, kcal/
+  min).
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug`
+  BUILD SUCCESSFUL cả hai; 91 file `TEST-*.xml` toàn repo, không file nào thiếu `failures="0"
+  errors="0"` (34 test mới nằm trong số đó); `feature/activity/build/generated/ksp/debug/java/
+  hilt_aggregated_deps` có đủ `WorkoutDetailViewModel_HiltModules_{Binds,Key}Module.java` (không gặp
+  flake KSP). `:app:compileReleaseKotlin` (gồm `kspReleaseKotlin` validate toàn bộ Hilt graph) build
+  sạch — xác nhận `Optional<SyntheticWorkoutDetailSource>` resolve về rỗng ở release, không kéo theo
+  `:core:demo`. **Xác minh trên emulator thật (trước khi coordinator đổi chỉ đạo giữa chừng — xem
+  D-1196)**: cài APK, mở Activity → mở lần lượt workout Running/Walking/Cycling thật từ demo data có
+  sẵn — tile mới "Calorie rate" (vd. 330 kcal/30 min = 11.0 kcal/min, khớp phép chia) và cadence/
+  elevation gain-loss (vd. running 170/180 spm trong dải 160-180, cycling 88/95 spm trong dải 80-95)
+  đều hiện, trước đây rỗng; card "Trends" (Pace/Elevation) cũng lên được với 1 workout. Mở lại đúng
+  workout Running đó 3 lần tách biệt (relaunch app giữa mỗi lần, ViewModel mới hoàn toàn mỗi lần) ra
+  đúng 1 bộ số giống hệt cả 3 lần (170/180 spm, 190/175 m, 11.0 kcal/min, 154/167 bpm) — xác nhận
+  determinism qua seed, không phải trùng hợp cache. Chưa chụp được Splits/HR-zones card riêng (cuộn
+  trên màn pushed bị agent khác test pill nav cùng lúc làm sai lệch, xem D-1196) trước khi dừng hẳn
+  adb theo chỉ đạo mới — bù lại bằng unit test `hasSplits`/`hasHrZones` ở trên. Screenshot ở
+  `/private/tmp/claude-501/-Users-Apple-Documents-Projects-noattoan/c9d7be03-0705-4257-958d-425d46c7b31e/scratchpad/`
+  (24/28/45/48/50/51/53 là các lần mở workout detail thành công).
+
+## Đính chính số D cho entry RaceCard (D-1198)
+
+- **D-1198** · 2026-11-12 · Entry "RaceCard: CTA 'Xem chi tiết' bị cắt ở carousel Home + tối ưu khoảng
+  trống thẻ" ghi phía trên là **D-1198**, không phải **D-1197** như tiêu đề/nhãn gốc của nó — hai agent
+  (RaceCard và "Workout detail: derived metrics...") đọc `docs/DECISIONS.md` cùng lúc, cùng thấy
+  D-1197 còn trống và cùng chiếm nó khi ghi song song; không sửa lại nhãn của 1 trong 2 entry đó, ghi
+  số thật ở đây, giống cách D-1193/D-1194 và D-1196/D-1197 (entry "Workout detail") từng xử lý va chạm
+  số tương tự. Nội dung/code của entry RaceCard không đổi, chỉ số hiệu bị trùng.
+
+## Home: "7 vòng mini" cho cả tuần dưới vòng lớn (D-1199)
+
+- **D-1199** · 2026-11-12 · Home luôn hiện 7 vòng hoạt động mini (Move/Exercise/Steps) cho cả tuần
+  ngay dưới vòng lớn, làm rõ ngày nào là "hôm nay" — **Chốt**
+  **Tuần cố định Thứ 2→CN (quy ước Việt Nam), không phải cửa sổ trượt 7 ngày** — `WeekRange`
+  (`core/domain/.../usecase/ObserveWeekActivitySummaryUseCase.kt`) tính `mondayOf`/`daysOf` thuần
+  bằng `LocalDate` (`TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)` rồi `plusDays`), không đụng
+  `Instant`/zone sau khi đã resolve "hôm nay" — nên an toàn qua DST tự nhiên (test riêng xác nhận qua
+  biên DST mùa xuân `America/New_York`, biên tháng, biên năm, biên năm nhuận). "Hôm nay" dùng cùng
+  cách `ObserveTodaySummaryUseCase` đã dùng (`Clock.systemDefaultZone()` mặc định, theo múi giờ máy).
+  **`ObserveWeekActivitySummaryUseCase`** (file mới, không đụng `HealthDataRepository` interface):
+  gọi lại đúng `HealthDataRepository.observeDailySummary(date)` 7 lần (1 lần/ngày, mỗi ngày 1 flow
+  riêng nên chỉ ngày đó re-emit khi dữ liệu ngày đó đổi) rồi `combine` — đúng nguồn
+  `ObserveTodaySummaryUseCase` dùng cho "hôm nay", nên số của "hôm nay" trong tuần luôn khớp number
+  với vòng lớn, không tính lại riêng. Model mới `WeekActivityDay` (`core/model`, file riêng, không
+  đụng `DailyHealthSummary`/`HealthMetrics.kt`): `summary` + `isToday` + `isFuture`.
+  `HomeViewModel` thêm field `HomeUiState.Success.week: List<WeekActivityDay>`, combine thêm một
+  bước cuối cùng (giống cách `todayWorkout` đã làm) — cập nhật live khi dữ liệu hôm nay đổi.
+  **UI** (`feature/home/HomeScreen.kt`, composable mới `WeekRingsStrip`/`DayRing`, đặt ngay dưới
+  `RingsCard` trong `Summary`'s `LazyColumn`): tái dùng thẳng `ActivityRings` (`core:designsystem`)
+  với `size=40.dp, strokeWidth=3.dp, gap=1.dp` thay vì vẽ `Canvas` riêng — đúng góc độ "parametrize,
+  đừng duplicate" vì composable đó đã sẵn tham số `size`/`strokeWidth`/`gap`. Cùng 3 vòng/goal/màu với
+  vòng lớn (Move=calories, Exercise=activeMinutes, Steps=steps — cùng `MetricColors`).
+  **Hôm nay**: nền tròn `primaryContainer` sau vòng (52dp, lớn hơn vòng 40dp) + label `primary` in
+  đậm + chấm tròn nhỏ dưới label. **Tương lai** (`isFuture`): progress ép về 0 (chỉ hiện track rỗng)
+  + `Modifier.alpha(0.4f)` cho cả cột (vòng lẫn label) — không thêm tham số track-alpha mới vào
+  `ActivityRings` (giữ file đó nguyên vẹn, không đụng `core:designsystem` ngoài phạm vi giao). Ngày
+  quá khứ không có dữ liệu: progress tự nhiên = 0 nên track rỗng ở alpha thường, không cần nhánh riêng.
+  Ngày đạt đủ cả 3 goal: vòng khép kín tự nhiên, không cần code riêng. **Không bấm được** (D-1189):
+  không `Surface`/`clickable`, không ripple. **A11y**: `Modifier.clearAndSetSemantics` ở cấp cột
+  (vòng+label) gộp 1 node duy nhất mô tả `"T2: 420/830 kcal, 25/30 phút, 6.200/8.000 bước"` (+
+  `", hôm nay"` nếu là hôm nay) — ghi đè/che hẳn semantics riêng của `Canvas` bên trong (không cần sửa
+  `ActivityRings`). Dùng số trần (`%d`), không ép định dạng phân tách nghìn — khớp quy ước hiện có của
+  `ring_calories_progress`/`ring_count_progress` trong cùng file, không tự chế convention mới. Nhãn
+  thứ (T2..CN / Mon..Sun) qua string resource mới (`week_ring_mon`..`week_ring_sun`,
+  `week_ring_description`, `week_ring_today_suffix`) trong `values/strings.xml` + `values-vi/
+  strings.xml` của `feature:home`, đúng kiểu EN/VI D-1192 đã có sẵn trong module này.
+  **Sửa kèm (theo yêu cầu user giữa chừng, đã confirm giữ phần equal-height, huỷ phần gap/padding vì
+  sẽ có 1 đợt rà soát spacing/token toàn app riêng sau)**: Grid "Metrics" (`feedCardItems`'s
+  `HomeMetricsViewMode.GRID` branch) — card "Workouts" cao hơn "VO2max" cùng hàng làm hàng so le +
+  khoảng cách hàng sau lớn hơn bình thường. Sửa bằng `Row(..., Modifier.height(IntrinsicSize.Max))` +
+  mỗi card trong cặp bọc `Modifier.weight(1f).fillMaxHeight()` (cả `Box` bọc ngoài lẫn `modifier` của
+  `FeedCard`) — Compose co hàng theo card cao nhất rồi giãn card thấp hơn khớp chiều cao đó, không đổi
+  nội dung/testTag từng card. Không đụng gap/padding (Spacing.md giữa card, Spacing.lg trong card) —
+  phần đó để lại cho đợt rà soát token sau, tránh làm hai lần.
+  **Test mới (18, toàn bộ pass)**: `WeekRangeTest` (6 — Monday-of chính nó, mỗi ngày trong tuần walk
+  back đúng Monday, 7 ngày liên tiếp Mon→Sun, biên tháng, biên năm, biên năm nhuận tháng 2),
+  `ObserveWeekActivitySummaryUseCaseTest` (6 — đúng 7 entry Mon→Sun, ngày sau hôm nay flag future,
+  đúng 1 ngày flag today, today khớp y hệt `ObserveTodaySummaryUseCase`, update live khi data hôm nay
+  đổi, tính tuần an toàn qua biên DST mùa xuân múi `America/New_York`), `HomeViewModelTest` thêm 3 case
+  (week có đúng 7 entry Mon→Sun, today's entry khớp `state.summary`, ngày sau hôm nay flag future).
+  **Verify (chỉ Gradle, không đụng emulator/adb theo chỉ đạo mới của coordinator — nhiều agent đang
+  dùng chung máy ảo, sẽ test gộp 1 lần sau khi mọi agent xong)**: `JAVA_HOME=/opt/homebrew/opt/
+  openjdk@21 ./gradlew :feature:home:testDebugUnitTest :core:domain:test :app:assembleDebug` BUILD
+  SUCCESSFUL (chạy 2 lần, lần 2 toàn bộ UP-TO-DATE, không flake) — `TEST-*.xml` mới đều `failures="0"
+  errors="0"` (`HomeViewModelTest` 7/7, `WeekRangeTest` 6/6, `ObserveWeekActivitySummaryUseCaseTest`
+  6/6); `feature/home/build/generated/ksp/debug/java/hilt_aggregated_deps` có đủ
+  `HomeViewModel_HiltModules_BindsModule.java`, không gặp flake KSP; `app:assembleDebug` build
+  `app-debug.apk` sạch cùng lúc với thay đổi của các agent song song khác (feature/activity+core/
+  domain+core/demo, RaceCard, feature/gear) — không có xung đột biên dịch.
+
+## Devices: gộp 3 CTA thêm thiết bị bị trùng lặp (D-1200)
+
+- **D-1200** · 2026-11-12 · `feature/devices` (DevicesScreen.kt) — **Chốt**
+  Bug từ screenshot: màn Devices lúc chưa ghép nối hiện 3 nút cạnh tranh ngang hàng, một nút bị lặp —
+  card trống "Chưa ghép nối thiết bị nào" có [Quét mã QR] (tonal) + [Quét tìm thiết bị] (outlined),
+  ngay dưới đó section "Thiết bị gần đây" lặp lại [Quét mã QR] + [Nhập địa chỉ MAC].
+  **Sửa theo đúng UX đã chốt với coordinator**:
+  - Lúc chưa ghép nối thiết bị nào: gộp về **một** card onboarding — tiêu đề + mô tả 1 dòng, rồi 3 nút
+    xếp dọc theo đúng thứ bậc thay vì cạnh tranh ngang hàng: PRIMARY `Button` "Quét tìm thiết bị" (quét
+    BLE, tìm được hầu hết đồng hồ), SECONDARY `FilledTonalButton` "Quét mã QR", TERTIARY `TextButton`
+    "Nhập địa chỉ MAC" (dành cho trường hợp nâng cao). Không còn nút nào lặp lại bên dưới.
+  - Section "Thiết bị gần đây" không còn 2 nút QR/MAC riêng của nó nữa — chỉ còn hiện khi **đang quét
+    hoặc đã từng quét ra kết quả** (`isScanning || discovered.isNotEmpty() || scanAttempted`, biến cục
+    bộ `scanAttempted` lật lên qua `LaunchedEffect(state.isScanning)` bất kể lối vào nào kích hoạt quét
+    — FAB, card onboarding, hay "Thêm thiết bị" — nên không cần luồn cờ qua từng call site). Quét xong
+    mà rỗng thì hiện "Chưa tìm thấy thiết bị nào…" + nút Retry ngay trong section (chuỗi mới
+    `scan_empty_no_results`, dùng lại `action_try_again` đã có ở `:core:designsystem`), không phải
+    thêm nút trùng. Chuỗi `scan_empty_idle` cũ (không còn ai gọi tới) đã xóa khỏi cả 2 `strings.xml`.
+  - Đã ghép nối ít nhất 1 thiết bị: 3 hành động thêm thiết bị gộp vào **một** điểm vào — nút văn bản
+    "Thêm thiết bị" (`AddDeviceEntry`, góc phải phía trên danh sách thiết bị đã ghép nối) mở
+    `DropdownMenu` 3 mục (quét / QR / MAC), dẫn tới đúng các luồng cũ (`requestScan`,
+    `showScanner = true`, `showManualMacDialog = true`) — không đổi `QrFindSheet`, `QrScannerScreen`,
+    `ManualMacDialog`, logic quyền hay `DevicesViewModel`.
+  **testTag**: tag cũ `qr_scan_button`/`qr_scan_button_empty`/`manual_mac_button` (Nearby + card cũ) bị
+  xóa cùng với 2 nút lặp — đã `grep` toàn bộ `app/src/androidTest` + `scripts/e2e.sh` trước khi xóa,
+  không nơi nào tham chiếu 3 tag đó (chỉ `scan_fab`/`stop_scan_fab`/`discovered_*`/`pair_*` được E2E
+  dùng, và các tag đó giữ nguyên). Tag mới: `onboarding_scan_button`/`onboarding_qr_button`/
+  `onboarding_mac_button` (card onboarding), `add_device_button`/`add_device_scan`/`add_device_qr`/
+  `add_device_mac` (menu "Thêm thiết bị"), `scan_retry_button` (Nearby rỗng).
+  **Spacing**: không thêm `.dp` cứng nào cho gap/padding — dùng token `Spacing.sm/.md/.lg/.xs` sẵn có,
+  để đúng theo đợt rà soát spacing-token sẽ chạy sau trên toàn app.
+  **ECC skills áp dụng**: `make-interfaces-feel-better` → đổi hàng ngang 2 nút cạnh tranh thành 3 nút
+  xếp dọc full-width theo thứ bậc rõ ràng (Filled > Tonal > Text) thay vì "equal-weight" cạnh nhau —
+  đúng tinh thần phần hit-area/động lực (button đứng riêng dòng dễ bấm hơn, không cần đổi kích thước
+  vì Material3 `Button`/`OutlinedButton`/`TextButton` đã tự áp dụng tối thiểu 48dp touch target).
+  `accessibility` → giữ focus order logic (tiêu đề → mô tả → 3 nút theo đúng thứ bậc chính/phụ/phụ, menu
+  "Thêm thiết bị" theo thứ tự quét/QR/MAC khớp card onboarding cũ), icon trang trí (`contentDescription
+  = null`) đi kèm label chữ rõ ràng, không chỉ dựa màu sắc để phân biệt action.
+  **i18n D-1192**: thêm chuỗi mới `add_device`/`scan_empty_no_results` ở cả `values/strings.xml` (EN)
+  và `values-vi/strings.xml` (VI).
+  **Không đụng** `DevicesViewModel.kt`/`DevicesViewModelTest.kt` (logic scan/pair/QR-find không đổi,
+  chỉ UI) — 23 test cũ (`DevicesViewModelTest` 15, `DeviceDetailViewModelTest` 8) vẫn pass nguyên.
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :feature:devices:testDebugUnitTest`
+  BUILD SUCCESSFUL (23 test, `failures="0" errors="0"`); `feature/devices/build/generated/ksp/debug/
+  java/hilt_aggregated_deps` có đủ 2 file `*ViewModel_HiltModules_BindsModule.java`
+  (`DevicesViewModel`, `DeviceDetailViewModel`), không gặp flake KSP. `./gradlew :app:assembleDebug`
+  lần đầu FAIL ở `:driver:xiaomi:compileDebugKotlin` (`channelAndOpCodeFor` unresolved — code của
+  session khác đang làm `driver/xiaomi`, không phải lỗi từ thay đổi này); chạy lại với
+  `-x :driver:xiaomi:compileDebugKotlin` thì `:app:assembleDebug` BUILD SUCCESSFUL, xác nhận
+  `feature/devices` biên dịch sạch và không phải nguồn gây lỗi. `:app:compileDebugAndroidTestKotlin`
+  (cùng loại trừ `driver:xiaomi`) cũng BUILD SUCCESSFUL — E2E vẫn biên dịch được với tag mới.
+  Chưa test trên emulator/adb theo đúng chỉ đạo (máy ảo dùng chung, coordinator test gộp 1 lần cuối).
+
+## Workout detail: Huawei-parity metrics (splits, pace/speed/stride, HR-zone minutes, elevation hysteresis) + line charts (D-1201/D-1202)
+
+- **D-1201** · 2026-11-12 · Workout detail hiện đủ bộ chỉ số như Huawei Health (trong giới hạn dữ liệu
+  tự tính được, §9 của `docs/re-evidence/huawei/workout_detail_metrics.md`) — **Chốt**
+  **Số thật trong code comment là D-1199**, nhưng số đó đã bị agent khác (Home "7 vòng mini") chiếm
+  trước khi entry này được ghi — không sửa lại các KDoc/comment đã viết (rất nhiều file), ghi số thật
+  ở đây, giống cách D-1193/D-1194 và D-1196/D-1197/D-1198 đã xử lý va chạm số tương tự trước đó.
+  **Domain mới (core/domain/usecase, file mới, hầu như không sửa file cũ)**: `WorkoutRunningMetrics`
+  (avg pace/speed theo `UnitSystem`, max speed từ sample, avg stride = distance/steps×100cm ẩn nếu
+  >200cm, ước lượng tổng bước từ cadence×thời gian vì `Workout` chưa có field số bước thật),
+  `WorkoutElevationProfile`/`WorkoutElevation` (gain/descent từ altitude samples với hysteresis 2.5m
+  mặc định — chỉ dùng khi lap không mang sẵn ascent/descent), `WorkoutSplits`
+  (`WorkoutSplit`/`WorkoutSplitsSummary`: 1 split/km hoặc /mi, ưu tiên lap có sẵn (đã là ~1km/5km từ
+  D-1093/D-1195), nếu không có lap thì tích phân từ sample theo thời gian — nội suy đúng thời điểm cắt
+  mốc; fastest split loại trừ split lẻ cuối; half/full marathon chỉ hiện khi quãng đường thật sự đạt
+  tới, nội suy tuyến tính trong split chứa mốc đó), `HeartRateZoneDurations` (phút theo từng vùng nhịp
+  tim theo đúng quy tắc §3.2 Huawei: tích luỹ 5s/sample khi dày hoặc khi count×60s vượt thời lượng
+  buổi tập, còn lại 60s/sample — **dùng chung ngưỡng %HRmax 50/60/70/80/90/100% đã có sẵn ở
+  `MetricThresholds.heartRateZones` (D-1030) vì trùng khớp chính xác với method-0 của Huawei, không
+  thêm bảng ngưỡng thứ 2**). `WorkoutSampleSeries` thêm `cadence()` (nhỏ, cộng thêm vào file có sẵn).
+  `WorkoutDerivedDetail` (file cũ D-1195, mở rộng có kiểm soát) thêm các field trên +
+  `minHeartRate`/`hrZoneDurations`; `derive(...)` thêm tham số có default (`laps`, `unitSystem`,
+  `avgCadence`) nên lời gọi cũ trong test không cần sửa.
+  **Không làm** (theo đúng §9 "Cannot compute without device data"): Training Effect/VO2max/recovery
+  time/RAI/training load/running posture (ground contact/vertical oscillation/...) — chỉ hiện khi model
+  có sẵn field thật từ thiết bị (hiện chưa có field nào), không bịa số. HR-recovery drop (§3.3) bị bỏ vì
+  app chưa có luồng dữ liệu "post-workout recovery HR window" nào — đúng như brief cho phép skip khi
+  "no data path", không tự chế field mới ngoài phạm vi.
+  **UI** (`feature/activity/.../detail/WorkoutDetailScreen.kt`, viết lại có kiểm soát, giữ nguyên mọi
+  testTag cũ `workout_detail`/`workout_time_range`/`workout_hr_chart`/`workout_source` vì
+  `WorkoutsE2ETest` dựa vào đúng các tag này): header thêm "chief number" (quãng đường to, hoặc thời
+  lượng nếu workout không có quãng đường — heuristic thay cho field `chiefSportDataType` Huawei mà app
+  không lưu) + dòng nguồn thiết bị; summary grid 2 cột đổi thành đúng thứ tự §2.2 (Duration, Calories,
+  Avg pace, Avg speed, Avg cadence, Avg stride, Steps (ước lượng), Avg/Max HR, Elevation gain, Descent,
+  kcal/min), lọc bỏ hẳn item vắng giá trị thay vì hiện ô "--"; bỏ hẳn tile Distance riêng (giờ là chief
+  number, đúng Huawei: DISTANCE không nằm trong grid); gộp "Active calories" vào "Calories" vì model chỉ
+  có 1 field `activeKcal`, không có 2 field riêng biệt như Huawei. Splits section viết lại hoàn toàn
+  (trước đây chỉ là list lap thô) thành bảng kiểu Huawei: Fastest/Average + half/full marathon khi đạt,
+  rồi từng dòng split với thanh pace tỷ lệ (ngắn hơn = nhanh hơn, hightlight dòng nhanh nhất), dòng lẻ
+  cuối "< 1 km"/"< 1 mi". HR-zone card đổi từ hiện % sang hiện phút ("<1 phút" cho 1-59s, đúng quy tắc
+  §3.2). Card "Heart rate" gốc (tag `workout_hr_chart`) giữ nguyên 100% không đổi (an toàn cho E2E);
+  phần "Trends" cũ nhập chung vào 1 Card "Charts" (tag `workout_trend` giữ nguyên) thêm biểu đồ cadence.
+  Dùng toàn bộ token `Spacing.*` cho khoảng cách/padding mới (coordinator yêu cầu để đợt gộp spacing
+  sau tinh chỉnh tập trung, không hardcode `.dp` cho spacing — kích thước component như icon/bar/line
+  vẫn giữ `.dp` như code cũ).
+  **core/demo**: không sửa gì — `SyntheticWorkoutDetailGenerator` (D-1195) đã sinh sẵn cadence/speed/
+  altitude/HR đầy đủ, đủ cho mọi field mới (bước suy ra từ cadence×thời gian).
+  **Test**: `WorkoutSplitsTest`/`WorkoutRunningMetricsTest`/`WorkoutElevationTest`/
+  `HeartRateZoneDurationsTest` (core/domain, mới) — split từ sample có dòng lẻ cuối + imperial, fastest
+  loại trừ dòng lẻ, phát hiện half/full marathon, rule tích luỹ 5s/60s, ẩn stride >200cm, hysteresis độ
+  cao (nhiễu dưới ngưỡng không cộng dồn, leo dốc thật vượt ngưỡng vẫn tính đúng).
+
+- **D-1202** · 2026-11-12 · Thêm chế độ line chart (+ area-fill) vào `HealthCharts.kt` dùng chung, theo
+  yêu cầu bổ sung giữa chừng của coordinator — **Chốt**
+  **Số thật trong code comment là D-1200** (lý do trùng số giống D-1201 ở trên).
+  Lý do: 3 mini-chart Pace/Elevation/Heart-rate trong "Trends" trước đây dùng `HealthRangeChart` (chấm
+  rời theo bucket) nhìn rối vì dữ liệu dày (tới 60 bucket/buổi tập). Thêm `HealthLineChart` (file cũ
+  `core/designsystem/.../component/HealthCharts.kt`, cộng thêm — không đụng `HealthBarChart`/
+  `HealthRangeChart` hiện có, màn hình khác như `MetricDetailScreen` giữ nguyên dạng chấm/cột) +
+  `LineChartMath` (pure, test riêng `LineChartMathTest`): `movingAverage` (làm mượt pace ~20s, null giữ
+  nguyên null không lan sang điểm lân cận), `segments` (cắt đường tại chỗ thiếu dữ liệu, không nối qua
+  khoảng trống — vì bucket đã cố định độ rộng từ `WorkoutSampleSeries`, 1 bucket rỗng tự nhiên đã là 1
+  khoảng trống ≥ 1 chu kỳ bucket, không cần tính lại "3x median interval" ở tầng chart), `axisRange`
+  (pad min/max rồi mới làm tròn tick đẹp — khác `niceFloor`/`niceCeil` cũ làm tròn trước, dễ nuốt mất
+  dải dữ liệu hẹp như nhịp tim 145-155bpm thành true trục 100-200 phẳng lì). Trục Y luôn fit theo đúng
+  **dữ liệu thật** (kể cả khi có `zoneBands` nền) — không giãn trục theo dải band. Pace: `invertY=true`
+  (lật chiều trục bằng cách hoán đổi cặp giá trị đưa vào `drawAxes`/hàm `y()`, không âm hoá giá trị —
+  nên label trục vẫn đúng số giây thật), bỏ hint "(lower is faster)" trong string EN/VI vì trục đã tự
+  nói lên điều đó. Elevation: `areaFill=true`. Heart rate: dải nền mờ 5 vùng (cùng ngưỡng %HRmax
+  D-1030/D-1201) tính ở tầng `feature/activity` (designsystem không phụ thuộc domain) rồi truyền vào
+  như list `Triple<Float,Float,Color>` thuần, cộng đường trung bình nét đứt.
+  **Verify**: chỉ Gradle, không chạm emulator/adb theo đúng chỉ đạo chung.
+
+
+## Gear: lọc theo giá + màu sắc trên "Trang bị tham khảo" (D-1203)
+
+- **D-1203** · 2026-11-12 · `feature/gear` (GearScreen.kt/GearViewModel.kt) + 2 file mới ở
+  `core/domain/usecase` — **Chốt**. Mã nguồn vẫn còn ghi "D-1199"/"D-1201" ở một vài bản nháp do va
+  chạm số hiệu với 2 agent khác chạy song song (home "7 vòng mini" chiếm D-1199, devices "gộp CTA"
+  chiếm D-1200, rồi activity/workout-detail chiếm cả D-1201/D-1202) — đã sửa lại toàn bộ comment
+  trong code về đúng D-1203 trước khi ghi entry này (khác tình huống D-1193/1196/1197/1198: ở đây
+  chưa có entry nào được ghi/commit nên sửa thẳng code thay vì để lại số sai).
+
+  **1. Chuẩn hoá màu (`core/domain/usecase/GearColorFamily.kt`)**: `enum ColorFamily` 12 giá trị
+  (BLACK/WHITE/GREY/BLUE/GREEN/RED/PINK/ORANGE/YELLOW/PURPLE/BROWN_BEIGE/MULTI) +
+  `classifyGearColor(raw: String): GearColorMatch(dominant, secondary)`, hàm thuần không phụ thuộc
+  Android. Thuật toán: bỏ dấu (xử lý riêng "đ"→"d" vì NFD không tách được), tokenize theo
+  `[^a-z0-9]+` (gộp "-"/"/"/" phối " làm một), bỏ token nhiễu "puma", quét trái→phải qua từ điển
+  ~100 từ khoá (VN: đen/trắng/xám/xanh dương/xanh lá/đỏ/hồng/cam/vàng/tím/nâu/be…; EN: black/white/
+  navy/lime/ruby/lavender/sandstone/inky…) — **gia đình đầu tiên khớp = dominant, các gia đình khác
+  = secondary** (không có state "MULTI ngầm định" cho tên 2 màu như "PUMA Black-PUMA White" — dominant
+  BLACK, secondary {WHITE}; MULTI chỉ dành cho tín hiệu rõ ràng "nhiều màu" — "Mix màu", hoặc hậu tố
+  "AOP" (All-Over-Print) của PUMA). **Quy tắc "xanh"**: một mình mặc định BLUE; chỉ chuyển GREEN khi
+  từ theo sau là lá/rêu/oliu/olive/lục/ngọc/mint (lookahead không "nuốt" token sau, token đó vẫn được
+  quét riêng — nên "xanh đen" vẫn ra dominant BLUE + secondary {BLACK}). "kem" xếp vào WHITE (không
+  phải BROWN_BEIGE) vì cách dùng thật trong feed ("Kem viền tím") mô tả nền trắng-kem viền màu, không
+  phải be/nâu.
+
+  **Coverage đo trên feed thật** (đọc read-only `unified_health_service/docs/gear/latest.json`, 486
+  item/156 có variant/636 variant — KHÔNG sửa repo đó): **629/636 variant (98.9%) map được**; 7 cái
+  còn lại cố ý không map (2× "Cool Weather" không có từ màu nào, 5× "Thêu <hoạ tiết>" là tên thêu,
+  không mô tả màu — không đoán bừa). Item không có variant (330 item), thử suy từ tên sản phẩm: chỉ
+  94/330 (28.5%) — thấp hơn nhiều vì đa số tên sản phẩm chỉ là tên model ("Deviate NITRO 3 Running
+  Shoes Men"), không nhắc màu; vài tên Salomon có màu gắn liền mã sản phẩm không có dấu cách
+  ("BlackLC2180300") nên tokenizer không tách ra được — chấp nhận, không cố match chuỗi con (rủi ro
+  match nhầm chữ khác). Test (`GearColorFamilyTest`, 15 case) dùng đúng các chuỗi thật trong feed.
+
+  **2. Lọc trong domain (`core/domain/usecase/GearCatalogFilters.kt`, 12 test)**: `gearColorFamilies()`
+  (variant → dominant mỗi variant; không variant → dominant từ tên), `matchesColorFamilies`,
+  `firstVariantMatchingColorFamilies` (quyết định 4), `gearColorFamilyCounts()` (chỉ liệt kê family có
+  mặt, kèm số lượng item), `gearPriceBoundsVnd()`, `matchesPriceRange` (lọc giá chỉ loại item
+  `priceVnd == null` khi filter đang bật), `GearPricePreset` (5 preset, bucket không chồng lắp, `OVER_3M`
+  luôn trần ≥ 3tr dù category hiện tại rẻ hơn).
+
+  **3. ViewModel (`GearViewModel.kt`)**: category/giá/màu đều chuyển sang `SavedStateHandle.getStateFlow`
+  (trước đây category là `MutableStateFlow` thường) — `GearCategory`/`Set<ColorFamily>` tự
+  `Serializable` (mọi `enum class`/`HashSet` Kotlin đều vậy) nên lưu thẳng không cần serialize tay;
+  sống sót qua process death (test riêng: tạo lại ViewModel từ cùng `SavedStateHandle`). 5 flow
+  (`items` + category + color + priceMin + priceMax) gộp bằng 1 lần `combine` 5-tham số.
+  `availableColorFamilies`/`priceBoundsVnd` tính từ tập đã lọc category (CHƯA lọc giá/màu) — để chip
+  màu/biên giá trong sheet không "biến mất" khi người dùng đang bật filter khác.
+
+  **4. UI (`GearScreen.kt`)**: nút "Lọc" (`FilterList` icon) ở `actions` của `AppScreen`, bọc
+  `ChromeRipple` riêng (D-1189) — `AppScreen` chỉ tự bọc ripple cho `navigationIcon`, không bọc cả
+  slot `actions`, nên tự bọc ở đây; `BadgedBox` hiện số filter đang bật (không tính category — category
+  đã có hàng chip riêng). `ModalBottomSheet`: giá (5 chip preset + `RangeSlider` liên tục, format
+  "1.200.000đ") + màu (chip tròn-màu + tên + số lượng, multi-select, `FlowRow`) + 2 nút "Xoá lọc"/
+  "Áp dụng" — áp dụng ngay khi chọn (không có state "pending" riêng), "Áp dụng" chỉ đóng sheet, đơn
+  giản hoá vì không cần 2 tầng state. Dưới hàng chip category: hàng chip filter đang bật, có nút ×
+  xoá từng cái (giá hoặc từng màu). Thẻ sản phẩm: khi có lọc màu, đổi ảnh sang variant đầu tiên khớp
+  màu đó (quyết định 4) và truyền màu đó qua nav arg `GearDetailDestination.variantColor` —
+  **đã nối đầy đủ** (không phải "bỏ qua vì phức tạp"): thêm field optional vào route, seed
+  `selectedColor` trong `GearDetailViewModel` từ `route.variantColor`; `onOpenGearDetail` đổi chữ ký
+  `(String) -> Unit` → `(String, String?) -> Unit` — `app/UnifiedHealthNavHost.kt` **không cần sửa**
+  vì `navController::navigateToGearDetail` (tham số 2 có default `null`) tự khớp kiểu hàm 2-tham số
+  khi dùng làm callable reference. Empty state "Không có trang bị khớp bộ lọc" thêm nút "Xoá lọc" khi
+  có filter đang bật (ẩn nút nếu chỉ do category rỗng, không có gì để xoá). Màu sắc dùng token
+  `Spacing` có sẵn, không thêm `.dp` cứng mới (theo yêu cầu coordinator hoãn việc chỉnh spacing
+  sang đợt rà soát design-token riêng).
+
+  **Không đụng**: `GearDetailScreen.kt`/variant tiles (D-1196, đã có sẵn), `core/model/GearItem.kt`
+  (không cần field mới). Không thêm Compose UI test (`androidTest`) — chỉ unit test theo đúng brief.
+  Chưa có test cho việc seed `selectedColor` từ `route.variantColor` ở `GearDetailViewModel` — không
+  có tiền lệ unit test nào dùng `savedStateHandle.toRoute<T>()` trong repo này (kiểm tra: không file
+  test nào mock được định dạng `SavedStateHandle` mà Navigation-Compose tạo ra cho `toRoute`), và
+  `GearDetailViewModel` vốn chưa từng có test — để nguyên, đổi 1 dòng rủi ro thấp
+  (`MutableStateFlow(route.variantColor)` thay vì `MutableStateFlow(null)`).
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :feature:gear:testDebugUnitTest
+  :core:domain:test :app:assembleDebug --rerun-tasks` BUILD SUCCESSFUL (450 task); test mới
+  `GearColorFamilyTest` 15, `GearCatalogFiltersTest` 12, `GearViewModelTest` 13 (cũ 5 + 8 mới) — toàn
+  bộ `failures="0" errors="0"`. `feature/gear/build/generated/ksp/debug/java/hilt_aggregated_deps`
+  có đủ 2 file `*ViewModel_HiltModules_BindsModule.java`, không gặp flake KSP. Lần chạy đầu tiên
+  `:app:assembleDebug` FAIL ở `:app:hiltJavaCompileDebug` ("error reading
+  ..._GeneratedInjector.java") — lỗi đọc file tạm do tranh chấp ghi đồng thời với agent khác đang
+  build cùng cây thư mục (không phải lỗi từ thay đổi này); chạy lại ngay sau đó
+  `:app:assembleDebug` BUILD SUCCESSFUL, xác nhận thoáng qua. Không test trên emulator/adb theo đúng
+  chỉ đạo (máy ảo dùng chung, coordinator test gộp 1 lần cuối).
+
+## Rà soát spacing/padding toàn app, chốt bộ token ngữ nghĩa `Gaps` (D-1204)
+
+- **D-1204** · 2026-11-12 · `core/designsystem/theme/Spacing.kt` (token mới `Gaps`) + 21 file
+  screen/component ở `feature/*`, `app/*`, `core/designsystem/component` — **Chốt**
+  Phản hồi từ screenshot: UI "quá thoáng" (airy) — cụ thể Gear (khoảng cách dọc giữa top bar và hàng
+  chip danh mục, và giữa hàng chip với nội dung bên dưới, đều quá lớn) và Home Metrics (khoảng cách
+  giữa 2 card trong lưới 2 cột, padding trong card, và khoảng cách giữa hàng tiêu đề "Metrics" với
+  hàng đầu tiên đều quá rộng). Yêu cầu: giảm (khoảng nửa) các khoảng dọc, lưới; đồng thời chốt token
+  ngữ nghĩa áp dụng nhất quán toàn app thay vì mỗi màn tự chọn `Spacing.lg/md/sm` theo cảm tính.
+
+  **1. Token mới — `object Gaps` trong `Spacing.kt`** (giữ nguyên thang nguyên tố 4dp của `Spacing`
+  làm nền, `Gaps.*` chỉ tham chiếu lại các giá trị đó, không thêm `.dp` cứng mới):
+
+  | Token | Vai trò | Giá trị cũ (phổ biến nhất) | Giá trị mới |
+  |---|---|---|---|
+  | `screenHorizontal` | lề ngang nội dung màn hình | `Spacing.lg` (16dp) | **không đổi** — 16dp |
+  | `screenTop` | khoảng cách từ top bar → nội dung đầu tiên | `Spacing.sm` (8dp, Home/Activity/Devices) hoặc `Spacing.lg` (16dp, Training/TrainingCalendar/Races) — không nhất quán | **`Spacing.xs` — 4dp**, thống nhất mọi màn |
+  | `sectionGap` | khoảng cách giữa các khối/card lớn xếp dọc 1 màn | `Spacing.lg`/`Spacing.xl` (16–24dp) | **`Spacing.md` — 12dp** |
+  | `itemGap` | khoảng cách giữa các item cùng dạng trong 1 list | `Spacing.sm`/`Spacing.md` lẫn lộn (8/12dp) | **`Spacing.sm` — 8dp** |
+  | `gridGap` | khoảng cách giữa các ô lưới (2 cột), cả 2 trục | `Spacing.md` (12dp) | **`Spacing.sm` — 8dp** |
+  | `cardPadding` | padding bên trong 1 Card/ElevatedCard | `Spacing.lg` (16dp) | **`Spacing.md` — 12dp** |
+  | `cardContentGap` | khoảng cách giữa các dòng nội dung trong 1 card | `Spacing.sm` (8dp, có nơi `Spacing.xxs` 2dp) | **`Spacing.xs` — 4dp** |
+  | `chipGap` | khoảng cách giữa các chip trong 1 hàng chip | lẫn lộn `Spacing.xs`/`Spacing.sm` (4/8dp) | **`Spacing.sm` — 8dp** (không giảm — không nằm trong phản hồi "quá thoáng", đây là khoảng NGANG giữa các chip, không phải khoảng DỌC quanh hàng chip) |
+  | `chipRowVertical` | khoảng dọc bao quanh 1 hàng chip (trên + dưới) | `Spacing.sm` (8dp) | **`Spacing.xs` — 4dp** |
+  | `sheetPadding` | padding nội dung 1 `ModalBottomSheet` | `Spacing.lg` (16dp) | **`Spacing.md` — 12dp** |
+
+  `bottomNavClearance` (96dp, che pill nav nổi) **giữ nguyên** — không phải "khoảng trống đọc thấy
+  thoáng/chật", mà là khoảng che một footprint cố định, không phải ứng viên để siết lại.
+
+  **2. Sửa lỗi cấu trúc gây "khoảng cách chồng đôi" ở Gear** (không chỉ đổi số, đổi cả cách ghép):
+  trước đây `CategoryFilterRow` tự có padding dọc `Spacing.sm` (8dp) ở cả trên lẫn dưới, rồi
+  `LazyVerticalGrid` bên dưới lại cộng thêm `top = Spacing.sm` (8dp) nữa trên contentPadding của
+  chính nó → khoảng cách thực tế giữa hàng chip và lưới là 8+8=16dp dù mỗi nơi đọc riêng chỉ là
+  8dp. Sửa: `CategoryFilterRow`/`ActiveFilterChipsRow` dùng `Gaps.chipRowVertical` (4dp) cho cả viền
+  trên lẫn dưới, và `LazyVerticalGrid`'s `contentPadding.top` đổi thành `0.dp` hẳn (không cộng gì
+  thêm) — khoảng cách chip→lưới giờ chỉ còn đúng 4dp từ phía chip, không chồng.
+
+  **3. Di trú toàn bộ màn hình sang `Gaps.*`** (giữ nguyên mọi `testTag`/hành vi, chỉ đổi số/token
+  spacing) — bảng trước/sau theo màn (giá trị chính, không liệt kê từng dòng nhỏ):
+  - **Gear**: chip-row dọc 8→4dp + bỏ chồng gap (xem mục 2); grid gap 12→8dp; card padding (đã là
+    12dp) giữ nguyên nhưng đổi sang token; card content gap 2→4dp; sheet padding 16→12dp.
+  - **Home**: screenTop 8→4dp; item/grid gap (list + lưới Metrics 2 cột, cả 2 trục) 12→8dp — đây là
+    khoảng cách "2 card quá rộng" VÀ "Metrics header → hàng đầu" cùng lúc (cùng 1 `Arrangement` của
+    `LazyColumn`); card padding mọi feed/metric/highlight card 16→12dp; card content gap 8→4dp.
+  - **Activity**: screenTop 8→4dp; card padding (Activity Load) 16→12dp, content gap 8→4dp; stat-row
+    gap 8dp giữ nguyên số, đổi token (`gridGap`).
+  - **Workout detail**: sectionGap 16→12dp; mọi card padding 16→12dp, content gap 8→4dp; splits-row
+    gap 4dp giữ nguyên số đổi token; charts/HR-zones card dùng `itemGap` 8dp thay vì 12/8dp lẫn lộn.
+  - **Devices**: screenTop 8→4dp; itemGap 12→8dp; mọi card padding 16→12dp, content gap 8→4dp;
+    QrFindSheet padding 16→12dp.
+  - **Device detail**: sectionGap 16→12dp; card padding 16→12dp, content gap 8→4dp.
+  - **Profile / Notifications**: card (Thresholds reference, notifications-blocked) padding 16→12dp,
+    content gap 8→4dp; sectionGap Notifications 12dp giữ nguyên số đổi token.
+  - **Races**: screenTop **16→4dp** (màn này trước dùng `Spacing.lg`, mức giảm lớn nhất); itemGap
+    12→8dp; chipGap trong `FilterChipRow` 4→8dp (tăng, theo quy tắc `chipGap` chốt ở 8dp).
+  - **Race detail**: card padding 16→12dp; sectionGap 16→12dp.
+  - **Training**: screenTop **16→4dp**; itemGap 12→8dp; mọi card (banner/entry/plan) padding
+    16→12dp, content gap 2–8→4dp.
+  - **Training calendar**: screenTop **16→4dp**; week-header padding dọc 8dp giữ nguyên số đổi
+    token (`itemGap`).
+  - **Running form**: toàn màn padding 16→12dp (dùng lại `cardPadding` vì không có top bar scaffold
+    riêng để tách màn/card); sectionGap 16→12dp.
+  - **Onboarding**: bước Permissions — padding 16→12dp, itemGap 12→8dp, mỗi `PermissionItem` card
+    padding 16→12dp. Bước Welcome **giữ nguyên** `Spacing.xl` (24dp) + `Spacing.lg` (16dp) — lề cố ý
+    rộng hơn cho màn splash căn giữa 1 lần duy nhất, không thuộc nhóm phản hồi "list/card quá
+    thoáng"; có comment trong code giải thích rõ lý do giữ nguyên.
+  - **Permissions rationale** (`PermissionsRationaleActivity`): đổi sang token `screenHorizontal`/
+    `sectionGap` nhưng giá trị số không đổi (16dp/12dp từ trước).
+  - **Metric detail / Metric data**: sectionGap 16→12dp; card (chart/insight) padding 16→12dp;
+    stat-row gap 12→8dp (`gridGap`); header-row (All data) padding dọc 8→4dp (`screenTop`).
+
+  **Không đổi (cố ý, có comment tại chỗ)**: mọi dp không phải spacing (icon size, ảnh, stroke
+  width, corner radius, chiều cao chart) — không nằm trong phản hồi và không chia sẻ vai trò với
+  bất kỳ token `Gaps` nào. `Spacing.xxl`/`Spacing.xl` ở `DeviceImageViewer.kt` (lề quanh ảnh phóng
+  to) và toàn bộ `QrScannerScreen.kt` (overlay camera full-bleed) — không nằm trong danh sách màn
+  hình brief liệt kê, giữ nguyên để tránh rủi ro cho overlay/viewer đặc thù. `StatTile.kt`'s
+  `padding(bottom = 3.dp)` (canh baseline đơn vị cạnh số lớn) — không khớp thang 4dp, giữ nguyên.
+  Các `Spacer(width/height = Spacing.xs/sm/md)` canh icon-text/inline đơn giản, dùng 1 vai trò rõ
+  ràng duy nhất tại chỗ đó (không mơ hồ giữa nhiều vai trò) — không di trú sang `Gaps`, giữ
+  `Spacing.*` nguyên bản theo đúng tinh thần "token sơ cấp vẫn là nền".
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest
+  :app:compileDebugAndroidTestKotlin assembleDebug -x :driver:xiaomi:compileDebugKotlin -x
+  :driver:xiaomi:testDebugUnitTest` → **BUILD SUCCESSFUL** cho cả 3; 799 test chạy toàn repo, chỉ 1
+  fail (`XiaomiL1Test > cumulative ack handles seq wraparound`, thuộc `driver/xiaomi` — module đang
+  có agent khác chỉnh sửa song song, không đụng tới, đúng theo chỉ đạo coordinator). 0 fail ở mọi
+  module còn lại (`core/designsystem` 28, `feature/home` 15, `feature/activity` 19,
+  `feature/devices` 23, `feature/gear` 13, `feature/profile` 14, `feature/races` 8,
+  `feature/training` 3 — không có test nào viết riêng cho spacing, nên số test không đổi so với
+  trước khi sửa, chỉ xác nhận hành vi/testTag không vỡ). Không kiểm tra KSP flake nào phát sinh
+  (`hilt_aggregated_deps` đủ `*ViewModel_HiltModules_BindsModule.java` cho từng `@HiltViewModel`
+  thật ở mọi `feature/*`). Không test trên emulator/adb theo đúng chỉ đạo (coordinator test gộp 1
+  lần cuối).
+
+## Home: sửa 2 lỗi phát hiện khi review trên máy thật — tuần mini-rings lệch nhãn + thiếu dấu cách "a day" (D-1205)
+
+- **D-1205** · 2026-11-12 · `feature/home` (`HomeScreen.kt`, `strings.xml` EN+VI) — **Chốt**
+
+  **1. Mini rings tuần (`WeekRingsStrip`/`DayRing`, D-1199/D-1196) lệch nhãn khi tới ngày hôm nay.**
+  Nguyên nhân: `Box` bọc ring dùng `contentAlignment` không khai kích thước cố định, nên nó tự co
+  giãn theo item con lớn nhất — riêng hôm nay có thêm backdrop "spotlight" 52dp (to hơn ring 40dp) vẽ
+  cùng cấp, khiến `Box` của riêng ngày hôm nay cao hơn 6 ngày còn lại, đẩy `Text` nhãn + chấm tròn bên
+  dưới lệch xuống so với hàng. Sửa: `Box` giờ có `Modifier.size(WEEK_RING_BOX_SIZE)` cố định áp dụng
+  **cho mọi ngày như nhau** (backdrop chỉ là nội dung *bên trong*, không còn quyết định kích thước
+  `Box`); chấm "hôm nay" dưới nhãn cũng luôn chiếm chỗ (`Color.Transparent` ở 6 ngày còn lại thay vì
+  `if (isToday)` thêm/bớt `Spacer`+`Box`) — cả 7 cột giờ cùng chiều cao, cùng baseline nhãn.
+
+  Nhân dịp này gộp luôn 2 yêu cầu UI khác trong cùng khu vực: **tăng gấp đôi kích thước ring** (
+  `WEEK_RING_SIZE` 40dp→76dp, `WEEK_RING_STROKE` 3dp→6dp theo đúng tỷ lệ, backdrop 52dp→80dp — vẫn
+  vừa 4 cột đều nhau trong bề ngang 360dp trừ `Gaps.screenHorizontal` 16dp mỗi bên, tức mỗi cột ~82dp)
+  và **chia 2 hàng 4 cột đều nhau** thay vì 1 hàng 7 cột (hàng 1: T2–T5, hàng 2: T6–CN căn trái dưới 3
+  cột đầu của hàng 1 bằng 1 `Spacer(weight(1f))` thế chỗ cột thứ 4 còn trống) — 7 ring to gấp đôi
+  không còn vừa 1 hàng ở bề ngang màn hình tối thiểu 360dp.
+
+  **2. Thẻ Highlights thiếu dấu cách trước "a day"/"mỗi ngày"**: "...averaged 7,606 stepsa day", "...34
+  mina day", "...473 kcala day" ở cả bản EN lẫn VI, mọi đơn vị (steps/min/kcal) vì cùng dùng chung
+  resource `highlight_per_day_suffix`. Nguyên nhân **không phải** lỗi logic format trong code — chuỗi
+  Kotlin nối ghép đúng thứ tự — mà là lỗi `strings.xml`: giá trị `<string name="highlight_per_day_suffix">
+  a day</string>` có dấu cách đầu dòng **không được quote/escape**, nên trình biên dịch tài nguyên
+  Android tự động cắt khoảng trắng đầu/cuối không nằm trong dấu ngoặc kép — dấu cách bị mất ngay lúc
+  build, không phải lúc runtime. Sửa: đổi dấu cách thường thành escape ` ` ở cả
+  `values/strings.xml` (` a day`) và `values-vi/strings.xml` (` mỗi ngày`) — giữ nguyên nội
+  dung chữ, chỉ thêm escape để trình biên dịch không cắt.
+
+  Nhân tiện tách phần nối chuỗi của `HighlightCard`'s body (`stringResource(R.string.highlight_body,
+  verb, recent, unit, perDay, change)`) ra hàm pure `highlightCardBody(...)` (không phụ thuộc
+  Compose/Android) để có thể unit-test JVM thuần theo đúng pattern có sẵn của
+  `metricInsightLine`/`MetricInsightTextTest` (`feature/home/.../insight/MetricInsightText.kt`) —
+  test mới `HighlightCardBodyTest` (5 case: steps/min/kcal có đúng 1 dấu cách giữa đơn vị và hậu tố
+  "a day", discrete/sleep không có hậu tố, và 1 test đọc thẳng `strings.xml` để khóa ` ` không
+  bị ai vô tình sửa lại thành dấu cách trần).
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :feature:home:testDebugUnitTest
+  :app:assembleDebug` → **BUILD SUCCESSFUL** cả 2 (không cần loại trừ `:driver:xiaomi`, module đó
+  build sạch trong lần chạy này). `feature/home` 20 test (15 cũ + 5 `HighlightCardBodyTest` mới), 0
+  fail. `hilt_aggregated_deps` có đủ 3 `*ViewModel_HiltModules_BindsModule.java` (không cần
+  `kspDebugKotlin --rerun`). Không test trên emulator/adb (coordinator kiểm tra trên máy thật ở bước
+  sau) — bố cục 2 hàng/4 cột và việc nhãn không còn lệch chỉ được xác nhận bằng đọc code bố cục
+  (`Box` kích thước cố định cho mọi ngày) và test sẵn có không vỡ (`testTag` của từng ngày/ring
+  không đổi), chưa có ảnh chụp màn hình thật.
+
+## Workout detail: 5 lỗi phát hiện khi review trên máy thật (splits trùng pace, HR chart trùng lặp, MAC thô, HR-zone thiếu track, chart nuốt vuốt dọc) (D-1206)
+
+- **D-1206** · 2026-11-12 · `feature/activity` (`WorkoutDetailScreen.kt`, `WorkoutDetailViewModel.kt`,
+  `Fakes.kt`, `strings.xml` EN+VI), `core/demo/.../detail/SyntheticWorkoutDetailGenerator.kt`,
+  `core/domain/.../repository/SyntheticWorkoutDetailSource.kt`,
+  `core/demo/.../detail/DemoSyntheticWorkoutDetailSource.kt`,
+  `core/designsystem/.../component/HealthCharts.kt` — **Chốt**
+
+  **1. Bảng splits: cả 5 split "5'53" giống hệt nhau, chỉ split #1 có thanh pace.**
+  Nguyên nhân thật nằm ở `SyntheticWorkoutDetailGenerator` (D-1195/D-1197), không phải ở công thức vẽ
+  thanh: `generateLaps` cũ chia biên lap theo `secondBoundariesFromDistanceShares` — chia đều thời
+  gian theo **tỉ lệ quãng đường ở pace trung bình cả buổi**, hoàn toàn không đọc `samples` (vốn đã có
+  pace dao động 5'40"–6'10" qua `splitFactor`/noise) — nên mọi lap 1km full đều ra đúng cùng một số
+  giây. Sửa tận gốc: `secondBoundariesFromSampleDistance` (hàm mới) tích phân hình thang tốc độ của
+  chính `samples` đã sinh thành đường quãng đường tích luỹ, rồi nội suy đúng giây mà đường đó cắt mỗi
+  mốc `k×lapMeters` — y hệt cách `WorkoutSplits.fromSamples` (core/domain, D-1201) làm, chỉ là bản
+  độc lập vì hàm đó `private`. Kèm theo: `lapDistances` của nhánh split-theo-khoảng-cách đổi sang
+  `fixedLapDistanceShares` (mục tiêu cố định lapMeters/lap, phần dư ở lap cuối) thay vì
+  `distanceShares` (tỉ lệ theo thời lượng) — nếu không đổi, quãng đường mỗi lap sẽ lệch khỏi "đúng
+  1km" ngay khi thời lượng lap bắt đầu dao động thật. Bất biến giữ nguyên (test xác nhận): tổng quãng
+  đường = `Workout.distanceMeters` (chính xác, không chỉ ±1m), tổng thời lượng = `Workout.duration`
+  (chính xác), tổng kcal = `activeKcal` (chính xác), determinism qua seed.
+  Phần vẽ thanh (`WorkoutDetailScreen.kt`) tách ra hàm thuần `splitBarFraction(durationSeconds,
+  minSeconds, maxSeconds)` (trước đây nằm trực tiếp trong `SplitRow`) để có unit test JVM riêng, giữ
+  nguyên công thức floor 0.12f + trường hợp suy biến (mọi split bằng nhau → full bar mọi dòng, không
+  còn rủi ro chia 0/0 ra bar rỗng) — hành vi không đổi, chỉ tách để test được độc lập với bug sinh dữ
+  liệu ở trên.
+
+  **2. Hai biểu đồ nhịp tim trùng nhau**: card "Heart rate" đầu trang vẫn vẽ `HealthRangeChart` cũ
+  (chấm rời từ stream HR theo phút) + dòng "Average 151 · lowest 148 · highest 156" tính thuần từ
+  `sampleStats` (stream phút), trong khi card "Trends" có `HealthLineChart` mới (D-1202, có dải vùng
+  nhịp tim) vẽ lại **cùng nội dung nhịp tim** từ `sampleHeartRateSeries` — avg/max của 2 nơi lệch nhau
+  vì khác nguồn (grid dùng `workout.avgHeartRate`/`maxHeartRate` = 154/167, card HR dùng `sampleStats`
+  = 151/156). Sửa: gộp về đúng 1 biểu đồ — card "Heart rate" (giữ `testTag="workout_hr_chart"` cho
+  E2E) giờ dùng `HealthLineChart` với dải vùng nhịp tim + optional `referenceValue`, chọn nguồn tốt
+  nhất (`sampleHeartRateSeries` nếu có dữ liệu, else `heartRate` stream phút — đúng quy tắc
+  `hasHeartRateChart` mới trong `WorkoutDetailViewModel`: `sampleHeartRateSeries.any{hasData} ||
+  heartRate.any{hasData}`); card "Trends" bỏ hẳn nhánh vẽ HR (`hasSampleTrend` cũng bỏ điều kiện HR ra
+  khỏi OR, chỉ còn pace/elevation/cadence). Dòng tóm tắt avg/min/max đổi sang quy tắc đã có sẵn ở
+  `WorkoutDetailUiState.Success` (không tạo quy tắc mới): avg/max ưu tiên `workout.avgHeartRate`/
+  `maxHeartRate` (đồng hồ thắng), min luôn lấy từ sample (`workout` không có field min) — khớp đúng
+  số với summary grid, chỉ hiện dòng này khi cả 3 giá trị đều có.
+
+  **3. Nguồn thiết bị hiện MAC thô** (`02:DE:30:00:00:01`) ở cả header lẫn card "Source" vì thiết bị
+  demo không nằm trong `pairedDevices` (demo watch không phải BLE peripheral thật, không bao giờ được
+  pair). Thêm `SyntheticWorkoutDetailSource.isDemoDevice(deviceId)` (interface `core/domain`, implement
+  ở `DemoSyntheticWorkoutDetailSource` bằng `deviceId in DemoDeviceIds.ALL`) — đúng pattern
+  `@BindsOptionalOf`/`Optional<SyntheticWorkoutDetailSource>` D-1195 đã có sẵn, không cần
+  `feature/activity` biết gì về `core/demo`. `WorkoutDetailViewModel` giờ trả `source:
+  WorkoutSourceDisplay` (sealed: `Paired(name, brand)` / `Demo` / `Unknown(deviceId: String?)`) thay vì
+  `String?` thô. UI: header bỏ hẳn dòng nguồn (trước đây hiện ở cả 2 nơi); card "Source" là nơi duy
+  nhất còn lại — headline là tên thân thiện ("Tên · Hãng" / "Demo watch"/"Đồng hồ demo" / "Thiết bị
+  không xác định"), MAC chỉ còn là `supportingContent` nhỏ và **chỉ khi** `Unknown` (ẩn hẳn với
+  `Paired`/`Demo`). Chuỗi mới `source_demo_watch` (EN "Demo watch", VI "Đồng hồ demo") ở cả 2
+  `strings.xml` theo đúng quy ước song ngữ D-1192.
+  **Theo dõi riêng (không sửa trong lần này — ngoài phạm vi `feature/activity`/`core/domain`/
+  `core/demo`/`core/designsystem` coordinator giao)**: `app/src/androidTest/.../WorkoutsE2ETest.kt`
+  hiện assert text chứa `DemoDevice.ADDRESS` (MAC thô) bên trong node `workout_source` — sau thay đổi
+  này test đó sẽ fail khi chạy thật (giờ hiện "Demo watch"/"Đồng hồ demo" thay vì MAC), cần agent phụ
+  trách `app/*` cập nhật assertion. `app/src/androidTest` đang nằm ngoài phạm vi được giao cho lần sửa
+  này (coordinator giao vùng đó cho nhóm agent khác chạy song song), và test này không chạy trong lần
+  verify Gradle hiện tại (`testDebugUnitTest`, không phải androidTest) nên không chặn build.
+
+  **4. Hàng vùng nhịp tim 0 phút chỉ hiện 1 chấm tròn trôi nổi, không có track.** Nguyên nhân: Material3
+  `LinearProgressIndicator` bản mới có hành vi gap/stop-indicator riêng quanh `progress == 0f` khiến
+  track không vẽ, chỉ còn chấm đầu mút. Sửa: bỏ hẳn `LinearProgressIndicator`, thay bằng `Box` tự vẽ
+  track (nền `surfaceVariant`, luôn hiện đủ mọi dòng kể cả 0 phút) + `Box` con là phần tô màu theo
+  `fillMaxWidth(fraction)` (chỉ vẽ khi `fraction > 0f`) — bố cục mọi dòng giờ nhất quán, màu tô vẫn tỷ
+  lệ thuận với thời lượng vùng.
+
+  **5. Vuốt dọc bắt đầu trên biểu đồ bị nuốt, không cuộn được trang.** `chartScrubGestures`
+  (`core/designsystem/.../HealthCharts.kt`, dùng chung bởi `HealthBarChart`/`HealthRangeChart`/
+  `HealthLineChart`) dùng `detectDragGestures` (nhận mọi hướng) — tiêu thụ pixel đầu tiên của BẤT KỲ
+  thao tác kéo nào, kể cả kéo dọc định cuộn trang, nên `Modifier.verticalScroll` của
+  `WorkoutDetailContent` không bao giờ nhận được gesture nếu ngón tay bắt đầu trên 1 trong 4-5 biểu đồ
+  (HR/pace/cadence/elevation) — đúng mọi biểu đồ trên màn workout detail vì không cái nào set
+  `scrubEnabled = false`. Sửa: đổi sang `detectHorizontalDragGestures` — chỉ nhận gesture sau khi vượt
+  ngưỡng trượt NGANG, nên một cú kéo dọc không bị tiêu thụ và được nhường cho `verticalScroll` của
+  Column cha. Tap-to-scrub (`detectTapGestures`) giữ nguyên không đổi.
+
+  **Test mới (24, toàn bộ pass)**: `SyntheticWorkoutDetailGeneratorTest` +5 (lap full dao động thời
+  lượng theo pace mẫu — đúng bug báo cáo 5.10km/30 phút, lap distance vẫn đúng mục tiêu cố định dù
+  thời lượng đổi, bộ bất biến đầy đủ cho đúng case 5.10km/30 phút, 1 test xác suất qua 20 seed xác
+  nhận có dao động pace lap-to-lap). `WorkoutDetailScreenTest` (file mới, 5 — `splitBarFraction`:
+  nhanh nhất full bar, chậm nhất có floor 0.12, tuyến tính giữa khoảng, trường hợp suy biến mọi split
+  bằng nhau vẫn full bar mọi dòng, không chia 0/0). `WorkoutDetailViewModelTest` +7 (2 test cũ sửa lại
+  theo kiểu `WorkoutSourceDisplay` mới; demo device → `Demo`; paired thắng demo; không có synthetic
+  source → `Unknown` dù id giống demo; avg/max theo đồng hồ còn min theo sample — đúng case báo cáo
+  154/167 vs 151/156; HR chart hiện được chỉ từ sample dày, không cần stream phút).
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest assembleDebug
+  -x :driver:xiaomi:testDebugUnitTest` → **BUILD SUCCESSFUL** cả 2. 919 test tổng cộng toàn repo qua
+  117 file `TEST-*.xml` (`testDebugUnitTest` + JVM `test` của `core:domain`/`core:model`), **0 file
+  nào thiếu `failures="0" errors="0"`**. `feature/activity/build/generated/ksp/debug/java/
+  hilt_aggregated_deps` có đúng 2 file `*ViewModel_HiltModules_BindsModule.java`
+  (`ActivityViewModel`, `WorkoutDetailViewModel`) — không gặp flake KSP. `./gradlew
+  :app:compileReleaseKotlin -x :driver:xiaomi:compileReleaseKotlin` BUILD SUCCESSFUL — xác nhận
+  `Optional<SyntheticWorkoutDetailSource>` (thêm method mới `isDemoDevice`) vẫn resolve sạch ở graph
+  release, không kéo `:core:demo`. `./gradlew :app:compileDebugAndroidTestKotlin -x
+  :driver:xiaomi:compileDebugKotlin` BUILD SUCCESSFUL — E2E vẫn biên dịch được (xem mục 3 về
+  assertion cần cập nhật sau, không phải lỗi biên dịch). Không test trên emulator/adb theo đúng chỉ
+  đạo (không dùng emulator/adb, chỉ Gradle build + unit test) — mục 5 (gesture) và phần hiển thị
+  track mục 4 chỉ xác minh bằng đọc code + test logic thuần, chưa chụp màn hình thật.
+
+- **D-1207** (2026-11-12, **Chốt**): Ảnh lệch tỷ lệ khung hình → nền mờ cùng ảnh thay vì viền trống/
+  nền sai màu (gear card ảnh nền xám trong card trắng/xám, thấy viền 2 bên).
+
+  Thêm composable dùng chung mới `BlurFillAsyncImage`
+  (`core/designsystem/.../component/BlurFillAsyncImage.kt`, D-1109: Coil chỉ sống ở
+  `core/designsystem`) — lớp nền cùng `model`, `ContentScale.Crop`, mờ `Modifier.blur(24dp)` (API 31+,
+  dùng `RenderEffect`; có scrim đen 35% để chữ/foreground nổi hơn), lớp trước `ContentScale.Fit`. Chỉ
+  vẽ nền mờ khi tỷ lệ khung hình ảnh đã tải lệch tỷ lệ container >5% (`aspectRatioMismatch`, đo từ
+  `BoxWithConstraints` + `AsyncImage.onSuccess`'s intrinsic size) — và chỉ khi `contentScale == Fit`:
+  caller xin thẳng `Crop` (ví dụ `GearImage`'s variant thumbnail 56dp) nghĩa là chủ ý fill-crop, không
+  bao giờ thêm nền mờ cho trường hợp đó vì Crop vốn không bao giờ chừa khoảng trống. Dưới API 31
+  (`Modifier.blur` no-op): nền đặc màu trung bình (`averageColor`, mean từng kênh RGB) tính từ bitmap
+  downsample rẻ 16×16 qua Coil (`size(16,16)` + `allowHardware(false)`) — không thêm dependency nặng
+  (`androidx.palette` chưa có trong app) chỉ để lấy màu chủ đạo. Một `ImageRequest` duy nhất (model +
+  size tường minh từ constraints đo được) dùng chung cho cả 2 lớp để Coil dedupe/cache, không tải ảnh
+  2 lần.
+
+  3 file gọi: `GearImage.kt` (ảnh có `imageUrl` → `BlurFillAsyncImage`; fallback icon khi null giữ
+  nguyên, không đổi), `TrainingHeroImage.kt` (đổi sang gọi `BlurFillAsyncImage`, nhưng `contentScale`
+  default vẫn `Crop` như cũ nên hành vi hiện tại không đổi — chỉ gộp code dùng chung, sẵn sàng cho
+  caller tương lai muốn `Fit`), `RaceCoverImage.kt` (nhánh "near-square" — vốn đã tự giải quyết đúng
+  bug này bằng cơ chế riêng từ D-1150/1142 — đổi gọi `RaceImageBackdrop` cũ sang `ImageBackdropLayer`
+  mới (cùng file `BlurFillAsyncImage.kt`, internal) để có luôn fallback màu trung bình dưới API 31;
+  **không** route qua `BlurFillAsyncImage` tự-detect ở nhánh này — vì container của `RaceCoverImage`
+  tự đổi aspect ratio bằng `animateFloatAsState` nên nếu để `BlurFillAsyncImage` tự đo lệch tỷ lệ theo
+  thời gian thực sẽ bắt được lệch tạm thời trong lúc animation đang chạy, chớp nền mờ bật-tắt ở MỌI ảnh
+  không-vuông chứ không chỉ ảnh vuông). `RaceCard.kt`'s `RaceImageBackdrop`/`RaceHeroImage` (nền mờ
+  toàn-card trang trí, D-1136/1142) **không đổi** — mục đích khác (trang trí, không phải lấp khoảng
+  trống do lệch tỷ lệ), và D-1136 đã chốt rõ "không cần fallback thủ công" cho trường hợp đó.
+
+  Test mới (10, JVM thuần, `BlurFillAsyncImageTest.kt`): `aspectRatioMismatch` (khớp chính xác → false,
+  lệch 1% dưới ngưỡng → false, lệch >5% → true như case ảnh vuông trong card 4:5, ngưỡng tuỳ chỉnh,
+  không bao giờ true với tỷ lệ ≤0), `backdropRenderStyleFor` (API 31/36 → blur, API 30/26 → màu trung
+  bình), `averageColor` (toàn bộ pixel đỏ → đỏ chính xác, nửa đen nửa trắng → xám 50%, mảng rỗng → đen
+  không crash).
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :core:designsystem:testDebugUnitTest
+  :core:designsystem:compileDebugKotlin` BUILD SUCCESSFUL, 10/10 test qua. `./gradlew
+  :feature:training:compileDebugKotlin :feature:races:compileDebugKotlin` BUILD SUCCESSFUL.
+  `:feature:gear:compileDebugKotlin` fail nhưng vì lỗi không liên quan của agent khác đang sửa song
+  song (`GearCardDisplay`/`GearItem` type mismatch trong `GearViewModel.kt`/`GearScreen.kt`, không
+  đụng gì tới `GearImage`'s signature) — đã xác nhận không phải do thay đổi này.
+
+- **D-1208** (2026-11-12, **Chốt**): Soát virtualization cho mọi màn hình cuộn ngoài `feature/gear`/
+  `feature/devices` (agent khác đang sửa song song).
+
+  Kết quả soát: `feature/home` (`HomeScreen`'s `Summary`, `MetricDataScreen`, `MetricDetailScreen`),
+  `feature/activity` (`ActivityScreen`, `WorkoutDetailScreen`), `feature/races` (`RacesScreen`,
+  `RaceDetailScreen`), `feature/training` (`TrainingScreen`, `TrainingCalendarScreen`,
+  `RunningFormScreen`), `feature/profile` (`ProfileScreen`, `NotificationSettingsScreen`),
+  `feature/onboarding` (`OnboardingScreen`) — hầu hết **đã** đúng: danh sách có thể dài (feed Home,
+  toàn bộ data điểm `MetricDataScreen`, workout theo tháng `ActivityScreen`, races `RacesScreen`, kế
+  hoạch tập `TrainingScreen`/lịch tập `TrainingCalendarScreen`) đều đã là `LazyColumn`/`LazyRow` với
+  `items(..., key = ...)`, không có `LazyColumn` lồng trong `verticalScroll` ở đâu. Màn hình còn lại
+  (`MetricDetailScreen`, `WorkoutDetailScreen`, `RaceDetailScreen`, `RunningFormScreen`,
+  `ProfileScreen`, `NotificationSettingsScreen`, `OnboardingScreen`) dùng `Column` + `verticalScroll`
+  thuần — đúng đắn vì nội dung cố định/giới hạn (vài card/row cố định, không phải danh sách dài theo
+  dữ liệu người dùng — ví dụ `WorkoutDetailScreen`'s splits tối đa ~42 dòng cho 1 marathon, vẫn nằm
+  trong 1 `Card` cố định chứ không lồng `LazyColumn` thứ 2 bên trong `verticalScroll` ngoài, tránh đúng
+  lỗi nested-scroll task brief cảnh báo; `ProfileScreen`/`EditFeedCardsDialog`'s list card cũng cố định
+  theo số `HealthMetricType`, không phải tăng theo dữ liệu).
+
+  2 chỗ sửa thật:
+  1. `MetricDataScreen.kt` (`feature/home/detail`): `itemsIndexed(rows)` thiếu `key` — list này là
+     "Show All Data" của 1 metric, có thể hàng nghìn sample thô. Thêm `key = { index, row ->
+     "${row.reading.time}_${row.reading.sourceId}_$index" }` (time+source+index, vì
+     `MetricReading` không có id riêng) để ổn định danh tính item qua recomposition thay vì chỉ dựa vị
+     trí mặc định.
+  2. `ActivityScreen.kt`: header theo tháng (`SectionHeader` mỗi tháng) trước đó là `item(key =
+     "month_...")` thường — đổi sang `stickyHeader(key = "month_...")` (`ExperimentalFoundationApi`,
+     có `Modifier.background(colorScheme.surface)` để không lộ nội dung cuộn phía dưới xuyên qua chữ)
+     để tên tháng hiện tại ghim ở đầu trong lúc cuộn qua các workout của tháng đó, giống kiểu danh bạ/
+     sao kê dài — đúng yêu cầu "sticky month headers" của task brief cho đúng 1 trong 2 màn hình ưu
+     tiên (`ActivityScreen`/`MetricDataScreen`; `MetricDataScreen` không có header nhóm theo tháng nên
+     không áp dụng — không tự thêm tính năng nhóm tháng mới ngoài phạm vi "virtualize").
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew testDebugUnitTest -x
+  :driver:xiaomi:testDebugUnitTest -x :feature:gear:testDebugUnitTest -x :app:testDebugUnitTest` BUILD
+  SUCCESSFUL — 118 file `TEST-*.xml`, 0 file thiếu `failures="0" errors="0"`.
+  `:core:designsystem:assembleDebug :feature:home:assembleDebug :feature:activity:assembleDebug
+  :feature:training:assembleDebug :feature:races:assembleDebug` BUILD SUCCESSFUL. KSP Hilt: mỗi
+  `feature/*` có đủ `*ViewModel_HiltModules_BindsModule.java` tương ứng trong
+  `build/generated/ksp/debug/java/hilt_aggregated_deps`, không flake. `feature:gear`/`app` không chạy
+  được (agent khác đang sửa song song, lỗi không liên quan tới thay đổi của task này) — đúng theo chỉ
+  đạo verify từng module riêng khi module ngoài phạm vi đang vỡ.
+
+## Pill bottom nav: tap không chuyển tab sau khi quay lại từ detail đã cuộn (D-1209)
+
+- **D-1209** · 2026-11-12 · `app/src/main/kotlin/com/unified/health/ui/UnifiedHealthApp.kt` — **Chốt**
+  **Số thật là D-1209** — code comment trong `UnifiedHealthApp.kt` đang ghi "D-1205" (viết lúc sửa,
+  trước khi biết agent khác đã chiếm số đó cho batch fix `feature/home`) — không sửa lại comment
+  (chi phí cao, không đáng), ghi rõ ở đây theo đúng tiền lệ D-1189/D-1190/D-1200/D-1201.
+
+  **Repro (user báo trên máy thật)**: Activity tab → mở 1 workout detail → cuộn trong detail → hệ
+  thống BACK → về main pager hiện Home (không phải Activity) → bấm "Devices"/"Profile" trên pill
+  không có phản ứng gì, dù uiautomator dump thấy item `clickable=true enabled=true`, trong khi vuốt
+  ngang trên pager vẫn đổi trang bình thường.
+
+  **Điều tra**: đọc kỹ `UnifiedHealthApp.kt`/`PillBottomNavigation.kt`/`MainPagerDestination.kt`/
+  `EdgeGestureExclusion.kt` — `pagerState`/`coroutineScope`/`switchTab` đều hoist ở `UnifiedHealthApp`
+  (trên `NavHost`, đúng kiến trúc D-1052 để sống sót qua push/pop detail), không tìm thấy đường code
+  nào thật sự gọi lại `pagerState.scrollToPage(0)`/tạo `rememberPagerState` lần 2 — tức hiện tượng
+  "về Home" không tái lập được bằng cách đọc code tĩnh (không có thiết bị thật để trace runtime theo
+  đúng giới hạn môi trường agent). **Nguyên nhân gốc tìm được và sửa được, giải thích đúng phần "tap
+  không ăn"**: `scrollFadeConnection` (D-1134/D-1149) gắn trên `Modifier` của *toàn bộ* `NavHost`, nên
+  vẫn phản ứng với scroll ngay cả khi đang ở 1 detail screen (pill không hiện) — cuộn trong detail có
+  thể để lại `pillVisible = false` làm "rác" từ trước. Khi bấm back, `onMainPager` bật lại `true` ngay
+  trong cùng 1 lần recompose mà `pillVisible` vẫn còn `false` (vì `LaunchedEffect(onMainPager)` reset
+  nó về `true` chỉ chạy ở effect phase *sau* lần compose đó) — và trước đây `PillBottomNavigation`
+  được compose có điều kiện qua `if (onMainPager) { ... }`, nên mỗi lần quay lại main pager nó bị
+  **unmount rồi mount lại từ đầu**, làm mất hẳn `animateFloatAsState`'s `Animatable` (D-1134/D-1195)
+  — một `Animatable` mới tạo không có giá trị cũ để animate từ, nên `alpha` "snap" thẳng về 0 ngay
+  frame đầu tiên đó, rơi đúng vào điều kiện early-return của D-1195
+  (`if (!visible && alpha <= 0f) return`) — pill không compose `Surface`/items ở đúng frame mà user
+  dễ bấm nhất ngay sau khi back. Đây khớp với mọi triệu chứng đã log được (enabled=true khi dump sau
+  đó vì đã tự hồi phục trong frame kế, nhưng cú tap đúng lúc "rỗng" đã bị bỏ qua) — **phần "về Home"
+  cụ thể không chứng minh được 100% qua đọc code tĩnh** (pagerState không có đường nào bị reset về 0
+  theo những gì tìm thấy), ghi nhận trung thực thay vì đoán — có khả năng là hiểu nhầm của reviewer về
+  trạng thái UI trong đúng khung thời gian unmount/remount trên, và được fix gián tiếp bởi chính sửa
+  đổi dưới đây (loại bỏ hẳn unmount/remount nên không còn khung thời gian "lạ" đó nữa để quan sát
+  nhầm).
+
+  **Sửa (2 thay đổi, cùng gốc)**:
+  1. `scrollFadeConnection.onPreScroll` giờ chỉ đổi `pillVisible` khi đang thật sự ở main pager
+     (`onMainPager`) — tách thành hàm thuần `pillVisibilityForScroll(onMainPager, availableX,
+     availableY, current)`, đọc `onMainPager` qua `rememberUpdatedState` (tránh đúng bẫy "giá trị cũ
+     bị đóng băng trong lambda `remember` không key" mà brief gợi ý kiểm tra) — cuộn trong 1 detail
+     screen giờ không còn đụng `pillVisible` nữa, nên không còn "rác" nào để đối lúc quay lại.
+  2. `PillBottomNavigation` giờ **luôn được compose** (bỏ hẳn `if (onMainPager) { ... }`) —
+     `visible` gộp cả 2 điều kiện qua hàm thuần `pillNavVisible(onMainPager, pillVisible)`. D-1195's
+     early-return vẫn là cơ chế duy nhất ẩn nó khi ở detail screen, nhưng giờ `animateFloatAsState`'s
+     `Animatable` sống xuyên suốt vòng đời app, không bao giờ bị huỷ/tạo lại do điều hướng — loại bỏ
+     hẳn lớp bug "mount lại ngay đúng lúc nhạy cảm" thay vì chỉ vá triệu chứng.
+
+  **Test**: `app/src/test/kotlin/com/unified/health/ui/UnifiedHealthAppLogicTest.kt` (7 test JUnit4,
+  module `app` trước đây chưa có `src/test` nào) — test trực tiếp 2 hàm thuần trên, bao gồm đúng kịch
+  bản repro (cuộn ở detail screen không đổi `pillVisible`, quay lại main pager thấy pill visible ngay
+  không cần đợi `LaunchedEffect`).
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :app:testDebugUnitTest
+  :app:assembleDebug :app:compileDebugAndroidTestKotlin` BUILD SUCCESSFUL cả 3; `app` module: 7/7 test
+  pass (`UnifiedHealthAppLogicTest`), 0 fail.
+
+## Devices: ẩn Scan FAB khi đang hiện onboarding card, nâng lên trên pill khi còn hiện (D-1210)
+
+- **D-1210** · 2026-11-12 · `feature/devices/src/main/kotlin/com/unified/health/feature/devices/DevicesScreen.kt` — **Chốt**
+  **Số thật là D-1210** — code comment trong file đang ghi "D-1206" (chiếm nhầm số thật của batch fix
+  `feature/activity`/`WorkoutDetailScreen` — xem entry D-1206 thật), không sửa lại comment, ghi số thật
+  ở đây theo đúng tiền lệ.
+
+  **Vấn đề (review trên máy thật)**: khi chưa pair thiết bị nào, `NoPairedDeviceCard` (D-1200) đã có
+  đủ 3 CTA Scan/QR/MAC, nhưng 1 FAB "Scan" riêng vẫn hiện góc dưới-phải — trùng lặp CTA chính, và còn
+  bị pill nav nổi (D-1144) che khuất vì `Scaffold`'s FAB chỉ biết tự chừa inset thanh điều hướng hệ
+  thống, không biết gì về footprint riêng của `PillBottomNavigation`.
+
+  **Sửa**: FAB giờ **ẩn hẳn** khi chưa có thiết bị pair nào *và* không đang scan (điều kiện
+  `!state.isScanning && state.pairedDevices.isEmpty()`) — `NoPairedDeviceCard` là CTA duy nhất lúc đó.
+  Khi FAB có lý do để hiện (đang scan → `stop_scan_fab`, hoặc đã có ≥1 thiết bị pair → `scan_fab`, lúc
+  này `AddDeviceEntry`/D-1200 là entry point theo từng dòng còn FAB vẫn có chỗ đứng cho "scan lại"),
+  thêm `Modifier.padding(bottom = Spacing.bottomNavClearance)` lên chính FAB đó để nó nổi *trên* pill
+  thay vì bị che — cùng hằng số `Spacing.bottomNavClearance` (96dp) mà mọi top-level tab khác đã dùng
+  cho nội dung cuộn của mình (D-1144), áp lần đầu trực tiếp lên 1 FAB.
+
+  **E2E**: `scan_fab`/`stop_scan_fab` testTag giữ nguyên hành vi khi có pair/đang scan. Khi chưa pair
+  (đúng lúc FAB giờ bị ẩn), 7 chỗ trong `app/src/androidTest/kotlin/com/unified/health/e2e/` đang
+  `clickTag("scan_fab")` ngay sau onboarding mới (trạng thái chưa pair) — đổi cả 7 sang
+  `clickTag("onboarding_scan_button")` (nút Scan của chính `NoPairedDeviceCard`, test tag đã có sẵn từ
+  D-1200): `UserJourneyE2ETest`, `DeviceSettingsE2ETest`, `StandardWatchE2ETest`, `ZeppWatchE2ETest`,
+  `GarminWatchE2ETest`, `HuaweiWatchE2ETest` (2 chỗ, flow 10 + flow 11). Chỉ compile-check được
+  (`:app:compileDebugAndroidTestKotlin`), không chạy thật trên thiết bị (đúng giới hạn môi trường
+  agent — coordinator test gộp sau).
+
+  **Việc khác không thuộc quyết định này, làm theo yêu cầu giữa chừng của coordinator**:
+  `app/src/androidTest/kotlin/com/unified/health/e2e/WorkoutsE2ETest.kt` — agent xử lý
+  `feature/activity`/`WorkoutDetailScreen` (D-1206 thật) đổi Source card từ hiện MAC thô sang nhãn
+  thân thiện ("Demo watch"/`R.string.source_demo_watch`); test cũ assert thẳng `DemoDevice.ADDRESS`
+  (MAC) trong node `workout_source` nên vỡ giả định — sửa sang đọc qua
+  `context.getString(com.unified.health.feature.activity.R.string.source_demo_watch)` (locale-safe,
+  không hardcode chuỗi tiếng Anh) thay vì MAC. Không phải quyết định thiết kế của agent này — chỉ cập
+  nhật test cho khớp hành vi đã chốt ở nơi khác, ghi lại để truy vết.
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :feature:devices:testDebugUnitTest
+  :app:assembleDebug :app:compileDebugAndroidTestKotlin` BUILD SUCCESSFUL cả 3; `feature:devices`:
+  23/23 test pass (8 `DeviceDetailViewModelTest` + 15 `DevicesViewModelTest`), 0 fail — không test
+  riêng cho FAB visibility/offset (thuần UI, không có logic đáng tách ra unit test; verify bằng đọc
+  code + build xanh theo đúng giới hạn "không emulator/adb" của agent này).
+
+## Gear: nút "Áp dụng"/"Xoá lọc" trong filter sheet thành nút chính + phụ rõ ràng (D-1211)
+
+- **D-1211** · 2026-11-12 · `feature/gear/src/main/kotlin/com/unified/health/feature/gear/GearScreen.kt` — **Chốt**
+  **Số thật là D-1211** — code comment trong file đang ghi "D-1207" (chiếm nhầm số thật của fix tỷ lệ
+  khung hình ảnh/blur-fill `core/designsystem`), không sửa lại comment, ghi số thật ở đây.
+
+  **Vấn đề**: hàng action của `GearFilterSheet` (D-1203) là 2 `TextButton` phẳng, căn trái — khó nhận
+  ra "Áp dụng" mới là hành động chính của sheet, không có khác biệt thị giác giữa "xác nhận" và
+  "reset".
+
+  **Sửa**: "Áp dụng" → `Button` (filled primary) với `Modifier.weight(1f)` (chiếm hết phần còn lại của
+  hàng, đọc như CTA chính mặc định của 1 bottom sheet); "Xoá lọc" → `OutlinedButton` cố định bề rộng
+  bên cạnh. Vẫn nằm ở cuối `Column` với `navigationBarsPadding()` + `Gaps.sheetPadding` dưới (không
+  đổi) — đã ở đúng vị trí "cuối sheet, trên nav bar inset" từ trước. `testTag` `gear_filter_clear`/
+  `gear_filter_apply` giữ nguyên.
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :feature:gear:testDebugUnitTest
+  :app:assembleDebug` BUILD SUCCESSFUL cả 2.
+
+## Gear: bộ lọc Giới tính (Nam/Nữ/Trẻ em) + fallback classifier từ tên sản phẩm (D-1212)
+
+- **D-1212** · 2026-11-12 · `core/model` (`GearItem.kt`), `core/data` (`GearFeedDto.kt`), `core/domain`
+  (`GearGenderClassifier.kt` mới, `GearCatalogFilters.kt`), `feature/gear` (`GearViewModel.kt`,
+  `GearScreen.kt`) — **Chốt**
+
+  **Dữ liệu thật**: feed `unified_health_service/docs/gear/latest.json` (đọc trực tiếp, read-only, lúc
+  viết: 485 item) **đã có sẵn field `gender`** cho 462/485 item (205 women, 199 men, 58 unisex, 0
+  kids) — chỉ 23 item không có giá trị, đúng lúc classifier fallback cần chạy.
+
+  **1. Model + DTO**: `GearItem.gender: GearGender? = null` (default để không vỡ mọi call site cũ —
+  `core/domain`/`core/data`/`feature/gear` test); `GearGender { MEN, WOMEN, UNISEX, KIDS }`.
+  `GearItemDto.gender: String? = null` map 1:1 case-insensitive từ chuỗi feed (`"men"`/`"women"`/
+  `"unisex"`/`"kids"`) — **không bao giờ ghi đè** khi feed đã có giá trị; chỉ gọi fallback
+  classifier khi feed trả null.
+
+  **2. `classifyGearGender` (`core/domain`, thuần, không phụ thuộc Android/Compose)** — mirror thuật
+  toán `classifyGearColor` (D-1203): strip "đ"/"Đ", NFD bỏ dấu, lowercase, tokenize trên
+  `[^a-z0-9]+`, quét trái→phải, token khớp đầu tiên thắng. Từ điển đúng phạm vi brief liệt kê:
+  women/womens/wmns/nu (="nữ"); men/mens/nam (**nguyên từ, không phải substring** — tokenize đã tự
+  đảm bảo điều này); unisex; kids/kid/junior/jr + cụm 2 từ "trẻ em" (lookahead "tre"→"em", giống cách
+  `classifyGearColor` xử lý "xanh"). **Đo coverage trên đúng 23 item null-gender thật**: resolve được
+  8 (1 "...Unisex Salomon...", 2 "...Men"/"Men's...", 1 "...Women", 4 "trẻ em" — mỗi size 1 tên), 15
+  còn lại (bình nước, balo, đai, gaiters...) đúng là tên không có tín hiệu giới tính, để null đúng chủ
+  đích chứ không phải thiếu sót. Kiểm tra chéo thêm: 90 item có "Nam"/"Nữ" trong tên (đã có feed
+  gender sẵn, classifier không thật sự chạy trên chúng) — không có false positive whole-word nào
+  trong catalog này (không có tên kiểu địa danh "Nam Định..." gây nhầm) — ghi rõ trong KDoc đây là
+  rủi ro tồn dư đã biết, chấp nhận được của riêng luật "nam nguyên từ", không cố vá thêm ngoài brief.
+
+  **3. Filter logic (`GearCatalogFilters.kt`)**: `matchesGenderFilter(selected)` — null chọn tất cả;
+  MEN/WOMEN khớp cả UNISEX (đúng rule brief: "UNISEX items match both Nam and Nữ"); KIDS chỉ khớp
+  KIDS (UNISEX không tính là trẻ em); item `gender = null` chỉ bị loại khi có filter giới tính đang
+  bật. `hasKidsItems()` — chip "Trẻ em" trong sheet chỉ hiện khi có.
+
+  **4. UI**: section mới "Giới tính" trong `GearFilterSheet` — chip đơn-chọn Tất cả/Nam/Nữ (+Trẻ em
+  nếu có kids item). Filter active hiện dưới dạng chip có thể gỡ trong `GearChipRow` đã gộp (D-1213),
+  tính vào badge `activeFilterCount`, lưu qua `SavedStateHandle` (`gear_gender_filter`) giống
+  category/price/color — sống sót qua process death, kết hợp AND với category/price/color trong
+  `GearViewModel.buildSuccess`. `clearPriceAndColorFilters()` đổi tên thành `clearFilters()` (giờ reset
+  cả 3: price, color, gender — không đổi category) — rename nội bộ trong cùng file, không ảnh hưởng gì
+  bên ngoài module.
+
+  **Test**: `GearGenderClassifierTest` (10 test, `core/domain` — dùng đúng chuỗi tên thật từ feed cho
+  cả nhánh resolve-được lẫn null-đúng-chủ-đích lẫn check chéo false-positive); `GearCatalogFiltersTest`
+  thêm 5 test cho `matchesGenderFilter`/`hasKidsItems`; `RemoteGearRepositoryTest` thêm 1 test (literal
+  feed value thắng fallback, case-insensitive, fallback hoạt động khi feed null); `GearViewModelTest`
+  thêm 3 test gender + sửa test `clearFilters` (tên cũ `clearPriceAndColorFilters`) cho khớp.
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :core:domain:test
+  :core:data:testDebugUnitTest :feature:gear:testDebugUnitTest :app:assembleDebug
+  :app:compileDebugAndroidTestKotlin` BUILD SUCCESSFUL cả 5. `core:domain`: 10/10
+  `GearGenderClassifierTest` + 17/17 `GearCatalogFiltersTest` (12 cũ + 5 mới) pass. `core:data`: 9/9
+  `RemoteGearRepositoryTest` (8 cũ + 1 mới) pass. `feature:gear`: 16/16 `GearViewModelTest` (13 cũ + 3
+  mới, trừ 1 đổi tên) pass. Không test nào fail ở module nào.
+
+## Gear: gộp category-chip + active-filter chip thành 1 `ChipRow`, bỏ khoảng trống dọc do touch-target ẩn của Material3 chip (D-1213)
+
+- **D-1213** · 2026-11-12 · `core/designsystem/src/main/kotlin/com/unified/health/core/designsystem/component/ChipRow.kt` (mới),
+  `feature/gear/src/main/kotlin/com/unified/health/feature/gear/GearScreen.kt` — **Chốt**
+
+  **Nguyên nhân gốc (review trên máy thật, sau cả D-1204 đã giảm `Gaps.chipRowVertical` 8→4dp)**:
+  mọi chip Material3 (`FilterChip`/`InputChip`/...) tuy vẽ ra chỉ cao ~32dp, nhưng mỗi chip tự bọc
+  nội dung trong `Modifier.minimumInteractiveComponentSize()`, đệm lên tới `LocalMinimumInteractiveComponentSize`
+  (mặc định 48dp) — căn giữa, nên mỗi chip tự cộng thêm ~8dp padding **vô hình** ở cả trên lẫn dưới,
+  cộng dồn lên trên bất kỳ padding tường minh nào hàng chip tự khai báo. Gear trước đây có 2 hàng chip
+  xếp chồng (category + active-filter) — mỗi hàng tự cộng padding vô hình ở cả 2 phía, nên khoảng cách
+  *đọc thấy* giữa 2 hàng lớn hơn nhiều so với con số `Gaps.chipRowVertical` (4dp) mà code khai báo,
+  không công cụ đo layout nào chỉ thẳng ra nguyên nhân nếu không biết tra đúng composable.
+
+  **Sửa, 2 phần**:
+  1. `ChipRow` (`core/designsystem/component`, mới) — 1 `LazyRow` bọc
+     `CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp)`, xoá hẳn phần đệm
+     vô hình cho mọi chip bên trong. **Đánh đổi a11y có chủ đích, có giới hạn phạm vi** (ghi đầy đủ lý
+     do trong KDoc): hướng dọc của touch target co về đúng 32dp vẽ ra — chấp nhận được vì chip trong 1
+     hàng ngang không bao giờ xếp chồng lên nhau (không có target cạnh tranh trực tiếp trên/dưới, lý
+     do chính 48dp tồn tại), hướng ngang vẫn giữ nguyên (mỗi chip đủ rộng + `Gaps.chipGap` giữa các
+     chip). **Không** áp dụng cho chip trong `FlowRow` có thể xuống dòng (ví dụ price/color section
+     trong chính `GearFilterSheet`) — ở đó 2 chip thật sự có thể xếp chồng, giữ nguyên 48dp.
+  2. `GearScreen.kt`: gộp `CategoryFilterRow` + `ActiveFilterChipsRow` (2 hàm, 2 `LazyRow`/`FlowRow`
+     riêng) thành 1 `GearChipRow` duy nhất dùng `ChipRow` — category chip trước, 1 `VerticalDivider`
+     (chỉ hiện khi có filter đang active) ngăn cách, rồi tới chip gỡ được (giá/màu/giới tính — D-1212)
+     — không còn 2 hàng xếp chồng, nên không còn "2 lần padding vô hình" cộng dồn. Gap app bar → hàng
+     chip = `Gaps.screenTop` (qua `AppScreen`'s content padding, không đổi); hàng chip → grid =
+     `Gaps.chipRowVertical` duy nhất, không cộng thêm gì (grid's `contentPadding.top = 0.dp`, giữ
+     nguyên từ D-1204).
+  **Phạm vi**: chỉ `feature/gear` dùng `ChipRow` ở task này — các hàng chip ngang khác trong app
+  (races/training/metric-detail range chips...) đang do agent khác xử lý song song (coordinator nói
+  rõ), không đụng tới ngoài khai báo component dùng chung sẵn ở `core/designsystem` cho agent đó tái
+  sử dụng nếu cần.
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :core:designsystem:compileDebugKotlin
+  :feature:gear:testDebugUnitTest :app:assembleDebug` BUILD SUCCESSFUL cả 3; `feature:gear`: 16/16 test
+  pass, không test nào viết riêng cho `ChipRow` (thuần layout/CompositionLocal, không có logic để tách
+  unit test — verify bằng đọc code + build xanh, không có thiết bị thật để chụp màn hình theo đúng
+  giới hạn môi trường agent).
+
+## Gear: tối ưu performance lưới cho catalog lớn (486+ item) — stable key/contentType, bỏ tính toán per-item khỏi item lambda (D-1214)
+
+- **D-1214** · 2026-11-12 · `feature/gear/src/main/kotlin/com/unified/health/feature/gear/GearViewModel.kt`,
+  `GearScreen.kt` — **Chốt**
+  **Số thật là D-1214** — code comment trong 2 file trên đang ghi "D-1209" (chiếm nhầm số thật của
+  chính agent này ở entry D-1209 phía trên, pill-nav fix, viết trước khi biết số thật) — không sửa lại
+  comment, ghi số thật ở đây.
+
+  **Vấn đề**: `LazyVerticalGrid` của Gear (486+ item thật trên feed) đã có `key = { it.id }` từ trước,
+  nhưng mỗi `GearCard` trong item lambda tự gọi `item.firstVariantMatchingColorFamilies(colorFilter)`
+  — 1 phép quét `variants` để chọn ảnh hiển thị đúng theo màu đang lọc — **chạy lại mỗi lần recompose
+  cho mỗi card đang hiện trên màn**, không chỉ khi `colorFilter` thật sự đổi. `GearItem` cũng có field
+  `variants: List<GearVariant>` khiến Compose compiler suy luận nó **unstable** (interface `List`
+  không đảm bảo bất biến), nên truyền thẳng `GearItem` vào item composable mất khả năng skip
+  recomposition thông minh của Compose.
+
+  **Sửa**: thêm `GearCardDisplay` (data class mới, `feature/gear`, mọi field là
+  `String`/`Long?`/nullable-của-chúng — Compose compiler tự suy ra **stable**) — tính sẵn 1 lần cho
+  mỗi item trong `GearViewModel.buildSuccess` (chạy lại đúng khi state/filter thật sự đổi, không phải
+  mỗi frame recompose): `displayImageUrl`/`displayVariantColor` đã resolve sẵn từ
+  `firstVariantMatchingColorFamilies`, không còn gọi lại trong Composable. `GearUiState.Success.items`
+  đổi type từ `List<GearItem>` sang `List<GearCardDisplay>`; `GearCard` nhận thẳng
+  `GearCardDisplay`, không nhận `colorFilter` nữa. `LazyVerticalGrid`'s `items(...)` thêm
+  `contentType = { "gear_card" }` tường minh (mọi cell cùng 1 dạng hôm nay, nhưng khai báo rõ không
+  tốn gì và giúp Compose không phải đoán khi tái sử dụng node).
+
+  **`GearImage`/Coil size**: không đụng `core/designsystem`'s `GearImage.kt`/`RaceCoverImage.kt` theo
+  đúng chỉ đạo (agent khác đang sửa blur-fill + Coil size ở đó) — `GearCard` vẫn truyền
+  `Modifier.fillMaxWidth().aspectRatio(1f)` y như trước, không đổi cách gọi.
+
+  **@Immutable cho `GearItem` gốc**: cân nhắc nhưng **không làm** — `core/model` là pure JVM, thêm
+  annotation từ `androidx.compose.runtime` (dù chỉ 1 annotation) phá nguyên tắc module này không phụ
+  thuộc framework UI; và dùng `kotlinx.collections.immutable.ImmutableList` cho `variants` sẽ lan
+  dependency mới qua `core/domain`/`core/data` chỉ để phục vụ 1 màn hình UI — không đáng so với giải
+  pháp đã chọn (tạo riêng 1 UI projection type nhẹ, named rõ, test được như mọi state khác trong
+  `GearViewModel`).
+
+  **Test**: không thêm test riêng cho `GearCardDisplay`/`contentType` (thuần đổi type + khai báo
+  Compose, không có logic nhánh để test) — `GearViewModelTest`'s 16 test hiện có đã đi qua đường
+  `buildSuccess` mới (map sang `GearCardDisplay`) nên xác nhận hành vi filter không vỡ.
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :feature:gear:testDebugUnitTest
+  :app:assembleDebug :app:compileDebugAndroidTestKotlin` BUILD SUCCESSFUL cả 3; `feature:gear`: 16/16
+  test pass.
+
+## Verify gộp cuối cho toàn bộ batch D-1209..D-1214
+
+**Lệnh**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :app:testDebugUnitTest
+:feature:devices:testDebugUnitTest :feature:gear:testDebugUnitTest :core:domain:test
+:core:data:testDebugUnitTest :core:designsystem:testDebugUnitTest :app:assembleDebug
+:app:compileDebugAndroidTestKotlin` → **BUILD SUCCESSFUL** toàn bộ, không cần loại trừ
+`:driver:xiaomi` (không đụng module đó, không có conflict lúc chạy). Test-result XML soát thủ công
+từng module, không file nào thiếu `failures="0" errors="0"`: `app` 7 (`UnifiedHealthAppLogicTest`,
+module trước đây chưa có `src/test`), `feature:devices` 23 (8+15, không đổi so với trước batch),
+`feature:gear` 16 (13 cũ + 3 gender mới, trừ 1 rename), `core:domain` 2 file gear mới (10
+`GearGenderClassifierTest` + 17 `GearCatalogFiltersTest`, 12 cũ +5) cộng toàn bộ suite cũ không đổi,
+`core:data` 9 `RemoteGearRepositoryTest` (8 cũ +1), `core:designsystem` không đổi (không có logic mới
+cần unit test ở `ChipRow`). Không test trên emulator/adb — đúng chỉ đạo coordinator test gộp trên máy
+thật ở phiên sau.
+
+## Home: chọn 1 ngày trong tuần-mini-rings để xem lại trên vòng lớn, thu nhỏ ring 1/3 (D-1215)
+
+- **D-1215** · 2026-11-12 · `feature/home` (`HomeScreen.kt`, `HomeViewModel.kt`, `HomeDaySelection.kt`
+  mới, `strings.xml` EN+VI) — **Chốt**
+
+  **Yêu cầu**: bấm 1 vòng mini trong dải tuần (D-1196/D-1205) để thẻ vòng lớn (`RingsCard`) hiện lại
+  đúng Move/Exercise/Steps của ngày đó, có nhãn ngày + nút "Hôm nay" để quay lại, chỉ vòng lớn theo
+  lựa chọn (lưới Metrics/Highlights vẫn luôn là hôm nay); thu nhỏ ring mini ~1/3; thêm outline chọn
+  phân biệt với marker "hôm nay"; a11y selectable; re-animate vòng lớn khi đổi ngày.
+
+  **1. Logic lựa chọn thuần (`HomeDaySelection.kt`, file mới trong `feature/home`, không phụ thuộc
+  Android/Compose/clock)**: `onDayTapped(current, tapped, today)` — ngày tương lai bị từ chối (trả
+  nguyên `current`), bấm đúng ngày đang chọn (hoặc bấm hôm nay lúc đang xem hôm nay) toggle về `null`
+  (= hôm nay), còn lại chọn `tapped` (chuẩn hoá về `null` nếu `tapped == today`). `onJumpToToday()` =
+  `null`. `resolveRestoredSelection(persisted, persistedAsOfToday, today, week)` — phục hồi lựa chọn
+  đã lưu qua process death, reset về `null` nếu: không có gì được lưu, **đã sang ngày mới** (so
+  `persistedAsOfToday` với `today` — cố ý tách riêng khỏi điều kiện "còn trong tuần", vì 1 ngày có thể
+  rời sang hôm sau mà vẫn cùng tuần lịch, brief yêu cầu 2 điều kiện reset độc lập), ngày đã chọn không
+  còn nằm trong `week` hiện tại, hoặc nó chính là hôm nay/ở tương lai (chuẩn hoá phòng thủ). Bất biến
+  xuyên suốt: `selectedDate == hôm nay` không bao giờ xảy ra (luôn là `null`), nên marker "hôm nay"
+  (backdrop `primaryContainer` + nhãn đậm + chấm tròn, D-1196) và outline "đang chọn" (mục 3) không
+  bao giờ cùng hiện trên 1 ngày — đúng theo cấu trúc dữ liệu, không cần check UI riêng.
+  Test thuần (`HomeDaySelectionTest`, 13 case): toggle về hôm nay (bấm lại ngày đang chọn, bấm hôm nay
+  lúc đang chọn ngày khác, bấm hôm nay lúc đang xem hôm nay), tương lai bị từ chối, phục hồi hợp lệ,
+  reset khi sang ngày mới dù còn cùng tuần, reset khi ra khỏi tuần, chuẩn hoá hôm nay/tương lai lúc
+  phục hồi.
+
+  **2. `HomeViewModel`**: thêm `SavedStateHandle` vào constructor (theo đúng mẫu
+  `GearViewModel`/D-1203 — `getStateFlow`/`savedStateHandle[key] = value`, `LocalDate` là
+  `Serializable` nên lưu thẳng, không cần chuyển sang `String`). 2 key: `home_selected_date` (lựa
+  chọn) + `home_selected_as_of_today` (ngày "hôm nay" lúc lưu, để `resolveRestoredSelection` phân biệt
+  "sang ngày mới" khỏi "còn trong tuần"). `HomeUiState.Success` thêm `selectedDate: LocalDate?` (giải
+  quyết trong bước `combine` cuối cùng của `uiState`, dựa trên `state.week` đã gắn ở bước trước đó —
+  không subscribe `week` flow lần 2) và computed property `selectedDaySummary` (lấy từ `week` theo
+  `selectedDate`, mặc định về `summary` khi `null` — **cố ý trả đúng cùng 1 object `summary` như
+  trước khi có feature này khi đang xem hôm nay**, đúng yêu cầu "vòng lớn cho hôm nay phải y hệt như
+  trước"). `selectDay(date)`/`jumpToToday()` đọc `uiState.value` (đã có `week`) để lấy "hôm nay" từ
+  `WeekActivityDay.isToday` thay vì gọi `LocalDate.now()` riêng — không bao giờ lệch với tuần/vòng lớn
+  đang hiển thị. `HomeViewModelTest` thêm 6 case (chọn ngày đổi `selectedDate`+`selectedDaySummary`,
+  hôm nay giữ nguyên `selectedDaySummary == summary`, bấm lại toggle về hôm nay, `jumpToToday`, chọn
+  tương lai bị từ chối, lựa chọn sống sót qua tạo lại ViewModel từ cùng `SavedStateHandle` — mô phỏng
+  process death) — 4 case có ngày phụ thuộc "hôm nay" thật (`LocalDate.now()`) được bọc
+  `firstOrNull { ... } ?: return@runTest` phòng trường hợp hiếm chạy đúng thứ Hai (không có ngày nào
+  vừa quá khứ vừa không phải hôm nay trong tuần).
+
+  **3. UI (`HomeScreen.kt`)**: `RingsCard` nhận thêm `selectedDate`/`onJumpToToday` — khi
+  `selectedDate != null` hiện 1 `Row` phía trên vòng (nhãn ngày qua `selectedDayLabel()` +
+  `TextButton` "Hôm nay"/"Today", `testTag` riêng `selected_day_label`/`jump_to_today`), còn lúc xem
+  hôm nay thì không có hàng này — y hệt bố cục cũ. `ActivityRings` bọc trong
+  `key(selectedDate) { ... }` — đổi ngày tạo lại composable, `LaunchedEffect(Unit)` trong
+  `ActivityRings` (`core:designsystem`, D-1157, không đụng file đó) tự chạy lại intro animation có
+  sẵn từ 0 tới progress ngày mới, tái dùng animation hiện có thay vì viết animation riêng; hôm nay thì
+  key không đổi nên không tự re-animate khi có recomposition không liên quan (vd nhịp tim live).
+  **Nhãn ngày** (`selected_day_label`, string resource riêng, không dùng chung `week_ring_mon..sun`
+  vì cần dạng đầy đủ hơn — VI "Thứ 3" thay vì "T3"): bản EN `"%1$s, %4$s %2$d"` → "Tue, Nov 10" (tên
+  tháng viết tắt tiếng Anh từ `LocalDate.month.getDisplayName(TextStyle.SHORT, Locale.ENGLISH)`, tính
+  thuần Kotlin, không phụ thuộc locale máy); bản VI `"%1$s, %2$02d/%3$02d"` → "Thứ 3, 10/11" (thuần số
+  dd/mm, không cần tên tháng) — 2 template dùng tập argument-index khác nhau (EN bỏ qua %3, VI bỏ qua
+  %4), hợp lệ với `String.format`/Android resource compiler, không có cấu hình `lint` chạy trong
+  `testDebugUnitTest`/`assembleDebug` nên không ảnh hưởng lệnh verify.
+
+  **Mini rings (`WeekRingsStrip`/`WeekRingsRow`/`DayRing`)**: `WEEK_RING_SIZE` 76dp→50dp,
+  `WEEK_RING_STROKE` 6dp→4dp, `WEEK_RING_BOX_SIZE` 80dp→54dp (thu nhỏ ~1/3, giữ nguyên tỷ lệ D-1205
+  đã lập) — 2 hàng 4 cột đều nhau giữ nguyên, cột vẫn cùng kích thước/baseline cố định (D-1205 fix
+  không bị phá). Outline chọn: `Box` viền `WEEK_RING_SELECTION_OUTLINE_WIDTH` (2dp) màu `primary`,
+  `CircleShape`, vẽ ở đúng `WEEK_RING_BOX_SIZE` bên trong `Box` cố định — không đổi kích thước
+  cột/box khi chọn, chỉ vẽ thêm bên trong, đúng yêu cầu "outline vẽ trong box cố định". Mỗi ngày bọc
+  `Modifier.sizeIn(minWidth/minHeight = Spacing.minTouchTarget)` (48dp) +
+  `Modifier.selectable(selected, enabled = !isFuture, role = Role.Tab, onClick)` rồi mới tới
+  `clearAndSetSemantics` sẵn có (D-1196) — thứ tự modifier này cố ý: `selectable` là node cha (tự
+  `mergeDescendants = true`), `clearAndSetSemantics` là node con thay thế semantics của `Canvas` bên
+  trong bằng 1 khối duy nhất; node cha gộp cả 2 lại thành 1 node a11y duy nhất mang đủ role/selected/
+  click action (từ `selectable`) **và** `contentDescription`/`stateDescription` (từ khối
+  `clearAndSetSemantics`) — không cần khai lại role/selected thủ công trong khối đó.
+  `stateDescription` mới (`week_ring_state_selected` "Selected"/"Đã chọn") hiện khi `isSelected`,
+  dùng lại `selected_day_today_action` ("Today"/"Hôm nay") khi `isToday` — tách khỏi
+  `contentDescription` (giữ nguyên, D-1196) để TalkBack đọc đúng như trạng thái, không phải tên.
+  Ngày tương lai: `enabled = false` trên `selectable` nên không có ripple/click, kể cả qua a11y
+  (không có `onClick` action nào được set khi future).
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :feature:home:testDebugUnitTest
+  :feature:home:assembleDebug` → **BUILD SUCCESSFUL** cả 2 lần chạy (lần đầu sau khi viết code, lần 2
+  sau khi đổi toàn bộ comment từ "D-1216" — số tạm lúc viết code, trước khi đọc lại file này — về
+  đúng "D-1215"). `feature:home`: 39 test, 0 fail (`HighlightCardBodyTest` 5, `HomeDaySelectionTest`
+  13 mới, `HomeViewModelTest` 13 — 7 cũ + 6 mới, `MetricInsightTextTest` 8). `hilt_aggregated_deps` có
+  đủ 3 `*ViewModel_HiltModules_BindsModule.java` (`HomeViewModel`/`MetricDetailViewModel`/
+  `MetricDataViewModel`). Không chạy `:app:assembleDebug` (app module đang do agent khác sửa
+  `UnifiedHealthApp.kt`/`PillBottomNavigation.kt` song song, đúng chỉ đạo coordinator chỉ verify module
+  riêng); không đụng emulator/adb (agent khác đang debug trên đó) — bố cục outline/nhãn ngày/animation
+  chỉ xác nhận bằng đọc code + build xanh + test logic lựa chọn, chưa có ảnh chụp màn hình thật.
+
+## Pill bottom nav: tap không chuyển tab ngay sau khi mở app (race `onMainPager` lúc khởi động) (D-1216)
+
+- **D-1216** · 2026-11-12 · `app/src/main/kotlin/com/unified/health/ui/UnifiedHealthApp.kt` — **Chốt**
+
+  **Bug (vẫn còn sau D-1209..D-1214)**: trên máy thật, mở app xong, bấm 1 tab pill nav (Activity/
+  Devices/Profile) ngay khi Home vừa hiện — không chuyển tab (vuốt ngang trên pager vẫn hoạt động
+  bình thường). `uiautomator` dump sau đó cho thấy các item pill `clickable=true`/`enabled=true`,
+  bounds đúng, Home đang `selected` — tức là lúc *kiểm tra* thì mọi thứ trông bình thường; bug chỉ xảy
+  ra trong đúng khoảnh khắc chạm, không để lại dấu vết.
+
+  **Cách tìm nguyên nhân**: thêm tạm `Log.d` vào `PillNavItem.onClick`, `switchTab`, và
+  `snapshotFlow { pagerState.currentPage }`, chạy `adb logcat` qua ~50 lần mở app sạch (force-stop +
+  start) rồi bấm pill ngay khi Home vừa render ổn định (chờ 2 frame liên tiếp giống hệt kích thước qua
+  `screencap`, để loại trường hợp chụp trúng frame cũ còn sót lại lúc activity đang chuyển — artifact
+  của chính kịch bản test, không phải bug thật). Log bắt được:
+  ```
+  recompose: backStackEntry=null destination=null onMainPager=false
+  PillBottomNavigation visible param = false (onMainPager=false, pillVisible=true)
+  pagerState.currentPage changed -> 0
+  recompose: backStackEntry=... route=MainPagerDestination onMainPager=true
+  PillBottomNavigation visible param = true (onMainPager=true, pillVisible=true)
+  ```
+  — khoảng ~200ms giữa dòng 1 và dòng 4 trên emulator (nhiều khả năng dài hơn trên máy thật chậm hơn/
+  cold start nặng hơn, CPU yếu hơn, GC/JIT warmup).
+
+  **Nguyên nhân gốc**: `navController.currentBackStackEntryAsState()` trả về `null` trong (những)
+  frame đầu tiên sau khi `UnifiedHealthApp` vào composition — back stack entry của `NavHost` chỉ trở
+  thành "current" sau khi nó đạt lifecycle `RESUMED`, việc này xảy ra sau, không phải *trong*, lần
+  compose đầu tiên của chính `UnifiedHealthApp`. Code cũ `currentDestination?.hasRoute(...) == true`
+  biến `null` thành `false`, nên `onMainPager` báo sai "không ở main pager" đúng trong khoảng ~200ms+
+  đó — feed thẳng vào `pillNavVisible(onMainPager, pillVisible)` (D-1205) khiến cả thanh pill bị ẩn/vô
+  hiệu hoá đúng lúc Home vừa xuất hiện, tức đúng lúc người dùng dễ bấm nhất. `PillBottomNavigation`
+  với `visible=false`: hoặc không compose `Surface` luôn (`if (!visible && alpha <= 0f) return`,
+  D-1195) hoặc disable `selectable` của từng item — cả 2 đường đều khiến `onSelect` không bao giờ
+  được gọi, không có dấu hiệu thị giác nào cho thấy có vấn đề (`uiautomator` kiểm tra sau đó luôn thấy
+  bình thường vì khoảng hẫng đã đóng lại từ lâu). `BackHandler`/`EdgeGestureExclusion` (cũng đọc
+  `onMainPager`) bị ảnh hưởng tương tự nhưng ít thấy hơn (back hiếm khi bấm trong đúng 200ms đầu).
+
+  **Sửa**: thay `== true` bằng `?: !startWithOnboarding` — khi back stack entry thật sự chưa kịp
+  resolve (`currentDestination == null`), dùng đúng destination đã biết trước (`startWithOnboarding`,
+  đã capture 1 lần ở trên) thay vì mặc định sai thành "không phải main pager". `currentDestination`
+  chỉ từng là `null` trong đúng khoảng hẫng khởi động này (không bao giờ null lại sau khi `NavHost` đã
+  chạy), nên đây là giá trị đúng, không phải đoán.
+
+  **Verify**: `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :app:testDebugUnitTest
+  :app:compileDebugAndroidTestKotlin :app:assembleDebug` → **BUILD SUCCESSFUL** cả 3;
+  `UnifiedHealthAppLogicTest` 7/7 pass (không đổi, 2 hàm thuần `pillVisibilityForScroll`/
+  `pillNavVisible` D-1205 không bị đụng, fix chỉ ở điểm gọi). Log tạm đã gỡ sạch khỏi
+  `UnifiedHealthApp.kt`/`PillBottomNavigation.kt` sau khi xác nhận.
+  Kiểm chứng trên emulator bằng log `onMainPager` qua nhiều vòng mở app sạch + bấm ngay khi Home vừa
+  ổn định (2 frame `screencap` liên tiếp cùng kích thước, loại artifact chụp trúng frame cũ): sau fix,
+  dòng log đầu tiên luôn là `onMainPager=true` (không còn `false` thoáng qua), và tất cả các lần bấm
+  trong các đợt đo đều phát `onClick` + chuyển trang (0 lần thất bại thật qua nhiều đợt test, mỗi lần
+  10-20 vòng mở app sạch). Một vài lần "thất bại" quan sát được trong lúc dò vấn đề hoá ra là do chính
+  kịch bản test bấm trúng frame cũ còn sót lại giữa lúc `force-stop`/`am start` (0 dòng log hoặc đúng 1
+  dòng `recompose` duy nhất không có gì theo sau) — không phải bug thật, bị loại khỏi kết luận bằng
+  cách chờ 2 frame `screencap` ổn định liên tiếp trước khi bấm.
+  **Dừng theo yêu cầu coordinator trước khi chạy xong đợt đo lớn cuối cùng (20 vòng)** — 2/2 vòng đầu
+  của đợt đó đã pass trước khi dừng; không gọi thêm `adb`/emulator sau mốc này theo đúng chỉ đạo.
+  Chưa có ảnh chụp màn hình thật từ máy của user xác nhận lại (agent chỉ test trên emulator) — đề nghị
+  user tự cài `app-debug.apk` mới và thử lại đúng kịch bản bug gốc.
+
+  **Còn lại, chưa làm trong task này (theo yêu cầu dừng sớm của coordinator)**: bước 4 của brief gốc
+  ("nếu BACK từ detail screen về landing sai tab thì sửa luôn") và vòng verify đầy đủ trên thiết bị
+  theo đúng kịch bản 6 bước trong brief (mở app → bấm Activity → Devices → Profile → Home → mở 1
+  workout → cuộn → BACK → đúng tab cũ → bấm Devices → cuộn ẩn pill trên Home → bấm chỗ cũ của Profile
+  → không chuyển → cuộn lên → bấm Profile → chuyển) **chưa được xác nhận lại sau khi gỡ log** — các
+  phần đã thấy hoạt động đúng trong lúc còn log (switchTab hoàn tất, trang pager đổi đúng) nhưng chưa
+  chạy lại kịch bản đầy đủ sau bản build log-free cuối cùng. Để lại cho vòng test tiếp theo của
+  coordinator/user.

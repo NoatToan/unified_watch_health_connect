@@ -17,13 +17,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -36,6 +36,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.unified.health.core.designsystem.component.AppScreen
 import com.unified.health.core.designsystem.component.DistancePills
 import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.LoadingState
@@ -46,6 +47,7 @@ import com.unified.health.core.designsystem.component.TerrainBadge
 import com.unified.health.core.designsystem.component.ctaLabel
 import com.unified.health.core.designsystem.component.formatVnd
 import com.unified.health.core.designsystem.theme.ChromeRipple
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.util.launchInCustomTab
 import com.unified.health.core.model.Race
@@ -67,7 +69,8 @@ internal fun RaceDetailRoute(onBack: () -> Unit, viewModel: RaceDetailViewModel 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun RaceDetailScreen(state: RaceDetailUiState, onBack: () -> Unit) {
-    Scaffold(
+    AppScreen(
+        title = "",
         topBar = {
             TopAppBar(
                 title = {},
@@ -78,25 +81,21 @@ internal fun RaceDetailScreen(state: RaceDetailUiState, onBack: () -> Unit) {
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
             )
         },
-        containerColor = MaterialTheme.colorScheme.background,
-    ) { padding ->
+    ) { contentPadding ->
         when (state) {
-            RaceDetailUiState.Loading -> LoadingState(Modifier.padding(padding))
+            RaceDetailUiState.Loading -> LoadingState(Modifier.padding(contentPadding))
             RaceDetailUiState.NotFound -> EmptyState(
                 title = "Không tìm thấy giải chạy",
                 message = "Giải chạy này có thể đã bị gỡ khỏi danh sách.",
-                modifier = Modifier.padding(padding),
+                modifier = Modifier.padding(contentPadding),
             )
-            is RaceDetailUiState.Success -> RaceDetailContent(
-                state.race,
-                // D-1151: this screen previously took only the top inset here, silently dropping the
-                // bottom one Scaffold's own `padding` already computes (status/nav bar + topBar height)
-                // — the CTA button at the end of the scrollable content ended up hidden behind the
-                // system navigation bar on gesture-nav devices. Horizontal is still intentionally left
-                // out (unlike the full `Modifier.padding(padding)` other screens use) so the header
-                // image above stays edge-to-edge; only top+bottom are applied.
-                Modifier.padding(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding()),
-            )
+            // D-1151/D-1194: contentPadding (top-bar height + nav-bar inset) now chained AFTER
+            // verticalScroll inside RaceDetailContent (never as an outer Modifier.padding before it)
+            // — the CTA at the end of the scrollable content scrolls fully behind the gesture bar
+            // instead of a fixed gap that's never reachable, and the hero image can scroll up behind
+            // the transparent app bar above as intended. Horizontal is still intentionally left out so
+            // the header image stays edge-to-edge side to side.
+            is RaceDetailUiState.Success -> RaceDetailContent(state.race, contentPadding)
         }
     }
 }
@@ -117,17 +116,17 @@ private val CtaHeight = 56.dp
  * no intrinsic ratio of its own to read).
  */
 @Composable
-private fun RaceDetailContent(race: Race, modifier: Modifier = Modifier) {
+private fun RaceDetailContent(race: Race, contentPadding: PaddingValues) {
     val context = LocalContext.current
     val imageUrl = race.imageUrl
-    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(contentPadding)) {
         if (imageUrl != null) {
             RaceCoverImage(imageUrl, Modifier.fillMaxWidth())
         } else {
             RaceGradientBackground(race.terrain, Modifier.fillMaxWidth().height(HeaderHeight), terrainIconSize = 220.dp)
         }
-        Column(Modifier.fillMaxWidth().padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.lg)) {
-            Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+        Column(Modifier.fillMaxWidth().padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.sectionGap)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
                 TerrainBadge(race.terrain)
                 RaceNameText(
                     race.name,

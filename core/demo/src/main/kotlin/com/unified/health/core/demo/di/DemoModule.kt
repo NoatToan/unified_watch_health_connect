@@ -2,6 +2,7 @@ package com.unified.health.core.demo.di
 
 import com.unified.health.core.ble.driver.WearableDriver
 import com.unified.health.core.ble.virtual.VirtualDevice
+import com.unified.health.core.demo.detail.DemoSyntheticWorkoutDetailSource
 import com.unified.health.core.demo.mock.MockWatchDriver
 import com.unified.health.core.demo.mock.MockWatchVirtualDevice
 import com.unified.health.core.demo.mode.DemoModeControllerImpl
@@ -11,6 +12,7 @@ import com.unified.health.core.demo.virtual.GarminVirtualDevice
 import com.unified.health.core.demo.virtual.ZeppVirtualWatch
 import com.unified.health.core.domain.repository.DemoDataController
 import com.unified.health.core.domain.repository.DemoModeController
+import com.unified.health.core.domain.repository.SyntheticWorkoutDetailSource
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -60,4 +62,8 @@ internal abstract class DemoDataModule {
 
     @Binds
     abstract fun bindDemoModeController(impl: DemoModeControllerImpl): DemoModeController
+
+    /** D-1195: synthesizes laps/samples for a demo workout that has none stored, computed on open. */
+    @Binds
+    abstract fun bindSyntheticWorkoutDetailSource(impl: DemoSyntheticWorkoutDetailSource): SyntheticWorkoutDetailSource
 }

@@ -22,6 +22,7 @@ enum class WearableVendor(val displayName: String) {
     HUAWEI("Huawei"),
     ZEPP("Zepp / Amazfit"),
     COROS("Coros"),
+    XIAOMI("Xiaomi"),
 
     /** Any watch exposing the Bluetooth SIG Heart Rate / Battery / Device Information services. */
     STANDARD("Bluetooth standard"),

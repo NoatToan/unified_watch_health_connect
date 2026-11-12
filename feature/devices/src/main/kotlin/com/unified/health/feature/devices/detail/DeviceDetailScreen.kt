@@ -2,6 +2,7 @@ package com.unified.health.feature.devices.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,18 +29,15 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -56,11 +54,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.unified.health.core.designsystem.component.AppScreen
 import com.unified.health.core.designsystem.component.ConnectionStatusChip
 import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.SectionHeader
-import com.unified.health.core.designsystem.theme.ChromeRipple
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.feature.devices.R
 import com.unified.health.feature.devices.TappableWatchImage
@@ -114,32 +113,21 @@ internal fun DeviceDetailScreen(
             onMessageShown()
         }
     }
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text((state as? DeviceDetailUiState.Success)?.device?.name ?: stringResource(R.string.device_fallback_title)) },
-                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
-                navigationIcon = {
-                    ChromeRipple {
-                        IconButton(onClick = onBack) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back))
-                        }
-                    }
-                },
-            )
-        },
+    AppScreen(
+        title = (state as? DeviceDetailUiState.Success)?.device?.name ?: stringResource(R.string.device_fallback_title),
+        onBack = onBack,
         snackbarHost = { SnackbarHost(snackbar) },
-    ) { padding ->
+    ) { contentPadding ->
         when (state) {
-            DeviceDetailUiState.Loading -> LoadingState(Modifier.padding(padding))
+            DeviceDetailUiState.Loading -> LoadingState(Modifier.padding(contentPadding))
             is DeviceDetailUiState.Gone -> EmptyState(
                 title = stringResource(R.string.device_not_paired_title),
                 message = stringResource(R.string.device_not_paired_message),
                 icon = Icons.Outlined.LinkOff,
-                modifier = Modifier.padding(padding).testTag("device_gone"),
+                modifier = Modifier.padding(contentPadding).testTag("device_gone"),
             )
             is DeviceDetailUiState.Success ->
-                DeviceDetailContent(state, Modifier.padding(padding), onSync, onConnect, onDisconnect, onUnpair, onReprocess)
+                DeviceDetailContent(state, contentPadding, onSync, onConnect, onDisconnect, onUnpair, onReprocess)
         }
     }
 }
@@ -147,7 +135,7 @@ internal fun DeviceDetailScreen(
 @Composable
 private fun DeviceDetailContent(
     state: DeviceDetailUiState.Success,
-    modifier: Modifier,
+    contentPadding: PaddingValues,
     onSync: () -> Unit,
     onConnect: () -> Unit,
     onDisconnect: () -> Unit,
@@ -160,12 +148,14 @@ private fun DeviceDetailContent(
     val connecting = device.connectionState == ConnectionState.Connecting || device.connectionState == ConnectionState.Authenticating
     val syncing = connected && state.syncState is SyncState.InProgress
 
+    // D-1194: contentPadding chained AFTER verticalScroll — the unpair button/note at the end of the
+    // scrollable content scrolls fully behind the gesture bar instead of a dead strip above it.
     Column(
-        modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = Spacing.lg).testTag("device_detail"),
-        verticalArrangement = Arrangement.spacedBy(Spacing.lg),
+        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(contentPadding).padding(horizontal = Gaps.screenHorizontal).testTag("device_detail"),
+        verticalArrangement = Arrangement.spacedBy(Gaps.sectionGap),
     ) {
         ElevatedCard(Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+            Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
                 val watchModel = remember(device.vendor, device.name, device.model) { WatchModelMatcher.match(device) }
                 // D-1148: tappable -> fullscreen viewer, with a subtle pulse hinting it's tappable.
                 TappableWatchImage(
@@ -254,7 +244,7 @@ private fun DeviceDetailContent(
             val unknown = stringResource(R.string.about_unknown)
             rows.forEachIndexed { index, (tag, label, value) ->
                 InfoRow(label, value ?: unknown, Modifier.testTag(tag))
-                if (index < rows.lastIndex) HorizontalDivider(Modifier.padding(horizontal = Spacing.lg))
+                if (index < rows.lastIndex) HorizontalDivider(Modifier.padding(horizontal = Gaps.screenHorizontal))
             }
         }
 
@@ -265,7 +255,7 @@ private fun DeviceDetailContent(
                     stringResource(R.string.capabilities_unknown),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(Spacing.lg).testTag("capabilities_unknown"),
+                    modifier = Modifier.padding(Gaps.cardPadding).testTag("capabilities_unknown"),
                 )
             } else {
                 DeviceCapability.entries.forEach { capability ->
@@ -308,7 +298,7 @@ private fun DeviceDetailContent(
         if (device.vendor == WearableVendor.GARMIN) {
             SectionHeader(stringResource(R.string.data_recovery_title))
             ElevatedCard(Modifier.fillMaxWidth()) {
-                Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
                     Text(
                         stringResource(R.string.data_recovery_message),
                         style = MaterialTheme.typography.bodySmall,

@@ -1,5 +1,6 @@
 package com.unified.health.feature.activity
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -25,9 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,6 +40,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.unified.health.core.designsystem.component.AppScreen
 import com.unified.health.core.designsystem.component.EmptyState
 import com.unified.health.core.designsystem.component.ErrorState
 import com.unified.health.core.designsystem.component.HealthBarChart
@@ -47,6 +48,7 @@ import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.component.StatTile
 import com.unified.health.core.designsystem.component.formatMinutes
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.MetricValueTextStyle
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
@@ -69,32 +71,46 @@ internal fun ActivityRoute(onWorkoutClick: (String) -> Unit, viewModel: Activity
 }
 
 /** Activity tab: weekly activity load (generic, D-805) on top, then every workout grouped by month. */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 internal fun ActivityScreen(state: ActivityUiState, onWorkoutClick: (String) -> Unit) {
-    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.activity_title)) }) }) { padding ->
+    // D-1194: top-level tab (inside the main pager) — bottomClearance clears PillBottomNavigation's
+    // floating pill, routed through AppScreen instead of this screen adding it manually.
+    AppScreen(title = stringResource(R.string.activity_title), bottomClearance = Spacing.bottomNavClearance) { contentPadding ->
         when (state) {
-            ActivityUiState.Loading -> LoadingState(Modifier.padding(padding))
-            is ActivityUiState.Error -> ErrorState(state.message, Modifier.padding(padding))
+            ActivityUiState.Loading -> LoadingState(Modifier.padding(contentPadding))
+            is ActivityUiState.Error -> ErrorState(state.message, Modifier.padding(contentPadding))
             ActivityUiState.Empty -> EmptyState(
                 title = stringResource(R.string.workouts_empty_title),
                 message = stringResource(R.string.workouts_empty_message),
                 icon = Icons.Outlined.SportsScore,
-                modifier = Modifier.padding(padding).testTag("workouts_empty"),
+                modifier = Modifier.padding(contentPadding).testTag("workouts_empty"),
             )
-            // D-1144: bottom clearance is Spacing.bottomNavClearance (was Spacing.xxl) — the pill nav
-            // now floats as a Box overlay over this tab's content instead of reserving Scaffold space.
+            // D-1194: contentPadding (already includes bottomClearance) passed straight into the
+            // LazyColumn's own contentPadding, never as an outer Modifier.padding — see AppScreen.
             is ActivityUiState.Success -> LazyColumn(
-                modifier = Modifier.fillMaxSize().padding(padding).testTag("activity_list"),
-                contentPadding = PaddingValues(start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.bottomNavClearance),
-                verticalArrangement = Arrangement.spacedBy(Spacing.sm),
+                modifier = Modifier.fillMaxSize().testTag("activity_list"),
+                contentPadding = PaddingValues(
+                    start = Gaps.screenHorizontal,
+                    end = Gaps.screenHorizontal,
+                    top = contentPadding.calculateTopPadding() + Gaps.screenTop,
+                    bottom = contentPadding.calculateBottomPadding(),
+                ),
+                verticalArrangement = Arrangement.spacedBy(Gaps.itemGap),
             ) {
                 item(key = "load") { ActivityLoadCard(state.load, state.unitSystem) }
                 // Stable, list-wide positions for test tags (newest workout = 0).
                 val positions = state.months.flatMap { it.workouts }.withIndex().associate { it.value.id to it.index }
                 state.months.forEach { month ->
-                    item(key = "month_${month.month}") {
-                        SectionHeader(MONTH.format(month.month), Modifier.padding(top = Spacing.md, bottom = Spacing.xs))
+                    // D-1207: stickyHeader (not a plain item) — the current month's label stays pinned
+                    // at the top while its workouts scroll underneath, the same affordance a long
+                    // contacts/transactions list gives for its section headers, instead of the header
+                    // scrolling away with everything else once the user is a few workouts into a month.
+                    stickyHeader(key = "month_${month.month}") {
+                        SectionHeader(
+                            MONTH.format(month.month),
+                            Modifier.background(MaterialTheme.colorScheme.surface).padding(top = Gaps.sectionGap, bottom = Gaps.cardContentGap),
+                        )
                     }
                     items(month.workouts, key = { it.id }) { workout ->
                         WorkoutItem(workout, state.unitSystem, onClick = { onWorkoutClick(workout.id) }, modifier = Modifier.testTag("workout_item_${positions[workout.id]}"))
@@ -112,7 +128,7 @@ private fun ActivityLoadCard(load: ActivityLoadSummary, unitSystem: UnitSystem) 
     val headline = "${current.load.roundToInt()}"
     val (trendIcon, trendText) = trendCopy(load)
     ElevatedCard(Modifier.fillMaxWidth().testTag("activity_load_card")) {
-        Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Outlined.Insights, contentDescription = null, tint = accent, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(Spacing.sm))
@@ -135,7 +151,7 @@ private fun ActivityLoadCard(load: ActivityLoadSummary, unitSystem: UnitSystem) 
                 average = load.baseline?.toFloat(),
                 modifier = Modifier.testTag("activity_load_chart"),
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(Gaps.gridGap)) {
                 StatTile(stringResource(R.string.stat_workouts), current.workouts.toString(), Modifier.weight(1f))
                 StatTile(stringResource(R.string.stat_time), current.duration.compact(), Modifier.weight(1f))
                 StatTile(

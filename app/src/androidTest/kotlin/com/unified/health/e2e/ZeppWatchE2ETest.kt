@@ -40,7 +40,7 @@ class ZeppWatchE2ETest : E2EBase() {
             }
             step("scanning", "Open Devices, tap Scan", "The simulated Zepp watch is listed with its brand") {
                 clickTag("nav_DEVICES")
-                clickTag("scan_fab")
+                clickTag("onboarding_scan_button")
                 waitForTag("discovered_$watch", timeoutMs = 20_000)
                 compose.onNode(hasText(name) and hasAnyAncestor(hasTestTag("discovered_$watch")), useUnmergedTree = true).assertIsDisplayed()
                 compose.onNode(

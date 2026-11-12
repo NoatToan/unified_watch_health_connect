@@ -2,7 +2,7 @@ package com.unified.health.core.designsystem.component
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -178,6 +178,171 @@ fun HealthRangeChart(
     }
 }
 
+/**
+ * Smoothed line (optionally area-filled) variant of a time-series chart (docs/DECISIONS.md D-1202):
+ * used for a workout's dense pace/elevation/heart-rate trend instead of [HealthRangeChart]'s
+ * per-bucket dots/capsules, which read as cluttered "scatter" on a near-continuous series.
+ * [HealthBarChart]/[HealthRangeChart] are untouched — sparser daily/weekly charts (e.g.
+ * `MetricDetailScreen`) keep their existing look; this is a new, separate composable, not a mode flag
+ * on those.
+ */
+@Composable
+fun HealthLineChart(
+    points: List<ChartPoint>,
+    color: Color,
+    modifier: Modifier = Modifier,
+    height: Dp = 200.dp,
+    axisLabel: (Float) -> String = ::compactNumber,
+    /** Centered moving-average window, in buckets; 1 (default) draws the raw series unsmoothed. */
+    smoothingWindow: Int = 1,
+    /** D-1202: flips the y axis so a *lower* value draws higher — for pace, where faster (fewer
+     * seconds/unit) should read as "up" without negating the underlying values/labels. */
+    invertY: Boolean = false,
+    /** D-1202: fills the area under the line at low alpha, Apple-Health-elevation style. */
+    areaFill: Boolean = false,
+    /** Dashed horizontal guide at this data value (e.g. the workout's average); null to omit it. */
+    referenceValue: Float? = null,
+    /** Faint background bands behind the line, e.g. the 5 HR zones — (from, to, color) in data units.
+     * Clipped to the axis range (which always fits the *data*, not the bands) so a band wider than the
+     * actual series never stretches the chart. */
+    zoneBands: List<Triple<Float, Float, Color>> = emptyList(),
+    scrubEnabled: Boolean = true,
+) {
+    val frame = rememberChartFrame()
+    val raw = points.map { if (it.hasData) it.value else null }
+    val smoothed = LineChartMath.movingAverage(raw, smoothingWindow)
+    val dataValues = raw.filterNotNull()
+    var scrubX by remember(points) { mutableStateOf<Float?>(null) }
+    Canvas(
+        modifier
+            .fillMaxWidth()
+            .height(height)
+            .semantics { contentDescription = describe(points) }
+            .chartScrubGestures(scrubEnabled && points.isNotEmpty()) { scrubX = it },
+    ) {
+        if (dataValues.isEmpty()) {
+            frame.drawAxes(this, 0f, 1f, points.map { it.label }, axisLabel)
+            return@Canvas
+        }
+        var lo = dataValues.min()
+        var hi = dataValues.max()
+        referenceValue?.let { lo = min(lo, it); hi = max(hi, it) }
+        val (axisMin, axisMax) = LineChartMath.axisRange(lo, hi)
+        // Normally yMin sits at the bottom; inverted, yMax does instead (the whole mapping below just
+        // follows whichever value [bottomValue] actually is), so the gridline numbers and the plotted
+        // points always agree on which end of the axis is "up".
+        val bottomValue = if (invertY) axisMax else axisMin
+        val topValue = if (invertY) axisMin else axisMax
+        val plot = frame.drawAxes(this, bottomValue, topValue, points.map { it.label }, axisLabel)
+        fun y(v: Float) = plot.bottom - plot.height * ((v - bottomValue) / (topValue - bottomValue))
+
+        zoneBands.forEach { (from, to, bandColor) ->
+            val y0 = y(from).coerceIn(plot.top, plot.bottom)
+            val y1 = y(to).coerceIn(plot.top, plot.bottom)
+            val bandTop = min(y0, y1)
+            val bandBottom = max(y0, y1)
+            if (bandBottom > bandTop) drawRect(bandColor.copy(alpha = 0.12f), Offset(plot.left, bandTop), Size(plot.width, bandBottom - bandTop))
+        }
+
+        val slot = plot.width / points.size.coerceAtLeast(1)
+        fun x(i: Int) = plot.left + i * slot + slot / 2
+
+        LineChartMath.segments(raw.map { it != null }).forEach { range ->
+            if (range.first == range.last) {
+                val v = smoothed[range.first] ?: return@forEach
+                drawCircle(color, radius = 2.5.dp.toPx(), center = Offset(x(range.first), y(v)))
+                return@forEach
+            }
+            val indices = range.toList()
+            val path = Path()
+            val fillPath = if (areaFill) Path() else null
+            indices.forEachIndexed { idx, i ->
+                val v = smoothed[i] ?: return@forEachIndexed
+                val px = x(i)
+                val py = y(v)
+                if (idx == 0) {
+                    path.moveTo(px, py)
+                    fillPath?.moveTo(px, plot.bottom)
+                    fillPath?.lineTo(px, py)
+                } else {
+                    path.lineTo(px, py)
+                    fillPath?.lineTo(px, py)
+                }
+                if (idx == indices.lastIndex) fillPath?.lineTo(px, plot.bottom)
+            }
+            fillPath?.close()
+            fillPath?.let { drawPath(it, color.copy(alpha = 0.18f)) }
+            drawPath(path, color, style = Stroke(width = 2.5.dp.toPx()))
+        }
+
+        referenceValue?.let { ref ->
+            val ry = y(ref)
+            drawLine(color.copy(alpha = 0.7f), Offset(plot.left, ry), Offset(plot.right, ry), 1.5.dp.toPx(), pathEffect = PathEffect.dashPathEffect(floatArrayOf(8f, 8f)))
+        }
+
+        frame.drawScrub(this, plot, points, scrubX, color) { p ->
+            if (!p.hasData) "${p.label}: no data" else "${p.label}: ${axisLabel(p.value)}"
+        }
+    }
+}
+
+/** Pure math behind [HealthLineChart] (docs/DECISIONS.md D-1202), split out so it is unit-testable
+ * without a Compose [DrawScope]. */
+internal object LineChartMath {
+
+    /**
+     * Centered moving average over [window] points; gaps (null) stay null rather than bleeding into
+     * their neighbours, so [HealthLineChart]'s gap-breaking ([segments]) still sees the same holes
+     * after smoothing as before it.
+     */
+    fun movingAverage(values: List<Float?>, window: Int): List<Float?> {
+        if (window <= 1) return values
+        val half = (window / 2).coerceAtLeast(1)
+        return values.indices.map { i ->
+            val center = values[i] ?: return@map null
+            val lo = (i - half).coerceAtLeast(0)
+            val hi = (i + half).coerceAtMost(values.lastIndex)
+            val windowValues = (lo..hi).mapNotNull { values[it] }
+            if (windowValues.isEmpty()) center else windowValues.average().toFloat()
+        }
+    }
+
+    /** Contiguous runs of `true` in [hasData] — the line/area is drawn once per run, never bridging a
+     * `false` (missing-data) gap between them. */
+    fun segments(hasData: List<Boolean>): List<IntRange> {
+        val result = mutableListOf<IntRange>()
+        var start = -1
+        hasData.forEachIndexed { i, has ->
+            when {
+                has && start == -1 -> start = i
+                !has && start != -1 -> {
+                    result += start until i
+                    start = -1
+                }
+                else -> Unit
+            }
+        }
+        if (start != -1) result += start until hasData.size
+        return result
+    }
+
+    /**
+     * [min]..[max] padded by [paddingFraction] on each side, then rounded outward to a "nice" tick
+     * step — unlike [niceFloor]/[niceCeil] alone, padding happens *before* rounding, so a tight data
+     * range (e.g. 145-155 bpm) is never swallowed back into something wide by the rounding step.
+     */
+    fun axisRange(min: Float, max: Float, paddingFraction: Float = 0.1f): Pair<Float, Float> {
+        val span = (max - min).takeIf { it > 0f } ?: (kotlin.math.abs(max).coerceAtLeast(1f) * 0.2f)
+        val pad = (span * paddingFraction).coerceAtLeast(span * 0.02f)
+        val paddedMin = min - pad
+        val paddedMax = max + pad
+        val step = niceCeil(((paddedMax - paddedMin) / 4f).coerceAtLeast(0.01f))
+        val niceMin = floor(paddedMin / step) * step
+        val niceMax = ceil(paddedMax / step) * step
+        return niceMin to niceMax
+    }
+}
+
 /** Hypnogram of one night: one lane per stage (Awake on top, Deep at the bottom). */
 @Composable
 fun SleepStageChart(
@@ -348,14 +513,21 @@ private fun rememberChartFrame(): ChartFrame = ChartFrame(
 /**
  * D-1020: drag (or tap-and-hold) to scrub a chart. Reports the pointer's x in the same canvas-space
  * pixels [ChartFrame.drawAxes]/[ChartFrame.drawScrub] use, or null once released so the indicator
- * disappears. Only [HealthBarChart]/[HealthRangeChart] (the full-size charts on `MetricDetailScreen`)
- * use this — the feed's mini-chart cards are too small to be worth scrubbing.
+ * disappears. Used by [HealthBarChart]/[HealthRangeChart]/[HealthLineChart] — including the dense
+ * per-second charts on a workout's detail screen, which sit inside a vertically-scrolling column.
+ *
+ * D-1197 round 2: horizontal-only ([detectHorizontalDragGestures], not the old omnidirectional
+ * [androidx.compose.foundation.gestures.detectDragGestures]) — that one consumed the very first pixel
+ * of *any* drag, including one that started on the chart but was meant to scroll the page, so the
+ * whole screen stopped scrolling under a finger that landed on a chart. The horizontal-only detector
+ * only claims the gesture once it has actually crossed the horizontal touch slop, so a vertical drag
+ * is left unconsumed for the ancestor `Modifier.verticalScroll` to pick up instead.
  */
 private fun Modifier.chartScrubGestures(enabled: Boolean, onScrub: (Float?) -> Unit): Modifier {
     if (!enabled) return this
     return this
         .pointerInput(Unit) {
-            detectDragGestures(
+            detectHorizontalDragGestures(
                 onDragEnd = { onScrub(null) },
                 onDragCancel = { onScrub(null) },
             ) { change, _ ->

@@ -1,6 +1,8 @@
 package com.unified.health.core.data.gear
 
+import com.unified.health.core.domain.usecase.classifyGearGender
 import com.unified.health.core.model.GearCategory
+import com.unified.health.core.model.GearGender
 import com.unified.health.core.model.GearItem
 import com.unified.health.core.model.GearVariant
 import kotlinx.serialization.Serializable
@@ -40,6 +42,10 @@ internal data class GearItemDto(
     val productUrl: String? = null,
     val variants: List<GearVariantDto> = emptyList(),
     val crawledAt: String? = null,
+    /** Gender filter (gender-filter task, 2026-11-12): optional, not yet on every crawl source as of
+     *  this writing — `"men"` / `"women"` / `"unisex"` / `"kids"` (case-insensitive), else null. See
+     *  [toGearGenderOrNull]/[GearItemDto.toDomainOrNull] for the null fallback. */
+    val gender: String? = null,
 )
 
 @Serializable
@@ -68,8 +74,15 @@ internal fun GearItemDto.toDomainOrNull(): GearItem? {
         imageUrl = imageUrl?.takeIf { it.isNotBlank() },
         productUrl = safeProductUrl,
         variants = variants.mapNotNull { it.toDomainOrNull() },
+        gender = gender.toGearGenderOrNull() ?: classifyGearGender(safeName),
     )
 }
+
+/** Literal feed value only ("men"/"women"/"unisex"/"kids", case-insensitive) — the name-based
+ *  fallback ([classifyGearGender]) is applied separately, only when this returns null, by
+ *  [GearItemDto.toDomainOrNull] above; never guessed here when the feed already says otherwise. */
+private fun String?.toGearGenderOrNull(): GearGender? =
+    this?.let { raw -> GearGender.entries.firstOrNull { it.name.equals(raw, ignoreCase = true) } }
 
 private fun GearVariantDto.toDomainOrNull(): GearVariant? {
     val safeColor = color?.takeIf { it.isNotBlank() } ?: return null

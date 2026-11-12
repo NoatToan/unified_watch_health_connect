@@ -1,5 +1,6 @@
 package com.unified.health.feature.home
 
+import androidx.lifecycle.SavedStateHandle
 import com.unified.health.core.domain.repository.HealthDataRepository
 import com.unified.health.core.domain.repository.LiveHealthRepository
 import com.unified.health.core.domain.repository.RacesRepository
@@ -10,6 +11,7 @@ import com.unified.health.core.domain.repository.WearableDeviceRepository
 import com.unified.health.core.domain.usecase.ObserveHighlightsUseCase
 import com.unified.health.core.domain.usecase.ObservePrimaryDeviceUseCase
 import com.unified.health.core.domain.usecase.ObserveTodaySummaryUseCase
+import com.unified.health.core.domain.usecase.ObserveWeekActivitySummaryUseCase
 import com.unified.health.core.model.ActiveTrainingPlan
 import com.unified.health.core.model.CaloriesSummary
 import com.unified.health.core.model.ChartPoint
@@ -147,13 +149,15 @@ class HomeViewModelTest {
     @After
     fun tearDown() = Dispatchers.resetMain()
 
-    private fun viewModel(): HomeViewModel {
+    private fun viewModel(savedStateHandle: SavedStateHandle = SavedStateHandle()): HomeViewModel {
         val healthData = FakeHealthDataRepository()
         val deviceRepository = FakeWearableDeviceRepository()
         return HomeViewModel(
+            savedStateHandle = savedStateHandle,
             observeTodaySummary = ObserveTodaySummaryUseCase(healthData),
             observePrimaryDevice = ObservePrimaryDeviceUseCase(deviceRepository),
             observeHighlights = ObserveHighlightsUseCase(healthData),
+            observeWeekActivitySummary = ObserveWeekActivitySummaryUseCase(healthData),
             deviceRepository = deviceRepository,
             healthData = healthData,
             preferences = FakeUserPreferencesRepository(),
@@ -217,5 +221,120 @@ class HomeViewModelTest {
         val workout = successState(vm).todayWorkout
         assertEquals(1, workout?.dayOffset)
         assertEquals(ScheduledDayKind.RUN, workout?.kind)
+    }
+
+    // D-1196: the "7 mini rings" week strip exposed on HomeUiState.Success.
+    @Test
+    fun `week has exactly 7 entries, Monday through Sunday`() = runTest(dispatcher) {
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+
+        val week = successState(vm).week
+        assertEquals(7, week.size)
+        assertEquals(java.time.DayOfWeek.MONDAY, week.first().summary.date.dayOfWeek)
+        assertEquals(java.time.DayOfWeek.SUNDAY, week.last().summary.date.dayOfWeek)
+    }
+
+    @Test
+    fun `week's today entry matches the big ring's own summary exactly`() = runTest(dispatcher) {
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+
+        val state = successState(vm)
+        val todays = state.week.filter { it.isToday }
+        assertEquals(1, todays.size)
+        assertEquals(today, todays.single().summary.date)
+        assertEquals(state.summary, todays.single().summary)
+    }
+
+    @Test
+    fun `week flags days after today as future`() = runTest(dispatcher) {
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+
+        val week = successState(vm).week
+        week.forEach { day -> assertEquals(day.summary.date.isAfter(today), day.isFuture) }
+    }
+
+    // D-1215: HomeViewModel's own wiring of HomeDaySelection — the pure toggle/future/out-of-week
+    // rules themselves are covered exhaustively in HomeDaySelectionTest; these just confirm the
+    // ViewModel actually plugs that logic into uiState/SavedStateHandle correctly.
+
+    @Test
+    fun `selecting a non-today day in the week updates selectedDate and the big ring's summary`() = runTest(dispatcher) {
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+
+        // Guarded, not `.first`: on a Monday (the week's first day) there is no past, non-today day
+        // to pick — `LocalDate.now()` drives `today` here (see this file's own `today`), so this
+        // genuinely varies by the date the suite runs on.
+        val pastDay = successState(vm).week.firstOrNull { !it.isToday && !it.isFuture } ?: return@runTest
+        vm.selectDay(pastDay.summary.date)
+
+        val state = successState(vm)
+        assertEquals(pastDay.summary.date, state.selectedDate)
+        assertEquals(pastDay.summary, state.selectedDaySummary)
+    }
+
+    @Test
+    fun `today's own selectedDaySummary is exactly the big ring's summary, unaffected by selection`() = runTest(dispatcher) {
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+
+        val state = successState(vm)
+        assertNull(state.selectedDate)
+        assertEquals(state.summary, state.selectedDaySummary)
+    }
+
+    @Test
+    fun `tapping the selected day again returns the selection to today`() = runTest(dispatcher) {
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+
+        val pastDay = successState(vm).week.firstOrNull { !it.isToday && !it.isFuture } ?: return@runTest
+        vm.selectDay(pastDay.summary.date)
+        assertEquals(pastDay.summary.date, successState(vm).selectedDate)
+
+        vm.selectDay(pastDay.summary.date)
+        assertNull(successState(vm).selectedDate)
+    }
+
+    @Test
+    fun `jumpToToday resets the selection back to today`() = runTest(dispatcher) {
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+
+        val pastDay = successState(vm).week.firstOrNull { !it.isToday && !it.isFuture } ?: return@runTest
+        vm.selectDay(pastDay.summary.date)
+        assertEquals(pastDay.summary.date, successState(vm).selectedDate)
+
+        vm.jumpToToday()
+        assertNull(successState(vm).selectedDate)
+    }
+
+    @Test
+    fun `selecting a future day is rejected`() = runTest(dispatcher) {
+        val vm = viewModel()
+        backgroundScope.launch { vm.uiState.collect {} }
+
+        val futureDay = successState(vm).week.firstOrNull { it.isFuture }
+        if (futureDay == null) return@runTest // today == Sunday: no future day exists this week, nothing to assert.
+
+        vm.selectDay(futureDay.summary.date)
+        assertNull(successState(vm).selectedDate)
+    }
+
+    @Test
+    fun `a selection survives recreating the ViewModel from the same SavedStateHandle`() = runTest(dispatcher) {
+        val handle = SavedStateHandle()
+        val vm = viewModel(handle)
+        backgroundScope.launch { vm.uiState.collect {} }
+        val pastDay = successState(vm).week.firstOrNull { !it.isToday && !it.isFuture } ?: return@runTest
+        vm.selectDay(pastDay.summary.date)
+        assertEquals(pastDay.summary.date, successState(vm).selectedDate)
+
+        val recreated = viewModel(handle)
+        backgroundScope.launch { recreated.uiState.collect {} }
+        assertEquals(pastDay.summary.date, successState(recreated).selectedDate)
     }
 }

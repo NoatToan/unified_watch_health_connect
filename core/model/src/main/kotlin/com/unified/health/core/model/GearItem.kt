@@ -22,7 +22,22 @@ data class GearItem(
     /** Color variants, e.g. one Puma item can have several colorways; empty when the source (e.g.
      *  Salomon) instead publishes each color as its own separate [GearItem]. */
     val variants: List<GearVariant>,
+    /**
+     * Gender filter (gender-filter task, 2026-11-12): the feed's own explicit value when present,
+     * else `core/domain`'s name-based fallback classifier's best guess, else null when neither finds
+     * a signal — see `com.unified.health.core.data.gear.GearItemDto.toDomainOrNull` (where both are
+     * applied) and `com.unified.health.core.domain.usecase.classifyGearGender` (the fallback itself).
+     */
+    val gender: GearGender? = null,
 )
+
+/** Gender filter (gender-filter task, 2026-11-12): the feed's four possible values, mirrored 1:1 from
+ *  the service's own `"men"` / `"women"` / `"unisex"` / `"kids"` strings (case-insensitive, see
+ *  `com.unified.health.core.data.gear.GearItemDto`'s mapping) — never guessed when the feed itself
+ *  gives one; see [GearItem.gender]. */
+enum class GearGender {
+    MEN, WOMEN, UNISEX, KIDS
+}
 
 /** One color option of a [GearItem], each with its own image and link-out URL. */
 data class GearVariant(

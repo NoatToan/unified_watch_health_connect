@@ -39,8 +39,12 @@
     <string name="stat_max_heart_rate">Nhịp tim tối đa</string>
     <string name="stat_avg_cadence">Nhịp chân TB</string>
     <string name="stat_max_cadence">Nhịp chân tối đa</string>
+    <string name="stat_avg_stride">Sải chân TB</string>
+    <string name="stat_steps">Số bước</string>
     <string name="stat_elevation_gain">Độ cao lên</string>
     <string name="stat_elevation_loss">Độ cao xuống</string>
+    <!-- D-1195 follow-up: bản gốc thiếu bản dịch cho khoá này, dùng tạm tiếng Anh. -->
+    <string name="stat_kcal_per_minute">Tốc độ đốt calo</string>
 
     <string name="heart_rate_title">Nhịp tim</string>
     <string name="heart_rate_summary">Trung bình %1$s · thấp nhất %2$s · cao nhất %3$s bpm</string>
@@ -48,15 +52,22 @@
 
     <string name="source_label">Nguồn</string>
     <string name="source_unknown">Thiết bị không xác định</string>
+    <string name="source_demo_watch">Đồng hồ demo</string>
 
     <string name="trends_title">Xu hướng</string>
-    <string name="trend_pace_title">Nhịp độ (càng thấp càng nhanh)</string>
+    <string name="trend_pace_title">Nhịp độ</string>
+    <string name="trend_cadence_title">Nhịp chân</string>
     <string name="trend_elevation_title">Độ cao</string>
 
     <string name="splits_title">Chặng</string>
-    <string name="lap_title">Vòng %1$d · %2$s</string>
-    <string name="lap_no_details">Không có dữ liệu chi tiết</string>
+    <string name="splits_fastest">Nhanh nhất</string>
+    <string name="splits_average">Trung bình</string>
+    <string name="splits_half_marathon">Bán marathon: %1$s</string>
+    <string name="splits_marathon">Marathon: %1$s</string>
+    <string name="split_partial_label">&lt; 1 %1$s</string>
 
     <string name="hr_zones_title">Thời gian theo vùng nhịp tim</string>
-    <string name="hr_zone_description">Vùng %1$d %2$s, %3$d phần trăm thời gian buổi tập</string>
+    <string name="hr_zone_minutes">%1$d phút</string>
+    <string name="hr_zone_under_one_minute">&lt;1 phút</string>
+    <string name="hr_zone_description">Vùng %1$d %2$s, %3$s thời gian buổi tập</string>
 </resources>

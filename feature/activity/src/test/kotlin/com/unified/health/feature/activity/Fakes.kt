@@ -1,8 +1,10 @@
 package com.unified.health.feature.activity
 
 import com.unified.health.core.domain.repository.HealthDataRepository
+import com.unified.health.core.domain.repository.SyntheticWorkoutDetailSource
 import com.unified.health.core.domain.repository.UserPreferencesRepository
 import com.unified.health.core.domain.repository.WearableDeviceRepository
+import com.unified.health.core.domain.repository.WorkoutDetailSupplement
 import com.unified.health.core.model.ChartPoint
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.DailyHealthSummary
@@ -65,6 +67,20 @@ class FakeWearableDeviceRepository : WearableDeviceRepository {
     override suspend fun reprocessRawPayloads(deviceId: String): Result<Int> = Result.success(0)
     override suspend fun setCredential(deviceId: String, key: String, value: String): Result<Unit> = Result.success(Unit)
     override suspend fun generateCredential(deviceId: String, key: String): Result<String> = Result.success("")
+}
+
+/** D-1195: controllable per-test stand-in for `:core:demo`'s real implementation, which the test
+ *  module cannot depend on (`core:domain` only, D-1195 keeps feature code demo-unaware). */
+class FakeSyntheticWorkoutDetailSource : SyntheticWorkoutDetailSource {
+    var supplements: Map<String, WorkoutDetailSupplement> = emptyMap()
+    var callCount: Int = 0
+    /** D-1197 round 2: controllable stand-in for `DemoDeviceIds.ALL`. */
+    var demoDeviceIds: Set<String> = emptySet()
+    override fun supplement(workout: Workout): WorkoutDetailSupplement? {
+        callCount++
+        return supplements[workout.id]
+    }
+    override fun isDemoDevice(deviceId: String): Boolean = deviceId in demoDeviceIds
 }
 
 /** D-1183: only [UserPreferences.unitSystem] matters to Activity/WorkoutDetail; every other setter is a no-op. */

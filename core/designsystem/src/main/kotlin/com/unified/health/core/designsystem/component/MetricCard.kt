@@ -22,6 +22,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.MetricValueTextStyle
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
@@ -52,8 +53,8 @@ fun MetricCard(
         shape = MaterialTheme.shapes.large,
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(Spacing.sm),
+            modifier = Modifier.fillMaxWidth().padding(Gaps.cardPadding),
+            verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(metric.icon(), contentDescription = null, tint = accent, modifier = Modifier.size(20.dp))
@@ -73,7 +74,7 @@ fun MetricCard(
                     text = unit,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 4.dp),
+                    modifier = Modifier.padding(bottom = Spacing.xs),
                 )
             }
             if (progress != null) {

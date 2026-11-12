@@ -11,7 +11,7 @@
     <string name="scan_qr_code">Scan QR code</string>
     <string name="scan_enter_mac_address">Enter MAC address</string>
     <string name="scan_empty_scanning">Looking for wearables nearby…</string>
-    <string name="scan_empty_idle">Tap Scan to look for your watch or band. Keep it close to the phone.</string>
+    <string name="scan_empty_no_results">No devices found yet. Keep it close to the phone and try again.</string>
 
     <!-- Back up a just-created pairing key. -->
     <string name="backup_key_title">Back up %1$s</string>
@@ -29,6 +29,7 @@
     <string name="no_paired_device_title">No device paired yet</string>
     <string name="no_paired_device_message">Pair your watch or band to sync steps, heart rate, sleep and more.</string>
     <string name="scan_for_devices">Scan for devices</string>
+    <string name="add_device">Add device</string>
 
     <string name="unpair_dialog_title">Unpair %1$s?</string>
     <string name="unpair_dialog_message">The device will be removed from this app. Data already synced is kept.</string>

@@ -16,16 +16,26 @@ data class HeartRateZoneShare(val zone: HeartRateZone, val percentOfTime: Double
 object HeartRateZoneBreakdown {
 
     /** One entry per zone, Z1..Z5, in order; all 0% when there is no usable heart-rate data. */
-    fun percentages(samples: List<WorkoutSample>, thresholds: MetricThresholds, maxHeartRateBpm: Int): List<HeartRateZoneShare> {
+    fun percentages(samples: List<WorkoutSample>, thresholds: MetricThresholds, maxHeartRateBpm: Int): List<HeartRateZoneShare> =
+        percentagesFromReadings(samples.mapNotNull { it.heartRate }, thresholds, maxHeartRateBpm)
+
+    /**
+     * Same calculation directly from raw bpm readings (docs/DECISIONS.md D-1195): the fallback used
+     * when a workout has no per-second [WorkoutSample]s with heart rate (e.g. a demo workout before
+     * synthesis, or a real device whose FIT file only has a `session` summary) — the minute-level
+     * heart-rate stream (`HealthDataRepository.observeHeartRateSamples`) is passed here instead, so
+     * the workout detail screen still gets zone percentages.
+     */
+    fun percentagesFromReadings(readings: List<Int>, thresholds: MetricThresholds, maxHeartRateBpm: Int): List<HeartRateZoneShare> {
         val zones = thresholds.heartRateZones
-        val readings = samples.mapNotNull { it.heartRate }.filter { it > 0 }
-        if (readings.isEmpty() || maxHeartRateBpm <= 0) return zones.map { HeartRateZoneShare(it, 0.0) }
+        val usable = readings.filter { it > 0 }
+        if (usable.isEmpty() || maxHeartRateBpm <= 0) return zones.map { HeartRateZoneShare(it, 0.0) }
         val counts = zones.associateWith { 0 }.toMutableMap()
-        readings.forEach { bpm ->
+        usable.forEach { bpm ->
             val percentOfMax = (bpm * 100.0 / maxHeartRateBpm).roundToInt()
             thresholds.heartRateZoneFor(percentOfMax)?.let { zone -> counts[zone] = counts.getValue(zone) + 1 }
         }
-        val total = readings.size.toDouble()
+        val total = usable.size.toDouble()
         return zones.map { zone -> HeartRateZoneShare(zone, counts.getValue(zone) / total * 100.0) }
     }
 }

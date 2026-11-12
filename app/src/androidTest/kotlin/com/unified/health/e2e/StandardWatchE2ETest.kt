@@ -36,7 +36,7 @@ class StandardWatchE2ETest : E2EBase() {
         report.flow(60, "standard-watch", "Bluetooth SIG band (driver:standard)") {
             step("scan", "Open Devices, tap Scan", "${StandardVirtualWatch.NAME} is listed as ${WearableVendor.STANDARD.displayName}") {
                 clickTag("nav_DEVICES")
-                clickTag("scan_fab")
+                clickTag("onboarding_scan_button")
                 waitForTag("discovered_$band")
                 waitFor(
                     hasText(WearableVendor.STANDARD.displayName, substring = true) and hasAnyAncestor(hasTestTag("discovered_$band")),

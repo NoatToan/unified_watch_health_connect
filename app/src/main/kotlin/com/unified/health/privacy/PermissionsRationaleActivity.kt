@@ -10,17 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.Modifier
-import com.unified.health.core.designsystem.theme.Spacing
+import com.unified.health.core.designsystem.component.AppScreen
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
 
 /**
@@ -36,21 +31,12 @@ class PermissionsRationaleActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             UnifiedHealthTheme {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = { Text("Privacy policy") },
-                            navigationIcon = {
-                                IconButton(onClick = ::finish) {
-                                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                                }
-                            },
-                        )
-                    },
-                ) { padding ->
+                // D-1194: migrated to AppScreen — contentPadding chained AFTER verticalScroll, so the
+                // last policy section scrolls fully behind the gesture bar instead of a dead strip above it.
+                AppScreen(title = "Privacy policy", onBack = ::finish) { contentPadding ->
                     Column(
-                        modifier = Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(Spacing.lg),
-                        verticalArrangement = Arrangement.spacedBy(Spacing.md),
+                        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(contentPadding).padding(Gaps.screenHorizontal),
+                        verticalArrangement = Arrangement.spacedBy(Gaps.sectionGap),
                     ) {
                         POLICY.forEach { (title, body) ->
                             Text(title, style = MaterialTheme.typography.titleMedium)

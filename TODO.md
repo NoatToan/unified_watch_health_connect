@@ -3,6 +3,39 @@
 Open work as of 2026-11-11. Decisions behind each item: [docs/DECISIONS.md](docs/DECISIONS.md).
 Protocol gaps per brand: `docs/protocols/<BRAND>_IMPLEMENTATION_BRIEF.md` (items marked NEEDS-REAL-WATCH).
 
+## Next: test stages for the 2026-11-12 UI batch (D-1194 … D-1215)
+
+Built and unit-tested; only partly checked on the emulator. Run these on the emulator (and one
+real phone) before calling the batch done. Pass/fail notes go into the matching D- entry.
+
+- [x] **Pill nav (critical):** tabs not switching — fixed by D-1216 (`onMainPager` was false while the
+  back-stack entry was still null at startup). Checked on the emulator 2026-11-12: all 4 tabs switch,
+  and Activity → workout detail → BACK lands on Activity with tabs still tappable. Re-check on a real phone.
+- [ ] Pill hidden on scroll is not tappable, taps fall through to content (D-1195); scroll up → tappable.
+- [ ] Home week rings (D-1205/D-1215): 2 rows, ~50dp, labels on one baseline; tap a past day →
+  big ring + Move/Exercise/Steps switch, date label + "Hôm nay" shown; tap again / "Hôm nay" →
+  back to today; future days not tappable; selection survives process death, resets on a new day.
+- [ ] Home highlights read "… steps a day" / "… mỗi ngày" (D-1205); Metrics grid rows equal height.
+- [ ] Workout detail (D-1201/D-1202/D-1206): split times vary and match the pace chart, every split
+  row has a bar, fastest highlighted, "< 1 km" row; one HR line chart with zone bands; avg/max HR
+  identical in grid and HR card; source reads "Đồng hồ demo" (no raw MAC, not in header); zero-minute
+  zones show an empty track; vertical swipe starting on a chart scrolls the page.
+- [ ] Gear (D-1203/D-1207/D-1209–1214): one merged ChipRow (categories | active filters), small gaps;
+  filter sheet price/colour/gender (Nam/Nữ/Trẻ em), "Áp dụng" is the primary button; colour filter
+  swaps card image to the matching variant and opens detail preselected; blur backdrop on
+  mismatched-ratio photos (API 31+) / average-colour fill (API ≤30); smooth scroll over ~485 items.
+- [ ] Devices (D-1200/D-1209–1214): no-device state shows only the onboarding card (no Scan FAB);
+  with a paired device the "Add device" menu works and the FAB sits above the pill.
+- [ ] RaceCard (D-1198): Ironman 70.3 card and a card with many distance chips at font scale 1.0 and
+  1.3 — CTA never clipped, 70/30 header, "+N" chip.
+- [ ] Activity list sticky month headers (D-1208); edge-to-edge on every screen (D-1194);
+  spacing tokens look right everywhere (D-1204).
+- [ ] Whole-app pass at font scale 1.3 and in dark mode.
+- [ ] `scripts/e2e.sh` on the emulator (E2E selectors changed: `onboarding_scan_button`,
+  `WorkoutsE2ETest` source text) + `./gradlew :app:compileReleaseKotlin` (release has no demo
+  synthetic workout detail).
+- [ ] Gear feed after the service push: app shows Li-Ning/Coolmate items and feed-provided gender.
+
 ## Next: first real-device run
 
 - [x] Install the debug build on a physical phone and pair a real **Garmin** watch — done 2026-11-11 by
@@ -24,13 +57,13 @@ Protocol gaps per brand: `docs/protocols/<BRAND>_IMPLEMENTATION_BRIEF.md` (items
 
 - [ ] **Garmin:** whether pairing completes without the Garmin Connect cloud `registerDevice` step; whether firmware ever requires the service-4 registration path; 5023 battery layout; the four FIT checks in `FitHealthMapper` (resting HR 273, HRV 389, sampling scheme, per-activity counters); meaning of capability bit 29.
 - [ ] **Zepp:** resting HR type 58 layout (inferred), sleep-stage enum, PAI/sport-summary/GPS layouts, `allowLocalBinding` on current firmware.
-- [ ] **Xiaomi (non-Huami) driver — brand new, un-started RE project.** Confirmed 2026-11-12 (D-804/
-  D-1188) on a real Xiaomi Smart Band 10: it speaks neither the Zepp OS channel nor the legacy 0x0009
-  auth at all, so `:driver:zepp` correctly refuses it (user-facing message, not a bug). Xiaomi's own
-  (newer Band 8/9/10, Band 7 Pro) protocol has never been reverse-engineered here. Needs the real
-  Xiaomi Wear or Mi Fitness companion APK (not Zepp's own app) placed in `docs/apks/` before any
-  protocol work starts, per CLAUDE.md's "never guess a vendor protocol without checking evidence first"
-  rule — blocked until the user supplies it.
+- [ ] **Xiaomi (non-Huami) driver — RE complete 2026-11-12, implementation not started.** Mi Fitness
+  3.46.1 (`docs/apks/com.mi.health_…apk`) was analysed; the protocol is written up in
+  `docs/protocols/XIAOMI_MIWEAR_DEVICE_PROTOCOL.md` + `XIAOMI_IMPLEMENTATION_BRIEF.md` (evidence
+  `docs/re-evidence/mi/`, local-only jadx tree). Next: Gate 0 on the real Smart Band 10 — probe
+  `getBindInfo` (`verifyMode == 2` → local ECDH bind with no Xiaomi account; `== 1` → import the
+  16-byte token from Mi Fitness logs, the Gadgetbridge-proven path). Cloud self-bind is blocked by
+  Xiaomi's `miothealth` service token (see D-1193); Wear OS Mi Watch is out of scope (stub in APK).
 - [ ] **Huawei:** direct BLE now works only for watches that report `authenticVersion == 0`; all other
   watches fail fast with a clear message (no CAK/HiChain extraction). Still open: service-7 response
   layouts, 0x0132 zone/IANA real-watch echo, 0x0103 support-vector edge cases, live-HR nesting/periodic

@@ -22,7 +22,7 @@ import coil.compose.AsyncImage
  * [imageUrl] once Coil decodes it, instead of a fixed-height band that crops/distorts the crawled
  * race photos — the same problem [RaceCardWithPhoto]/[RaceImageBackdrop] already solved for the
  * list view (D-1131/1136/1142). Lives here (not in `feature/races`) so Coil stays confined to
- * `core/designsystem` (D-1109), and reuses [RaceImageBackdrop] rather than a second blur
+ * `core/designsystem` (D-1109), and reuses [ImageBackdropLayer] (D-1207) rather than a second blur
  * implementation.
  *
  * Three states:
@@ -36,8 +36,16 @@ import coil.compose.AsyncImage
  * 3. **Near-square** ([SquareishAspectRatioRange]): a literal 1:1 container reads like a mistake on
  *    a detail-screen hero, not a deliberate square photo, so this keeps the 16:9 container instead,
  *    centers the image inside it at its own ratio ([ContentScale.Fit], never cropped/stretched), and
- *    fills the leftover space with [RaceImageBackdrop] — the exact blurred-backdrop treatment
- *    [RaceCardWithPhoto] already uses — instead of empty bars either side of the photo.
+ *    fills the leftover space with [ImageBackdropLayer] (D-1207; a blurred copy of the same photo, or
+ *    a solid average-color fill below API 31 where blur is a no-op) instead of empty bars either side
+ *    of the photo.
+ *
+ * D-1207: the near-square branch calls [ImageBackdropLayer] directly rather than the generic
+ * auto-detecting [BlurFillAsyncImage] — [isSquareish] is already this composable's own decision, and
+ * routing through [BlurFillAsyncImage]'s independent container-vs-image measurement instead would
+ * have it briefly see a mismatch (and flash the backdrop on, then off) during the few animated frames
+ * where [animatedRatio] is still interpolating toward a *non*-square [intrinsicRatio] on every normal
+ * (non-square) load, not just the square one.
  */
 @Composable
 fun RaceCoverImage(imageUrl: String, modifier: Modifier = Modifier) {
@@ -57,7 +65,7 @@ fun RaceCoverImage(imageUrl: String, modifier: Modifier = Modifier) {
             .background(MaterialTheme.colorScheme.surfaceVariant),
     ) {
         if (isSquareish) {
-            RaceImageBackdrop(imageUrl, Modifier.fillMaxSize())
+            ImageBackdropLayer(imageUrl, Modifier.fillMaxSize())
         }
         AsyncImage(
             model = imageUrl,

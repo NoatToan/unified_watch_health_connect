@@ -52,11 +52,15 @@ class GearDetailViewModel @Inject constructor(
     gearRepository: GearRepository,
 ) : ViewModel() {
 
-    private val itemId = savedStateHandle.toRoute<GearDetailDestination>().itemId
+    private val route = savedStateHandle.toRoute<GearDetailDestination>()
+    private val itemId = route.itemId
 
     /** Keyed by [GearVariant.color] rather than holding the [GearVariant] itself, so a background
-     *  refresh that reconstructs the item/variant list doesn't lose the user's selection. */
-    private val selectedColor = MutableStateFlow<String?>(null)
+     *  refresh that reconstructs the item/variant list doesn't lose the user's selection.
+     *  D-1203: seeded from [GearDetailDestination.variantColor] — a tap on a gear-list card while a
+     *  color filter was active opens straight into that matching variant instead of the item's own
+     *  default photo. */
+    private val selectedColor = MutableStateFlow(route.variantColor)
 
     val uiState: StateFlow<GearDetailUiState> = combine(gearRepository.items, selectedColor) { state, color ->
         val item = (state as? GearState.Success)?.items?.firstOrNull { it.id == itemId }

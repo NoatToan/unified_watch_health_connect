@@ -1,5 +1,6 @@
 package com.unified.health.feature.home
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.unified.health.core.domain.repository.HealthDataRepository
@@ -15,6 +16,7 @@ import com.unified.health.core.domain.usecase.MetricStatsCalculator
 import com.unified.health.core.domain.usecase.ObserveHighlightsUseCase
 import com.unified.health.core.domain.usecase.ObservePrimaryDeviceUseCase
 import com.unified.health.core.domain.usecase.ObserveTodaySummaryUseCase
+import com.unified.health.core.domain.usecase.ObserveWeekActivitySummaryUseCase
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.DailyHealthSummary
 import com.unified.health.core.model.FeedCardId
@@ -26,6 +28,7 @@ import com.unified.health.core.model.SyncState
 import com.unified.health.core.model.TimeRange
 import com.unified.health.core.model.UnitSystem
 import com.unified.health.core.model.WearableDevice
+import com.unified.health.core.model.WeekActivityDay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -70,7 +73,22 @@ sealed interface HomeUiState {
          *  *and* today hasn't been checked in yet — null otherwise (no plan, no entry for today, or
          *  already checked in), which is exactly when Home should show nothing extra. */
         val todayWorkout: ScheduledDay? = null,
-    ) : HomeUiState
+        /** D-1196: the current calendar week (Monday→Sunday), one entry per day, for the "7 mini
+         *  rings" strip under the big ring — see [ObserveWeekActivitySummaryUseCase]. */
+        val week: List<WeekActivityDay> = emptyList(),
+        /** D-1215: the day the big `RingsCard` currently previews — `null` means "today" (the big
+         *  ring shows exactly [summary], unchanged from before this feature). Set by tapping a mini
+         *  ring in the week strip or the "Today" action; see [HomeDaySelection] for the selection
+         *  rules and [HomeViewModel.selectDay]/[HomeViewModel.jumpToToday] for how it's set. Only the
+         *  big ring follows this — the metrics grid and highlights below it always stay on today. */
+        val selectedDate: LocalDate? = null,
+    ) : HomeUiState {
+        /** The summary the big `RingsCard` displays: [selectedDate]'s own entry from [week] when a
+         *  day other than today is selected, else exactly [summary] — so today's big ring is the
+         *  same object, unchanged, from before this feature (D-1215 brief). */
+        val selectedDaySummary: DailyHealthSummary
+            get() = selectedDate?.let { date -> week.firstOrNull { it.summary.date == date }?.summary } ?: summary
+    }
     data class Error(val message: String) : HomeUiState
 }
 
@@ -83,9 +101,11 @@ private data class FeedBundle(
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     observeTodaySummary: ObserveTodaySummaryUseCase,
     observePrimaryDevice: ObservePrimaryDeviceUseCase,
     observeHighlights: ObserveHighlightsUseCase,
+    observeWeekActivitySummary: ObserveWeekActivitySummaryUseCase,
     private val deviceRepository: WearableDeviceRepository,
     private val healthData: HealthDataRepository,
     private val preferences: UserPreferencesRepository,
@@ -152,6 +172,20 @@ class HomeViewModel @Inject constructor(
     private val todayWorkout: Flow<ScheduledDay?> =
         trainingPlanRepository.activePlan.map { plan -> plan?.entryOn()?.takeUnless { it.completed } }
 
+    /** D-1196: current calendar week (Mon→Sun), one entry per day, for the "7 mini rings" strip. */
+    private val week: Flow<List<WeekActivityDay>> = observeWeekActivitySummary()
+
+    /** D-1215: the raw, possibly-stale selection persisted across process death — resolved against
+     *  the live week (dropped back to today per [HomeDaySelection.resolveRestoredSelection]) in
+     *  [uiState] below, never read directly by the UI. */
+    private val persistedSelectedDate: StateFlow<LocalDate?> = savedStateHandle.getStateFlow(KEY_SELECTED_DATE, null)
+
+    /** D-1215: the date that *was* "today" the moment [persistedSelectedDate] was last written —
+     *  lets [HomeDaySelection.resolveRestoredSelection] tell "still today" apart from "a new day
+     *  started", which a plain membership-in-[week] check alone can't (a date can stay inside the
+     *  same calendar week across a day rollover). */
+    private val persistedSelectedAsOfToday: StateFlow<LocalDate?> = savedStateHandle.getStateFlow(KEY_SELECTED_AS_OF_TODAY, null)
+
     val uiState: StateFlow<HomeUiState> =
         combine(header, feedBundle, metricsViewMode, unitSystem, showEmptyMetricCards) { state, feed, viewMode, units, showEmpty ->
             val enriched = feed.cards.map { card ->
@@ -172,6 +206,15 @@ class HomeViewModel @Inject constructor(
             ) as HomeUiState
         }
             .combine(todayWorkout) { state, workout -> if (state is HomeUiState.Success) state.copy(todayWorkout = workout) else state }
+            .combine(week) { state, week -> if (state is HomeUiState.Success) state.copy(week = week) else state }
+            // D-1215: resolved last, from the just-attached `week`, so it always sees this exact
+            // combine's own week list (not a second independent subscription to the `week` flow).
+            .combine(combine(persistedSelectedDate, persistedSelectedAsOfToday, ::Pair)) { state, (persisted, persistedAsOf) ->
+                if (state !is HomeUiState.Success) return@combine state
+                val today = state.week.firstOrNull { it.isToday }?.summary?.date ?: return@combine state
+                val resolved = HomeDaySelection.resolveRestoredSelection(persisted, persistedAsOf, today, state.week.map { it.summary.date })
+                state.copy(selectedDate = resolved)
+            }
             .catch { emit(HomeUiState.Error(it.message ?: "Unable to load data")) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeUiState.Loading)
 
@@ -204,6 +247,31 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch { trainingPlanRepository.checkIn(dayOffset) }
     }
 
+    /** D-1215: tapping a mini ring in the week strip — see [HomeDaySelection.onDayTapped] for the
+     *  toggle-back-to-today/future-rejected rules. A no-op (defensively returns early rather than
+     *  throwing) before the week has loaded at least once, since there's nothing to select against
+     *  yet. */
+    fun selectDay(date: LocalDate) {
+        val state = uiState.value as? HomeUiState.Success ?: return
+        val today = state.week.firstOrNull { it.isToday }?.summary?.date ?: return
+        persistSelection(HomeDaySelection.onDayTapped(state.selectedDate, date, today), today)
+    }
+
+    /** D-1215: the "Today" chip/action next to the date label — always jumps back to today. */
+    fun jumpToToday() {
+        val state = uiState.value as? HomeUiState.Success ?: return
+        val today = state.week.firstOrNull { it.isToday }?.summary?.date ?: return
+        persistSelection(HomeDaySelection.onJumpToToday(), today)
+    }
+
+    /** Writes both halves of the persisted selection together so they're always consistent with
+     *  each other on the next read (see [persistedSelectedAsOfToday]'s KDoc for why "as of today"
+     *  has to travel alongside the selection itself, not be inferred separately). */
+    private fun persistSelection(date: LocalDate?, asOfToday: LocalDate) {
+        savedStateHandle[KEY_SELECTED_DATE] = date
+        savedStateHandle[KEY_SELECTED_AS_OF_TODAY] = asOfToday
+    }
+
     /** Pull-to-refresh: syncs every connected device and re-fetches the races feed (D-1107). */
     fun refresh() {
         viewModelScope.launch { racesRepository.refresh() }
@@ -219,3 +287,7 @@ class HomeViewModel @Inject constructor(
         val ALL_METRICS = HealthMetricType.entries
     }
 }
+
+/** D-1215: `SavedStateHandle` keys for the week-strip day selection (see [HomeViewModel]). */
+private const val KEY_SELECTED_DATE = "home_selected_date"
+private const val KEY_SELECTED_AS_OF_TODAY = "home_selected_as_of_today"

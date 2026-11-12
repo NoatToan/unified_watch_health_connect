@@ -31,7 +31,7 @@ class DeviceSettingsE2ETest : E2EBase() {
             step("paired", "Pair the simulated watch from Devices", "Watch connected in My devices") {
                 skipOnboarding(grant = true)
                 clickTag("nav_DEVICES")
-                clickTag("scan_fab")
+                clickTag("onboarding_scan_button")
                 // Several simulated watches advertise; give the scan a full window to list the demo one.
                 waitForTag("pair_$watch", timeoutMs = 30_000)
                 clickTag("pair_$watch")

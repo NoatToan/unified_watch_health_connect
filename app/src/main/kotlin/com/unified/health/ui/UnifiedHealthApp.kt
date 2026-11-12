@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -66,7 +67,26 @@ fun UnifiedHealthApp(
     val startWithOnboarding = rememberSaveable { !onboardingCompleted }
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
-    val onMainPager = currentDestination?.hasRoute(MainPagerDestination::class) == true
+    // Bug fix (D-1216, on-device review 2026-11-12): `currentBackStackEntryAsState()` reports `null`
+    // for the first frame(s) after this composable enters composition — `NavHost`'s own back stack
+    // entry only becomes "current" once it reaches the RESUMED lifecycle state, which lands a frame or
+    // two *after* `UnifiedHealthApp`'s own first composition, not within it. Falling through to `false`
+    // during that gap (the old `== true` below) made `onMainPager` wrongly report "not on the main
+    // pager" for a brief but real window right as the app launches straight to the main pager
+    // (`startWithOnboarding == false`, the common case) — which fed into `pillNavVisible` (below) and
+    // hid/disabled the whole pill bottom nav for that same window. A tap landing in it (a user tapping
+    // a tab right as Home first appears, exactly the repro in the bug report) silently did nothing:
+    // `PillBottomNavigation`'s `visible = false` either skips composing the tappable `Surface` entirely
+    // (D-1195's `if (!visible && alpha <= 0f) return`) or disables every item's `selectable` — either
+    // way `onSelect` never fires, with no visual sign anything was wrong (by the time anyone inspects
+    // the tree, e.g. via `uiautomator`, the gap has long since closed and everything reports normally
+    // tappable). Same root cause also meant `BackHandler`/`EdgeGestureExclusion` below briefly had the
+    // wrong `enabled` value on a cold launch, just less observable than a dead tap. Fix: resolve the
+    // *known* destination (`startWithOnboarding`, already captured above) while the real one is still
+    // resolving, instead of defaulting to "not on the main pager" — `currentDestination` is only ever
+    // null during this startup gap (never again once `NavHost` has a running graph), so this default is
+    // exact, not a guess.
+    val onMainPager = currentDestination?.hasRoute(MainPagerDestination::class) ?: !startWithOnboarding
 
     // D-1179: at the root of the back stack (one of the 4 top-level tabs, nothing left to pop) the
     // system back press must minimize the app rather than fall through to Android's default of
@@ -133,17 +153,32 @@ fun UnifiedHealthApp(
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
+    // Bug fix (on-device review, 2026-11-12, D-1205): `onMainPager` is a plain `val`, recomputed on
+    // every recomposition of this function — reading it directly from inside `remember`'s lambda
+    // below (captured once, since that `remember` has no keys) would freeze it at whatever it was on
+    // the very first composition. `rememberUpdatedState` keeps `onPreScroll` seeing the *current*
+    // value every time it runs, however old the enclosing `NestedScrollConnection` object is.
+    val latestOnMainPager by rememberUpdatedState(onMainPager)
     val scrollFadeConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                if (abs(available.y) <= abs(available.x)) return Offset.Zero
-                // Negative y = content scrolling up (user scrolling down the list) = hide; positive y
-                // = content scrolling down (user scrolling back up) = show right away. A ~0 delta
-                // (shouldn't really happen once the axis check above passes) is simply ignored.
-                when {
-                    available.y < 0f -> pillVisible = false
-                    available.y > 0f -> pillVisible = true
-                }
+                // Bug fix (on-device review, 2026-11-12, D-1205): this connection sits on the whole
+                // `NavHost` (below), so it used to keep reacting to scrolls even while a detail screen
+                // (metric/device/workout detail, ...) was on top and the pill wasn't shown at all —
+                // scrolling there could leave `pillVisible = false` as a stale leftover. Returning from
+                // such a screen flips `onMainPager` back to true in the same recomposition that
+                // `pillVisible` is still `false` from (the `LaunchedEffect` below that resets it only
+                // runs in the *next* effect phase), so the pill would come back disabled
+                // (`enabled = visible` in `PillBottomNavigation`/D-1195) for at least one frame right
+                // when the user's tap was most likely to land. Gating this on `onMainPager` means a
+                // detail screen's own scrolling never touches `pillVisible` in the first place, so
+                // there is nothing stale left for the reset below to race against.
+                pillVisible = pillVisibilityForScroll(
+                    onMainPager = latestOnMainPager,
+                    availableX = available.x,
+                    availableY = available.y,
+                    current = pillVisible,
+                )
                 return Offset.Zero
             }
         }
@@ -166,13 +201,54 @@ fun UnifiedHealthApp(
                 modifier = Modifier.fillMaxSize().nestedScroll(scrollFadeConnection),
             )
         }
-        if (onMainPager) {
-            PillBottomNavigation(
-                pagerState = pagerState,
-                onSelect = switchTab,
-                visible = pillVisible,
-                modifier = Modifier.align(Alignment.BottomCenter),
-            )
-        }
+        // Bug fix (on-device review, 2026-11-12, D-1205): used to be `if (onMainPager) { ... }`,
+        // conditionally composing/disposing `PillBottomNavigation` itself on every trip into/out of a
+        // detail screen. That threw away its own `animateFloatAsState` `Animatable` (line-for-line the
+        // one backing D-1195's fade) each time, so coming straight back from a detail screen always
+        // remounted the pill *from scratch* at whatever `visible` happened to be that first frame
+        // (see the connection's own comment above for why that could still be `false` momentarily) —
+        // a freshly (re)created `Animatable` has no previous value to animate from, so it *snapped* to
+        // alpha 0 immediately rather than animating, which is exactly the condition D-1195's own
+        // `if (!visible && alpha <= 0f) return` treats as "fully hidden, don't even compose the
+        // tappable Surface or its items' `MutableInteractionSource`s". `PillBottomNavigation` now stays
+        // composed for the lifetime of the app; `visible` folds in `onMainPager` directly, and D-1195's
+        // existing early-return is the only mechanism that ever hides it, with its `Animatable`'s state
+        // continuous across every detail-screen round trip instead of being reset by one.
+        PillBottomNavigation(
+            pagerState = pagerState,
+            onSelect = switchTab,
+            visible = pillNavVisible(onMainPager = onMainPager, pillVisible = pillVisible),
+            modifier = Modifier.align(Alignment.BottomCenter),
+        )
     }
 }
+
+/**
+ * Pure decision behind [UnifiedHealthApp]'s scroll-driven pill fade (D-1134/D-1149): the new
+ * `pillVisible` value for one [NestedScrollConnection.onPreScroll] dispatch, or [current] unchanged
+ * when the dispatch should not affect it at all — not on the main pager ([onMainPager] false, bug fix
+ * D-1205, see call site), or not a vertical-dominant delta (the pager's own horizontal drag, D-1149).
+ * Negative [availableY] = content scrolling up (user scrolling down the list) = hide; positive = show
+ * right away.
+ */
+internal fun pillVisibilityForScroll(
+    onMainPager: Boolean,
+    availableX: Float,
+    availableY: Float,
+    current: Boolean,
+): Boolean {
+    if (!onMainPager) return current
+    if (abs(availableY) <= abs(availableX)) return current
+    return when {
+        availableY < 0f -> false
+        availableY > 0f -> true
+        else -> current
+    }
+}
+
+/**
+ * Pure decision behind whether [PillBottomNavigation] is shown/tappable at all (bug fix D-1205): it is
+ * now always composed (see call site), so this is the only thing gating it on being on the main pager
+ * in the first place, combined with the scroll-driven fade ([pillVisibilityForScroll]).
+ */
+internal fun pillNavVisible(onMainPager: Boolean, pillVisible: Boolean): Boolean = onMainPager && pillVisible

@@ -14,16 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,8 +28,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.unified.health.core.designsystem.component.AppScreen
 import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.component.scheduledDayDescription
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.model.ActiveTrainingPlan
 import com.unified.health.core.model.ScheduledDay
@@ -70,39 +67,34 @@ internal fun TrainingCalendarScreen(
     onBack: () -> Unit,
     onToggleCheckIn: (dayOffset: Int, completed: Boolean) -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(plan?.planId?.displayName ?: "Lịch tập") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-            )
-        },
-    ) { padding ->
+    // D-1194: migrated to AppScreen — this screen's back button previously used a plain IconButton
+    // with no ChromeRipple wrap (unlike every other migrated screen's D-1189 treatment); AppScreen's
+    // default top bar now gives it the same restored-ripple back button as the rest of the app.
+    AppScreen(title = plan?.planId?.displayName ?: "Lịch tập", onBack = onBack) { contentPadding ->
         if (plan == null) {
-            Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
+            Box(Modifier.fillMaxSize().padding(contentPadding), contentAlignment = Alignment.Center) {
                 Text(
                     "Chưa có kế hoạch nào đang theo.",
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.testTag("training_calendar_empty"),
                 )
             }
-            return@Scaffold
+            return@AppScreen
         }
         val today = LocalDate.now()
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().padding(padding).testTag("training_calendar_list"),
-            contentPadding = PaddingValues(vertical = Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+            modifier = Modifier.fillMaxWidth().testTag("training_calendar_list"),
+            contentPadding = PaddingValues(
+                top = contentPadding.calculateTopPadding() + Gaps.screenTop,
+                bottom = contentPadding.calculateBottomPadding() + Gaps.sectionGap,
+            ),
+            verticalArrangement = Arrangement.spacedBy(Gaps.itemGap),
         ) {
             plan.schedule.chunked(DAYS_PER_WEEK).forEachIndexed { weekIndex, week ->
                 item {
                     SectionHeader(
                         "Tuần ${weekIndex + 1}",
-                        Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.sm).testTag("training_calendar_week_${weekIndex + 1}"),
+                        Modifier.padding(horizontal = Gaps.screenHorizontal, vertical = Gaps.itemGap).testTag("training_calendar_week_${weekIndex + 1}"),
                     )
                 }
                 items(week, key = { it.dayOffset }) { day ->
@@ -110,7 +102,7 @@ internal fun TrainingCalendarScreen(
                         day = day,
                         isToday = day.date == today,
                         onToggleCheckIn = onToggleCheckIn,
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.lg),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = Gaps.screenHorizontal),
                     )
                 }
             }

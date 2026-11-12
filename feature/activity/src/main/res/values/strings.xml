@@ -40,8 +40,12 @@
     <string name="stat_active_energy">Active energy</string>
     <string name="stat_avg_heart_rate">Avg. heart rate</string>
     <string name="stat_max_heart_rate">Max heart rate</string>
+    <!-- D-1195: activeKcal/duration, always derivable from the stored summary. -->
+    <string name="stat_kcal_per_minute">Calorie rate</string>
     <string name="stat_avg_cadence">Avg. cadence</string>
     <string name="stat_max_cadence">Max. cadence</string>
+    <string name="stat_avg_stride">Avg. stride</string>
+    <string name="stat_steps">Steps</string>
     <string name="stat_elevation_gain">Elevation gain</string>
     <string name="stat_elevation_loss">Elevation loss</string>
 
@@ -51,17 +55,32 @@
 
     <string name="source_label">Source</string>
     <string name="source_unknown">Unknown device</string>
+    <!-- D-1197 round 2: a demo/virtual watch is never actually in the paired list, so its raw
+         synthetic MAC would otherwise show here with no friendly name. -->
+    <string name="source_demo_watch">Demo watch</string>
 
+    <!-- D-1200: the pace chart's y axis is now inverted (faster draws higher), so the old
+         "(lower is faster)" hint is no longer needed. -->
     <string name="trends_title">Trends</string>
-    <string name="trend_pace_title">Pace (lower is faster)</string>
+    <string name="trend_pace_title">Pace</string>
+    <string name="trend_cadence_title">Cadence</string>
     <string name="trend_elevation_title">Elevation</string>
 
+    <!-- D-1199: per-km/mi splits table (Huawei's Pace tab). -->
     <string name="splits_title">Splits</string>
-    <string name="lap_title">Lap %1$d · %2$s</string>
-    <string name="lap_no_details">No details recorded</string>
+    <string name="splits_fastest">Fastest</string>
+    <string name="splits_average">Average</string>
+    <string name="splits_half_marathon">Half marathon: %1$s</string>
+    <string name="splits_marathon">Marathon: %1$s</string>
+    <!-- %1$s is the distance unit ("km"/"mi"), e.g. "&lt; 1 km". -->
+    <string name="split_partial_label">&lt; 1 %1$s</string>
 
+    <!-- D-1199: minutes-in-zone (Huawei's zone ring, §3.2), not the plain percent this card used before. -->
     <string name="hr_zones_title">Time in heart rate zones</string>
+    <string name="hr_zone_minutes">%1$d min</string>
+    <string name="hr_zone_under_one_minute">&lt;1 min</string>
     <!-- Zone label (e.g. "Warm up"/"Easy") stays the plain English word core:domain already
-         returns (HeartRateZoneShare.zone.label is domain data, not UI copy). -->
-    <string name="hr_zone_description">Zone %1$d %2$s, %3$d percent of workout time</string>
+         returns (HeartRateZone.label is domain data, not UI copy). %3$s is the already-formatted
+         minutes text (e.g. "12 min" or "&lt;1 min"). -->
+    <string name="hr_zone_description">Zone %1$d %2$s, %3$s of workout time</string>
 </resources>

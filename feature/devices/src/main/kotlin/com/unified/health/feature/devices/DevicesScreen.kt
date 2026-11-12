@@ -24,10 +24,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.BatteryStd
 import androidx.compose.material.icons.automirrored.outlined.BluetoothSearching
 import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.Keyboard
 import androidx.compose.material.icons.outlined.Memory
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.QrCodeScanner
@@ -51,7 +51,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -77,6 +76,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.unified.health.core.designsystem.component.AppScreen
 import com.unified.health.core.designsystem.component.ConnectionStatusChip
 import com.unified.health.core.designsystem.component.WatchImage
 import com.unified.health.core.model.CredentialFormat
@@ -84,6 +84,7 @@ import com.unified.health.core.model.CredentialRequirement
 import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.permission.RuntimePermissions
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.model.ConnectionState
 import com.unified.health.core.model.DiscoveredDevice
@@ -153,6 +154,14 @@ internal fun DevicesScreen(
     var permissionDenied by rememberSaveable { mutableStateOf(false) }
     var showScanner by rememberSaveable { mutableStateOf(false) }
     var showManualMacDialog by rememberSaveable { mutableStateOf(false) }
+    // D-1200: "Nearby devices" only earns its place once a scan has actually happened (running or
+    // finished) — not merely because the onboarding/"Add device" entry points exist. Driven off
+    // isScanning (set by any path: the FAB, the onboarding block, "Add device", or the QR-find
+    // timeout's "Choose from list") rather than threaded through every call site that can start one.
+    var scanAttempted by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(state.isScanning) {
+        if (state.isScanning) scanAttempted = true
+    }
     val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
         permissionDenied = result.values.any { !it }
         if (!permissionDenied) onStartScan()
@@ -218,45 +227,81 @@ internal fun DevicesScreen(
         }
     }
 
-    Scaffold(
-        topBar = { TopAppBar(title = { Text(stringResource(R.string.devices_title)) }) },
+    // D-1194: top-level tab (inside the main pager) — bottomClearance clears PillBottomNavigation's
+    // floating pill, routed through AppScreen instead of this screen adding it manually.
+    AppScreen(
+        title = stringResource(R.string.devices_title),
         snackbarHost = { SnackbarHost(snackbar) },
         floatingActionButton = {
+            // Bug fix (on-device review, 2026-11-12, D-1206): with no paired device yet (and not
+            // already scanning), `NoPairedDeviceCard`'s own Scan/QR/MAC actions (D-1200) are already
+            // the primary "add a device" CTA — this FAB used to render underneath that card too,
+            // duplicating "Scan" while sitting hidden behind the floating pill nav (Scaffold only
+            // knows about the system navigation-bar inset, not `PillBottomNavigation`'s own extra
+            // floating footprint, D-1144). Hidden entirely in that state now; still shown (with the
+            // explicit `Spacing.bottomNavClearance` bottom offset below, so it floats above the pill
+            // instead of behind it) once there is something a FAB usefully adds: a scan already
+            // running (`stop_scan_fab`), or at least one paired device, where `AddDeviceEntry` (D-1200)
+            // is the per-row/list entry point but a persistent "scan again" FAB still earns its place.
             if (state.isScanning) {
                 ExtendedFloatingActionButton(
-                    modifier = Modifier.testTag("stop_scan_fab"),
+                    modifier = Modifier.testTag("stop_scan_fab").padding(bottom = Spacing.bottomNavClearance),
                     onClick = onStopScan,
                     icon = { Icon(Icons.Outlined.Stop, contentDescription = null) },
                     text = { Text(stringResource(R.string.scan_stop)) },
                 )
-            } else {
+            } else if (state.pairedDevices.isNotEmpty()) {
                 ExtendedFloatingActionButton(
-                    modifier = Modifier.testTag("scan_fab"),
+                    modifier = Modifier.testTag("scan_fab").padding(bottom = Spacing.bottomNavClearance),
                     onClick = requestScan,
                     icon = { Icon(Icons.AutoMirrored.Outlined.BluetoothSearching, contentDescription = null) },
                     text = { Text(stringResource(R.string.scan_start)) },
                 )
             }
         },
-    ) { padding ->
+        bottomClearance = Spacing.bottomNavClearance,
+    ) { contentPadding ->
         if (state.isLoading) {
-            LoadingState(Modifier.padding(padding))
-            return@Scaffold
+            LoadingState(Modifier.padding(contentPadding))
+            return@AppScreen
         }
         LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(padding),
-            // D-1144: Spacing.bottomNavClearance (was a literal 96.dp — same value, now the shared
-            // constant) — the pill nav floats as a Box overlay over this tab's content instead of
-            // reserving Scaffold space, so without this the last card would sit behind it permanently.
-            contentPadding = PaddingValues(start = Spacing.lg, end = Spacing.lg, top = Spacing.sm, bottom = Spacing.bottomNavClearance),
-            verticalArrangement = Arrangement.spacedBy(Spacing.md),
+            modifier = Modifier.fillMaxSize(),
+            // D-1194: contentPadding (already including bottomClearance) passed straight to the
+            // LazyColumn's own contentPadding, never as an outer Modifier.padding — see AppScreen.
+            contentPadding = PaddingValues(
+                start = Gaps.screenHorizontal,
+                end = Gaps.screenHorizontal,
+                top = contentPadding.calculateTopPadding() + Gaps.screenTop,
+                bottom = contentPadding.calculateBottomPadding(),
+            ),
+            verticalArrangement = Arrangement.spacedBy(Gaps.itemGap),
         ) {
             if (permissionDenied) {
                 item { PermissionCard(onOpenSettings = { context.openAppSettings() }) }
             }
             if (state.pairedDevices.isEmpty()) {
-                item { NoPairedDeviceCard(onScan = requestScan, onScanQrCode = { showScanner = true }) }
+                // D-1200: one onboarding block replaces the old card (QR + Scan) plus the "Nearby
+                // devices" section's own QR/MAC row below it — same three actions, no longer duplicated.
+                item {
+                    NoPairedDeviceCard(
+                        onScan = requestScan,
+                        onScanQrCode = { showScanner = true },
+                        onEnterMacAddress = { showManualMacDialog = true },
+                    )
+                }
             } else {
+                // D-1200: once at least one device is paired, the add-device actions collapse into
+                // this single entry point instead of staying permanently on screen.
+                item {
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                        AddDeviceEntry(
+                            onScan = requestScan,
+                            onScanQrCode = { showScanner = true },
+                            onEnterMacAddress = { showManualMacDialog = true },
+                        )
+                    }
+                }
                 items(state.pairedDevices, key = { it.id }) { device ->
                     PairedDeviceCard(
                         device = device,
@@ -271,41 +316,38 @@ internal fun DevicesScreen(
                     )
                 }
             }
-            item {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    SectionHeader(stringResource(R.string.scan_section_nearby), Modifier.weight(1f))
-                    if (state.isScanning) Text(stringResource(R.string.scan_scanning), style = MaterialTheme.typography.labelMedium)
-                }
-                if (state.isScanning) {
-                    LinearProgressIndicator(Modifier.fillMaxWidth().padding(top = Spacing.sm))
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(top = Spacing.sm),
-                    horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
-                ) {
-                    OutlinedButton(onClick = { showScanner = true }, modifier = Modifier.testTag("qr_scan_button")) {
-                        Icon(Icons.Outlined.QrCodeScanner, contentDescription = null, modifier = Modifier.size(18.dp))
-                        Spacer(Modifier.width(Spacing.xs))
-                        Text(stringResource(R.string.scan_qr_code))
-                    }
-                    OutlinedButton(onClick = { showManualMacDialog = true }, modifier = Modifier.testTag("manual_mac_button")) {
-                        Icon(Icons.Outlined.Keyboard, contentDescription = null, modifier = Modifier.size(18.dp))
-                        Spacer(Modifier.width(Spacing.xs))
-                        Text(stringResource(R.string.scan_enter_mac_address))
-                    }
-                }
-            }
-            if (state.discovered.isEmpty()) {
+            // D-1200: "Nearby devices" only appears once a scan is running or has (ever) produced
+            // something to show — never as an empty section competing with the onboarding block above.
+            val showNearbySection = state.isScanning || state.discovered.isNotEmpty() || scanAttempted
+            if (showNearbySection) {
                 item {
-                    Text(
-                        if (state.isScanning) stringResource(R.string.scan_empty_scanning) else stringResource(R.string.scan_empty_idle),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        SectionHeader(stringResource(R.string.scan_section_nearby), Modifier.weight(1f))
+                        if (state.isScanning) Text(stringResource(R.string.scan_scanning), style = MaterialTheme.typography.labelMedium)
+                    }
+                    if (state.isScanning) {
+                        LinearProgressIndicator(Modifier.fillMaxWidth().padding(top = Gaps.itemGap))
+                    }
                 }
-            } else {
-                items(state.discovered, key = { it.macAddress }) { device ->
-                    DiscoveredDeviceItem(device, onPair = { onPair(device) })
+                if (state.discovered.isEmpty()) {
+                    item {
+                        Column(verticalArrangement = Arrangement.spacedBy(Gaps.itemGap)) {
+                            Text(
+                                if (state.isScanning) stringResource(R.string.scan_empty_scanning) else stringResource(R.string.scan_empty_no_results),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                            if (!state.isScanning) {
+                                OutlinedButton(onClick = requestScan, modifier = Modifier.testTag("scan_retry_button")) {
+                                    Text(stringResource(DesignSystemR.string.action_try_again))
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    items(state.discovered, key = { it.macAddress }) { device ->
+                        DiscoveredDeviceItem(device, onPair = { onPair(device) })
+                    }
                 }
             }
         }
@@ -332,7 +374,7 @@ private fun PairedDeviceCard(
     val watchModel = remember(device.vendor, device.name, device.model) { WatchModelMatcher.match(device) }
 
     ElevatedCard(Modifier.fillMaxWidth().testTag("paired_${device.macAddress}")) {
-        Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
             val menuButton: @Composable () -> Unit = {
                 IconButton(onClick = { menuOpen = true }, modifier = Modifier.testTag("more_${device.macAddress}")) {
                     Icon(Icons.Outlined.MoreVert, contentDescription = stringResource(R.string.device_more_options, device.name))
@@ -386,7 +428,7 @@ private fun PairedDeviceCard(
                 )
                 // D-1162: one cohesive icon+text block instead of a chip row plus two stray Text
                 // lines — text content/testTag per line kept exactly as before (e2e asserts on them).
-                Column(Modifier.padding(top = Spacing.xs), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                Column(Modifier.padding(top = Gaps.cardContentGap), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
                     device.batteryPercent?.let {
                         StatusInfoRow(Icons.Outlined.BatteryStd) { Text("$it%", style = MaterialTheme.typography.bodyMedium) }
                     }
@@ -582,24 +624,69 @@ private fun PairingCodeDialog(request: PairingCodeRequest, onSubmit: (String) ->
     )
 }
 
+/**
+ * D-1200: the only add-device entry point while nothing is paired — one card, one clear hierarchy
+ * (primary "Scan for devices" finds most watches over BLE; "Scan QR code" and "Enter MAC address"
+ * are the advanced/fallback paths), instead of the previous two equal-weight buttons here plus a
+ * duplicate QR button in the "Nearby devices" section below.
+ */
 @Composable
-private fun NoPairedDeviceCard(onScan: () -> Unit, onScanQrCode: () -> Unit) {
+private fun NoPairedDeviceCard(onScan: () -> Unit, onScanQrCode: () -> Unit, onEnterMacAddress: () -> Unit) {
     OutlinedCard(Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
             Text(stringResource(R.string.no_paired_device_title), style = MaterialTheme.typography.titleMedium)
             Text(
                 stringResource(R.string.no_paired_device_message),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-                FilledTonalButton(onClick = onScanQrCode, modifier = Modifier.testTag("qr_scan_button_empty")) {
-                    Icon(Icons.Outlined.QrCodeScanner, contentDescription = null, modifier = Modifier.size(18.dp))
-                    Spacer(Modifier.width(Spacing.xs))
-                    Text(stringResource(R.string.scan_qr_code))
-                }
-                OutlinedButton(onClick = onScan) { Text(stringResource(R.string.scan_for_devices)) }
+            Button(onClick = onScan, modifier = Modifier.fillMaxWidth().testTag("onboarding_scan_button")) {
+                Icon(Icons.AutoMirrored.Outlined.BluetoothSearching, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(Modifier.width(Spacing.xs))
+                Text(stringResource(R.string.scan_for_devices))
             }
+            FilledTonalButton(onClick = onScanQrCode, modifier = Modifier.fillMaxWidth().testTag("onboarding_qr_button")) {
+                Icon(Icons.Outlined.QrCodeScanner, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(Modifier.width(Spacing.xs))
+                Text(stringResource(R.string.scan_qr_code))
+            }
+            TextButton(onClick = onEnterMacAddress, modifier = Modifier.fillMaxWidth().testTag("onboarding_mac_button")) {
+                Text(stringResource(R.string.scan_enter_mac_address))
+            }
+        }
+    }
+}
+
+/**
+ * D-1200: once at least one device is paired, the three add-device actions (scan / QR / MAC) no
+ * longer sit permanently on screen — they collapse behind this one entry point, opening the same
+ * flows as [NoPairedDeviceCard].
+ */
+@Composable
+private fun AddDeviceEntry(onScan: () -> Unit, onScanQrCode: () -> Unit, onEnterMacAddress: () -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    Box {
+        TextButton(onClick = { expanded = true }, modifier = Modifier.testTag("add_device_button")) {
+            Icon(Icons.Outlined.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+            Spacer(Modifier.width(Spacing.xs))
+            Text(stringResource(R.string.add_device))
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.scan_for_devices)) },
+                onClick = { expanded = false; onScan() },
+                modifier = Modifier.testTag("add_device_scan"),
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.scan_qr_code)) },
+                onClick = { expanded = false; onScanQrCode() },
+                modifier = Modifier.testTag("add_device_qr"),
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.scan_enter_mac_address)) },
+                onClick = { expanded = false; onEnterMacAddress() },
+                modifier = Modifier.testTag("add_device_mac"),
+            )
         }
     }
 }
@@ -646,8 +733,8 @@ private fun QrFindSheet(state: QrFindUiState, onCancel: () -> Unit, onRetry: () 
     }
     ModalBottomSheet(onDismissRequest = onCancel, modifier = Modifier.testTag("qr_find_sheet")) {
         Column(
-            modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(Spacing.sm),
+            modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(Gaps.sheetPadding),
+            verticalArrangement = Arrangement.spacedBy(Gaps.itemGap),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
                 WatchImage(model = watchModel, size = 64.dp, interactive = true, revealKey = matchedDevice != null)
@@ -694,7 +781,7 @@ private fun QrFindSheet(state: QrFindUiState, onCancel: () -> Unit, onRetry: () 
 @Composable
 private fun PermissionCard(onOpenSettings: () -> Unit) {
     ElevatedCard(Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
             Text(stringResource(R.string.permission_needed_title), style = MaterialTheme.typography.titleMedium)
             Text(
                 stringResource(R.string.permission_needed_message),

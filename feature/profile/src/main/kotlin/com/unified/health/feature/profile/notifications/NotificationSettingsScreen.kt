@@ -18,7 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.BatteryAlert
 import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.NotificationsOff
@@ -28,15 +27,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,10 +50,11 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.unified.health.core.designsystem.component.AppScreen
 import com.unified.health.core.designsystem.component.LoadingState
 import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.permission.RuntimePermissions
-import com.unified.health.core.designsystem.theme.ChromeRipple
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.domain.model.DefaultMetricThresholds
 import com.unified.health.feature.profile.R
@@ -102,33 +99,21 @@ internal fun NotificationSettingsScreen(
     onLowWatchBattery: (Boolean) -> Unit,
     onSyncReminders: (Boolean) -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.notifications_title)) },
-                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
-                navigationIcon = {
-                    ChromeRipple {
-                        IconButton(onClick = onBack) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back))
-                        }
-                    }
-                },
-            )
-        },
-    ) { padding ->
+    AppScreen(title = stringResource(R.string.notifications_title), onBack = onBack) { contentPadding ->
         if (state.isLoading) {
-            LoadingState(Modifier.padding(padding))
-            return@Scaffold
+            LoadingState(Modifier.padding(contentPadding))
+            return@AppScreen
         }
         val prefs = state.preferences
+        // D-1194: contentPadding chained AFTER verticalScroll — the footer text scrolls fully behind
+        // the gesture bar instead of stopping in a dead strip above it.
         Column(
-            modifier = Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(horizontal = Spacing.lg).testTag("notification_settings"),
-            verticalArrangement = Arrangement.spacedBy(Spacing.md),
+            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(contentPadding).padding(horizontal = Gaps.screenHorizontal).testTag("notification_settings"),
+            verticalArrangement = Arrangement.spacedBy(Gaps.sectionGap),
         ) {
             if (!systemNotificationsEnabled) {
                 ElevatedCard(Modifier.fillMaxWidth().testTag("notifications_blocked")) {
-                    Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                    Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Outlined.NotificationsOff, contentDescription = null, tint = MaterialTheme.colorScheme.error)
                             Spacer(Modifier.width(Spacing.sm))
@@ -155,7 +140,7 @@ internal fun NotificationSettingsScreen(
                     checked = prefs.goalAchieved,
                     onChange = onGoalAchieved,
                 )
-                HorizontalDivider(Modifier.padding(horizontal = Spacing.lg))
+                HorizontalDivider(Modifier.padding(horizontal = Gaps.screenHorizontal))
                 ToggleRow(
                     tag = "notif_battery",
                     icon = Icons.Outlined.BatteryAlert,
@@ -164,7 +149,7 @@ internal fun NotificationSettingsScreen(
                     checked = prefs.lowWatchBattery,
                     onChange = onLowWatchBattery,
                 )
-                HorizontalDivider(Modifier.padding(horizontal = Spacing.lg))
+                HorizontalDivider(Modifier.padding(horizontal = Gaps.screenHorizontal))
                 ToggleRow(
                     tag = "notif_sync",
                     icon = Icons.Outlined.Sync,

@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.MetricValueTextStyle
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
@@ -47,7 +48,7 @@ fun SummaryMetricCard(
         timeLabel?.let { append(", ").append(it) }
     }
     ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth().semantics(mergeDescendants = true) { contentDescription = description }) {
-        Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(metric.icon(), contentDescription = null, tint = accent, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(Spacing.sm))
@@ -64,7 +65,7 @@ fun SummaryMetricCard(
                 Text(value ?: "No data", style = if (value == null) MaterialTheme.typography.titleMedium else MetricValueTextStyle)
                 if (value != null && unit.isNotEmpty()) {
                     Spacer(Modifier.width(Spacing.xs))
-                    Text(unit, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 4.dp))
+                    Text(unit, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = Spacing.xs))
                 }
             }
         }

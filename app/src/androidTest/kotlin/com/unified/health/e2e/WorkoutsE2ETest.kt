@@ -8,7 +8,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
-import com.unified.health.core.demo.DemoDevice
+import com.unified.health.feature.activity.R as ActivityR
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Test
 
@@ -53,7 +53,13 @@ class WorkoutsE2ETest : E2EBase() {
             step("workout-heart-rate", "Scroll to Heart rate and Source", "Heart rate over the workout and the recording watch") {
                 compose.onNodeWithTag("workout_source").performScrollTo()
                 waitForTag("workout_hr_chart")
-                waitFor(hasText(DemoDevice.ADDRESS, substring = true) and hasAnyAncestor(hasTestTag("workout_source")), what = "source device")
+                // D-1206 (workout-detail agent): Source now shows a friendly "Demo watch" label
+                // (`WorkoutSourceDisplay.Demo`, `R.string.source_demo_watch`) instead of the raw demo
+                // MAC (`DemoDevice.ADDRESS`, only ever shown for `WorkoutSourceDisplay.Unknown`) — read
+                // through the real string resource rather than hardcoding "Demo watch" so this stays
+                // correct under any locale/string change.
+                val demoWatchLabel = context.getString(ActivityR.string.source_demo_watch)
+                waitFor(hasText(demoWatchLabel, substring = true) and hasAnyAncestor(hasTestTag("workout_source")), what = "source device")
             }
             step("back-to-list", "Tap Back", "Back on the Activity tab") {
                 device.pressBack()

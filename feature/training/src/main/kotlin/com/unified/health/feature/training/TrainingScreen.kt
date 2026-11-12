@@ -33,12 +33,9 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -56,9 +53,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.unified.health.core.designsystem.component.AppScreen
 import com.unified.health.core.designsystem.component.SectionHeader
 import com.unified.health.core.designsystem.component.TrainingHeroImage
-import com.unified.health.core.designsystem.theme.ChromeRipple
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.model.ActiveTrainingPlan
 import com.unified.health.core.model.TrainingPlanId
@@ -116,30 +114,23 @@ internal fun TrainingScreen(
     onOpenCalendar: () -> Unit = {},
     onSelectPlan: (TrainingPlanId, LocalDate) -> Unit = { _, _ -> },
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Chế độ luyện tập") },
-                // D-1189: app chrome, not this screen's own content — restores the normal ripple.
-                navigationIcon = {
-                    ChromeRipple {
-                        IconButton(onClick = onBack) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                        }
-                    }
-                },
-            )
-        },
-    ) { padding ->
+    AppScreen(title = "Chế độ luyện tập", onBack = onBack) { contentPadding ->
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().padding(padding).testTag("training_list"),
-            contentPadding = PaddingValues(vertical = Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(Spacing.md),
+            modifier = Modifier.fillMaxWidth().testTag("training_list"),
+            // D-1194/D-1204: contentPadding (Scaffold's top-bar height / safe-drawing insets / nav-bar
+            // inset, see AppScreen) merged with this screen's own Gaps.screenTop — passed to the
+            // LazyColumn itself, never as an outer Modifier.padding, so the hero photos/list scroll
+            // fully behind the gesture bar instead of stopping in a dead strip above it.
+            contentPadding = PaddingValues(
+                top = contentPadding.calculateTopPadding() + Gaps.screenTop,
+                bottom = contentPadding.calculateBottomPadding() + Gaps.sectionGap,
+            ),
+            verticalArrangement = Arrangement.spacedBy(Gaps.itemGap),
         ) {
             if (activePlan != null) {
-                item { ActivePlanBanner(activePlan, onClick = onOpenCalendar, modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.lg)) }
+                item { ActivePlanBanner(activePlan, onClick = onOpenCalendar, modifier = Modifier.fillMaxWidth().padding(horizontal = Gaps.screenHorizontal)) }
             }
-            item { RunningFormEntryCard(onClick = onOpenRunningForm, modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.lg)) }
+            item { RunningFormEntryCard(onClick = onOpenRunningForm, modifier = Modifier.fillMaxWidth().padding(horizontal = Gaps.screenHorizontal)) }
             item { IntroSection() }
             TRAINING_DISTANCE_SECTIONS.forEach { section -> distanceSectionItems(section, activePlan?.planId, onSelectPlan) }
         }
@@ -157,7 +148,7 @@ private fun ActivePlanBanner(plan: ActiveTrainingPlan, onClick: () -> Unit, modi
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
     ) {
         Row(
-            Modifier.fillMaxWidth().padding(Spacing.lg),
+            Modifier.fillMaxWidth().padding(Gaps.cardPadding),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Spacing.md),
         ) {
@@ -167,7 +158,7 @@ private fun ActivePlanBanner(plan: ActiveTrainingPlan, onClick: () -> Unit, modi
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.size(32.dp),
             )
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xxs)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
                 Text(
                     "Đang theo: ${plan.planId.displayName}",
                     style = MaterialTheme.typography.titleSmall,
@@ -199,7 +190,7 @@ private fun RunningFormEntryCard(onClick: () -> Unit, modifier: Modifier = Modif
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
     ) {
         Row(
-            Modifier.fillMaxWidth().padding(Spacing.lg),
+            Modifier.fillMaxWidth().padding(Gaps.cardPadding),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Spacing.md),
         ) {
@@ -209,7 +200,7 @@ private fun RunningFormEntryCard(onClick: () -> Unit, modifier: Modifier = Modif
                 tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 modifier = Modifier.size(32.dp),
             )
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xxs)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
                 Text(
                     "Dáng chạy đúng",
                     style = MaterialTheme.typography.titleSmall,
@@ -236,8 +227,8 @@ private fun RunningFormEntryCard(onClick: () -> Unit, modifier: Modifier = Modif
 @Composable
 private fun IntroSection() {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.lg).testTag("training_intro"),
-        verticalArrangement = Arrangement.spacedBy(Spacing.sm),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = Gaps.screenHorizontal).testTag("training_intro"),
+        verticalArrangement = Arrangement.spacedBy(Gaps.itemGap),
     ) {
         SectionHeader("Nguyên tắc chung")
         Text(
@@ -299,7 +290,7 @@ private fun LazyListScope.distanceSectionItems(
     onSelectPlan: (TrainingPlanId, LocalDate) -> Unit,
 ) {
     item {
-        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Gaps.itemGap)) {
             TrainingHeroImage(
                 imageUrl = section.heroImageUrl,
                 modifier = Modifier
@@ -307,11 +298,11 @@ private fun LazyListScope.distanceSectionItems(
                     .aspectRatio(HeroAspectRatio)
                     .testTag("training_hero_${section.id}"),
             )
-            SectionHeader(section.heading, Modifier.padding(horizontal = Spacing.lg).testTag("training_section_${section.id}"))
+            SectionHeader(section.heading, Modifier.padding(horizontal = Gaps.screenHorizontal).testTag("training_section_${section.id}"))
         }
     }
     items(section.plans, key = { "${section.id}_${it.id}" }) { plan ->
-        PlanCard(plan, activePlanId, onSelectPlan, modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.lg))
+        PlanCard(plan, activePlanId, onSelectPlan, modifier = Modifier.fillMaxWidth().padding(horizontal = Gaps.screenHorizontal))
     }
     section.recommendation?.let { recommendation ->
         item {
@@ -319,7 +310,7 @@ private fun LazyListScope.distanceSectionItems(
                 recommendation,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = Spacing.lg).testTag("training_recommendation_${section.id}"),
+                modifier = Modifier.padding(horizontal = Gaps.screenHorizontal).testTag("training_recommendation_${section.id}"),
             )
         }
     }
@@ -344,7 +335,7 @@ private fun PlanCard(
 ) {
     var expanded by rememberSaveable(plan.id) { mutableStateOf(false) }
     ElevatedCard(onClick = { expanded = !expanded }, modifier = modifier.testTag("training_plan_${plan.id}")) {
-        Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Column(Modifier.padding(Gaps.cardPadding), verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(plan.name, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
                 Icon(

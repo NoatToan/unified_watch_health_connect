@@ -76,6 +76,19 @@ fun PillBottomNavigation(
 ) {
     val destinations = TopLevelDestination.entries
     val alpha by animateFloatAsState(if (visible) 1f else 0f, animationSpec = tween(220), label = "pillVisibility")
+    // Bug fix (user review, 2026-11-12): the fade-out used to only change `alpha` via
+    // `graphicsLayer` below, which is purely visual — the Surface (and its tappable
+    // PillNavItems) stayed in the layout tree and kept intercepting touches even once fully
+    // invisible, so tapping the empty area where the pill used to be still switched tabs.
+    // Once the fade-out tween finishes (`alpha` has reached 0f and `visible` is still false),
+    // skip composing the Surface entirely so there is nothing left in that area to hit-test —
+    // taps fall straight through to the content scrolled behind it. While still mid-fade
+    // (`visible == false` but `alpha > 0f`) the Surface stays composed for the tween to finish
+    // smoothly, but `enabled = visible` below disables every item's `selectable`, so a tap
+    // during that short window cannot trigger `onSelect`. Flipping `visible` back to true
+    // re-enters this branch immediately (alpha may still be 0f that frame) and items are
+    // enabled again right away, so fade-in stays tappable as before (D-1134/D-1140).
+    if (!visible && alpha <= 0f) return
     Surface(
         // A fixed height (rather than wrap-content) is required: the nav item Row below uses
         // fillMaxHeight(), which needs a bounded constraint to resolve against.
@@ -122,6 +135,7 @@ fun PillBottomNavigation(
                     PillNavItem(
                         destination = destination,
                         selected = index == selectedIndex,
+                        enabled = visible,
                         onClick = { onSelect(destination) },
                         modifier = Modifier.weight(1f).testTag("nav_${destination.name}"),
                     )
@@ -135,6 +149,7 @@ fun PillBottomNavigation(
 private fun PillNavItem(
     destination: TopLevelDestination,
     selected: Boolean,
+    enabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -148,6 +163,7 @@ private fun PillNavItem(
                 selected = selected,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null, // D-1091: no ripple on the pill tabs — the color/weight change is the feedback
+                enabled = enabled, // bug fix: block navigation while the pill is fading out, see call site above
                 onClick = onClick,
                 role = Role.Tab,
             )

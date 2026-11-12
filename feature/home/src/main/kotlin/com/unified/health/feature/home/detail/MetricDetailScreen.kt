@@ -22,16 +22,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -44,6 +41,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.unified.health.core.designsystem.component.AppScreen
 import com.unified.health.core.designsystem.component.HealthBarChart
 import com.unified.health.core.designsystem.component.HealthRangeChart
 import com.unified.health.core.designsystem.component.LoadingState
@@ -54,7 +52,7 @@ import com.unified.health.core.designsystem.component.compactNumber
 import com.unified.health.core.designsystem.component.formatValueLocalized
 import com.unified.health.core.designsystem.component.label
 import com.unified.health.core.designsystem.component.unit
-import com.unified.health.core.designsystem.theme.ChromeRipple
+import com.unified.health.core.designsystem.theme.Gaps
 import com.unified.health.core.designsystem.theme.MetricValueTextStyle
 import com.unified.health.core.designsystem.theme.Spacing
 import com.unified.health.core.designsystem.theme.UnifiedHealthTheme
@@ -89,25 +87,12 @@ internal fun MetricDetailScreen(
 ) {
     val metric = state.metric
     val accent = UnifiedHealthTheme.metricColors.forMetric(metric)
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(metric.label()) },
-                navigationIcon = {
-                    // D-1189: this TopAppBar's own icon is app chrome, not this screen's content —
-                    // restores the normal ripple `UnifiedHealthApp` otherwise zeroes out by default.
-                    ChromeRipple {
-                        IconButton(onClick = onBack) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(DesignSystemR.string.nav_back))
-                        }
-                    }
-                },
-            )
-        },
-    ) { padding ->
+    AppScreen(title = metric.label(), onBack = onBack) { contentPadding ->
+        // D-1194: contentPadding chained AFTER verticalScroll — the "about" card at the end of the
+        // scrollable content scrolls fully behind the gesture bar instead of a dead strip above it.
         Column(
-            modifier = Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(horizontal = Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(Spacing.lg),
+            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(contentPadding).padding(horizontal = Gaps.screenHorizontal),
+            verticalArrangement = Arrangement.spacedBy(Gaps.sectionGap),
         ) {
             val ranges = TimeRange.entries
             SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().testTag("range_selector")) {
@@ -129,11 +114,11 @@ internal fun MetricDetailScreen(
             }
             Header(state)
             Card(Modifier.fillMaxWidth().testTag("metric_chart")) {
-                Column(Modifier.padding(Spacing.lg)) { Chart(state, accent) }
+                Column(Modifier.padding(Gaps.cardPadding)) { Chart(state, accent) }
             }
             // Hourly totals have no meaningful average/min/max; a single night neither.
             state.stats?.takeIf { state.range != TimeRange.DAY || metric.aggregation == MetricAggregation.DISCRETE }?.let { stats ->
-                Row(horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(Gaps.gridGap)) {
                     StatCard(stringResource(R.string.metric_stat_average), metric.formatValueLocalized(stats.value, unitSystem = state.unitSystem), Modifier.weight(1f))
                     StatCard(stringResource(R.string.metric_stat_min), stats.min?.let { metric.formatValueLocalized(it, unitSystem = state.unitSystem) } ?: "--", Modifier.weight(1f))
                     StatCard(stringResource(R.string.metric_stat_max), stats.max?.let { metric.formatValueLocalized(it, unitSystem = state.unitSystem) } ?: "--", Modifier.weight(1f))
@@ -151,7 +136,7 @@ internal fun MetricDetailScreen(
                     trailingContent = { Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null) },
                 )
             }
-            Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Gaps.cardContentGap)) {
                 Text(stringResource(R.string.about_metric, metric.label()), style = MaterialTheme.typography.titleMedium)
                 Text(metric.about(), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
@@ -185,7 +170,7 @@ private fun Header(state: MetricDetailUiState) {
             Text(value, style = MetricValueTextStyle)
             if (stats != null && metric.unit(unitSystem).isNotEmpty()) {
                 Spacer(Modifier.width(Spacing.xs))
-                Text(metric.unit(unitSystem), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 4.dp))
+                Text(metric.unit(unitSystem), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = Spacing.xs))
             }
         }
         Text(state.periodLabel, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -207,7 +192,7 @@ private fun Chart(state: MetricDetailUiState, accent: Color) {
                 Text(stringResource(R.string.sleep_empty), color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("sleep_empty"))
             } else {
                 SleepStageChart(session, Modifier.testTag("sleep_stage_chart"))
-                Spacer(Modifier.height(Spacing.md))
+                Spacer(Modifier.height(Gaps.cardContentGap))
                 SleepStageLegend(session)
             }
         }
@@ -234,7 +219,7 @@ private fun Chart(state: MetricDetailUiState, accent: Color) {
 @Composable
 private fun InsightCard(insight: String, accent: Color) {
     ElevatedCard(Modifier.fillMaxWidth().testTag("metric_insight")) {
-        Row(Modifier.padding(Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.padding(Gaps.cardPadding), verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Outlined.Insights, contentDescription = null, tint = accent, modifier = Modifier.size(20.dp))
             Spacer(Modifier.width(Spacing.md))
             Text(insight, style = MaterialTheme.typography.bodyMedium)
@@ -245,7 +230,7 @@ private fun InsightCard(insight: String, accent: Color) {
 @Composable
 private fun StatCard(label: String, value: String, modifier: Modifier = Modifier) {
     Card(modifier) {
-        Column(Modifier.padding(Spacing.md)) {
+        Column(Modifier.padding(Gaps.cardPadding)) {
             Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(value, style = MaterialTheme.typography.titleMedium)
         }
