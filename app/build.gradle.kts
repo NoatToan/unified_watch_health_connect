@@ -53,6 +53,7 @@ dependencies {
     implementation(projects.driver.huawei)
     implementation(projects.driver.zepp)
     implementation(projects.driver.coros)
+    implementation(projects.driver.xiaomi)
 
     // Simulated "Demo watch" + demo-data seeder: debug/androidTest only, never in release (D-006, D-201).
     debugImplementation(projects.core.demo)

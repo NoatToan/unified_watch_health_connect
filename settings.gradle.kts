@@ -42,6 +42,7 @@ include(":driver:garmin")
 include(":driver:huawei")
 include(":driver:zepp")
 include(":driver:coros")
+include(":driver:xiaomi")
 
 include(":feature:onboarding")
 include(":feature:home")
