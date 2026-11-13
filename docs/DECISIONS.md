@@ -4590,3 +4590,38 @@ profile/manual measure/abnormal record — không có `HealthRecord` type tươn
 product-level trước), M5 không cần làm (hạ tầng reconnect/foreground service đã có sẵn dùng
 chung), V1 first-bind (cần cloud key, D-1193). Gate 0 thật (verifyMode của watch thật) và mọi
 byte-level parser đều **Tạm**, chờ user tự verify trên Xiaomi Smart Band 10 thật.
+
+- **D-1222** · 2026-11-13 · Xiaomi MiWear — Gate 0 trên thiết bị thật — **Tạm**
+  Chạy debug build (`com.unified.health.debug`) qua adb trên Galaxy S24 của Tony, kết nối tới
+  **Xiaomi Smart Band 10** thật (`74:FB:17:05:30:DC`). Logcat (`MultiVendorConnection`/`XiaomiDriver`/
+  `XiaomiLink`, 2026-11-13 14:45:53):
+
+  ```
+  I XiaomiDriver: MiWear protocol version 3.0.65 (V2)
+  I XiaomiLink: L1 session started; remote window=3
+  W MultiVendorConnection: Connecting to 74:FB:17:05:30:DC (XIAOMI) failed
+  com.unified.health.core.ble.driver.UnsupportedDeviceException: This Xiaomi watch requires a
+  cloud-signed bind (Xiaomi account), which Unified Health does not perform (protocol §7.3/§8.5 --
+  D-1193). Bind it once in Mi Fitness, extract the 16-byte token from its Transfer.device.log via
+  adb, and paste it as the Xiaomi auth token instead.
+      at com.unified.health.driver.xiaomi.XiaomiDriver.authenticate(XiaomiDriver.kt:211)
+  ```
+
+  **Đọc đúng, không phải bug**: L0/L1 transport bắt tay thành công (đọc được version 3.0.65 =>
+  generation V2, mở L1 session với remote window=3 bình thường). Luồng rơi vào nhánh "first bind"
+  (`XiaomiDriver.authenticate`, D-1217/D-1219) vì credential `AUTH_TOKEN` là token tự sinh
+  (`unboundMarkerKey` có mặt) — đúng theo thiết kế (band chưa từng bind qua app này). `probeBindMode`
+  gọi thật tới band trả về `Ha0.verifyMode = VERIFY_MODE_PSK_CLOUD (1)`, không phải
+  `VERIFY_MODE_LOCAL_ECDH (2)` — tức **Xiaomi Smart Band 10 thật của Tony bắt buộc cloud-signed
+  bind (tài khoản Mi Fitness), không hỗ trợ local ECDH bind** mà M2 (D-1217) đã implement. Đây là
+  **Gate 0 thật đầu tiên** đo được trên phần cứng thật, và kết quả xấu hơn giả định ban đầu: M2 (local
+  bind) chỉ chạy được trên model nào trả `verifyMode=2`; Smart Band 10 không nằm trong nhóm đó.
+  Driver throw đúng `UnsupportedDeviceException` theo scope đã chốt ở D-1193 (không tự ý implement
+  cloud bind — cần key/signature phía Xiaomi server, không có trong tầm `core/ble` BLE-only).
+
+  **Đường tiếp theo cho Tony (không cần sửa code ngay)**: bind band qua app Mi Fitness thật một
+  lần, sau đó lấy 16-byte auth token thật (theo gợi ý log: `Transfer.device.log` qua adb) và paste
+  vào làm credential `xiaomi.auth_token` thay vì để app tự sinh token mới — lúc đó
+  `authenticateV2` (reauth, không phải first-bind) sẽ chạy, không đi qua `probeBindMode`/local-bind
+  nữa. Việc tự động hoá bước "đọc token từ Mi Fitness" (nếu muốn) là việc mới, chưa có trong scope
+  M0-M6 hiện tại — cần quyết định product-level riêng trước khi giao agent.
