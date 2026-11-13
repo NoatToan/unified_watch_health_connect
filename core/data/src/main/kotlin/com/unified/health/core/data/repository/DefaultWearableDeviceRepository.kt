@@ -34,6 +34,9 @@ import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/** Byte count used to generate a [CredentialFormat.TEXT] credential, which has no fixed [CredentialFormat.byteLength]. */
+private const val GENERATED_TEXT_BYTE_LENGTH = 16
+
 /**
  * Orchestrates scan / pair / connect / sync on top of `:core:ble` and persists paired devices
  * in Room. Brand-agnostic: vendor specifics come from the driver registered for each device.
@@ -199,14 +202,21 @@ class DefaultWearableDeviceRepository @Inject constructor(
         val entity = dao.getById(deviceId) ?: return Result.failure(NoSuchElementException("Unknown device $deviceId"))
         val requirement = requirementsFor(entity.wearableVendor).firstOrNull { it.key == key && it.generatable }
             ?: return Result.failure(IllegalArgumentException("${entity.wearableVendor.displayName} cannot generate $key"))
-        val size = requirement.format.byteLength
-            ?: return Result.failure(IllegalArgumentException("${requirement.label} has no fixed size"))
-        val bytes = ByteArray(size).also(SecureRandom()::nextBytes)
+        // CredentialFormat.TEXT has no fixed byteLength (it is normally user-typed), but a
+        // *generatable* TEXT credential (e.g. driver/xiaomi's USER_ID / APP_DEVICE_ID) is not a
+        // vendor secret the user copies in — it only needs to be a stable, unique local id, so any
+        // random string is fine. Fall back to the same random-hex shape used for HEX_16_BYTES, then
+        // go through the same parse() every stored credential goes through.
+        val value = randomHex(requirement.format.byteLength ?: GENERATED_TEXT_BYTE_LENGTH)
+        val bytes = parse(requirement, value).getOrElse { return Result.failure(it) }
         credentials.put(entity.macAddress, key, bytes)
         credentials.put(entity.macAddress, requirement.unboundMarkerKey, byteArrayOf(1))
         credentialsVersion.value++
-        return Result.success(bytes.joinToString("") { "%02x".format(it) })
+        return Result.success(value)
     }
+
+    private fun randomHex(byteCount: Int): String =
+        ByteArray(byteCount).also(SecureRandom()::nextBytes).joinToString("") { "%02x".format(it) }
 
     private fun requirementsFor(vendor: WearableVendor): List<CredentialRequirement> =
         registry[vendor]?.credentialRequirements.orEmpty()
