@@ -13,10 +13,12 @@ import com.unified.health.core.ble.gatt.GattClient
 import com.unified.health.core.ble.scan.Advertisement
 import com.unified.health.core.model.CredentialFormat
 import com.unified.health.core.model.CredentialRequirement
+import com.unified.health.core.model.HealthRecord
 import com.unified.health.core.model.WearableVendor
 import com.unified.health.driver.xiaomi.auth.XiaomiAuthResult
 import com.unified.health.driver.xiaomi.auth.XiaomiAuthenticator
 import com.unified.health.driver.xiaomi.auth.XiaomiBindProbe
+import com.unified.health.driver.xiaomi.codec.FitnessPayloadDecoder
 import com.unified.health.driver.xiaomi.device.XiaomiDeviceCommands
 import com.unified.health.driver.xiaomi.proto.Ha0
 import com.unified.health.driver.xiaomi.sync.XiaomiFitnessSync
@@ -103,6 +105,25 @@ class XiaomiDriver internal constructor(
             scope.cancel()
             throw e
         }
+    }
+
+    /**
+     * Re-decodes a stored fitness-file [HealthRecord.RawPayload] (M3/M4, protocol §9.3-§9.5 [V]):
+     * dispatches to the exact same [FitnessPayloadDecoder.decode] the live sync path
+     * ([com.unified.health.driver.xiaomi.sync.XiaomiFitnessSyncImpl]) calls, keyed off the same
+     * `kind` string that path chose
+     * ([com.unified.health.driver.xiaomi.codec.FitnessKind]). `bytes` is `id.encode() + payload`
+     * (see [com.unified.health.driver.xiaomi.codec.FitnessFilePayload.Decoded.rawPayloadBytes]),
+     * so the original [com.unified.health.driver.xiaomi.proto.FitnessDataId] (version/timezone/
+     * dataType/subType/fileType) a parser needs is recovered without a live link. Every fitness
+     * kind without a parser (daytime sleep, user profile, manual measure, weight, ECG,
+     * temperature, any sport kind, GPS, ...) already returns `emptyList()` from
+     * [FitnessPayloadDecoder.decode] itself -- there is nothing this driver can re-derive for
+     * those yet, same scoping as `driver/garmin`'s `GarminDriver.reprocess`.
+     */
+    override suspend fun reprocess(payload: HealthRecord.RawPayload): List<HealthRecord> {
+        if (payload.vendor != WearableVendor.XIAOMI) return emptyList()
+        return FitnessPayloadDecoder.decodeStored(payload.bytes)
     }
 
     private suspend fun doOpenSession(gatt: GattClient, context: SessionContext, scope: CoroutineScope): WearableSession {

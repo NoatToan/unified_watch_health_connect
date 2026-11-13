@@ -140,6 +140,29 @@ internal class XiaomiLink(
     }
 
     /**
+     * Receives the next message that derives to [type], without writing anything first (protocol
+     * §9.4 [V]: channel-5 fitness file data arrives as a stream the watch pushes on its own once a
+     * transfer was triggered by an `s7r f=3/4` request on channel 1 -- it is not itself the answer
+     * to that request, so [requestRaw]'s write-then-wait pairing does not apply). Unlike
+     * [requestRaw], nothing is discarded before waiting: channel 5 is not used by anything else in
+     * this module today, so there is no "stale answer from a previous call" to guard against, and
+     * every packet the caller has not consumed yet must still be delivered in order -- discarding
+     * would drop real segments, not stale ones. For the same reason this does not take
+     * [channelLock]: there is only ever one fitness-file transfer in flight (the fitness sync loop
+     * is itself sequential, one id at a time), so there is nothing to serialize against [I] --
+     * revisit if a later milestone shares channel 5 with a second concurrent requester.
+     * @throws WearableProtocolException if [type] has no known channel, or on a timeout.
+     */
+    suspend fun receiveRaw(type: Int, timeoutMs: Long): ByteArray {
+        check(started) { "XiaomiLink.start() must be called before receiveRaw()" }
+        return try {
+            withTimeout(timeoutMs) { inbox(type).receive() }
+        } catch (e: TimeoutCancellationException) {
+            throw WearableProtocolException("Xiaomi watch did not send type $type within ${timeoutMs}ms", e)
+        }
+    }
+
+    /**
      * Fire-and-forget `s7r` command for `(e, f)` (protocol §9.2 f=3 `needResponse=false` time
      * sync is the only user of this today): writes the request, does not wait for an answer.
      */

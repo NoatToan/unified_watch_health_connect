@@ -45,7 +45,7 @@ internal class XiaomiSession(
     }
 
     override suspend fun sync(request: SyncRequest, sink: HealthRecordSink, progress: SyncProgress): Int =
-        fitnessSync.sync(link, sink, progress, request.since)
+        fitnessSync.sync(link, sink, progress, request)
 
     override suspend fun close() {
         link.close()

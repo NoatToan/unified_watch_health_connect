@@ -7,6 +7,7 @@ import com.unified.health.core.ble.driver.MissingCredentialException
 import com.unified.health.core.ble.driver.RecognitionScore
 import com.unified.health.core.ble.driver.SessionContext
 import com.unified.health.core.ble.driver.SyncProgress
+import com.unified.health.core.ble.driver.SyncRequest
 import com.unified.health.core.ble.driver.UnsupportedDeviceException
 import com.unified.health.core.ble.driver.WearableProtocolException
 import com.unified.health.core.ble.gatt.GattCharacteristic
@@ -15,9 +16,12 @@ import com.unified.health.core.ble.gatt.StandardUuids
 import com.unified.health.core.ble.scan.Advertisement
 import com.unified.health.core.model.CredentialFormat
 import com.unified.health.core.model.DeviceCapability
+import com.unified.health.core.model.HealthRecord
+import com.unified.health.core.model.WearableVendor
 import com.unified.health.driver.xiaomi.auth.XiaomiAuthResult
 import com.unified.health.driver.xiaomi.auth.XiaomiAuthenticator
 import com.unified.health.driver.xiaomi.auth.XiaomiBindProbe
+import com.unified.health.driver.xiaomi.proto.FitnessDataId
 import com.unified.health.driver.xiaomi.proto.Ha0
 import com.unified.health.driver.xiaomi.sync.XiaomiFitnessSync
 import com.unified.health.driver.xiaomi.transport.XiaomiLink
@@ -90,7 +94,7 @@ class XiaomiDriverTest {
     }
 
     private class FakeFitnessSync : XiaomiFitnessSync {
-        override suspend fun sync(link: XiaomiLink, sink: HealthRecordSink, progress: SyncProgress, since: Instant?): Int = 0
+        override suspend fun sync(link: XiaomiLink, sink: HealthRecordSink, progress: SyncProgress, request: SyncRequest): Int = 0
     }
 
     /** A link whose notification setup never completes, to exercise the whole-handshake deadline. */
@@ -286,5 +290,51 @@ class XiaomiDriverTest {
             assertTrue(e.message!!.contains("120 s"))
             assertTrue(e.message!!.contains("handshake"))
         }
+    }
+
+    @Test
+    fun `reprocess recovers a daily report from a stored fitness RawPayload`() = runTest {
+        val id = FitnessDataId(
+            timestampSeconds = 1_700_000_040L,
+            timezone15min = 0,
+            version = 2,
+            dataType = FitnessDataId.DATA_TYPE_DAILY,
+            subType = 0,
+            fileType = 1,
+        )
+        val dataValid = byteArrayOf(0x80.toByte(), 0x00) // steps valid only
+        val body = byteArrayOf(0x40, 0x1F, 0x00, 0x00, 0, 0, 0, 0) // steps=8000, calories/curHr/restHr unused
+        val payload = byteArrayOf(0) + dataValid + body
+        val stored = HealthRecord.RawPayload(WearableVendor.XIAOMI, "daily_report", null, id.encode() + payload)
+
+        val records = plainDriver().reprocess(stored)
+
+        assertEquals(8_000, records.filterIsInstance<HealthRecord.DailyActivity>().single().steps)
+    }
+
+    @Test
+    fun `reprocess ignores other vendors`() = runTest {
+        assertTrue(plainDriver().reprocess(HealthRecord.RawPayload(WearableVendor.GARMIN, "daily_report", null, ByteArray(0))).isEmpty())
+    }
+
+    @Test
+    fun `reprocess has nothing to recover for a kind this driver does not parse`() = runTest {
+        // dataType=1 (sport), sportType=6 -> FitnessKind.of falls back to "fitness_1_6_0", which
+        // FitnessPayloadDecoder.decode has no parser for (protocol brief's scoped M4).
+        val sportId = FitnessDataId(
+            timestampSeconds = 1_700_000_040L,
+            timezone15min = 0,
+            version = 1,
+            dataType = FitnessDataId.DATA_TYPE_SPORT,
+            subType = 6,
+            fileType = 0,
+        )
+        val stored = HealthRecord.RawPayload(WearableVendor.XIAOMI, "fitness_1_6_0", null, sportId.encode() + byteArrayOf(1, 2, 3))
+        assertTrue(plainDriver().reprocess(stored).isEmpty())
+    }
+
+    @Test
+    fun `reprocess on bytes too short for a FitnessDataId decodes nothing`() = runTest {
+        assertTrue(plainDriver().reprocess(HealthRecord.RawPayload(WearableVendor.XIAOMI, "daily_report", null, ByteArray(3))).isEmpty())
     }
 }

@@ -105,4 +105,12 @@ internal class FakeMiWearWatch(
     private fun notifyFrame(frame: ByteArray) {
         XiaomiL0.chunk(frame, gatt.maxWriteLength).forEach { gatt.notify(notify, it) }
     }
+
+    /**
+     * Pushes one unsolicited L2 frame on [channel]/[opCode], e.g. a channel-5 fitness-file
+     * segment -- unlike [onRequest]'s answers, this is not tied to anything the phone wrote.
+     */
+    fun pushChannelFrame(channel: Int, opCode: Int, payload: ByteArray) {
+        notifyFrame(L1Frame.encode(L1Frame.TYPE_DATA, seq = nextWatchSeq++, payload = L2Frame.encode(channel, opCode, payload)))
+    }
 }

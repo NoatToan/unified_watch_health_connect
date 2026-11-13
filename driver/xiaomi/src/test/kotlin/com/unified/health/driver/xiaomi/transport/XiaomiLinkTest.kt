@@ -1,13 +1,16 @@
 package com.unified.health.driver.xiaomi.transport
 
 import com.unified.health.core.ble.driver.WearableProtocolException
+import com.unified.health.core.ble.protocol.bytesOf
 import com.unified.health.driver.xiaomi.FakeMiWearWatch
+import com.unified.health.driver.xiaomi.XiaomiChannel
 import com.unified.health.driver.xiaomi.proto.ProtoWriter
 import com.unified.health.driver.xiaomi.proto.S7r
 import com.unified.health.driver.xiaomi.proto.Txo
 import com.unified.health.driver.xiaomi.proto.Vwo
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
@@ -121,6 +124,49 @@ class XiaomiLinkTest {
         link.send(S7r.CLASS_SYSTEM, 3, byteArrayOf(1, 2, 3))
 
         assertEquals(1, watch.received.count { it.e == S7r.CLASS_SYSTEM && it.f == 3 })
+    }
+
+    @Test
+    fun `receiveRaw returns an unprompted channel-5 push without writing anything`() = runTest {
+        val watch = FakeMiWearWatch()
+        val link = buildLink(watch)
+        link.start()
+
+        val type = requireNotNull(L2Frame.typeFor(XiaomiChannel.FILE_FITNESS.id, XiaomiOpCode.WRITE))
+        watch.pushChannelFrame(XiaomiChannel.FILE_FITNESS.id, XiaomiOpCode.WRITE, bytesOf(1, 0, 1, 0, 42))
+
+        val payload = link.receiveRaw(type, timeoutMs = 5_000)
+
+        assertArrayEquals(bytesOf(1, 0, 1, 0, 42), payload)
+    }
+
+    @Test
+    fun `receiveRaw delivers two pushes to two sequential calls in order`() = runTest {
+        val watch = FakeMiWearWatch()
+        val link = buildLink(watch)
+        link.start()
+        val type = requireNotNull(L2Frame.typeFor(XiaomiChannel.FILE_FITNESS.id, XiaomiOpCode.WRITE))
+
+        watch.pushChannelFrame(XiaomiChannel.FILE_FITNESS.id, XiaomiOpCode.WRITE, bytesOf(1))
+        watch.pushChannelFrame(XiaomiChannel.FILE_FITNESS.id, XiaomiOpCode.WRITE, bytesOf(2))
+
+        assertArrayEquals(bytesOf(1), link.receiveRaw(type, timeoutMs = 5_000))
+        assertArrayEquals(bytesOf(2), link.receiveRaw(type, timeoutMs = 5_000))
+    }
+
+    @Test
+    fun `receiveRaw times out when nothing arrives`() = runTest {
+        val watch = FakeMiWearWatch()
+        val link = buildLink(watch)
+        link.start()
+        val type = requireNotNull(L2Frame.typeFor(XiaomiChannel.FILE_FITNESS.id, XiaomiOpCode.WRITE))
+
+        try {
+            link.receiveRaw(type, timeoutMs = 1_000)
+            fail("expected WearableProtocolException")
+        } catch (e: WearableProtocolException) {
+            assertTrue(e.message!!.contains("did not send"))
+        }
     }
 
     @Test
