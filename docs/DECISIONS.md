@@ -4625,3 +4625,38 @@ byte-level parser đều **Tạm**, chờ user tự verify trên Xiaomi Smart Ba
   `authenticateV2` (reauth, không phải first-bind) sẽ chạy, không đi qua `probeBindMode`/local-bind
   nữa. Việc tự động hoá bước "đọc token từ Mi Fitness" (nếu muốn) là việc mới, chưa có trong scope
   M0-M6 hiện tại — cần quyết định product-level riêng trước khi giao agent.
+
+## Cloud OAuth (Garmin / Huawei / Xiaomi): research xong, chưa code (D-1223)
+
+- **D-1223** · 2026-11-13 · Sản phẩm / hạ tầng: luồng dữ liệu thứ hai qua cloud của hãng (OAuth). **Tạm**
+  (mới research, chưa bắt đầu code, chờ Tony quyết)
+
+  Tony muốn thêm đường lấy dữ liệu thứ hai: user đăng nhập OAuth vào tài khoản cloud của hãng (Garmin
+  Connect, Huawei Health, Xiaomi/Mi Fitness), không qua BLE. Đã research live (2026-11-13). Toàn bộ
+  checklist setup và kế hoạch nằm ở `Tony_toto.md` (root repo).
+
+  Kết luận từng hãng: **Garmin**: khả thi, nên làm trước. Connect Developer Program đã mở lại
+  2026-10-21 với 3 tier. Tier Starter miễn phí, giới hạn khoảng 1.000 user, **chỉ push, không có dữ
+  liệu lịch sử**. OAuth 2.0 PKCE, không có scope. **Huawei**: khả thi nhưng tốn công. Health Kit có
+  REST cloud (OAuth qua HUAWEI ID), nhưng developer cá nhân chỉ lấy được dữ liệu basic
+  (bước/quãng đường/calo). HR/giấc ngủ/SpO2 cần tài khoản doanh nghiệp, review thủ công khoảng 10-15
+  ngày làm việc. **Xiaomi**: không khả thi theo đường chính thức. Có "小米运动健康云服务"
+  (`hlthopen.io.mi.com`), nhưng chỉ mở cho doanh nghiệp hệ sinh thái/đối tác và chỉ hỗ trợ Trung Quốc
+  đại lục. Đường không chính thức (đăng nhập bằng mật khẩu Xiaomi vào API riêng) trái D-004 và ToS,
+  khuyến nghị không làm. Thay vào đó giữ driver BLE, có thể thêm tính năng *đọc* Health Connect
+  (Mi Fitness có sync vào Health Connect).
+
+  **Mâu thuẫn với D-001/D-803**: mọi đường cloud đều cần backend. Client secret không được nằm trong
+  APK, và Garmin Starter chỉ push tới URL HTTPS public. Đây là hạ tầng mới, không chỉ là một module
+  Android. Tony phải chốt việc sửa D-001/D-803 trước M0 (backend relay OAuth + outbox, token chỉ lưu
+  trên server). Thứ tự dự kiến: M0 backend skeleton, M1 Garmin, M2 Huawei, M3 Xiaomi chỉ qua
+  Health Connect read. Secret do Tony giữ ngoài repo, không dán vào chat hay commit.
+
+  **Huawei — không thể bỏ qua AppGallery** (`Tony_toto.md` §3.1, `[Reported]`): tài liệu Huawei Health
+  Service Kit nói thẳng "nếu app chưa release trên AppGallery, hoặc không phải mobile app, dữ liệu
+  Health Service Kit sẽ không mở cho app đó" đối với developer cá nhân. Build app Android rồi chỉ đẩy
+  lên Play Store **không đủ** để mở quyền Health Kit cloud — vẫn cần: (1) một project trong AppGallery
+  Connect để tạo OAuth client (App ID/App secret, Client ID/Secret) — bước này tách biệt với việc
+  public listing; và (2) với tier cá nhân, có khả năng còn phải thực sự release app trên AppGallery
+  (không chỉ Play Store) để Huawei mở dữ liệu. Đây là gotcha thêm cho M2 (Huawei) trong §5.5, chưa
+  tính vào milestone trước đó.
