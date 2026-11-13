@@ -40,12 +40,19 @@ private fun <T> ReceiveChannel<T>.discardBuffered() {
  *
  * [encrypt]/[decrypt] default to identity (plaintext); the session installs the real AES-CTR
  * functions once the handshake derives the session keys (protocol §4 [V]; see `XiaomiL2.kt`).
+ *
+ * @param plaintextPostAuth MiWear V1 only (protocol §6.2 [V], `BleTaskQueueV1.getDataType()`):
+ *  V1 never installs session crypto, and the real app is careful to never tag a V1 frame with
+ *  [XiaomiOpCode.WRITE_ENC] either -- every [request]/[send] call, not only the pre-auth ones,
+ *  stays on the plain [L2Frame.TYPE_PB_PLAINTEXT]/[XiaomiOpCode.WRITE] type. `false` (the default)
+ *  reproduces this class's original V2-only behaviour exactly.
  */
 internal class XiaomiLink(
     private val gatt: GattClient,
     private val writeCharacteristic: GattCharacteristic,
     private val notifyCharacteristic: GattCharacteristic,
     private val scope: CoroutineScope,
+    private val plaintextPostAuth: Boolean = false,
     private val clock: () -> Long = System::currentTimeMillis,
 ) {
     private val l1 = XiaomiL1()
@@ -104,7 +111,8 @@ internal class XiaomiLink(
      */
     suspend fun request(e: Int, f: Int, payload: ByteArray? = null, timeoutMs: Long = DEFAULT_REQUEST_TIMEOUT_MS): S7r {
         val requestBytes = S7r.request(e, f, payload).encode()
-        val responseBytes = requestRaw(L2Frame.TYPE_PB_ENCRYPTED, requestBytes, timeoutMs)
+        val type = if (plaintextPostAuth) L2Frame.TYPE_PB_PLAINTEXT else L2Frame.TYPE_PB_ENCRYPTED
+        val responseBytes = requestRaw(type, requestBytes, timeoutMs)
         val response = S7r.decode(responseBytes)
         if (response.e != e || response.f != f) {
             throw WearableProtocolException(
@@ -169,8 +177,9 @@ internal class XiaomiLink(
     suspend fun send(e: Int, f: Int, payload: ByteArray? = null) {
         check(started) { "XiaomiLink.start() must be called before send()" }
         val requestBytes = S7r.request(e, f, payload).encode()
+        val opCode = if (plaintextPostAuth) XiaomiOpCode.WRITE else XiaomiOpCode.WRITE_ENC
         channelLock(XiaomiChannel.PROTOBUF.id).withLock {
-            sendData(L2Frame.encode(XiaomiChannel.PROTOBUF.id, XiaomiOpCode.WRITE_ENC, requestBytes, encrypt))
+            sendData(L2Frame.encode(XiaomiChannel.PROTOBUF.id, opCode, requestBytes, encrypt))
         }
     }
 

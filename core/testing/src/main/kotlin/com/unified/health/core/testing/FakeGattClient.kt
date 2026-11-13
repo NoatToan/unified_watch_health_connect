@@ -50,6 +50,19 @@ class FakeGattClient(
     /** Scripted watch behaviour, invoked synchronously for each write. */
     var onWrite: suspend (GattCharacteristic, ByteArray) -> Unit = { _, _ -> }
 
+    /** Result [ensureBonded] returns; scripts a mid-session bond request (e.g. Xiaomi MiWear V1). */
+    var bondResult: Boolean = true
+
+    /** Number of times [ensureBonded] was called; lets a test assert a driver did (not) request one. */
+    var ensureBondedCalls: Int = 0
+        private set
+
+    override suspend fun ensureBonded(): Boolean {
+        ensureConnected()
+        ensureBondedCalls++
+        return bondResult
+    }
+
     override fun hasService(service: UUID): Boolean = characteristics.any { it.service == service }
 
     override fun findCharacteristic(characteristic: UUID, service: UUID?): GattCharacteristic? =

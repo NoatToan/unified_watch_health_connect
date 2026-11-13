@@ -64,9 +64,18 @@ internal interface XiaomiAuthenticator {
     ): XiaomiAuthResult
 
     /**
-     * V1 (protocol version 0) auth: OS bond + `CMD_SEND_USERID` (protocol §6.2 [V]). Core BLE-bond
-     * support does not exist in this app yet, so until then this throws
-     * [com.unified.health.core.ble.driver.UnsupportedDeviceException] with an actionable message.
+     * V1 (protocol version 0) session auth: `CMD_SEND_USERID` (protocol §6.2 [V], `WearAuthV1`).
+     * The caller ([com.unified.health.driver.xiaomi.XiaomiDriver.doOpenSession]) must already have
+     * created the mandatory OS bond before calling this -- that is a GATT-level, pre-[link]-start
+     * step owned by the driver, not this method. No token, no HKDF/AES: traffic stays plaintext
+     * after the bond, so a successful call does not install [link]'s `encrypt`/`decrypt` hooks.
+     *
+     * @param credentials reads `xiaomi.user_id`: the identity this watch must already know (e.g.
+     *  imported from a prior Mi Fitness bind). V1 first-time bind (`WearBinderV1`, protocol §7.4)
+     *  needs a cloud bind key this app does not fetch (D-1193) and is out of scope here.
+     * @throws com.unified.health.core.ble.driver.MissingCredentialException if no user id is stored.
+     * @throws com.unified.health.core.ble.driver.AuthenticationException if the watch reports the
+     *  identity is not bound (error code 4) or otherwise rejects/does not confirm the request.
      */
     suspend fun authenticateV1(link: XiaomiLink, credentials: CredentialReader): XiaomiAuthResult
 }

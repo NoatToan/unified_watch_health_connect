@@ -25,6 +25,9 @@ internal data class T7r(val msgId: Int, val q90: ByteArray? = null) {
         /** `CMD_AUTH`: step 3, `sendAppConfirm` (protocol §6.1 [V]). */
         const val CMD_AUTH = 27
 
+        /** `CMD_SEND_USERID`: V1's only auth message (protocol §6.2 [V], `WearAuthV1.e()`). */
+        const val CMD_SEND_USERID = 5
+
         private const val FIELD_CONST = 1
         private const val FIELD_MSG_ID = 2
         private const val FIELD_Q90 = 3

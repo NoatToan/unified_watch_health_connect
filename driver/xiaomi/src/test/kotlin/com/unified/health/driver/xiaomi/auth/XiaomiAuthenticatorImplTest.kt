@@ -34,11 +34,12 @@ import org.junit.Assert.fail
 import org.junit.Test
 
 /**
- * Scripts a [FakeMiWearWatch] through the M2 handshakes: the bind probe (protocol §7.1 [V]), the
- * full V2 session-auth nonce exchange (protocol §6.1 [V]) and the full no-cloud local bind
- * (protocol §7.2 [V]), plus one failure path for each. Unlike [XiaomiLinkTest]'s fixed-payload
- * scripts, every response here is *computed* from the real request bytes -- these handshakes are
- * nonce-based, so a canned response would not exercise the actual crypto.
+ * Scripts a [FakeMiWearWatch] through the M2/M6 handshakes: the bind probe (protocol §7.1 [V]),
+ * the full V2 session-auth nonce exchange (protocol §6.1 [V]), the full no-cloud local bind
+ * (protocol §7.2 [V]) and V1's plaintext `CMD_SEND_USERID` (protocol §6.2 [V]), plus failure paths
+ * for each. Unlike [XiaomiLinkTest]'s fixed-payload scripts, every V2/local-bind response here is
+ * *computed* from the real request bytes -- those handshakes are nonce-based, so a canned response
+ * would not exercise the actual crypto; V1 has no crypto to exercise, so its responses are canned.
  */
 class XiaomiAuthenticatorImplTest {
 
@@ -314,5 +315,105 @@ class XiaomiAuthenticatorImplTest {
             assertTrue(e.message!!.contains("declined"))
         }
         assertFalse(sharedKeyOnWatch == null) // sanity: the ECDH step did run
+    }
+
+    // ===== authenticateV1 (protocol §6.2 [V]) =====
+
+    @Test
+    fun `authenticateV1 sends the stored user id and succeeds on a true success flag`() = runTest {
+        val watch = FakeMiWearWatch()
+        var sentUserId: String? = null
+        watch.onRequest(S7r.CLASS_BIND, T7r.CMD_SEND_USERID) { s7r ->
+            sentUserId = checkNotNull(decodeFirstBytesField(checkNotNull(s7r.p90), Q90.FIELD_USER_ID)).toString(Charsets.UTF_8)
+            S7r(e = S7r.CLASS_BIND, f = T7r.CMD_SEND_USERID, p90 = Q90(success = true).encode()).encode()
+        }
+        val link = buildLink(watch)
+        link.start()
+
+        val result = XiaomiAuthenticatorImpl().authenticateV1(link, credentials(XiaomiDriver.USER_ID.key to "mi-fitness-user-1".toByteArray()))
+
+        assertEquals("mi-fitness-user-1", sentUserId)
+        assertEquals(null, result.token) // V1 has no token/HKDF exchange to produce one
+    }
+
+    @Test
+    fun `authenticateV1 surfaces error code 4 as an actionable not-bound message`() = runTest {
+        val watch = FakeMiWearWatch()
+        watch.onRequest(S7r.CLASS_BIND, T7r.CMD_SEND_USERID) {
+            S7r(e = S7r.CLASS_BIND, f = T7r.CMD_SEND_USERID, p90 = Q90(errorCode = Q90.ERROR_NOT_BOUND).encode()).encode()
+        }
+        val link = buildLink(watch)
+        link.start()
+
+        try {
+            XiaomiAuthenticatorImpl().authenticateV1(link, credentials(XiaomiDriver.USER_ID.key to "user".toByteArray()))
+            fail("expected AuthenticationException")
+        } catch (e: AuthenticationException) {
+            assertTrue(e.message!!.contains("not bound"))
+            assertTrue(e.message!!.contains("Mi Fitness"))
+        }
+    }
+
+    @Test
+    fun `authenticateV1 surfaces a generic error code`() = runTest {
+        val watch = FakeMiWearWatch()
+        watch.onRequest(S7r.CLASS_BIND, T7r.CMD_SEND_USERID) {
+            S7r(e = S7r.CLASS_BIND, f = T7r.CMD_SEND_USERID, p90 = Q90(errorCode = 99).encode()).encode()
+        }
+        val link = buildLink(watch)
+        link.start()
+
+        try {
+            XiaomiAuthenticatorImpl().authenticateV1(link, credentials(XiaomiDriver.USER_ID.key to "user".toByteArray()))
+            fail("expected AuthenticationException")
+        } catch (e: AuthenticationException) {
+            assertTrue(e.message!!.contains("99"))
+        }
+    }
+
+    @Test
+    fun `authenticateV1 rejects a reply with neither a success flag nor an error code`() = runTest {
+        val watch = FakeMiWearWatch()
+        watch.onRequest(S7r.CLASS_BIND, T7r.CMD_SEND_USERID) {
+            S7r(e = S7r.CLASS_BIND, f = T7r.CMD_SEND_USERID, p90 = Q90().encode()).encode()
+        }
+        val link = buildLink(watch)
+        link.start()
+
+        try {
+            XiaomiAuthenticatorImpl().authenticateV1(link, credentials(XiaomiDriver.USER_ID.key to "user".toByteArray()))
+            fail("expected AuthenticationException")
+        } catch (e: AuthenticationException) {
+            assertTrue(e.message!!.contains("did not confirm"))
+        }
+    }
+
+    @Test
+    fun `authenticateV1 throws MissingCredentialException when no user id is stored`() = runTest {
+        val watch = FakeMiWearWatch()
+        val link = buildLink(watch)
+        link.start()
+
+        try {
+            XiaomiAuthenticatorImpl().authenticateV1(link, CredentialReader { null })
+            fail("expected MissingCredentialException")
+        } catch (e: MissingCredentialException) {
+            assertEquals(XiaomiDriver.USER_ID, e.requirement)
+        }
+    }
+
+    @Test
+    fun `authenticateV1 times out when the watch never answers`() = runTest {
+        val watch = FakeMiWearWatch()
+        watch.onRequest(S7r.CLASS_BIND, T7r.CMD_SEND_USERID) { null }
+        val link = buildLink(watch)
+        link.start()
+
+        try {
+            XiaomiAuthenticatorImpl().authenticateV1(link, credentials(XiaomiDriver.USER_ID.key to "user".toByteArray()))
+            fail("expected WearableProtocolException")
+        } catch (e: WearableProtocolException) {
+            assertTrue(e.message!!.contains("did not answer"))
+        }
     }
 }

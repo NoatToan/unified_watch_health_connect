@@ -62,6 +62,28 @@ interface GattClient {
     /** Disconnects and releases the link. Idempotent, never throws. */
     suspend fun close()
 
+    /**
+     * Creates (or confirms) an OS-level bond with the already-connected device, for a driver that
+     * only learns bonding is required *after* inspecting a device-reported value post-connect
+     * (e.g. a protocol-version characteristic) rather than upfront via
+     * [com.unified.health.core.ble.driver.LinkRequirements.bond]. Complements, but does not
+     * replace, that pre-connect flag: most drivers know whether they need a bond before connecting
+     * and should keep using [com.unified.health.core.ble.driver.LinkRequirements.bond] for that --
+     * this exists for the rarer case where the decision can only be made mid-handshake (see
+     * `driver/xiaomi`'s MiWear V1 vs V2 detection for the motivating example).
+     *
+     * @return true once bonded (including when already bonded before this call), false if bonding
+     *   failed, was rejected on the watch, timed out, or is not supported by this [GattClient].
+     *   Never throws for a plain pairing failure -- callers decide how to react (e.g. an actionable
+     *   [com.unified.health.core.ble.driver.AuthenticationException]).
+     *
+     * Default: unsupported, always `false`. Only `AndroidGattClient` implements a real bond here;
+     * demo/virtual [GattClient]s keep this default. [com.unified.health.core.testing.FakeGattClient]
+     * overrides it with a settable `bondResult` (default `true`) so a driver test can script either
+     * outcome.
+     */
+    suspend fun ensureBonded(): Boolean = false
+
     companion object {
         const val DEFAULT_MTU = 23
         const val ATT_HEADER_SIZE = 3

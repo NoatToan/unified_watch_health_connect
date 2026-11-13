@@ -11,6 +11,7 @@ import android.bluetooth.BluetoothStatusCodes
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import com.unified.health.core.ble.pairing.PairingCodeRequester
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.Channel
@@ -35,6 +36,8 @@ import java.util.concurrent.ConcurrentHashMap
 internal class AndroidGattClient private constructor(
     private val device: BluetoothDevice,
     private val options: GattOptions,
+    private val context: Context,
+    private val pairingCodes: PairingCodeRequester,
 ) : GattClient {
 
     override val address: String = device.address
@@ -126,7 +129,7 @@ internal class AndroidGattClient private constructor(
         gatt = null
     }
 
-    private suspend fun open(context: Context, timeoutMs: Long) {
+    private suspend fun open(timeoutMs: Long) {
         val waiter = CompletableDeferred<Unit>()
         connectWaiter = waiter
         val link = device.connectGatt(context, false, callback, BluetoothDevice.TRANSPORT_LE)
@@ -267,6 +270,30 @@ internal class AndroidGattClient private constructor(
         onLinkLost()
     }
 
+    /**
+     * Mid-session OS bond, for a driver that only learns bonding is required after inspecting a
+     * device-reported value post-connect (protocol version char, product id, ...) rather than
+     * upfront via [com.unified.health.core.ble.driver.LinkRequirements.bond] -- see
+     * [GattClient.ensureBonded]'s KDoc and [createBondAndAwait]. Never throws for a plain pairing
+     * failure (rejected, cancelled, timed out): those become `false`, logged, so the caller can
+     * turn them into its own actionable error. A revoked runtime permission is different -- that is
+     * not "the watch said no", so it is rethrown as [BluetoothUnavailableException].
+     */
+    override suspend fun ensureBonded(): Boolean {
+        if (device.bondState == BluetoothDevice.BOND_BONDED) return true
+        return try {
+            createBondAndAwait(context, device, pairingCodes)
+            true
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: SecurityException) {
+            throw BluetoothUnavailableException("Bluetooth permission was revoked", e)
+        } catch (e: GattException) {
+            Log.w(TAG, "Mid-session bond with $address failed: ${e.message}")
+            false
+        }
+    }
+
     private fun native(gatt: BluetoothGatt, characteristic: GattCharacteristic): BluetoothGattCharacteristic =
         gatt.getService(characteristic.service)?.getCharacteristic(characteristic.uuid)
             ?: throw GattException("Characteristic ${characteristic.uuid} not found in ${characteristic.service}")
@@ -315,8 +342,13 @@ internal class AndroidGattClient private constructor(
     companion object {
         private const val TAG = "AndroidGattClient"
 
-        suspend fun connect(context: Context, device: BluetoothDevice, options: GattOptions): AndroidGattClient =
-            AndroidGattClient(device, options).also { it.open(context, options.connectTimeoutMs) }
+        suspend fun connect(
+            context: Context,
+            device: BluetoothDevice,
+            options: GattOptions,
+            pairingCodes: PairingCodeRequester,
+        ): AndroidGattClient =
+            AndroidGattClient(device, options, context, pairingCodes).also { it.open(options.connectTimeoutMs) }
     }
 }
 

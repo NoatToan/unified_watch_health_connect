@@ -6,7 +6,6 @@ import com.unified.health.core.ble.driver.AuthenticationException
 import com.unified.health.core.ble.driver.CredentialReader
 import com.unified.health.core.ble.driver.CredentialWriter
 import com.unified.health.core.ble.driver.MissingCredentialException
-import com.unified.health.core.ble.driver.UnsupportedDeviceException
 import com.unified.health.core.ble.driver.WearableProtocolException
 import com.unified.health.driver.xiaomi.XiaomiDriver
 import com.unified.health.driver.xiaomi.crypto.aesCcmEncrypt
@@ -40,10 +39,13 @@ import java.security.SecureRandom
 import javax.inject.Inject
 
 /**
- * [XiaomiAuthenticator] for MiWear V2: the `getBindInfo` probe (protocol §7.1 [V]), the
- * token+nonce session auth (`WearAuthV2`, protocol §6.1 [V]) and the no-cloud ECDH local bind
- * (`LocalWearBinderV2`, protocol §7.2 [V]). PSK/cloud bind (§7.3) and V1 (§6.2) stay out of scope
- * (D-1193, [authenticateV1]).
+ * [XiaomiAuthenticator] for MiWear V2 and V1: the `getBindInfo` probe (protocol §7.1 [V]), the
+ * token+nonce session auth (`WearAuthV2`, protocol §6.1 [V]), the no-cloud ECDH local bind
+ * (`LocalWearBinderV2`, protocol §7.2 [V]) and V1's `CMD_SEND_USERID` session auth (`WearAuthV1`,
+ * protocol §6.2 [V], [authenticateV1]). V2's PSK/cloud bind (§7.3) and V1's cloud bind
+ * (`WearBinderV1`, §7.4) both need a cloud bind key this app does not fetch and stay out of scope
+ * (D-1193) -- V1 support here is therefore reauth-only, for a watch already bound through Mi
+ * Fitness; see [authenticateV1]'s KDoc.
  *
  * Every pre-auth exchange (bind probe, both auth messages, every local-bind step) is `s7r`/`t7r`
  * framed over [XiaomiLink]'s plaintext primitive, [L2Frame.TYPE_PB_PLAINTEXT]
@@ -213,14 +215,47 @@ internal class XiaomiAuthenticatorImpl internal constructor(
         return XiaomiAuthResult(token = bindKeys.token, appDeviceId = appDeviceId)
     }
 
+    /**
+     * V1's only auth message, `CMD_SEND_USERID` (protocol §6.2 [V], `WearAuthV1.e()`): a plaintext
+     * `t7r{msgId=5}`/`q90{userId}` round trip over the same channel-1 plaintext primitive V2's
+     * pre-auth messages use ([XiaomiLink.requestRaw] with [L2Frame.TYPE_PB_PLAINTEXT]) -- V1 never
+     * installs session crypto (`link.encrypt`/`link.decrypt` stay identity), matching the doc's
+     * "no token/HKDF/AES exchange on the version-0 path; traffic remains plaintext after the OS
+     * bond". The OS bond itself ([XiaomiAuthenticator]'s contract requires it to already be in
+     * place by the time this runs, protocol §6.2 step 1) is [XiaomiDriver.doOpenSession]'s job, via
+     * [com.unified.health.core.ble.gatt.GattClient.ensureBonded] -- not this method's.
+     *
+     * [credentials]' `xiaomi.user_id` must be the identity this watch actually knows: V1 binding
+     * (`WearBinderV1`, protocol §7.4) needs a cloud bind key this app does not fetch (D-1193, same
+     * scope line as V2's PSK/cloud bind), so first-time V1 pairing is not supported here. A watch
+     * already bound through Mi Fitness can still be used by pasting *that* userId (extracted from
+     * Mi Fitness, not the random id this app would otherwise auto-generate) as the credential --
+     * the auto-generated default simply fails with [Q90.ERROR_NOT_BOUND] below, which is this
+     * method's only real failure mode.
+     */
     override suspend fun authenticateV1(link: XiaomiLink, credentials: CredentialReader): XiaomiAuthResult {
-        throw UnsupportedDeviceException(
-            "This watch uses the legacy MiWear V1 protocol, which needs an OS-level Bluetooth bond. " +
-                "Unified Health's BLE layer does not support creating that bond yet, so V1 devices " +
-                "(some Mi Band 8 units, Redmi Watch 2 Lite, Xiaomi Watch S1 Active) cannot be added yet. " +
-                "MiWear V2 devices (Xiaomi Smart Band 8/9/10, Redmi Watch 3/4/5, Xiaomi Watch S1/S2/S3/S4 " +
-                "non-Wear-OS) are fully supported.",
-        )
+        val userId = credentials.get(XiaomiDriver.USER_ID.key)?.toString(Charsets.UTF_8)?.takeIf { it.isNotEmpty() }
+            ?: throw MissingCredentialException(XiaomiDriver.USER_ID)
+        val reply = authRequest(link, T7r.CMD_SEND_USERID, Q90(userId = userId), SEND_USERID_TIMEOUT_MS)
+        reply.errorCode?.let { throwSendUserIdError(it) }
+        if (reply.success != true) {
+            throw AuthenticationException("Xiaomi watch did not confirm CMD_SEND_USERID (no success flag in its reply)")
+        }
+        Log.i(TAG, "V1 session auth (CMD_SEND_USERID) succeeded")
+        return XiaomiAuthResult()
+    }
+
+    /** Code 4 = not bound under this identity (protocol §6.2 [V]); every other code is generic. */
+    private fun throwSendUserIdError(code: Int): Nothing {
+        if (code == Q90.ERROR_NOT_BOUND) {
+            throw AuthenticationException(
+                "Xiaomi watch reports this identity is not bound (error code 4). MiWear V1 devices can only be " +
+                    "added here if already bound through Mi Fitness: extract the account user id Mi Fitness used " +
+                    "(e.g. from its own log via adb) and paste it as the Xiaomi local user id, then retry. This " +
+                    "app cannot perform a first-time V1 bind -- that needs a cloud bind key (protocol §7.4).",
+            )
+        }
+        throw AuthenticationException("Xiaomi watch rejected CMD_SEND_USERID (error code $code)")
     }
 
     // ---- pre-auth plaintext request/response wrappers (protocol §6.1/§7.2 [V], both over
@@ -327,5 +362,8 @@ internal class XiaomiAuthenticatorImpl internal constructor(
         const val OOB_CONFIRM_TIMEOUT_MS = 30_000L
 
         const val AUTH_REQUEST_TIMEOUT_MS = 10_000L
+
+        /** `WearAuthV1.e()`'s own timeout for `CMD_SEND_USERID` (protocol §6.2 [V]). */
+        const val SEND_USERID_TIMEOUT_MS = 15_000L
     }
 }

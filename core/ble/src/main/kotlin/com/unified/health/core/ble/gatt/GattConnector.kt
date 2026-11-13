@@ -5,24 +5,14 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
-import androidx.core.content.IntentCompat
 import com.unified.health.core.ble.pairing.PairingCodeRequester
-import com.unified.health.core.model.PairingCodeRequest
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -96,7 +86,7 @@ internal class AndroidGattConnector @Inject constructor(
         try {
             if (bond) {
                 try {
-                    ensureBonded(device)
+                    createBondAndAwait(context, device, pairingCodes)
                 } catch (e: Exception) {
                     if (!bondOptional) throw e
                     Log.w(TAG, "OS bond with $address failed; continuing unbonded for app-level auth", e)
@@ -116,82 +106,13 @@ internal class AndroidGattConnector @Inject constructor(
     private suspend fun connectWithRetry(device: BluetoothDevice, options: GattOptions): GattClient {
         repeat(CONNECT_ATTEMPTS - 1) { attempt ->
             try {
-                return AndroidGattClient.connect(context, device, options)
+                return AndroidGattClient.connect(context, device, options, pairingCodes)
             } catch (e: GattException) {
                 Log.w(TAG, "Connect attempt ${attempt + 1} to ${device.address} failed: ${e.message}")
                 delay(RETRY_DELAY_MS)
             }
         }
-        return AndroidGattClient.connect(context, device, options)
-    }
-
-    /**
-     * Creates an OS bond and waits for the result. When the watch shows a PIN/passkey, the code is asked
-     * in-app and handed to the stack; other pairing variants fall back to the system dialog.
-     */
-    private suspend fun ensureBonded(device: BluetoothDevice) = coroutineScope {
-        if (device.bondState == BluetoothDevice.BOND_BONDED) return@coroutineScope
-        val result = CompletableDeferred<Boolean>()
-        val codeRequests = Channel<Int>(Channel.UNLIMITED)
-        val bondReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                val changed = IntentCompat.getParcelableExtra(intent, BluetoothDevice.EXTRA_DEVICE, BluetoothDevice::class.java)
-                if (changed?.address != device.address) return
-                when (intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR)) {
-                    BluetoothDevice.BOND_BONDED -> result.complete(true)
-                    BluetoothDevice.BOND_NONE -> result.complete(false)
-                }
-            }
-        }
-        val pairingReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                val target = IntentCompat.getParcelableExtra(intent, BluetoothDevice.EXTRA_DEVICE, BluetoothDevice::class.java)
-                if (target?.address != device.address) return
-                val maxLength = when (intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_VARIANT, BluetoothDevice.ERROR)) {
-                    BluetoothDevice.PAIRING_VARIANT_PIN -> PASSKEY_LENGTH
-                    PAIRING_VARIANT_PIN_16_DIGITS -> PIN_16_LENGTH
-                    else -> return
-                }
-                if (isOrderedBroadcast) abortBroadcast() // Keep the system dialog from covering ours.
-                codeRequests.trySend(maxLength)
-            }
-        }
-        val codeJob = launch {
-            for (maxLength in codeRequests) {
-                val code = pairingCodes.requestCode(
-                    PairingCodeRequest(deviceName = device.name ?: device.address, address = device.address, maxLength = maxLength),
-                )
-                if (code == null) result.complete(false) else device.setPin(code.toByteArray(Charsets.UTF_8))
-            }
-        }
-        ContextCompat.registerReceiver(
-            context,
-            bondReceiver,
-            IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED),
-            ContextCompat.RECEIVER_EXPORTED, // System broadcast.
-        )
-        ContextCompat.registerReceiver(
-            context,
-            pairingReceiver,
-            IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST).apply { priority = PAIRING_RECEIVER_PRIORITY },
-            ContextCompat.RECEIVER_EXPORTED, // System broadcast.
-        )
-        try {
-            if (device.bondState == BluetoothDevice.BOND_BONDED) return@coroutineScope
-            if (device.bondState != BluetoothDevice.BOND_BONDING && !device.createBond()) {
-                throw GattException("Could not start pairing with ${device.address}")
-            }
-            when (withTimeoutOrNull(BOND_TIMEOUT_MS) { result.await() }) {
-                true -> Unit
-                false -> throw GattException("Pairing was rejected or cancelled")
-                null -> throw GattException("Pairing timed out")
-            }
-        } finally {
-            context.unregisterReceiver(pairingReceiver)
-            context.unregisterReceiver(bondReceiver)
-            codeRequests.close()
-            codeJob.cancel()
-        }
+        return AndroidGattClient.connect(context, device, options, pairingCodes)
     }
 
     private fun requireConnectPermission() {
@@ -206,10 +127,5 @@ internal class AndroidGattConnector @Inject constructor(
         const val TAG = "AndroidGattConnector"
         const val CONNECT_ATTEMPTS = 2
         const val RETRY_DELAY_MS = 600L
-        const val BOND_TIMEOUT_MS = 60_000L
-        const val PASSKEY_LENGTH = 6
-        const val PIN_16_LENGTH = 16
-        const val PAIRING_VARIANT_PIN_16_DIGITS = 7 // @hide in the SDK.
-        const val PAIRING_RECEIVER_PRIORITY = 999
     }
 }

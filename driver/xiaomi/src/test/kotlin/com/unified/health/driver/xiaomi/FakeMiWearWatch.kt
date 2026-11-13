@@ -13,10 +13,14 @@ import com.unified.health.driver.xiaomi.transport.L2Frame
 import com.unified.health.driver.xiaomi.transport.XiaomiL0
 
 /**
- * Scripted MiWear V2 watch for JVM tests: always answers the L1 session-start exchange (unless
- * [answersL1Start] is false) and ACKs every DATA frame, answering specific `s7r (e, f)` requests
- * with canned responses registered via [onRequest]. Byte layouts follow
- * `XIAOMI_MIWEAR_DEVICE_PROTOCOL.md`.
+ * Scripted MiWear watch for JVM tests, V2 by default or V1 via [generation]: always answers the
+ * L1 session-start exchange (unless [answersL1Start] is false) and ACKs every DATA frame,
+ * answering specific `s7r (e, f)` requests with canned responses registered via [onRequest]. Byte
+ * layouts follow `XIAOMI_MIWEAR_DEVICE_PROTOCOL.md`.
+ *
+ * [generation] only selects which write/notify characteristic UUIDs this fake exposes (V1's
+ * 0x52/0x51 vs. V2's 0x5F/0x5E) -- L0/L1/L2 framing is identical either way (protocol §6.2 [V]:
+ * V1 reuses the same channel-1 plaintext transport, see `XiaomiAuthenticatorImpl.authenticateV1`).
  */
 internal class FakeMiWearWatch(
     mtu: Int = 247,
@@ -25,10 +29,13 @@ internal class FakeMiWearWatch(
     hasWrite: Boolean = true,
     hasNotify: Boolean = true,
     private val answersL1Start: Boolean = true,
+    generation: XiaomiGeneration = XiaomiGeneration.V2,
 ) {
     val version = characteristic(XiaomiUuids.SERVICE, XiaomiUuids.VERSION, PROPERTY_READ)
-    val write = characteristic(XiaomiUuids.SERVICE, XiaomiUuids.V2_WRITE, PROPERTY_WRITE, PROPERTY_WRITE_NO_RESPONSE)
-    val notify = characteristic(XiaomiUuids.SERVICE, XiaomiUuids.V2_NOTIFY, PROPERTY_NOTIFY)
+    private val writeUuid = if (generation == XiaomiGeneration.V1) XiaomiUuids.V1_COMMAND_WRITE else XiaomiUuids.V2_WRITE
+    private val notifyUuid = if (generation == XiaomiGeneration.V1) XiaomiUuids.V1_COMMAND_READ else XiaomiUuids.V2_NOTIFY
+    val write = characteristic(XiaomiUuids.SERVICE, writeUuid, PROPERTY_WRITE, PROPERTY_WRITE_NO_RESPONSE)
+    val notify = characteristic(XiaomiUuids.SERVICE, notifyUuid, PROPERTY_NOTIFY)
 
     val gatt = FakeGattClient(
         buildList {
@@ -41,6 +48,9 @@ internal class FakeMiWearWatch(
 
     /** Every `s7r` request the watch received on channel 1, in order. */
     val received: MutableList<S7r> = mutableListOf()
+
+    /** The L2 opCode (1 = plain, 2 = "encrypted") each entry in [received] arrived tagged with. */
+    val receivedOpCodes: MutableList<Int> = mutableListOf()
 
     /** When true, the *first* DATA frame received answers with a NAK instead of an ACK+response. */
     var failFirstDataWithNak: Boolean = false
@@ -97,6 +107,7 @@ internal class FakeMiWearWatch(
         if (l2.channel != XiaomiChannel.PROTOBUF.id) return
         val s7r = S7r.decode(l2.payload)
         received += s7r
+        receivedOpCodes += l2.opCode
         val response = scripted[s7r.e to s7r.f]?.invoke(s7r) ?: return
         val responseL2 = L2Frame.encode(XiaomiChannel.PROTOBUF.id, l2.opCode, response)
         notifyFrame(L1Frame.encode(L1Frame.TYPE_DATA, seq = nextWatchSeq++, payload = responseL2))

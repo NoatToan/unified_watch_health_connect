@@ -24,8 +24,8 @@ class XiaomiLinkTest {
      * work once the test body completes, so `XiaomiLink`'s `while (true) { delay(...) }` pump can never
      * keep `advanceUntilIdle` spinning forever on the shared test scheduler.
      */
-    private fun TestScope.buildLink(watch: FakeMiWearWatch): XiaomiLink =
-        XiaomiLink(watch.gatt, watch.write, watch.notify, backgroundScope, clock = { 0L })
+    private fun TestScope.buildLink(watch: FakeMiWearWatch, plaintextPostAuth: Boolean = false): XiaomiLink =
+        XiaomiLink(watch.gatt, watch.write, watch.notify, backgroundScope, plaintextPostAuth, clock = { 0L })
 
     /** `vwo { 1: a { 1: batteryPercent } }` (protocol §9.2 [V]); [Vwo] only needs to decode this. */
     private fun vwoBytes(batteryPercent: Int): ByteArray {
@@ -124,6 +124,34 @@ class XiaomiLinkTest {
         link.send(S7r.CLASS_SYSTEM, 3, byteArrayOf(1, 2, 3))
 
         assertEquals(1, watch.received.count { it.e == S7r.CLASS_SYSTEM && it.f == 3 })
+    }
+
+    @Test
+    fun `request and send tag their L2 frame WRITE_ENC by default (V2 behaviour unchanged)`() = runTest {
+        val watch = FakeMiWearWatch()
+        watch.onRequest(S7r.CLASS_SYSTEM, 1) { S7r(e = S7r.CLASS_SYSTEM, f = 1, txo = Txo(vwo = vwoBytes(10)).encode()).encode() }
+        val link = buildLink(watch, plaintextPostAuth = false)
+        link.start()
+
+        link.request(S7r.CLASS_SYSTEM, 1, payload = null, timeoutMs = 5_000)
+        link.send(S7r.CLASS_SYSTEM, 3, byteArrayOf(9))
+
+        assertEquals(listOf(XiaomiOpCode.WRITE_ENC, XiaomiOpCode.WRITE_ENC), watch.receivedOpCodes)
+    }
+
+    @Test
+    fun `plaintextPostAuth tags request and send WRITE instead of WRITE_ENC (MiWear V1)`() = runTest {
+        // Protocol §6.2 [V]: V1 never installs session crypto and never sets opCode WRITE_ENC,
+        // even for the post-auth commands (time sync, battery, ...) that V2 always encrypts.
+        val watch = FakeMiWearWatch()
+        watch.onRequest(S7r.CLASS_SYSTEM, 1) { S7r(e = S7r.CLASS_SYSTEM, f = 1, txo = Txo(vwo = vwoBytes(10)).encode()).encode() }
+        val link = buildLink(watch, plaintextPostAuth = true)
+        link.start()
+
+        link.request(S7r.CLASS_SYSTEM, 1, payload = null, timeoutMs = 5_000)
+        link.send(S7r.CLASS_SYSTEM, 3, byteArrayOf(9))
+
+        assertEquals(listOf(XiaomiOpCode.WRITE, XiaomiOpCode.WRITE), watch.receivedOpCodes)
     }
 
     @Test

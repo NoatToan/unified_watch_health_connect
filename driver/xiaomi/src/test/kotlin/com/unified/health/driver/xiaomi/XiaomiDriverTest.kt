@@ -1,6 +1,7 @@
 package com.unified.health.driver.xiaomi
 
 import com.unified.health.core.ble.HealthRecordSink
+import com.unified.health.core.ble.driver.AuthenticationException
 import com.unified.health.core.ble.driver.CredentialReader
 import com.unified.health.core.ble.driver.CredentialWriter
 import com.unified.health.core.ble.driver.MissingCredentialException
@@ -50,8 +51,12 @@ class XiaomiDriverTest {
         var authenticateV2Calls = 0
         var probeBindModeCalls = 0
         var localBindCalls = 0
+        var authenticateV1Calls = 0
         var lastUserId: String? = null
         var lastAppDeviceId: String? = null
+
+        /** Thrown by [authenticateV1] instead of returning [result], when set. */
+        var authenticateV1Error: Throwable? = null
 
         override suspend fun probeBindMode(link: XiaomiLink, userId: String): XiaomiBindProbe {
             probeBindModeCalls++
@@ -76,7 +81,12 @@ class XiaomiDriverTest {
             return result
         }
 
-        override suspend fun authenticateV1(link: XiaomiLink, credentials: CredentialReader): XiaomiAuthResult = error("not used by this test")
+        override suspend fun authenticateV1(link: XiaomiLink, credentials: CredentialReader): XiaomiAuthResult {
+            authenticateV1Calls++
+            lastUserId = credentials.get(XiaomiDriver.USER_ID.key)?.toString(Charsets.UTF_8)
+            authenticateV1Error?.let { throw it }
+            return result
+        }
     }
 
     /** Records every credential write, like the real repository-backed [CredentialWriter] would. */
@@ -109,6 +119,12 @@ class XiaomiDriverTest {
     private fun plainDriver() = XiaomiDriver(FakeAuthenticator(), FakeFitnessSync(), Dispatchers.Default, { ZoneOffset.UTC })
 
     private fun sessionContext() = SessionContext("AA:BB:CC:DD:EE:FF", CredentialReader { null })
+
+    /** A V1 device only ever needs `xiaomi.user_id` (protocol §6.2 [V]); no token, no bind marker. */
+    private fun v1SessionContext(userId: String = "mi-fitness-user-1") = SessionContext(
+        "AA:BB:CC:DD:EE:FF",
+        CredentialReader { key -> if (key == XiaomiDriver.USER_ID.key) userId.toByteArray(Charsets.UTF_8) else null },
+    )
 
     /** A credential store carrying the "generated but not yet bound" marker, as `generateCredential` would leave it. */
     private fun unboundSessionContext(
@@ -192,14 +208,71 @@ class XiaomiDriverTest {
     }
 
     @Test
-    fun `openSession refuses a V1 (legacy) protocol version`() = runTest {
+    fun `openSession refuses a V1-reporting device missing the legacy write-notify characteristics`() = runTest {
+        // Default FakeMiWearWatch only registers the V2 (0x5F/0x5E) characteristics; a device that
+        // reports version 0.x.y but doesn't expose 0x52/0x51 is a malformed/unexpected signature,
+        // not a normal V1 watch, and should fail clearly rather than silently use the V2 chars.
         val watch = FakeMiWearWatch(versionBytes = byteArrayOf(0, 3, 1))
         try {
             driver().openSession(watch.gatt, sessionContext())
             fail("expected UnsupportedDeviceException")
         } catch (e: UnsupportedDeviceException) {
-            assertTrue(e.message!!.contains("V1"))
+            assertTrue(e.message!!.contains("0xFE95"))
         }
+    }
+
+    @Test
+    fun `openSession runs the V1 handshake -- mid-session bond, then CMD_SEND_USERID, no V2 bind machinery`() = runTest {
+        val watch = FakeMiWearWatch(versionBytes = byteArrayOf(0, 3, 1), generation = XiaomiGeneration.V1)
+        val authenticator = FakeAuthenticator()
+
+        val session = driver(authenticator).openSession(watch.gatt, v1SessionContext("mi-fitness-user-1"))
+
+        assertEquals(1, watch.gatt.ensureBondedCalls)
+        assertEquals(1, authenticator.authenticateV1Calls)
+        assertEquals("mi-fitness-user-1", authenticator.lastUserId)
+        assertEquals(0, authenticator.authenticateV2Calls)
+        assertEquals(0, authenticator.probeBindModeCalls)
+        assertEquals(0, authenticator.localBindCalls)
+        assertTrue(watch.received.any { it.e == 2 && it.f == 3 }) // best-effort time sync still runs for V1
+        session.close()
+    }
+
+    @Test
+    fun `openSession surfaces a mid-session bond failure as an actionable AuthenticationException`() = runTest {
+        val watch = FakeMiWearWatch(versionBytes = byteArrayOf(0, 3, 1), generation = XiaomiGeneration.V1)
+        watch.gatt.bondResult = false // simulates the user rejecting/cancelling the OS pairing prompt
+        val authenticator = FakeAuthenticator()
+        try {
+            driver(authenticator).openSession(watch.gatt, v1SessionContext())
+            fail("expected AuthenticationException")
+        } catch (e: AuthenticationException) {
+            assertTrue(e.message!!.contains("pairing"))
+        }
+        assertEquals(0, authenticator.authenticateV1Calls) // never got past the bond
+    }
+
+    @Test
+    fun `openSession surfaces CMD_SEND_USERID's not-bound error for a V1 device`() = runTest {
+        val watch = FakeMiWearWatch(versionBytes = byteArrayOf(0, 3, 1), generation = XiaomiGeneration.V1)
+        val authenticator = FakeAuthenticator().apply {
+            authenticateV1Error = AuthenticationException("Xiaomi watch reports this identity is not bound (error code 4)")
+        }
+        try {
+            driver(authenticator).openSession(watch.gatt, v1SessionContext())
+            fail("expected AuthenticationException")
+        } catch (e: AuthenticationException) {
+            assertTrue(e.message!!.contains("not bound"))
+        }
+    }
+
+    @Test
+    fun `openSession never requests a bond for a V2 device (V1 support must not regress V2)`() = runTest {
+        val watch = FakeMiWearWatch() // default: V2 characteristics, version 1.0.0
+        watch.gatt.bondResult = false // if the driver ever called ensureBonded for V2, this would break it
+        val session = driver().openSession(watch.gatt, sessionContext())
+        assertEquals(0, watch.gatt.ensureBondedCalls)
+        session.close()
     }
 
     @Test
