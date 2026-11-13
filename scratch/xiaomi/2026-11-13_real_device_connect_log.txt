@@ -1,0 +1,174 @@
+309114:11-13 14:45:51.320  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1289 GATT_Register: Allocated name:com.unified.health.debug uuid:7ee0ea6c-0b78-4ad3-802d-3c0ae3332420 gatt_if:156 eatt_support:false
+309121:11-13 14:45:51.325  2962  3326 W gatt_api: system/stack/gatt/gatt_api.cc:1512 GATT_Connect: Starting direct connect gatt_if=156 address=xx:xx:xx:xx:30:dc transport=2
+309122:11-13 14:45:51.325  2962  3326 W bluetooth: system/stack/gatt/gatt_api.cc:1520 GATT_Connect: Connecting without tcb to: xx:xx:xx:xx:30:dc
+309430:11-13 14:45:51.533  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1499 GATT_Connect: Registered for opportunistic connection gatt_if=42
+309451:11-13 14:45:51.534  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1227 GATT_SetIdleTimeout: idle_timeout=65535, is_active=true, status=true (1-OK 0-not performed)
+309458:11-13 14:45:51.534  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1227 GATT_SetIdleTimeout: idle_timeout=65535, is_active=true, status=true (1-OK 0-not performed)
+309508:11-13 14:45:51.547  2962  3912 W BtGatt.GattService: pkgName : com.unified.health.debug
+309516:11-13 14:45:51.551 32728  2250 D AndroidGattClient: 74:FB:17:05:30:DC connection state=2 status=0
+309518:11-13 14:45:51.552  1544  2934 D SLocation: BluetoothStatusMonitor - conn, (74:FB:17:**:**:DC/682), state : 10, 2
+309526:11-13 14:45:51.553 32728 32728 D AndroidGattClient: Refreshed GATT cache for 74:FB:17:05:30:DC before service discovery
+309591:11-13 14:45:51.592  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1649 GATT_Disconnect: conn_id=42
+309645:11-13 14:45:51.653  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=1, s_handle=0x1, e_handle=0xffff
+309671:11-13 14:45:51.896  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x1, e_handle=0x9
+309673:11-13 14:45:51.956  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x1, e_handle=0x9
+309702:11-13 14:45:52.022  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0xa, e_handle=0x11
+309704:11-13 14:45:52.037  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0xa, e_handle=0x11
+309724:11-13 14:45:52.070  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0xd, e_handle=0xd
+309726:11-13 14:45:52.091  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x12, e_handle=0x1a
+309728:11-13 14:45:52.115  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x12, e_handle=0x1a
+309753:11-13 14:45:52.152  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0x17, e_handle=0x17
+309755:11-13 14:45:52.173  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0x1a, e_handle=0x1a
+309757:11-13 14:45:52.196  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x1b, e_handle=0x23
+309767:11-13 14:45:52.216  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x1b, e_handle=0x23
+309796:11-13 14:45:52.250  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0x20, e_handle=0x20
+309798:11-13 14:45:52.270  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0x23, e_handle=0x23
+309800:11-13 14:45:52.285  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x24, e_handle=0x27
+309802:11-13 14:45:52.299  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x24, e_handle=0x27
+309834:11-13 14:45:52.334  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0x27, e_handle=0x27
+309836:11-13 14:45:52.353  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x28, e_handle=0x2c
+309838:11-13 14:45:52.373  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x28, e_handle=0x2c
+309873:11-13 14:45:52.409  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x2d, e_handle=0x2f
+309875:11-13 14:45:52.427  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x2d, e_handle=0x2f
+309928:11-13 14:45:52.459  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x30, e_handle=0x33
+309932:11-13 14:45:52.470  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x30, e_handle=0x33
+309969:11-13 14:45:52.501  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0x33, e_handle=0x33
+310011:11-13 14:45:52.517  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=1, s_handle=0x1, e_handle=0xffff
+310127:11-13 14:45:52.576  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x1, e_handle=0x9
+310175:11-13 14:45:52.589  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x1, e_handle=0x9
+310289:11-13 14:45:52.764  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0xa, e_handle=0x11
+310299:11-13 14:45:52.822  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0xa, e_handle=0x11
+310320:11-13 14:45:52.945  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0xd, e_handle=0xd
+310332:11-13 14:45:52.981  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x12, e_handle=0x1a
+310335:11-13 14:45:52.997  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x12, e_handle=0x1a
+310359:11-13 14:45:53.028  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0x17, e_handle=0x17
+310361:11-13 14:45:53.041  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0x1a, e_handle=0x1a
+310363:11-13 14:45:53.058  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x1b, e_handle=0x23
+310365:11-13 14:45:53.073  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x1b, e_handle=0x23
+310398:11-13 14:45:53.103  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0x20, e_handle=0x20
+310400:11-13 14:45:53.118  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0x23, e_handle=0x23
+310402:11-13 14:45:53.141  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x24, e_handle=0x27
+310404:11-13 14:45:53.163  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x24, e_handle=0x27
+310437:11-13 14:45:53.203  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0x27, e_handle=0x27
+310448:11-13 14:45:53.221  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x28, e_handle=0x2c
+310452:11-13 14:45:53.247  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x28, e_handle=0x2c
+310496:11-13 14:45:53.284  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x2d, e_handle=0x2f
+310498:11-13 14:45:53.303  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x2d, e_handle=0x2f
+310539:11-13 14:45:53.334  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=3, s_handle=0x30, e_handle=0x33
+310541:11-13 14:45:53.348  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=4, s_handle=0x30, e_handle=0x33
+310578:11-13 14:45:53.381  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9c, disc_type=5, s_handle=0x33, e_handle=0x33
+310642:11-13 14:45:53.411  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:798 GATTC_TryMtuRequest: xx:xx:xx:xx:30:dc conn_id=0x009c
+310643:11-13 14:45:53.411  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:756 GATTC_ConfigureMTU: Configuring ATT mtu size conn_id:156 mtu:517 user mtu 512
+310663:11-13 14:45:53.462 32728 32728 I XiaomiDriver: MiWear protocol version 3.0.65 (V2)
+310671:11-13 14:45:53.488  2962  3912 I BtGatt.GattService: onWriteCharacteristic() - address=XX:XX:XX:XX:30:DC, status=0, length=30
+310686:11-13 14:45:53.550 32728 32728 I XiaomiLink: L1 session started; remote window=3
+310704:11-13 14:45:53.621  2962  3912 I BtGatt.GattService: onWriteCharacteristic() - address=XX:XX:XX:XX:30:DC, status=0, length=38
+310710:11-13 14:45:53.675  2962  3912 I BtGatt.GattService: onWriteCharacteristic() - address=XX:XX:XX:XX:30:DC, status=0, length=8
+310711:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: Connecting to 74:FB:17:05:30:DC (XIAOMI) failed
+310712:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: com.unified.health.core.ble.driver.UnsupportedDeviceException: This Xiaomi watch requires a cloud-signed bind (Xiaomi account), which Unified Health does not perform (protocol §7.3/§8.5 -- D-1193). Bind it once in Mi Fitness, extract the 16-byte token from its Transfer.device.log via adb, and paste it as the Xiaomi auth token instead.
+310713:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at com.unified.health.driver.xiaomi.XiaomiDriver.authenticate(XiaomiDriver.kt:211)
+310714:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at com.unified.health.driver.xiaomi.XiaomiDriver.access$authenticate(XiaomiDriver.kt:54)
+310715:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at com.unified.health.driver.xiaomi.XiaomiDriver$authenticate$1.invokeSuspend(XiaomiDriver.kt:15)
+310716:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+310717:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at kotlinx.coroutines.internal.ScopeCoroutine.afterResume(Scopes.kt:35)
+310718:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+310719:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+310720:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+310721:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at android.os.Handler.handleCallback(Handler.java:995)
+310722:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at android.os.Handler.dispatchMessage(Handler.java:103)
+310723:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at android.os.Looper.loopOnce(Looper.java:273)
+310724:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at android.os.Looper.loop(Looper.java:363)
+310725:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at android.app.ActivityThread.main(ActivityThread.java:10060)
+310726:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at java.lang.reflect.Method.invoke(Native Method)
+310727:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:632)
+310728:11-13 14:45:53.682 32728 32728 W MultiVendorConnection: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:975)
+310735:11-13 14:45:53.688  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1649 GATT_Disconnect: conn_id=156
+310743:11-13 14:45:53.688  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1227 GATT_SetIdleTimeout: idle_timeout=1, is_active=false, status=true (1-OK 0-not performed)
+310750:11-13 14:45:53.696  2962  3326 W gatt_api: system/stack/gatt/gatt_api.cc:1365 GATT_Deregister: gatt_if=156
+310919:11-13 14:45:54.804  1544  2934 D SLocation: BluetoothStatusMonitor - disconn, (74:FB:17:**:**:DC/682), 2
+310921:11-13 14:45:54.804  1544  2934 D SLocation: BluetoothDeviceManager - handleDisconnected (74:FB:17:**:**:DC/682) 2
+310948:11-13 14:45:54.919  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1289 GATT_Register: Allocated name:com.unified.health.debug uuid:af43f63f-1f60-43c7-889c-42a14902d9b5 gatt_if:157 eatt_support:false
+310953:11-13 14:45:54.928  2962  3326 W gatt_api: system/stack/gatt/gatt_api.cc:1512 GATT_Connect: Starting direct connect gatt_if=157 address=xx:xx:xx:xx:30:dc transport=2
+310954:11-13 14:45:54.928  2962  3326 W bluetooth: system/stack/gatt/gatt_api.cc:1520 GATT_Connect: Connecting without tcb to: xx:xx:xx:xx:30:dc
+311075:11-13 14:45:55.182  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1499 GATT_Connect: Registered for opportunistic connection gatt_if=42
+311099:11-13 14:45:55.185  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1227 GATT_SetIdleTimeout: idle_timeout=65535, is_active=true, status=true (1-OK 0-not performed)
+311108:11-13 14:45:55.187  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1227 GATT_SetIdleTimeout: idle_timeout=65535, is_active=true, status=true (1-OK 0-not performed)
+311146:11-13 14:45:55.224  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1649 GATT_Disconnect: conn_id=42
+311156:11-13 14:45:55.232  2962  3912 W BtGatt.GattService: pkgName : com.unified.health.debug
+311157:11-13 14:45:55.232  1544  2934 D SLocation: BluetoothStatusMonitor - conn, (74:FB:17:**:**:DC/682), state : 10, 2
+311163:11-13 14:45:55.236 32728 32739 D AndroidGattClient: 74:FB:17:05:30:DC connection state=2 status=0
+311178:11-13 14:45:55.253 32728  2196 D AndroidGattClient: Refreshed GATT cache for 74:FB:17:05:30:DC before service discovery
+311201:11-13 14:45:55.283  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=1, s_handle=0x1, e_handle=0xffff
+311217:11-13 14:45:55.528  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x1, e_handle=0x9
+311219:11-13 14:45:55.587  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x1, e_handle=0x9
+311248:11-13 14:45:55.664  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0xa, e_handle=0x11
+311250:11-13 14:45:55.684  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0xa, e_handle=0x11
+311270:11-13 14:45:55.728  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0xd, e_handle=0xd
+311272:11-13 14:45:55.749  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x12, e_handle=0x1a
+311274:11-13 14:45:55.764  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x12, e_handle=0x1a
+311298:11-13 14:45:55.797  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0x17, e_handle=0x17
+311301:11-13 14:45:55.816  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0x1a, e_handle=0x1a
+311303:11-13 14:45:55.832  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x1b, e_handle=0x23
+311305:11-13 14:45:55.846  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x1b, e_handle=0x23
+311334:11-13 14:45:55.880  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0x20, e_handle=0x20
+311336:11-13 14:45:55.900  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0x23, e_handle=0x23
+311338:11-13 14:45:55.915  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x24, e_handle=0x27
+311340:11-13 14:45:55.930  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x24, e_handle=0x27
+311372:11-13 14:45:55.964  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0x27, e_handle=0x27
+311374:11-13 14:45:55.981  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x28, e_handle=0x2c
+311376:11-13 14:45:55.997  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x28, e_handle=0x2c
+311411:11-13 14:45:56.030  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x2d, e_handle=0x2f
+311413:11-13 14:45:56.049  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x2d, e_handle=0x2f
+311449:11-13 14:45:56.092  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x30, e_handle=0x33
+311452:11-13 14:45:56.108  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x30, e_handle=0x33
+311489:11-13 14:45:56.144  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0x33, e_handle=0x33
+311531:11-13 14:45:56.170  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=1, s_handle=0x1, e_handle=0xffff
+311556:11-13 14:45:56.237  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x1, e_handle=0x9
+311558:11-13 14:45:56.275  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x1, e_handle=0x9
+311590:11-13 14:45:56.456  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0xa, e_handle=0x11
+311592:11-13 14:45:56.514  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0xa, e_handle=0x11
+311624:11-13 14:45:56.611  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0xd, e_handle=0xd
+311626:11-13 14:45:56.624  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x12, e_handle=0x1a
+311628:11-13 14:45:56.640  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x12, e_handle=0x1a
+311655:11-13 14:45:56.673  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0x17, e_handle=0x17
+311657:11-13 14:45:56.687  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0x1a, e_handle=0x1a
+311659:11-13 14:45:56.703  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x1b, e_handle=0x23
+311661:11-13 14:45:56.717  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x1b, e_handle=0x23
+311690:11-13 14:45:56.750  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0x20, e_handle=0x20
+311692:11-13 14:45:56.769  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0x23, e_handle=0x23
+311694:11-13 14:45:56.785  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x24, e_handle=0x27
+311696:11-13 14:45:56.798  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x24, e_handle=0x27
+311728:11-13 14:45:56.830  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0x27, e_handle=0x27
+311741:11-13 14:45:56.843  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x28, e_handle=0x2c
+311745:11-13 14:45:56.857  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x28, e_handle=0x2c
+311783:11-13 14:45:56.889  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x2d, e_handle=0x2f
+311785:11-13 14:45:56.904  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x2d, e_handle=0x2f
+311821:11-13 14:45:56.934  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=3, s_handle=0x30, e_handle=0x33
+311823:11-13 14:45:56.947  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=4, s_handle=0x30, e_handle=0x33
+311860:11-13 14:45:56.984  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:938 GATTC_Discover: conn_id=0x9d, disc_type=5, s_handle=0x33, e_handle=0x33
+311924:11-13 14:45:57.029  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:798 GATTC_TryMtuRequest: xx:xx:xx:xx:30:dc conn_id=0x009d
+311925:11-13 14:45:57.029  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:756 GATTC_ConfigureMTU: Configuring ATT mtu size conn_id:157 mtu:517 user mtu 512
+311936:11-13 14:45:57.082 32728  2196 I XiaomiDriver: MiWear protocol version 3.0.65 (V2)
+311955:11-13 14:45:57.159  2962  3912 I BtGatt.GattService: onWriteCharacteristic() - address=XX:XX:XX:XX:30:DC, status=0, length=30
+311967:11-13 14:45:57.211 32728  2196 I XiaomiLink: L1 session started; remote window=3
+311988:11-13 14:45:57.314  2962  3912 I BtGatt.GattService: onWriteCharacteristic() - address=XX:XX:XX:XX:30:DC, status=0, length=38
+311995:11-13 14:45:57.366  2962  3912 I BtGatt.GattService: onWriteCharacteristic() - address=XX:XX:XX:XX:30:DC, status=0, length=8
+311996:11-13 14:45:57.379 32728   441 W MultiVendorConnection: Connecting to 74:FB:17:05:30:DC (XIAOMI) failed
+311997:11-13 14:45:57.379 32728   441 W MultiVendorConnection: com.unified.health.core.ble.driver.UnsupportedDeviceException: This Xiaomi watch requires a cloud-signed bind (Xiaomi account), which Unified Health does not perform (protocol §7.3/§8.5 -- D-1193). Bind it once in Mi Fitness, extract the 16-byte token from its Transfer.device.log via adb, and paste it as the Xiaomi auth token instead.
+311998:11-13 14:45:57.379 32728   441 W MultiVendorConnection: 	at com.unified.health.driver.xiaomi.XiaomiDriver.authenticate(XiaomiDriver.kt:211)
+311999:11-13 14:45:57.379 32728   441 W MultiVendorConnection: 	at com.unified.health.driver.xiaomi.XiaomiDriver.access$authenticate(XiaomiDriver.kt:54)
+312000:11-13 14:45:57.379 32728   441 W MultiVendorConnection: 	at com.unified.health.driver.xiaomi.XiaomiDriver$authenticate$1.invokeSuspend(XiaomiDriver.kt:15)
+312001:11-13 14:45:57.379 32728   441 W MultiVendorConnection: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+312002:11-13 14:45:57.379 32728   441 W MultiVendorConnection: 	at kotlinx.coroutines.internal.ScopeCoroutine.afterResume(Scopes.kt:35)
+312003:11-13 14:45:57.379 32728   441 W MultiVendorConnection: 	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+312004:11-13 14:45:57.379 32728   441 W MultiVendorConnection: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+312005:11-13 14:45:57.379 32728   441 W MultiVendorConnection: 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+312006:11-13 14:45:57.379 32728   441 W MultiVendorConnection: 	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+312007:11-13 14:45:57.379 32728   441 W MultiVendorConnection: 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:807)
+312008:11-13 14:45:57.379 32728   441 W MultiVendorConnection: 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+312009:11-13 14:45:57.379 32728   441 W MultiVendorConnection: 	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+312015:11-13 14:45:57.385  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1649 GATT_Disconnect: conn_id=157
+312023:11-13 14:45:57.387  2962  3326 I gatt_api: system/stack/gatt/gatt_api.cc:1227 GATT_SetIdleTimeout: idle_timeout=1, is_active=false, status=true (1-OK 0-not performed)
+312031:11-13 14:45:57.394  2962  3326 W gatt_api: system/stack/gatt/gatt_api.cc:1365 GATT_Deregister: gatt_if=157
+312170:11-13 14:45:58.824  1544  2934 D SLocation: BluetoothStatusMonitor - disconn, (74:FB:17:**:**:DC/682), 2
+312171:11-13 14:45:58.824  1544  2934 D SLocation: BluetoothDeviceManager - handleDisconnected (74:FB:17:**:**:DC/682) 2
