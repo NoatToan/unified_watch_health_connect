@@ -4498,3 +4498,43 @@ thật ở phiên sau.
   `DailyRecordCodec` version 1. Ur9's field2Bytes/field3Bytes request/response mapping (nêu từ M2,
   vẫn chưa có byte vector xác nhận) — code đã handle cả hai field một cách thủ động, không chặn gì
   thêm.
+
+## Xiaomi MiWear: sport workout (outdoor family) + GPS + daytime sleep (D-1220)
+
+- **D-1220** · 2026-11-13 · `driver/xiaomi` — parse thêm sport/workout (nhóm outdoor) + GPS +
+  daytime sleep, map vào `HealthRecord` có sẵn — **Chốt** (đúng theo spec/evidence; byte-level vẫn
+  **Tạm**, chưa có máy thật)
+
+  Chọn nhóm sportType **outdoor** (`RUNNING_OUTDOOR=1`, `WALKING_OUTDOOR=2`, `MOUNTAINEERING=4`,
+  `CROSS_COUNTRY=5`, `HIKING_OUTDOOR=15`) thay vì `OutdoorStepRecordParser`/`FreeTrainingParser` —
+  lý do: đọc thẳng dispatch switch thật trong `FitnessDataParser.java`, sportType 1/2 (chạy/đi bộ
+  ngoài trời) là loại khối lượng cao nhất trên band Xiaomi, và bảng field của nhóm này ít version-
+  fragment nhất trong evidence. `SportReportCodec` → `HealthRecord.Workout` (start/end/distance/
+  calo/avgHR/maxHR); `SportGpsCodec` → `HealthRecord.WorkoutSample` (lat/lon/altitude/speed, GPS
+  đứng riêng không gộp HR/cadence vì file sport-record dạng FourDimenData không có timestamp per-
+  sample để correlate); `DaytimeSleepCodec` → `HealthRecord.Sleep`, tái dùng nguyên logic
+  `NightSleepCodec` (đúng như `DaytimeSleepParser.java` gốc gọi thẳng `NightSleepParser`'s methods).
+
+  Review: tự đối chiếu lại (không chỉ tin báo cáo agent) toàn bộ field-type-number của
+  `SportReportCodec` với `SportReportBaseParser.ReportType`'s `int` constant thật (`startTime=1,
+  endTime=2, duration=3, distance=5, calories=6, maxPace=8, minPace=9, maxSpeed=12, steps=13,
+  maxCadence=14, avgHr=16, maxHr=17`) và với `OutdoorSportReportParser.java`'s
+  `reportDataTypeArray` — khớp từng field, đúng thứ tự, đúng byte width. Sport-type catalog
+  (`XiaomiSportTypes.kt`) đối chiếu với `FitnessProtoSportType.java` — khớp 1-1 toàn bộ 25 giá trị.
+  Bit-validity (MSB-first per-field) đối chiếu với `OneDimenDataParser.isDataExist`'s real code
+  (`(dataValid[i2] & (1 << (7 - i3))) > 0`) — khớp logic. Tự chạy lại độc lập:
+  `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :driver:xiaomi:testDebugUnitTest
+  :app:compileDebugKotlin` → cả 2 **BUILD SUCCESSFUL**, 252 test/0 fail (tăng từ 228). Merge
+  fast-forward vào main tại `dce457efe`; worktree `unified_watch_health_connect-wt-xiaomi-sport` +
+  branch `feat/xiaomi-sport-gps-sleep` đã dọn theo quy tắc git-worktree.
+
+  **Cắt có chủ đích, không phải thiếu sót**: `WorkoutLap`, interval/pause-handling, sport record
+  per-sample (không có timestamp per-sample trong evidence để anchor), GPS dạng TGC (version≥4) và
+  triathlon/ski (multi-segment), mọi sportType ngoài nhóm outdoor-5 — vẫn `RawPayload`. Không
+  refactor `DailyReportCodec`/`DailyRecordCodec` để share logic với codec mới (quyết định của agent:
+  rủi ro hồi quy code đã test cao hơn lợi ích gọn code ở milestone này) — khác với brief đề xuất,
+  ghi nhận là deviation hợp lý.
+
+  **Đơn vị chưa xác nhận trên máy thật**: distance/calo giả định mét/kcal nguyên (suy từ cách format
+  khác trong cùng wire format), tốc độ GPS giả định m/s ×0.1 — cần verify với tổng số Mi Fitness
+  hiện ra trên 1 buổi chạy ngoài trời thật.
