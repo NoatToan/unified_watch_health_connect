@@ -4412,3 +4412,29 @@ thật ở phiên sau.
   `HealthRecord` §9.5) chưa làm, theo đúng thứ tự M0→M1→M2→M3→M4 của
   `XIAOMI_IMPLEMENTATION_BRIEF.md`. Chưa có xác nhận Gate 0 (`verifyMode` thật của con Band 10) —
   user sẽ tự verify trên thiết bị thật.
+
+## Fix generateCredential cho CredentialFormat.TEXT (D-1218)
+
+- **D-1218** · 2026-11-13 · `core/data` — `DefaultWearableDeviceRepository.generateCredential()`
+  hỗ trợ credential dạng `TEXT` — **Chốt**
+
+  Gap nêu ở D-1217 đã fix: `generateCredential()` trước đây bắt buộc
+  `requirement.format.byteLength` khác null nên luôn fail với `CredentialFormat.TEXT`
+  (`byteLength = null`) — đúng case của `XiaomiDriver.USER_ID`/`APP_DEVICE_ID`
+  (`generatable = true` nhưng format `TEXT`). Sửa: sinh chuỗi hex ngẫu nhiên 16 byte cho cả hai
+  format (giữ nguyên hành vi `HEX_16_BYTES` — cùng số byte, cùng dạng chuỗi trả về), rồi đi qua
+  đúng `parse(requirement, value)` sẵn có thay vì ghép byte tay riêng cho từng format. Lý do dùng
+  hex ngẫu nhiên cho `TEXT` dù nó là chuỗi: một credential `TEXT` *generatable* không phải secret
+  của vendor cần đúng định dạng — chỉ cần là id ổn định, duy nhất ở local (theo đúng mô tả trong
+  `XiaomiDriver.USER_ID`/`APP_DEVICE_ID`'s KDoc, "any stable string is probably accepted").
+
+  Review + tự verify độc lập (không chỉ tin báo cáo agent): đọc diff
+  `DefaultWearableDeviceRepository.kt` (18 dòng, không đụng `HEX_16_BYTES`'s shape cũ), tự chạy lại
+  `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :core:data:testDebugUnitTest` → **BUILD
+  SUCCESSFUL**, 61 test/0 fail (gồm 2 test mới cho `DefaultWearableDeviceRepositoryTest`, file test
+  đầu tiên cho class này). Merge fast-forward vào main tại `d3d5d82f8`; worktree
+  `unified_watch_health_connect-wt-text-credential` + branch `fix/generate-text-credential` đã
+  dọn theo quy tắc git-worktree.
+
+  Gap chặn local-bind-từ-UI nêu ở D-1217 coi như đã hết (user có thể tự thử bind con Band 10 thật
+  với M2 + fix này).
