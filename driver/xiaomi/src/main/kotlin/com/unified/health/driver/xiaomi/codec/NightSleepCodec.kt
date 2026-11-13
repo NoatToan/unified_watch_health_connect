@@ -30,6 +30,13 @@ import java.time.Instant
  * emitted for a marker in either state) rather than guessed onto one of the four stages this app
  * models -- TODO(xiaomi-protocol): verify on a real watch whether `SLEEP_TRACE` should instead
  * collapse into `AWAKE` or `LIGHT`.
+ *
+ * [parseTransitions] is exposed (not `private`) so [DaytimeSleepCodec] can reuse the exact same
+ * transition-marker-to-segment loop against its own, differently-positioned record list --
+ * `DaytimeSleepParser.java` [V] is a thin wrapper that calls `NightSleepParser`'s own
+ * `parseRecordData`/`processSleepState` with a different report table in front of an identical
+ * `(sleepTime: u32, sleepState: u8)` record shape, so the segment-building logic itself needs no
+ * daytime-specific change, only a different header length in front of it.
  */
 internal object NightSleepCodec {
     private const val TYPE_SLEEP_TIME = 16
@@ -69,6 +76,15 @@ internal object NightSleepCodec {
         if (payload.size < headerLen) return emptyList()
 
         val reader = ByteReader(payload, headerLen, payload.size)
+        return parseTransitions(reader)
+    }
+
+    /**
+     * Turns consecutive `(sleepTime: u32, sleepState: u8)` markers starting at [reader]'s current
+     * position into contiguous [HealthRecord.Sleep] segments (record *i* opens a segment that
+     * record *i+1* closes; see class KDoc). Shared by [decode] and [DaytimeSleepCodec.decode].
+     */
+    fun parseTransitions(reader: ByteReader): List<HealthRecord> {
         var prevTime: Long? = null
         var prevState: Int? = null
         val records = mutableListOf<HealthRecord>()

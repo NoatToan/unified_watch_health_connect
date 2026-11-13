@@ -22,6 +22,9 @@ internal object FitnessPayloadDecoder {
         FitnessKind.DAILY_RECORD -> DailyRecordCodec.decode(id, payload)
         FitnessKind.DAILY_REPORT -> DailyReportCodec.decode(id, payload)
         FitnessKind.NIGHT_SLEEP -> NightSleepCodec.decode(id, payload)
+        FitnessKind.DAYTIME_SLEEP -> DaytimeSleepCodec.decode(id, payload)
+        FitnessKind.SPORT_REPORT_OUTDOOR -> SportReportCodec.decode(id, payload)
+        FitnessKind.SPORT_GPS -> SportGpsCodec.decode(id, payload)
         else -> emptyList()
     }
 }
