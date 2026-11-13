@@ -4538,3 +4538,55 @@ thật ở phiên sau.
   **Đơn vị chưa xác nhận trên máy thật**: distance/calo giả định mét/kcal nguyên (suy từ cách format
   khác trong cùng wire format), tốc độ GPS giả định m/s ×0.1 — cần verify với tổng số Mi Fitness
   hiện ra trên 1 buổi chạy ngoài trời thật.
+
+## Xiaomi MiWear M6: V1 (legacy) session auth + mid-session OS bond (D-1221)
+
+- **D-1221** · 2026-11-13 · `driver/xiaomi` + `core/ble` (additive) — hỗ trợ MiWear V1 (giao thức
+  cũ: một số Mi Band 8, Redmi Watch 2 Lite, Xiaomi Watch S1 Active) — **Chốt** (thiết kế an toàn đã
+  verify kỹ; chưa có máy V1 thật để test)
+
+  Vấn đề kiến trúc thật (không phải chỉ driver work): app chỉ biết 1 thiết bị Xiaomi là V1 hay V2
+  **sau khi đã connect** (đọc characteristic `0x0050`), trong khi OS bond phải quyết định **trước
+  khi connect** (`LinkRequirements.bond`, đọc bởi connection manager trước `openSession`). V1 bắt
+  buộc bond, V2 (vừa build M2) không được bond.
+
+  **Giải pháp đã chọn, không đụng core architecture**: thêm `GattClient.ensureBonded(): Boolean`
+  (additive, default `false`, chỉ `AndroidGattClient` implement thật — mọi `GattClient` khác không
+  đổi hành vi). `XiaomiDriver.linkRequirements.bond` **giữ nguyên `false`** như cũ; `doOpenSession`
+  đọc version characteristic trước (không bond), chỉ gọi `gatt.ensureBonded()` trong nhánh
+  `generation == V1` — V2 không bao giờ chạm nhánh này. Logic bonding cũ của `GattConnector`
+  (dùng bởi Garmin `bond=true,bondOptional=true` và Coros `bond=true` bắt buộc) được tách thành
+  hàm share `createBondAndAwait()` (`core/ble/.../gatt/Bonding.kt`, mới) — byte-for-byte giống hệt
+  code cũ, chỉ di chuyển, không sửa logic.
+
+  V1 auth: `CMD_SEND_USERID` (msgId=5, `q90` field 7=userId request / field 8=success response,
+  field 3=errorCode) — plaintext hoàn toàn kể cả post-auth (`XiaomiLink` thêm
+  `plaintextPostAuth: Boolean = false`, V2 giữ nguyên hành vi mặc định). V1 bind lần đầu (cần cloud
+  bind key) **không làm** — cùng giới hạn D-1193; V1 chỉ dùng được nếu đã bind sẵn qua Mi Fitness,
+  user tự paste userId thật (không dùng id tự sinh).
+
+  Review (tự verify độc lập, không chỉ tin báo cáo agent): đối chiếu `CMD_SEND_USERID=5`, field
+  7/8 của `q90`, UUID `0x51`(read)/`0x52`(write) đúng với protocol doc §6.2/§0.2. Đọc diff
+  `Bonding.kt` xác nhận đúng là di chuyển nguyên logic cũ, không đổi hằng số/timeout. Tự chạy lại
+  **toàn bộ module liên quan** (không chỉ driver/xiaomi, vì đây là thay đổi `core/ble`):
+  `:driver:xiaomi` 246/0 fail (sau rebase lên D-1220: 270/0 fail), `:core:ble` 3/0,
+  `:driver:garmin` 124/0, `:driver:coros` 20/0 (2 driver này phụ thuộc thật vào bonding cũ —
+  0 fail xác nhận không hồi quy), `:driver:zepp` 128/0, `:driver:huawei` 64/0,
+  `:driver:standard` 33/0, `:core:data` 61/0; `:app:compileDebugKotlin` + `:driver:xiaomi:lintDebug`
+  đều BUILD SUCCESSFUL. Merge fast-forward vào main tại `5f7769fa4`; worktree
+  `unified_watch_health_connect-wt-xiaomi-v1` + branch `feat/xiaomi-miwear-v1` đã dọn theo quy tắc
+  git-worktree.
+
+  **Chưa verify trên máy thật**: không có watch V1 thật trong tay; thứ tự notify/write 0x51/0x52,
+  việc đọc `0x0050` có cần bonded trước không, và write-with-response trên firmware V1 đều là
+  `[I]`/suy luận từ doc, chưa có HCI snoop xác nhận.
+
+## Trạng thái driver Xiaomi sau D-1217..D-1221
+
+M1 (transport+auth V2 token) — M2 (local bind) — M3 (fitness sync) — M4 thu hẹp (daily record/
+report, night+daytime sleep, sport outdoor record+GPS) — M6 (V1 reauth) đều đã merge vào main.
+Còn lại: M4 phần sport/kind khác (12 sportType ngoài nhóm outdoor, ECG/weight/temperature/user
+profile/manual measure/abnormal record — không có `HealthRecord` type tương ứng, cần quyết định
+product-level trước), M5 không cần làm (hạ tầng reconnect/foreground service đã có sẵn dùng
+chung), V1 first-bind (cần cloud key, D-1193). Gate 0 thật (verifyMode của watch thật) và mọi
+byte-level parser đều **Tạm**, chờ user tự verify trên Xiaomi Smart Band 10 thật.
