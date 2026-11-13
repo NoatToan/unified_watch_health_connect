@@ -4438,3 +4438,63 @@ thật ở phiên sau.
 
   Gap chặn local-bind-từ-UI nêu ở D-1217 coi như đã hết (user có thể tự thử bind con Band 10 thật
   với M2 + fix này).
+
+## Xiaomi MiWear M3 (fitness id sync + channel 5 file receiver) + M4 scoped (3 parser) (D-1219)
+
+- **D-1219** · 2026-11-13 · `driver/xiaomi` — M3 (§9.3/§9.4) và M4 thu hẹp phạm vi (3/~15 record
+  kind: `DailyRecordParser`, `DailyReportParser`, `NightSleepParser`, §9.5) đã implement và merge
+  — **Chốt** (phần parser bytes) / **Tạm** (chưa verify trên máy thật)
+
+  `XiaomiFitnessSyncImpl.sync()` giờ chạy đủ: `f=1`/`f=2` lấy danh sách `FitnessDataId`, dedupe
+  theo `SyncRequest.knownRawPayloadTimestamps` + cửa sổ `effectiveSince()` + cap 50 file/lần
+  (giống `GarminFileSync`), `f=4` kích hoạt transfer, nhận stream không mời trên channel 5 (phải
+  thêm `XiaomiLink.receiveRaw()` mới — `requestRaw` cũ luôn ghi-rồi-đợi, không hợp cho dữ liệu
+  watch tự đẩy), `XiaomiFitnessFileReassembler` ghép segment theo `totalSegments/sequence`,
+  `FitnessFilePayload` verify+strip CRC32 rồi tách `FitnessDataId`, lưu `HealthRecord.RawPayload`
+  trước, `f=5` confirm sau cùng (đúng acceptance criterion "mất kết nối giữa chừng không mất dữ
+  liệu" — confirm chỉ gửi sau khi raw bytes đã ghi xong).
+
+  **CRC32 luôn bật, không phải đoán**: doc không nói transfer nào có CRC32; đọc
+  `docs/re-evidence/mi/jadx-base/.../FitnessReceiverHandler.java` thấy
+  `new FitnessDataReceiver(did, true)` — `crc32Verify` hardcode `true` cho mọi transfer kênh 5
+  trong evidence, nên driver luôn kỳ vọng và strip CRC32, gắn `[V]` chứ không phải `[I]` như brief
+  gợi ý ban đầu.
+
+  **3 parser M4** (`codec/{DailyRecordCodec,DailyReportCodec,NightSleepCodec}.kt`) port field-by-
+  field từ evidence (`DailyRecordParser`/`DailyReportParser`/`NightSleepParser`/
+  `FourDimenDataParser`/`OneDimenDataParser`/`FitnessDataValidity`/`SleepState` annotation) —
+  không đoán bit offset/byte size nào. `DailyRecordCodec` chỉ port `v2DataInfoArray` (version
+  2/3/4); `version==1` (layout `v1DataInfoArray` khác hẳn) để trống có `TODO(xiaomi-protocol)`,
+  cắt phạm vi có chủ đích chứ không đoán. Sleep state raw→`SleepStage` lấy từ
+  `SleepState.java`/`annotation/SleepState.java` (2 file evidence độc lập, khớp nhau): 0=NOT_SLEEP,
+  2=DEEP,3=LIGHT,4=REM,5=AWAKE,6=SLEEP_TRACE — NOT_SLEEP/SLEEP_TRACE không map vào 4 `SleepStage`
+  hiện có nên bị drop (không đoán gán bừa vào AWAKE/LIGHT).
+
+  `kind` string (`FitnessKind`): `daily_record`/`daily_report`/`night_sleep` cho 3 kind có parser,
+  `fitness_<dataType>_<subType>_<fileType>` cho phần còn lại (sport, GPS, sleep ban ngày, user
+  profile, ECG, cân nặng, nhiệt độ, ...) — raw-only, không parse, giống đúng tiền lệ
+  `HuaweiSession.sync()` (lưu raw, parse sau). `XiaomiDriver.reprocess()` route theo đúng hàm
+  decode sync dùng (`FitnessPayloadDecoder`), `bytes` lưu `id.encode() + payload` (giữ nguyên
+  `FitnessDataId` để reprocess không cần link thật vẫn biết version/timezone).
+
+  Review + tự verify độc lập: đọc toàn bộ diff, tự chạy lại
+  `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :driver:xiaomi:testDebugUnitTest` → **BUILD
+  SUCCESSFUL**, 228 test/0 fail (187 cũ + 41 test mới: reassembler, CRC/id split, 3 parser, sync
+  e2e qua `FakeMiWearWatch` kịch bản thành công + dedupe + ngoài cửa sổ + CRC hỏng không crash cả
+  sync, `receiveRaw`, `XiaomiDriver.reprocess`), `:driver:xiaomi:lintDebug` → **BUILD SUCCESSFUL**
+  (fix 1 lỗi `NewApi` — `LocalDate.ofInstant` cần API 34, đổi sang `Instant.atZone(zone)
+  .toLocalDate()` như phần còn lại của codebase), `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**.
+  Merge fast-forward vào main; worktree `unified_watch_health_connect-wt-xiaomi-m3m4` + branch
+  `worktree-xiaomi-m3m4` đã dọn theo quy tắc git-worktree.
+
+  **Chưa verify trên máy thật — cảnh báo rõ cho user trước khi test**: không có vendor test vector
+  nào cho fitness payload bytes (`XIAOMI_TEST_VECTORS.json` chỉ có vector cho id-exchange), nên 3
+  parser này build từ byte array tự tạo theo đúng bit layout đọc từ evidence, chưa test byte-for-
+  byte với Band 10 thật. Mở với con Band 10 thật của user để xem có field nào lệch offset không.
+
+  **Còn lại ngoài phạm vi D-1219** (cắt có chủ đích theo brief, không phải thiếu sót): 12/15 record
+  kind khác ở §9.5 (daytime sleep, user profile, manual measure, all-day sleep, abnormal record,
+  weight, ECG, temperature, mọi sport kind, GPS, recovery-rate) chỉ lưu `RawPayload`, không parse.
+  `DailyRecordCodec` version 1. Ur9's field2Bytes/field3Bytes request/response mapping (nêu từ M2,
+  vẫn chưa có byte vector xác nhận) — code đã handle cả hai field một cách thủ động, không chặn gì
+  thêm.
