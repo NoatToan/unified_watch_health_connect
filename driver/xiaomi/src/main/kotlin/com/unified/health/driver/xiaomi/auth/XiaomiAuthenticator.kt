@@ -20,11 +20,17 @@ internal interface XiaomiAuthenticator {
 
     /**
      * `getBindInfo` (protocol §7.1 [V], `s7r e=1 f=17`): asks the watch which bind mode it offers.
-     * A pure protocol probe (no crypto) -- only its result (verify/oob mode, model/SN/MAC/DID)
-     * decides between [localBind] and the feature-flagged, not-implemented-here cloud/PSK bind
-     * (protocol §7.3/§8.5).
+     * A pure protocol probe (no crypto, beyond the non-secret `MD5(userId)` identity hint) --
+     * only its result (verify/oob mode, model/SN/MAC/DID) decides between [localBind] and the
+     * feature-flagged, not-implemented-here cloud/PSK bind (protocol §7.3/§8.5).
+     *
+     * @param userId the app's own locally-generated bind identity (`xiaomi.user_id`); not a
+     *  Xiaomi account id.
+     * @throws com.unified.health.core.ble.driver.AuthenticationException if the watch reports it
+     *  is already bound (protocol §7.1/§7.5 field 3 code `1`) -- see the implementation's KDoc for
+     *  why this is a hard failure rather than a probe result.
      */
-    suspend fun probeBindMode(link: XiaomiLink): XiaomiBindProbe
+    suspend fun probeBindMode(link: XiaomiLink, userId: String): XiaomiBindProbe
 
     /**
      * V2 session auth (protocol §6.1 [V], `WearAuthV2`/`x6r`): nonce exchange, HKDF key schedule
@@ -39,8 +45,23 @@ internal interface XiaomiAuthenticator {
      * V2 local (no-cloud) bind (protocol §7.2 [V], `LocalWearBinderV2`): ECDH-P256 + HKDF, run only
      * when [probeBindMode] reports [XiaomiBindProbe.verifyMode] `== 2`. Persists the new token/
      * appDeviceId/userId via [credentialWriter] on success.
+     *
+     * @param userId the app's own locally-generated bind identity (`xiaomi.user_id`), sent as
+     *  `wa0.userId` in the final bind result.
+     * @param appDeviceId sent as `na0.appDeviceId`; the credential the app already generated for
+     *  `xiaomi.app_device_id` (protocol §7.2 step 2 says the vendor derives this from an Android
+     *  device id, MAC and userId -- "any stable string is probably accepted" [I], so this driver
+     *  reuses whatever was already generated for the `APP_DEVICE_ID` credential instead of
+     *  reproducing that formula).
+     * @throws com.unified.health.core.ble.driver.AuthenticationException if the watch rejects the
+     *  ECDH signature, or declines the local bind (e.g. the user did not confirm on the watch).
      */
-    suspend fun localBind(link: XiaomiLink, credentialWriter: CredentialWriter): XiaomiAuthResult
+    suspend fun localBind(
+        link: XiaomiLink,
+        userId: String,
+        appDeviceId: String,
+        credentialWriter: CredentialWriter,
+    ): XiaomiAuthResult
 
     /**
      * V1 (protocol version 0) auth: OS bond + `CMD_SEND_USERID` (protocol §6.2 [V]). Core BLE-bond

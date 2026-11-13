@@ -1,9 +1,21 @@
 package com.unified.health.driver.xiaomi.crypto
 
+import java.math.BigInteger
+import java.security.AlgorithmParameters
 import java.security.GeneralSecurityException
+import java.security.KeyFactory
+import java.security.KeyPairGenerator
 import java.security.MessageDigest
+import java.security.PrivateKey
 import java.security.Provider
+import java.security.SecureRandom
+import java.security.interfaces.ECPublicKey
+import java.security.spec.ECGenParameterSpec
+import java.security.spec.ECParameterSpec
+import java.security.spec.ECPoint
+import java.security.spec.ECPublicKeySpec
 import javax.crypto.Cipher
+import javax.crypto.KeyAgreement
 import javax.crypto.Mac
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -30,8 +42,17 @@ private const val SHA256_BYTES = 32
 /** HKDF-Expand's counter is one byte, so at most 255 blocks (protocol §5.1 [V]). */
 private const val HKDF_MAX_OUTPUT_BYTES = 255 * SHA256_BYTES
 
-/** HKDF info label for the MiWear session key schedule (protocol §5.1/§6 [V]). */
+/** HKDF info label for the MiWear session key schedule (protocol §5.1/§6.1 [V]). */
 private const val AUTH_LABEL = "miwear-auth"
+
+/** HKDF info label for the MiWear local-bind key schedule (protocol §7.2 step 8 [V]). */
+private const val BIND_LABEL = "miwear-bind"
+
+/** `LocalWearBinderV2`'s ECDH curve (protocol §7.2 step 1 [V]): NIST P-256, JCE name `secp256r1`. */
+private const val EC_CURVE_NAME = "secp256r1"
+
+/** One EC-P256 coordinate's fixed byte width; `appPub`/`devicePub` are `X(32) || Y(32)`, no `0x04` tag (protocol §7.2 [V]). */
+private const val EC_COORDINATE_BYTES = 32
 
 /**
  * `ucb.a(key, message)` (protocol §5.2 [V]): HMAC-SHA256 over [message], raw 32 bytes.
@@ -210,3 +231,114 @@ internal fun aesCtrCrypt(key: ByteArray, iv: ByteArray, data: ByteArray): ByteAr
  * (both sides are fixed-size keys/signatures), but different lengths return `false`.
  */
 internal fun constantTimeEquals(a: ByteArray, b: ByteArray): Boolean = MessageDigest.isEqual(a, b)
+
+/**
+ * `MD5(userId)` (protocol §7.1 [V], `sb0.userIdMd5`): the only MD5 use in this module, a
+ * non-secret identity hint sent in the plaintext `getBindInfo` probe. Not secret-bearing --
+ * `userId` is the app's own locally-generated bind identity, not a credential.
+ */
+internal fun md5(data: ByteArray): ByteArray = MessageDigest.getInstance("MD5").digest(data)
+
+/** Cached NIST P-256 domain parameters, reused by every [generateEcKeyPair]/[ecdhSharedSecret] call. */
+private val ecParameterSpec: ECParameterSpec by lazy {
+    val params = AlgorithmParameters.getInstance("EC")
+    params.init(ECGenParameterSpec(EC_CURVE_NAME))
+    params.getParameterSpec(ECParameterSpec::class.java)
+}
+
+/**
+ * One side of a MiWear local-bind ECDH-P256 exchange (protocol §7.2 [V]: `LocalWearBinderV2`
+ * generates an app keypair at step 1, the watch generates its own and replies with `devicePub`).
+ * Holds the private key only in memory; [sharedSecret] is the only operation exposed on it.
+ */
+internal class XiaomiEcKeyPair(
+    /** Raw uncompressed point `X(32) || Y(32)` -- the wire format `na0.appPub` carries (protocol §7.2 [V]). */
+    val publicKey: ByteArray,
+    private val privateKey: PrivateKey,
+) {
+    /**
+     * `sharedKey = ECDH-P256(appPriv, devicePub)` (protocol §7.2 step 5 [V]): the 32-byte X
+     * coordinate of the shared point.
+     * @throws IllegalArgumentException if [peerPublicKey] is not 64 raw bytes.
+     * @throws GeneralSecurityException if [peerPublicKey] does not decode to a valid P-256 point.
+     */
+    fun sharedSecret(peerPublicKey: ByteArray): ByteArray = ecdhSharedSecret(privateKey, peerPublicKey)
+}
+
+/** `LocalWearBinderV2` step 1 (protocol §7.2 [V]): generates the app's own EC-P256 keypair. */
+internal fun generateEcKeyPair(random: SecureRandom = SecureRandom()): XiaomiEcKeyPair {
+    val generator = KeyPairGenerator.getInstance("EC")
+    generator.initialize(ecParameterSpec, random)
+    val pair = generator.generateKeyPair()
+    val point = (pair.public as ECPublicKey).w
+    return XiaomiEcKeyPair(encodeEcPoint(point), pair.private)
+}
+
+private fun encodeEcPoint(point: ECPoint): ByteArray =
+    fixedWidth(point.affineX) + fixedWidth(point.affineY)
+
+/** Big-endian, exactly [EC_COORDINATE_BYTES] wide: strips [BigInteger]'s optional sign byte, pads short values. */
+private fun fixedWidth(value: BigInteger): ByteArray {
+    val raw = value.toByteArray()
+    return when {
+        raw.size == EC_COORDINATE_BYTES -> raw
+        raw.size > EC_COORDINATE_BYTES -> raw.copyOfRange(raw.size - EC_COORDINATE_BYTES, raw.size)
+        else -> ByteArray(EC_COORDINATE_BYTES - raw.size) + raw
+    }
+}
+
+private fun ecdhSharedSecret(privateKey: PrivateKey, peerPublicKey: ByteArray): ByteArray {
+    require(peerPublicKey.size == EC_COORDINATE_BYTES * 2) {
+        "EC public key must be ${EC_COORDINATE_BYTES * 2} bytes (X||Y, no 0x04 prefix), was ${peerPublicKey.size}"
+    }
+    val x = BigInteger(1, peerPublicKey.copyOfRange(0, EC_COORDINATE_BYTES))
+    val y = BigInteger(1, peerPublicKey.copyOfRange(EC_COORDINATE_BYTES, EC_COORDINATE_BYTES * 2))
+    val publicKey = KeyFactory.getInstance("EC").generatePublic(ECPublicKeySpec(ECPoint(x, y), ecParameterSpec))
+    val agreement = KeyAgreement.getInstance("ECDH")
+    agreement.init(privateKey)
+    agreement.doPhase(publicKey, true)
+    val secret = agreement.generateSecret()
+    // Some JCE providers drop the X coordinate's leading zero bytes; pad back to the fixed field width.
+    return if (secret.size == EC_COORDINATE_BYTES) secret else ByteArray(EC_COORDINATE_BYTES - secret.size) + secret
+}
+
+/**
+ * Session key schedule from the 64-byte `miwear-bind` HKDF output (protocol §7.2 step 8 [V]):
+ * same layout as [XiaomiAuthKeys] plus a 16-byte permanent [token] (`okm[40..56)`).
+ *
+ * [toString] is redacted: this object holds live key material including the new long-lived token.
+ */
+internal class XiaomiBindKeys(
+    val deviceKey: ByteArray,
+    val appKey: ByteArray,
+    val deviceIV: ByteArray,
+    val appIV: ByteArray,
+    val token: ByteArray,
+) {
+    override fun toString(): String = "XiaomiBindKeys(redacted)"
+}
+
+/**
+ * Derives the local-bind session keys and the new permanent token (protocol §7.2 step 8 [V]):
+ * `OKM = HKDF-SHA256(ikm = sharedKey, salt = appRandom||deviceRandom, info = "miwear-bind", L = 64)`.
+ *
+ * @throws IllegalArgumentException if HKDF's own argument constraints fail.
+ */
+internal fun deriveBindKeys(
+    sharedKey: ByteArray,
+    appRandom: ByteArray,
+    deviceRandom: ByteArray,
+): XiaomiBindKeys {
+    val okm = hkdfSha256(BIND_LABEL, sharedKey, appRandom + deviceRandom, length = 64)
+    return try {
+        XiaomiBindKeys(
+            deviceKey = okm.copyOfRange(0, 16),
+            appKey = okm.copyOfRange(16, 32),
+            deviceIV = okm.copyOfRange(32, 36),
+            appIV = okm.copyOfRange(36, 40),
+            token = okm.copyOfRange(40, 56),
+        )
+    } finally {
+        okm.fill(0)
+    }
+}

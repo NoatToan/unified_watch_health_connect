@@ -82,4 +82,40 @@ class P90Test {
     fun `Ha0 decode throws when verifyMode (field 1) is missing`() {
         assertThrows(MalformedPayloadException::class.java) { Ha0.decode(ByteArray(0)) }
     }
+
+    // ---- bind-handshake fields added for M2 (protocol §7.2 [V]) ----
+
+    @Test
+    fun `P90 round-trips the local-bind fields (na0 ta0 ka0 qa0 pb0)`() {
+        val na0 = byteArrayOf(1, 2, 3)
+        val ta0 = byteArrayOf(4, 5)
+        val ka0 = byteArrayOf(6)
+        val qa0 = byteArrayOf(7, 8, 9, 10)
+        val pb0 = byteArrayOf(11)
+        val decoded = P90.decode(P90(na0 = na0, ta0 = ta0, ka0 = ka0, qa0 = qa0, pb0 = pb0).encode())
+        assertEquals(na0.toHex(), decoded.na0?.toHex())
+        assertEquals(ta0.toHex(), decoded.ta0?.toHex())
+        assertEquals(ka0.toHex(), decoded.ka0?.toHex())
+        assertEquals(qa0.toHex(), decoded.qa0?.toHex())
+        assertEquals(pb0.toHex(), decoded.pb0?.toHex())
+    }
+
+    @Test
+    fun `P90 new fields do not disturb the sb0 ha0 errorCode vectors`() {
+        val decoded = P90.decode("5a1408001210e807f1fcf82d132f9bb018ca6738a19f".hexToBytes())
+        assertEquals("08001210e807f1fcf82d132f9bb018ca6738a19f", decoded.sb0?.toHex())
+        assertNull(decoded.na0)
+        assertNull(decoded.ta0)
+        assertNull(decoded.ka0)
+        assertNull(decoded.qa0)
+        assertNull(decoded.pb0)
+    }
+
+    @Test
+    fun `S7r wrapping a getBindInfo P90 matches the full test vector`() {
+        // XIAOMI_TEST_VECTORS.json getBindInfo.s7r_hex: e=1, f=17 over the Sb0 built above.
+        val sb0 = Sb0(dynamicCode = false, userIdMd5 = userIdMd5).encode()
+        val bytes = S7r.request(S7r.CLASS_BIND, 17, P90(sb0 = sb0).encode()).encode()
+        assertEquals("080110111a165a1408001210e807f1fcf82d132f9bb018ca6738a19f", bytes.toHex())
+    }
 }

@@ -4,26 +4,36 @@ import com.unified.health.core.ble.protocol.MalformedPayloadException
 
 /**
  * `p90` -- the generic binding envelope carried in `s7r.field3` for every `e = 1` (bind) message
- * (protocol §7 [V]). Only the oneof slots the non-secret bind *probe* needs are modelled here:
- * field 11 ([Sb0], outgoing `getBindInfo` request) and field 12 ([Ha0], its response), plus `p90`'s
- * own `field 3` error code (distinct from `s7r.field100`; protocol §7.1/§7.5 [V], e.g. code `1`
- * means "device already bound").
+ * (protocol §7 [V]). The bind *probe* slots are field 11 ([Sb0], outgoing `getBindInfo` request)
+ * and field 12 ([Ha0], its response); `p90`'s own `field 3` error code is distinct from
+ * `s7r.field100` (protocol §7.1/§7.5 [V], e.g. code `1` means "device already bound").
  *
- * The many other oneof slots used by the local-bind / PSK-bind handshakes (§7.2-§7.4: fields
- * 13-20, 29) carry cryptographic material (ECDH public keys, HMAC signs, AES-CCM ciphertext) and
- * are intentionally **not** modelled here -- see `auth/XiaomiAuthenticator.kt`, which owns the
- * full bind handshake and is the extension point for those slots.
+ * Fields 17/18/19/20/29 are the `LocalWearBinderV2` no-cloud bind handshake (protocol §7.2 [V]:
+ * [Na0] app ECDH key, [Ta0] device ECDH key + sign, [Ka0] app confirm, [Qa0] device confirm,
+ * [Pb0] the AES-CCM-wrapped bind result) -- added here by `auth/XiaomiAuthenticatorImpl.kt`
+ * (M2), which this class's own KDoc had flagged as the extension point for them. The PSK/cloud
+ * slots (§7.3/§7.4: fields 13-16) remain unmodelled -- that bind mode is out of scope (D-1193).
  */
 internal data class P90(
     val sb0: ByteArray? = null,
     val ha0: ByteArray? = null,
     val errorCode: Int? = null,
+    val na0: ByteArray? = null,
+    val ta0: ByteArray? = null,
+    val ka0: ByteArray? = null,
+    val qa0: ByteArray? = null,
+    val pb0: ByteArray? = null,
 ) {
     fun encode(): ByteArray {
         val writer = ProtoWriter()
         sb0?.let { writer.messageField(FIELD_SB0, it) }
         ha0?.let { writer.messageField(FIELD_HA0, it) }
         errorCode?.let { writer.int32Field(FIELD_ERROR, it) }
+        na0?.let { writer.messageField(FIELD_NA0, it) }
+        ta0?.let { writer.messageField(FIELD_TA0, it) }
+        ka0?.let { writer.messageField(FIELD_KA0, it) }
+        qa0?.let { writer.messageField(FIELD_QA0, it) }
+        pb0?.let { writer.messageField(FIELD_PB0, it) }
         return writer.toByteArray()
     }
 
@@ -31,22 +41,40 @@ internal data class P90(
         const val FIELD_ERROR = 3
         const val FIELD_SB0 = 11
         const val FIELD_HA0 = 12
+        const val FIELD_NA0 = 17
+        const val FIELD_TA0 = 18
+        const val FIELD_KA0 = 19
+        const val FIELD_QA0 = 20
+        const val FIELD_PB0 = 29
+
+        /** "Device already bound" (protocol §7.1/§7.5 [V]; distinct from the §7.5 vendor-callback codes 1002+). */
+        const val ERROR_ALREADY_BOUND = 1
 
         fun decode(bytes: ByteArray): P90 {
             val reader = ProtoReader(bytes)
             var sb0: ByteArray? = null
             var ha0: ByteArray? = null
             var error: Int? = null
+            var na0: ByteArray? = null
+            var ta0: ByteArray? = null
+            var ka0: ByteArray? = null
+            var qa0: ByteArray? = null
+            var pb0: ByteArray? = null
             while (reader.hasRemaining) {
                 val tag = reader.readTag()
                 when (tag.fieldNumber) {
                     FIELD_SB0 -> reader.lengthDelimitedOrSkip(tag)?.let { sb0 = it }
                     FIELD_HA0 -> reader.lengthDelimitedOrSkip(tag)?.let { ha0 = it }
                     FIELD_ERROR -> reader.varintOrSkip(tag)?.let { error = it.toInt() }
+                    FIELD_NA0 -> reader.lengthDelimitedOrSkip(tag)?.let { na0 = it }
+                    FIELD_TA0 -> reader.lengthDelimitedOrSkip(tag)?.let { ta0 = it }
+                    FIELD_KA0 -> reader.lengthDelimitedOrSkip(tag)?.let { ka0 = it }
+                    FIELD_QA0 -> reader.lengthDelimitedOrSkip(tag)?.let { qa0 = it }
+                    FIELD_PB0 -> reader.lengthDelimitedOrSkip(tag)?.let { pb0 = it }
                     else -> reader.skip(tag.wireType)
                 }
             }
-            return P90(sb0, ha0, error)
+            return P90(sb0, ha0, error, na0, ta0, ka0, qa0, pb0)
         }
     }
 }

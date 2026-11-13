@@ -47,7 +47,7 @@ internal class FakeMiWearWatch(
 
     private var dataFramesSeen = 0
     private var nextWatchSeq = 0
-    private val scripted = mutableMapOf<Pair<Int, Int>, () -> ByteArray?>()
+    private val scripted = mutableMapOf<Pair<Int, Int>, (S7r) -> ByteArray?>()
     private val reassembler = XiaomiL0.Reassembler()
 
     init {
@@ -55,8 +55,13 @@ internal class FakeMiWearWatch(
         gatt.onWrite = { _, value -> onWrite(value) }
     }
 
-    /** Registers a canned `s7r` response payload for one `(e, f)`; `null` means "never answer" (timeout). */
-    fun onRequest(e: Int, f: Int, response: () -> ByteArray?) {
+    /**
+     * Registers a response builder for one `(e, f)`; `null` means "never answer" (timeout). The
+     * builder receives the decoded request `s7r` -- needed by crypto-dependent exchanges (the M2
+     * nonce/ECDH handshakes carry the real appRandom/appPub, which the response must sign/derive
+     * against), unused by the simple fixed-payload commands most other tests script.
+     */
+    fun onRequest(e: Int, f: Int, response: (S7r) -> ByteArray?) {
         scripted[e to f] = response
     }
 
@@ -92,7 +97,7 @@ internal class FakeMiWearWatch(
         if (l2.channel != XiaomiChannel.PROTOBUF.id) return
         val s7r = S7r.decode(l2.payload)
         received += s7r
-        val response = scripted[s7r.e to s7r.f]?.invoke() ?: return
+        val response = scripted[s7r.e to s7r.f]?.invoke(s7r) ?: return
         val responseL2 = L2Frame.encode(XiaomiChannel.PROTOBUF.id, l2.opCode, response)
         notifyFrame(L1Frame.encode(L1Frame.TYPE_DATA, seq = nextWatchSeq++, payload = responseL2))
     }

@@ -3,6 +3,7 @@ package com.unified.health.driver.xiaomi
 import com.unified.health.core.ble.HealthRecordSink
 import com.unified.health.core.ble.driver.CredentialReader
 import com.unified.health.core.ble.driver.CredentialWriter
+import com.unified.health.core.ble.driver.MissingCredentialException
 import com.unified.health.core.ble.driver.RecognitionScore
 import com.unified.health.core.ble.driver.SessionContext
 import com.unified.health.core.ble.driver.SyncProgress
@@ -17,6 +18,7 @@ import com.unified.health.core.model.DeviceCapability
 import com.unified.health.driver.xiaomi.auth.XiaomiAuthResult
 import com.unified.health.driver.xiaomi.auth.XiaomiAuthenticator
 import com.unified.health.driver.xiaomi.auth.XiaomiBindProbe
+import com.unified.health.driver.xiaomi.proto.Ha0
 import com.unified.health.driver.xiaomi.sync.XiaomiFitnessSync
 import com.unified.health.driver.xiaomi.transport.XiaomiLink
 import kotlinx.coroutines.Dispatchers
@@ -36,20 +38,55 @@ import java.util.UUID
 
 class XiaomiDriverTest {
 
-    /** Stands in for the real (TODO) authenticator: returns a canned result without touching GATT. */
-    private class FakeAuthenticator(private val result: XiaomiAuthResult = XiaomiAuthResult()) : XiaomiAuthenticator {
-        var calls = 0
+    /** Stands in for the real authenticator: returns canned results/probes without touching GATT. */
+    private class FakeAuthenticator(
+        private val result: XiaomiAuthResult = XiaomiAuthResult(),
+        private val probe: XiaomiBindProbe = XiaomiBindProbe(Ha0.VERIFY_MODE_LOCAL_ECDH, null, null, null, null, null),
+    ) : XiaomiAuthenticator {
+        var authenticateV2Calls = 0
+        var probeBindModeCalls = 0
+        var localBindCalls = 0
+        var lastUserId: String? = null
+        var lastAppDeviceId: String? = null
 
-        override suspend fun probeBindMode(link: XiaomiLink): XiaomiBindProbe = error("not used by this test")
+        override suspend fun probeBindMode(link: XiaomiLink, userId: String): XiaomiBindProbe {
+            probeBindModeCalls++
+            lastUserId = userId
+            return probe
+        }
 
         override suspend fun authenticateV2(link: XiaomiLink, credentials: CredentialReader): XiaomiAuthResult {
-            calls++
+            authenticateV2Calls++
             return result
         }
 
-        override suspend fun localBind(link: XiaomiLink, credentialWriter: CredentialWriter): XiaomiAuthResult = error("not used by this test")
+        override suspend fun localBind(
+            link: XiaomiLink,
+            userId: String,
+            appDeviceId: String,
+            credentialWriter: CredentialWriter,
+        ): XiaomiAuthResult {
+            localBindCalls++
+            lastUserId = userId
+            lastAppDeviceId = appDeviceId
+            return result
+        }
 
         override suspend fun authenticateV1(link: XiaomiLink, credentials: CredentialReader): XiaomiAuthResult = error("not used by this test")
+    }
+
+    /** Records every credential write, like the real repository-backed [CredentialWriter] would. */
+    private class RecordingCredentialWriter : CredentialWriter {
+        val removed = mutableListOf<String>()
+        val written = mutableMapOf<String, ByteArray>()
+
+        override suspend fun put(key: String, value: ByteArray) {
+            written[key] = value
+        }
+
+        override suspend fun remove(key: String) {
+            removed += key
+        }
     }
 
     private class FakeFitnessSync : XiaomiFitnessSync {
@@ -68,6 +105,24 @@ class XiaomiDriverTest {
     private fun plainDriver() = XiaomiDriver(FakeAuthenticator(), FakeFitnessSync(), Dispatchers.Default, { ZoneOffset.UTC })
 
     private fun sessionContext() = SessionContext("AA:BB:CC:DD:EE:FF", CredentialReader { null })
+
+    /** A credential store carrying the "generated but not yet bound" marker, as `generateCredential` would leave it. */
+    private fun unboundSessionContext(
+        userId: String = "user-1",
+        appDeviceId: String = "device-1",
+        credentialWriter: CredentialWriter = CredentialWriter.None,
+    ) = SessionContext(
+        "AA:BB:CC:DD:EE:FF",
+        CredentialReader { key ->
+            when (key) {
+                XiaomiDriver.AUTH_TOKEN.unboundMarkerKey -> byteArrayOf(1)
+                XiaomiDriver.USER_ID.key -> userId.toByteArray(Charsets.UTF_8)
+                XiaomiDriver.APP_DEVICE_ID.key -> appDeviceId.toByteArray(Charsets.UTF_8)
+                else -> null
+            }
+        },
+        credentialWriter,
+    )
 
     private fun ad(name: String?, serviceUuids: Set<UUID> = emptySet(), serviceData: Map<UUID, ByteArray> = emptyMap()) =
         Advertisement("AA:BB:CC:DD:EE:FF", name, rssi = -50, serviceUuids = serviceUuids, serviceData = serviceData)
@@ -152,9 +207,65 @@ class XiaomiDriverTest {
         val session = driver(authenticator).openSession(watch.gatt, sessionContext())
 
         assertEquals(setOf(DeviceCapability.HISTORY_SYNC, DeviceCapability.BATTERY_LEVEL), session.capabilities)
-        assertEquals(1, authenticator.calls)
+        assertEquals(1, authenticator.authenticateV2Calls)
         assertTrue(watch.received.any { it.e == 2 && it.f == 3 }) // best-effort time sync (e=2 f=3)
         session.close()
+    }
+
+    @Test
+    fun `openSession runs authenticateV2 (reauth) when no unbound marker is stored`() = runTest {
+        val watch = FakeMiWearWatch()
+        val authenticator = FakeAuthenticator()
+        val session = driver(authenticator).openSession(watch.gatt, sessionContext())
+        assertEquals(1, authenticator.authenticateV2Calls)
+        assertEquals(0, authenticator.probeBindModeCalls)
+        assertEquals(0, authenticator.localBindCalls)
+        session.close()
+    }
+
+    @Test
+    fun `openSession runs the local-bind flow when the unbound marker is stored`() = runTest {
+        val watch = FakeMiWearWatch()
+        val authenticator = FakeAuthenticator(probe = XiaomiBindProbe(Ha0.VERIFY_MODE_LOCAL_ECDH, null, null, null, null, null))
+        val writer = RecordingCredentialWriter()
+
+        val session = driver(authenticator).openSession(watch.gatt, unboundSessionContext(credentialWriter = writer))
+
+        assertEquals(1, authenticator.probeBindModeCalls)
+        assertEquals(1, authenticator.localBindCalls)
+        assertEquals(0, authenticator.authenticateV2Calls)
+        assertEquals("user-1", authenticator.lastUserId)
+        assertEquals("device-1", authenticator.lastAppDeviceId)
+        assertTrue(writer.removed.contains(XiaomiDriver.AUTH_TOKEN.unboundMarkerKey))
+        session.close()
+    }
+
+    @Test
+    fun `openSession refuses a watch that only offers cloud PSK bind`() = runTest {
+        val watch = FakeMiWearWatch()
+        val authenticator = FakeAuthenticator(probe = XiaomiBindProbe(Ha0.VERIFY_MODE_PSK_CLOUD, null, null, null, null, null))
+        try {
+            driver(authenticator).openSession(watch.gatt, unboundSessionContext())
+            fail("expected UnsupportedDeviceException")
+        } catch (e: UnsupportedDeviceException) {
+            assertTrue(e.message!!.contains("Mi Fitness"))
+        }
+        assertEquals(0, authenticator.localBindCalls)
+    }
+
+    @Test
+    fun `openSession requires the local user id credential before binding`() = runTest {
+        val watch = FakeMiWearWatch()
+        val context = SessionContext(
+            "AA:BB:CC:DD:EE:FF",
+            CredentialReader { key -> if (key == XiaomiDriver.AUTH_TOKEN.unboundMarkerKey) byteArrayOf(1) else null },
+        )
+        try {
+            driver().openSession(watch.gatt, context)
+            fail("expected MissingCredentialException")
+        } catch (e: MissingCredentialException) {
+            assertEquals(XiaomiDriver.USER_ID, e.requirement)
+        }
     }
 
     @Test

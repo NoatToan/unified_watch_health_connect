@@ -129,6 +129,18 @@ internal class ProtoWriter {
         varint(((value shl 1) xor (value shr 31)).toLong() and 0xFFFFFFFFL)
     }
 
+    /** Little-endian 4-byte `fixed32`/`float` wire value (protocol §6.1 `dc0`/§7.2 `cc0` field 2 [V]). */
+    fun fixed32Field(fieldNumber: Int, bits: Int) = apply {
+        tag(fieldNumber, WireType.FIXED32)
+        writer.u8(bits and 0xFF)
+        writer.u8((bits ushr 8) and 0xFF)
+        writer.u8((bits ushr 16) and 0xFF)
+        writer.u8((bits ushr 24) and 0xFF)
+    }
+
+    /** `dc0`/`cc0` field 2, `SDK_INT` as a protobuf `float` (protocol §6.1/§7.2 [V]). */
+    fun floatField(fieldNumber: Int, value: Float) = fixed32Field(fieldNumber, value.toRawBits())
+
     fun bytesField(fieldNumber: Int, value: ByteArray) = apply {
         tag(fieldNumber, WireType.LENGTH_DELIMITED)
         varint(value.size.toLong())

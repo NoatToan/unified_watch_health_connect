@@ -2,6 +2,7 @@ package com.unified.health.driver.xiaomi
 
 import android.util.Log
 import com.unified.health.core.ble.driver.LinkRequirements
+import com.unified.health.core.ble.driver.MissingCredentialException
 import com.unified.health.core.ble.driver.RecognitionScore
 import com.unified.health.core.ble.driver.SessionContext
 import com.unified.health.core.ble.driver.UnsupportedDeviceException
@@ -13,8 +14,11 @@ import com.unified.health.core.ble.scan.Advertisement
 import com.unified.health.core.model.CredentialFormat
 import com.unified.health.core.model.CredentialRequirement
 import com.unified.health.core.model.WearableVendor
+import com.unified.health.driver.xiaomi.auth.XiaomiAuthResult
 import com.unified.health.driver.xiaomi.auth.XiaomiAuthenticator
+import com.unified.health.driver.xiaomi.auth.XiaomiBindProbe
 import com.unified.health.driver.xiaomi.device.XiaomiDeviceCommands
+import com.unified.health.driver.xiaomi.proto.Ha0
 import com.unified.health.driver.xiaomi.sync.XiaomiFitnessSync
 import com.unified.health.driver.xiaomi.transport.XiaomiLink
 import kotlinx.coroutines.CoroutineDispatcher
@@ -118,12 +122,45 @@ class XiaomiDriver internal constructor(
         val link = XiaomiLink(gatt, write, notify, scope)
         link.start()
 
-        val authResult = authenticator.authenticateV2(link, context.credentials)
+        val authResult = authenticate(link, context)
 
         // Best-effort (protocol §9.2 [V]: needResponse=false); a failure here must not fail pairing.
         XiaomiDeviceCommands.setTime(link, now(), zoneProvider())
 
         return XiaomiSession(link, fitnessSync, authResult)
+    }
+
+    /**
+     * First-bind vs. reauth (protocol §6.1/§7.2 [V]): the `xiaomi.auth_token.unbound` marker is
+     * set only on a credential this app generated itself and has not yet had accepted by the
+     * watch (see [CredentialRequirement.unboundMarkerKey], mirroring the `driver/zepp` driver's
+     * own first-bind detection). The connect flow above the driver already requires every
+     * [credentialRequirements] to have a value before `openSession` runs (so [AUTH_TOKEN] itself
+     * is never missing here) -- the marker is what actually distinguishes "freshly generated,
+     * still needs binding" from "a real token, either local-bound earlier or imported from Mi
+     * Fitness".
+     */
+    private suspend fun authenticate(link: XiaomiLink, context: SessionContext): XiaomiAuthResult {
+        val needsBind = context.credentials.get(AUTH_TOKEN.unboundMarkerKey) != null
+        if (!needsBind) return authenticator.authenticateV2(link, context.credentials)
+
+        val userId = context.credentials.get(USER_ID.key)?.toString(Charsets.UTF_8)?.takeIf { it.isNotEmpty() }
+            ?: throw MissingCredentialException(USER_ID)
+        val appDeviceId = context.credentials.get(APP_DEVICE_ID.key)?.toString(Charsets.UTF_8).orEmpty()
+
+        val probe: XiaomiBindProbe = authenticator.probeBindMode(link, userId)
+        val result = when (probe.verifyMode) {
+            Ha0.VERIFY_MODE_LOCAL_ECDH -> authenticator.localBind(link, userId, appDeviceId, context.credentialWriter)
+            Ha0.VERIFY_MODE_PSK_CLOUD -> throw UnsupportedDeviceException(
+                "This Xiaomi watch requires a cloud-signed bind (Xiaomi account), which Unified Health does " +
+                    "not perform (protocol §7.3/§8.5 -- D-1193). Bind it once in Mi Fitness, extract the 16-byte " +
+                    "token from its Transfer.device.log via adb, and paste it as the Xiaomi auth token instead.",
+            )
+            else -> throw UnsupportedDeviceException("Xiaomi watch reported an unrecognised bind verify mode ${probe.verifyMode}")
+        }
+        // The watch accepted the bind; this credential is no longer "generated but unconfirmed".
+        context.credentialWriter.remove(AUTH_TOKEN.unboundMarkerKey)
+        return result
     }
 
     /**
