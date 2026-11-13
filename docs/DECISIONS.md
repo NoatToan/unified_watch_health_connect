@@ -4375,3 +4375,40 @@ thật ở phiên sau.
   phần đã thấy hoạt động đúng trong lúc còn log (switchTab hoàn tất, trang pager đổi đúng) nhưng chưa
   chạy lại kịch bản đầy đủ sau bản build log-free cuối cùng. Để lại cho vòng test tiếp theo của
   coordinator/user.
+
+## Xiaomi MiWear M2: session auth + local bind (D-1217)
+
+- **D-1217** · 2026-11-13 · `:driver:xiaomi` M2 (session auth V2 + no-cloud local bind) — triển
+  khai xong, merge vào main — **Chốt** (đúng theo spec/evidence; kết quả trên thiết bị thật vẫn
+  **Tạm**, xem bên dưới)
+
+  `XiaomiAuthenticatorImpl` hết còn 3 `TODO()`: `probeBindMode` (§7.1 `getBindInfo`/`sb0`/`ha0`),
+  `authenticateV2` (§6.1 `WearAuthV2` — nonce handshake `w90`→`ca0`→`t90`→`z90`, cài AES-CTR vào
+  `XiaomiLink.encrypt`/`decrypt` với key==IV==appKey/deviceKey), `localBind` (§7.2
+  `LocalWearBinderV2` — ECDH-P256 → HKDF-SHA256 `miwear-bind` → token 16 byte → AES-CCM bind
+  result). `XiaomiDriver.openSession` phân nhánh first-bind vs reauth qua
+  `AUTH_TOKEN.unboundMarkerKey` (cùng pattern với `driver/zepp`). PSK/cloud bind (`verifyMode==1`)
+  vẫn out-of-scope, ném `UnsupportedDeviceException` hướng dẫn import token từ Mi Fitness, giữ
+  đúng quyết định D-1193.
+
+  Review (không chỉ tin báo cáo của agent, tự đối chiếu lại): từng bước khớp
+  `docs/protocols/XIAOMI_MIWEAR_DEVICE_PROTOCOL.md` §6.1/§7.2 và `docs/re-evidence/mi/jadx-base`;
+  khớp byte-level với vector `authCrypto`/`authCcm`/`l2Ctr`/`getBindInfo` trong
+  `docs/protocols/XIAOMI_TEST_VECTORS.json`. Tự chạy lại độc lập:
+  `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew :driver:xiaomi:testDebugUnitTest
+  :app:compileDebugKotlin` → cả 2 **BUILD SUCCESSFUL**, 187 test/0 fail (tăng từ baseline 136).
+  Merge fast-forward vào main tại `9fbf3ed64`; worktree
+  `unified_watch_health_connect-wt-xiaomi-m2` + branch `worktree-xiaomi-m2-auth` đã dọn theo quy
+  tắc git-worktree.
+
+  **Gap phát hiện khi review, chưa sửa (ngoài phạm vi `driver/xiaomi`, đã tự xác minh lại là có
+  thật)**: `DefaultWearableDeviceRepository.generateCredential()` (`core/data`) chỉ generate được
+  khi `requirement.format.byteLength` khác null; `XiaomiDriver.USER_ID`/`APP_DEVICE_ID` dùng
+  `CredentialFormat.TEXT` (`byteLength = null`) nhưng `generatable = true` → nút "Generate" trên
+  UI sẽ fail cho 2 credential này, chặn luồng bind lần đầu trên máy thật. Cần fix trong
+  `core/data` trước khi local bind thật sự chạy được từ UI.
+
+  **Còn lại**: M3 (fitness ID sync §9.3 + channel 5 file receiver §9.4) và M4 (parser →
+  `HealthRecord` §9.5) chưa làm, theo đúng thứ tự M0→M1→M2→M3→M4 của
+  `XIAOMI_IMPLEMENTATION_BRIEF.md`. Chưa có xác nhận Gate 0 (`verifyMode` thật của con Band 10) —
+  user sẽ tự verify trên thiết bị thật.
